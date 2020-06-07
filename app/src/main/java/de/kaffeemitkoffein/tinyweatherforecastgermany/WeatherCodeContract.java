@@ -111,26 +111,6 @@ public class WeatherCodeContract {
         return sum / elements;
     }
 
-    private boolean isDaytime_old(){
-        // daytime = 6:00 - 18:00
-        // result is polled based on if more forecasts go into the day or night period.
-        int dayForecasts = 0;
-        int nightForecasts = 0;
-        int[] hours = weatherCard.getIntArray(weatherCard.uhrzeit,start,stop);
-        for (int i=start; i<=stop; i++){
-            if ((hours[i]>6) && (hours[i]<19)){
-                dayForecasts++;
-            } else {
-                nightForecasts++;
-            }
-        }
-        if (nightForecasts>dayForecasts){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     private boolean isDaytime(){
         // daytime = 6:00 - 18:00
         // result is taken from first entry

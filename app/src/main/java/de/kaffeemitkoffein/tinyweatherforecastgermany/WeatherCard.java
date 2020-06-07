@@ -160,20 +160,6 @@ public class WeatherCard {
     }
 
     private String truncateSpaces(String s){
-        /**
-        String s = s1;
-        Log.v("STR","Value>"+s+"<");
-        if (s==null){
-            return s;
-        }
-        if (s.length()==0){
-            return s;
-        }
-        while (!isValidDataChar(s.charAt(0))) {
-            s = s.substring(1);
-        }
-        Log.v("STR","Resul>"+s+"<");
-         **/
         return s.trim();
     }
 

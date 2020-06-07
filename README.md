@@ -1,7 +1,7 @@
 Tiny 24h Weather Forecast Germany
 =================================
 
-An android app with a widget that presents a 24 hours weather forecast based on the open data of the Deutscher Wetterdienst (DWD).
+An android app with a widget that presents a 24 hours weather forecast based on open data from the Deutscher Wetterdienst (DWD).
 
 How to get the app
 ------------------
