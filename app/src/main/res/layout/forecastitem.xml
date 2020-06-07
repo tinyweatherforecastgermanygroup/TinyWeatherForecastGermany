@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of Tiny24hWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fcitem_maincontainer"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:padding="3dp">
+
+    <TextView android:id="@+id/fcitem_heading"
+        android:textSize="@dimen/fcmain_textsize_large"
+        android:textColor="@color/widget_textcolor"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/fcitem_linearlayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/fcitem_heading"
+        android:weightSum="3"
+        android:gravity="center">
+
+        <LinearLayout android:id="@+id/fcitem_leftcontainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView android:id="@+id/fcitem_weatherconditiontext"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/fcitem_clouds"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/fcitem_rain"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/fcitem_centercontainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView android:id="@+id/fcitem_weatherconditionicon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_launcher" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/fcitem_rightcontainer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView android:id="@+id/fcitem_temperature"
+                android:textSize="@dimen/fcmain_textsize_large"
+                android:textColor="@color/widget_textcolor"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/fcitem_temperature_highlow"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView android:id="@+id/fcitem_wind"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,58 @@
+<!--
+ This file is part of Tiny24hWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/preference_category_general">
+
+        <ListPreference
+            android:key="PREF_updateinterval"
+            android:title="@string/preference_updateinterval_title"
+            android:summary="@string/preference_pdateinterval_summary"
+            android:entries="@array/updateinterval_text"
+            android:entryValues="@array/updateinterval_values"
+            android:defaultValue="1"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/preference_category_widget">
+
+        <ListPreference
+            android:key="PREF_widget_opacity"
+            android:title="@string/preference_opacity_title"
+            android:summary="@string/preference_opacity_summary"
+            android:entries="@array/widget_opacity_text"
+            android:entryValues="@array/widget_opacity_values"
+            android:defaultValue="1"/>
+
+        <CheckBoxPreference
+            android:key="PREF_widget_showdwdnote"
+            android:title="@string/preference_displaynoteinwidget_title"
+            android:summary="@string/preference_displaynoteinwidget_summary"
+            android:defaultValue="true"/>
+
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
+
+

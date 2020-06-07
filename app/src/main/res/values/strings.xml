@@ -1,0 +1,80 @@
+<!--
+ This file is part of Tiny24hWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="app_name">Tiny Weather Forecast Germany</string>
+    <string name="main_selectstation">Region:</string>
+    <string name="main_isprovider">Please note that this service is registered as the weather provider service in lineageos. You cannot change the weather location here. To change the location, go to the widget settings of the system clock and select the location there.</string>
+    <string name="dwd_notice">Source: Deutscher Wetterdienst, own elements added, some data averaged over individual values. </string>
+    <string name="new_station">Region changed to </string>
+    <string name="license_button">License</string>
+    <string name="about_button">About...</string>
+    <string name="triggerupdate_button">About...</string>
+    <string name="classicwidget_description">Weather widget</string>
+    <string name="weathercode_blustery">Blustery</string>
+    <string name="weathercode_clear_night">Clear night</string>
+    <string name="weathercode_cloudy">Cloudy</string>
+    <string name="weathercode_cold">Cold</string>
+    <string name="weathercode_drizzle">Drizzle</string>
+    <string name="weathercode_fair_day">Fair day</string>
+    <string name="weathercode_fair_night">Fair night</string>
+    <string name="weathercode_freezing_drizzle">Freezing drizzle</string>
+    <string name="weathercode_freezing_rain">Freezing rain</string>
+    <string name="weathercode_heavy_snow">Heavy snow</string>
+    <string name="weathercode_hot">Hot</string>
+    <string name="weathercode_hurricane">Hurricane</string>
+    <string name="weathercode_light_showers">Light showers</string>
+    <string name="weathercode_light_snow_showers">Light snow showers</string>
+    <string name="weathercode_mixed_rain_and_snow">Mixed rain and snow</string>
+    <string name="weathercode_mostly_cloudy_day">Mostly cloudy day</string>
+    <string name="weathercode_mostly_cloudy_night">Mostly cloudy night</string>
+    <string name="weathercode_not_available">Not available</string>
+    <string name="weathercode_partly_cloudy_day">Partly cloudy day</string>
+    <string name="weathercode_partly_cloudy_night">Partly cloudy night</string>
+    <string name="weathercode_scattered_showers">Scattered showers</string>
+    <string name="weathercode_scattered_snow_showers">Scattered snow showers</string>
+    <string name="weathercode_showers">Showers</string>
+    <string name="weathercode_snow_showers">Snow showers</string>
+    <string name="weathercode_snow">Snow</string>
+    <string name="weathercode_snow_flurries">Snow flurries</string>
+    <string name="weathercode_sunny">Sunny</string>
+    <string name="weathercode_windy">Windy</string>
+    <string name="weathercode_partly_cloudy_day_scattered_showers">Partly cloudy, showers</string>
+    <string name="weathercode_partly_cloudy_night_scattered_showers">Partly cloudy, showers</string>
+    <string name="weathercode_partly_cloudy_day_scattered_snow_showers">Partly cloudy, snow showers</string>
+    <string name="weathercode_partly_cloudy_night_scattered_snow_showers">Partly cloudy, snow showers</string>
+    <string name="weathercode_partly_cloudy_day_scattered_showers_light">Partly cloudy, light showers</string>
+    <string name="weathercode_partly_cloudy_night_scattered_showers_light">Partly cloudy, light showers</string>
+    <string name="weathercode_partly_cloudy_day_scattered_snow_showers_light">Partly cloudy, light snow showers</string>
+    <string name="weathercode_partly_cloudy_night_scattered_snow_showers_light">Partly cloudy, light snow showers</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="clouds">Clouds: </string>
+    <string name="rain">Rain: </string>
+    <string name="preference_category_general">General</string>
+    <string name="preference_category_widget">Widget settigs</string>
+    <string name="preference_updateinterval_title">Update interval</string>
+    <string name="preference_pdateinterval_summary">Select how often the weather data should be updated.</string>
+    <string name="preference_opacity_title">Widget opacity</string>
+    <string name="preference_opacity_summary">Select how transparent the widget is on your home screen.</string>
+    <string name="preference_displaynoteinwidget_title">Diplay DWD note</string>
+    <string name="preference_displaynoteinwidget_summary">Show the data source string.</string>
+    <string name="license_title">Licenses</string>
+    <string name="button_continue">Continue</string>
+
+</resources>

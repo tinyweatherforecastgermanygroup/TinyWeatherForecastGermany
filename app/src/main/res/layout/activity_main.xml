@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of Tiny24hWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="@string/main_selectstation"
+        android:textColor="@color/textColor"
+        android:layout_gravity="left"
+        android:textSize="@dimen/fcmain_textsize_large"
+        android:id="@+id/main_selectstation_text"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dwd_notice"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/textColorGrey"
+        android:background="@color/colorPrimary"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textSize="@dimen/fcmain_textsize_medium"
+        android:id="@+id/main_dwd_notice_text"/>
+
+    <Spinner android:id="@+id/stations_spinner"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_below="@id/main_selectstation_text"/>
+
+    <ListView android:id="@+id/main_listview"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:divider="@color/colorPrimaryLight"
+              android:dividerHeight="1dp"
+              android:layout_below="@id/stations_spinner"
+              android:layout_above="@id/main_dwd_notice_text"
+              android:footerDividersEnabled="true"/>
+
+</RelativeLayout>
