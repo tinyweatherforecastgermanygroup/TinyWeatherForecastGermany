@@ -223,7 +223,7 @@ public class WeatherCodeContract {
         int[] min_rain = weatherCard.getIntArray(weatherCard.niederschlag_min);
         int[] max_rain = weatherCard.getIntArray(weatherCard.niederschlag_max);
         // this is the logic for analyzing more than one item
-        if (start == stop){
+        if (start != stop){
             int counter = 0;
             for (int i=start; i<=stop; i++) {
                 if (rain[i]>0){
@@ -239,7 +239,6 @@ public class WeatherCodeContract {
             }
             return false;
         } else {
-            // this is the logic for one item
             if ((min_rain[start] == 0) && (max_rain[start]>0)) {
                 return true;
             } else {
