@@ -571,6 +571,7 @@ public class WeatherCodeContract {
 
     public int getWeatherConditionTextResource(int weathercondition){
         int resource = 0;
+        Log.v("GWC","Weather Condition: "+weathercondition);
         switch (weathercondition){
             case BLUSTERY: resource = R.string.weathercode_blustery; break;
             case CLEAR_NIGHT: resource = R.string.weathercode_clear_night; break;
@@ -599,6 +600,8 @@ public class WeatherCodeContract {
             case SNOW_SHOWERS: resource = R.string.weathercode_snow_showers; break;
             case SUNNY: resource = R.string.weathercode_sunny; break;
             case WINDY: resource = R.string.weathercode_windy; break;
+            case PARTLY_CLOUDY_DAY_SCATTERED_SHOWERS: resource = R.string.weathercode_partly_cloudy_day_scattered_showers; break;
+            case PARTLY_CLOUDY_NIGHT_SCATTERED_SHOWERS: resource = R.string.weathercode_partly_cloudy_night_scattered_showers; break;
             case PARTLY_CLOUDY_DAY_SCATTERED_SHOWERS_LIGHT: resource = R.string.weathercode_partly_cloudy_day_scattered_showers_light; break;
             case PARTLY_CLOUDY_NIGHT_SCATTERED_SHOWERS_LIGHT: resource = R.string.weathercode_partly_cloudy_night_scattered_showers_light; break;
             case PARTLY_CLOUDY_DAY_SCATTERED_SNOW_SHOWERS_LIGHT: resource = R.string.weathercode_partly_cloudy_day_scattered_snow_showers_light; break;
@@ -625,7 +628,7 @@ public class WeatherCodeContract {
 
     public int getWeatherCondition(){
         // int weatherCondition = NOT_AVAILABLE;
-        int weatherCondition = FAIR_DAY;
+        int weatherCondition = NOT_AVAILABLE;
         // *** BASIC WEATHER CONDITIONS ***
         // FAIR
         if (isFair()){
@@ -769,6 +772,10 @@ public class WeatherCodeContract {
         // HURRICANE
         if (isHurricane()){
             weatherCondition = HURRICANE;
+        }
+        if (weatherCondition==NOT_AVAILABLE){
+            Log.v("WCC","Weather condition ia not avaiable.");
+            Log.v("WCC","Details"+weatherCard.toString(start,stop));
         }
         return weatherCondition;
     }

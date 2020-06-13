@@ -450,5 +450,43 @@ public class WeatherCard {
         return getArrowBitmap(context,degrees);
     }
 
+    private String arrayToString(String[] strarray, int start, int stop){
+        String result = "";
+        for (int i=start; i<=stop; i++){
+            result = result + strarray[i];
+            if (i<stop){
+                result = result + "|";
+            }
+        }
+        return result;
+    }
+
+    public String toString(int start, int stop){
+        String seperator =",";
+        String result = fdat + seperator +
+                        ortscode + seperator +
+                        zeitstempel + seperator +
+                        klimagebiet + seperator +
+                        ausgegeben_am + seperator +
+                        ausgegeben_von + seperator +
+                        uhrzeit;
+        result = result + "|Bewölkung:"+arrayToString(bewoelkung,start,stop);
+        result = result + "|Bewölkung_min:"+arrayToString(bewoelkung_min,start,stop);
+        result = result + "|Bewölkung_max:"+arrayToString(bewoelkung_max,start,stop);
+        result = result + "|Niederschlag:"+arrayToString(niederschlag,start,stop);
+        result = result + "|Niederschlag_min:"+arrayToString(niederschlag_min,start,stop);
+        result = result + "|Niederschlag_max:"+arrayToString(niederschlag_max,start,stop);
+        result = result + "|Temperatur:"+arrayToString(lufttemperatur,start,stop);
+        result = result + "|Temperatur_min:"+arrayToString(lufttemperatur_min,start,stop);
+        result = result + "|Temperatur_max:"+arrayToString(lufttemperatur_max,start,stop);
+        result = result + "|Wind:"+arrayToString(wind,start,stop);
+        result = result + "|Boeen:"+arrayToString(boeen,start,stop);
+        result = result + "|Zeit:"+String.valueOf(polling_time);
+        return result;
+    }
+
+    public String toString(){
+        return toString(0,11);
+    }
 
 }
