@@ -43,8 +43,21 @@ Credits
  
  For the privacy statement, see [here](https://codeberg.org/Starfish/TinyWeatherForecastGermany/wiki/Home).
 
-Contributing
-------------
+ Concept
+ -------
+ 
+ When installing [lineageos](https://lineageos.org/) on your device, you will perhaps miss the out of the box functionality of the cLock stock app to display a weather forecast. To do so, you need to install a third-party weather provider service. The first idea was to code a weather forecast provider that uses the open data from the Deutscher Wetterdienst (DWD).
+ 
+ However, although some basic functionality could be established in a test version, the lineageos classes to integrate a [weather provider service](https://lineageos.github.io/android_lineage-sdk/reference/lineageos/weatherservice/WeatherProviderService.html) turned out to be quite inflexible (e.g. you need to provide a forecast for exactly 7 days to achieve full functionality, some additional data available form the DWD could not be displayed, etc.).
+ 
+ Therefore, this idea was dropped in favour of a widget that could be placed comfortably on the home screen and adjusted to the needs of the user, displaying more detailed weather data that would have been possible using a weather provider service.
+ 
+ Furthermore, this approach makes this app also available to anyone, not requiring lineageos to be installed on the device.
+ 
+ Please also note that the DWD presents huge amounts of open weather data. The scope of this app is to poll a simple, 24 hours weather forecast from the DWD, and not more at the present time. 
+ 
+ Contributing
+ ------------
 
  Please leave comments, bug reports, issues and feature requests at
  the app repository at codeberg.org:
