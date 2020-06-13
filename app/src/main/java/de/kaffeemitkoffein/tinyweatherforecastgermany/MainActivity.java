@@ -202,6 +202,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
 
     public void getWeatherForecast(){
+        // uncomment this for fake weather data generation
+        // FakeWeatherData fakeWeatherData = new FakeWeatherData();
+        // displayWeatherForecast(fakeWeatherData.getInstance());
+        // ...and comment the rest of the sub out
         Log("GETTING WEATHER FORCAST ****");
         int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
         Station station = stationsArrayList.stations.get(position);

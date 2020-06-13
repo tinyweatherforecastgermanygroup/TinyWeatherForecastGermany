@@ -625,7 +625,8 @@ public class WeatherCodeContract {
     }
 
     public int getWeatherCondition(){
-        int weatherCondition = NOT_AVAILABLE;
+        // int weatherCondition = NOT_AVAILABLE;
+        int weatherCondition = FAIR_DAY;
         // *** BASIC WEATHER CONDITIONS ***
         // FAIR
         if (isFair()){

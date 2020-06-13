@@ -37,6 +37,11 @@ Credits
  
  Weather data: Deutscher Wetterdienst, own elements added, some data 
  averaged over individual values.
+ 
+ Privacy
+ -------
+ 
+ For the privacy statement, see [here](https://codeberg.org/Starfish/TinyWeatherForecastGermany/wiki/Home).
 
 Contributing
 ------------

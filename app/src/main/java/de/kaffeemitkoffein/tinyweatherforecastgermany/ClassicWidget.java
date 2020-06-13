@@ -114,6 +114,9 @@ public class ClassicWidget extends AppWidgetProvider {
         Log.v("WIDGET","UpdateWidgetDisplay");
         WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(c);
+        // uncomment this to override with random weather data for test purposes
+        // FakeWeatherData fakeWeatherData = new FakeWeatherData();
+        // weatherCard = fakeWeatherData.getInstance();
         WeatherSettings weatherSettings = new WeatherSettings(c);
         if (weatherCard != null) {
             WeatherCodeContract weatherCodeContract = new WeatherCodeContract(weatherCard,WeatherCodeContract.WEATHER_TODAY);
