@@ -28,5 +28,6 @@
     <dimen name="fcmain_textsize_small">7sp</dimen>
 
     <dimen name="licence_textsize">10sp</dimen>
+    <dimen name="about_textsize">12sp</dimen>
 
 </resources>

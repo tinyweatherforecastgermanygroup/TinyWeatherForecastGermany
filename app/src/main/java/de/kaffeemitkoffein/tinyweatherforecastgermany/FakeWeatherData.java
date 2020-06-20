@@ -63,11 +63,11 @@ public class FakeWeatherData {
             weatherCard.niederschlag[i]     = s+seperator+String.valueOf(value);
             weatherCard.niederschlag_min[i] = s+seperator+getRandomMinAboveZero(value,3);
             weatherCard.niederschlag_max[i] = s+seperator+getRandomMax(value,3);
-            value = random.nextInt(40) - 10;
+            value = random.nextInt(40) - 15;
             weatherCard.lufttemperatur[i]     = String.valueOf(value);
-            weatherCard.lufttemperatur_min[i] = getRandomMinAboveZero(value,3);
+            weatherCard.lufttemperatur_min[i] = getRandomMin(value,3);
             weatherCard.lufttemperatur_max[i] = getRandomMax(value,3);
-            value = random.nextInt(12) * 10;
+            value = random.nextInt(2) * 10;
             max   = value + random.nextInt(3) * 10;
             weatherCard.wind[i]    = String.valueOf(value);
             weatherCard.boeen[i]   = String.valueOf(max);

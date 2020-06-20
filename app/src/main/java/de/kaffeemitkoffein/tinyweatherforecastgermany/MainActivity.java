@@ -30,6 +30,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -41,6 +44,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     int spinner_initial_position;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
     private Dialog aboutDialog;
+    private WeatherForecastReader weatherForecastReader;
 
     @Override
     protected void onPause(){
@@ -203,17 +207,16 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     public void getWeatherForecast(){
         // uncomment this for fake weather data generation
-         FakeWeatherData fakeWeatherData = new FakeWeatherData();
-         displayWeatherForecast(fakeWeatherData.getInstance());
+        // FakeWeatherData fakeWeatherData = new FakeWeatherData();
+        // displayWeatherForecast(fakeWeatherData.getInstance());
         // ...and comment the rest of the sub out
-        /**
         Log("GETTING WEATHER FORCAST ****");
         int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
         Station station = stationsArrayList.stations.get(position);
         URL stationURLs[] = station.getAbsoluteWebURLArray();
         final WeatherCard weatherCardArray[] = {new WeatherCard()};
         final Context context = this;
-        WeatherForecastReader weatherForecastReader = new WeatherForecastReader(getApplicationContext()){
+        weatherForecastReader = new WeatherForecastReader(getApplicationContext()){
             @Override
             public void onPositiveResult(WeatherCard wc){
                 displayWeatherForecast(wc);
@@ -226,7 +229,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
         };
         weatherForecastReader.execute(stationURLs);
-         **/
     }
 
     @Override
@@ -305,7 +307,19 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         });
         aboutDialog.show();
         TextView textView = (TextView) aboutDialog.findViewById(R.id.about_textview);
-        textView.setText(getApplicationContext().getResources().getString(R.raw.license));
+        String textfile = "about";
+        InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(textfile,"raw",getApplicationContext().getPackageName()));
+        try {
+            int size = inputStream.available();
+            byte[] textdata = new byte[size];
+            inputStream.read(textdata);
+            inputStream.close();
+            String text = new String(textdata);
+            textView.setText(text);
+        } catch (IOException e) {
+            textView.setText("Error.");
+        }
+
     }
 
 
