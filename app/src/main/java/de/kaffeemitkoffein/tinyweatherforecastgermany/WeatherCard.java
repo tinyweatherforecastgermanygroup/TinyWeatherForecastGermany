@@ -144,7 +144,7 @@ public class WeatherCard {
 
     private boolean isValidDataChar(char c){
         String s = String.valueOf(c);
-        if (s.equals("0") || s.equals("1") ||s.equals("2") ||s.equals("3") ||s.equals("4") ||s.equals("5") ||s.equals("6") ||s.equals("7") ||s.equals("8") ||s.equals("9") ||
+        if (s.equals("-") || s.equals("0") || s.equals("1") ||s.equals("2") ||s.equals("3") ||s.equals("4") ||s.equals("5") ||s.equals("6") ||s.equals("7") ||s.equals("8") ||s.equals("9") ||
                 s.equals("S") ||s.equals("W") ||s.equals("O") ||s.equals("N") || s.equals("C")|| s.equals("R")) {
             return true;
         }
@@ -153,7 +153,7 @@ public class WeatherCard {
 
     private boolean isNumber(char c){
         String s = String.valueOf(c);
-        if (s.equals("0") || s.equals("1") ||s.equals("2") ||s.equals("3") ||s.equals("4") ||s.equals("5") ||s.equals("6") ||s.equals("7") ||s.equals("8") ||s.equals("9")){
+        if (s.equals("-") || s.equals("0") || s.equals("1") ||s.equals("2") ||s.equals("3") ||s.equals("4") ||s.equals("5") ||s.equals("6") ||s.equals("7") ||s.equals("8") ||s.equals("9")){
             return true;
         }
         return false;
@@ -267,7 +267,7 @@ public class WeatherCard {
      * @return
      */
 
-    public double todaysHigh(){
+    public int todaysHigh(){
         int[] tempmax = getIntArray(this.lufttemperatur_max);
         int result = tempmax[0];
         for (int i=1; i<getEndOfTodayPos(); i++){
@@ -275,8 +275,7 @@ public class WeatherCard {
                 result = tempmax[i];
             }
         }
-        double d = result;
-        return d;
+        return result;
     }
 
     /**
@@ -284,7 +283,7 @@ public class WeatherCard {
      * @return
      */
 
-    public double todaysLow(){
+    public int todaysLow(){
         int[] tempmin = getIntArray(this.lufttemperatur_min);
         int result = tempmin[0];
         for (int i=1; i<getEndOfTodayPos(); i++){
@@ -292,11 +291,10 @@ public class WeatherCard {
                 result = tempmin[i];
             }
         }
-        double d = result;
-        return d;
+        return result;
     }
 
-    public double tomorrowLow(){
+    public int tomorrowLow(){
         int[] tempmin = getIntArray(this.lufttemperatur_min);
         int result = tempmin[getEndOfTodayPos()];
         for (int i=getEndOfTodayPos(); i<9; i++){
@@ -304,8 +302,7 @@ public class WeatherCard {
                 result = tempmin[i];
             }
         }
-        double d = result;
-        return d;
+        return result;
     }
 
     public double tomorrowHigh(){

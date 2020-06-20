@@ -1,5 +1,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.util.Log;
+
 import java.util.Calendar;
 import java.util.Random;
 
@@ -48,7 +50,11 @@ public class FakeWeatherData {
         weatherCard.ausgegeben_am = "Montag, den 08.06.2020 um 12:00 Uhr";
         weatherCard.ausgegeben_von = "dummy weather data";
         for (int i=0; i<9; i++){
-            weatherCard.uhrzeit[i]   =String.valueOf(i*3);
+            int uhrzeit = i*3 + 12;
+            if (uhrzeit>23){
+                uhrzeit = uhrzeit - 12;
+            }
+            weatherCard.uhrzeit[i]   =String.valueOf(uhrzeit);
             value = random.nextInt(10);
             weatherCard.bewoelkung[i]=String.valueOf(value);
             weatherCard.bewoelkung_min[i] = getRandomMinAboveZero(value,3);
@@ -65,6 +71,7 @@ public class FakeWeatherData {
             weatherCard.niederschlag_max[i] = s+seperator+getRandomMax(value,3);
             value = random.nextInt(40) - 15;
             weatherCard.lufttemperatur[i]     = String.valueOf(value);
+            Log.v("RANDOM","Luft:"+value);
             weatherCard.lufttemperatur_min[i] = getRandomMin(value,3);
             weatherCard.lufttemperatur_max[i] = getRandomMax(value,3);
             value = random.nextInt(2) * 10;
