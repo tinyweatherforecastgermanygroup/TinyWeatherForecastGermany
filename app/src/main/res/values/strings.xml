@@ -1,5 +1,5 @@
 <!--
- This file is part of Tiny24hWeatherForecastGermany.
+ This file is part of TinyWeatherForecastGermany.
 
  Copyright (c) 2020 Pawel Dube
 
@@ -21,7 +21,7 @@
     <string name="app_name">Tiny Weather Forecast Germany</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_isprovider">Please note that this service is registered as the weather provider service in lineageos. You cannot change the weather location here. To change the location, go to the widget settings of the system clock and select the location there.</string>
-    <string name="dwd_notice">Source: Deutscher Wetterdienst, own elements added, some data averaged over individual values. </string>
+    <string name="dwd_notice">Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual values. </string>
     <string name="new_station">Region changed to </string>
     <string name="license_button">License</string>
     <string name="about_button">About...</string>

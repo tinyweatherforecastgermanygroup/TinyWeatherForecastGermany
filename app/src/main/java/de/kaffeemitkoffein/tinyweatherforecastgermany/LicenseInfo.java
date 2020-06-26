@@ -1,14 +1,5 @@
-package de.kaffeemitkoffein.tinyweatherforecastgermany;
-
-import android.app.Activity;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.os.Bundle;
-import android.widget.TextView;
-import android.content.Intent;
 /**
- * This file is part of Tiny24hWeatherForecastGermany.
+ * This file is part of TinyWeatherForecastGermany.
  *
  * Copyright (c) 2020 Pawel Dube
  *
@@ -26,6 +17,15 @@ import android.content.Intent;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+package de.kaffeemitkoffein.tinyweatherforecastgermany;
+
+import android.app.Activity;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.os.Bundle;
+import android.widget.TextView;
+import android.content.Intent;
 import java.io.IOException;
 import java.io.InputStream;
 

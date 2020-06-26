@@ -1,4 +1,4 @@
-Tiny 24h Weather Forecast Germany
+Tiny Weather Forecast Germany
 =================================
 
 Copyright © 2020 Pawel Dube
@@ -10,7 +10,7 @@ Some icons are Copyright © Google Inc., licensed under the Apache 2.0 license.
 
 This app uses gradle and the gradle wrapper, Copyright © Gradle Inc, licensed under the Apache 2.0 license.
 
-Weather data source: Deutscher Wetterdienst, own elements added, some data averaged over individual values.
+Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual values.
 
 License:
 --------
