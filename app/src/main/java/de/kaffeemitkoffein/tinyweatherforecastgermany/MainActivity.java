@@ -318,6 +318,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             inputStream.read(textdata);
             inputStream.close();
             String text = new String(textdata);
+            text = text.replace("[VERSION]",versioning);
             textView.setText(text);
         } catch (IOException e) {
             textView.setText("Error.");

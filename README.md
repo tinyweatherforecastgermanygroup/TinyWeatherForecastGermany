@@ -3,6 +3,13 @@ Tiny Weather Forecast Germany
 
 An android app with a widget that presents a 24 hours weather forecast based on open data from the Deutscher Wetterdienst (DWD).
 
+Prewiews
+--------
+
+![Screenshot1](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
+![Screenshot2](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
+![Screenshot3](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
+
 How to get the app
 ------------------
 

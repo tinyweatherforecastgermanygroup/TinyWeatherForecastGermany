@@ -3,6 +3,8 @@ Tiny Weather Forecast Germany
 
 Copyright © 2020 Pawel Dube
 
+Version: [VERSION]
+
 Credits:
 --------
 
