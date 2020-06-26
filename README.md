@@ -6,13 +6,9 @@ An android app with a widget that presents a 24 hours weather forecast based on 
 Prewiews
 --------
 
-![Screenshot #1][1](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
-![Screenshot #2][2](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
-![Screenshot #3][3](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
-
-[1]: https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png
-[2]: https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png
-[3]: https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png
+![Screenshot #1](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
+![Screenshot #2](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
+![Screenshot #3](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
 
 
 How to get the app
