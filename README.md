@@ -43,7 +43,7 @@ Credits
  This app uses gradle and the gradle wrapper, Copyright by Gradle Inc,
  licensed under the Apache 2.0 license.
  
- Weather data: Deutscher Wetterdienst, own elements added, some data 
+ Data source: Deutscher Wetterdienst, own elements added, some data 
  averaged over individual values.
  
  Privacy
