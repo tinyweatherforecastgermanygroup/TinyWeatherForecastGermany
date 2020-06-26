@@ -3,12 +3,12 @@ Tiny Weather Forecast Germany
 
 An android app with a widget that presents a 24 hours weather forecast based on open data from the Deutscher Wetterdienst (DWD).
 
-Prewiews
+Screenshots
 --------
 
-![Screenshot #1](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
-![Screenshot #2](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
-![Screenshot #3](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
+![Screenshot #1](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png){width=200px}
+![Screenshot #2](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png){width=200px}
+![Screenshot #3](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png){width=200px}
 
 
 How to get the app
