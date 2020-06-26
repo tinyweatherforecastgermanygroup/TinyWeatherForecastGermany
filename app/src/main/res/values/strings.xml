@@ -72,7 +72,7 @@
     <string name="preference_pdateinterval_summary">Select how often the weather data should be updated.</string>
     <string name="preference_opacity_title">Widget opacity</string>
     <string name="preference_opacity_summary">Select how transparent the widget is on your home screen.</string>
-    <string name="preference_displaynoteinwidget_title">Diplay DWD note</string>
+    <string name="preference_displaynoteinwidget_title">Display DWD note</string>
     <string name="preference_displaynoteinwidget_summary">Show the data source string.</string>
     <string name="license_title">Licenses</string>
     <string name="button_continue">Continue</string>
