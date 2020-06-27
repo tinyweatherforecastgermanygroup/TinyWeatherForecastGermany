@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.*;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -110,7 +109,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     private void Log(String s){
-        Log.v("ID",s);
+        // Log.v("ID",s);
     }
 
     public void displayWeatherForecast(WeatherCard weatherCard){
@@ -191,11 +190,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         }
         Log("Boeen               : "+s);
         Log("***************************");
-        // Test
-        WeatherCodeContract weatherCodeContractNow = new WeatherCodeContract(weatherCard,0);
-        Log("Today: "+weatherCodeContractNow.getWeatherCondition());
-        WeatherCodeContract weatherCodeContractTomorrow = new WeatherCodeContract(weatherCard,0);
-        Log("Tomorrow: "+weatherCodeContractTomorrow.getWeatherCondition());
     }
 
     public void displayWeatherForecast(){
@@ -236,7 +230,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-        Log.v("ID","RESPONSE DETECTED");
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         if (!weatherSettings.is_weatherprovider){
             // save options & get data if new item is different from previous station.

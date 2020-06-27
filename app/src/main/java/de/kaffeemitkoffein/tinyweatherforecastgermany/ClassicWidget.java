@@ -27,7 +27,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -59,7 +58,6 @@ public class ClassicWidget extends AppWidgetProvider {
 
     @Override
     public void onAppWidgetOptionsChanged(Context c, AppWidgetManager awm, int appWidgetID, Bundle newOptions){
-        Log.v("WIDGET","onAppWidgetOptionsChanged");
         int[] idarray = new int[appWidgetID];
         updateWidgetDisplay(c,awm,idarray);
     }
@@ -111,7 +109,6 @@ public class ClassicWidget extends AppWidgetProvider {
      */
 
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
-        Log.v("WIDGET","UpdateWidgetDisplay");
         WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(c);
         WeatherSettings weatherSettings = new WeatherSettings(c);

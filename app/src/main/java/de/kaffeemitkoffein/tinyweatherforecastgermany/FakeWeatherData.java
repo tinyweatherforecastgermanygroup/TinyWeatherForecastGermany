@@ -19,8 +19,6 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.util.Log;
-
 import java.util.Calendar;
 import java.util.Random;
 
@@ -90,7 +88,6 @@ public class FakeWeatherData {
             weatherCard.niederschlag_max[i] = s+seperator+getRandomMax(value,3);
             value = random.nextInt(40) - 15;
             weatherCard.lufttemperatur[i]     = String.valueOf(value);
-            Log.v("RANDOM","Luft:"+value);
             weatherCard.lufttemperatur_min[i] = getRandomMin(value,3);
             weatherCard.lufttemperatur_max[i] = getRandomMax(value,3);
             value = random.nextInt(2) * 10;

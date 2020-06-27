@@ -23,7 +23,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -456,7 +455,6 @@ public class WeatherCard {
 
     public double windDirection(int pos){
         String windstring = getWindDir(wind[pos]);
-        Log.v("ID:","WIND IS: "+windstring);
         int i = 0;
         switch (windstring){
             case "N": i=0; break;

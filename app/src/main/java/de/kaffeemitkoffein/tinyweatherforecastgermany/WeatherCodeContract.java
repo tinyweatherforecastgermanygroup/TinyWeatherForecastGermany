@@ -22,7 +22,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.Log;
 
 public class WeatherCodeContract {
 
@@ -442,7 +441,6 @@ public class WeatherCodeContract {
         int[] temp = weatherCard.getIntArray(weatherCard.lufttemperatur);
         int[] rain = weatherCard.getIntArray(weatherCard.niederschlag);
         boolean result = true;
-        Log.v("BOUNDS: ",start+"|"+stop);
         for (int i=start; i<=stop; i++) {
             if (!((weatherCard.niederschlag[i].contains("R")) && (rain[i]>2) && temp[i]<1)){
                 result = false;
@@ -571,7 +569,6 @@ public class WeatherCodeContract {
 
     public int getWeatherConditionTextResource(int weathercondition){
         int resource = 0;
-        Log.v("GWC","Weather Condition: "+weathercondition);
         switch (weathercondition){
             case BLUSTERY: resource = R.string.weathercode_blustery; break;
             case CLEAR_NIGHT: resource = R.string.weathercode_clear_night; break;
@@ -774,8 +771,7 @@ public class WeatherCodeContract {
             weatherCondition = HURRICANE;
         }
         if (weatherCondition==NOT_AVAILABLE){
-            Log.v("WCC","Weather condition ia not avaiable.");
-            Log.v("WCC","Details"+weatherCard.toString(start,stop));
+            // do nothing at the moment
         }
         return weatherCondition;
     }
