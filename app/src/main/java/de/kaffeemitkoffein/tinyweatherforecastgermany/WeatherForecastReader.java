@@ -21,6 +21,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -58,7 +59,14 @@ public class WeatherForecastReader extends AsyncTask<URL,Void, WeatherCard> {
                     pageloaded = false;
                 }
                 if (pageloaded){
-                    return new WeatherCard(pageContent);
+                    try {
+                        WeatherCard weatherCard = new WeatherCard(pageContent);
+                        return weatherCard;
+                    } catch (IllegalArgumentException e){
+                        // show an error if the data returned from DWD has an unexpected format
+                        Toast.makeText(context,e.getMessage(), Toast.LENGTH_LONG).show();
+                        return null;
+                    }
                 }
        }
         }
