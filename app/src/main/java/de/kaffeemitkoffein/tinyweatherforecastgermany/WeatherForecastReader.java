@@ -21,7 +21,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -39,16 +38,11 @@ public class WeatherForecastReader extends AsyncTask<URL,Void, WeatherCard> {
 
     @Override
     protected WeatherCard doInBackground(URL... urls) {
-        Log.v("READER:","STARTING CONNS....");
         for (int i = 0; i < urls.length; i++) {
             Boolean pageloaded = false;
             ArrayList<String> pageContent = new ArrayList<String>();
             if (urls[i] != null) {
-                Log.v("READER:","Url not null: "+urls[i].toString());
                 try {
-                    // HttpsURLConnection httpsURLConnection = (HttpsURLConnection) urls[i].openConnection();
-                    //InputStream is = httpsURLConnection.getInputStream();
-                    //BufferedReader bufferedReader = new BufferedReader(is);
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urls[i].openStream()));
                     String line = bufferedReader.readLine();
                     while (line != null) {
@@ -59,10 +53,8 @@ public class WeatherForecastReader extends AsyncTask<URL,Void, WeatherCard> {
                             line = null;
                         }
                     }
-                    Log.v("READER:", "Seems Https succeeded.");
                     pageloaded = true;
                 } catch (Exception e) {
-                    Log.v("READER:","Https failed: "+e);
                     pageloaded = false;
                 }
                 if (pageloaded){
@@ -99,7 +91,6 @@ public class WeatherForecastReader extends AsyncTask<URL,Void, WeatherCard> {
     }
 
     protected void onPostExecute(WeatherCard weatherCard) {
-        Log.v("READER:","OnPostExecute called.");
         if (weatherCard == null) {
             onNegativeResult();
         } else {
@@ -107,7 +98,6 @@ public class WeatherForecastReader extends AsyncTask<URL,Void, WeatherCard> {
             Calendar calendar = Calendar.getInstance();
             weatherCard.polling_time = calendar.getTimeInMillis();
             // writes the weather data to the database
-            Log.v("READER:","Positive result, writing it to database.");
             WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
             weatherForecastContentProvider.writeWeatherForecast(context,weatherCard);
             onPositiveResult(weatherCard);

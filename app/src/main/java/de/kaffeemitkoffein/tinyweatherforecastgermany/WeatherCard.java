@@ -53,11 +53,27 @@ public class WeatherCard {
     public String[] boeen;
     public long polling_time;
 
+    /**
+     * Constructor for an empty class.
+     */
+
     public WeatherCard(){
         initEmptyClassValues();
     }
 
-    public WeatherCard(ArrayList<String> weatherText){
+    /**
+     * Constructor for a WeatherCard from a arraylist of strings that represents the weather data file that
+     * has been received from the DWD open data source.
+     *
+     * Errors will likely occur if the file format ever changes. In this case, an IlleagalArgumentException is
+     * thrown that has details about what went wrong.
+     *
+     * @param weatherText
+     * @throws IllegalArgumentException
+     *
+     */
+
+    public WeatherCard(ArrayList<String> weatherText) throws IllegalArgumentException{
         /**
          * Known abbrevations:
          * R = Regen
@@ -69,55 +85,146 @@ public class WeatherCard {
         } else
         if (weatherText.size()<26){
             initEmptyClassValues();
+            throw new IllegalArgumentException("wrong number of lines in API file");
         } else {
             String s;
-            // get filename elements
+            // **********************************************************
+            // line #0: get headers: fdat, ortscode, zeitstempel
+            // **********************************************************
             s = weatherText.get(0);
-            this.fdat = s.substring(0,5);
-            Log.v("WEATHERCARD","fdat:"+this.fdat+"<");
-            this.ortscode = s.substring(7,11);
-            Log.v("WEATHERCARD","fdat:"+this.ortscode+"<");
-            this.zeitstempel = s.substring(12,18);
-            Log.v("WEATHERCARD","fdat:"+this.zeitstempel+"<");
-            // get weather area in readable text
+            try{
+                this.fdat = s.substring(0,5);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException ("fdat has wrong format:"+s);
+            }
+            try {
+                this.ortscode = s.substring(7,11);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("ortscode has wrong fromat:"+s);
+            }
+            try {
+                this.zeitstempel = s.substring(12,18);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("zeitstempel has wrong format:"+s);
+            }
+            // **********************************************************
+            // line #3: get weather area in readable text, truncate all
+            //          unnecessary data.
+            // **********************************************************
             s = weatherText.get(3);
-            this.klimagebiet = truncateSpaces( s.substring(15) );
-            Log.v("WEATHERCARD","Klimagebiet:"+this.klimagebiet+"<");
-            if (this.klimagebiet.contains("Hoehen")){
-                int hp = this.klimagebiet.indexOf("Hoehen");
-                this.klimagebiet = this.klimagebiet.substring(0,hp-1);
-                this.klimagebiet = this.klimagebiet.trim();
+            try {
+                this.klimagebiet = truncateSpaces( s.substring(15) );
+                if (this.klimagebiet.contains("Hoehen")){
+                    int hp = this.klimagebiet.indexOf("Hoehen");
+                    this.klimagebiet = this.klimagebiet.substring(0,hp-1);
+                    this.klimagebiet = this.klimagebiet.trim();
+                }
+             } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("klimagebiet has wrong format:"+s);
             }
+            // **********************************************************
+            // line #4: get time of the weather forecast
+            // **********************************************************
             s = weatherText.get(4);
-            this.ausgegeben_am = truncateSpaces( s.substring(15) );
-            Log.v("WEATHERCARD","am          :"+this.ausgegeben_am+"<");
-            s = weatherText.get(5);
-            this.ausgegeben_von = truncateSpaces( s.substring(15) );
-            Log.v("WEATHERCARD","von         :"+this.ausgegeben_von+"<");
-            s = weatherText.get(7);
-            Log.v("WEATHERCARD","Timeline String:"+s);
-            this.uhrzeit = getValuesFromLine(15,weatherText.get(7),2);
-
-            this.bewoelkung_max = getValuesFromLine(16,weatherText.get(9),1);
-            this.bewoelkung     = getValuesFromLine(16,weatherText.get(10),1);
-            this.bewoelkung_min = getValuesFromLine(16,weatherText.get(11),1);
-
-            this.niederschlag_max = getValuesFromLine(14,weatherText.get(13),3);
-            this.niederschlag     = getValuesFromLine(14,weatherText.get(14),3);
-            this.niederschlag_min = getValuesFromLine(14,weatherText.get(15),3);
-
-            this.lufttemperatur_max = getValuesFromLine(14,weatherText.get(18),3);
-            this.lufttemperatur     = getValuesFromLine(14,weatherText.get(19),3);
-
-            Log.v("WEATHERCARD","Temp min line:"+weatherText.get(20));
-            this.lufttemperatur_min = getValuesFromLine(14,weatherText.get(20),3);
-            for (int i=0; i<9; i++){
-                Log.v("WEATHERCARD", "Value "+i+"=>"+this.lufttemperatur_min[i]);
+            try {
+                this.ausgegeben_am = truncateSpaces( s.substring(15) );
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("ausgegeben_am has wrong format:"+s);
             }
-            this.wind  = getValuesFromLine(13,weatherText.get(22),4);
-            this.boeen = getValuesFromLine(14,weatherText.get(23),3);
+            // **********************************************************
+            // line #5: get source of the weather forecast (usually DWD)
+            // **********************************************************
+            s = weatherText.get(5);
+            try {
+                this.ausgegeben_von = truncateSpaces( s.substring(15) );
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("ausgegeben_von has wrong format:"+s);
+            }
+            // **********************************************************
+            // line #7: get the timestamps array of weather data
+            // **********************************************************
+            s = weatherText.get(7);
+            try {
+                this.uhrzeit = getValuesFromLine(15,s,2);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("uhrzeit array has wrong format:"+s);
+            }
+            // **********************************************************
+            // line #9,10,11: get the clouds data
+            // **********************************************************
+            try {
+                this.bewoelkung_max = getValuesFromLine(16,weatherText.get(9),1);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("bewolekung_max has wrong format:"+weatherText.get(9));
+            }
+            try {
+                this.bewoelkung     = getValuesFromLine(16,weatherText.get(10),1);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("bewolekung has wrong format:"+weatherText.get(10));
+            }
+            try {
+                this.bewoelkung_min = getValuesFromLine(16,weatherText.get(11),1);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("bewolekung_min has wrong format:"+weatherText.get(11));
+            }
+            // **********************************************************
+            // line #13,14,15: get the precipitation data
+            // **********************************************************
+            try {
+                this.niederschlag_max = getValuesFromLine(14,weatherText.get(13),3);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("niederschlag_max has wrong format:"+weatherText.get(13));
+            }
+            try {
+                this.niederschlag     = getValuesFromLine(14,weatherText.get(14),3);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("niederschlag has wrong format:"+weatherText.get(14));
+            }
+            try {
+                this.niederschlag_min = getValuesFromLine(14,weatherText.get(15),3);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("niederschlag_min has wrong format:"+weatherText.get(15));
+            }
+            // **********************************************************
+            // line #18,19,20: get the temperature data
+            // **********************************************************
+            try {
+                this.lufttemperatur_max = getValuesFromLine(14,weatherText.get(18),3);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("lufttemperatur_max has wrong format:"+weatherText.get(18));
+            }
+            try {
+                this.lufttemperatur     = getValuesFromLine(14,weatherText.get(19),3);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("lufttemperatur has wrong format:"+weatherText.get(19));
+            }
+            try {
+                this.lufttemperatur_min = getValuesFromLine(14,weatherText.get(20),3);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("lufttemperatur_min has wrong format:"+weatherText.get(20));
+            }
+            // **********************************************************
+            // line #22: get wind data
+            // **********************************************************
+            try {
+                this.wind  = getValuesFromLine(13,weatherText.get(22),4);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("wind has wrong format:"+weatherText.get(22));
+            }
+            try {
+                this.boeen = getValuesFromLine(14,weatherText.get(23),3);
+            } catch (IndexOutOfBoundsException e){
+                throw new IllegalArgumentException("boeen has wrong format:"+weatherText.get(23));
+            }
         }
     }
+
+    /**
+     * Reads a WeatherCard from a local file. Currently not used.
+     *
+     * @param context
+     * @param filename
+     */
 
     public WeatherCard(Context context, String filename){
         File file = new File(context.getExternalFilesDir(null)+"/"+filename);
@@ -198,6 +305,7 @@ public class WeatherCard {
 
     /**
      * Returns current temperature.
+     *
      * @return
      */
 
@@ -257,7 +365,7 @@ public class WeatherCard {
         while ((i<9) && (times[i]>time)){
             i++;
         }
-        // go one back so i will be the last record of the current day
+        // go one back so it will be the last record of the current day
         i--;
         return i;
     }
@@ -294,6 +402,14 @@ public class WeatherCard {
         return result;
     }
 
+    /**
+     * Returns lowest temperature of tomorrow. Currently not used.
+     * CAUTION: keep in mind that due to a 24h forecast this result is of limited value,
+     *          as in most cases no complete data is available for the next day.
+     *
+     * @return
+     */
+
     public int tomorrowLow(){
         int[] tempmin = getIntArray(this.lufttemperatur_min);
         int result = tempmin[getEndOfTodayPos()];
@@ -305,7 +421,15 @@ public class WeatherCard {
         return result;
     }
 
-    public double tomorrowHigh(){
+    /**
+     * Returns highest temperature of tomorrow. Currently not used.
+     * CAUTION: keep in mind that due to a 24h forecast this result is of limited value,
+     *          as in most cases no complete data is available for the next day.
+     *
+     * @return
+     * */
+
+ public double tomorrowHigh(){
         int[] tempmax = getIntArray(this.lufttemperatur_max);
         int result = tempmax[getEndOfTodayPos()];
         for (int i=getEndOfTodayPos(); i<9; i++){
