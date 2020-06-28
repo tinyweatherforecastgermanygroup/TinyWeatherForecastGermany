@@ -26,6 +26,7 @@
     <string name="license_button">License</string>
     <string name="about_button">About...</string>
     <string name="triggerupdate_button">About...</string>
+    <string name="whatsnew_button">What\'s new</string>
     <string name="classicwidget_description">Weather widget</string>
     <string name="weathercode_blustery">Blustery</string>
     <string name="weathercode_clear_night">Clear night</string>

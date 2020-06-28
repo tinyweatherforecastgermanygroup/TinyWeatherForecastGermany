@@ -328,6 +328,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             showAboutDialog();
             return true;
         }
+        if (item_id == R.id.menu_whatsnew) {
+            showWhatsNewDialog();
+            return true;
+        }
         return super.onOptionsItemSelected(mi);
     }
 

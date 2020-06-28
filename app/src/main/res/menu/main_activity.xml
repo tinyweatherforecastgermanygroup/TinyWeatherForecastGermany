@@ -44,6 +44,10 @@
         android:showAsAction="never"
         android:orderInCategory="100">
     </item>
-
+    <item android:id="@+id/menu_whatsnew"
+        android:title="@string/whatsnew_button"
+        android:showAsAction="never"
+        android:orderInCategory="200">
+    </item>
 
 </menu>
