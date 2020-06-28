@@ -29,5 +29,6 @@
 
     <dimen name="licence_textsize">10sp</dimen>
     <dimen name="about_textsize">12sp</dimen>
+    <dimen name="whatsnew_textsize">14sp</dimen>
 
 </resources>

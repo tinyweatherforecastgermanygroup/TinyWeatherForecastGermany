@@ -24,7 +24,7 @@ android {
 
 
     defaultConfig {
-        applicationId "de.kaffeemitkoffein.tiny24hweatherforecastgermany"
+        applicationId "de.kaffeemitkoffein.tinyweatherforecastgermany"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1

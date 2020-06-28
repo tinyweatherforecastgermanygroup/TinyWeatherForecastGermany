@@ -30,6 +30,7 @@ public class WeatherSettings {
     public static final String PREF_ISWEATHERPROVIDER = "PREF_isregisteredweatherprovider";
     public static final String PREF_WIDGET_OPACITY = "PREF_widget_opacity";
     public static final String PREF_WIDGET_SHOWDWDNOTE = "PREF_widget_showdwdnote";
+    public static final String PREF_LAST_VERSION_CODE = "PREF_last_version_code";
 
 
     public static final String PREF_STATION_DEFAULT = "Hamburg";
@@ -37,12 +38,14 @@ public class WeatherSettings {
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";
     public static final boolean PREF_ISWEATHERPROVIDER_DEFAULT = false;
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
+    public final int PREF_LAST_VERSION_CODE_DEFAULT = BuildConfig.VERSION_CODE;
 
     public String station = PREF_STATION_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
     public boolean is_weatherprovider = PREF_ISWEATHERPROVIDER_DEFAULT;
     public String widget_opacity = PREF_WIDGET_OPACITY_DEFAULT;
     public boolean widget_showdwdnote = PREF_WIDGET_SHOWDWDNOTE_DEFAULT;
+    public int last_version_code = PREF_LAST_VERSION_CODE_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -59,6 +62,7 @@ public class WeatherSettings {
         this.is_weatherprovider = readPreference(PREF_ISWEATHERPROVIDER,PREF_ISWEATHERPROVIDER_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY,PREF_WIDGET_OPACITY_DEFAULT);
         this.widget_showdwdnote = readPreference(PREF_WIDGET_SHOWDWDNOTE,PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
+        this.last_version_code = readPreference(PREF_LAST_VERSION_CODE,PREF_LAST_VERSION_CODE_DEFAULT);
    }
 
     public void savePreferences(){
@@ -67,6 +71,7 @@ public class WeatherSettings {
         applyPreference(PREF_ISWEATHERPROVIDER,this.is_weatherprovider);
         applyPreference(PREF_WIDGET_OPACITY,this.widget_opacity);
         applyPreference(PREF_WIDGET_SHOWDWDNOTE,this.widget_showdwdnote);
+        applyPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
     }
 
     public String readPreference(String p, String d){

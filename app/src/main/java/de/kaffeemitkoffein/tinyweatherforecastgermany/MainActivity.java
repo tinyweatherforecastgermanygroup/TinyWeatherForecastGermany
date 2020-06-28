@@ -38,16 +38,54 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
+    private final static String SIS_ABOUT_DIALOG_STATE="ABOUT_DIALOG_VISIBLE";
+    private final static String SIS_WHATSNEW_DIALOG_STATE="WHATSNEW_DIALOG_VISIBLE";
+
     private ArrayList<String> stationNames = new ArrayList<String>();
     private StationsArrayList stationsArrayList;
     int spinner_initial_position;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
+
     private Dialog aboutDialog;
+    private boolean aboutDiaglogVisible=false;
+
+    private Dialog whatsNewDialog;
+    private boolean whatsNewDialogVisible=false;
+
     private WeatherForecastReader weatherForecastReader;
 
     @Override
     protected void onPause(){
+        if (aboutDialog != null){
+            if (aboutDialog.isShowing()){
+                aboutDialog.dismiss();
+            }
+        }
+        if (whatsNewDialog != null){
+            if (whatsNewDialog.isShowing()){
+                whatsNewDialog.dismiss();
+            }
+        }
         super.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putBoolean(SIS_ABOUT_DIALOG_STATE,aboutDiaglogVisible);
+        savedInstanceState.putBoolean(SIS_WHATSNEW_DIALOG_STATE,whatsNewDialogVisible);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle restoreInstanceState){
+        aboutDiaglogVisible   = restoreInstanceState.getBoolean(SIS_ABOUT_DIALOG_STATE);
+        whatsNewDialogVisible = restoreInstanceState.getBoolean(SIS_WHATSNEW_DIALOG_STATE);
+        if (aboutDiaglogVisible){
+            showAboutDialog();
+        }
+        if (whatsNewDialogVisible){
+            showWhatsNewDialog();
+        }
     }
 
     @Override
@@ -97,6 +135,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         } else {
             getWeatherForecast();
         }
+        // show whats new dialog if necessary
+        if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
+            showWhatsNewDialog();
+        }
+        showWhatsNewDialog();
     }
 
     private int getPositionInStationNames(String s){
@@ -298,10 +341,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         contbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+                aboutDiaglogVisible=false;
                 aboutDialog.dismiss();
             }
         });
         aboutDialog.show();
+        aboutDiaglogVisible=true;
         TextView textView = (TextView) aboutDialog.findViewById(R.id.about_textview);
         String textfile = "about";
         InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(textfile,"raw",getApplicationContext().getPackageName()));
@@ -316,8 +361,43 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         } catch (IOException e) {
             textView.setText("Error.");
         }
+    }
+
+    public void showWhatsNewDialog(){
+        whatsNewDialog = new Dialog(this);
+        whatsNewDialog.setContentView(R.layout.whatsnewdialog);
+        whatsNewDialog.setTitle(getResources().getString(R.string.app_name));
+        whatsNewDialog.setCancelable(true);
+        Button contbutton = (Button) whatsNewDialog.findViewById(R.id.whatsnew_button);
+        contbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                whatsNewDialogVisible=false;
+                whatsNewDialog.dismiss();
+                // update version code in preferences so that this dialog is not shown anymore in this version
+                final WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+                weatherSettings.applyPreference(WeatherSettings.PREF_LAST_VERSION_CODE,BuildConfig.VERSION_CODE);
+            }
+        });
+        whatsNewDialog.show();
+        whatsNewDialogVisible=true;
+        TextView textView = (TextView) whatsNewDialog.findViewById(R.id.whatsnew_textview);
+        String textfile = "whatsnew";
+        InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(textfile,"raw",getApplicationContext().getPackageName()));
+        try {
+            int size = inputStream.available();
+            byte[] textdata = new byte[size];
+            inputStream.read(textdata);
+            inputStream.close();
+            String text = new String(textdata);
+            text = text.replace("[VERSION]",BuildConfig.VERSION_NAME);
+            textView.setText(text);
+        } catch (IOException e) {
+            textView.setText("Error.");
+        }
 
     }
+
 
 
 }

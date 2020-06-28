@@ -1,0 +1,3 @@
+What is new in this version ([VERSION]):
+
+- app installation is now foced on internal storage (fixes widget not available when app installs on SD card), this is according
