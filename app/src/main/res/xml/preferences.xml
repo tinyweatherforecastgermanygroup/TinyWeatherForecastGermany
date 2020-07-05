@@ -51,8 +51,6 @@
 
     </PreferenceCategory>
 
-    <!--
-
     <PreferenceScreen
             android:key="PREF_screen_gadgetbridge"
             android:title="@string/preference_screen_gadgetbridge_title"
@@ -76,8 +74,6 @@
             android:summary="@string/preference_gadgetbridge_note_summary"/>
 
     </PreferenceScreen>
-
-    -->
 
 </PreferenceScreen>
 
