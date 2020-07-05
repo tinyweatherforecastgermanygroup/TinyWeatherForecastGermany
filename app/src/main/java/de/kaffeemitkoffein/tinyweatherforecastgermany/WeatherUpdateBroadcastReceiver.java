@@ -23,8 +23,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import java.net.URL;
-
 public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
 
     public final static String UPDATE_ACTION = "de.kaffeemitkoffein.broadcast.REQUEST_UPDATE";
@@ -35,29 +33,8 @@ public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
             if (intent.getAction().equals(UPDATE_ACTION)) {
                 // check if enough time passed since last update
                 if (UpdateChecker.eligibleForForecastUpdate(context)){
-                    StationsArrayList stationsArrayList = new StationsArrayList(context);
-                    int position = stationsArrayList.getSetStationPositionByName(context);
-                    // gets station instance
-                    Station station = stationsArrayList.stations.get(position);
-                    // determines web urls of api
-                    URL stationURLs[] = station.getAbsoluteWebURLArray();
-                    final WeatherCard weatherCardArray[] = {new WeatherCard()};
-                    WeatherForecastReader weatherForecastReader = new WeatherForecastReader(context){
-                        @Override
-                        public void onPositiveResult(WeatherCard wc){
-                            // weather data was already saved; check if data needs to be sent
-                            // to dadgetbridge.
-                            GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-                            gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-                        }
-
-                        @Override
-                        public void onNegativeResult(){
-                            // do nothing
-                        }
-
-                    };
-                    weatherForecastReader.execute(stationURLs);
+                    Intent i = new Intent(context,WeatherUpdateService.class);
+                    context.startService(i);
                 }
             }
         }
