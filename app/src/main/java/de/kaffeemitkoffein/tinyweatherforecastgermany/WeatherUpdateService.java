@@ -122,8 +122,6 @@ public class WeatherUpdateService extends Service {
                             .build();
                 }
                 //
-        // notificationManager.notify(NOTIFICATION_TAG,notification_id,n);
-        Toast.makeText(getApplicationContext(),"Hello, World!",Toast.LENGTH_LONG).show();
         return n;
     }
 
