@@ -1,1 +1,1 @@
-Next 24 hours weather forecast for Germany based on open data from the Deutscher Wetterdienst (DWD).
+24 h weather forecast for Germany based on open data from the Deutscher Wetterdienst.

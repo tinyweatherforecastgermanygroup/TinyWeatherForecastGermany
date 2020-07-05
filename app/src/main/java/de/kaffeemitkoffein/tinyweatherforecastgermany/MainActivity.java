@@ -19,9 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.os.Bundle;
 import android.app.*;
 import android.view.Menu;
@@ -32,7 +30,6 @@ import android.widget.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -40,6 +37,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     private final static String SIS_ABOUT_DIALOG_STATE="ABOUT_DIALOG_VISIBLE";
     private final static String SIS_WHATSNEW_DIALOG_STATE="WHATSNEW_DIALOG_VISIBLE";
+
+    public final static String MAINAPP_CUSTOM_REFRESH_ACTION     = "MAINAPP_CUSTOM_ACTION_REFRESH";
 
     private ArrayList<String> stationNames = new ArrayList<String>();
     private StationsArrayList stationsArrayList;
@@ -52,7 +51,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private Dialog whatsNewDialog;
     private boolean whatsNewDialogVisible=false;
 
-    private WeatherForecastReader weatherForecastReader;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
+                displayWeatherForecast();
+            }
+        }
+    };
 
     @Override
     protected void onPause(){
@@ -66,6 +72,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 whatsNewDialog.dismiss();
             }
         }
+        unregisterReceiver(receiver);
         super.onPause();
     }
 
@@ -90,6 +97,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     protected void onResume(){
+        registerForBroadcast();
         super.onResume();
     }
 
@@ -110,6 +118,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 Intent intent = new Intent(context,ClassicWidget.class);
                 intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
                 sendBroadcast(intent);
+                // check for alarm sets
+                UpdateAlarmManager.setUpdateAlarmsIfAppropriate(getApplicationContext());
             }
         };
         weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
@@ -139,6 +149,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             showWhatsNewDialog();
         }
+        registerForBroadcast();
+        UpdateAlarmManager.setUpdateAlarmsIfAppropriate(getApplicationContext());
     }
 
     private int getPositionInStationNames(String s){
@@ -240,36 +252,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         displayWeatherForecast(weatherCard);
     }
 
-
     public void getWeatherForecast(){
-        // uncomment this for fake weather data generation
-        // FakeWeatherData fakeWeatherData = new FakeWeatherData();
-        // WeatherCard fakeWeatherCard = fakeWeatherData.getInstance();
-        // displayWeatherForecast(fakeWeatherCard);
-        // WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-        // weatherForecastContentProvider.writeWeatherForecast(this,fakeWeatherCard);
-        // ...and comment the rest of the sub out
-        Log("GETTING WEATHER FORCAST ****");
-        int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
-        Station station = stationsArrayList.stations.get(position);
-        URL stationURLs[] = station.getAbsoluteWebURLArray();
-        final WeatherCard weatherCardArray[] = {new WeatherCard()};
-        final Context context = this;
-        weatherForecastReader = new WeatherForecastReader(getApplicationContext()){
-            @Override
-            public void onPositiveResult(WeatherCard wc){
-                displayWeatherForecast(wc);
-                GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-                gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-            }
-
-            @Override
-            public void onNegativeResult(){
-                Log("*** GETTING FROM WEB FAILED.");
-            }
-
-        };
-        weatherForecastReader.execute(stationURLs);
+        Intent intent = new Intent(getApplicationContext(),WeatherUpdateService.class);
+        startService(intent);
     }
 
     @Override
@@ -403,7 +388,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     }
 
-
+    private void registerForBroadcast(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(MAINAPP_CUSTOM_REFRESH_ACTION);
+        filter.addAction(Intent.ACTION_BOOT_COMPLETED);
+        registerReceiver(receiver,filter);
+    }
 
 }
 

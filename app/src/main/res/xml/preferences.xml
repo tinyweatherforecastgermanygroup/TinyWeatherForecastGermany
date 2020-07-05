@@ -22,6 +22,12 @@
     <PreferenceCategory
         android:title="@string/preference_category_general">
 
+        <CheckBoxPreference
+            android:key="PREF_setalarm"
+            android:title="@string/preference_setalarm_title"
+            android:summary="@string/preference_setalarm_summary"
+            android:defaultValue="true"/>
+
         <ListPreference
             android:key="PREF_updateinterval"
             android:title="@string/preference_updateinterval_title"

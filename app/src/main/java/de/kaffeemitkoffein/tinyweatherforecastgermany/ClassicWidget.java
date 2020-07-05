@@ -43,6 +43,7 @@ public class ClassicWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context c){
+        UpdateAlarmManager.setUpdateAlarmsIfAppropriate(c);
         super.onEnabled(c);
     }
 

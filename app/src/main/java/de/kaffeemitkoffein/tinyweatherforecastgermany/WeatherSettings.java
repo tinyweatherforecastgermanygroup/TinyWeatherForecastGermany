@@ -26,6 +26,7 @@ import android.preference.PreferenceManager;
 public class WeatherSettings {
 
     public static final String PREF_STATION = "PREF_station";
+    public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_ISWEATHERPROVIDER = "PREF_isregisteredweatherprovider";
     public static final String PREF_WIDGET_OPACITY = "PREF_widget_opacity";
@@ -35,6 +36,7 @@ public class WeatherSettings {
     public static final String PREF_GADGETBRIDGE_PACKAGENAME = "PREF_gadgetbridge_packagename";
 
     public static final String PREF_STATION_DEFAULT = "Hamburg";
+    public static final boolean PREF_SETALARM_DEFAULT = false;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "6";
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";
     public static final boolean PREF_ISWEATHERPROVIDER_DEFAULT = false;
@@ -44,6 +46,7 @@ public class WeatherSettings {
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
 
     public String station = PREF_STATION_DEFAULT;
+    public boolean setalarm = PREF_SETALARM_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
     public boolean is_weatherprovider = PREF_ISWEATHERPROVIDER_DEFAULT;
     public String widget_opacity = PREF_WIDGET_OPACITY_DEFAULT;
@@ -63,6 +66,7 @@ public class WeatherSettings {
 
     public void readPreferences(){
         this.station = readPreference(PREF_STATION,PREF_STATION_DEFAULT);
+        this.setalarm = readPreference(PREF_SETALARM,PREF_SETALARM_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL,PREF_UPDATEINTERVAL_DEFAULT);
         this.is_weatherprovider = readPreference(PREF_ISWEATHERPROVIDER,PREF_ISWEATHERPROVIDER_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY,PREF_WIDGET_OPACITY_DEFAULT);
@@ -73,6 +77,7 @@ public class WeatherSettings {
 
     public void savePreferences(){
         applyPreference(PREF_STATION,this.station);
+        applyPreference(PREF_SETALARM,this.setalarm);
         applyPreference(PREF_UPDATEINTERVAL,this.updateinterval);
         applyPreference(PREF_ISWEATHERPROVIDER,this.is_weatherprovider);
         applyPreference(PREF_WIDGET_OPACITY,this.widget_opacity);
