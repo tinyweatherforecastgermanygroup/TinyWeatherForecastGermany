@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of TinyWeatherForecastGermany.
  *
  * Copyright (c) 2020 Pawel Dube
