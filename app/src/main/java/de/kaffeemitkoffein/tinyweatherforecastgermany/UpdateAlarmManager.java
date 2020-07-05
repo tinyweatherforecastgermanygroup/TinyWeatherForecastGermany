@@ -18,12 +18,14 @@ public class UpdateAlarmManager {
 
     public static void setUpdateAlarmsIfAppropriate(final Context context) {
         WeatherSettings weatherSettings = new WeatherSettings(context);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        long update_period = weatherSettings.getUpdateInterval();
+        Intent i = new Intent(context, WeatherUpdateService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(context, PRIVATE_ALARM_IDENTIFIER, i, PendingIntent.FLAG_UPDATE_CURRENT);
         if (weatherSettings.setalarm){
-            long update_period = weatherSettings.getUpdateInterval();
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            Intent i = new Intent(context, WeatherUpdateService.class);
-            PendingIntent pendingIntent = PendingIntent.getService(context, PRIVATE_ALARM_IDENTIFIER, i, PendingIntent.FLAG_UPDATE_CURRENT);
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + update_period, update_period, pendingIntent);
+        } else {
+            alarmManager.cancel(pendingIntent);
         }
     }
 

@@ -52,34 +52,41 @@ public class WeatherUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
-        StationsArrayList stationsArrayList = new StationsArrayList(this);
-        int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
-        Station station = stationsArrayList.stations.get(position);
-        URL stationURLs[] = station.getAbsoluteWebURLArray();
-        final WeatherCard weatherCardArray[] = {new WeatherCard()};
-        final Context context = this;
-        WeatherForecastReader weatherForecastReader = new WeatherForecastReader(getApplicationContext()){
-            @Override
-            public void onPositiveResult(WeatherCard wc){
-                GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-                gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-                // notify widget
-                Intent intent = new Intent();
-                intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
-                sendBroadcast(intent);
-                // notify main class
-                intent = new Intent();
-                intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
-                sendBroadcast(intent);
-                stopSelf();
-            }
-            @Override
-            public void onNegativeResult(){
-                stopSelf();
-            }
-        };
-        weatherForecastReader.execute(stationURLs);
-        return START_STICKY;
+        if (UpdateChecker.eligibleForForecastUpdate(this)){
+            StationsArrayList stationsArrayList = new StationsArrayList(this);
+            int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
+            Station station = stationsArrayList.stations.get(position);
+            URL stationURLs[] = station.getAbsoluteWebURLArray();
+            final WeatherCard weatherCardArray[] = {new WeatherCard()};
+            final Context context = this;
+            WeatherForecastReader weatherForecastReader = new WeatherForecastReader(getApplicationContext()){
+                @Override
+                public void onPositiveResult(WeatherCard wc){
+                    GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+                    gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+                    // notify widget
+                    Intent intent = new Intent();
+                    intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
+                    sendBroadcast(intent);
+                    // notify main class
+                    intent = new Intent();
+                    intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+                    sendBroadcast(intent);
+                    // set new alarms, so that the alert will not be fired too early next time.
+                    UpdateAlarmManager.setUpdateAlarmsIfAppropriate(context);
+                    stopSelf();
+                }
+                @Override
+                public void onNegativeResult(){
+                    stopSelf();
+                }
+            };
+            weatherForecastReader.execute(stationURLs);
+            return START_STICKY;
+        } else {
+           stopSelf();
+           return START_NOT_STICKY;
+        }
     }
 
     @Override
