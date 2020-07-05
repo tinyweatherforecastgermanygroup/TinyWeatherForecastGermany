@@ -75,6 +75,15 @@
     <string name="preference_opacity_summary">Select how transparent the widget is on your home screen.</string>
     <string name="preference_displaynoteinwidget_title">Display DWD note</string>
     <string name="preference_displaynoteinwidget_summary">Show the data source string.</string>
+    <string name="preference_screen_gadgetbridge_title">Gadgetbridge support</string>
+    <string name="preference_screen_gadgetbridge_summary">Options for integrating the weather data of this app into Gadgetbridge.</string>
+    <string name="preference_gadgetbridge_serve_title">Enable</string>
+    <string name="preference_gadgetbridge_serve_summary">When enabled, all weather data is sent locally to the Gadgetbridge app on your device.</string>
+    <string name="preference_gadgetbridge_packagename_title">Package name</string>
+    <string name="preference_gadgetbridge_packagename_summary">You can set a custom package name here, e.g. when using a fork of Gadgetbridge. Remove the name to return to the default package name.</string>
+    <string name="preference_gadgetbridge_note_title">Important!</string>
+    <string name="preference_gadgetbridge_note_summary">At the current stage of development, Gadgetbridge support is not fully implemented yet and will not work!</string>
+    <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge package name is set back to default.</string>
     <string name="license_title">Licenses</string>
     <string name="button_continue">Continue</string>
 

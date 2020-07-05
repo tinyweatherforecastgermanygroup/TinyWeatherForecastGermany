@@ -3,3 +3,5 @@ What is new in this version ([VERSION]):
 - app installation is now forced on internal storage (fixes widget not available when app installs on SD card)
 
 - added this "what is new" screen
+
+- added experimental support for Gadgetbridge (not functional yet!)

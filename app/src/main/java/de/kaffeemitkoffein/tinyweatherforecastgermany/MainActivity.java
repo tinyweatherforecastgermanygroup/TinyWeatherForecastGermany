@@ -139,7 +139,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             showWhatsNewDialog();
         }
-        showWhatsNewDialog();
     }
 
     private int getPositionInStationNames(String s){
@@ -260,6 +259,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             @Override
             public void onPositiveResult(WeatherCard wc){
                 displayWeatherForecast(wc);
+                GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+                gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
             }
 
             @Override

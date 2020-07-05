@@ -48,6 +48,11 @@ Credits
  Data source: Deutscher Wetterdienst, own elements added, some data 
  averaged over individual values.
  
+ This program uses the WeatherSpec class of Gadgetbridge,
+ Copyright (C) 2016-2020 Andreas Shimokawa, Carsten Pfeiffer,
+ Daniele Gobbetti, licensed under the GNU AFFRERO GENERAL PUBLIC LICENSE,
+ Version 3, 19 November 2007. 
+ 
  Privacy
  -------
  

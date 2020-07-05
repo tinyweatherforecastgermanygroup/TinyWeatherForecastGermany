@@ -188,6 +188,8 @@ public class ClassicWidget extends AppWidgetProvider {
         @Override
         public void onPositiveResult(){
             refreshWidgetDisplays(context);
+            GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+            gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
         }
 
         /**

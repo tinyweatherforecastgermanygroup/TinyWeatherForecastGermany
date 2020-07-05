@@ -24,10 +24,21 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
-public class Settings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class Settings extends PreferenceActivity{
+
+    SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+            Log.v("PREF:","ON SHARED PREF CHANGED CALLEd");
+            updateValuesDisplay();
+        }
+    };
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
         addPreferencesFromResource(R.xml.preferences);
@@ -35,23 +46,35 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void onResume(){
         super.onResume();
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(listener);
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     protected void onPause(){
         super.onPause();
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        if (listener!=null){
+            getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(listener);
+        }
     }
 
+    @SuppressWarnings("deprecation")
     private void updateValuesDisplay(){
         SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(this);
         Preference p;
+        String gadgetbridge_packagename = sp.getString(WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME,WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT);
+        if (gadgetbridge_packagename.equals("")){
+            Log.v("PREF","UPDATING");
+            gadgetbridge_packagename = WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;
+            SharedPreferences.Editor preferences_editor = sp.edit();
+            preferences_editor.putString(WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME, gadgetbridge_packagename);
+            preferences_editor.commit();
+            Toast.makeText(this,getResources().getString(R.string.preference_gadgetbridge_package_reset_toast),Toast.LENGTH_LONG).show();
+            finish();
+        }
      }
 
-    public void onSharedPreferenceChanged(SharedPreferences sp, String id){
-        updateValuesDisplay();
-    }
 }

@@ -23,6 +23,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -428,7 +429,7 @@ public class WeatherCard {
      * @return
      * */
 
- public double tomorrowHigh(){
+    public double tomorrowHigh(){
         int[] tempmax = getIntArray(this.lufttemperatur_max);
         int result = tempmax[getEndOfTodayPos()];
         for (int i=getEndOfTodayPos(); i<9; i++){
@@ -440,10 +441,34 @@ public class WeatherCard {
         return d;
     }
 
+    public double get24hHigh(){
+        int[] tempmax = getIntArray(this.lufttemperatur_max);
+        int result = tempmax[0];
+        for (int i=0; i<9; i++){
+            if (tempmax[i]>result){
+                result = tempmax[i];
+            }
+        }
+        double d = result;
+        return d;
+    }
+
+    public double get24hLow(){
+        int[] tempmin = getIntArray(this.lufttemperatur_min);
+        int result = tempmin[0];
+        for (int i=0; i<9; i++){
+            if (tempmin[i]<result){
+                result = tempmin[i];
+            }
+        }
+        double d = result;
+        return d;
+    }
+
     public String getWindDir(String s){
-        Character c = s.charAt(1);
+        Character c = s.charAt(0);
         String result = "";
-        if (Character.isDigit(s.charAt(1))) {
+        if (Character.isDigit(s.charAt(0))) {
             // one char wind code
             result = String.valueOf(s.charAt(0));
         } else {
@@ -471,14 +496,18 @@ public class WeatherCard {
     }
 
     public String getWindSpeed(String s){
-        Character c = s.charAt(1);
         String result = "";
-        if (Character.isDigit(s.charAt(1))) {
-            // one char wind code
-            result = s.substring(1);
+        if (Character.isDigit(s.charAt(0))) {
+            // no wind direction given, 1st char is number, e.g. "10"
+            result = s.substring(0);
         } else {
-            // two char wind code
-            result = s.substring(2);
+            if (Character.isDigit(s.charAt(1))) {
+                // one char wind direction, e.g. "N10"
+                result = s.substring(1);
+            } else {
+                // two char wind direction, e.g. "NW10"
+                result = s.substring(2);
+            }
         }
         return result;
     }
@@ -488,6 +517,14 @@ public class WeatherCard {
         int i = Integer.parseInt(s);
         double d = i;
         return d;
+    }
+
+    public double getCurrentWindSpeed(){
+     return windSpeed(0);
+    }
+
+    public double getCurrentWindDirection(){
+     return windDirection(0);
     }
 
     public String getCurrentFlurries(){

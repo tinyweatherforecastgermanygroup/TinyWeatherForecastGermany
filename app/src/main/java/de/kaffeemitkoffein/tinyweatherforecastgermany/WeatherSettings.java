@@ -31,7 +31,8 @@ public class WeatherSettings {
     public static final String PREF_WIDGET_OPACITY = "PREF_widget_opacity";
     public static final String PREF_WIDGET_SHOWDWDNOTE = "PREF_widget_showdwdnote";
     public static final String PREF_LAST_VERSION_CODE = "PREF_last_version_code";
-
+    public static final String PREF_SERVE_GADGETBRIDGE = "PREF_serve_gadgetbridge";
+    public static final String PREF_GADGETBRIDGE_PACKAGENAME = "PREF_gadgetbridge_packagename";
 
     public static final String PREF_STATION_DEFAULT = "Hamburg";
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "6";
@@ -39,6 +40,8 @@ public class WeatherSettings {
     public static final boolean PREF_ISWEATHERPROVIDER_DEFAULT = false;
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
     public final int PREF_LAST_VERSION_CODE_DEFAULT = BuildConfig.VERSION_CODE;
+    public static final boolean PREF_SERVE_GADGETBRIDGE_DEFAULT = false;
+    public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
 
     public String station = PREF_STATION_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
@@ -46,6 +49,8 @@ public class WeatherSettings {
     public String widget_opacity = PREF_WIDGET_OPACITY_DEFAULT;
     public boolean widget_showdwdnote = PREF_WIDGET_SHOWDWDNOTE_DEFAULT;
     public int last_version_code = PREF_LAST_VERSION_CODE_DEFAULT;
+    public boolean serve_gadgetbridge = PREF_SERVE_GADGETBRIDGE_DEFAULT;
+    public String gadgetbridge_packagename = PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -63,6 +68,7 @@ public class WeatherSettings {
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY,PREF_WIDGET_OPACITY_DEFAULT);
         this.widget_showdwdnote = readPreference(PREF_WIDGET_SHOWDWDNOTE,PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
         this.last_version_code = readPreference(PREF_LAST_VERSION_CODE,PREF_LAST_VERSION_CODE_DEFAULT);
+        this.serve_gadgetbridge = readPreference(PREF_SERVE_GADGETBRIDGE,PREF_SERVE_GADGETBRIDGE_DEFAULT);
    }
 
     public void savePreferences(){
@@ -72,6 +78,7 @@ public class WeatherSettings {
         applyPreference(PREF_WIDGET_OPACITY,this.widget_opacity);
         applyPreference(PREF_WIDGET_SHOWDWDNOTE,this.widget_showdwdnote);
         applyPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
+        applyPreference(PREF_SERVE_GADGETBRIDGE,this.serve_gadgetbridge);
     }
 
     public String readPreference(String p, String d){

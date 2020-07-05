@@ -28,6 +28,7 @@ public class WeatherCodeContract {
     private WeatherCard weatherCard;
     private int start;
     private int stop;
+    private boolean isLineageOsCompatible = false;
 
     public final static int WEATHER_TODAY = 0;
     public final static int WEATHER_TOMORROW = 1;
@@ -60,6 +61,11 @@ public class WeatherCodeContract {
     public final static int SNOW_SHOWERS = 43;
     public final static int SUNNY = 31;
     public final static int WINDY = 23;
+
+    /**
+     * Weather codes 50-57 are not compatible with the lineageOS SDK WeatherContract.WeatherColumns.WeatherCode
+     * class. When setting lineageOS compatibility to true, they will not be used.
+     */
 
     public final static int PARTLY_CLOUDY_DAY_SCATTERED_SHOWERS_LIGHT = 50;
     public final static int PARTLY_CLOUDY_NIGHT_SCATTERED_SHOWERS_LIGHT = 51;
@@ -99,6 +105,14 @@ public class WeatherCodeContract {
                 this.start = 0;
                 this.stop = 8;
             }
+    }
+
+    public boolean isLineageOsCompatible(){
+        return isLineageOsCompatible;
+    }
+
+    public void setLineageOsCompatible(boolean b){
+        this.isLineageOsCompatible = b;
     }
 
     private int getAvaerage(int[] intarray){
@@ -613,6 +627,7 @@ public class WeatherCodeContract {
         return s;
     }
 
+    @SuppressWarnings("deprecation")
     public Drawable getWeatherConditionDrawable(Context context, int weathercondition){
         Drawable drawable;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -678,7 +693,7 @@ public class WeatherCodeContract {
             weatherCondition = SCATTERED_SHOWERS;
         }
         // PARTLY CLOUDY, SCATTERED SHOWERS
-        if (isPartlyCloudyAndScatteredShowers()){
+        if (isPartlyCloudyAndScatteredShowers() && (!isLineageOsCompatible)){
             if (isDaytime()){
                 weatherCondition = PARTLY_CLOUDY_DAY_SCATTERED_SHOWERS;
             } else {
@@ -687,7 +702,8 @@ public class WeatherCodeContract {
         }
         // PARTLY CLOUDY, LIGHT SCATTERED SHOWERS
         // has to come after partly cloudy, scattered showers as this is more specific
-        if (isPartlyCloudyAndScatteredShowersLight()){
+        // not valid for lineageOs.
+        if (isPartlyCloudyAndScatteredShowersLight() && (!isLineageOsCompatible)){
             if (isDaytime()){
                 weatherCondition = PARTLY_CLOUDY_DAY_SCATTERED_SHOWERS_LIGHT;
             } else {
@@ -721,7 +737,8 @@ public class WeatherCodeContract {
             weatherCondition = SCATTERED_SNOW_SHOWERS;
         }
         // PARTLY CLOUDY, SCATTERED SNOW SHOWERS
-        if (isPartlyCloudyAndScatteredSnowShowers()){
+        // not valid for lineageOs
+        if (isPartlyCloudyAndScatteredSnowShowers() && (!isLineageOsCompatible)){
             if (isDaytime()){
                 weatherCondition = PARTLY_CLOUDY_DAY_SCATTERED_SNOW_SHOWERS;
             } else {
@@ -730,7 +747,8 @@ public class WeatherCodeContract {
         }
         // PARTLY CLOUDY, LIGHT SCATTERED SNOW SHOWERS
         // has to come after partly cloudy, scattered snow showers as this is more specific
-        if (isPartlyCloudyAndScatteredSnowShowersLight()){
+        // not valid for lineageOs
+        if (isPartlyCloudyAndScatteredSnowShowersLight() && (!isLineageOsCompatible)){
             if (isDaytime()){
                 weatherCondition = PARTLY_CLOUDY_DAY_SCATTERED_SNOW_SHOWERS_LIGHT;
             } else {
