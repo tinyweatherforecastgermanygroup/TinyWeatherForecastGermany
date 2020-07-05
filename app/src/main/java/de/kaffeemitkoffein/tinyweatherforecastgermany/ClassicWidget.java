@@ -192,14 +192,6 @@ public class ClassicWidget extends AppWidgetProvider {
             gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
         }
 
-        /**
-         * The onNegativeResult routine generates a runnable that is delayed for WIDGET_CONN_RETRY_DELAY milliseconds.
-         * Then, the widget retries to get data.
-         *
-         * Caution: due to typical garbage collection behaviour of the OS, this post-delayed task is at
-         * risk being garbage-collected at any time and therefore may never be called at all.
-         */
-
         @Override
         public void onNegativeResult(){
             // nothing to do here, as update simply failed. We can ignore this.
