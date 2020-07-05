@@ -14,9 +14,9 @@ Screenshots
 How to get the app
 ------------------
 
-This app is currently in a heavy alpha state, current official builds are not available yet - but this will shortly change.
+This app is currently in a beta state, current official builds are not available yet - but this will shortly change.
 
-You get alpha-builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/fY3KAQ5xJazEENF>
+You get builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/NxjPfLNfAfYB9PN>
 
 License
 -------
