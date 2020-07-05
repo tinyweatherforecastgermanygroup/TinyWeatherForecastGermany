@@ -29,7 +29,7 @@ import nodomain.freeyourgadget.gadgetbridge.model.WeatherSpec;
 /*
 
  This is a simple BroadcastReceiver to demonstrate how weather data from this app can be included
- in the Gadgetbridge app.
+ in the Gadgetbridge app. It is not used in this app.
 
  You need to put this receiver in AndroidManifest.xml:
 
@@ -40,6 +40,18 @@ import nodomain.freeyourgadget.gadgetbridge.model.WeatherSpec;
      </intent-filter>
  </receiver>
 
+ To manually trigger a weather update FROM gadgetbridge, do a broadcast with the following action:
+
+ public final static String UPDATE_ACTION = "de.kaffeemitkoffein.broadcast.REQUEST_UPDATE";
+ ...
+ Intent intent = new Intent();
+ intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+ intent.setPackage("de.kaffeemitkoffein.tinyweatherforecastgermany");
+ intent.setAction(UPDATE_ACTION);
+ sendBroadcast(intent);
+ ...
+
+ Anyway, this app - once enabled by the user - will send every weather update to Gadgetbridge.
 
  */
 

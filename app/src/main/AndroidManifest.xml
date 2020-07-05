@@ -69,6 +69,14 @@
             </meta-data>
         </receiver>
 
+        <receiver android:name=".WeatherUpdateBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="de.kaffeemitkoffein.broadcast.REQUEST_UPDATE"/>
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>
