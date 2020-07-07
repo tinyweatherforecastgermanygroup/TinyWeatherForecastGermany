@@ -1,0 +1,1 @@
+Wettervorschau für Deutschland, basierend auf Open Data des Deutschen Wetterdienstes.

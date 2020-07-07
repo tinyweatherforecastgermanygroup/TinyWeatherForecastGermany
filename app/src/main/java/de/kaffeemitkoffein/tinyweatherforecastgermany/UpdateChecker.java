@@ -32,13 +32,13 @@ public class UpdateChecker {
     public static boolean eligibleForForecastUpdate(Context c) {
         // get settings and time values
         WeatherSettings weatherSettings = new WeatherSettings(c);
-        long update_hours = weatherSettings.getUpdateInterval();
+        long updateperiodinmillis = weatherSettings.getUpdateIntervalInMillis();
         long time = Calendar.getInstance().getTimeInMillis();
         // 3 600 000 millisecs = 1 hour
         WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(c);
         if (weatherCard != null) {
-            if (time >= ((update_hours * 3600000) + weatherCard.polling_time)) {
+            if (time >= updateperiodinmillis + weatherCard.polling_time) {
                 // update data because data too old
                 return true;
             } else {

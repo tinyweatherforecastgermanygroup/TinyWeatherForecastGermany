@@ -19,15 +19,16 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import nodomain.freeyourgadget.gadgetbridge.model.WeatherSpec;
 
 public class GadgetbridgeAPI {
 
     public final static String WEATHER_EXTRA="WeatherSpec";
     public final static String WEATHER_ACTION="de.kaffeemitkoffein.broadcast.WEATHERDATA";
+    public final static double KelvinConstant = 273.15;
 
     private WeatherSpec weatherSpec;
     private Context context;
@@ -36,30 +37,48 @@ public class GadgetbridgeAPI {
         this.context = context;
     }
 
+    private int toKelvin(double temperature){
+        return (int) (temperature - KelvinConstant);
+    }
+
     private void setWeatherData(){
         WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(context);
-        int currentWeatherCondition = new WeatherCodeContract(weatherCard,0).getWeatherCondition();
-        // build the WeatherSpec instance
+        // build the WeatherSpec instance with current weather
+        WeatherCodeContract weatherCodeContract = new WeatherCodeContract(weatherCard,0,0);
+        weatherCodeContract.setLineageOsCompatible(true);
+        int currentWeatherCondition = weatherCodeContract.getWeatherCondition();
         weatherSpec = new WeatherSpec();
         weatherSpec.currentConditionCode = currentWeatherCondition;
-        weatherSpec.currentCondition     = new WeatherCodeContract(weatherCard,0).getWeatherConditionText(context,currentWeatherCondition);
-        weatherSpec.currentTemp          = (int) (weatherCard.getCurrentTemp());
+        weatherSpec.currentCondition     = weatherCodeContract.getWeatherConditionText(context,currentWeatherCondition);
+        weatherSpec.currentTemp          = toKelvin(weatherCard.getCurrentTemp());
         weatherSpec.location             = weatherCard.getName();
-        weatherSpec.timestamp            = (int) weatherCard.polling_time / 1000;
-        weatherSpec.todayMaxTemp         = weatherCard.todaysHigh();
-        weatherSpec.todayMinTemp         = weatherCard.todaysLow();
+        weatherSpec.timestamp            = (int) (weatherCard.polling_time / 1000);
+        weatherSpec.todayMaxTemp         = toKelvin(weatherCard.todaysHigh());
+        weatherSpec.todayMinTemp         = toKelvin(weatherCard.todaysLow());
         weatherSpec.windSpeed            = (float) weatherCard.getCurrentWindSpeed();
         weatherSpec.windDirection        = (int) weatherCard.getCurrentWindDirection();
         // build the forecast instance
-        WeatherCodeContract weatherCodeContract = new WeatherCodeContract(weatherCard,WeatherCodeContract.WEATHER_24H);
+        weatherCodeContract = new WeatherCodeContract(weatherCard,WeatherCodeContract.WEATHER_24H);
         weatherCodeContract.setLineageOsCompatible(true);
         int forecastCondition = weatherCodeContract.getWeatherCondition();
-        WeatherSpec.Forecast forecast = new WeatherSpec.Forecast((int) weatherCard.get24hLow(),
-                                                                 (int) weatherCard.get24hLow(),
+        WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(toKelvin(weatherCard.get24hLow()),
+                                                                 toKelvin(weatherCard.get24hLow()),
                                                                  forecastCondition,
                                                          0);
         weatherSpec.forecasts.add(forecast);
+        /*
+        Log.v("GADGETBRIDGE-API","Timestamp          : "+weatherSpec.timestamp);
+        Log.v("GADGETBRIDGE-API","Condition          : "+weatherSpec.currentCondition);
+        Log.v("GADGETBRIDGE-API","Temperature current: "+weatherSpec.currentTemp);
+        Log.v("GADGETBRIDGE-API","Temperature min    : "+weatherSpec.todayMinTemp);
+        Log.v("GADGETBRIDGE-API","Temperature max    : "+weatherSpec.todayMaxTemp);
+        Log.v("GADGETBRIDGE-API","FC-Temperature max : "+weatherSpec.forecasts.get(0).minTemp);
+        Log.v("GADGETBRIDGE-API","FC-Temperature max : "+weatherSpec.forecasts.get(0).maxTemp);
+        Log.v("GADGETBRIDGE-API","FC-Condition       : "+weatherSpec.forecasts.get(0).conditionCode);
+        Log.v("GADGETBRIDGE-API","Windspeed          : "+weatherSpec.windSpeed);
+        Log.v("GADGETBRIDGE-API","Windspeed direct.  : "+weatherSpec.windDirection);
+        */
     }
 
     private final void sendWeatherBroadcast(){
@@ -74,9 +93,10 @@ public class GadgetbridgeAPI {
         intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         intent.setAction(WEATHER_ACTION);
         context.sendBroadcast(intent);
+        Log.v("GADGETBRIDGE","sent broadcast!");
     }
 
-    public  final void sendWeatherBroadcastIfEnabled(){
+    public final void sendWeatherBroadcastIfEnabled(){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         if (weatherSettings.serve_gadgetbridge){
             sendWeatherBroadcast();

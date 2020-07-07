@@ -23,8 +23,9 @@ import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
-import android.widget.Toast;
+import android.util.Log;
 
 import java.net.URL;
 import java.util.Calendar;
@@ -36,7 +37,8 @@ public class WeatherUpdateService extends Service {
 
     public static String IC_ID = "WEATHER_NOTIFICATION";
     public static String IC_NAME = "Updating weather data";
-    public static int    IC_IMPORTANCE = NotificationManager.IMPORTANCE_DEFAULT;
+    public static int    IC_IMPORTANCE = NotificationManager.IMPORTANCE_LOW;
+    public static String SERVICE_FORCEUPDATE="SERVICE_FORCEUPDATE";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -52,7 +54,19 @@ public class WeatherUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
-        if (UpdateChecker.eligibleForForecastUpdate(this)){
+        Bundle bundle = intent.getExtras();
+        boolean forceupdate = false;
+        if (bundle != null){
+            Log.v("GADGET","CHECKING FOR FORCED UPDATE;");
+            forceupdate = bundle.getBoolean(SERVICE_FORCEUPDATE,false);
+            if (forceupdate){
+                Log.v("GADGET","-> is forced.");
+            } else {
+                Log.v("GADGET","-> not forced.");
+            }
+        }
+        if ((UpdateChecker.eligibleForForecastUpdate(this)) || (forceupdate)){
+            Log.v("GADGET","DOING DATA UPDATE IN SERVICE");
             StationsArrayList stationsArrayList = new StationsArrayList(this);
             int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
             Station station = stationsArrayList.stations.get(position);
@@ -108,7 +122,7 @@ public class WeatherUpdateService extends Service {
             n = new Notification.Builder(getApplicationContext())
                             .setContentTitle(getResources().getString(R.string.service_notification_title))
                             .setContentText(getResources().getString(R.string.service_notification_text))
-                            .setSmallIcon(R.mipmap.ic_launcher_round)
+                            .setSmallIcon(R.drawable.schirm_weiss)
                             .setAutoCancel(true)
                             .setOngoing(false)
                             .setChannelId(IC_ID)
@@ -117,11 +131,10 @@ public class WeatherUpdateService extends Service {
                     n = new Notification.Builder(getApplicationContext())
                             .setContentTitle(getResources().getString(R.string.service_notification_title))
                             .setContentText(getResources().getString(R.string.service_notification_text))
-                            .setSmallIcon(R.mipmap.ic_launcher_round)
+                            .setSmallIcon(R.drawable.schirm_weiss)
                             .setAutoCancel(true)
                             .build();
                 }
-                //
         return n;
     }
 

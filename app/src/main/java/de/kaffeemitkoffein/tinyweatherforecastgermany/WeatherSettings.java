@@ -121,4 +121,9 @@ public class WeatherSettings {
         return i;
     }
 
+    public long getUpdateIntervalInMillis(){
+        //return getUpdateInterval()*60*60*1000;
+        return 120000;
+    }
+
 }

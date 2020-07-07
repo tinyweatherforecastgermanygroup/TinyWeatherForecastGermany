@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -110,6 +111,7 @@ public class ClassicWidget extends AppWidgetProvider {
      */
 
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
+        Log.v("GADGET","UPDATING WIDGET!");
         WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(c);
         WeatherSettings weatherSettings = new WeatherSettings(c);

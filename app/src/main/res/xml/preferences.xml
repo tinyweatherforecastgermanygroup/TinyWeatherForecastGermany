@@ -34,7 +34,7 @@
             android:summary="@string/preference_pdateinterval_summary"
             android:entries="@array/updateinterval_text"
             android:entryValues="@array/updateinterval_values"
-            android:defaultValue="1"/>
+            android:defaultValue="6"/>
 
     </PreferenceCategory>
 

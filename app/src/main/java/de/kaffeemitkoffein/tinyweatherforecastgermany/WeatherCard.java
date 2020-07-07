@@ -23,7 +23,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -61,6 +60,51 @@ public class WeatherCard {
         initEmptyClassValues();
     }
 
+    public WeatherCard(String fdat,
+            String ortscode,
+            String zeitstempel,
+             String klimagebiet,
+             String ausgegeben_am,
+            String ausgegeben_von,
+            String[] uhrzeit,
+             String[] bewoelkung,
+            String[] bewoelkung_max,
+            String[] bewoelkung_min,
+            String[] niederschlag,
+            String[] niederschlag_max,
+            String[] niederschlag_min,
+            String[] lufttemperatur,
+             String[] lufttemperatur_max,
+            String[] lufttemperatur_min,
+            String[] wind,
+            String[] boeen,
+            long polling_time){
+        this.fdat = fdat;
+        this.ortscode = ortscode;
+        this.zeitstempel = zeitstempel;
+        this.klimagebiet = klimagebiet;
+        this.ausgegeben_am = ausgegeben_am;
+        this.ausgegeben_von = ausgegeben_von;
+        this.uhrzeit = uhrzeit;
+        this.bewoelkung=bewoelkung;
+        this.bewoelkung_max=bewoelkung_max;
+        this.bewoelkung_min=bewoelkung_min;
+        this.niederschlag=niederschlag;
+        this.niederschlag_max=niederschlag_max;
+        this.niederschlag_min=niederschlag_min;
+        this.lufttemperatur=lufttemperatur;
+        this.lufttemperatur_max=lufttemperatur_max;
+        this.lufttemperatur_min=lufttemperatur_min;
+        this.wind=wind;
+        this.boeen=boeen;
+        this.polling_time=polling_time;
+    }
+
+    public WeatherCard copy(){
+        return new WeatherCard(
+        fdat, ortscode, zeitstempel, klimagebiet, ausgegeben_am, ausgegeben_von, uhrzeit, bewoelkung, bewoelkung_max, bewoelkung_min, niederschlag, niederschlag_max, niederschlag_min, lufttemperatur, lufttemperatur_max, lufttemperatur_min, wind, boeen, polling_time);
+    }
+
     /**
      * Constructor for a WeatherCard from a arraylist of strings that represents the weather data file that
      * has been received from the DWD open data source.
@@ -93,7 +137,7 @@ public class WeatherCard {
             // **********************************************************
             s = weatherText.get(0);
             try{
-                this.fdat = s.substring(0,5);
+                this.fdat = s.substring(0,6);
             } catch (IndexOutOfBoundsException e){
                 throw new IllegalArgumentException ("fdat has wrong format:"+s);
             }
@@ -207,7 +251,7 @@ public class WeatherCard {
             // line #22: get wind data
             // **********************************************************
             try {
-                this.wind  = getValuesFromLine(13,weatherText.get(22),4);
+                this.wind  = getValuesFromLine(12,weatherText.get(22),5);
             } catch (IndexOutOfBoundsException e){
                 throw new IllegalArgumentException("wind has wrong format:"+weatherText.get(22));
             }
@@ -315,7 +359,8 @@ public class WeatherCard {
         return d;
     }
 
-    public String getNumbers(String s){
+    public String getNumbers(String parameter){
+        String s = new String(parameter);
         // elimate non-number chars from the beginning of s
         while (!isNumber(s.charAt(0))){
             s = s.substring(1);
@@ -323,7 +368,8 @@ public class WeatherCard {
         return s;
     }
 
-    public int[] getIntArray(String[] s){
+    public int[] getIntArray(String[] parameter){
+        String[] s = parameter.clone();
         // elimate non-number chars from the beginning of s
         for (int i=0; i<s.length; i++){
             while (!isNumber(s[i].charAt(0))){
@@ -338,8 +384,9 @@ public class WeatherCard {
         return result;
     }
 
-    public int[] getIntArray(String[] s, int start, int stop){
+    public int[] getIntArray(String[] parameter, int start, int stop){
         // elimate non-number chars from the beginning of s
+        String[] s = parameter.clone();
         for (int i=0; i<s.length; i++){
             while (!isNumber(s[i].charAt(0))){
                 s[i] = s[i].substring(1);
@@ -465,7 +512,8 @@ public class WeatherCard {
         return d;
     }
 
-    public String getWindDir(String s){
+    public String getWindDir(String parameter){
+        String s = new String(parameter);
         Character c = s.charAt(0);
         String result = "";
         if (Character.isDigit(s.charAt(0))) {
@@ -495,7 +543,8 @@ public class WeatherCard {
         return d;
     }
 
-    public String getWindSpeed(String s){
+    public String getWindSpeed(String parameter){
+        String s = new String(parameter);
         String result = "";
         if (Character.isDigit(s.charAt(0))) {
             // no wind direction given, 1st char is number, e.g. "10"
@@ -642,7 +691,7 @@ public class WeatherCard {
     }
 
     public String toString(){
-        return toString(0,11);
+        return toString(0,8);
     }
 
 }

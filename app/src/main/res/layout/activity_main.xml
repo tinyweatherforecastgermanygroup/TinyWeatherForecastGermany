@@ -37,6 +37,18 @@
         android:id="@+id/main_selectstation_text"/>
 
     <TextView
+        android:id="@+id/main_update_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/fcmain_textsize_medium"
+        android:text="00:00:00">
+    </TextView>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/dwd_notice"

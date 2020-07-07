@@ -30,7 +30,9 @@ import android.widget.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
@@ -167,6 +169,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     public void displayWeatherForecast(WeatherCard weatherCard){
+        // date
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+        String updatetime = simpleDateFormat.format(new Date(weatherCard.polling_time));
+        TextView textView_update_time = (TextView) findViewById(R.id.main_update_time);
+        textView_update_time.setText(getApplicationContext().getResources().getString(R.string.main_updatetime)+" "+updatetime);
         // listview
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard);
@@ -254,6 +261,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     public void getWeatherForecast(){
         Intent intent = new Intent(getApplicationContext(),WeatherUpdateService.class);
+        // call from main app forces update from api
+        intent.putExtra(WeatherUpdateService.SERVICE_FORCEUPDATE,true);
         startService(intent);
     }
 

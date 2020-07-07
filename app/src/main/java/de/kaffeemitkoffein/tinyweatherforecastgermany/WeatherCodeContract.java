@@ -86,13 +86,13 @@ public class WeatherCodeContract {
      */
 
     public WeatherCodeContract(WeatherCard weatherCard, int start, int stop){
-        this.weatherCard = weatherCard;
+        this.weatherCard = weatherCard.copy();
         this.start = start;
         this.stop = stop;
     }
 
     public WeatherCodeContract(WeatherCard weatherCard, int period){
-        this.weatherCard = weatherCard;
+        this.weatherCard = weatherCard.copy();
         int delimeter = weatherCard.getEndOfTodayPos();
         if (period==WEATHER_TODAY){
             this.start = 0;
