@@ -13,3 +13,4 @@ What is new in this version ([VERSION]):
 - gadgetbridge support: fixed supplied weather conditions were not always compatible with the lineageos standard
 - gadgetbridge support: fixed current weather condition now displays current condition instead of day forecast
 - gadgetbridge support is still in a beta, but should work!
+- added German locale

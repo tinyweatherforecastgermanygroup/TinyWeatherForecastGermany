@@ -85,7 +85,7 @@
     <string name="preference_gadgetbridge_packagename_title">Package name</string>
     <string name="preference_gadgetbridge_packagename_summary">You can set a custom package name here, e.g. when using a fork of Gadgetbridge. Remove the name to return to the default package name.</string>
     <string name="preference_gadgetbridge_note_title">Important!</string>
-    <string name="preference_gadgetbridge_note_summary">At the current stage of development, Gadgetbridge support is not fully implemented yet and will not work!</string>
+    <string name="preference_gadgetbridge_note_summary">Gadgetbridge support is still experimental.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge package name is set back to default.</string>
     <string name="license_title">Licenses</string>
     <string name="button_continue">Continue</string>

@@ -1,0 +1,96 @@
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="app_name">Kleine Wettervorschau Deutschland</string>
+    <string name="main_selectstation">Region:</string>
+    <string name="main_updatetime">Letzte Aktualisierung:</string>
+    <string name="main_isprovider">Please note that this service is registered as the weather provider service in lineageos. You cannot change the weather location here. To change the location, go to the widget settings of the system clock and select the location there.</string>
+    <string name="dwd_notice">Quelle: Deutscher Wetterdienst, eigene Elemente ergänzt, einige Einzelwerte gemittelt.</string>
+    <string name="new_station">Region geändert zu </string>
+    <string name="license_button">Lizenz</string>
+    <string name="about_button">Über...</string>
+    <string name="triggerupdate_button">Über...</string>
+    <string name="whatsnew_button">Was ist neu?</string>
+    <string name="classicwidget_description">Wetter Widget</string>
+    <string name="weathercode_blustery">Stürmisch</string>
+    <string name="weathercode_clear_night">Klare Nacht</string>
+    <string name="weathercode_cloudy">Bewölkt</string>
+    <string name="weathercode_cold">Kalt</string>
+    <string name="weathercode_drizzle">Nieselregen</string>
+    <string name="weathercode_fair_day">Heiterer Tag</string>
+    <string name="weathercode_fair_night">Heitere Nacht</string>
+    <string name="weathercode_freezing_drizzle">Gefrierender Nieselregen</string>
+    <string name="weathercode_freezing_rain">Gefrierender Regen</string>
+    <string name="weathercode_heavy_snow">Starker Schneefall</string>
+    <string name="weathercode_hot">Heiß</string>
+    <string name="weathercode_hurricane">Orkan</string>
+    <string name="weathercode_light_showers">Leichte Regenschauer</string>
+    <string name="weathercode_light_snow_showers">Leichte Schneeschauer</string>
+    <string name="weathercode_mixed_rain_and_snow">Regen und Schnee</string>
+    <string name="weathercode_mostly_cloudy_day">Stark bewölkter Tag</string>
+    <string name="weathercode_mostly_cloudy_night">Stark bewölkte Nacht</string>
+    <string name="weathercode_not_available">Nicht verfügbar</string>
+    <string name="weathercode_partly_cloudy_day">Teilweise bewölkter Tag</string>
+    <string name="weathercode_partly_cloudy_night">Teilweise bewölkte Nacht</string>
+    <string name="weathercode_scattered_showers">Vereinzelte Schauer</string>
+    <string name="weathercode_scattered_snow_showers">Vereinzelt Schnee</string>
+    <string name="weathercode_showers">Shauer</string>
+    <string name="weathercode_snow_showers">Schneeschauer</string>
+    <string name="weathercode_snow">Schnee</string>
+    <string name="weathercode_snow_flurries">Schneegestöber</string>
+    <string name="weathercode_sunny">Sonnig</string>
+    <string name="weathercode_windy">Windig</string>
+    <string name="weathercode_partly_cloudy_day_scattered_showers">Vereinzelt bewölkt, Schauer</string>
+    <string name="weathercode_partly_cloudy_night_scattered_showers">Vereinzelt bewölkt, Schauer</string>
+    <string name="weathercode_partly_cloudy_day_scattered_snow_showers">Vereinzelt bewölkt, Schneeschauer</string>
+    <string name="weathercode_partly_cloudy_night_scattered_snow_showers">Vereinzelt bewölkt, Schneeschauer</string>
+    <string name="weathercode_partly_cloudy_day_scattered_showers_light">Teils bewölkt, leichte Schauer</string>
+    <string name="weathercode_partly_cloudy_night_scattered_showers_light">Teils bewölkt, leichte Schauer</string>
+    <string name="weathercode_partly_cloudy_day_scattered_snow_showers_light">Teils bewölkt, leichte Schneechauer</string>
+    <string name="weathercode_partly_cloudy_night_scattered_snow_showers_light">Teils bewölkt, leichte Schneechauer</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="clouds">Bewölkung: </string>
+    <string name="rain">Niederschlag: </string>
+    <string name="preference_category_general">Allgemein</string>
+    <string name="preference_category_widget">Widget-Einstellungen</string>
+    <string name="preference_updateinterval_title">Update-Intervall</string>
+    <string name="preference_pdateinterval_summary">Wie oft sollen Wetterdaten aktualisiert werden</string>
+    <string name="preference_opacity_title">Deckkraft Widget</string>
+    <string name="preference_opacity_summary">Bestimmt die Transparenz des Widgets auf dem Homescreen.</string>
+    <string name="preference_displaynoteinwidget_title">DWD-Hinweis anzeigen</string>
+    <string name="preference_displaynoteinwidget_summary">Zeigt den Hinweis auf die Datenquelle Deutscher Wetterdienst im Widget.</string>
+    <string name="preference_setalarm_title">Automatisch aktualisieren</string>
+    <string name="preference_setalarm_summary">Wetterdaten regelmäßig aktualisieren. Das kann den Akkuverbrauch erhöhen.</string>
+    <string name="preference_screen_gadgetbridge_title">Gadgetbridge-Unterstützung</string>
+    <string name="preference_screen_gadgetbridge_summary">Optionen, um die Wetterdaten dieser App in Gadgetbridge zu integrieren.</string>
+    <string name="preference_gadgetbridge_serve_title">Aktivieren</string>
+    <string name="preference_gadgetbridge_serve_summary">Wenn altiviert, werden alle Wetterdaten lokal an die Gadgetbridge-App auf dem Gerät geschickt.</string>
+    <string name="preference_gadgetbridge_packagename_title">Paketname</string>
+    <string name="preference_gadgetbridge_packagename_summary">Hier kann der Paketname verändert werden, z.B. falls ein Gadgetbridge-Fork verwendet wird. Name löschen, um zum Standard-Paketnamen zurück zu kehren.</string>
+    <string name="preference_gadgetbridge_note_title">Wichtig!</string>
+    <string name="preference_gadgetbridge_note_summary">Der Gadgetbridge-Support ist noch experimentell.</string>
+    <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge-Paketname wurde zurückgesetzt!</string>
+    <string name="license_title">Lizenzen</string>
+    <string name="button_continue">Weiter</string>
+    <string name="service_notification_channelname">Aktualisierungs-Hinweise</string>
+    <string name="service_notification_title">Kleine Wettervorschau Deutschland</string>
+    <string name="service_notification_text">Neue Wettervorhersage wird geholt...</string>
+
+</resources>

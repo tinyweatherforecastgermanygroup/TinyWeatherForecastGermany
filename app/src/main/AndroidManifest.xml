@@ -86,7 +86,6 @@
             </intent-filter>
         </receiver>
 
-
         <service android:name=".WeatherUpdateService"
             android:enabled="true"
             android:exported="false"/>

@@ -23,9 +23,7 @@ import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 
 import java.net.URL;
 import java.util.Calendar;
@@ -54,53 +52,42 @@ public class WeatherUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
-        Bundle bundle = intent.getExtras();
-        boolean forceupdate = false;
-        if (bundle != null){
-            Log.v("GADGET","CHECKING FOR FORCED UPDATE;");
-            forceupdate = bundle.getBoolean(SERVICE_FORCEUPDATE,false);
-            if (forceupdate){
-                Log.v("GADGET","-> is forced.");
-            } else {
-                Log.v("GADGET","-> not forced.");
+        // hack to prevent too frequent api calls
+        WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
+        WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(this);
+        if (weatherCard != null){
+            if (weatherCard.polling_time>Calendar.getInstance().getTimeInMillis()-10000){
+                stopSelf();
             }
         }
-        if ((UpdateChecker.eligibleForForecastUpdate(this)) || (forceupdate)){
-            Log.v("GADGET","DOING DATA UPDATE IN SERVICE");
-            StationsArrayList stationsArrayList = new StationsArrayList(this);
-            int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
-            Station station = stationsArrayList.stations.get(position);
-            URL stationURLs[] = station.getAbsoluteWebURLArray();
-            final WeatherCard weatherCardArray[] = {new WeatherCard()};
-            final Context context = this;
-            WeatherForecastReader weatherForecastReader = new WeatherForecastReader(getApplicationContext()){
-                @Override
-                public void onPositiveResult(WeatherCard wc){
-                    GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-                    gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-                    // notify widget
-                    Intent intent = new Intent();
-                    intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
-                    sendBroadcast(intent);
-                    // notify main class
-                    intent = new Intent();
-                    intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
-                    sendBroadcast(intent);
-                    // set new alarms, so that the alert will not be fired too early next time.
-                    UpdateAlarmManager.setUpdateAlarmsIfAppropriate(context);
-                    stopSelf();
+        StationsArrayList stationsArrayList = new StationsArrayList(this);
+        int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
+        Station station = stationsArrayList.stations.get(position);
+        URL stationURLs[] = station.getAbsoluteWebURLArray();
+        final WeatherCard weatherCardArray[] = {new WeatherCard()};
+        final Context context = this;
+        WeatherForecastReader weatherForecastReader = new WeatherForecastReader(getApplicationContext()){
+            @Override
+            public void onPositiveResult(WeatherCard wc){
+                GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+                gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+                // notify widget
+                Intent intent = new Intent();
+                intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
+                sendBroadcast(intent);
+                // notify main class
+                intent = new Intent();
+                intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+                sendBroadcast(intent);
+                stopSelf();
                 }
                 @Override
                 public void onNegativeResult(){
                     stopSelf();
                 }
             };
-            weatherForecastReader.execute(stationURLs);
-            return START_STICKY;
-        } else {
-           stopSelf();
-           return START_NOT_STICKY;
-        }
+        weatherForecastReader.execute(stationURLs);
+        return START_STICKY;
     }
 
     @Override

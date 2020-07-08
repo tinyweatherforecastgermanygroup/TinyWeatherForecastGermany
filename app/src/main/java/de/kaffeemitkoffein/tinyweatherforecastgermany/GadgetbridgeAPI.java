@@ -93,7 +93,6 @@ public class GadgetbridgeAPI {
         intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         intent.setAction(WEATHER_ACTION);
         context.sendBroadcast(intent);
-        Log.v("GADGETBRIDGE","sent broadcast!");
     }
 
     public final void sendWeatherBroadcastIfEnabled(){

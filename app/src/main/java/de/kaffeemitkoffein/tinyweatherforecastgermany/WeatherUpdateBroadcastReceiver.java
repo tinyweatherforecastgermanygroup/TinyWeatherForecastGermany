@@ -22,6 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
 
@@ -29,13 +30,16 @@ public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
+        Log.v("WEATHERLOG-WUBR","received broadcast for update.");
         if (intent != null) {
+            Log.v("WEATHERLOG-WUBR","Intent not null.");
             if (intent.getAction().equals(UPDATE_ACTION)) {
-                // check if enough time passed since last update
-                if (UpdateChecker.eligibleForForecastUpdate(context)){
-                    Intent i = new Intent(context,WeatherUpdateService.class);
-                    context.startService(i);
-                }
+                Log.v("WEATHERLOG-WUBR","Correct action.");
+                /*
+                Intent i = new Intent(context,WeatherUpdateService.class);
+                context.getApplicationContext().startService(i);
+                 */
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context);
             }
         }
     }

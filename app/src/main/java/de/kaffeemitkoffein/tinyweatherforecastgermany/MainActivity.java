@@ -121,7 +121,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
                 sendBroadcast(intent);
                 // check for alarm sets
-                UpdateAlarmManager.setUpdateAlarmsIfAppropriate(getApplicationContext());
+                WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+                // only react if regular updates are set
+                if (weatherSettings.setalarm){
+                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
+                }
             }
         };
         weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
@@ -138,21 +142,13 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         }
         WeatherCard weatherCard = new WeatherForecastContentProvider().readWeatherForecast(getApplicationContext());
         // get new data from api or display present data.
-        if (weatherCard != null){
-            if (UpdateChecker.eligibleForForecastUpdate(getApplicationContext())){
-                getWeatherForecast();
-            } else {
-                displayWeatherForecast(weatherCard);
-            }
-        } else {
-            getWeatherForecast();
-        }
+        displayWeatherForecast(weatherCard);
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
         // show whats new dialog if necessary
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             showWhatsNewDialog();
         }
         registerForBroadcast();
-        UpdateAlarmManager.setUpdateAlarmsIfAppropriate(getApplicationContext());
     }
 
     private int getPositionInStationNames(String s){
@@ -260,10 +256,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     public void getWeatherForecast(){
-        Intent intent = new Intent(getApplicationContext(),WeatherUpdateService.class);
-        // call from main app forces update from api
-        intent.putExtra(WeatherUpdateService.SERVICE_FORCEUPDATE,true);
-        startService(intent);
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
     }
 
     @Override

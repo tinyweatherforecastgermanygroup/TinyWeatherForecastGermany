@@ -27,12 +27,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
-
-import java.net.URL;
-import java.util.Calendar;
 
 public class ClassicWidget extends AppWidgetProvider {
 
@@ -44,7 +40,6 @@ public class ClassicWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context c){
-        UpdateAlarmManager.setUpdateAlarmsIfAppropriate(c);
         super.onEnabled(c);
     }
 
@@ -66,22 +61,11 @@ public class ClassicWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context c, AppWidgetManager awm, int[] widget_instances){
-        // get settings and time values
-        WeatherSettings weatherSettings = new WeatherSettings(c);
-        long update_hours = weatherSettings.getUpdateInterval();
-        long time = Calendar.getInstance().getTimeInMillis();
-        // 3 600 000 millisecs = 1 hour
-        WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-        WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(c);
-        if (weatherCard != null){
-            if (time >= ((update_hours*3600000) + weatherCard.polling_time)) {
-                // trigger a data update
-                launchWeatherDataUpdate(c,awm,widget_instances);
-            } else {
-                // simply refresh display with present data
-                updateWidgetDisplay(c,awm,widget_instances);
-            }
-        }
+        // checks for update & launches update if necessary;
+        // refresh widgets, if no update was made.
+        // in case of an update, the widgets are refreshed by a callback of WIDGET_CUSTOM_REFRESH_ACTION
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c);
+        updateWidgetDisplay(c,awm,widget_instances);
     }
 
     /**
@@ -111,7 +95,6 @@ public class ClassicWidget extends AppWidgetProvider {
      */
 
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
-        Log.v("GADGET","UPDATING WIDGET!");
         WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(c);
         WeatherSettings weatherSettings = new WeatherSettings(c);
@@ -147,57 +130,6 @@ public class ClassicWidget extends AppWidgetProvider {
         int[] wi = awm.getAppWidgetIds(new ComponentName(c,this.getClass().getName()));
         if (wi.length>0){
             updateWidgetDisplay(c,awm,wi);
-        }
-    }
-
-    public void refreshWidgetDisplays(Context c){
-        Intent widget_small = new Intent(c,ClassicWidget.class);
-        widget_small.setAction(WIDGET_CUSTOM_REFRESH_ACTION);
-        c.sendBroadcast(widget_small);
-    }
-
-    private void launchWeatherDataUpdate(Context c, AppWidgetManager awm, int[] widget_instances){
-        // read stations list from resources
-        StationsArrayList stationsArrayList = new StationsArrayList(c);
-        // get position of station in arraylist; station is retrieved from settings.
-        int position = stationsArrayList.getSetStationPositionByName(c);
-        // gets station instance
-        Station station = stationsArrayList.stations.get(position);
-        // determines web urls of api
-        URL stationURLs[] = station.getAbsoluteWebURLArray();
-        // Launches an async task for update. The async task will call the widget update if everything
-        // went well and new data is present.
-        DataFetcher dataFetcher = new DataFetcher(c,awm,widget_instances);
-        dataFetcher.execute(stationURLs);
-    }
-
-    public class DataFetcher extends WeatherForecastReader {
-        AppWidgetManager awm_instance = null;
-        int[] appwidget_ids;
-        Context context;
-
-        public DataFetcher(Context c, AppWidgetManager awm, int[] ids){
-            super(c);
-            this.context = c;
-            this.awm_instance = awm;
-            this.appwidget_ids = ids;
-        }
-
-        /**
-         * The onPositiveResult routine is called when the API request of new data was
-         * successful. It triggers a refresh of the display of all widgets.
-         */
-
-        @Override
-        public void onPositiveResult(){
-            refreshWidgetDisplays(context);
-            GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-            gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-        }
-
-        @Override
-        public void onNegativeResult(){
-            // nothing to do here, as update simply failed. We can ignore this.
         }
     }
 
