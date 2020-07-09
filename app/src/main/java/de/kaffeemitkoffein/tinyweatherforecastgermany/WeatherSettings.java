@@ -41,7 +41,7 @@ public class WeatherSettings {
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";
     public static final boolean PREF_ISWEATHERPROVIDER_DEFAULT = false;
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
-    public final int PREF_LAST_VERSION_CODE_DEFAULT = BuildConfig.VERSION_CODE;
+    public final int PREF_LAST_VERSION_CODE_DEFAULT = 0;
     public static final boolean PREF_SERVE_GADGETBRIDGE_DEFAULT = false;
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
 

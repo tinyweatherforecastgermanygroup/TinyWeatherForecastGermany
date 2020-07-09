@@ -1,11 +1,8 @@
-What is new in this version ([VERSION]):
-
+Version 0.31:
 - App crash on first launch (when no old weather data is present)
 - "What's new" now also appears after first installation
 
 Version 0.30:
-- App crash on first launch (when no old weather data is present)
-- "What's new" now also appears after first installation
 - added an option to regularly download weather data in custom intervals, this can be enabled and disabled in the settings
 - added visible last update time in main app
 - app and widget now display wind direction

@@ -1,3 +1,8 @@
+Version 0.31:
+- Absturz beim ersten Starten behoben (und keine alte Wetterdaten da sind)
+- "Was ist neu" erscheint nun auch bei der Erstinstallation
+
+Version 0.30:
 
 - Option hinzugefügt, um Wetterdaten in regelmäßigen Abständen zu laden, dies kann in den Einstellungen ein- und ausgeschaltet werden
 - sichtbare, letzte Aktualisierungs-Zeit in der App hinzugefügt
@@ -13,5 +18,3 @@
 - Gadgetbridge-Unterstützung: behoben: der Wetterstand zeigt nun das aktuelle Wetter anstelle der Voraussage für den Tag
 - Die Gadgetbridge-Unterstützung ist noch experimentell, sollte aber funktionieren!
 - Deutsche Sprache hinzu gefügt
-
-
