@@ -112,7 +112,9 @@ public class ClassicWidget extends AppWidgetProvider {
                 remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,weatherCodeContract.getWeatherConditionDrawableResource(weathercondition));
                 remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.getCurrentTemp())+"°");
                 remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,String.valueOf(weatherCard.todaysLow())+ "° | "+String.valueOf(weatherCard.todaysHigh())+"°");
-                remoteViews.setTextViewText(R.id.classicwidget_wind,weatherCard.getCurrentWind()+" ("+ weatherCard.getCurrentFlurries()+") km/h");
+                remoteViews.setTextViewText(R.id.classicwidget_wind,weatherCard.getCurrentWind()+" ("+ weatherCard.getCurrentFlurries()+")");
+                remoteViews.setTextViewText(R.id.classicwidget_wind_unit,"km/h");
+                remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.getCurrentArrow(c));
                 int opacity = Integer.parseInt(weatherSettings.widget_opacity);
                 remoteViews.setInt(R.id.classicwidget_maincontainer,"setBackgroundColor",getBackgroundInt(opacity));
                 if (weatherSettings.widget_showdwdnote) {

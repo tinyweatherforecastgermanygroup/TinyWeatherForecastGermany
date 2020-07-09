@@ -92,5 +92,15 @@
     <string name="service_notification_channelname">Update notifications</string>
     <string name="service_notification_title">Tiny Weather Forecast Germany</string>
     <string name="service_notification_text">Getting new weather forecast...</string>
+    <string name="direction_north">N</string>
+    <string name="direction_south">S</string>
+    <string name="direction_west">W</string>
+    <string name="direction_east">E</string>
+    <string name="direction_northeast">NE</string>
+    <string name="direction_southeast">SE</string>
+    <string name="direction_southwest">SW</string>
+    <string name="direction_northwest">NW</string>
+    <string name="direction_calm">-</string>
+
 
 </resources>

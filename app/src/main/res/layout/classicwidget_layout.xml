@@ -28,7 +28,7 @@
         android:id="@+id/classicwidget_linearlayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:weightSum="3"
+        android:weightSum="10"
         android:gravity="center"
         android:layout_above="@+id/classicwidget_reference_text"
         android:layout_height="match_parent">
@@ -36,7 +36,7 @@
         <LinearLayout android:id="@+id/classicwidget_leftcontainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -58,7 +58,7 @@
         <LinearLayout android:id="@+id/classicwidget_centercontainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -72,7 +72,7 @@
         <LinearLayout android:id="@+id/classicwidget_rightcontainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -91,12 +91,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <TextView android:id="@+id/classicwidget_wind"
-                android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/widget_textcolor"
-                android:gravity="center"
+            <LinearLayout
+                android:id="@+id/classicwidget_wind_horizontal_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/classicwidget_windarrow"
+                    android:layout_width="@dimen/widget_textsize_medium"
+                    android:layout_height="@dimen/widget_textsize_medium"
+                    android:layout_gravity="center">
+                </ImageView>
+
+                <TextView android:id="@+id/classicwidget_wind"
+                    android:textSize="@dimen/widget_textsize_medium"
+                    android:textColor="@color/widget_textcolor"
+                    android:gravity="center"
+                    android:layout_marginLeft="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView android:id="@+id/classicwidget_wind_unit"
+                    android:textSize="@dimen/widget_textsize_small"
+                    android:textColor="@color/widget_textcolor"
+                    android:gravity="center"
+                    android:text="km/h"
+                    android:layout_marginLeft="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
 
        </LinearLayout>
     </LinearLayout>

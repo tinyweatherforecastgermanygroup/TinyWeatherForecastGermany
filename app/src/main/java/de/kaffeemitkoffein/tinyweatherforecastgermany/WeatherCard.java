@@ -512,10 +512,25 @@ public class WeatherCard {
         return d;
     }
 
+    public boolean isValidWindDirChar(String s){
+        if ((s.equals("N"))||(s.equals("S"))||(s.equals("W"))||(s.equals("O"))||(s.equals("C"))){
+            return true;
+        }
+        return false;
+    }
+
     public String getWindDir(String parameter){
         String s = new String(parameter);
         Character c = s.charAt(0);
-        String result = "";
+        int winddir_end = 0;
+        while (isValidWindDirChar(s.substring(winddir_end,winddir_end+1))){
+            winddir_end = winddir_end + 1;
+        }
+        String result = s.substring(0,winddir_end);
+        result = result.trim();
+        return result;
+        /*
+        if (Character.isDigit(s.charAt()))
         if (Character.isDigit(s.charAt(0))) {
             // one char wind code
             result = String.valueOf(s.charAt(0));
@@ -524,6 +539,7 @@ public class WeatherCard {
             result = s.substring(0,1);
         }
         return result;
+         */
     }
 
     public double windDirection(int pos){
@@ -538,9 +554,28 @@ public class WeatherCard {
             case "SW": i=225; break;
             case "W": i=270; break;
             case "NW": i=315; break;
+            case "C": i=0; break;
         }
         double d = i;
         return d;
+    }
+
+    public String getWindDirString(Context c, int pos){
+        String windstring = getWindDir(wind[pos]);
+        String result = "";
+        switch (windstring){
+            case "N":  result = c.getApplicationContext().getResources().getString(R.string.direction_north); break;
+            case "NO": result = c.getApplicationContext().getResources().getString(R.string.direction_northeast); break;
+            case "O":  result = c.getApplicationContext().getResources().getString(R.string.direction_east); break;
+            case "SO": result = c.getApplicationContext().getResources().getString(R.string.direction_southeast); break;
+            case "S":  result = c.getApplicationContext().getResources().getString(R.string.direction_south); break;
+            case "SW": result = c.getApplicationContext().getResources().getString(R.string.direction_southwest); break;
+            case "W":  result = c.getApplicationContext().getResources().getString(R.string.direction_west); break;
+            case "NW": result = c.getApplicationContext().getResources().getString(R.string.direction_northwest); break;
+            case "C":  result = c.getApplicationContext().getResources().getString(R.string.direction_calm); break;
+        }
+        return result;
+
     }
 
     public String getWindSpeed(String parameter){
@@ -581,7 +616,11 @@ public class WeatherCard {
     }
 
     public String getCurrentWind(){
-        return wind[0];
+        return String.valueOf((int) (windSpeed(0)));
+    }
+
+    public String getWindSpeed(int i){
+        return String.valueOf((int) (windSpeed(i)));
     }
 
     public String getTodaysFlurries(){
@@ -620,39 +659,46 @@ public class WeatherCard {
         }
     }
 
-    public Bitmap getCurrentArrow(Context context){
+    public Bitmap getArrow(Context context, int pos){
         int degrees = 0;
         // no wind direction given, no wind.
-        if (wind[0].length()<2) {
+        // String first_char = String.valueOf(wind[pos].charAt(0));
+        // String first_two_chars = String.valueOf(wind[pos].charAt(0))+String.valueOf(wind[pos].charAt(1));
+        // Log.v("WEATHERWIDGET","FIRST:"+first_char);
+        // Log.v("WEATHERWIDGET","TWO  :"+first_two_chars);
+        String winddir = getWindDir(wind[pos]);
+        if (winddir.equals("C")){
             return null;
         }
-        String first_char = String.valueOf(wind[0].charAt(0));
-        String first_two_chars = String.valueOf(wind[0].charAt(0)+wind[0].charAt(1));
-        if (first_char.equals("N")){
+        if (winddir.equals("N")){
             degrees = 0;
         }
-        if (first_char.equals("O")){
-            degrees = 90;
-        }
-        if (first_char.equals("S")){
-            degrees = 180;
-        }
-        if (first_char.equals("W")){
+        if (winddir.equals("O")){
             degrees = 270;
         }
-        if (first_two_chars.equals("NO")){
-            degrees = 45;
+        if (winddir.equals("S")){
+            degrees = 180;
         }
-        if (first_two_chars.equals("SO")){
-            degrees = 135;
+        if (winddir.equals("W")){
+            degrees = 90;
         }
-        if (first_two_chars.equals("NO")){
-            degrees = 225;
-        }
-        if (first_two_chars.equals("NO")){
+        if (winddir.equals("NO")){
             degrees = 315;
         }
+        if (winddir.equals("SO")){
+            degrees = 225;
+        }
+        if (winddir.equals("SW")){
+            degrees = 135;
+        }
+        if (winddir.equals("NW")){
+            degrees = 45;
+        }
         return getArrowBitmap(context,degrees);
+    }
+
+    public Bitmap getCurrentArrow(Context c){
+        return getArrow(c,0);
     }
 
     private String arrayToString(String[] strarray, int start, int stop){

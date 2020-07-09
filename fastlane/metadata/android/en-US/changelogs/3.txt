@@ -1,15 +1,15 @@
+- Option hinzugefügt, um Wetterdaten in regelmäßigen Abständen zu laden, dies kann in den Einstellungen ein- und ausgeschaltet werden
+- sichtbare, letzte Aktualisierungs-Zeit in der App hinzugefügt
+- Die App und das Widget zeigen nun auch die Windrichtung
+- behoben: Wind-Daten haben die Richtungs-Information verloren
+- behoben: Parsing-Fehler des FDAT-Feldes (Teil der Sensor-ID)
+- behoben: ungültiger Standard-Wert für das Aktualisierungsintervall
+- behoben: Fehler, der zu einer sehr seltenen Aktualisierung führte
+- Gadgetbridge-Unterstützung: behoben: Unix-Zeitstempel war mit Müll gefüllt
+- Gadgetbridge-Unterstützung: behoben: Wind-Richtung war immer 0°
+- Gadgetbridge-Unterstützung: behoben: Temperatur wurde in Celsius anstelle Kelvin übermittelt
+- Gadgetbridge-Unterstützung: behoben: Wetterstände waren nicht immer mit dem Lineageos-Standard kompatibel
+- Gadgetbridge-Unterstützung: behoben: der Wetterstand zeigt nun das aktuelle Wetter anstelle der Voraussage für den Tag
+- Die Gadgetbridge-Unterstützung ist noch experimentell, sollte aber funktionieren!
+- Deutsche Sprache hinzu gefügt
 
-- added an option to regularly download weather data in custom intervals, this can be enabled and disabled in the settings
-- added visible last update time in main app
-- app and widget now display wind direction
-- fixed wind data losing direction information
-- fixed parsing error of FDAT data field (part of sensor ID)
-- fixed broken default value for update interval
-- fixed update bug causing updates to take place very rarely
-- gadgetbridge support: fixed unix timestamp filled with garbage
-- gadgetbridge support: fixed wind direction always 0°
-- gadgetbridge support: fixed temperature sent in celsius instead of kelvin
-- gadgetbridge support: fixed supplied weather conditions were not always compatible with the lineageos standard
-- gadgetbridge support: fixed current weather condition now displays current condition instead of day forecast
-- gadgetbridge support is still in a beta, but should work!
-- added German locale

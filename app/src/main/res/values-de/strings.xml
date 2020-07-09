@@ -92,5 +92,14 @@
     <string name="service_notification_channelname">Aktualisierungs-Hinweise</string>
     <string name="service_notification_title">Kleine Wettervorschau Deutschland</string>
     <string name="service_notification_text">Neue Wettervorhersage wird geholt...</string>
+    <string name="direction_north">N</string>
+    <string name="direction_south">S</string>
+    <string name="direction_west">W</string>
+    <string name="direction_east">O</string>
+    <string name="direction_northeast">NO</string>
+    <string name="direction_southeast">SO</string>
+    <string name="direction_southwest">SW</string>
+    <string name="direction_northwest">NW</string>
+    <string name="direction_calm">-</string>
 
 </resources>

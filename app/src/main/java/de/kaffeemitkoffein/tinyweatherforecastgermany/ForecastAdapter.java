@@ -81,7 +81,9 @@ public class ForecastAdapter extends BaseAdapter {
         TextView textView_highlow = (TextView) view.findViewById(R.id.fcitem_temperature_highlow);
         textView_highlow.setText(weatherCard.lufttemperatur_min[i]+"° | "+weatherCard.lufttemperatur_max[i]+"°");
         TextView textView_wind = (TextView) view.findViewById(R.id.fcitem_wind);
-        textView_wind.setText(weatherCard.wind[i]+" ("+weatherCard.boeen[i]+") km/h");
+        textView_wind.setText(weatherCard.getWindSpeed(i)+" ("+weatherCard.boeen[i]+") km/h");
+        ImageView imageView_windarrow = (ImageView) view.findViewById(R.id.fcitem_windarrow);
+        imageView_windarrow.setImageBitmap(weatherCard.getArrow(context,i));
         return view;
     }
 }
