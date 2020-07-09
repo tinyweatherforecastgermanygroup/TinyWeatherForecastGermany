@@ -142,8 +142,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         }
         WeatherCard weatherCard = new WeatherForecastContentProvider().readWeatherForecast(getApplicationContext());
         // get new data from api or display present data.
-        displayWeatherForecast(weatherCard);
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
+        if (weatherCard!=null){
+            displayWeatherForecast(weatherCard);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
+        } else {
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
+        }
         // show whats new dialog if necessary
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             showWhatsNewDialog();
