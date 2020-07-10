@@ -28,7 +28,7 @@
         android:id="@+id/classicwidget_linearlayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:weightSum="10"
+        android:weightSum="3"
         android:gravity="center"
         android:layout_above="@+id/classicwidget_reference_text"
         android:layout_height="match_parent">
@@ -36,7 +36,7 @@
         <LinearLayout android:id="@+id/classicwidget_leftcontainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -58,7 +58,7 @@
         <LinearLayout android:id="@+id/classicwidget_centercontainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -72,7 +72,7 @@
         <LinearLayout android:id="@+id/classicwidget_rightcontainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 

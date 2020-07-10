@@ -1,2 +1,3 @@
 Version 0.32:
 - fixes temperature conversion error (celsius to kelvin) in the Gadgetbridge api
+- slight layout correction in widget (weather symbol is larger now)
