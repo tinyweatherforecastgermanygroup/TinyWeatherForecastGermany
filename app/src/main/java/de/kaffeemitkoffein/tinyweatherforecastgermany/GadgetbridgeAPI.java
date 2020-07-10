@@ -21,7 +21,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import nodomain.freeyourgadget.gadgetbridge.model.WeatherSpec;
 
 public class GadgetbridgeAPI {

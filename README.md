@@ -53,6 +53,9 @@ Credits
  Daniele Gobbetti, licensed under the GNU AFFRERO GENERAL PUBLIC LICENSE,
  Version 3, 19 November 2007. 
  
+ Contributors:
+ - Andreas Shimokawa (bugfixes & support for the Gadgetbridge API)
+ 
  Privacy
  -------
  
