@@ -1,0 +1,2 @@
+Version 0.32:
+- behebt Fehler in der Temperaturumrechnung (Celsius zu Kelvin) in der Gadgetbridge api

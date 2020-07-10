@@ -1,5 +1,8 @@
 What is new in this version ([VERSION]):
 
+- fixes temperature conversion error (celsius to kelvin) in the Gadgetbridge api
+
+Version 0.31:
 - App crash on first launch (when no old weather data is present)
 - "What's new" now also appears after first installation
 

@@ -1,5 +1,7 @@
 Neu in dieser Version ([VERSION]):
+- behebt Fehler in der Temperaturumrechnung (Celsius zu Kelvin) in der Gadgetbridge api
 
+Version 0.31:
 - Absturz beim ersten Starten behoben (und keine alte Wetterdaten da sind)
 - "Was ist neu" erscheint nun auch bei der Erstinstallation
 
