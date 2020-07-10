@@ -38,7 +38,7 @@ public class GadgetbridgeAPI {
     }
 
     private int toKelvin(double temperature){
-        return (int) (temperature - KelvinConstant);
+        return (int) (temperature + KelvinConstant);
     }
 
     private void setWeatherData(){
