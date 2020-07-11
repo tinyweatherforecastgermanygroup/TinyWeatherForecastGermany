@@ -62,7 +62,7 @@ public class GadgetbridgeAPI {
         weatherCodeContract.setLineageOsCompatible(true);
         int forecastCondition = weatherCodeContract.getWeatherCondition();
         WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(toKelvin(weatherCard.get24hLow()),
-                                                                 toKelvin(weatherCard.get24hLow()),
+                                                                 toKelvin(weatherCard.get24hHigh()),
                                                                  forecastCondition,
                                                          0);
         weatherSpec.forecasts.add(forecast);
