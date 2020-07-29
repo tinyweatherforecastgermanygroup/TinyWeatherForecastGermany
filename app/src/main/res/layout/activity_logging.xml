@@ -1,0 +1,82 @@
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout android:id="@+id/logging_intoButtonLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="3dip"
+        android:layout_alignParentBottom="true">
+
+        <Button android:id="@+id/logging_button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textColor="@color/textColor"
+            android:text="@string/logging_button_back"/>
+        <Button android:id="@+id/logging_button_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textColor="@color/textColor"
+            android:text="@string/logging_button_clear"/>
+        <Button android:id="@+id/logging_button_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textColor="@color/textColor"
+            android:text="@string/logging_button_copy"/>
+    </LinearLayout>
+
+    <ScrollView android:id="@+id/infoScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:layout_below="@+id/infoSolidBar"
+        android:layout_above="@id/logging_intoButtonLine">
+
+        <TextView
+            android:id="@+id/logging_infoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollHorizontally="false"
+            android:minLines="2"
+            android:singleLine="false"
+            android:ellipsize="none"
+            android:maxLines="3000"
+            android:textSize="@dimen/licence_textsize"
+            android:textColor="@color/textColor"
+            android:gravity="top"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+        />
+
+    </ScrollView>
+
+</RelativeLayout>

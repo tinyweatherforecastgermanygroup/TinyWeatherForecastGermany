@@ -1,0 +1,6 @@
+Version 0.32:
+- Gadgetbridge-Support: fixed max. temperature in forecast
+- new option to repeat update every 5 minutes when there is no network
+- new experimental feature to catch up on a due update once there is a network available
+- new options for local logging (debugging)
+- revised settings

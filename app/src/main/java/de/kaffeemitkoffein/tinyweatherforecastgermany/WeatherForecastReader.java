@@ -32,6 +32,10 @@ import java.util.Calendar;
 public class WeatherForecastReader extends AsyncTask<URL,Void, WeatherCard> {
 
     private Context context;
+    public final static int NO_ERROR = 0;
+    public final static int CONNECTIVITY_ERROR = 1;
+    public final static int PARSING_ERROR = 2;
+    private int errorcode = NO_ERROR;
 
     public WeatherForecastReader(Context context){
         this.context = context;
@@ -61,10 +65,12 @@ public class WeatherForecastReader extends AsyncTask<URL,Void, WeatherCard> {
                 if (pageloaded){
                     try {
                         WeatherCard weatherCard = new WeatherCard(pageContent);
+                        errorcode = NO_ERROR;
                         return weatherCard;
                     } catch (IllegalArgumentException e){
                         // show an error if the data returned from DWD has an unexpected format
                         Toast.makeText(context,e.getMessage(), Toast.LENGTH_LONG).show();
+                        errorcode = PARSING_ERROR;
                         return null;
                     }
                 }
@@ -72,6 +78,7 @@ public class WeatherForecastReader extends AsyncTask<URL,Void, WeatherCard> {
         }
         // when the loop finishes with no previous return, this means that we only got 404 page not found errors but
         // no weather forecast data at all.
+        errorcode = CONNECTIVITY_ERROR;
         return null;
     }
 
@@ -79,7 +86,7 @@ public class WeatherForecastReader extends AsyncTask<URL,Void, WeatherCard> {
      * Override this routine to define what to do if obtaining data failed.
      */
 
-    public void onNegativeResult(){
+    public void onNegativeResult(int errorcode){
         // do nothing at the moment.
     }
 
@@ -100,7 +107,7 @@ public class WeatherForecastReader extends AsyncTask<URL,Void, WeatherCard> {
 
     protected void onPostExecute(WeatherCard weatherCard) {
         if (weatherCard == null) {
-            onNegativeResult();
+            onNegativeResult(errorcode);
         } else {
             // get timestamp
             Calendar calendar = Calendar.getInstance();

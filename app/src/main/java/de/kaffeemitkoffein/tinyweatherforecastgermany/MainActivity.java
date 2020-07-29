@@ -20,6 +20,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.*;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.*;
 import android.view.Menu;
@@ -107,7 +108,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PrivateLog.log(this,Tag.MAIN,"App started.");
         final WeatherSettings weatherSettings = new WeatherSettings(this);
+        PrivateLog.log(this,Tag.MAIN,"Settings loaded.");
         if (weatherSettings.is_weatherprovider) {
             TextView infotext = (TextView) findViewById(R.id.main_selectstation_text);
             infotext.setText(R.string.main_isprovider);
@@ -143,13 +146,16 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         WeatherCard weatherCard = new WeatherForecastContentProvider().readWeatherForecast(getApplicationContext());
         // get new data from api or display present data.
         if (weatherCard!=null){
+            PrivateLog.log(this,Tag.MAIN,"weather info is present in local database.");
             displayWeatherForecast(weatherCard);
             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
         } else {
+            PrivateLog.log(this,Tag.MAIN,"no weather info present in local database => forcing update.");
             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
         }
         // show whats new dialog if necessary
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
+            PrivateLog.log(this,Tag.MAIN,"Showing wat's new dialog.");
             showWhatsNewDialog();
         }
         registerForBroadcast();
@@ -300,6 +306,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public boolean onOptionsItemSelected(MenuItem mi){
         int item_id = mi.getItemId();
         if (item_id == R.id.menu_refresh){
+            PrivateLog.log(this,Tag.MAIN,"user requests update => force update");
             getWeatherForecast();
             return true;
         }

@@ -22,6 +22,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.app.*;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
 
@@ -45,20 +47,41 @@ public class WeatherUpdateService extends Service {
 
     @Override
     public void onCreate(){
+        PrivateLog.log(this,Tag.SERVICE,"service started: onCreate");
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         notification_id = (int) Calendar.getInstance().getTimeInMillis();
         startForeground(notification_id,getNotification());
+        PrivateLog.log(this,Tag.SERVICE,"service is foreground now");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
         // hack to prevent too frequent api calls
+        PrivateLog.log(this,Tag.SERVICE,"service started: onStartCommand");
         WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(this);
         if (weatherCard != null){
             if (weatherCard.polling_time>Calendar.getInstance().getTimeInMillis()-10000){
+                PrivateLog.log(this,Tag.SERVICE,"update cancelled, too frequent call!");
                 stopSelf();
             }
+        }
+        // abort update if there is no internet connection.
+        if (!isConnectedToInternet()){
+            PrivateLog.log(this,Tag.SERVICE,"update cancelled, no internet connection");
+            /*  Check if the user desires to repeat updates when no network is found. If yes, a retry is scheduled
+             *  in 5 minutes. Other errors that occur later in this process (404 error, parsing errors) will
+             *  NOT trigger a retry update to protect the DWD api from too frequent calls.
+             *
+             *  Certain conditions like captive portals, local networks with no internet access etc. may
+             *  appear as a valid internet connection at first glance and will also NOT trigger
+             *  repeated updates.
+             */
+            WeatherSettings weatherSettings = new WeatherSettings(this);
+            if (weatherSettings.aggressive_update){
+                UpdateAlarmManager.setEarlyAlarm(this);
+            }
+            stopSelf();
         }
         StationsArrayList stationsArrayList = new StationsArrayList(this);
         int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
@@ -79,13 +102,16 @@ public class WeatherUpdateService extends Service {
                 intent = new Intent();
                 intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
                 sendBroadcast(intent);
+                PrivateLog.log(context,Tag.SERVICE,"update from API: success");
                 stopSelf();
                 }
                 @Override
-                public void onNegativeResult(){
+                public void onNegativeResult(int errorcode){
+                    PrivateLog.log(context,Tag.SERVICE,"update from API: failed, error: "+errorcode);
                     stopSelf();
                 }
             };
+        PrivateLog.log(this,Tag.SERVICE,"starting update from API");
         weatherForecastReader.execute(stationURLs);
         return START_STICKY;
     }
@@ -93,6 +119,7 @@ public class WeatherUpdateService extends Service {
     @Override
     public void onDestroy(){
         notificationManager.cancel(notification_id);
+        PrivateLog.log(this,Tag.SERVICE,"destroyed.");
     }
 
     @Deprecated
@@ -123,6 +150,18 @@ public class WeatherUpdateService extends Service {
                             .build();
                 }
         return n;
+    }
+
+    private boolean isConnectedToInternet(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager!=null) {
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null) {
+                // returns if the network can establish connections and pass data.
+                return networkInfo.isConnected();
+            }
+        }
+        return false;
     }
 
 }

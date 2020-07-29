@@ -70,7 +70,7 @@
     <string name="rain">Niederschlag: </string>
     <string name="preference_category_general">Allgemein</string>
     <string name="preference_category_widget">Widget-Einstellungen</string>
-    <string name="preference_updateinterval_title">Update-Intervall</string>
+    <string name="preference_updateinterval_title">Aktualisierungs-Intervall</string>
     <string name="preference_pdateinterval_summary">Wie oft sollen Wetterdaten aktualisiert werden</string>
     <string name="preference_opacity_title">Deckkraft Widget</string>
     <string name="preference_opacity_summary">Bestimmt die Transparenz des Widgets auf dem Homescreen.</string>
@@ -78,6 +78,8 @@
     <string name="preference_displaynoteinwidget_summary">Zeigt den Hinweis auf die Datenquelle Deutscher Wetterdienst im Widget.</string>
     <string name="preference_setalarm_title">Automatisch aktualisieren</string>
     <string name="preference_setalarm_summary">Wetterdaten regelmäßig aktualisieren. Das kann den Akkuverbrauch erhöhen.</string>
+    <string name="preference_set_aggresive_alarm_title">Aktualisierung wiederholen</string>
+    <string name="preference_set_aggresive_alarm_summary">Bei fehlender Netzwerk-Verbindung nach 5 Min. immer wieder nochmal versuchen. Erhöht den Stromverbrauch.</string>
     <string name="preference_screen_gadgetbridge_title">Gadgetbridge-Unterstützung</string>
     <string name="preference_screen_gadgetbridge_summary">Optionen, um die Wetterdaten dieser App in Gadgetbridge zu integrieren.</string>
     <string name="preference_gadgetbridge_serve_title">Aktivieren</string>
@@ -87,6 +89,19 @@
     <string name="preference_gadgetbridge_note_title">Wichtig!</string>
     <string name="preference_gadgetbridge_note_summary">Der Gadgetbridge-Support ist noch experimentell.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge-Paketname wurde zurückgesetzt!</string>
+    <string name="preference_category_other">Sonstiges</string>
+    <string name="preference_loggingscreen_title">Fehler finden</string>
+    <string name="preference_loggingscreen_summary">Protokoll aufzeichnen und verwalten.</string>
+    <string name="preference_logging_title">Protokoll</string>
+    <string name="preference_logging_summary">Protokollierung aktivieren. Das Protokoll wird LOKAL gespeichert und NICHT automatisch vesandt.</string>
+    <string name="preference_loggingactivity_title">Protokoll verwalten</string>
+    <string name="preference_loggingactivity_summary">Protokoll senden/löschen.</string>
+    <string name="logging_button_back">Zurück</string>
+    <string name="logging_button_clear">Protokoll löschen</string>
+    <string name="logging_button_copy">Protokoll in die Zwischenablage kopieren</string>
+    <string name="logging_title">Protokoll</string>
+    <string name="logging_copy_success">Protokoll in die Zwischenablage kopiert.</string>
+    <string name="logging_copy_fail">Kopieren des Protokolls in die Zwischenablage fehlgeschlagen!</string>
     <string name="license_title">Lizenzen</string>
     <string name="button_continue">Weiter</string>
     <string name="service_notification_channelname">Aktualisierungs-Hinweise</string>

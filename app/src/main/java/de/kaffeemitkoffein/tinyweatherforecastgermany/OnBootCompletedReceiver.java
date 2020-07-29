@@ -26,9 +26,13 @@ import android.content.Intent;
 public class OnBootCompletedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        PrivateLog.log(context,Tag.ONBOOT,"received on boot completed broadcast.");
         if (intent!=null){
+            PrivateLog.log(context,Tag.ONBOOT,"+-> intent passed");
             if (intent.getAction()!=null){
+                PrivateLog.log(context,Tag.ONBOOT,"+-> intent has action");
                 if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
+                    PrivateLog.log(context,Tag.ONBOOT,"+-> action is ACTION_BOOT_COMPLETED, triggering alarm update.");
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context);
                 }
             }

@@ -21,9 +21,14 @@
     <string name="app_name">Tiny Weather Forecast Germany</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Last Update:</string>
-    <string name="main_isprovider">Please note that this service is registered as the weather provider service in lineageos. You cannot change the weather location here. To change the location, go to the widget settings of the system clock and select the location there.</string>
-    <string name="dwd_notice">Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual values. </string>
-    <string name="new_station">Region changed to </string>
+    <string name="main_isprovider">Please note that this service is registered as the weather provider service in
+        lineageos. You cannot change the weather location here. To change the location, go to the widget settings of the
+        system clock and select the location there.
+    </string>
+    <string name="dwd_notice">Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual
+        values.
+    </string>
+    <string name="new_station">Region changed to</string>
     <string name="license_button">License</string>
     <string name="about_button">About...</string>
     <string name="triggerupdate_button">About...</string>
@@ -64,10 +69,11 @@
     <string name="weathercode_partly_cloudy_day_scattered_showers_light">Partly cloudy, light showers</string>
     <string name="weathercode_partly_cloudy_night_scattered_showers_light">Partly cloudy, light showers</string>
     <string name="weathercode_partly_cloudy_day_scattered_snow_showers_light">Partly cloudy, light snow showers</string>
-    <string name="weathercode_partly_cloudy_night_scattered_snow_showers_light">Partly cloudy, light snow showers</string>
+    <string name="weathercode_partly_cloudy_night_scattered_snow_showers_light">Partly cloudy, light snow showers
+    </string>
     <string name="title_activity_settings">Settings</string>
-    <string name="clouds">Clouds: </string>
-    <string name="rain">Rain: </string>
+    <string name="clouds">Clouds:</string>
+    <string name="rain">Rain:</string>
     <string name="preference_category_general">General</string>
     <string name="preference_category_widget">Widget settigs</string>
     <string name="preference_updateinterval_title">Update interval</string>
@@ -78,8 +84,10 @@
     <string name="preference_displaynoteinwidget_summary">Show the data source string.</string>
     <string name="preference_setalarm_title">Update automatically</string>
     <string name="preference_setalarm_summary">Update weather data regularly. This may increase battery usage.</string>
+    <string name="preference_set_aggresive_alarm_title">Repeat failed updates</string>
+    <string name="preference_set_aggresive_alarm_summary">When no network available, retry again and again after 5 minutes. This will use more battery.</string>
     <string name="preference_screen_gadgetbridge_title">Gadgetbridge support</string>
-    <string name="preference_screen_gadgetbridge_summary">Options for integrating the weather data of this app into Gadgetbridge.</string>
+    <string name="preference_screen_gadgetbridge_summary">Options for integrating the weather data of this app into Gadgetbridge. </string>
     <string name="preference_gadgetbridge_serve_title">Enable</string>
     <string name="preference_gadgetbridge_serve_summary">When enabled, all weather data is sent locally to the Gadgetbridge app on your device.</string>
     <string name="preference_gadgetbridge_packagename_title">Package name</string>
@@ -87,6 +95,19 @@
     <string name="preference_gadgetbridge_note_title">Important!</string>
     <string name="preference_gadgetbridge_note_summary">Gadgetbridge support is still experimental.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge package name is set back to default.</string>
+    <string name="preference_category_other">Other</string>
+    <string name="preference_loggingscreen_title">Debug</string>
+    <string name="preference_loggingscreen_summary">Set up logging options for debugging.</string>
+    <string name="preference_logging_title">Logging</string>
+    <string name="preference_logging_summary">Activate logging. Logs are saved LOCALLY on your device and are NOT sent automatically.</string>
+    <string name="preference_loggingactivity_title">Manage logs</string>
+    <string name="preference_loggingactivity_summary">Send and/or clear the logs.</string>
+    <string name="logging_button_back">Back</string>
+    <string name="logging_button_clear">Clear Logs</string>
+    <string name="logging_button_copy">Copy Logs to Clipboard</string>
+    <string name="logging_title">Logs</string>
+    <string name="logging_copy_success">Logs have been copied to your clipboard.</string>
+    <string name="logging_copy_fail">Copying logs to your clipboard failed!</string>
     <string name="license_title">Licenses</string>
     <string name="button_continue">Continue</string>
     <string name="service_notification_channelname">Update notifications</string>
@@ -101,6 +122,4 @@
     <string name="direction_southwest">SW</string>
     <string name="direction_northwest">NW</string>
     <string name="direction_calm">-</string>
-
-
 </resources>

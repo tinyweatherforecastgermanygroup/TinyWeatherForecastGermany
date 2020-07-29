@@ -36,6 +36,12 @@
             android:entryValues="@array/updateinterval_values"
             android:defaultValue="6"/>
 
+        <CheckBoxPreference
+            android:key="PREF_aggressive_update"
+            android:title="@string/preference_set_aggresive_alarm_title"
+            android:summary="@string/preference_set_aggresive_alarm_summary"
+            android:defaultValue="false"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -57,29 +63,56 @@
 
     </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
+        android:title="@string/preference_category_other">
+
+        <PreferenceScreen
             android:key="PREF_screen_gadgetbridge"
             android:title="@string/preference_screen_gadgetbridge_title"
             android:summary="@string/preference_screen_gadgetbridge_summary">
 
-        <CheckBoxPreference
-            android:key="PREF_serve_gadgetbridge"
-            android:title="@string/preference_gadgetbridge_serve_title"
-            android:summary="@string/preference_gadgetbridge_serve_summary"
-            android:defaultValue="false"/>
+            <CheckBoxPreference
+                android:key="PREF_serve_gadgetbridge"
+                android:title="@string/preference_gadgetbridge_serve_title"
+                android:summary="@string/preference_gadgetbridge_serve_summary"
+                android:defaultValue="false"/>
 
-        <EditTextPreference
-            android:key="PREF_gadgetbridge_packagename"
-            android:title="@string/preference_gadgetbridge_packagename_title"
-            android:summary="@string/preference_gadgetbridge_packagename_summary"
-            android:defaultValue="nodomain.freeyourgadget.gadgetbridge"/>
+            <EditTextPreference
+                android:key="PREF_gadgetbridge_packagename"
+                android:title="@string/preference_gadgetbridge_packagename_title"
+                android:summary="@string/preference_gadgetbridge_packagename_summary"
+                android:defaultValue="nodomain.freeyourgadget.gadgetbridge"/>
 
-        <Preference
-            android:key="PREF_gadgetbridge_note"
-            android:title="@string/preference_gadgetbridge_note_title"
-            android:summary="@string/preference_gadgetbridge_note_summary"/>
+            <Preference
+                android:key="PREF_gadgetbridge_note"
+                android:title="@string/preference_gadgetbridge_note_title"
+                android:summary="@string/preference_gadgetbridge_note_summary"/>
 
-    </PreferenceScreen>
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:key="PREF_screen_logging"
+            android:title="@string/preference_loggingscreen_title"
+            android:summary="@string/preference_loggingscreen_summary">
+
+            <CheckBoxPreference
+                android:key="PREF_logging"
+                android:title="@string/preference_logging_title"
+                android:summary="@string/preference_logging_summary"/>
+
+            <Preference
+                android:key="PREF_start_loggingactivity"
+                android:title="@string/preference_loggingactivity_title"
+                android:summary="@string/preference_loggingactivity_summary">
+                <intent
+                    android:action="android.intent.action.VIEW"
+                    android:targetPackage="de.kaffeemitkoffein.tinyweatherforecastgermany"
+                    android:targetClass="de.kaffeemitkoffein.tinyweatherforecastgermany.LoggingActivity"/>
+            </Preference>
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
 

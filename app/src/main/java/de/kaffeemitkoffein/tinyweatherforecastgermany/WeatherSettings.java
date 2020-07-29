@@ -28,15 +28,19 @@ public class WeatherSettings {
     public static final String PREF_STATION = "PREF_station";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
+    public static final String PREF_AGGRESSIVE_UPDATE = "PREF_aggressive_update";
     public static final String PREF_ISWEATHERPROVIDER = "PREF_isregisteredweatherprovider";
     public static final String PREF_WIDGET_OPACITY = "PREF_widget_opacity";
     public static final String PREF_WIDGET_SHOWDWDNOTE = "PREF_widget_showdwdnote";
     public static final String PREF_LAST_VERSION_CODE = "PREF_last_version_code";
     public static final String PREF_SERVE_GADGETBRIDGE = "PREF_serve_gadgetbridge";
     public static final String PREF_GADGETBRIDGE_PACKAGENAME = "PREF_gadgetbridge_packagename";
+    public static final String PREF_LOGGING = "PREF_logging";
 
     public static final String PREF_STATION_DEFAULT = "Hamburg";
     public static final boolean PREF_SETALARM_DEFAULT = false;
+    public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
+
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "6";
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";
     public static final boolean PREF_ISWEATHERPROVIDER_DEFAULT = false;
@@ -44,9 +48,11 @@ public class WeatherSettings {
     public final int PREF_LAST_VERSION_CODE_DEFAULT = 0;
     public static final boolean PREF_SERVE_GADGETBRIDGE_DEFAULT = false;
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
+    public static final boolean PREF_LOGGING_DEFAULT = false;
 
     public String station = PREF_STATION_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
+    public boolean aggressive_update = PREF_AGGRESSIVE_UPDATE_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
     public boolean is_weatherprovider = PREF_ISWEATHERPROVIDER_DEFAULT;
     public String widget_opacity = PREF_WIDGET_OPACITY_DEFAULT;
@@ -54,6 +60,7 @@ public class WeatherSettings {
     public int last_version_code = PREF_LAST_VERSION_CODE_DEFAULT;
     public boolean serve_gadgetbridge = PREF_SERVE_GADGETBRIDGE_DEFAULT;
     public String gadgetbridge_packagename = PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;
+    public boolean logging = PREF_LOGGING_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -67,23 +74,27 @@ public class WeatherSettings {
     public void readPreferences(){
         this.station = readPreference(PREF_STATION,PREF_STATION_DEFAULT);
         this.setalarm = readPreference(PREF_SETALARM,PREF_SETALARM_DEFAULT);
+        this.aggressive_update = readPreference(PREF_AGGRESSIVE_UPDATE,PREF_AGGRESSIVE_UPDATE_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL,PREF_UPDATEINTERVAL_DEFAULT);
         this.is_weatherprovider = readPreference(PREF_ISWEATHERPROVIDER,PREF_ISWEATHERPROVIDER_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY,PREF_WIDGET_OPACITY_DEFAULT);
         this.widget_showdwdnote = readPreference(PREF_WIDGET_SHOWDWDNOTE,PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
         this.last_version_code = readPreference(PREF_LAST_VERSION_CODE,PREF_LAST_VERSION_CODE_DEFAULT);
         this.serve_gadgetbridge = readPreference(PREF_SERVE_GADGETBRIDGE,PREF_SERVE_GADGETBRIDGE_DEFAULT);
+        this.logging = readPreference(PREF_LOGGING,PREF_LOGGING_DEFAULT);
    }
 
     public void savePreferences(){
         applyPreference(PREF_STATION,this.station);
         applyPreference(PREF_SETALARM,this.setalarm);
+        applyPreference(PREF_AGGRESSIVE_UPDATE,this.aggressive_update);
         applyPreference(PREF_UPDATEINTERVAL,this.updateinterval);
         applyPreference(PREF_ISWEATHERPROVIDER,this.is_weatherprovider);
         applyPreference(PREF_WIDGET_OPACITY,this.widget_opacity);
         applyPreference(PREF_WIDGET_SHOWDWDNOTE,this.widget_showdwdnote);
         applyPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
         applyPreference(PREF_SERVE_GADGETBRIDGE,this.serve_gadgetbridge);
+        applyPreference(PREF_LOGGING,this.logging);
     }
 
     public String readPreference(String p, String d){

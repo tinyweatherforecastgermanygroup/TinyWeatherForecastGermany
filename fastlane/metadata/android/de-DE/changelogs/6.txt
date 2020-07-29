@@ -1,0 +1,6 @@
+Version 0.32:
+- Gadgetbridge-Unterstützung: max. Temperatur in Wettervorhersage korrgiert
+- Option hinzugefügt, um bei fehlendem Netzwerk die Aktualisierung alle 5 Min. zu wiederholen
+- experimentelles Feature, bei dem eine fällige Aktualisierung nachgeholt wird, sobald ein Netzwerk verfügbar ist
+- Optionen für lokales Logging (Protokoll) zur Fehlersuche hinzugefügt
+- Einstellungen überarbeitet
