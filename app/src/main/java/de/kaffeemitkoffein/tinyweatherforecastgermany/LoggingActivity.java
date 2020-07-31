@@ -33,10 +33,16 @@ public class LoggingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logging);
         final TextView logview = (TextView) findViewById(R.id.logging_infoTextView);
-        String logs = PrivateLog.getLogs(getApplicationContext());
-        if  (logs != null){
-            logview.setText(logs);
-        }
+        logview.setText("Loading...");
+        // Read the logs asynchronously
+        PrivateLog.AsyncGetLogs asyncGetLogs = new PrivateLog.AsyncGetLogs(this){
+            @Override
+            public void onPositiveResult(String result) {
+                logview.setText(result);
+            }
+        };
+        asyncGetLogs.execute();
+        // register buttons
         final Button button_back = (Button) findViewById(R.id.logging_button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
             @Override

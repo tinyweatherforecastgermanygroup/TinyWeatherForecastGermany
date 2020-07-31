@@ -116,5 +116,8 @@
     <string name="direction_southwest">SW</string>
     <string name="direction_northwest">NW</string>
     <string name="direction_calm">-</string>
-
+    <string name="preference_feedback_title">Feedback</string>
+    <string name="preference_feedback_summary">Dem Entwickler Feedback per Mail geben.</string>
+    <string name="feedback_mail_subject">Feedback: TinyWeatherForecastGermany</string>
+    <string name="feedback_mail_text">Wenn es sich um einen Fehler handelt, bitte auch ein Protokoll kopieren &amp; hier einfügen, falls möglich.</string>
 </resources>

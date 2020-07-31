@@ -159,6 +159,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             showWhatsNewDialog();
         }
         registerForBroadcast();
+        // TEST OF NEW API
+        /*
+        Weather.WeatherLocation wl = new Weather().new WeatherLocation();
+        wl.name="01194";
+        Weather.WeatherForecastReader forecastReader = new Weather().new WeatherForecastReader(this,wl);
+        forecastReader.doInBackground();
+        forecastReader.execute();
+        */
     }
 
     private int getPositionInStationNames(String s){

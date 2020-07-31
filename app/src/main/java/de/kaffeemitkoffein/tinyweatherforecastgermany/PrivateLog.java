@@ -22,8 +22,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Build;
-import android.os.SystemClock;
 import android.util.Log;
 
 import java.io.File;
@@ -31,7 +31,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -124,6 +123,35 @@ public class PrivateLog {
     public static boolean clearLogs(Context context){
         File file = new File(context.getFilesDir().getAbsolutePath(),LOGFILENAME);
         return file.delete();
+    }
+
+    public static class AsyncGetLogs extends AsyncTask<Void, Void, String> {
+
+        private Context context;
+
+        public AsyncGetLogs(Context context){
+            this.context = context;
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            String result = getLogs(context);
+            return result;
+        }
+
+        public void onNegativeResult(){
+        }
+
+        public void onPositiveResult(String result) {
+        }
+
+        protected void onPostExecute(String result) {
+            if (result != null){
+                onPositiveResult(result);
+            } else {
+                onNegativeResult();
+            }
+        }
     }
 
 }
