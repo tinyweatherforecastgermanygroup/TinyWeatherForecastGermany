@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class StationsArrayList {
 
-    public ArrayList<Station> stations = new ArrayList<Station>();
+    public ArrayList<Weather.WeatherLocation> stations = new ArrayList<Weather.WeatherLocation>();
     private Context context;
 
     /**
@@ -35,8 +35,8 @@ public class StationsArrayList {
 
     public StationsArrayList(Context context){
         this.context = context;
-        StationListReader stationListReader = new StationListReader(context);
-        stations = stationListReader.getStations();
+        StationsManager stationsManager = new StationsManager(context);
+        stations = stationsManager.getStations();
     }
 
     /**
@@ -48,7 +48,7 @@ public class StationsArrayList {
 
     public int getStationPositionByName(String name){
         for (int i=0; i<stations.size(); i++){
-            if (stations.get(i).getName().equals(name)){
+            if (stations.get(i).description.equals(name)){
                 return i;
             }
         }
@@ -74,9 +74,9 @@ public class StationsArrayList {
     public ArrayList<String> getStringArrayListOfNames(){
         ArrayList<String> result = new ArrayList<String>();
         for (int i=0; i<stations.size(); i++){
-            result.add(stations.get(i).getName());
+            result.add(stations.get(i).description);
         }
         return result;
     }
-
 }
+

@@ -95,26 +95,24 @@ public class ClassicWidget extends AppWidgetProvider {
      */
 
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
-        WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-        WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(c);
+        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         WeatherSettings weatherSettings = new WeatherSettings(c);
         if (weatherCard != null) {
-            WeatherCodeContract weatherCodeContract = new WeatherCodeContract(weatherCard,WeatherCodeContract.WEATHER_TODAY);
-            int weathercondition = weatherCodeContract.getWeatherCondition();
+            int weathercondition = weatherCard.currentWeather.getCondition();
             for (int i=0; i<widget_instances.length; i++){
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c,MainActivity.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.classicwidget_layout);
                 remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer,pendingIntent);
-                remoteViews.setTextViewText(R.id.classicwidget_locationtext,weatherCard.klimagebiet);
-                remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,weatherCodeContract.getWeatherConditionText(c,weathercondition));
-                remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,weatherCodeContract.getWeatherConditionDrawableResource(weathercondition));
-                remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.getCurrentTemp())+"°");
-                remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,String.valueOf(weatherCard.todaysLow())+ "° | "+String.valueOf(weatherCard.todaysHigh())+"°");
-                remoteViews.setTextViewText(R.id.classicwidget_wind,weatherCard.getCurrentWind()+" ("+ weatherCard.getCurrentFlurries()+")");
+                remoteViews.setTextViewText(R.id.classicwidget_locationtext,weatherCard.city);
+                remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,new WeatherCodeContract().getWeatherConditionText(c,weathercondition));
+                remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,new WeatherCodeContract().getWeatherConditionDrawableResource(weathercondition,weatherCard.currentWeather.isDaytime()));
+                remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.currentWeather.getTemperature()));
+                remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,weatherCard.currentWeather.getMinTemperature()+" | "+weatherCard.currentWeather.getMaxTemperature());
+                remoteViews.setTextViewText(R.id.classicwidget_wind,weatherCard.currentWeather.getWindSpeed()+" ("+ weatherCard.currentWeather.getFlurries()+")");
                 remoteViews.setTextViewText(R.id.classicwidget_wind_unit,"km/h");
-                remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.getCurrentArrow(c));
+                remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getArrowBitmap(c));
                 int opacity = Integer.parseInt(weatherSettings.widget_opacity);
                 remoteViews.setInt(R.id.classicwidget_maincontainer,"setBackgroundColor",getBackgroundInt(opacity));
                 if (weatherSettings.widget_showdwdnote) {

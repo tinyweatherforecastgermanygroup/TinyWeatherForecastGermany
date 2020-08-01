@@ -359,7 +359,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
             return TextUtils.split(s,serial_serparator);
         }
 
-        public ContentValues getContentValuesFromWeatherCard(Weather.RawWeatherInfo rawWeatherInfo){
+        public ContentValues getContentValuesFromWeatherCard(RawWeatherInfo rawWeatherInfo){
             ContentValues contentValues = new ContentValues();
             contentValues.put(WeatherForecastDatabaseHelper.KEY_timetext,rawWeatherInfo.timetext);
             contentValues.put(WeatherForecastDatabaseHelper.KEY_timesteps,serializeString(rawWeatherInfo.timesteps));
@@ -484,23 +484,23 @@ public class WeatherForecastContentProvider extends ContentProvider {
             return contentValues;
         }
 
-        public Uri writeWeatherForecast(Context c,Weather.RawWeatherInfo weatherCard){
+        public Uri writeWeatherForecast(Context c,RawWeatherInfo weatherCard){
             ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
             contentResolver.delete(WeatherForecastContentProvider.URI_SENSORDATA,null,null);
             return contentResolver.insert(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard));
         }
 
-        public Weather.RawWeatherInfo readWeatherForecast(Context c){
+        public RawWeatherInfo readWeatherForecast(Context c){
             ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
             Cursor cursor = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,null,null,null,null,null);
             return getWeatherCardFromCursor(cursor);
         }
 
-        public Weather.RawWeatherInfo getWeatherCardFromCursor(Cursor c){
+        public RawWeatherInfo getWeatherCardFromCursor(Cursor c){
             if (c==null){
                 return null;
             } else {
-                Weather.RawWeatherInfo rawWeatherInfo = new Weather().new RawWeatherInfo();
+                RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
                 if (c.moveToFirst()){
                     rawWeatherInfo.timetext = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timetext));
                     rawWeatherInfo.timesteps = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timesteps)));

@@ -48,8 +48,7 @@ public class UpdateAlarmManager {
     public static boolean updateAndSetAlarmsIfAppropriate(Context context, boolean force_update){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         long update_period = weatherSettings.getUpdateIntervalInMillis();
-        WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-        WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(context.getApplicationContext());
+        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         // set time for timer to equal next interval as set up by user
         // weatherCard can be null on first app launch or after clearing memory
         long update_time_utc = Calendar.getInstance().getTimeInMillis() + update_period;

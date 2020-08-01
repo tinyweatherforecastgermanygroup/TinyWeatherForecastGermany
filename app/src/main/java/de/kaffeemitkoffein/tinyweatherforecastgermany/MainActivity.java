@@ -20,7 +20,6 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.*;
-import android.os.Build;
 import android.os.Bundle;
 import android.app.*;
 import android.view.Menu;
@@ -143,7 +142,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         if (spinner_initial_position != -1){
             stationsSpinner.setSelection(spinner_initial_position);
         }
-        WeatherCard weatherCard = new WeatherForecastContentProvider().readWeatherForecast(getApplicationContext());
+        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
         // get new data from api or display present data.
         if (weatherCard!=null){
             PrivateLog.log(this,Tag.MAIN,"weather info is present in local database.");
@@ -178,11 +177,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         return -1;
     }
 
-    private void Log(String s){
-        // Log.v("ID",s);
-    }
-
-    public void displayWeatherForecast(WeatherCard weatherCard){
+    public void displayWeatherForecast(Weather.CurrentWeatherInfo weatherCard){
         // date
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
         String updatetime = simpleDateFormat.format(new Date(weatherCard.polling_time));
@@ -196,80 +191,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         Intent intent = new Intent(this,ClassicWidget.class);
         intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
         sendBroadcast(intent);
-        // Logs
-        Log("***************************");
-        Log("Ausgegeben am "+weatherCard.ausgegeben_am);
-        Log("Ausgegeben von "+weatherCard.ausgegeben_von);
-        Log("Code1: "+weatherCard.fdat);
-        Log("Code2: "+weatherCard.ortscode);
-        Log("Klimagebiet: "+weatherCard.klimagebiet);
-        Log("Zeitstempel: "+weatherCard.zeitstempel);
-        String s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.uhrzeit[i]+" ";
-        }
-        Log("Uhrzeit             : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.bewoelkung_max[i]+" ";
-        }
-        Log("Bewoelkung (max)    : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.bewoelkung[i]+" ";
-        }
-        Log("Bewoelkung          : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.bewoelkung_min[i]+" ";
-        }
-        Log("Bewoelkung (min)    : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.niederschlag_max[i]+" ";
-        }
-        Log("Niederschlag (max)  : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.niederschlag[i]+" ";
-        }
-        Log("Niederschlag        : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.niederschlag_min[i]+" ";
-        }
-        Log("Niederschlag (min)  : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.lufttemperatur_max[i]+" ";
-        }
-        Log("Temperatur (max)    : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.lufttemperatur[i]+" ";
-        }
-        Log("Temperatur          : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.lufttemperatur_min[i]+" ";
-        }
-        Log("Temperatur (min)    : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.wind[i]+" ";
-        }
-        Log("Wind                : "+s);
-        s="";
-        for (int i=0; i<9; i++){
-            s = s + weatherCard.boeen[i]+" ";
-        }
-        Log("Boeen               : "+s);
-        Log("***************************");
-    }
+   }
 
     public void displayWeatherForecast(){
-        WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-        WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(this);
+        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(this);
         displayWeatherForecast(weatherCard);
     }
 
@@ -280,22 +205,16 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-        if (!weatherSettings.is_weatherprovider){
-            // save options & get data if new item is different from previous station.
-            if (!weatherSettings.station.equals(stationNames.get(pos))){
-                weatherSettings.station = stationNames.get(pos);
+        // save options & get data if new item is different from previous station.
+        if (!weatherSettings.station.equals(stationsArrayList.stations.get(pos))){
+                weatherSettings.station =stationsArrayList.stations.get(pos).name;
                 weatherSettings.savePreferences();
                 Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+stationNames.get(pos),Toast.LENGTH_LONG).show();
                 getWeatherForecast();
             } else {
                 // do nothing, as new station is old station.
             }
-        } else {
-            // if this app is the registered lineageos weather provider service, set spinner back to the weather
-            // location set by the system.
-            Spinner stationsSpinner = (Spinner) findViewById(R.id.stations_spinner);
-            stationsSpinner.setSelection(spinner_initial_position);
-        }
+
     }
 
     @Override

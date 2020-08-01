@@ -58,8 +58,8 @@ public class WeatherUpdateService extends Service {
     public int onStartCommand(Intent intent, int flags, int startID){
         // hack to prevent too frequent api calls
         PrivateLog.log(this,Tag.SERVICE,"service started: onStartCommand");
-        WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-        WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(this);
+        WeatherSettings weatherSettings = new WeatherSettings(this);
+        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(this);
         if (weatherCard != null){
             if (weatherCard.polling_time>Calendar.getInstance().getTimeInMillis()-10000){
                 PrivateLog.log(this,Tag.SERVICE,"update cancelled, too frequent call!");
@@ -77,7 +77,6 @@ public class WeatherUpdateService extends Service {
              *  appear as a valid internet connection at first glance and will also NOT trigger
              *  repeated updates.
              */
-            WeatherSettings weatherSettings = new WeatherSettings(this);
             if (weatherSettings.aggressive_update){
                 UpdateAlarmManager.setEarlyAlarm(this);
             }
@@ -85,13 +84,12 @@ public class WeatherUpdateService extends Service {
         }
         StationsArrayList stationsArrayList = new StationsArrayList(this);
         int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
-        Station station = stationsArrayList.stations.get(position);
-        URL stationURLs[] = station.getAbsoluteWebURLArray();
-        final WeatherCard weatherCardArray[] = {new WeatherCard()};
+        Weather.WeatherLocation weatherLocation = new Weather.WeatherLocation();
+        weatherLocation.name = weatherSettings.station;
         final Context context = this;
-        WeatherForecastReader weatherForecastReader = new WeatherForecastReader(getApplicationContext()){
+        WeatherForecastReader weatherForecastReader = new WeatherForecastReader(this,weatherLocation){
             @Override
-            public void onPositiveResult(WeatherCard wc){
+            public void onPositiveResult(){
                 GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
                 gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
                 // notify widget
@@ -104,15 +102,15 @@ public class WeatherUpdateService extends Service {
                 sendBroadcast(intent);
                 PrivateLog.log(context,Tag.SERVICE,"update from API: success");
                 stopSelf();
-                }
-                @Override
-                public void onNegativeResult(int errorcode){
-                    PrivateLog.log(context,Tag.SERVICE,"update from API: failed, error: "+errorcode);
-                    stopSelf();
-                }
-            };
+            }
+            @Override
+            public void onNegativeResult(){
+                PrivateLog.log(context,Tag.SERVICE,"update from API: failed, error.");
+                stopSelf();
+            }
+        };
         PrivateLog.log(this,Tag.SERVICE,"starting update from API");
-        weatherForecastReader.execute(stationURLs);
+        weatherForecastReader.execute();
         return START_STICKY;
     }
 

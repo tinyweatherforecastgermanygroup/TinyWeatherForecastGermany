@@ -41,31 +41,28 @@ public class GadgetbridgeAPI {
     }
 
     private void setWeatherData(){
-        WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-        WeatherCard weatherCard = weatherForecastContentProvider.readWeatherForecast(context);
+        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         // build the WeatherSpec instance with current weather
-        WeatherCodeContract weatherCodeContract = new WeatherCodeContract(weatherCard,0,0);
-        weatherCodeContract.setLineageOsCompatible(true);
-        int currentWeatherCondition = weatherCodeContract.getWeatherCondition();
+        int currentWeatherCondition = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
         weatherSpec = new WeatherSpec();
-        weatherSpec.currentConditionCode = currentWeatherCondition;
-        weatherSpec.currentCondition     = weatherCodeContract.getWeatherConditionText(context,currentWeatherCondition);
-        weatherSpec.currentTemp          = toKelvin(weatherCard.getCurrentTemp());
-        weatherSpec.location             = weatherCard.getName();
+        weatherSpec.currentConditionCode = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
+        weatherSpec.currentCondition     = new WeatherCodeContract().getWeatherConditionText(context,currentWeatherCondition);
+        weatherSpec.currentTemp          = weatherCard.currentWeather.getTemperatureInt();
+        weatherSpec.location             = weatherCard.getCity();
         weatherSpec.timestamp            = (int) (weatherCard.polling_time / 1000);
-        weatherSpec.todayMaxTemp         = toKelvin(weatherCard.todaysHigh());
-        weatherSpec.todayMinTemp         = toKelvin(weatherCard.todaysLow());
-        weatherSpec.windSpeed            = (float) weatherCard.getCurrentWindSpeed();
-        weatherSpec.windDirection        = (int) weatherCard.getCurrentWindDirection();
+        weatherSpec.todayMaxTemp         = weatherCard.currentWeather.getMaxTemperatureInt();
+        weatherSpec.todayMinTemp         = weatherCard.currentWeather.getMinTemperatureInt();
+        weatherSpec.windSpeed            = (float) weatherCard.currentWeather.getWindSpeedInKmhInt();
+        weatherSpec.windDirection        = (int) weatherCard.currentWeather.getWindDirection();
         // build the forecast instance
-        weatherCodeContract = new WeatherCodeContract(weatherCard,WeatherCodeContract.WEATHER_24H);
-        weatherCodeContract.setLineageOsCompatible(true);
-        int forecastCondition = weatherCodeContract.getWeatherCondition();
-        WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(toKelvin(weatherCard.get24hLow()),
-                                                                 toKelvin(weatherCard.get24hHigh()),
-                                                                 forecastCondition,
-                                                         0);
-        weatherSpec.forecasts.add(forecast);
+        for (int i=0; i<weatherCard.forecast24hourly.size(); i++){
+            WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(
+                    toKelvin(weatherCard.forecast24hourly.get(i).temperature_low),
+                    toKelvin(weatherCard.forecast24hourly.get(i).temperature_high),
+                    new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),
+                    0);
+            weatherSpec.forecasts.add(forecast);
+        }
         /*
         Log.v("GADGETBRIDGE-API","Timestamp          : "+weatherSpec.timestamp);
         Log.v("GADGETBRIDGE-API","Condition          : "+weatherSpec.currentCondition);
