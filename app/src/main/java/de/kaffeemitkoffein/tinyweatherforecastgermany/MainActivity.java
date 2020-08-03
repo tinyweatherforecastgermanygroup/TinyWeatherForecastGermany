@@ -22,6 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.*;
 import android.os.Bundle;
 import android.app.*;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,15 +36,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends Activity {
 
     private final static String SIS_ABOUT_DIALOG_STATE="ABOUT_DIALOG_VISIBLE";
     private final static String SIS_WHATSNEW_DIALOG_STATE="WHATSNEW_DIALOG_VISIBLE";
 
     public final static String MAINAPP_CUSTOM_REFRESH_ACTION     = "MAINAPP_CUSTOM_ACTION_REFRESH";
 
-    private ArrayList<String> stationNames = new ArrayList<String>();
-    private StationsArrayList stationsArrayList;
+    StationsManager stationsManager;
+    ArrayList<String> station_descriptions;
     int spinner_initial_position;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -110,10 +111,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         PrivateLog.log(this,Tag.MAIN,"App started.");
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         PrivateLog.log(this,Tag.MAIN,"Settings loaded.");
-        if (weatherSettings.is_weatherprovider) {
-            TextView infotext = (TextView) findViewById(R.id.main_selectstation_text);
-            infotext.setText(R.string.main_isprovider);
-        }
         final Context context = getApplicationContext();
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
@@ -131,30 +128,72 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             }
         };
         weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-        stationsArrayList = new StationsArrayList(this);
-        stationNames = stationsArrayList.getStringArrayListOfNames();
-        Spinner stationsSpinner = (Spinner) findViewById(R.id.stations_spinner);
-        stationsSpinner.setOnItemSelectedListener(this);
-        ArrayAdapter<String> stationAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,stationNames);
-        stationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        stationsSpinner.setAdapter(stationAdapter);
-        spinner_initial_position = getPositionInStationNames(weatherSettings.station);
-        if (spinner_initial_position != -1){
-            stationsSpinner.setSelection(spinner_initial_position);
+
+        stationsManager = new StationsManager(context);
+        final Spinner stationsSpinner = (Spinner) findViewById(R.id.stations_spinner);
+        final AdapterView.OnItemSelectedListener changeListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+                // save options & get data if new item is different from previous station.
+                if (!weatherSettings.station_name.equals(stationsManager.getName(pos))){
+                    if (stationsManager.setStation(pos)) {
+                        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+stationsManager.getDescription(pos),Toast.LENGTH_LONG).show();
+                        PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+                        PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(pos)+ "("+stationsManager.getName(pos)+")");
+                        PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+                        getWeatherForecast();
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        };
+
+        stationsManager.new AsyncStationsReader(){
+            @Override
+            public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
+                super.onLoadingListFinished(stations);
+                ArrayList<String> stationnames = new ArrayList<String>();
+                for (int j=0;j<stations.size(); j++){
+                    stationnames.add(stations.get(j).description);
+                }
+
+                ArrayAdapter<String> stationAdapter = new ArrayAdapter<String>(context,R.layout.custom_spinner_item,stationnames);
+                station_descriptions = stationnames;
+                stationAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
+                stationsSpinner.setAdapter(stationAdapter);
+                stationsSpinner.setOnItemSelectedListener(changeListener);
+                spinner_initial_position = stationsManager.getSetPosition();
+                if (spinner_initial_position != -1){
+                    stationsSpinner.setSelection(spinner_initial_position);
+                }
+            }
+        }.execute();
+
+        // station_descriptions = stationsManager.getStationNames();
+
+        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
+        if (weatherCard==null){
+            Log.v(Tag.MAIN,"weatherCard ist null");
+        } else {
+            Log.v(Tag.MAIN,"weatherCard 6h forecasts:"+weatherCard.forecast6hourly.size());
         }
-        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
         // get new data from api or display present data.
         if (weatherCard!=null){
-            PrivateLog.log(this,Tag.MAIN,"weather info is present in local database.");
+            Log.v(Tag.MAIN,"weather info is present in local database.");
             displayWeatherForecast(weatherCard);
             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
         } else {
-            PrivateLog.log(this,Tag.MAIN,"no weather info present in local database => forcing update.");
+            Log.v(Tag.MAIN,"no weather info present in local database => forcing update.");
             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
         }
         // show whats new dialog if necessary
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
-            PrivateLog.log(this,Tag.MAIN,"Showing wat's new dialog.");
+            Log.v(Tag.MAIN,"Showing wat's new dialog.");
             showWhatsNewDialog();
         }
         registerForBroadcast();
@@ -168,16 +207,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         */
     }
 
-    private int getPositionInStationNames(String s){
-        for (int i = 0; i<stationNames.size();i++){
-            if (s.equals(stationNames.get(i))){
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public void displayWeatherForecast(Weather.CurrentWeatherInfo weatherCard){
+    public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
         // date
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
         String updatetime = simpleDateFormat.format(new Date(weatherCard.polling_time));
@@ -185,7 +215,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         textView_update_time.setText(getApplicationContext().getResources().getString(R.string.main_updatetime)+" "+updatetime);
         // listview
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
-        ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard);
+        Log.v("MAIN","6h forecast items availabe: "+weatherCard.forecast6hourly.size());
+        ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly);
         weatherList.setAdapter(forecastAdapter);
         // Upate the widgets, so that everything displays the same
         Intent intent = new Intent(this,ClassicWidget.class);
@@ -194,32 +225,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
    }
 
     public void displayWeatherForecast(){
-        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(this);
+        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(this);
         displayWeatherForecast(weatherCard);
     }
 
     public void getWeatherForecast(){
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-        // save options & get data if new item is different from previous station.
-        if (!weatherSettings.station.equals(stationsArrayList.stations.get(pos))){
-                weatherSettings.station =stationsArrayList.stations.get(pos).name;
-                weatherSettings.savePreferences();
-                Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+stationNames.get(pos),Toast.LENGTH_LONG).show();
-                getWeatherForecast();
-            } else {
-                // do nothing, as new station is old station.
-            }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-        // nothing to do here.
     }
 
     @Override

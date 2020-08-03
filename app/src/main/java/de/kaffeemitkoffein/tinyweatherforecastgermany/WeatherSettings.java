@@ -25,7 +25,11 @@ import android.preference.PreferenceManager;
 
 public class WeatherSettings {
 
-    public static final String PREF_STATION = "PREF_station";
+    public static final String PREF_STATION_NAME = "PREF_station_name";
+    public static final String PREF_STATION_DESCRIPTION = "PREF_station_description";
+    public static final String PREF_STATION_LONGITUDE = "PREF_station_longitude";
+    public static final String PREF_STATION_LATIDTUDE = "PREF_station_latitude";
+    public static final String PREF_STATION_ALTITUDE  = "PREF_station_altitude";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_AGGRESSIVE_UPDATE = "PREF_aggressive_update";
@@ -37,10 +41,13 @@ public class WeatherSettings {
     public static final String PREF_GADGETBRIDGE_PACKAGENAME = "PREF_gadgetbridge_packagename";
     public static final String PREF_LOGGING = "PREF_logging";
 
-    public static final String PREF_STATION_DEFAULT = "Hamburg";
+    public static final String PREF_STATION_NAME_DEFAULT = "P0489";
+    public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
+    public static final double PREF_STATION_LONGITUDE_DEFAULT = 9.98;
+    public static final double PREF_STATION_LATIDTUDE_DEFAULT = 53.55;
+    public static final double PREF_STATION_ALTITUDE_DEFAULT  = 8.0;
     public static final boolean PREF_SETALARM_DEFAULT = false;
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
-
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "6";
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";
     public static final boolean PREF_ISWEATHERPROVIDER_DEFAULT = false;
@@ -50,7 +57,11 @@ public class WeatherSettings {
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
     public static final boolean PREF_LOGGING_DEFAULT = false;
 
-    public String station = PREF_STATION_DEFAULT;
+    public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
+    public String station_name = PREF_STATION_NAME_DEFAULT;
+    public double station_longitude = PREF_STATION_LONGITUDE_DEFAULT;
+    public double station_latitude = PREF_STATION_LATIDTUDE_DEFAULT;
+    public double station_altitude = PREF_STATION_LATIDTUDE_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public boolean aggressive_update = PREF_AGGRESSIVE_UPDATE_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
@@ -72,7 +83,11 @@ public class WeatherSettings {
     }
 
     public void readPreferences(){
-        this.station = readPreference(PREF_STATION,PREF_STATION_DEFAULT);
+        this.station_description = readPreference(PREF_STATION_DESCRIPTION,PREF_STATION_DESCRIPTION_DEFAULT);
+        this.station_name = readPreference(PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT);
+        this.station_longitude = readPreference(PREF_STATION_LONGITUDE,PREF_STATION_LONGITUDE_DEFAULT);
+        this.station_latitude = readPreference(PREF_STATION_LATIDTUDE,PREF_STATION_LATIDTUDE_DEFAULT);
+        this.station_altitude = readPreference(PREF_STATION_ALTITUDE,PREF_STATION_ALTITUDE_DEFAULT);
         this.setalarm = readPreference(PREF_SETALARM,PREF_SETALARM_DEFAULT);
         this.aggressive_update = readPreference(PREF_AGGRESSIVE_UPDATE,PREF_AGGRESSIVE_UPDATE_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL,PREF_UPDATEINTERVAL_DEFAULT);
@@ -85,7 +100,11 @@ public class WeatherSettings {
    }
 
     public void savePreferences(){
-        applyPreference(PREF_STATION,this.station);
+        applyPreference(PREF_STATION_DESCRIPTION,this.station_description);
+        applyPreference(PREF_STATION_NAME,this.station_name);
+        applyPreference(PREF_STATION_LONGITUDE,this.station_longitude);
+        applyPreference(PREF_STATION_LATIDTUDE,this.station_latitude);
+        applyPreference(PREF_STATION_ALTITUDE,this.station_altitude);
         applyPreference(PREF_SETALARM,this.setalarm);
         applyPreference(PREF_AGGRESSIVE_UPDATE,this.aggressive_update);
         applyPreference(PREF_UPDATEINTERVAL,this.updateinterval);
@@ -109,6 +128,14 @@ public class WeatherSettings {
         return sharedPreferences.getInt(p,d);
     }
 
+    public float readPreference(String p, float d){
+        return sharedPreferences.getFloat(p,d);
+    }
+
+    public double readPreference(String p, double d){
+        return (double) sharedPreferences.getFloat(p, (float) d);
+    }
+
     public void applyPreference(String pref, String value){
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putString(pref,value);
@@ -127,6 +154,18 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    public void applyPreference(String pref, float value){
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putFloat(pref,value);
+        pref_editor.apply();
+    }
+
+    public void applyPreference(String pref, double value){
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        applyPreference(pref, (float) value);
+        pref_editor.apply();
+    }
+
     public int getUpdateInterval(){
         int i = Integer.parseInt(this.updateinterval);
         return i;
@@ -134,6 +173,16 @@ public class WeatherSettings {
 
     public long getUpdateIntervalInMillis(){
         return getUpdateInterval()*60*60*1000;
+    }
+
+    public Weather.WeatherLocation getSetStationLocation(){
+        Weather.WeatherLocation weatherLocation = new Weather.WeatherLocation();
+        weatherLocation.description = this.station_description;
+        weatherLocation.name = this.station_name;
+        weatherLocation.longitude = this.station_longitude;
+        weatherLocation.latitude = this.station_latitude;
+        weatherLocation.altitude = this.station_altitude;
+        return weatherLocation;
     }
 
 }

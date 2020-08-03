@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.zip.ZipInputStream;
@@ -20,7 +21,15 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
 
     private String[] seperateValues(String s){
         String[] resultarray = new String[Weather.DATA_SIZE];
-        resultarray = s.split(" {1,}");
+        int index =0;
+        while (String.valueOf(s.charAt(index)).equals(" ")){
+            index++;
+        }
+        //Log.v("PPPP","Spaces:"+index);
+        s=s.substring(index);
+        //Log.v("PPPP",s);
+        resultarray = s.split(" +");
+        // String[] resultarray2 = new String[Weather.DATA_SIZE];
         return resultarray;
     }
 
@@ -35,26 +44,34 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
         return result;
     }
 
-
-    public WeatherForecastReader(Context context, Weather.WeatherLocation weatherLocation){
+    public WeatherForecastReader(Context context){
         this.context = context;
-        this.weatherLocation = weatherLocation;
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        this.weatherLocation = weatherSettings.getSetStationLocation();
     }
 
     @Override
     protected RawWeatherInfo doInBackground(Void... voids) {
         String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
         try{
+            Log.v("PPPP","Stating the Forecastreader........................");
+            Log.v("PPPP","URL: "+weather_url);
             URL url = new URL(weather_url);
             ZipInputStream zipInputStream = new ZipInputStream(new URL(weather_url).openStream());
             zipInputStream.getNextEntry();
             // init new RawWeatherInfo instance to fill with data
+            Log.v("PPPP","Init a rawWeatherInfo instance....");
             RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
             // rawWeatherInfo.description = weatherLocation.description;
-            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = documentBuilder.parse(zipInputStream);
+            try {
+                DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                Document document = documentBuilder.parse(zipInputStream);
+            Log.v("PPPP","Building....");
+            rawWeatherInfo.description = "?";
+            Log.v("PPPP",rawWeatherInfo.description);
             // get sensor description, usually city name. This should be equal to weatherLocation.description,
             // but we take it from the api to be sure nothing changed and the right city gets displayed!
+
             NodeList placemark_nodes = document.getElementsByTagName("kml:description");
             for (int i=0;i<placemark_nodes.getLength(); i++){
                 // should be only one, but we take the latest
@@ -65,16 +82,20 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
             }
 
             NodeList timesteps = document.getElementsByTagName("dwd:TimeStep");
+            Log.v("PPPP","Getting timesteps....");
             for (int i=0; i<timesteps.getLength(); i++){
+                Log.v("PPPP","Getting timesteps...."+i);
                 Element element = (Element) timesteps.item(i);
                 rawWeatherInfo.timesteps[i] = element.getFirstChild().getNodeValue();
                 rawWeatherInfo.elements = i;
             }
             NodeList forecast = document.getElementsByTagName("dwd:Forecast");
+            Log.v("PPPP","Getting forecast data....");
+            Log.v("PPPP","Forecast length: "+forecast.getLength());
             for (int i=0; i<forecast.getLength(); i++){
                 Element element = (Element) forecast.item(i);
                 String type     = element.getAttribute("dwd:elementName");
-                // PrivateLog.log(context,"Type/Element Name: "+type);
+               Log.v("PPPP","Type/Element Name (+"+i+"): "+type);
                 switch (type){
                     case "TTT": rawWeatherInfo.TTT = assigntoRaw(element); break;
                     case "E_TTT": rawWeatherInfo.E_TTT = assigntoRaw(element); break;
@@ -197,8 +218,11 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
             }
             PrivateLog.log(context,"Elements read: "+rawWeatherInfo.elements);
             return rawWeatherInfo;
-        } catch (Exception e){
-
+            } catch (Exception e){
+                Log.v("PPPP","Parsing error!");
+            }
+        } catch (IOException e){
+            Log.v("TAG",e.toString());
         }
         return null;
     }
@@ -222,22 +246,26 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
         onPositiveResult();
 
         for (int i=0;i< rawWeatherInfo.elements;i++){
-            PrivateLog.log(context,rawWeatherInfo.timesteps[i]+" PPPP:"+rawWeatherInfo.PPPP[i]+" TTT:"+rawWeatherInfo.TTT[i]);
+            Log.v("PPPP",rawWeatherInfo.timesteps[i]+" PPPP:"+rawWeatherInfo.PPPP[i]+" TTT:"+rawWeatherInfo.TTT[i]+" ww:"+rawWeatherInfo.ww[i]);
         }
 
     }
 
     protected void onPostExecute(RawWeatherInfo rawWeatherInfo) {
+        Log.v("PPPP","Postexecute reached.");
         if (rawWeatherInfo == null) {
+            Log.v("PPPP","Postexecute reached, result null.");
             onNegativeResult();
         } else {
             // get timestamp
             Calendar calendar = Calendar.getInstance();
             rawWeatherInfo.polling_time = calendar.getTimeInMillis();
             // writes the weather data to the database
+            Log.v("PPPP","Postexecute reached, result ok, writing.");
             WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
             weatherForecastContentProvider.writeWeatherForecast(context,rawWeatherInfo);
             onPositiveResult(rawWeatherInfo);
+            Log.v("PPPP","Postexecute termiates as expected.");
         }
     }
 

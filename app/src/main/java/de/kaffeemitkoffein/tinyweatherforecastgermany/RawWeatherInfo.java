@@ -1,5 +1,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.TimeZone;
 
 public class RawWeatherInfo{
     long polling_time;       // polling time from API in millis UTC
+    long timestamp;         // currently not used.
     int elements;            // # of elements read
     String description;     // sensor description, usually city name
     String timetext;    // text; original timestamp
@@ -197,7 +200,11 @@ public class RawWeatherInfo{
     public long[] toLongArray(String[] valuearray){
         long[] result = new long[Weather.DATA_SIZE];
         for (int i=0; i<elements; i++){
+            try {
             result[i] = Long.parseLong(valuearray[i]);
+            } catch (NumberFormatException e){
+                return null;
+            }
         }
         return result;
     }
@@ -205,7 +212,13 @@ public class RawWeatherInfo{
     public double[] toDoubleArray(String[] valuearray){
         double[] result = new double[Weather.DATA_SIZE];
         for (int i=0; i<elements; i++){
-            result[i] = Double.parseDouble(valuearray[i]);
+            try {
+                result[i] = Double.parseDouble(valuearray[i]);
+                // Log.v("CWI","Double: "+result[i]);
+            } catch (NumberFormatException e){
+                Log.v("CWI","Double parsing error!");
+                return null;
+            }
         }
         return result;
     }
@@ -213,18 +226,27 @@ public class RawWeatherInfo{
     public int[] toIntArray(String[] valuearray){
         int[] result = new int[Weather.DATA_SIZE];
         for (int i=0; i<elements; i++){
-            result[i] = Integer.parseInt(valuearray[i]);
+            try {
+                result[i] = (int) Double.parseDouble(valuearray[i]);
+                // result[i] = Integer.parseInt(valuearray[i]);
+            } catch (NumberFormatException e){
+                return null;
+            }
         }
         return result;
     }
 
     public long[] getTimeSteps(){
         long[] result = new long[Weather.DATA_SIZE];
-        SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
+        // SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
+        SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        kml_dateFormat.setLenient(true);
         for (int i=0; i<elements; i++){
             try {
+                //Log.v("TIME","timestep string:"+timesteps[i]);
                 Date parse = kml_dateFormat.parse(timesteps[i]);
                 result[i] = parse.getTime();
+                //Log.v("TIME","timestep result:"+result[i]);
             } catch (Exception e){
                 // nothing to dd
             }
@@ -236,7 +258,9 @@ public class RawWeatherInfo{
         long current_time = Calendar.getInstance().getTimeInMillis();
         long[] timeteps = getTimeSteps();
         int i=0;
-        while (timeteps[i]<current_time){
+        //Log.v("TIME","Elements:"+elements);
+        while ((timeteps[i]<current_time) && (i<elements)){
+            //Log.v("TIME","step:"+timeteps[i]+" current:"+current_time);
             i++;
         }
         return i;
@@ -258,29 +282,94 @@ public class RawWeatherInfo{
         calendar.set(Calendar.MILLISECOND,0);
         long next_midnight_utc = calendar.getTimeInMillis();
         int i = 0;
-        while (getTime(i)<next_midnight_utc){
+        while ((getTime(i)<next_midnight_utc) && (i<elements)){
             i++;
         }
         return i;
     }
 
     public int getNext6hPosition(){
+        // try by RR6c field from DWD data set
         int i = getCurrentForecastPosition();
-        while (wwT6.equals("-") && i<Weather.DATA_SIZE){
+        while (i<elements){
+            if (!RR6c[i].equals("-")){
+                break;
+            }
             i++;
+        }
+        // if this fails, take 6h-intervals 00:00, 06:00, 12:00 etc.
+        if (i==elements){
+            i = getCurrentForecastPosition();
+            Calendar calendar = Calendar.getInstance();
+            long[] timeteps = getTimeSteps();
+            calendar.setTimeInMillis(timeteps[i]);
+            int hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);
+            int counter = i;
+            while ((hour_of_day !=0) && (hour_of_day!=6) && (hour_of_day!=12) && (hour_of_day!=18) && (counter<elements)){
+                calendar.add(Calendar.HOUR_OF_DAY,1);
+                hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);
+                counter++;
+            }
+            // if this also fails (for unknown reasons...) take "currentForecastPosition as start point
+            if (i==elements){
+                i = getCurrentForecastPosition();
+            }
         }
         return i;
     }
 
     public int getNext24hPosition(){
         int i = getCurrentForecastPosition();
-        while (RRdc.equals("-") && i<Weather.DATA_SIZE){
+        while (i<elements){
+            if (!WPcd1[i].equals("-")){
+                break;
+            }
             i++;
         }
+        // if this fails, take 24h-intervals from 00:00
+        if (i==elements){
+            i = getCurrentForecastPosition();
+            Calendar calendar = Calendar.getInstance();
+            long[] timeteps = getTimeSteps();
+            calendar.setTimeInMillis(timeteps[i]);
+            int hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);
+            int counter = i;
+            while ((hour_of_day !=0) && (counter<elements)){
+                calendar.add(Calendar.HOUR_OF_DAY,1);
+                hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);
+                counter++;
+            }
+            // if this also fails (for unknown reasons...) take "currentForecastPosition as start point
+            if (i==elements){
+                i = getCurrentForecastPosition();
+            }
+        }
+
         return i;
     }
 
-    public int getAverageValue(String[] item, int first, int last){
+    public Double getAverageValueDouble(String[] item, int first, int last){
+        if (first<0){
+            first = 0;
+        }
+        if (last>elements){
+            last = elements;
+        }
+        double[] itemlist = toDoubleArray(item);
+        if (itemlist!=null){
+            double d = 0;
+            for (int i=first; i<=last; i++){
+                d = d + itemlist[i];
+            }
+            Double result = (d / (last-first+1));
+            Log.v("CWI","avRes "+result);
+            return result;
+        }
+        Log.v("CWI","avRes IS NULL");
+        return null;
+    }
+
+    public Integer getAverageValueInt(String[] item, int first, int last){
         if (first<0){
             first = 0;
         }
@@ -288,14 +377,17 @@ public class RawWeatherInfo{
             last = elements;
         }
         int[] itemlist = toIntArray(item);
-        int v = 0;
-        for (int i=first; i<=last; i++){
-            v = v + itemlist[i];
+        if (itemlist!=null){
+            int v = 0;
+            for (int i=first; i<=last; i++){
+                v = v + itemlist[i];
+            }
+            return v / (last-first+1);
         }
-        return v / (last+first+1);
+        return null;
     }
 
-    public int getMaxValue(String[] item, int first, int last){
+    public Integer getMaxIntValue(String[] item, int first, int last){
         if (first<0){
             first = 0;
         }
@@ -303,53 +395,68 @@ public class RawWeatherInfo{
             last = elements;
         }
         int[] itemlist = toIntArray(item);
-        int v = itemlist[0];
-        for (int i=first; i<=last; i++){
-            if (itemlist[i]>v){
-                v = itemlist[i];
+        if (itemlist != null){
+            int v = itemlist[0];
+            for (int i=first; i<=last; i++){
+                if (itemlist[i]>v){
+                    v = itemlist[i];
+                }
             }
+            return v;
         }
-        return v;
+        return null;
     }
 
-    public int getAverageTemperature(int first, int last){
+    public Double getMaxDoubleValue(String[] item, int first, int last){
         if (first<0){
             first = 0;
         }
         if (last>elements){
             last = elements;
         }
-        int[] temperature = toIntArray(TTT);
-        int v = 0;
-        for (int i=first; i<=last; i++){
-            v = v + temperature[i];
+        double[] itemlist = toDoubleArray(item);
+        if (itemlist != null){
+            double d = itemlist[0];
+            for (int i=first; i<=last; i++){
+                if (itemlist[i]>d){
+                    d = itemlist[i];
+                }
+            }
+            return d;
         }
-        return v / (last+first+1);
+        return null;
     }
 
-    public int getMinTemperature(int first, int last){
+    public Double getAverageTemperature(int first, int last){
+        return getAverageValueDouble(TTT,first,last);
+    }
+
+    public Double getMinTemperature(int first, int last){
         if (first<0){
             first = 0;
         }
         if (last>elements){
             last = elements;
         }
-        int[] temperature = toIntArray(TTT);
-        int v = temperature[0];
-        for (int i=first; i<=last; i++){
-            if (temperature[i]<v){
-                v = temperature[i];
+        double[] temperature = toDoubleArray(TTT);
+        if (temperature!=null){
+            double d = temperature[0];
+            for (int i=first; i<=last; i++){
+                if (temperature[i]<d){
+                    d = temperature[i];
+                }
             }
+            return d;
         }
-        return v;
+        return null;
     }
 
-    public int getMaxTemperature(int first, int last){
-        return getMaxValue(TTT,first,last);
+    public double getMaxTemperature(int first, int last){
+        return getMaxDoubleValue(TTT,first,last);
     }
 
-    public int getAverageClouds(int first, int last){
-        return getAverageValue(N,first,last);
+    public Integer getAverageClouds(int first, int last){
+        return getAverageValueInt(N,first,last);
     }
 
 }

@@ -48,7 +48,7 @@ public class UpdateAlarmManager {
     public static boolean updateAndSetAlarmsIfAppropriate(Context context, boolean force_update){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         long update_period = weatherSettings.getUpdateIntervalInMillis();
-        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
+        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         // set time for timer to equal next interval as set up by user
         // weatherCard can be null on first app launch or after clearing memory
         long update_time_utc = Calendar.getInstance().getTimeInMillis() + update_period;
@@ -77,15 +77,19 @@ public class UpdateAlarmManager {
             result = false;
         }
         // update later, set timer if wanted by user
+        /*
+         * For API < 27 we use AlarmManager, for API equal or greater 27 we use JobSheduler with JobWorkItem.
+         */
         if (weatherSettings.setalarm){
-            PrivateLog.log(context,Tag.ALARMMANAGER,"setting new alarm");
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(context,WeatherUpdateBroadcastReceiver.class);
-            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-            intent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,PRIVATE_ALARM_IDENTIFIER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-            alarmManager.setExact(AlarmManager.ELAPSED_REALTIME,next_update_time_realtime,pendingIntent);
-            if (Build.VERSION.SDK_INT >= 26) {
+            if (Build.VERSION.SDK_INT < 26) {
+                PrivateLog.log(context,Tag.ALARMMANAGER,"setting new alarm");
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(context,WeatherUpdateBroadcastReceiver.class);
+                intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+                intent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context,PRIVATE_ALARM_IDENTIFIER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.setExact(AlarmManager.ELAPSED_REALTIME,next_update_time_realtime,pendingIntent);
+            } else {
                 final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
                 Intent jobintent = new Intent(context,UpdateJobService.class);
                 jobintent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);

@@ -4,19 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.os.AsyncTask;
 import android.util.Log;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
-import java.io.*;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.zip.ZipInputStream;
-import javax.xml.parsers.*;
 
 public final class Weather {
 
@@ -174,25 +164,104 @@ public final class Weather {
     public final static int DATA_SIZE = 250;
 
     public static class WeatherInfo{
-        long timestamp;
-        int condition_code;
-        double temperature;
-        double temperature_high;
-        double temperature_low;
-        double wind_speed;
-        double wind_direction;
-        double flurries;
-        double precipitation;
-        int clouds;
-        int prob_thunderstorms;
-        int prob_precipitation;
-        int prob_solid_precipitation;
-        int prob_freezing_rain;
-        int prob_fog;
-        int visibility;
-        double uv;
+        private long timestamp;
+        private Integer condition_code;
+        private Double temperature;
+        private Double temperature_high;
+        private Double temperature_low;
+        private Double wind_speed;
+        private Double wind_direction;
+        private Double flurries;
+        private Double precipitation;
+        private Integer clouds;
+        private Integer prob_thunderstorms;
+        private Integer prob_precipitation;
+        private Integer prob_solid_precipitation;
+        private Integer prob_freezing_rain;
+        private Integer prob_fog;
+        private Integer visibility;
+        private Double uv;
 
-        public Bitmap getArrowBitmap(Context context, float degrees){
+        public void setTimestamp(long timestamp){
+            this.timestamp = timestamp;
+        }
+
+        public void setConditionCode(Integer condition_code){
+            this.condition_code = condition_code;
+        }
+
+        public void setTemperature(Double temperature){
+            this.temperature = temperature;
+        }
+
+        public void setLowTemperature(Double temperature_low){
+            this.temperature_low= temperature_low;
+        }
+
+        public void setHighTemperature(Double temperature_high){
+            this.temperature_high = temperature_high;
+        }
+
+        public void setWindSpeed(Double wind_speed){
+            this.wind_speed = wind_speed;
+        }
+
+        public void setWindDirection(Double wind_direction){
+            this.wind_direction = wind_direction;
+        }
+
+        public void setFlurries(Double flurries){
+            this.flurries = flurries;
+        }
+
+        public void setPrecipitation(Double precipitation){
+            this.precipitation = precipitation;
+        }
+
+        public void setClouds(Integer clouds){
+            this.clouds = clouds;
+        }
+
+        public void setProbThunderstorms(Integer thunderstorms){
+            this.prob_thunderstorms = thunderstorms;
+        }
+
+        public void setProbPrecipitation(Integer prob_precipitation){
+            this.prob_precipitation = prob_precipitation;
+        }
+
+        public void setProbSolidPrecipitation(Integer prob_solid_precipitation){
+            this.prob_solid_precipitation = prob_solid_precipitation;
+        }
+
+        public void setProbFreezingRain(Integer prob_freezing_rain){
+            this.prob_freezing_rain = prob_freezing_rain;
+        }
+
+        public void setProbFog(Integer prob_fog){
+            this.prob_fog = prob_fog;
+        }
+
+        public void setVisibility(Integer visibility){
+            this.visibility = visibility;
+        }
+
+        public void setUV(Double uv){
+            this.uv = uv;
+        }
+
+        public long getTimestamp(){
+            return timestamp;
+        }
+
+        public boolean hasWindDirection(){
+            if (wind_direction!=null){
+                return true;
+            }
+            return false;
+        }
+
+        private Bitmap getArrowBitmap(Context context, float degrees){
             Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.arrow);
             if (bitmap != null){
                 Matrix m = new Matrix();
@@ -204,72 +273,225 @@ public final class Weather {
         }
 
         public Bitmap getArrowBitmap(Context context){
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.arrow);
-            if (bitmap != null){
-                Matrix m = new Matrix();
-                m.postRotate((float) wind_direction);
-                return Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
-            } else {
-                return null;
+            if (wind_direction!=null){
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.arrow);
+                if (bitmap != null){
+                    Matrix m = new Matrix();
+                    m.postRotate(wind_direction.floatValue());
+                    return Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
+                }
             }
+            return null;
+        }
+
+        public double getWindDirection(){
+            return wind_direction;
+        }
+
+        public int getWindDirectionInt(){
+            int j = wind_direction.intValue();
+            return j;
+        }
+
+        public boolean hasCondition(){
+            if (condition_code!=null){
+                return true;
+            }
+            return false;
         }
 
         public int getCondition(){
             return condition_code;
         }
 
+        public boolean hasPrecipitation(){
+            if (precipitation!=null){
+                return true;
+            }
+            return false;
+
+        }
+
         public String getPrecipitation(){
-            return String.valueOf(precipitation)+" kg/m²";
+            if (precipitation!=null){
+                return String.valueOf(precipitation)+" kg/m²";
+            } else {
+                return "-";
+            }
         }
 
-        public String getProbPrecipitation(){
-            return String.valueOf(prob_precipitation)+" %";
+        public double getPrecipitationDouble(){
+            return precipitation;
         }
 
-        public String getTemperature(){
-            return String.valueOf(temperature+KelvinConstant+" °");
+        public boolean hasProbPrecipitation(){
+            if (prob_precipitation!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getProbPrecipitation(){
+            return prob_precipitation;
+
+        }
+
+        public boolean hasTemperature(){
+            if (temperature!=null){
+                return true;
+            }
+            return false;
         }
 
         public int getTemperatureInt(){
-            return (int) (temperature+KelvinConstant);
+            int j = temperature.intValue();
+            return j;
         }
 
-        public String getMaxTemperature(){
-            return String.valueOf(temperature_high+KelvinConstant+" °");
+        public int getTemperatureInCelsius(){
+            Double d = (temperature - KelvinConstant);
+            int j = d.intValue();
+            return j;
         }
 
-        public int getMaxTemperatureInt(){
-            return (int) (temperature_high+KelvinConstant);
+        public boolean hasMaxTemperature(){
+            if (temperature_high!=null){
+                return true;
+            }
+            return false;
         }
 
-        public String getMinTemperature(){
-            return String.valueOf(temperature_low+KelvinConstant+" °");
+        public int getMaxTemperature(){
+            int j = temperature_high.intValue();
+            return j;
         }
 
-        public int getMinTemperatureInt(){
-            return (int) (temperature_low+KelvinConstant);
+        public int getMaxTemperatureInCelsius(){
+            return (int) (temperature_high - KelvinConstant);
+        }
+
+        public boolean hasMinTemperature(){
+            if (temperature_low!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getMinTemperature(){
+            int j = temperature_low.intValue();
+            return j;
+        }
+
+        public int getMinTemperatureInCelsius(){
+            return (int) (temperature_low - KelvinConstant);
+        }
+
+        public boolean hasWindSpeed(){
+            if (wind_speed!=null){
+                return true;
+            }
+            return false;
         }
 
         public String getWindSpeed(){
             return String.valueOf(wind_speed+ "m/s");
         }
 
-        public String getWindSpeedInKmh(){
-            int speed = (int) (wind_speed*1000/(60*60));
-            return String.valueOf(speed)+ "km/h";
-        }
-
         public int getWindSpeedInKmhInt(){
-            int speed = (int) (wind_speed*1000/(60*60));
+            Double d = (wind_speed*3.6);
+            int speed = d.intValue();
             return speed;
         }
 
-        public String getFlurries(){
-            return String.valueOf(flurries+ "m/s");
+        public boolean hasFlurries(){
+            if (flurries!=null){
+                return true;
+            }
+            return false;
         }
 
-        public double getWindDirection(){
-            return wind_direction;
+        public int getFlurriesInKmhInt(){
+            Double d = (wind_speed*3.6);
+            int flurries = d.intValue();
+            return flurries;
+        }
+
+        public boolean hasClouds(){
+            if (clouds!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getClouds(){
+            return clouds;
+        }
+
+        public boolean hasProbThunderstorms(){
+            if (prob_thunderstorms!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getThunderStormsProb(){
+            return prob_thunderstorms;
+        }
+
+        public boolean hasProbSolidPrecipitation(){
+            if (prob_solid_precipitation!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getSolidPrecipitationProb(){
+            return prob_solid_precipitation;
+        }
+
+        public boolean hasProbFreezingRain(){
+            if (prob_freezing_rain!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getFreezingRainProb(){
+            return prob_freezing_rain;
+        }
+
+        public boolean hasFog(){
+            if (prob_fog!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getFogProb(){
+            return prob_fog;
+        }
+
+        public boolean hasVisibility(){
+            if (visibility!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getVisibility(){
+            return prob_freezing_rain;
+        }
+
+        public boolean hasUV(){
+            if (uv!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getUV(){
+            int j = uv.intValue();
+            return j;
         }
 
         public boolean isDaytime(){
@@ -282,104 +504,16 @@ public final class Weather {
             }
             return false;
         }
-
-    }
-
-    public class CurrentWeatherInfo{
-        String city;
-        long issue_timestamp;
-        long polling_time;
-        WeatherInfo currentWeather;
-        ArrayList<WeatherInfo> forecast6hourly;
-        ArrayList<WeatherInfo> forecast24hourly;
-
-        public CurrentWeatherInfo(RawWeatherInfo rawWeatherInfo){
-            city = rawWeatherInfo.description;
-            polling_time = rawWeatherInfo.polling_time;
-            currentWeather = new WeatherInfo();
-            // get current weather data
-            int current_weather_position = rawWeatherInfo.getCurrentForecastPosition();
-            int next_midnight_position   = rawWeatherInfo.getNextMidnightAfterCurrentForecastPosition();
-            currentWeather.timestamp                = Integer.parseInt(rawWeatherInfo.timesteps[current_weather_position]);
-            currentWeather.condition_code           = Integer.parseInt(rawWeatherInfo.ww[current_weather_position]);
-            currentWeather.clouds                   = Integer.parseInt(rawWeatherInfo.N[current_weather_position]);
-            currentWeather.temperature              = Double.parseDouble(rawWeatherInfo.TTT[current_weather_position]);
-            currentWeather.temperature_low          = rawWeatherInfo.getMinTemperature(current_weather_position,next_midnight_position);
-            currentWeather.temperature_high         = rawWeatherInfo.getMaxTemperature(current_weather_position,next_midnight_position);
-            currentWeather.wind_speed               = Double.parseDouble(rawWeatherInfo.FF[current_weather_position]);
-            currentWeather.wind_direction           = Double.parseDouble(rawWeatherInfo.DD[current_weather_position]);
-            currentWeather.flurries                 = Double.parseDouble(rawWeatherInfo.FX1[current_weather_position]);
-            currentWeather.precipitation            = Double.parseDouble(rawWeatherInfo.RR1c[current_weather_position]);
-            currentWeather.prob_precipitation       = Integer.parseInt(rawWeatherInfo.wwP[current_weather_position]);
-            currentWeather.prob_thunderstorms       = Integer.parseInt(rawWeatherInfo.wwT[current_weather_position]);
-            currentWeather.prob_fog                 = Integer.parseInt(rawWeatherInfo.wwM[current_weather_position]);
-            currentWeather.prob_solid_precipitation = Integer.parseInt(rawWeatherInfo.wwS[current_weather_position]);
-            currentWeather.prob_freezing_rain       = Integer.parseInt(rawWeatherInfo.wwF[current_weather_position]);
-            currentWeather.visibility               = Integer.parseInt(rawWeatherInfo.VV[current_weather_position]);
-            currentWeather.uv                       = Double.parseDouble(rawWeatherInfo.RRad1[current_weather_position]);
-            // fill 6h forecast arraylist
-            forecast6hourly = new ArrayList<WeatherInfo>();
-            int index = rawWeatherInfo.getNext6hPosition();
-            while (index<rawWeatherInfo.elements){
-                WeatherInfo wi = new WeatherInfo();
-                wi.timestamp  = Integer.parseInt(rawWeatherInfo.timesteps[index]);
-                wi.condition_code = Integer.parseInt(rawWeatherInfo.WPc61[index]);
-                wi.clouds                               = rawWeatherInfo.getAverageClouds(index-5,index);
-                currentWeather.temperature              = rawWeatherInfo.getAverageTemperature(index-5,index);
-                currentWeather.temperature_low          = rawWeatherInfo.getMinTemperature(index-5,index);
-                currentWeather.temperature_high         = rawWeatherInfo.getMaxTemperature(index-5,index);
-                currentWeather.wind_speed               = rawWeatherInfo.getAverageValue(rawWeatherInfo.FF,index+5,index);
-                currentWeather.wind_direction           = rawWeatherInfo.getAverageValue(rawWeatherInfo.DD,index+5,index);
-                currentWeather.flurries                 = rawWeatherInfo.getMaxValue(rawWeatherInfo.FX1,index+5,index);
-                currentWeather.precipitation            = Integer.parseInt(rawWeatherInfo.RR6c[index]);
-                currentWeather.prob_precipitation       = Integer.parseInt(rawWeatherInfo.wwP6[index]);
-                currentWeather.prob_thunderstorms       = Integer.parseInt(rawWeatherInfo.wwT6[index]);
-                currentWeather.prob_fog                 = Integer.parseInt(rawWeatherInfo.wwM6[index]);
-                currentWeather.prob_solid_precipitation = Integer.parseInt(rawWeatherInfo.wwS6[index]);
-                currentWeather.prob_freezing_rain       = Integer.parseInt(rawWeatherInfo.wwF6[index]);
-                currentWeather.visibility               = rawWeatherInfo.getAverageValue(rawWeatherInfo.VV,index+5,index);
-                currentWeather.uv                       = rawWeatherInfo.getAverageValue(rawWeatherInfo.RRad1,index+5,index);
-                forecast6hourly.add(wi);
-                index = index + 6;
-            }
-            // fill 24h forecast arraylist
-            forecast24hourly = new ArrayList<WeatherInfo>();
-            index = rawWeatherInfo.getNext24hPosition();
-            while (index<rawWeatherInfo.elements){
-                WeatherInfo wi = new WeatherInfo();
-                wi.timestamp  = Integer.parseInt(rawWeatherInfo.timesteps[index]);
-                wi.condition_code = Integer.parseInt(rawWeatherInfo.WPcd1[index]);
-                wi.clouds                               = rawWeatherInfo.getAverageClouds(index-23,index);
-                currentWeather.temperature              = rawWeatherInfo.getAverageTemperature(index-23,index);
-                currentWeather.temperature_low          = rawWeatherInfo.getMinTemperature(index-23,index);
-                currentWeather.temperature_high         = rawWeatherInfo.getMaxTemperature(index-23,index);
-                currentWeather.wind_speed               = rawWeatherInfo.getAverageValue(rawWeatherInfo.FF,index+23,index);
-                currentWeather.wind_direction           = rawWeatherInfo.getAverageValue(rawWeatherInfo.DD,index+23,index);
-                currentWeather.flurries                 = rawWeatherInfo.getMaxValue(rawWeatherInfo.FX1,index+23,index);
-                currentWeather.precipitation            = Integer.parseInt(rawWeatherInfo.RRdc[index]);
-                currentWeather.prob_precipitation       = rawWeatherInfo.getMaxValue(rawWeatherInfo.wwP,index+23,index);
-                currentWeather.prob_thunderstorms       = Integer.parseInt(rawWeatherInfo.wwTd[index]);
-                currentWeather.prob_fog                 = Integer.parseInt(rawWeatherInfo.wwMd[index]);
-                currentWeather.prob_solid_precipitation = rawWeatherInfo.getMaxValue(rawWeatherInfo.wwS,index+23,index);
-                currentWeather.prob_freezing_rain       = rawWeatherInfo.getMaxValue(rawWeatherInfo.wwF,index+23,index);
-                currentWeather.visibility               = rawWeatherInfo.getAverageValue(rawWeatherInfo.VV,index+23,index);
-                currentWeather.uv                       = rawWeatherInfo.getAverageValue(rawWeatherInfo.RRad1,index+23,index);
-                forecast6hourly.add(wi);
-                index = index + 24;
-            }
-        }
-
-        public String getCity(){
-            return city;
-        }
-
     }
 
     public CurrentWeatherInfo getCurrentWeatherInfo(Context context){
         WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         RawWeatherInfo rawWeatherInfo = weatherForecastContentProvider.readWeatherForecast(context);
-        CurrentWeatherInfo currentWeatherInfo = new CurrentWeatherInfo(rawWeatherInfo);
-        return currentWeatherInfo;
+        if (rawWeatherInfo!=null){
+            CurrentWeatherInfo currentWeatherInfo = new CurrentWeatherInfo(rawWeatherInfo);
+            return currentWeatherInfo;
+        }
+        return null;
     }
 
 }

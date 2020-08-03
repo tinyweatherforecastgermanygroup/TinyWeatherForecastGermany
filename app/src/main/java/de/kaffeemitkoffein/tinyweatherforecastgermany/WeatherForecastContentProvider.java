@@ -28,6 +28,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class WeatherForecastContentProvider extends ContentProvider {
 
@@ -83,11 +84,14 @@ public class WeatherForecastContentProvider extends ContentProvider {
 
     public static class WeatherForecastDatabaseHelper extends SQLiteOpenHelper {
 
-        public static final int DATABASE_VERSION = 2;
+        public static final int DATABASE_VERSION = 3;
         public static final String DATABASE_NAME = "weatherforecast";
         public static final String TABLE_NAME = "tables";
         public static final String KEY_id="id";
         public static final String KEY_timetext="timetext";
+        public static final String KEY_description="description";
+        public static final String KEY_polling_time="polling_time";
+        public static final String KEY_elements="elements";
         public static final String KEY_timesteps="timesteps";
         public static final String KEY_TTT="TTT";
         public static final String KEY_E_TTT="E_TTT";
@@ -211,6 +215,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
         public static final String SQL_COMMAND_CREATE = "CREATE TABLE " + TABLE_NAME + "("
                 + KEY_id + " INTEGER PRIMARY KEY ASC,"
                 + KEY_timetext + " TEXT,"
+                + KEY_description + " TEXT,"
                 + KEY_timesteps + " TEXT,"
                 + KEY_TTT + " TEXT,"
                 + KEY_E_TTT + " TEXT,"
@@ -329,7 +334,9 @@ public class WeatherForecastContentProvider extends ContentProvider {
                 + KEY_wwMh + " TEXT,"
                 + KEY_wwMd + " TEXT,"
                 + KEY_PEvap + " TEXT,"
-                + KEY_timestamp + " INTEGER" + ");";
+                + KEY_timestamp + " INTEGER,"
+                + KEY_polling_time + " INTEGER,"
+                + KEY_elements + " INTEGER" + "" + ");";
 
         public static final String SQL_COMMAND_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
@@ -361,7 +368,9 @@ public class WeatherForecastContentProvider extends ContentProvider {
 
         public ContentValues getContentValuesFromWeatherCard(RawWeatherInfo rawWeatherInfo){
             ContentValues contentValues = new ContentValues();
+            //Log.v("DATABASE",serializeString(rawWeatherInfo.timesteps));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_timetext,rawWeatherInfo.timetext);
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_description,rawWeatherInfo.description);
             contentValues.put(WeatherForecastDatabaseHelper.KEY_timesteps,serializeString(rawWeatherInfo.timesteps));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_TTT,serializeString(rawWeatherInfo.TTT));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_E_TTT,serializeString(rawWeatherInfo.E_TTT));
@@ -480,12 +489,16 @@ public class WeatherForecastContentProvider extends ContentProvider {
             contentValues.put(WeatherForecastDatabaseHelper.KEY_wwMh,serializeString(rawWeatherInfo.wwMh));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_wwMd,serializeString(rawWeatherInfo.wwMd));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_PEvap,serializeString(rawWeatherInfo.PEvap));
-            contentValues.put(WeatherForecastDatabaseHelper.KEY_timestamp,rawWeatherInfo.polling_time);
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_timestamp,rawWeatherInfo.timestamp);
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_polling_time,rawWeatherInfo.polling_time);
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_elements,rawWeatherInfo.elements);
+            Log.v("DATABASE","WRITE: elements: "+rawWeatherInfo.elements);
             return contentValues;
         }
 
         public Uri writeWeatherForecast(Context c,RawWeatherInfo weatherCard){
             ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
+
             contentResolver.delete(WeatherForecastContentProvider.URI_SENSORDATA,null,null);
             return contentResolver.insert(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard));
         }
@@ -498,11 +511,15 @@ public class WeatherForecastContentProvider extends ContentProvider {
 
         public RawWeatherInfo getWeatherCardFromCursor(Cursor c){
             if (c==null){
+                Log.v("DATABASE","Cursor IS null.");
                 return null;
             } else {
+                Log.v("DATABASE","Cursor not null.");
                 RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
                 if (c.moveToFirst()){
+                    Log.v("DATABASE","Moved to first....");
                     rawWeatherInfo.timetext = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timetext));
+                    rawWeatherInfo.description = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_description));
                     rawWeatherInfo.timesteps = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timesteps)));
                     rawWeatherInfo.TTT = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_TTT)));
                     rawWeatherInfo.E_TTT = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_E_TTT)));
@@ -621,9 +638,13 @@ public class WeatherForecastContentProvider extends ContentProvider {
                     rawWeatherInfo.wwMh = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_wwMh)));
                     rawWeatherInfo.wwMd = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_wwMd)));
                     rawWeatherInfo.PEvap = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_PEvap)));
-                    rawWeatherInfo.polling_time = c.getLong(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timestamp));
+                    rawWeatherInfo.timestamp = c.getLong(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timestamp));
+                    rawWeatherInfo.polling_time = c.getLong(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_polling_time));
+                    rawWeatherInfo.elements = c.getInt(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_elements));
+                    Log.v("DATABASE","READ: elements: "+rawWeatherInfo.elements);
                     return rawWeatherInfo;
                 } else {
+                    Log.v("DATABASE","READ: returnung NULL!");
                     return null;
                 }
             }

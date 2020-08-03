@@ -34,6 +34,7 @@
     <string name="triggerupdate_button">About...</string>
     <string name="whatsnew_button">What\'s new</string>
     <string name="classicwidget_description">Weather widget</string>
+    <string name="weathercode_UNKNOWN">unknown</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">thunderstorm</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">freezing drizzle</string>
     <string name="weathercode_DRIZZLE_FREEZING_SLIGHT">slight freezing drizzle</string>

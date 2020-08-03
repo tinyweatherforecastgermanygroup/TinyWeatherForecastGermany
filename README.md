@@ -75,6 +75,12 @@ Credits
  
  Please also note that the DWD presents huge amounts of open weather data. The scope of this app is to poll a simple, 24 hours weather forecast from the DWD, and not more at the present time. 
  
+ FAQ
+ ---
+ *For locations in a different time zone the day/night icons seem incorrect.*
+ 
+ The app always displays the date & time of your device (and locale). Example: you are in Berlin and have selected the weater for Cuba. The app shows you the weather in Cuba at the corresponding Berlin time and uses the day/night-icons corresponding to the Berlin time. Once you have travelled to Cuba and your device switched to the local time in Cuba, the app will display the weather in Cuba at the Cuba time.   
+  
  Contributing
  ------------
 

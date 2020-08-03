@@ -20,6 +20,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,23 +29,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ForecastAdapter extends BaseAdapter {
 
-    private Weather.CurrentWeatherInfo weatherCard;
+    private ArrayList<Weather.WeatherInfo> weatherForecasts;
     private Context context;
     LayoutInflater layoutInflater;
 
-    public ForecastAdapter(Context context, Weather.CurrentWeatherInfo weatherCard){
+    public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts){
         this.context = context;
-        this.weatherCard = weatherCard;
+        this.weatherForecasts = weatherForecasts;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return 9;
+        return weatherForecasts.size();
     }
 
     @Override
@@ -62,33 +64,56 @@ public class ForecastAdapter extends BaseAdapter {
         view = this.layoutInflater.inflate(R.layout.forecastitem,viewGroup,false);
         // now fill the item with content
         TextView textView_weathercondition = (TextView) view.findViewById(R.id.fcitem_weatherconditiontext);
-        Weather.WeatherInfo weatherInfo = weatherCard.forecast6hourly.get(i);
-        int weathercondition = weatherInfo.getCondition();
+        Log.v("FCA","forecastadapter at position "+i);
+        Weather.WeatherInfo weatherInfo = weatherForecasts.get(i);
         // heading
         TextView textView_heading = (TextView) view.findViewById(R.id.fcitem_heading);
-        SimpleDateFormat format = new SimpleDateFormat("E, dd. MMM yyyy hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
         Date date = new Date();
-        date.setTime(weatherCard.forecast6hourly.get(i).timestamp);
+        date.setTime(weatherForecasts.get(i).getTimestamp());
         String timetext = format.format(date);
         textView_heading.setText(timetext);
         // left column
-        textView_weathercondition.setText(new WeatherCodeContract().getWeatherConditionText(context,weathercondition));
+        if (weatherInfo.hasCondition()){
+            Integer weathercondition = weatherInfo.getCondition();
+            textView_weathercondition.setText(new WeatherCodeContract().getWeatherConditionText(context,weathercondition));
+        }
         TextView textView_clouds = (TextView) view.findViewById(R.id.fcitem_clouds);
-        textView_clouds.setText(context.getResources().getString(R.string.clouds)+" "+weatherCard.forecast6hourly.get(i).clouds+"%");
+        if (weatherInfo.hasClouds()){
+            textView_clouds.setText(context.getResources().getString(R.string.clouds)+" "+weatherInfo.getClouds()+"%");
+        }
         TextView textView_rain = (TextView) view.findViewById(R.id.fcitem_rain);
-        textView_rain.setText(context.getResources().getString(R.string.rain)+" "+weatherInfo.getProbPrecipitation()+" "+weatherInfo.getPrecipitation());
+        if (weatherInfo.hasPrecipitation()){
+            textView_rain.setText(context.getResources().getString(R.string.rain)+" "+weatherInfo.getProbPrecipitation()+" "+weatherInfo.getPrecipitation());
+        }
         // weather icon
         ImageView weather_icon = (ImageView) view.findViewById(R.id.fcitem_weatherconditionicon);
-        weather_icon.setImageDrawable(new WeatherCodeContract().getWeatherConditionDrawable(context,weathercondition,weatherInfo.isDaytime()));
+        if (weatherInfo.hasCondition()){
+            Integer weathercondition = weatherInfo.getCondition();
+            weather_icon.setImageDrawable(new WeatherCodeContract().getWeatherConditionDrawable(context,weathercondition,weatherInfo.isDaytime()));
+        }
         // right column
         TextView textView_temp = (TextView) view.findViewById(R.id.fcitem_temperature);
-        textView_temp.setText(weatherInfo.getTemperature());
+        if (weatherInfo.hasTemperature()){
+            textView_temp.setText(String.valueOf(weatherInfo.getTemperatureInCelsius()+"°"));
+        }
         TextView textView_highlow = (TextView) view.findViewById(R.id.fcitem_temperature_highlow);
-        textView_highlow.setText(weatherInfo.getMinTemperature()+" | "+weatherInfo.getMaxTemperature());
+        if (weatherInfo.hasMinTemperature() && weatherInfo.hasMaxTemperature()){
+            textView_highlow.setText(weatherInfo.getMinTemperatureInCelsius()+"° | "+weatherInfo.getMaxTemperatureInCelsius()+"°");
+        }
         TextView textView_wind = (TextView) view.findViewById(R.id.fcitem_wind);
-        textView_wind.setText(weatherInfo.getWindSpeed()+" ("+weatherInfo.getFlurries()+")");
+        if (weatherInfo.hasWindSpeed()){
+            String s = weatherInfo.getWindSpeedInKmhInt()+" km/h";
+            if (weatherInfo.hasFlurries()){
+                s = s + " ("+weatherInfo.getFlurriesInKmhInt()+")";
+            }
+            textView_wind.setText(s);
+        }
         ImageView imageView_windarrow = (ImageView) view.findViewById(R.id.fcitem_windarrow);
-        imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context,i));
+        if (weatherInfo.hasWindDirection()){
+            imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context));
+        }
         return view;
     }
+
 }

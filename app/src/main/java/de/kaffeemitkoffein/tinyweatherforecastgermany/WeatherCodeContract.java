@@ -22,8 +22,10 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.Log;
 
 public final class WeatherCodeContract {
+    public final static int NOT_AVAILABLE = 999;
     public final static int SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW = 95;
     public final static int DRIZZLE_FREEZING_MODERATE_OR_HEAVY = 57;
     public final static int DRIZZLE_FREEZING_SLIGHT = 56;
@@ -38,7 +40,7 @@ public final class WeatherCodeContract {
     public final static int SLIGHT_RAIN_SHOWER = 80;
     public final static int HEAVY_SNOWFALL_CONTINUOUS = 75;
     public final static int MODERATE_SNOWFALL_CONTINUOUS = 73;
-    public final static int SLIGHT_SNOWFALL_CONTINUOUS= 71;
+    public final static int SLIGHT_SNOWFALL_CONTINUOUS = 71;
     public final static int MODERATE_OR_HEAVY_RAIN_AND_SNOW = 69;
     public final static int SLIGHT_RAIN_AND_SNOW = 68;
     public final static int HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS = 55;
@@ -48,13 +50,15 @@ public final class WeatherCodeContract {
     public final static int MODERATE_RAIN_NOT_FREEZING_CONTINUOUS = 63;
     public final static int SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS = 61;
     public final static int ICE_FOG_SKY_NOT_RECOGNIZABLE = 24;
-    public final static int FOG_SKY_NOT_RECOGNIZABLE = 25;
+    public final static int FOG_SKY_NOT_RECOGNIZABLE = 45;
     public final static int EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8 = 03;
     public final static int EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8 = 02;
     public final static int EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8 = 01;
     public final static int EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8 = 00;
 
-    private static final class LineageOsWeatherContract {
+    public final static int SIMPLIFIED = 1024;
+
+    public static final class LineageOsWeatherContract {
         public final static int BLUSTERY = 22;
         public final static int CLEAR_NIGHT = 30;
         public final static int CLOUDY = 25;
@@ -87,139 +91,246 @@ public final class WeatherCodeContract {
         public final static int PARTLY_CLOUDY = 41;
     }
 
-    public int getLineageOSWeatherCode(int weathercode){
-     int result = LineageOsWeatherContract.NOT_AVAILABLE;
-        switch (weathercode){
-            case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW : result=LineageOsWeatherContract.THUNDERSTORMS; break;
-            case DRIZZLE_FREEZING_MODERATE_OR_HEAVY : result=LineageOsWeatherContract.FREEZING_DRIZZLE; break;
-            case DRIZZLE_FREEZING_SLIGHT : result=LineageOsWeatherContract.FREEZING_DRIZZLE; break;
-            case RAIN_FREEZING_MODERATE_OR_HEAVY : result=LineageOsWeatherContract.FREEZING_RAIN; break;
-            case RAIN_FREEZING_SLIGHT : result=LineageOsWeatherContract.FREEZING_RAIN; break;
-            case SNOW_SHOWERS_MODERATE_OR_HEAVY : result=LineageOsWeatherContract.SNOW; break;
-            case SNOW_SHOWERS_SLIGHT : result=LineageOsWeatherContract.LIGHT_SNOW_SHOWERS; break;
-            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY : result=LineageOsWeatherContract.MIXED_RAIN_AND_SNOW; break;
-            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT : result=LineageOsWeatherContract.MIXED_RAIN_AND_SNOW; break;
-            case EXTREMELY_HEAVY_RAIN_SHOWER : result=LineageOsWeatherContract.SHOWERS; break;
-            case MODERATE_OR_HEAVY_RAIN_SHOWERS : result=LineageOsWeatherContract.SHOWERS; break;
-            case SLIGHT_RAIN_SHOWER : result=LineageOsWeatherContract.SCATTERED_SHOWERS; break;
-            case HEAVY_SNOWFALL_CONTINUOUS : result=LineageOsWeatherContract.HEAVY_SNOW; break;
-            case MODERATE_SNOWFALL_CONTINUOUS : result=LineageOsWeatherContract.SNOW; break;
-            case SLIGHT_SNOWFALL_CONTINUOUS: result=LineageOsWeatherContract.LIGHT_SNOW_SHOWERS; break;
-            case MODERATE_OR_HEAVY_RAIN_AND_SNOW: result=LineageOsWeatherContract.MIXED_RAIN_AND_SNOW; break;
-            case SLIGHT_RAIN_AND_SNOW : result=LineageOsWeatherContract.MIXED_RAIN_AND_SNOW; break;
-            case HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS : result=LineageOsWeatherContract.DRIZZLE; break;
-            case MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS : result=LineageOsWeatherContract.DRIZZLE; break;
-            case SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS : result=LineageOsWeatherContract.DRIZZLE; break;
-            case HEAVY_RAIN_NOT_FREEZING_CONTINUOUS : result=LineageOsWeatherContract.SHOWERS; break;
-            case MODERATE_RAIN_NOT_FREEZING_CONTINUOUS : result=LineageOsWeatherContract.SHOWERS; break;
-            case SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS : result=LineageOsWeatherContract.SCATTERED_SHOWERS; break;
-            case ICE_FOG_SKY_NOT_RECOGNIZABLE : result=LineageOsWeatherContract.FOGGY; break;
-            case FOG_SKY_NOT_RECOGNIZABLE : result=LineageOsWeatherContract.FOGGY; break;
-            case EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8 : result=LineageOsWeatherContract.CLOUDY; break;
-            case EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8 : result=LineageOsWeatherContract.CLOUDY; break;
-            case EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8 : result=LineageOsWeatherContract.PARTLY_CLOUDY; break;
-            case EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8 : result=LineageOsWeatherContract.SUNNY; break;
-        }
-        return result;
-    }
-
-    public static int getWeatherConditionDrawableResource(int weathercondition, boolean daytime){
-        int result = 0;
-        switch (weathercondition){
-            case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW : result=R.drawable.thunderstorm; break;
-            case DRIZZLE_FREEZING_MODERATE_OR_HEAVY : result=R.drawable.freezing_drizzle; break;
-            case DRIZZLE_FREEZING_SLIGHT : result=R.drawable.freezing_drizzle_slight; break;
-            case RAIN_FREEZING_MODERATE_OR_HEAVY : result=R.drawable.freezing_rain; break;
-            case RAIN_FREEZING_SLIGHT : result=R.drawable.freezing_rain_slight; break;
-            case SNOW_SHOWERS_MODERATE_OR_HEAVY : if (daytime) {
-                result=R.drawable.snow_showers_partly;
-            } else {
-                result=R.drawable.snow_showers_partly_night;
-            }
-            break;
-            case SNOW_SHOWERS_SLIGHT : if (daytime) {
-                result=R.drawable.light_snow_showers_partly;
-            } else {
-                result=R.drawable.light_snow_showers_partly_night;
-            }
-            break;
-            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY : if (daytime) {
-                result=R.drawable.mixed_rain_and_snow_partly;
-            } else {
-                result=R.drawable.mixed_rain_and_snow_partly_night;
-            }
-            break;
-            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT : if (daytime) {
-                result=R.drawable.light_mixed_rain_and_snow_partly;
-            } else {
-                result=R.drawable.light_mixed_rain_and_snow_partly_night;
-            }
-            break;
-            case EXTREMELY_HEAVY_RAIN_SHOWER : if (daytime) {
-                result=R.drawable.extremely_heavy_showers_partly;
-            } else {
-                result=R.drawable.extremely_heavy_showers_partly_night;
-            }
-            case MODERATE_OR_HEAVY_RAIN_SHOWERS : if (daytime) {
-                result=R.drawable.showers_partly;
-            } else {
-                result=R.drawable.showers_partly_night;
-            }
-            break;
-            case SLIGHT_RAIN_SHOWER : if (daytime) {
-                result=R.drawable.light_showers_partly;
-            } else {
-                result=R.drawable.light_showers_partly_night;
-            }
-            break;
-            case HEAVY_SNOWFALL_CONTINUOUS : result=R.drawable.heavy_snow_showers; break;
-            case MODERATE_SNOWFALL_CONTINUOUS : result=R.drawable.moderate_snow_showers; break;
-            case SLIGHT_SNOWFALL_CONTINUOUS: result=R.drawable.light_snow_showers; break;
-            case MODERATE_OR_HEAVY_RAIN_AND_SNOW: result=R.drawable.mixed_rain_and_snow; break;
-            case SLIGHT_RAIN_AND_SNOW : result=R.drawable.light_mixed_rain_and_snow; break;
-            case HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS : result=R.drawable.heavy_drizzle; break;
-            case MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS : result=R.drawable.moderate_drizzle; break;
-            case SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS : result=R.drawable.light_drizzle; break;
-            case HEAVY_RAIN_NOT_FREEZING_CONTINUOUS : result=R.drawable.heavy_showers; break;
-            case MODERATE_RAIN_NOT_FREEZING_CONTINUOUS : result=R.drawable.moderate_showers; break;
-            case SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS : result=R.drawable.light_showers; break;
-            case ICE_FOG_SKY_NOT_RECOGNIZABLE : result=R.drawable.ice_fog; break;
-            case FOG_SKY_NOT_RECOGNIZABLE : result=R.drawable.fog; break;
-            case EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8 : result=R.drawable.cloudy; break;
-            case EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8 : if (daytime) {
-                result = R.drawable.mostly_cloudy_day;
-            } else {
-                result = R.drawable.mostly_cloudy_night;
-            }
-            break;
-            case EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8 : if (daytime) {
-                result=R.drawable.partly_cloudy_day;
-            } else {
-                result=R.drawable.partly_cloudy_night;
+    public int getLineageOSWeatherCode(int weathercode) {
+        int result = LineageOsWeatherContract.NOT_AVAILABLE;
+        switch (weathercode) {
+            case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:
+                result = LineageOsWeatherContract.THUNDERSTORMS;
                 break;
-            }
-            break;
-            case EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8 : if (daytime) {
-                result=R.drawable.sunny;
-            } else {
-                result=R.drawable.clear_night;
-            }
-            break;
+            case DRIZZLE_FREEZING_MODERATE_OR_HEAVY:
+                result = LineageOsWeatherContract.FREEZING_DRIZZLE;
+                break;
+            case DRIZZLE_FREEZING_SLIGHT:
+                result = LineageOsWeatherContract.FREEZING_DRIZZLE;
+                break;
+            case RAIN_FREEZING_MODERATE_OR_HEAVY:
+                result = LineageOsWeatherContract.FREEZING_RAIN;
+                break;
+            case RAIN_FREEZING_SLIGHT:
+                result = LineageOsWeatherContract.FREEZING_RAIN;
+                break;
+            case SNOW_SHOWERS_MODERATE_OR_HEAVY:
+                result = LineageOsWeatherContract.SNOW;
+                break;
+            case SNOW_SHOWERS_SLIGHT:
+                result = LineageOsWeatherContract.LIGHT_SNOW_SHOWERS;
+                break;
+            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY:
+                result = LineageOsWeatherContract.MIXED_RAIN_AND_SNOW;
+                break;
+            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT:
+                result = LineageOsWeatherContract.MIXED_RAIN_AND_SNOW;
+                break;
+            case EXTREMELY_HEAVY_RAIN_SHOWER:
+                result = LineageOsWeatherContract.SHOWERS;
+                break;
+            case MODERATE_OR_HEAVY_RAIN_SHOWERS:
+                result = LineageOsWeatherContract.SHOWERS;
+                break;
+            case SLIGHT_RAIN_SHOWER:
+                result = LineageOsWeatherContract.SCATTERED_SHOWERS;
+                break;
+            case HEAVY_SNOWFALL_CONTINUOUS:
+                result = LineageOsWeatherContract.HEAVY_SNOW;
+                break;
+            case MODERATE_SNOWFALL_CONTINUOUS:
+                result = LineageOsWeatherContract.SNOW;
+                break;
+            case SLIGHT_SNOWFALL_CONTINUOUS:
+                result = LineageOsWeatherContract.LIGHT_SNOW_SHOWERS;
+                break;
+            case MODERATE_OR_HEAVY_RAIN_AND_SNOW:
+                result = LineageOsWeatherContract.MIXED_RAIN_AND_SNOW;
+                break;
+            case SLIGHT_RAIN_AND_SNOW:
+                result = LineageOsWeatherContract.MIXED_RAIN_AND_SNOW;
+                break;
+            case HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = LineageOsWeatherContract.DRIZZLE;
+                break;
+            case MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = LineageOsWeatherContract.DRIZZLE;
+                break;
+            case SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = LineageOsWeatherContract.DRIZZLE;
+                break;
+            case HEAVY_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = LineageOsWeatherContract.SHOWERS;
+                break;
+            case MODERATE_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = LineageOsWeatherContract.SHOWERS;
+                break;
+            case SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = LineageOsWeatherContract.SCATTERED_SHOWERS;
+                break;
+            case ICE_FOG_SKY_NOT_RECOGNIZABLE:
+                result = LineageOsWeatherContract.FOGGY;
+                break;
+            case FOG_SKY_NOT_RECOGNIZABLE:
+                result = LineageOsWeatherContract.FOGGY;
+                break;
+            case EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8:
+                result = LineageOsWeatherContract.CLOUDY;
+                break;
+            case EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8:
+                result = LineageOsWeatherContract.CLOUDY;
+                break;
+            case EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8:
+                result = LineageOsWeatherContract.PARTLY_CLOUDY;
+                break;
+            case EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8:
+                result = LineageOsWeatherContract.SUNNY;
+                break;
         }
         return result;
     }
 
-    public String getWeatherConditionText(Context context, int weathercondition){
+    public static int getWeatherConditionDrawableResource(int weathercondition, boolean daytime) {
+        Log.v("CONTRACT", "Weathercode for icon: " + weathercondition);
+        int result = R.drawable.ic_launcher_foreground;
+        switch (weathercondition) {
+            case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:
+                result = R.drawable.thunderstorm;
+                break;
+            case DRIZZLE_FREEZING_MODERATE_OR_HEAVY:
+                result = R.drawable.freezing_drizzle;
+                break;
+            case DRIZZLE_FREEZING_SLIGHT:
+                result = R.drawable.freezing_drizzle_slight;
+                break;
+            case RAIN_FREEZING_MODERATE_OR_HEAVY:
+                result = R.drawable.freezing_rain;
+                break;
+            case RAIN_FREEZING_SLIGHT:
+                result = R.drawable.freezing_rain_slight;
+                break;
+            case SNOW_SHOWERS_MODERATE_OR_HEAVY:
+                if (daytime) {
+                    result = R.drawable.snow_showers_partly;
+                } else {
+                    result = R.drawable.snow_showers_partly_night;
+                }
+                break;
+            case SNOW_SHOWERS_SLIGHT:
+                if (daytime) {
+                    result = R.drawable.light_snow_showers_partly;
+                } else {
+                    result = R.drawable.light_snow_showers_partly_night;
+                }
+                break;
+            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY:
+                if (daytime) {
+                    result = R.drawable.mixed_rain_and_snow_partly;
+                } else {
+                    result = R.drawable.mixed_rain_and_snow_partly_night;
+                }
+                break;
+            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT:
+                if (daytime) {
+                    result = R.drawable.light_mixed_rain_and_snow_partly;
+                } else {
+                    result = R.drawable.light_mixed_rain_and_snow_partly_night;
+                }
+                break;
+            case EXTREMELY_HEAVY_RAIN_SHOWER:
+                if (daytime) {
+                    result = R.drawable.extremely_heavy_showers_partly;
+                } else {
+                    result = R.drawable.extremely_heavy_showers_partly_night;
+                }
+            case MODERATE_OR_HEAVY_RAIN_SHOWERS:
+                if (daytime) {
+                    result = R.drawable.showers_partly;
+                } else {
+                    result = R.drawable.showers_partly_night;
+                }
+                break;
+            case SLIGHT_RAIN_SHOWER:
+                if (daytime) {
+                    result = R.drawable.light_showers_partly;
+                } else {
+                    result = R.drawable.light_showers_partly_night;
+                }
+                break;
+            case HEAVY_SNOWFALL_CONTINUOUS:
+                result = R.drawable.heavy_snow_showers;
+                break;
+            case MODERATE_SNOWFALL_CONTINUOUS:
+                result = R.drawable.moderate_snow_showers;
+                break;
+            case SLIGHT_SNOWFALL_CONTINUOUS:
+                result = R.drawable.light_snow_showers;
+                break;
+            case MODERATE_OR_HEAVY_RAIN_AND_SNOW:
+                result = R.drawable.mixed_rain_and_snow;
+                break;
+            case SLIGHT_RAIN_AND_SNOW:
+                result = R.drawable.light_mixed_rain_and_snow;
+                break;
+            case HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = R.drawable.heavy_drizzle;
+                break;
+            case MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = R.drawable.moderate_drizzle;
+                break;
+            case SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = R.drawable.light_drizzle;
+                break;
+            case HEAVY_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = R.drawable.heavy_showers;
+                break;
+            case MODERATE_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = R.drawable.moderate_showers;
+                break;
+            case SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = R.drawable.light_showers;
+                break;
+            case ICE_FOG_SKY_NOT_RECOGNIZABLE:
+                result = R.drawable.ice_fog;
+                break;
+            case FOG_SKY_NOT_RECOGNIZABLE:
+                result = R.drawable.fog;
+                break;
+            case EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8:
+                result = R.drawable.cloudy;
+                break;
+            case EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8:
+                if (daytime) {
+                    result = R.drawable.mostly_cloudy_day;
+                } else {
+                    result = R.drawable.mostly_cloudy_night;
+                }
+                break;
+            case EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8:
+                if (daytime) {
+                    result = R.drawable.partly_cloudy_day;
+                } else {
+                    result = R.drawable.partly_cloudy_night;
+                    break;
+                }
+                break;
+            case EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8:
+                if (daytime) {
+                    result = R.drawable.sunny;
+                } else {
+                    result = R.drawable.clear_night;
+                }
+                break;
+        }
+        return result;
+    }
+
+    public String getWeatherConditionText(Context context, int weathercondition) {
         int resource = getWeatherConditionTextResource(weathercondition);
         String s = context.getResources().getString(resource);
         return s;
     }
 
     @SuppressWarnings("deprecation")
-    public Drawable getWeatherConditionDrawable(Context context, int weathercondition){
+    public Drawable getWeatherConditionDrawable(Context context, int weathercondition) {
         Drawable drawable;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable = context.getResources().getDrawable(getWeatherConditionDrawableResource(weathercondition,true),null);
+            drawable = context.getResources().getDrawable(getWeatherConditionDrawableResource(weathercondition, true), null);
         } else {
             drawable = context.getResources().getDrawable(weathercondition);
         }
@@ -227,50 +338,242 @@ public final class WeatherCodeContract {
     }
 
     @SuppressWarnings("deprecation")
-    public Drawable getWeatherConditionDrawable(Context context, int weathercondition, boolean daytime){
+    public Drawable getWeatherConditionDrawable(Context context, int weathercondition, boolean daytime) {
         Drawable drawable;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable = context.getResources().getDrawable(getWeatherConditionDrawableResource(weathercondition,daytime),null);
+            drawable = context.getResources().getDrawable(getWeatherConditionDrawableResource(weathercondition, daytime), null);
         } else {
             drawable = context.getResources().getDrawable(weathercondition);
         }
         return drawable;
     }
 
-    public static int getWeatherConditionTextResource(int weathercondition){
-        int result = 0;
-        switch (weathercondition){
-            case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW : result=R.string.weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW; break;
-            case DRIZZLE_FREEZING_MODERATE_OR_HEAVY : result=R.string.weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY; break;
-            case DRIZZLE_FREEZING_SLIGHT : result=R.string.weathercode_DRIZZLE_FREEZING_SLIGHT; break;
-            case RAIN_FREEZING_MODERATE_OR_HEAVY : result=R.string.weathercode_RAIN_FREEZING_MODERATE_OR_HEAVY; break;
-            case RAIN_FREEZING_SLIGHT : result=R.string.weathercode_RAIN_FREEZING_SLIGHT; break;
-            case SNOW_SHOWERS_MODERATE_OR_HEAVY : result=R.string.weathercode_SNOW_SHOWERS_MODERATE_OR_HEAVY; break;
-            case SNOW_SHOWERS_SLIGHT :  result=R.string.weathercode_SNOW_SHOWERS_SLIGHT; break;
-            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY :  result=R.string.weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY; break;
-            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT :  result=R.string.weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT; break;
-            case EXTREMELY_HEAVY_RAIN_SHOWER :  result=R.string.weathercode_EXTREMELY_HEAVY_RAIN_SHOWER; break;
-            case MODERATE_OR_HEAVY_RAIN_SHOWERS :  result=R.string.weathercode_MODERATE_OR_HEAVY_RAIN_SHOWERS; break;
-            case SLIGHT_RAIN_SHOWER :  result=R.string.weathercode_SLIGHT_RAIN_SHOWER; break;
-            case HEAVY_SNOWFALL_CONTINUOUS : result=R.string.weathercode_HEAVY_SNOWFALL_CONTINUOUS; break;
-            case MODERATE_SNOWFALL_CONTINUOUS : result=R.string.weathercode_MODERATE_SNOWFALL_CONTINUOUS; break;
-            case SLIGHT_SNOWFALL_CONTINUOUS: result=R.string.weathercode_SLIGHT_SNOWFALL_CONTINUOUS; break;
-            case MODERATE_OR_HEAVY_RAIN_AND_SNOW: result=R.string.weathercode_MODERATE_OR_HEAVY_RAIN_AND_SNOW; break;
-            case SLIGHT_RAIN_AND_SNOW : result=R.string.weathercode_SLIGHT_RAIN_AND_SNOW; break;
-            case HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS : result=R.string.weathercode_HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS; break;
-            case MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS : result=R.string.weathercode_MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS; break;
-            case SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS : result=R.string.weathercode_SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS; break;
-            case HEAVY_RAIN_NOT_FREEZING_CONTINUOUS : result=R.string.weathercode_HEAVY_RAIN_NOT_FREEZING_CONTINUOUS; break;
-            case MODERATE_RAIN_NOT_FREEZING_CONTINUOUS : result=R.string.weathercode_MODERATE_RAIN_NOT_FREEZING_CONTINUOUS; break;
-            case SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS : result=R.string.weathercode_SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS; break;
-            case ICE_FOG_SKY_NOT_RECOGNIZABLE : result=R.string.weathercode_ICE_FOG_SKY_NOT_RECOGNIZABLE; break;
-            case FOG_SKY_NOT_RECOGNIZABLE : result=R.string.weathercode_FOG_SKY_NOT_RECOGNIZABLE; break;
-            case EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8 : result=R.string.weathercode_EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8; break;
-            case EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8 : result=R.string.weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8; break;
-            case EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8 : result=R.string.weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8; break;
-            case EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8 :  result=R.string.weathercode_EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8; break;
+    public static int getWeatherConditionTextResource(int weathercondition) {
+        Log.v("CONTRACT", "Weathercode for text: " + weathercondition);
+        int result = R.string.weathercode_UNKNOWN;
+        switch (weathercondition) {
+            case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:
+                result = R.string.weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW;
+                break;
+            case DRIZZLE_FREEZING_MODERATE_OR_HEAVY:
+                result = R.string.weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY;
+                break;
+            case DRIZZLE_FREEZING_SLIGHT:
+                result = R.string.weathercode_DRIZZLE_FREEZING_SLIGHT;
+                break;
+            case RAIN_FREEZING_MODERATE_OR_HEAVY:
+                result = R.string.weathercode_RAIN_FREEZING_MODERATE_OR_HEAVY;
+                break;
+            case RAIN_FREEZING_SLIGHT:
+                result = R.string.weathercode_RAIN_FREEZING_SLIGHT;
+                break;
+            case SNOW_SHOWERS_MODERATE_OR_HEAVY:
+                result = R.string.weathercode_SNOW_SHOWERS_MODERATE_OR_HEAVY;
+                break;
+            case SNOW_SHOWERS_SLIGHT:
+                result = R.string.weathercode_SNOW_SHOWERS_SLIGHT;
+                break;
+            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY:
+                result = R.string.weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY;
+                break;
+            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT:
+                result = R.string.weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT;
+                break;
+            case EXTREMELY_HEAVY_RAIN_SHOWER:
+                result = R.string.weathercode_EXTREMELY_HEAVY_RAIN_SHOWER;
+                break;
+            case MODERATE_OR_HEAVY_RAIN_SHOWERS:
+                result = R.string.weathercode_MODERATE_OR_HEAVY_RAIN_SHOWERS;
+                break;
+            case SLIGHT_RAIN_SHOWER:
+                result = R.string.weathercode_SLIGHT_RAIN_SHOWER;
+                break;
+            case HEAVY_SNOWFALL_CONTINUOUS:
+                result = R.string.weathercode_HEAVY_SNOWFALL_CONTINUOUS;
+                break;
+            case MODERATE_SNOWFALL_CONTINUOUS:
+                result = R.string.weathercode_MODERATE_SNOWFALL_CONTINUOUS;
+                break;
+            case SLIGHT_SNOWFALL_CONTINUOUS:
+                result = R.string.weathercode_SLIGHT_SNOWFALL_CONTINUOUS;
+                break;
+            case MODERATE_OR_HEAVY_RAIN_AND_SNOW:
+                result = R.string.weathercode_MODERATE_OR_HEAVY_RAIN_AND_SNOW;
+                break;
+            case SLIGHT_RAIN_AND_SNOW:
+                result = R.string.weathercode_SLIGHT_RAIN_AND_SNOW;
+                break;
+            case HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = R.string.weathercode_HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS;
+                break;
+            case MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = R.string.weathercode_MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS;
+                break;
+            case SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = R.string.weathercode_SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS;
+                break;
+            case HEAVY_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = R.string.weathercode_HEAVY_RAIN_NOT_FREEZING_CONTINUOUS;
+                break;
+            case MODERATE_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = R.string.weathercode_MODERATE_RAIN_NOT_FREEZING_CONTINUOUS;
+                break;
+            case SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = R.string.weathercode_SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS;
+                break;
+            case ICE_FOG_SKY_NOT_RECOGNIZABLE:
+                result = R.string.weathercode_ICE_FOG_SKY_NOT_RECOGNIZABLE;
+                break;
+            case FOG_SKY_NOT_RECOGNIZABLE:
+                result = R.string.weathercode_FOG_SKY_NOT_RECOGNIZABLE;
+                break;
+            case EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8:
+                result = R.string.weathercode_EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8;
+                break;
+            case EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8:
+                result = R.string.weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8;
+                break;
+            case EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8:
+                result = R.string.weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8;
+                break;
+            case EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8:
+                result = R.string.weathercode_EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8;
+                break;
         }
         return result;
     }
+
+    public static boolean hasSufficientDataForIconCalculation(Weather.WeatherInfo weatherInfo) {
+        if ((weatherInfo.hasTemperature()) &&
+                (weatherInfo.hasProbPrecipitation()) &&
+                (weatherInfo.hasClouds())) {
+            return true;
+        }
+        return false;
+    }
+
+    public static int calculateCustomWeatherconditionFromData(Weather.WeatherInfo weatherInfo) {
+        final int THRESHOLD_CLOUDS_FOR_SHOWERS = 80;
+        if (!hasSufficientDataForIconCalculation(weatherInfo)) {
+            return NOT_AVAILABLE;
+        }
+        // sunny day is the standard condition with the lowest priority
+        /*
+         * cloud conditions
+         */
+        int condition = EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8;
+        if (weatherInfo.getClouds() > 12) {
+            condition = EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8;
+        }
+        if (weatherInfo.getClouds() > 56) {
+            condition = EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8;
+        }
+        if (weatherInfo.getClouds() > 87) {
+            condition = EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8;
+        }
+        /*
+         * fog conditions
+         */
+        if (weatherInfo.hasFog()) {
+            if (weatherInfo.getFogProb() > 30) {
+                condition = FOG_SKY_NOT_RECOGNIZABLE | SIMPLIFIED;
+            }
+        } else {
+            if (weatherInfo.hasVisibility()) {
+                if (weatherInfo.getVisibility() < 2000) {
+                    condition = FOG_SKY_NOT_RECOGNIZABLE | SIMPLIFIED;
+                }
+            }
+        }
+        /*
+         * rain conditions. Drizzle is ignored / not shown, therefore simplified tag is set
+         * first, we try to determine the condition from the amount of rain per hour, if this
+         * is specified.
+         */
+        if (weatherInfo.hasPrecipitation()) {
+            // >= 50 in 1h = very strong showers
+            condition = EXTREMELY_HEAVY_RAIN_SHOWER;
+            // < 10 mm in 1h = moderate rain, < 50 mm in 1h = heavy rain
+            if (weatherInfo.getPrecipitationDouble() < 50) { // mm
+                if (weatherInfo.getClouds() < THRESHOLD_CLOUDS_FOR_SHOWERS) {
+                    condition = MODERATE_OR_HEAVY_RAIN_SHOWERS | SIMPLIFIED;
+                } else {
+                    condition = HEAVY_RAIN_NOT_FREEZING_CONTINUOUS | SIMPLIFIED;
+                    if (weatherInfo.getPrecipitationDouble() < 10)
+                        condition = MODERATE_RAIN_NOT_FREEZING_CONTINUOUS | SIMPLIFIED;
+                }
+            }
+            // < 2.5 mm in 1h = light rain
+            if (weatherInfo.getPrecipitationDouble() < 2.5) { // mm
+        /*
+            1000 ml / m′
+            0.001 m³/m² = 0.001 m
+                = 0,1 cm
+                    = 1 mm
+
+         */
+                if (weatherInfo.getClouds() < THRESHOLD_CLOUDS_FOR_SHOWERS) {
+                    // light showers
+                    condition = SLIGHT_RAIN_SHOWER | SIMPLIFIED;
+                } else {
+                    condition = SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS | SIMPLIFIED;
+                }
+            }
+        } else {
+            /*
+             * alternatively, we try to determine rain conditions from probability values only. This is
+             * less accurate, therefore 2nd choice.
+             */
+            if (weatherInfo.getProbPrecipitation() > 0) {
+                if (weatherInfo.getProbPrecipitation() > 30) {
+                    // light rain
+                    if (weatherInfo.getClouds() >= 80) {
+                        condition = SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS | SIMPLIFIED;
+                    } else {
+                        condition = SLIGHT_RAIN_SHOWER | SIMPLIFIED;
+                    }
+                }
+                if (weatherInfo.getProbPrecipitation() > 60) {
+                    // moderate rain
+                    if (weatherInfo.getClouds() >= 80) {
+                        condition = MODERATE_RAIN_NOT_FREEZING_CONTINUOUS | SIMPLIFIED;
+                    } else {
+                        condition = MODERATE_OR_HEAVY_RAIN_SHOWERS | SIMPLIFIED;
+                    }
+                }
+                if (weatherInfo.getProbPrecipitation() > 80) {
+                    // heavy rain
+                    if (weatherInfo.getClouds() >= 80) {
+                        condition = HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS;
+                    } else {
+                        condition = MODERATE_OR_HEAVY_RAIN_SHOWERS;
+                    }
+                }
+            }
+            /*
+             * mixed snow & rain conditions
+             */
+
+
+            /*
+             * freezing rain conditions
+             */
+            if (weatherInfo.hasProbFreezingRain()) {
+                if (weatherInfo.getFreezingRainProb() > 0) {
+                    condition = RAIN_FREEZING_SLIGHT;
+                    if (weatherInfo.hasPrecipitation()) {
+                        if (weatherInfo.getPrecipitationDouble() >= 10) {
+                            condition = RAIN_FREEZING_MODERATE_OR_HEAVY;
+                        }
+                    }
+                }
+            }
+            /*
+             * thunderstorms
+             */
+        }
+        return condition;
+    }
 }
+
 

@@ -41,24 +41,44 @@ public class GadgetbridgeAPI {
     }
 
     private void setWeatherData(){
-        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
+        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         // build the WeatherSpec instance with current weather
-        int currentWeatherCondition = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
         weatherSpec = new WeatherSpec();
-        weatherSpec.currentConditionCode = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
-        weatherSpec.currentCondition     = new WeatherCodeContract().getWeatherConditionText(context,currentWeatherCondition);
-        weatherSpec.currentTemp          = weatherCard.currentWeather.getTemperatureInt();
         weatherSpec.location             = weatherCard.getCity();
         weatherSpec.timestamp            = (int) (weatherCard.polling_time / 1000);
-        weatherSpec.todayMaxTemp         = weatherCard.currentWeather.getMaxTemperatureInt();
-        weatherSpec.todayMinTemp         = weatherCard.currentWeather.getMinTemperatureInt();
-        weatherSpec.windSpeed            = (float) weatherCard.currentWeather.getWindSpeedInKmhInt();
-        weatherSpec.windDirection        = (int) weatherCard.currentWeather.getWindDirection();
+        if (weatherCard.currentWeather.hasCondition()){
+            int currentWeatherCondition = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
+            weatherSpec.currentConditionCode = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
+            weatherSpec.currentCondition     = new WeatherCodeContract().getWeatherConditionText(context,currentWeatherCondition);
+        }
+        if (weatherCard.currentWeather.hasTemperature()){
+            weatherSpec.currentTemp          = weatherCard.currentWeather.getTemperatureInt();
+
+        }
+        if (weatherCard.currentWeather.hasMaxTemperature()){
+            weatherSpec.todayMaxTemp         = weatherCard.currentWeather.getMaxTemperature();
+        }
+        if (weatherCard.currentWeather.hasMinTemperature()){
+            weatherSpec.todayMinTemp         = weatherCard.currentWeather.getMinTemperature();
+        }
+        if (weatherCard.currentWeather.hasWindSpeed()){
+            weatherSpec.windSpeed            = (float) weatherCard.currentWeather.getWindSpeedInKmhInt();
+        }
+        if (weatherCard.currentWeather.hasWindDirection()){
+            weatherSpec.windDirection        = (int) weatherCard.currentWeather.getWindDirection();
+        }
         // build the forecast instance
         for (int i=0; i<weatherCard.forecast24hourly.size(); i++){
+            // do not add and/or stop adding forecast if values are unknown
+            if ((!weatherCard.forecast24hourly.get(i).hasMinTemperature()||
+                    (!weatherCard.forecast24hourly.get(i).hasMaxTemperature())||
+                    (!weatherCard.forecast24hourly.get(i).hasCondition()))){
+                break;
+            }
+            // construct forecast and add it; @DWD, humidity is always unknown because not served.
             WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(
-                    toKelvin(weatherCard.forecast24hourly.get(i).temperature_low),
-                    toKelvin(weatherCard.forecast24hourly.get(i).temperature_high),
+                    toKelvin(weatherCard.forecast24hourly.get(i).getMinTemperature()),
+                    toKelvin(weatherCard.forecast24hourly.get(i).getMaxTemperature()),
                     new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),
                     0);
             weatherSpec.forecasts.add(forecast);

@@ -26,6 +26,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.net.URL;
 import java.util.Calendar;
@@ -59,7 +60,7 @@ public class WeatherUpdateService extends Service {
         // hack to prevent too frequent api calls
         PrivateLog.log(this,Tag.SERVICE,"service started: onStartCommand");
         WeatherSettings weatherSettings = new WeatherSettings(this);
-        Weather.CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(this);
+        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(this);
         if (weatherCard != null){
             if (weatherCard.polling_time>Calendar.getInstance().getTimeInMillis()-10000){
                 PrivateLog.log(this,Tag.SERVICE,"update cancelled, too frequent call!");
@@ -82,12 +83,8 @@ public class WeatherUpdateService extends Service {
             }
             stopSelf();
         }
-        StationsArrayList stationsArrayList = new StationsArrayList(this);
-        int position = stationsArrayList.getSetStationPositionByName(getApplicationContext());
-        Weather.WeatherLocation weatherLocation = new Weather.WeatherLocation();
-        weatherLocation.name = weatherSettings.station;
         final Context context = this;
-        WeatherForecastReader weatherForecastReader = new WeatherForecastReader(this,weatherLocation){
+        WeatherForecastReader weatherForecastReader = new WeatherForecastReader(this){
             @Override
             public void onPositiveResult(){
                 GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
@@ -101,6 +98,7 @@ public class WeatherUpdateService extends Service {
                 intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
                 sendBroadcast(intent);
                 PrivateLog.log(context,Tag.SERVICE,"update from API: success");
+                Log.v(Tag.SERVICE,"update from API: success");
                 stopSelf();
             }
             @Override
