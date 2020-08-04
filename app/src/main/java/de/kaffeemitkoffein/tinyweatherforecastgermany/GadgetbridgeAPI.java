@@ -27,17 +27,12 @@ public class GadgetbridgeAPI {
 
     public final static String WEATHER_EXTRA="WeatherSpec";
     public final static String WEATHER_ACTION="de.kaffeemitkoffein.broadcast.WEATHERDATA";
-    public final static double KelvinConstant = 273.15;
 
     private WeatherSpec weatherSpec;
     private Context context;
 
     public GadgetbridgeAPI(Context context){
         this.context = context;
-    }
-
-    private int toKelvin(double temperature){
-        return (int) (temperature + KelvinConstant);
     }
 
     private void setWeatherData(){
@@ -53,7 +48,6 @@ public class GadgetbridgeAPI {
         }
         if (weatherCard.currentWeather.hasTemperature()){
             weatherSpec.currentTemp          = weatherCard.currentWeather.getTemperatureInt();
-
         }
         if (weatherCard.currentWeather.hasMaxTemperature()){
             weatherSpec.todayMaxTemp         = weatherCard.currentWeather.getMaxTemperature();
@@ -77,8 +71,8 @@ public class GadgetbridgeAPI {
             }
             // construct forecast and add it; @DWD, humidity is always unknown because not served.
             WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(
-                    toKelvin(weatherCard.forecast24hourly.get(i).getMinTemperature()),
-                    toKelvin(weatherCard.forecast24hourly.get(i).getMaxTemperature()),
+                    weatherCard.forecast24hourly.get(i).getMinTemperature(),
+                    weatherCard.forecast24hourly.get(i).getMaxTemperature(),
                     new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),
                     0);
             weatherSpec.forecasts.add(forecast);
