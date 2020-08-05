@@ -100,6 +100,7 @@ public class CurrentWeatherInfo{
         currentWeather.setFlurries(getDoubleItem(rawWeatherInfo.FX1[current_weather_position]));
         currentWeather.setPrecipitation(getDoubleItem(rawWeatherInfo.RR1c[current_weather_position]));
         currentWeather.setProbPrecipitation(getIntItem(rawWeatherInfo.wwP[current_weather_position]));
+        currentWeather.setProbDrizzle(getIntItem(rawWeatherInfo.wwZ[current_weather_position]));
         currentWeather.setProbThunderstorms(getIntItem(rawWeatherInfo.wwT[current_weather_position]));
         currentWeather.setProbFog(getIntItem(rawWeatherInfo.wwM[current_weather_position]));
         currentWeather.setProbSolidPrecipitation(getIntItem(rawWeatherInfo.wwS[current_weather_position]));
@@ -136,6 +137,11 @@ public class CurrentWeatherInfo{
                 if (!wi.hasProbPrecipitation()){
                     // try to self-calculate this
                     wi.setProbPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwP, index -5,index));
+                }
+                wi.setProbDrizzle(getIntItem(rawWeatherInfo.wwZ6[current_weather_position]));
+                if (!wi.hasProbDrizzle()){
+                    // try to self-calculate this
+                    wi.setProbDrizzle(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwZ, index -5,index));
                 }
                 wi.setProbThunderstorms(getIntItem(rawWeatherInfo.wwT6[index]));
                 if (!wi.hasProbThunderstorms()){
@@ -190,6 +196,7 @@ public class CurrentWeatherInfo{
                     // try to self-calculate this
                     wi.setProbPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwP, index -23,index));
                 }
+                wi.setProbDrizzle(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwZ,index-23,index));
                 wi.setProbThunderstorms(getIntItem(rawWeatherInfo.wwTd[index]));
                 if (!wi.hasProbThunderstorms()){
                     // try to self-calculate this

@@ -178,6 +178,7 @@ public final class Weather {
         private Integer prob_thunderstorms;
         private Integer prob_precipitation;
         private Integer prob_solid_precipitation;
+        private Integer prob_drizzle;
         private Integer prob_freezing_rain;
         private Integer prob_fog;
         private Integer visibility;
@@ -229,6 +230,10 @@ public final class Weather {
 
         public void setProbPrecipitation(Integer prob_precipitation){
             this.prob_precipitation = prob_precipitation;
+        }
+
+        public void setProbDrizzle(Integer prob_precipitation){
+            this.prob_drizzle = prob_precipitation;
         }
 
         public void setProbSolidPrecipitation(Integer prob_solid_precipitation){
@@ -402,6 +407,16 @@ public final class Weather {
 
         }
 
+        public boolean hasProbDrizzle(){
+            if (prob_drizzle!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getProbDrizzle(){
+            return prob_drizzle;
+        }
 
         public boolean hasWindSpeed(){
             if (wind_speed!=null){

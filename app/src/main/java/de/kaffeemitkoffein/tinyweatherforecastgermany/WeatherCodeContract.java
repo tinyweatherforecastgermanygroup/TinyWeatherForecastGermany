@@ -491,7 +491,7 @@ public final class WeatherCodeContract {
             }
         }
         /*
-         * continuous rain conditions. drizzle is ignored.
+         * continuous rain conditions.
          */
         // first determine if we have a rain condition at all
         boolean rain_condition = false;
@@ -527,12 +527,30 @@ public final class WeatherCodeContract {
                 }
             }
         }
-        // TODO: add drizzle conditions: slight, moderate, heavy
+        /*
+         * continuous drizzle conditions
+         */
+        if (weatherInfo.hasProbDrizzle()){
+            if (weatherInfo.getProbDrizzle()>THRESHOLD_PROB_FOR_RAIN){
+                if (!weatherInfo.hasPrecipitation()){
+                    // no details about precipitaition known, we simply set the moderate condition
+                    condition = MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS;
+                } else {
+                    condition = HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS;
+                    if (weatherInfo.getPrecipitation()<10){
+                        condition = MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS;
+                    }
+                    if (weatherInfo.getPrecipitation()<2.5){
+                        condition = SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS;
+                    }
+                }
+            }
+        }
         /*
          * continuous mixed snow & rain conditions
          */
         if (weatherInfo.hasProbPrecipitation() && (weatherInfo.hasProbSolidPrecipitation())){
-            if ((weatherInfo.getProbSolidPrecipitation()>THRESHOLD_PROB_FOR_RAIN) & (weatherInfo.getPrecipitation()>THRESHOLD_PROB_FOR_RAIN)){
+            if ((weatherInfo.getProbSolidPrecipitation()>THRESHOLD_PROB_FOR_RAIN) & (weatherInfo.getProbPrecipitation()>THRESHOLD_PROB_FOR_RAIN)){
                 condition = SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY;
                 if (weatherInfo.hasPrecipitation()){
                     if (weatherInfo.getPrecipitation()<10){
@@ -593,7 +611,7 @@ public final class WeatherCodeContract {
          * mixed rain & snow showers
          */
         if (weatherInfo.hasProbPrecipitation() && (weatherInfo.hasProbSolidPrecipitation())){
-            if ((weatherInfo.getProbSolidPrecipitation()<=THRESHOLD_PROB_FOR_RAIN) & (weatherInfo.getPrecipitation()>THRESHOLD_PROB_FOR_RAIN)){
+            if ((weatherInfo.getProbSolidPrecipitation()<=THRESHOLD_PROB_FOR_RAIN) & (weatherInfo.getProbPrecipitation()>THRESHOLD_PROB_FOR_RAIN)){
                 condition = SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY;
                 if (weatherInfo.hasPrecipitation()){
                     if (weatherInfo.getPrecipitation()<10){
