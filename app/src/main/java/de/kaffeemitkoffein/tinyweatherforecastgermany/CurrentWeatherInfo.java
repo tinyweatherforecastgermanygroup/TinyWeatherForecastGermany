@@ -1,9 +1,6 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-
 public class CurrentWeatherInfo{
 
     public static final String EMPTY_TAG = "-";
@@ -27,7 +24,6 @@ public class CurrentWeatherInfo{
                     i = new Integer(j);
                     return i;
                 } catch (NumberFormatException e){
-                    Log.v("CWI","Parsing failed!");
                     // nothing to do
                 }
             }
@@ -73,7 +69,6 @@ public class CurrentWeatherInfo{
             return;
         }
         city = rawWeatherInfo.description;
-        Log.v("CWI","City: "+rawWeatherInfo.description);
         polling_time = rawWeatherInfo.polling_time;
         currentWeather = new Weather.WeatherInfo();
         // get timesteps_long in long
@@ -82,17 +77,9 @@ public class CurrentWeatherInfo{
         int current_weather_position = rawWeatherInfo.getCurrentForecastPosition();
         int next_midnight_position   = rawWeatherInfo.getNextMidnightAfterCurrentForecastPosition();
         currentWeather.setTimestamp(timesteps[current_weather_position]);
-        Log.v("CWI","-----------------------------------------------------");
-        Log.v("CWI","current weather position: "+current_weather_position);
-        Log.v("CWI","next midnight   position: "+next_midnight_position);
-        Log.v("CWI","Elements in raw data    : "+rawWeatherInfo.elements);
-        //Log.v("CWI","ww data    : "+rawWeatherInfo.ww[current_weather_position]);
         currentWeather.setConditionCode(getIntItem(rawWeatherInfo.ww[current_weather_position]));
-        //Log.v("CWI","Condition code current  : "+currentWeather.getCondition());
         currentWeather.setClouds(getIntItem(rawWeatherInfo.N[current_weather_position]));
-        //Log.v("CWI","Condition clouds        : "+currentWeather.getClouds());
         currentWeather.setTemperature(getDoubleItem(rawWeatherInfo.TTT[current_weather_position]));
-        //Log.v("CWI","Condition temp          : "+currentWeather.getTemperatureInt());
         currentWeather.setLowTemperature(rawWeatherInfo.getMinTemperature(current_weather_position,next_midnight_position));
         currentWeather.setHighTemperature(rawWeatherInfo.getMaxTemperature(current_weather_position,next_midnight_position));
         currentWeather.setWindSpeed(getDoubleItem(rawWeatherInfo.FF[current_weather_position]));
@@ -111,15 +98,9 @@ public class CurrentWeatherInfo{
         // fill 6h forecast arraylist
         forecast6hourly = new ArrayList<Weather.WeatherInfo>();
         int index = rawWeatherInfo.getNext6hPosition();
-        Log.v("CWI","First 6-h- Index : "+index);
-        for (int j=0;j<24;j++){
-            Log.v("CWI",j+":"+rawWeatherInfo.timesteps[j]+":"+rawWeatherInfo.WPc61[j]+":"+rawWeatherInfo.RR6c[j]);
-        }
         while (index<rawWeatherInfo.elements){
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setTimestamp(timesteps[index]);
-                Log.v("CWI","-----------------------------------------------------");
-                Log.v("CWI","6h-Forecast index : "+index);
                 wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
                 wi.setClouds(rawWeatherInfo.getAverageClouds(index - 5, index));
                 wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT,index - 5, index));
@@ -174,7 +155,6 @@ public class CurrentWeatherInfo{
         // fill 24h forecast arraylist
         forecast24hourly = new ArrayList<Weather.WeatherInfo>();
         index = rawWeatherInfo.getNext24hPosition();
-        Log.v("CWI","First 23h Index : "+index);
         while (index<rawWeatherInfo.elements){
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setTimestamp(timesteps[index]);

@@ -89,10 +89,41 @@ public class ClassicWidget extends AppWidgetProvider {
 
     /**
      * Updates the display of the wigdgets.
-     * @param c
-     * @param awm
-     * @param widget_instances
+     *
      */
+
+    private void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c){
+        remoteViews.setTextViewText(R.id.classicwidget_locationtext,weatherCard.getCity());
+        if (weatherCard.currentWeather.hasCondition()){
+            int weathercondition = weatherCard.currentWeather.getCondition();
+            remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,new WeatherCodeContract().getWeatherConditionText(c,weathercondition));
+            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,new WeatherCodeContract().getWeatherConditionDrawableResource(weathercondition,weatherCard.currentWeather.isDaytime()));
+        }
+        if (weatherCard.currentWeather.hasTemperature()){
+            remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.currentWeather.getTemperatureInCelsiusInt()+"°"));
+        }
+        if ((weatherCard.currentWeather.hasMinTemperature())&&(weatherCard.currentWeather.hasMaxTemperature())){
+            remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,weatherCard.currentWeather.getMinTemperatureInCelsiusInt()+"° | "+weatherCard.currentWeather.getMaxTemperatureInCelsiusInt()+"°");
+        }
+        if (weatherCard.currentWeather.hasWindSpeed()){
+            String s = String.valueOf(weatherCard.currentWeather.getWindSpeedInKmhInt());
+            if (weatherCard.currentWeather.hasFlurries()){
+                s = s + " ("+ weatherCard.currentWeather.getFlurriesInKmhInt()+")";
+            }
+            remoteViews.setTextViewText(R.id.classicwidget_wind,s);
+            remoteViews.setTextViewText(R.id.classicwidget_wind_unit,"km/h");
+        }
+        if (weatherCard.currentWeather.hasWindDirection()){
+            remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getArrowBitmap(c));
+        }
+        int opacity = Integer.parseInt(weatherSettings.widget_opacity);
+        remoteViews.setInt(R.id.classicwidget_maincontainer,"setBackgroundColor",getBackgroundInt(opacity));
+        if (weatherSettings.widget_showdwdnote) {
+            remoteViews.setViewVisibility(R.id.classicwidget_reference_text, View.VISIBLE);
+        } else {
+            remoteViews.setViewVisibility(R.id.classicwidget_reference_text, View.GONE);
+        }
+    }
 
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
@@ -104,36 +135,7 @@ public class ClassicWidget extends AppWidgetProvider {
                 PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.classicwidget_layout);
                 remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer,pendingIntent);
-                remoteViews.setTextViewText(R.id.classicwidget_locationtext,weatherCard.getCity());
-                if (weatherCard.currentWeather.hasCondition()){
-                    int weathercondition = weatherCard.currentWeather.getCondition();
-                    remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,new WeatherCodeContract().getWeatherConditionText(c,weathercondition));
-                    remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,new WeatherCodeContract().getWeatherConditionDrawableResource(weathercondition,weatherCard.currentWeather.isDaytime()));
-                }
-                if (weatherCard.currentWeather.hasTemperature()){
-                    remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.currentWeather.getTemperatureInCelsius()+"°"));
-                }
-                if ((weatherCard.currentWeather.hasMinTemperature())&&(weatherCard.currentWeather.hasMaxTemperature())){
-                    remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,weatherCard.currentWeather.getMinTemperatureInCelsiusInt()+"° | "+weatherCard.currentWeather.getMaxTemperatureInCelsius()+"°");
-                }
-                if (weatherCard.currentWeather.hasWindSpeed()){
-                    String s = String.valueOf(weatherCard.currentWeather.getWindSpeedInKmhInt());
-                    if (weatherCard.currentWeather.hasFlurries()){
-                        s = s + " ("+ weatherCard.currentWeather.getFlurriesInKmhInt()+")";
-                    }
-                    remoteViews.setTextViewText(R.id.classicwidget_wind,s);
-                    remoteViews.setTextViewText(R.id.classicwidget_wind_unit,"km/h");
-                }
-                if (weatherCard.currentWeather.hasWindDirection()){
-                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getArrowBitmap(c));
-                }
-                int opacity = Integer.parseInt(weatherSettings.widget_opacity);
-                remoteViews.setInt(R.id.classicwidget_maincontainer,"setBackgroundColor",getBackgroundInt(opacity));
-                if (weatherSettings.widget_showdwdnote) {
-                    remoteViews.setViewVisibility(R.id.classicwidget_reference_text, View.VISIBLE);
-                } else {
-                    remoteViews.setViewVisibility(R.id.classicwidget_reference_text, View.GONE);
-                }
+                setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
                 awm.updateAppWidget(widget_instances[i],remoteViews);
             }
         }

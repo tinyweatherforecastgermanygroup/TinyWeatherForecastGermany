@@ -347,7 +347,6 @@ public final class WeatherCodeContract {
     }
 
     public static int getWeatherConditionTextResource(int weathercondition) {
-        Log.v("CONTRACT", "Weathercode for text: " + weathercondition);
         int result = R.string.weathercode_UNKNOWN;
         switch (weathercondition) {
             case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:

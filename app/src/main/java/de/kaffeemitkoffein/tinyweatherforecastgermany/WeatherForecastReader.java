@@ -2,11 +2,9 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
@@ -54,21 +52,16 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
     protected RawWeatherInfo doInBackground(Void... voids) {
         String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
         try{
-            Log.v("PPPP","Stating the Forecastreader........................");
-            Log.v("PPPP","URL: "+weather_url);
             URL url = new URL(weather_url);
             ZipInputStream zipInputStream = new ZipInputStream(new URL(weather_url).openStream());
             zipInputStream.getNextEntry();
             // init new RawWeatherInfo instance to fill with data
-            Log.v("PPPP","Init a rawWeatherInfo instance....");
             RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
             // rawWeatherInfo.description = weatherLocation.description;
             try {
                 DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
                 Document document = documentBuilder.parse(zipInputStream);
-            Log.v("PPPP","Building....");
             rawWeatherInfo.description = "?";
-            Log.v("PPPP",rawWeatherInfo.description);
             // get sensor description, usually city name. This should be equal to weatherLocation.description,
             // but we take it from the api to be sure nothing changed and the right city gets displayed!
 
@@ -77,25 +70,19 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
                 // should be only one, but we take the latest
                 Element placemark_element = (Element) placemark_nodes.item(i);
                 String description = placemark_element.getFirstChild().getNodeValue();
-                Log.v("PPPP",description);
                 rawWeatherInfo.description = description;
             }
 
             NodeList timesteps = document.getElementsByTagName("dwd:TimeStep");
-            Log.v("PPPP","Getting timesteps....");
             for (int i=0; i<timesteps.getLength(); i++){
-                Log.v("PPPP","Getting timesteps...."+i);
                 Element element = (Element) timesteps.item(i);
                 rawWeatherInfo.timesteps[i] = element.getFirstChild().getNodeValue();
                 rawWeatherInfo.elements = i;
             }
             NodeList forecast = document.getElementsByTagName("dwd:Forecast");
-            Log.v("PPPP","Getting forecast data....");
-            Log.v("PPPP","Forecast length: "+forecast.getLength());
             for (int i=0; i<forecast.getLength(); i++){
                 Element element = (Element) forecast.item(i);
                 String type     = element.getAttribute("dwd:elementName");
-               Log.v("PPPP","Type/Element Name (+"+i+"): "+type);
                 switch (type){
                     case "TTT": rawWeatherInfo.TTT = assigntoRaw(element); break;
                     case "E_TTT": rawWeatherInfo.E_TTT = assigntoRaw(element); break;
@@ -219,10 +206,8 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
             PrivateLog.log(context,"Elements read: "+rawWeatherInfo.elements);
             return rawWeatherInfo;
             } catch (Exception e){
-                Log.v("PPPP","Parsing error!");
             }
         } catch (IOException e){
-            Log.v("TAG",e.toString());
         }
         return null;
     }
@@ -244,28 +229,19 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
 
     public void onPositiveResult(RawWeatherInfo rawWeatherInfo){
         onPositiveResult();
-
-        for (int i=0;i< rawWeatherInfo.elements;i++){
-            Log.v("PPPP",rawWeatherInfo.timesteps[i]+" PPPP:"+rawWeatherInfo.PPPP[i]+" TTT:"+rawWeatherInfo.TTT[i]+" ww:"+rawWeatherInfo.ww[i]);
-        }
-
     }
 
     protected void onPostExecute(RawWeatherInfo rawWeatherInfo) {
-        Log.v("PPPP","Postexecute reached.");
         if (rawWeatherInfo == null) {
-            Log.v("PPPP","Postexecute reached, result null.");
             onNegativeResult();
         } else {
             // get timestamp
             Calendar calendar = Calendar.getInstance();
             rawWeatherInfo.polling_time = calendar.getTimeInMillis();
             // writes the weather data to the database
-            Log.v("PPPP","Postexecute reached, result ok, writing.");
             WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
             weatherForecastContentProvider.writeWeatherForecast(context,rawWeatherInfo);
             onPositiveResult(rawWeatherInfo);
-            Log.v("PPPP","Postexecute termiates as expected.");
         }
     }
 
