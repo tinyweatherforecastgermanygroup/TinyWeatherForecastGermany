@@ -95,11 +95,11 @@ public class ForecastAdapter extends BaseAdapter {
         // right column
         TextView textView_temp = (TextView) view.findViewById(R.id.fcitem_temperature);
         if (weatherInfo.hasTemperature()){
-            textView_temp.setText(String.valueOf(weatherInfo.getTemperatureInCelsius()+"°"));
+            textView_temp.setText(String.valueOf(weatherInfo.getTemperatureInCelsiusInt()+"°"));
         }
         TextView textView_highlow = (TextView) view.findViewById(R.id.fcitem_temperature_highlow);
         if (weatherInfo.hasMinTemperature() && weatherInfo.hasMaxTemperature()){
-            textView_highlow.setText(weatherInfo.getMinTemperatureInCelsius()+"° | "+weatherInfo.getMaxTemperatureInCelsius()+"°");
+            textView_highlow.setText(weatherInfo.getMinTemperatureInCelsiusInt()+"° | "+weatherInfo.getMaxTemperatureInCelsiusInt()+"°");
         }
         TextView textView_wind = (TextView) view.findViewById(R.id.fcitem_wind);
         if (weatherInfo.hasWindSpeed()){

@@ -56,8 +56,6 @@ public final class WeatherCodeContract {
     public final static int EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8 = 01;
     public final static int EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8 = 00;
 
-    public final static int SIMPLIFIED = 1024;
-
     public static final class LineageOsWeatherContract {
         public final static int BLUSTERY = 22;
         public final static int CLEAR_NIGHT = 30;
@@ -454,6 +452,7 @@ public final class WeatherCodeContract {
 
     public static int calculateCustomWeatherconditionFromData(Weather.WeatherInfo weatherInfo) {
         final int THRESHOLD_CLOUDS_FOR_SHOWERS = 80;
+        final int THRESHOLD_PROB_FOR_RAIN      = 20;
         if (!hasSufficientDataForIconCalculation(weatherInfo)) {
             return NOT_AVAILABLE;
         }
@@ -474,106 +473,171 @@ public final class WeatherCodeContract {
         /*
          * fog conditions
          */
-        if (weatherInfo.hasFog()) {
-            if (weatherInfo.getFogProb() > 30) {
-                condition = FOG_SKY_NOT_RECOGNIZABLE | SIMPLIFIED;
+        if (weatherInfo.hasProbFog()) {
+            if (weatherInfo.getProbFog() > 30) {
+                condition = FOG_SKY_NOT_RECOGNIZABLE;
+                if (weatherInfo.getTemperatureInCelsius()<0){
+                    condition = ICE_FOG_SKY_NOT_RECOGNIZABLE;
+                }
             }
         } else {
             if (weatherInfo.hasVisibility()) {
                 if (weatherInfo.getVisibility() < 2000) {
-                    condition = FOG_SKY_NOT_RECOGNIZABLE | SIMPLIFIED;
+                    condition = FOG_SKY_NOT_RECOGNIZABLE;
+                }
+                if (weatherInfo.getTemperatureInCelsius()<0){
+                    condition = ICE_FOG_SKY_NOT_RECOGNIZABLE;
                 }
             }
         }
         /*
-         * rain conditions. Drizzle is ignored / not shown, therefore simplified tag is set
-         * first, we try to determine the condition from the amount of rain per hour, if this
-         * is specified.
+         * continuous rain conditions. drizzle is ignored.
          */
-        if (weatherInfo.hasPrecipitation()) {
-            // >= 50 in 1h = very strong showers
-            condition = EXTREMELY_HEAVY_RAIN_SHOWER;
-            // < 10 mm in 1h = moderate rain, < 50 mm in 1h = heavy rain
-            if (weatherInfo.getPrecipitationDouble() < 50) { // mm
-                if (weatherInfo.getClouds() < THRESHOLD_CLOUDS_FOR_SHOWERS) {
-                    condition = MODERATE_OR_HEAVY_RAIN_SHOWERS | SIMPLIFIED;
-                } else {
-                    condition = HEAVY_RAIN_NOT_FREEZING_CONTINUOUS | SIMPLIFIED;
-                    if (weatherInfo.getPrecipitationDouble() < 10)
-                        condition = MODERATE_RAIN_NOT_FREEZING_CONTINUOUS | SIMPLIFIED;
-                }
-            }
-            // < 2.5 mm in 1h = light rain
-            if (weatherInfo.getPrecipitationDouble() < 2.5) { // mm
-        /*
-            1000 ml / m′
-            0.001 m³/m² = 0.001 m
-                = 0,1 cm
-                    = 1 mm
-
-         */
-                if (weatherInfo.getClouds() < THRESHOLD_CLOUDS_FOR_SHOWERS) {
-                    // light showers
-                    condition = SLIGHT_RAIN_SHOWER | SIMPLIFIED;
-                } else {
-                    condition = SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS | SIMPLIFIED;
-                }
+        // first determine if we have a rain condition at all
+        boolean rain_condition = false;
+        if (weatherInfo.hasPrecipitation()){
+            if (weatherInfo.getPrecipitation()>0){
+                rain_condition = true;
             }
         } else {
-            /*
-             * alternatively, we try to determine rain conditions from probability values only. This is
-             * less accurate, therefore 2nd choice.
-             */
-            if (weatherInfo.getProbPrecipitation() > 0) {
-                if (weatherInfo.getProbPrecipitation() > 30) {
-                    // light rain
-                    if (weatherInfo.getClouds() >= 80) {
-                        condition = SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS | SIMPLIFIED;
-                    } else {
-                        condition = SLIGHT_RAIN_SHOWER | SIMPLIFIED;
-                    }
-                }
-                if (weatherInfo.getProbPrecipitation() > 60) {
-                    // moderate rain
-                    if (weatherInfo.getClouds() >= 80) {
-                        condition = MODERATE_RAIN_NOT_FREEZING_CONTINUOUS | SIMPLIFIED;
-                    } else {
-                        condition = MODERATE_OR_HEAVY_RAIN_SHOWERS | SIMPLIFIED;
-                    }
-                }
-                if (weatherInfo.getProbPrecipitation() > 80) {
-                    // heavy rain
-                    if (weatherInfo.getClouds() >= 80) {
-                        condition = HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS;
-                    } else {
+            if (weatherInfo.getProbPrecipitation()>THRESHOLD_PROB_FOR_RAIN){
+                rain_condition = true;
+            }
+        }
+        if (rain_condition){
+            // is it a continuous rain condition?
+            if (weatherInfo.getClouds()>THRESHOLD_CLOUDS_FOR_SHOWERS){
+                // >= 50 in 1h = very strong showers
+                if (!weatherInfo.hasPrecipitation()){
+                    // no details about precipitaition known, we simply set the moderate condition
+                    condition = MODERATE_RAIN_NOT_FREEZING_CONTINUOUS;
+                } else {
+                    // we have details about precipitation
+                    // >= 50 in 1h = very strong showers
+                    condition = EXTREMELY_HEAVY_RAIN_SHOWER;
+                    if (weatherInfo.getPrecipitation()<50){
                         condition = MODERATE_OR_HEAVY_RAIN_SHOWERS;
                     }
-                }
-            }
-            /*
-             * mixed snow & rain conditions
-             */
-
-
-            /*
-             * freezing rain conditions
-             */
-            if (weatherInfo.hasProbFreezingRain()) {
-                if (weatherInfo.getFreezingRainProb() > 0) {
-                    condition = RAIN_FREEZING_SLIGHT;
-                    if (weatherInfo.hasPrecipitation()) {
-                        if (weatherInfo.getPrecipitationDouble() >= 10) {
-                            condition = RAIN_FREEZING_MODERATE_OR_HEAVY;
-                        }
+                    if (weatherInfo.getPrecipitation()<10){
+                        condition = MODERATE_RAIN_NOT_FREEZING_CONTINUOUS;
+                    }
+                    if (weatherInfo.getPrecipitation()<2.5){
+                        condition = SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS;
                     }
                 }
             }
-            /*
-             * thunderstorms
-             */
+        }
+        /*
+         * continuous mixed snow & rain conditions
+         */
+        if (weatherInfo.hasProbPrecipitation() && (weatherInfo.hasProbSolidPrecipitation())){
+            if ((weatherInfo.getProbSolidPrecipitation()>THRESHOLD_PROB_FOR_RAIN) & (weatherInfo.getPrecipitation()>THRESHOLD_PROB_FOR_RAIN)){
+                condition = SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY;
+                if (weatherInfo.hasPrecipitation()){
+                    if (weatherInfo.getPrecipitation()<10){
+                        condition = SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT;
+                    }
+                }
+            }
+        }
+        /*
+         * continous snow conditions
+         */
+        boolean snow_condition = false;
+        if (rain_condition) {
+            if (weatherInfo.getTemperatureInCelsius()<0){
+                snow_condition = true;
+            }
+        }
+        if (weatherInfo.hasProbSolidPrecipitation()) {
+            if (weatherInfo.getProbSolidPrecipitation() > THRESHOLD_PROB_FOR_RAIN) {
+                snow_condition = true;
+            }
+        }
+        if ((snow_condition) && (weatherInfo.getClouds()>THRESHOLD_CLOUDS_FOR_SHOWERS)){
+            if (!weatherInfo.hasPrecipitation()) {
+                // no details about precipitaition known, we simply set the moderate condition
+                condition = MODERATE_SNOWFALL_CONTINUOUS;
+            } else {
+                // > 5 mm = heavy snow
+                condition = HEAVY_SNOWFALL_CONTINUOUS;
+                // < 5mm = moderate snow
+                if (weatherInfo.getPrecipitation() < 5) {
+                    condition = MODERATE_SNOWFALL_CONTINUOUS;
+                }
+                // <1.0 = light snow
+                if (weatherInfo.getPrecipitation() < 1) {
+                    condition = SLIGHT_SNOWFALL_CONTINUOUS;
+                }
+            }
+        }
+        /*
+         * rain shower conditions
+         */
+        if ((rain_condition) && (weatherInfo.getClouds()<=THRESHOLD_CLOUDS_FOR_SHOWERS)) {
+            if (!weatherInfo.hasPrecipitation()) {
+                // no details about precipitaition known, we simply set the moderate condition
+                condition = MODERATE_OR_HEAVY_RAIN_SHOWERS;
+            } else {
+                condition = EXTREMELY_HEAVY_RAIN_SHOWER;
+                if (weatherInfo.getPrecipitation() < 50) {
+                    condition = MODERATE_OR_HEAVY_RAIN_SHOWERS;
+                }
+                if (weatherInfo.getPrecipitation() < 2.5) {
+                    condition = SLIGHT_RAIN_SHOWER;
+                }
+            }
+        }
+        /*
+         * mixed rain & snow showers
+         */
+        if (weatherInfo.hasProbPrecipitation() && (weatherInfo.hasProbSolidPrecipitation())){
+            if ((weatherInfo.getProbSolidPrecipitation()<=THRESHOLD_PROB_FOR_RAIN) & (weatherInfo.getPrecipitation()>THRESHOLD_PROB_FOR_RAIN)){
+                condition = SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY;
+                if (weatherInfo.hasPrecipitation()){
+                    if (weatherInfo.getPrecipitation()<10){
+                        condition = SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT;
+                    }
+                }
+            }
+        }
+        /*
+         * snow shower conditions
+         */
+        if ((snow_condition) && (weatherInfo.getClouds()<THRESHOLD_CLOUDS_FOR_SHOWERS)) {
+            if (!weatherInfo.hasPrecipitation()) {
+                // no details about precipitaition known, we simply set the moderate condition
+                condition = SNOW_SHOWERS_MODERATE_OR_HEAVY;
+            } else {
+                if (weatherInfo.getPrecipitation() < 1) {
+                    condition = SNOW_SHOWERS_SLIGHT;
+                }
+            }
+        }
+        /*
+         * freezing rain conditions
+         */
+        if (weatherInfo.hasProbFreezingRain()) {
+            if (weatherInfo.getProbFreezingRain() > 0) {
+                condition = RAIN_FREEZING_SLIGHT;
+                if (weatherInfo.hasPrecipitation()) {
+                    if (weatherInfo.getProbPrecipitation() >= 10) {
+                        condition = RAIN_FREEZING_MODERATE_OR_HEAVY;
+                    }
+                }
+            }
+        }
+        /*
+         * thunderstorms
+         */
+        if (weatherInfo.hasProbThunderstorms()){
+            if (weatherInfo.getProbFreezingRain()>=5){
+                condition = SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW;
+            }
         }
         return condition;
     }
+
 }
 
 

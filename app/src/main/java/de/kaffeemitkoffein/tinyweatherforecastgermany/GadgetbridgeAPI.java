@@ -49,11 +49,11 @@ public class GadgetbridgeAPI {
         if (weatherCard.currentWeather.hasTemperature()){
             weatherSpec.currentTemp          = weatherCard.currentWeather.getTemperatureInt();
         }
-        if (weatherCard.currentWeather.hasMaxTemperature()){
-            weatherSpec.todayMaxTemp         = weatherCard.currentWeather.getMaxTemperature();
-        }
         if (weatherCard.currentWeather.hasMinTemperature()){
-            weatherSpec.todayMinTemp         = weatherCard.currentWeather.getMinTemperature();
+            weatherSpec.todayMinTemp         = weatherCard.currentWeather.getMinTemperatureInt();
+        }
+        if (weatherCard.currentWeather.hasMaxTemperature()){
+            weatherSpec.todayMaxTemp         = weatherCard.currentWeather.getMaxTemperatureInt();
         }
         if (weatherCard.currentWeather.hasWindSpeed()){
             weatherSpec.windSpeed            = (float) weatherCard.currentWeather.getWindSpeedInKmhInt();
@@ -71,8 +71,8 @@ public class GadgetbridgeAPI {
             }
             // construct forecast and add it; @DWD, humidity is always unknown because not served.
             WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(
-                    weatherCard.forecast24hourly.get(i).getMinTemperature(),
-                    weatherCard.forecast24hourly.get(i).getMaxTemperature(),
+                    weatherCard.forecast24hourly.get(i).getMinTemperatureInt(),
+                    weatherCard.forecast24hourly.get(i).getMaxTemperatureInt(),
                     new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),
                     0);
             weatherSpec.forecasts.add(forecast);

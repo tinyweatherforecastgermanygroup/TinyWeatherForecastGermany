@@ -36,7 +36,7 @@ import java.util.Calendar;
 public class UpdateAlarmManager {
 
     private static final int PRIVATE_ALARM_IDENTIFIER = 0;
-    private static final int PRIVATE_JOBINFO_IDENTIFIER = 59393;
+    private static final int PRIVATE_JOBINFO_IDENTIFIER = 1;
     private static final int EARLY_ALARM_TIME = 1000*60*5; // 5 minutes in millis
     public static final boolean FORCE_UPDATE = true;
     public static final boolean CHECK_FOR_UPDATE = false;
@@ -116,12 +116,27 @@ public class UpdateAlarmManager {
     }
 
     public static void setEarlyAlarm(Context context){
-        PrivateLog.log(context,Tag.ALARMMANAGER,"setting early alarm in "+EARLY_ALARM_TIME/1000+" seconds.");
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context,WeatherUpdateBroadcastReceiver.class);
-        intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        intent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,PRIVATE_ALARM_IDENTIFIER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setExact(AlarmManager.ELAPSED_REALTIME,SystemClock.elapsedRealtime() + EARLY_ALARM_TIME,pendingIntent);
+        if (Build.VERSION.SDK_INT < 26) {
+            PrivateLog.log(context,Tag.ALARMMANAGER,"setting early alarm in "+EARLY_ALARM_TIME/1000+" seconds.");
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context,WeatherUpdateBroadcastReceiver.class);
+            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            intent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,PRIVATE_ALARM_IDENTIFIER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.setExact(AlarmManager.ELAPSED_REALTIME,SystemClock.elapsedRealtime() + EARLY_ALARM_TIME,pendingIntent);
+        } else {
+            final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+            Intent jobintent = new Intent(context,UpdateJobService.class);
+            jobintent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            jobintent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
+            final JobWorkItem jobWorkItem = new JobWorkItem(jobintent);
+            final JobInfo jobInfo = new JobInfo.Builder(PRIVATE_JOBINFO_IDENTIFIER,new ComponentName(context,UpdateJobService.class))
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                    .setMinimumLatency(EARLY_ALARM_TIME)
+                    .build();
+            jobScheduler.enqueue(jobInfo,jobWorkItem);
+            PrivateLog.log(context,Tag.ALARMMANAGER,"early job enqueued in "+EARLY_ALARM_TIME/1000+"when network available.");
+        }
     }
 }

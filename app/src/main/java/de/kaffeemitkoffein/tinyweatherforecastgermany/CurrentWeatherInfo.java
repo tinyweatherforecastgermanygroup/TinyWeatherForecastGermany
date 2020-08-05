@@ -102,7 +102,7 @@ public class CurrentWeatherInfo{
         currentWeather.setProbPrecipitation(getIntItem(rawWeatherInfo.wwP[current_weather_position]));
         currentWeather.setProbThunderstorms(getIntItem(rawWeatherInfo.wwT[current_weather_position]));
         currentWeather.setProbFog(getIntItem(rawWeatherInfo.wwM[current_weather_position]));
-        currentWeather.setProbPrecipitation(getIntItem(rawWeatherInfo.wwS[current_weather_position]));
+        currentWeather.setProbSolidPrecipitation(getIntItem(rawWeatherInfo.wwS[current_weather_position]));
         currentWeather.setProbFreezingRain(getIntItem(rawWeatherInfo.wwF[current_weather_position]));
         currentWeather.setVisibility(getIntItem(rawWeatherInfo.VV[current_weather_position]));
         currentWeather.setUV(getDoubleItem(rawWeatherInfo.RRad1[current_weather_position]));
@@ -117,45 +117,51 @@ public class CurrentWeatherInfo{
         while (index<rawWeatherInfo.elements){
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setTimestamp(timesteps[index]);
-            try {
                 Log.v("CWI","-----------------------------------------------------");
                 Log.v("CWI","6h-Forecast index : "+index);
-                //Log.v("CWI","Raw cond code : "+rawWeatherInfo.WPc61[index]);
                 wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
-                //Log.v("CWI","Condition code 6h-forecast ("+index+") : "+wi.getCondition());
                 wi.setClouds(rawWeatherInfo.getAverageClouds(index - 5, index));
-                //Log.v("CWI","Clouds 6h-forecast ("+index+") : "+wi.getClouds());
                 wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT,index - 5, index));
-                //Log.v("CWI","Temp 6h-forecast ("+index+") : "+wi.getMaxTemperatureInCelsius());
                 wi.setLowTemperature(rawWeatherInfo.getMinTemperature(index - 5, index));
-                //Log.v("CWI","Temp low 6h-forecast ("+index+") : "+wi.getMinTemperatureInCelsius());
                 wi.setHighTemperature(rawWeatherInfo.getMaxTemperature(index - 5, index));
-                //Log.v("CWI","Temp high 6h-forecast ("+index+") : "+wi.getMaxTemperatureInCelsius());
                 wi.setWindSpeed(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.FF, index - 5, index));
-                //Log.v("CWI","Wind speed high 6h-forecast ("+index+") : "+wi.getWindSpeed());
-                wi.setWindDirection(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.DD, index - 5, index));
-                //Log.v("CWI","Wind dir high 6h-forecast ("+index+") : "+wi.getWindDirectionInt());
+                wi.setWindDirection(getDoubleItem(rawWeatherInfo.DD[index]));
                 wi.setFlurries(rawWeatherInfo.getMaxDoubleValue(rawWeatherInfo.FX1, index - 5, index));
-                //Log.v("CWI","Flurries high 6h-forecast ("+index+") : "+wi.getFlurriesInKmhInt());
                 wi.setPrecipitation(getDoubleItem(rawWeatherInfo.RR6c[index]));
-                // Log.v("CWI","Precipitation 6h-forecast ("+index+") : "+wi.getPrecipitation());
+                if (!wi.hasPrecipitation()){
+                    // try to self-calculate this
+                    wi.setPrecipitation(rawWeatherInfo.getMaxDoubleValue(rawWeatherInfo.RR1c, index -5,index));
+                }
                 wi.setProbPrecipitation(getIntItem(rawWeatherInfo.wwP6[index]));
-                //Log.v("CWI","Prob. prec. 6h-forecast ("+index+") : "+wi.getProbPrecipitation());
+                if (!wi.hasProbPrecipitation()){
+                    // try to self-calculate this
+                    wi.setProbPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwP, index -5,index));
+                }
                 wi.setProbThunderstorms(getIntItem(rawWeatherInfo.wwT6[index]));
-                //Log.v("CWI","Prob. T 6h-forecast ("+index+") : "+wi.getThunderStormsProb());
+                if (!wi.hasProbThunderstorms()){
+                    // try to self-calculate this
+                    wi.setProbThunderstorms(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwT, index -5,index));
+                }
                 wi.setProbFog(getIntItem(rawWeatherInfo.wwM6[index]));
-                //Log.v("CWI","Prob. fog 6h-forecast ("+index+") : "+wi.getFogProb());
+                if (!wi.hasProbFog()){
+                    // try to self-calculate this
+                    wi.setProbFog(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwM, index -5,index));
+                }
                 wi.setProbSolidPrecipitation(getIntItem(rawWeatherInfo.wwS6[index]));
-                //Log.v("CWI","Prob. solid per 6h-forecast ("+index+") : "+wi.getSolidPrecipitationProb());
+                if (!wi.hasProbSolidPrecipitation()){
+                    // try to self-calculate this
+                    wi.setProbSolidPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS, index -5,index));
+                }
                 wi.setProbFreezingRain(getIntItem(rawWeatherInfo.wwF6[index]));
-                //Log.v("CWI","Prob. FR per 6h-forecast ("+index+") : "+wi.getFreezingRainProb());
+                if (!wi.hasProbFreezingRain()){
+                    // try to self-calculate this
+                    wi.setProbFreezingRain(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS, index -5,index));
+                }
                 wi.setVisibility(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.VV, index - 5, index));
-                //Log.v("CWI","Visibility per 6h-forecast ("+index+") : "+wi.getVisibility());
                 wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1, index - 5, index));
-                //Log.v("CWI","Radiation per 6h-forecast ("+index+") : "+wi.getUV());
-            } catch (NumberFormatException e){
-                // nothing to do, not available already null
-            }
+                if (!wi.hasCondition()){
+                    wi.calculateMissingCondition();
+                }
             forecast6hourly.add(wi);
             index = index + 6;
         }
@@ -166,7 +172,6 @@ public class CurrentWeatherInfo{
         while (index<rawWeatherInfo.elements){
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setTimestamp(timesteps[index]);
-            try {
                 wi.setConditionCode(getIntItem(rawWeatherInfo.WPcd1[index]));
                 wi.setClouds(rawWeatherInfo.getAverageClouds(index-23,index));
                 wi.setTemperature(rawWeatherInfo.getAverageTemperature(index-23,index));
@@ -176,16 +181,32 @@ public class CurrentWeatherInfo{
                 wi.setWindDirection(getDoubleItem(rawWeatherInfo.DD[index]));
                 wi.setFlurries(rawWeatherInfo.getMaxDoubleValue(rawWeatherInfo.FX1,index-23,index));
                 wi.setPrecipitation(getDoubleItem(rawWeatherInfo.RRdc[index]));
+                if (!wi.hasPrecipitation()){
+                    // try to self-calculate this
+                    wi.setPrecipitation(rawWeatherInfo.getMaxDoubleValue(rawWeatherInfo.RR1c, index -23,index));
+                }
                 wi.setProbPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwP,index-23,index));
-                wi.setProbThunderstorms(Integer.parseInt(rawWeatherInfo.wwTd[index]));
-                wi.setProbFog(Integer.parseInt(rawWeatherInfo.wwMd[index]));
+                if (!wi.hasProbPrecipitation()){
+                    // try to self-calculate this
+                    wi.setProbPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwP, index -23,index));
+                }
+                wi.setProbThunderstorms(getIntItem(rawWeatherInfo.wwTd[index]));
+                if (!wi.hasProbThunderstorms()){
+                    // try to self-calculate this
+                    wi.setProbThunderstorms(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwT, index -23,index));
+                }
+                wi.setProbFog(getIntItem(rawWeatherInfo.wwMd[index]));
+                if (!wi.hasProbFog()){
+                    // try to self-calculate this
+                    wi.setProbFog(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwM, index -23,index));
+                }
                 wi.setProbSolidPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS,index-23,index));
                 wi.setProbFreezingRain(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwF,index-23,index));
                 wi.setVisibility(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.VV,index-23,index));
                 wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1,index-23,index));
-            } catch (NumberFormatException e){
-                // nothing to do, not available already null
-            }
+                if (!wi.hasCondition()){
+                    wi.calculateMissingCondition();
+                }
             forecast24hourly.add(wi);
             index = index + 24;
         }

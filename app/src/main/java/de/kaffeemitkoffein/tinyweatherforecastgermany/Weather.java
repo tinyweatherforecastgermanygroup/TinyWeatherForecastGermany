@@ -166,6 +166,7 @@ public final class Weather {
     public static class WeatherInfo{
         private long timestamp;
         private Integer condition_code;
+        private boolean condition_is_calculated = false;
         private Double temperature;
         private Double temperature_high;
         private Double temperature_low;
@@ -304,24 +305,89 @@ public final class Weather {
             return condition_code;
         }
 
+        public boolean hasTemperature(){
+            if (temperature!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getTemperatureInt(){
+            int j = temperature.intValue();
+            return j;
+        }
+
+        public double getTemperatureInCelsius(){
+            Double d = (temperature - KelvinConstant);
+            return d;
+        }
+        public int getTemperatureInCelsiusInt(){
+            Double d = (temperature - KelvinConstant);
+            int j = d.intValue();
+            return j;
+        }
+
+        public boolean hasMaxTemperature(){
+            if (temperature_high!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getMaxTemperatureInt(){
+            int j = temperature_high.intValue();
+            return j;
+        }
+
+        public double getMaxTemperatureInCelsius(){
+            return (temperature_high - KelvinConstant);
+        }
+
+        public int getMaxTemperatureInCelsiusInt(){
+            Double d = getMaxTemperatureInCelsius();
+            int j = d.intValue();
+            return j;
+        }
+
+        public boolean hasMinTemperature(){
+            if (temperature_low!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public double getMinTemperature(){
+            return temperature_low;
+        }
+
+        public int getMinTemperatureInt(){
+            int j = temperature_low.intValue();
+            return j;
+        }
+
+        public int getMinTemperatureInCelsiusInt(){
+            Double d = temperature_low - KelvinConstant;
+            int j = d.intValue();
+            return j;
+        }
+
         public boolean hasPrecipitation(){
             if (precipitation!=null){
                 return true;
             }
             return false;
-
         }
 
-        public String getPrecipitation(){
+        public double getPrecipitation(){
+            return precipitation;
+        }
+
+        public String getPrecipitationString(){
             if (precipitation!=null){
                 return String.valueOf(precipitation)+" kg/m²";
             } else {
                 return "-";
             }
-        }
-
-        public double getPrecipitationDouble(){
-            return precipitation;
         }
 
         public boolean hasProbPrecipitation(){
@@ -336,55 +402,6 @@ public final class Weather {
 
         }
 
-        public boolean hasTemperature(){
-            if (temperature!=null){
-                return true;
-            }
-            return false;
-        }
-
-        public int getTemperatureInt(){
-            int j = temperature.intValue();
-            return j;
-        }
-
-        public int getTemperatureInCelsius(){
-            Double d = (temperature - KelvinConstant);
-            int j = d.intValue();
-            return j;
-        }
-
-        public boolean hasMaxTemperature(){
-            if (temperature_high!=null){
-                return true;
-            }
-            return false;
-        }
-
-        public int getMaxTemperature(){
-            int j = temperature_high.intValue();
-            return j;
-        }
-
-        public int getMaxTemperatureInCelsius(){
-            return (int) (temperature_high - KelvinConstant);
-        }
-
-        public boolean hasMinTemperature(){
-            if (temperature_low!=null){
-                return true;
-            }
-            return false;
-        }
-
-        public int getMinTemperature(){
-            int j = temperature_low.intValue();
-            return j;
-        }
-
-        public int getMinTemperatureInCelsius(){
-            return (int) (temperature_low - KelvinConstant);
-        }
 
         public boolean hasWindSpeed(){
             if (wind_speed!=null){
@@ -393,7 +410,7 @@ public final class Weather {
             return false;
         }
 
-        public String getWindSpeed(){
+        public String getWindSpeedString(){
             return String.valueOf(wind_speed+ "m/s");
         }
 
@@ -434,7 +451,7 @@ public final class Weather {
             return false;
         }
 
-        public int getThunderStormsProb(){
+        public int getProbThunderStorms(){
             return prob_thunderstorms;
         }
 
@@ -445,7 +462,7 @@ public final class Weather {
             return false;
         }
 
-        public int getSolidPrecipitationProb(){
+        public int getProbSolidPrecipitation(){
             return prob_solid_precipitation;
         }
 
@@ -456,18 +473,18 @@ public final class Weather {
             return false;
         }
 
-        public int getFreezingRainProb(){
+        public int getProbFreezingRain(){
             return prob_freezing_rain;
         }
 
-        public boolean hasFog(){
+        public boolean hasProbFog(){
             if (prob_fog!=null){
                 return true;
             }
             return false;
         }
 
-        public int getFogProb(){
+        public int getProbFog(){
             return prob_fog;
         }
 
@@ -504,6 +521,22 @@ public final class Weather {
             }
             return false;
         }
+
+        public boolean calculateMissingCondition(){
+            if (condition_code==null){
+                condition_code = WeatherCodeContract.calculateCustomWeatherconditionFromData(this);
+                if (condition_code != WeatherCodeContract.NOT_AVAILABLE){
+                    this.condition_is_calculated = true;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public boolean isConditionCalculated(){
+            return condition_is_calculated;
+        }
+
     }
 
     public CurrentWeatherInfo getCurrentWeatherInfo(Context context){

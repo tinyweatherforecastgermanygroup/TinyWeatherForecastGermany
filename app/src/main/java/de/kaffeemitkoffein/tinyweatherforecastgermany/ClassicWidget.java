@@ -114,7 +114,7 @@ public class ClassicWidget extends AppWidgetProvider {
                     remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.currentWeather.getTemperatureInCelsius()+"°"));
                 }
                 if ((weatherCard.currentWeather.hasMinTemperature())&&(weatherCard.currentWeather.hasMaxTemperature())){
-                    remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,weatherCard.currentWeather.getMinTemperatureInCelsius()+"° | "+weatherCard.currentWeather.getMaxTemperatureInCelsius()+"°");
+                    remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,weatherCard.currentWeather.getMinTemperatureInCelsiusInt()+"° | "+weatherCard.currentWeather.getMaxTemperatureInCelsius()+"°");
                 }
                 if (weatherCard.currentWeather.hasWindSpeed()){
                     String s = String.valueOf(weatherCard.currentWeather.getWindSpeedInKmhInt());
