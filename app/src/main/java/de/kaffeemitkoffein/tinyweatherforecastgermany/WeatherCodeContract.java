@@ -185,7 +185,7 @@ public final class WeatherCodeContract {
 
     public static int getWeatherConditionDrawableResource(int weathercondition, boolean daytime) {
         Log.v("CONTRACT", "Weathercode for icon: " + weathercondition);
-        int result = R.drawable.ic_launcher_foreground;
+        int result = R.drawable.not_available;
         switch (weathercondition) {
             case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:
                 result = R.drawable.thunderstorm;
@@ -527,6 +527,7 @@ public final class WeatherCodeContract {
                 }
             }
         }
+        // TODO: add drizzle conditions: slight, moderate, heavy
         /*
          * continuous mixed snow & rain conditions
          */
