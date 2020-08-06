@@ -40,6 +40,13 @@ public class LoggingActivity extends Activity {
             public void onPositiveResult(String result) {
                 logview.setText(result);
             }
+
+            @Override
+            public void onNegativeResult(){
+                if (logview!=null){
+                    logview.setText("No logs.");
+                }
+            }
         };
         asyncGetLogs.execute();
         // register buttons
