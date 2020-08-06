@@ -81,7 +81,7 @@ public class ForecastAdapter extends BaseAdapter {
             textView_clouds.setText(context.getResources().getString(R.string.clouds)+" "+weatherInfo.getClouds()+"%");
         }
         TextView textView_rain = (TextView) view.findViewById(R.id.fcitem_rain);
-        if (weatherInfo.hasPrecipitation()){
+        if ((weatherInfo.hasPrecipitation()) && (weatherInfo.hasProbPrecipitation())){
             textView_rain.setText(context.getResources().getString(R.string.rain)+" "+weatherInfo.getProbPrecipitation()+" "+weatherInfo.getPrecipitation());
         }
         // weather icon
