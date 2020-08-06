@@ -1,7 +1,5 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -214,9 +212,7 @@ public class RawWeatherInfo{
         for (int i=0; i<elements; i++){
             try {
                 result[i] = Double.parseDouble(valuearray[i]);
-                // Log.v("CWI","Double: "+result[i]);
             } catch (NumberFormatException e){
-                Log.v("CWI","Double parsing error!");
                 return null;
             }
         }
@@ -228,7 +224,6 @@ public class RawWeatherInfo{
         for (int i=0; i<elements; i++){
             try {
                 result[i] = (int) Double.parseDouble(valuearray[i]);
-                // result[i] = Integer.parseInt(valuearray[i]);
             } catch (NumberFormatException e){
                 return null;
             }
@@ -362,10 +357,8 @@ public class RawWeatherInfo{
                 d = d + itemlist[i];
             }
             Double result = (d / (last-first+1));
-            Log.v("CWI","avRes "+result);
             return result;
         }
-        Log.v("CWI","avRes IS NULL");
         return null;
     }
 

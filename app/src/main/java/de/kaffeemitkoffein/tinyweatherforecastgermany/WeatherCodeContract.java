@@ -22,7 +22,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.Log;
 
 public final class WeatherCodeContract {
     public final static int NOT_AVAILABLE = 999;
@@ -184,7 +183,6 @@ public final class WeatherCodeContract {
     }
 
     public static int getWeatherConditionDrawableResource(int weathercondition, boolean daytime) {
-        Log.v("CONTRACT", "Weathercode for icon: " + weathercondition);
         int result = R.drawable.not_available;
         switch (weathercondition) {
             case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:

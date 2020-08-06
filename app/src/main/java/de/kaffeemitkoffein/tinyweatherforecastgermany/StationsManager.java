@@ -2,11 +2,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -28,7 +25,6 @@ public class StationsManager {
             inputStream.read(textdata);
             inputStream.close();
             String text = new String(textdata);
-            Log.v("STATIONS","List read success");
             return text;
         } catch (IOException e) {
             return null;

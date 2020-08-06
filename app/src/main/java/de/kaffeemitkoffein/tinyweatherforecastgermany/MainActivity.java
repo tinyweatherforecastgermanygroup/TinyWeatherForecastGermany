@@ -22,7 +22,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.*;
 import android.os.Bundle;
 import android.app.*;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -177,23 +176,15 @@ public class MainActivity extends Activity {
         // station_descriptions = stationsManager.getStationNames();
 
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
-        if (weatherCard==null){
-            Log.v(Tag.MAIN,"weatherCard ist null");
-        } else {
-            Log.v(Tag.MAIN,"weatherCard 6h forecasts:"+weatherCard.forecast6hourly.size());
-        }
         // get new data from api or display present data.
         if (weatherCard!=null){
-            Log.v(Tag.MAIN,"weather info is present in local database.");
             displayWeatherForecast(weatherCard);
             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
         } else {
-            Log.v(Tag.MAIN,"no weather info present in local database => forcing update.");
             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
         }
         // show whats new dialog if necessary
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
-            Log.v(Tag.MAIN,"Showing wat's new dialog.");
             showWhatsNewDialog();
         }
         registerForBroadcast();
@@ -215,7 +206,6 @@ public class MainActivity extends Activity {
         textView_update_time.setText(getApplicationContext().getResources().getString(R.string.main_updatetime)+" "+updatetime);
         // listview
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
-        Log.v("MAIN","6h forecast items availabe: "+weatherCard.forecast6hourly.size());
         ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly);
         weatherList.setAdapter(forecastAdapter);
         // Upate the widgets, so that everything displays the same

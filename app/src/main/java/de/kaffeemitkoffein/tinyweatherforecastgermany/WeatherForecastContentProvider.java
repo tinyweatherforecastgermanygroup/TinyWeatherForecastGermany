@@ -28,7 +28,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 public class WeatherForecastContentProvider extends ContentProvider {
 
@@ -492,7 +491,6 @@ public class WeatherForecastContentProvider extends ContentProvider {
             contentValues.put(WeatherForecastDatabaseHelper.KEY_timestamp,rawWeatherInfo.timestamp);
             contentValues.put(WeatherForecastDatabaseHelper.KEY_polling_time,rawWeatherInfo.polling_time);
             contentValues.put(WeatherForecastDatabaseHelper.KEY_elements,rawWeatherInfo.elements);
-            Log.v("DATABASE","WRITE: elements: "+rawWeatherInfo.elements);
             return contentValues;
         }
 
@@ -511,13 +509,10 @@ public class WeatherForecastContentProvider extends ContentProvider {
 
         public RawWeatherInfo getWeatherCardFromCursor(Cursor c){
             if (c==null){
-                Log.v("DATABASE","Cursor IS null.");
                 return null;
             } else {
-                Log.v("DATABASE","Cursor not null.");
                 RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
                 if (c.moveToFirst()){
-                    Log.v("DATABASE","Moved to first....");
                     rawWeatherInfo.timetext = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timetext));
                     rawWeatherInfo.description = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_description));
                     rawWeatherInfo.timesteps = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timesteps)));
@@ -641,10 +636,8 @@ public class WeatherForecastContentProvider extends ContentProvider {
                     rawWeatherInfo.timestamp = c.getLong(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timestamp));
                     rawWeatherInfo.polling_time = c.getLong(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_polling_time));
                     rawWeatherInfo.elements = c.getInt(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_elements));
-                    Log.v("DATABASE","READ: elements: "+rawWeatherInfo.elements);
                     return rawWeatherInfo;
                 } else {
-                    Log.v("DATABASE","READ: returnung NULL!");
                     return null;
                 }
             }

@@ -20,7 +20,6 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +63,6 @@ public class ForecastAdapter extends BaseAdapter {
         view = this.layoutInflater.inflate(R.layout.forecastitem,viewGroup,false);
         // now fill the item with content
         TextView textView_weathercondition = (TextView) view.findViewById(R.id.fcitem_weatherconditiontext);
-        Log.v("FCA","forecastadapter at position "+i);
         Weather.WeatherInfo weatherInfo = weatherForecasts.get(i);
         // heading
         TextView textView_heading = (TextView) view.findViewById(R.id.fcitem_heading);

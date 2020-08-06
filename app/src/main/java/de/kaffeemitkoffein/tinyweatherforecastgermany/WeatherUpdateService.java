@@ -26,9 +26,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
-
-import java.net.URL;
 import java.util.Calendar;
 
 public class WeatherUpdateService extends Service {
@@ -98,7 +95,6 @@ public class WeatherUpdateService extends Service {
                 intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
                 sendBroadcast(intent);
                 PrivateLog.log(context,Tag.SERVICE,"update from API: success");
-                Log.v(Tag.SERVICE,"update from API: success");
                 stopSelf();
             }
             @Override
