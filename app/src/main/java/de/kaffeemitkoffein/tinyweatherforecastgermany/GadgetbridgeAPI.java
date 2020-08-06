@@ -30,53 +30,57 @@ public class GadgetbridgeAPI {
 
     private WeatherSpec weatherSpec;
     private Context context;
+    CurrentWeatherInfo weatherCard;
 
     public GadgetbridgeAPI(Context context){
         this.context = context;
     }
 
     private void setWeatherData(){
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
-        // build the WeatherSpec instance with current weather
-        weatherSpec = new WeatherSpec();
-        weatherSpec.location             = weatherCard.getCity();
-        weatherSpec.timestamp            = (int) (weatherCard.polling_time / 1000);
-        if (weatherCard.currentWeather.hasCondition()){
-            int currentWeatherCondition = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
-            weatherSpec.currentConditionCode = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
-            weatherSpec.currentCondition     = new WeatherCodeContract().getWeatherConditionText(context,currentWeatherCondition);
+        if (weatherCard==null){
+            weatherCard = new Weather().getCurrentWeatherInfo(context);
         }
-        if (weatherCard.currentWeather.hasTemperature()){
-            weatherSpec.currentTemp          = weatherCard.currentWeather.getTemperatureInt();
-        }
-        if (weatherCard.currentWeather.hasMinTemperature()){
-            weatherSpec.todayMinTemp         = weatherCard.currentWeather.getMinTemperatureInt();
-        }
-        if (weatherCard.currentWeather.hasMaxTemperature()){
-            weatherSpec.todayMaxTemp         = weatherCard.currentWeather.getMaxTemperatureInt();
-        }
-        if (weatherCard.currentWeather.hasWindSpeed()){
-            weatherSpec.windSpeed            = (float) weatherCard.currentWeather.getWindSpeedInKmhInt();
-        }
-        if (weatherCard.currentWeather.hasWindDirection()){
-            weatherSpec.windDirection        = (int) weatherCard.currentWeather.getWindDirection();
-        }
-        // build the forecast instance
-        for (int i=0; i<weatherCard.forecast24hourly.size(); i++){
-            // do not add and/or stop adding forecast if values are unknown
-            if ((!weatherCard.forecast24hourly.get(i).hasMinTemperature()||
-                    (!weatherCard.forecast24hourly.get(i).hasMaxTemperature())||
-                    (!weatherCard.forecast24hourly.get(i).hasCondition()))){
-                break;
+        if (weatherCard!=null){
+            // build the WeatherSpec instance with current weather
+            weatherSpec = new WeatherSpec();
+            weatherSpec.location             = weatherCard.getCity();
+            weatherSpec.timestamp            = (int) (weatherCard.polling_time / 1000);
+            if (weatherCard.currentWeather.hasCondition()){
+                int currentWeatherCondition = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
+                weatherSpec.currentConditionCode = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
+                weatherSpec.currentCondition     = new WeatherCodeContract().getWeatherConditionText(context,currentWeatherCondition);
             }
-            // construct forecast and add it; @DWD, humidity is always unknown because not served.
-            WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(
-                    weatherCard.forecast24hourly.get(i).getMinTemperatureInt(),
-                    weatherCard.forecast24hourly.get(i).getMaxTemperatureInt(),
-                    new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),
-                    0);
-            weatherSpec.forecasts.add(forecast);
-        }
+            if (weatherCard.currentWeather.hasTemperature()){
+                weatherSpec.currentTemp          = weatherCard.currentWeather.getTemperatureInt();
+            }
+            if (weatherCard.currentWeather.hasMinTemperature()){
+                weatherSpec.todayMinTemp         = weatherCard.currentWeather.getMinTemperatureInt();
+            }
+            if (weatherCard.currentWeather.hasMaxTemperature()){
+                weatherSpec.todayMaxTemp         = weatherCard.currentWeather.getMaxTemperatureInt();
+            }
+            if (weatherCard.currentWeather.hasWindSpeed()){
+                weatherSpec.windSpeed            = (float) weatherCard.currentWeather.getWindSpeedInKmhInt();
+            }
+            if (weatherCard.currentWeather.hasWindDirection()){
+                weatherSpec.windDirection        = (int) weatherCard.currentWeather.getWindDirection();
+            }
+            // build the forecast instance
+            for (int i=0; i<weatherCard.forecast24hourly.size(); i++){
+                // do not add and/or stop adding forecast if values are unknown
+                if ((!weatherCard.forecast24hourly.get(i).hasMinTemperature()||
+                        (!weatherCard.forecast24hourly.get(i).hasMaxTemperature())||
+                        (!weatherCard.forecast24hourly.get(i).hasCondition()))){
+                    break;
+                }
+                // construct forecast and add it; @DWD, humidity is always unknown because not served.
+                WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(
+                        weatherCard.forecast24hourly.get(i).getMinTemperatureInt(),
+                        weatherCard.forecast24hourly.get(i).getMaxTemperatureInt(),
+                        new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),
+                        0);
+                weatherSpec.forecasts.add(forecast);
+            }
         /*
         Log.v("GADGETBRIDGE-API","Timestamp          : "+weatherSpec.timestamp);
         Log.v("GADGETBRIDGE-API","Condition          : "+weatherSpec.currentCondition);
@@ -89,22 +93,27 @@ public class GadgetbridgeAPI {
         Log.v("GADGETBRIDGE-API","Windspeed          : "+weatherSpec.windSpeed);
         Log.v("GADGETBRIDGE-API","Windspeed direct.  : "+weatherSpec.windDirection);
         */
+        }
     }
 
     private final void sendWeatherBroadcast(){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         setWeatherData();
-        Intent intent = new Intent();
-        intent.putExtra(WEATHER_EXTRA,weatherSpec);
-        // going by the docs, this requires at least api level 14
-        // read the package name from the settings. Users may change the package name to
-        // be able to use forks.
-        intent.setPackage(weatherSettings.gadgetbridge_packagename);
-        intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        intent.setAction(WEATHER_ACTION);
-        context.sendBroadcast(intent);
-        PrivateLog.log(context,Tag.GB,"Sent weather broadcast to GadgetBridge:");
-        PrivateLog.log(context,Tag.GB,"+-> package name: "+weatherSettings.gadgetbridge_packagename);
+        if (weatherSpec!=null){
+            Intent intent = new Intent();
+            intent.putExtra(WEATHER_EXTRA,weatherSpec);
+            // going by the docs, this requires at least api level 14
+            // read the package name from the settings. Users may change the package name to
+            // be able to use forks.
+            intent.setPackage(weatherSettings.gadgetbridge_packagename);
+            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            intent.setAction(WEATHER_ACTION);
+            context.sendBroadcast(intent);
+            PrivateLog.log(context,Tag.GB,"Sent weather broadcast to GadgetBridge:");
+            PrivateLog.log(context,Tag.GB,"+-> package name: "+weatherSettings.gadgetbridge_packagename);
+        } else {
+            PrivateLog.log(context,Tag.GB,"GadgetBridge could not be served because there is no weather data.");
+        }
     }
 
     public final void sendWeatherBroadcastIfEnabled(){
@@ -112,6 +121,11 @@ public class GadgetbridgeAPI {
         if (weatherSettings.serve_gadgetbridge){
             sendWeatherBroadcast();
         }
+    }
+
+    public final void sendWeatherBroadcastIfEnabled(CurrentWeatherInfo currentWeatherInfo){
+        this.weatherCard = currentWeatherInfo;
+        sendWeatherBroadcastIfEnabled();
     }
 
 }
