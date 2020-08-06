@@ -37,7 +37,7 @@ public class UpdateAlarmManager {
 
     private static final int PRIVATE_ALARM_IDENTIFIER = 0;
     private static final int PRIVATE_JOBINFO_IDENTIFIER = 1;
-    private static final int EARLY_ALARM_TIME = 1000*60*10; // 5 minutes in millis
+    private static final int EARLY_ALARM_TIME = 1000*60*15; // 15 minutes in millis
     public static final boolean FORCE_UPDATE = true;
     public static final boolean CHECK_FOR_UPDATE = false;
 
