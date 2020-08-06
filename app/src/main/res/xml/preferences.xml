@@ -34,7 +34,7 @@
             android:summary="@string/preference_pdateinterval_summary"
             android:entries="@array/updateinterval_text"
             android:entryValues="@array/updateinterval_values"
-            android:defaultValue="6"/>
+            android:defaultValue="24"/>
 
         <CheckBoxPreference
             android:key="PREF_aggressive_update"

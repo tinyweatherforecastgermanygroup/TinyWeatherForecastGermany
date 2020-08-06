@@ -1,6 +1,19 @@
-Version 0.32:
+Version 0.40:
 - Gadgetbridge-Unterstützung: max. Temperatur in Wettervorhersage korrgiert
-- Option hinzugefügt, um bei fehlendem Netzwerk die Aktualisierung alle 5 Min. zu wiederholen
+- experimentelle, neue & hoffentlich nun regelmäßigere Versorgung der GadgetBridge App mit Wetterdaten
+- Änderung der Wetter-Icons
+- Wettervorhersage für die nächsten 10 Tage
+- Option hinzugefügt, um bei fehlendem Netzwerk die Aktualisierung alle 10 Min. zu wiederholen
 - experimentelles Feature, bei dem eine fällige Aktualisierung nachgeholt wird, sobald ein Netzwerk verfügbar ist
 - Optionen für lokales Logging (Protokoll) zur Fehlersuche hinzugefügt
 - Einstellungen überarbeitet
+
+Die App wechselt mit dieser Version die Schnittstelle beim Deutschen Wetterdienst. Damit sind viel genauere Vorhersagen darstellbar, allerdings ist damit ein sehr grundlegender Umbau der App verbunden. Somit können neue Fehler auftreten.
+
+Die Einstellungen sind auf die Standard-Werte zurückgesetzt.
+
+Wichtiger Hinweis:
+Falls die App nach dem Wechsel auf einen neuen Sensor abstürzt, bitte diesen Sensor mir melden.
+
+Die App kann wieder zum Laufen gebracht werden, indem die App-Daten gelöscht werden; damit werden die Einstellungen auch zurückgesetzt und die App zeigt wieder das Wetter in Hamburg an.
+

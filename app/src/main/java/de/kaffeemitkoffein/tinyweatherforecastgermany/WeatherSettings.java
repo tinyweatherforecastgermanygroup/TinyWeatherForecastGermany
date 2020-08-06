@@ -50,7 +50,7 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
     public static final boolean PREF_SETALARM_DEFAULT = false;
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
-    public static final String PREF_UPDATEINTERVAL_DEFAULT = "6";
+    public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";
     public static final boolean PREF_ISWEATHERPROVIDER_DEFAULT = false;
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;

@@ -82,7 +82,7 @@ public class ForecastAdapter extends BaseAdapter {
         }
         TextView textView_rain = (TextView) view.findViewById(R.id.fcitem_rain);
         if ((weatherInfo.hasPrecipitation()) && (weatherInfo.hasProbPrecipitation())){
-            textView_rain.setText(context.getResources().getString(R.string.rain)+" "+weatherInfo.getProbPrecipitation()+" "+weatherInfo.getPrecipitation());
+            textView_rain.setText(context.getResources().getString(R.string.rain)+" "+weatherInfo.getProbPrecipitation()+"% "+weatherInfo.getPrecipitation()+ " kg/m²");
         }
         // weather icon
         ImageView weather_icon = (ImageView) view.findViewById(R.id.fcitem_weatherconditionicon);

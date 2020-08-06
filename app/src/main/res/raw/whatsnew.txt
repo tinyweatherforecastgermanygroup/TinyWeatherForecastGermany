@@ -1,25 +1,19 @@
 What is new in this version ([VERSION]):
 
-- fixes temperature conversion error (celsius to kelvin) in the Gadgetbridge api
-- slight layout correction in widget (weather symbol is larger now)
+- Gadgetbridge-Support: fixed max. temperature in forecast
+- experimental, new and hopefully more frequent delivery of weather data to the GadgetBridge App
+- change of weather icons
+- weather forecast now available for the next 10 days
+- new option to repeat update every 10 minutes when there is no network
+- new experimental feature to catch up on a due update once there is a network available
+- new options for local logging (debugging)
+- revised settings
 
-Version 0.31:
-- App crash on first launch (when no old weather data is present)
-- "What's new" now also appears after first installation
+With this version, the app changes the API at the Deutscher Wetterdienst. With this change, more accurate forecasts can be displayed, but it goes with a very fundamental remodeling. Therefore, new errors may occur.
 
-Version 0.30:
-- App crash on first launch (when no old weather data is present)
-- "What's new" now also appears after first installation
-- added an option to regularly download weather data in custom intervals, this can be enabled and disabled in the settings
-- added visible last update time in main app
-- app and widget now display wind direction
-- fixed wind data losing direction information
-- fixed parsing error of FDAT data field (part of sensor ID)
-- fixed broken default value for update interval
-- fixed update bug causing updates to take place very rarely
-- gadgetbridge support: fixed unix timestamp filled with garbage
-- gadgetbridge support: fixed wind direction always 0°
-- gadgetbridge support: fixed temperature sent in celsius instead of kelvin
-- gadgetbridge support: fixed supplied weather conditions were not always compatible with the lineageos standard
-- gadgetbridge support: fixed current weather condition now displays current condition instead of day forecast
-- gadgetbridge support is still in a beta, but should work!
+Settings have been set back to the default values.
+
+Important notice:
+Should the app crash after a change of the weather station, please report this station to me.
+
+The app can be brought back into a functional state by deleting the app data; this will set back the default values as well and the app will display the weather in Hamburg again.

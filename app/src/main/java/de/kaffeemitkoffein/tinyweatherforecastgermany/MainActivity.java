@@ -22,6 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.*;
 import android.os.Bundle;
 import android.app.*;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -111,6 +112,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         PrivateLog.log(this,Tag.MAIN,"App started.");
         final WeatherSettings weatherSettings = new WeatherSettings(this);
+        if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
+            // remove shared preferences on app update.
+            PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
+            showWhatsNewDialog();
+        }
         PrivateLog.log(this,Tag.MAIN,"Settings loaded.");
         final Context context = getApplicationContext();
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -143,9 +149,6 @@ public class MainActivity extends Activity {
             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
         }
         // show whats new dialog if necessary
-        if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
-            showWhatsNewDialog();
-        }
         registerForBroadcast();
         // TEST OF NEW API
         /*
