@@ -124,56 +124,15 @@ public class MainActivity extends Activity {
                 if (weatherSettings.setalarm){
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
                 }
+                // reload spinner
+                loadStationsSpinner(weatherSettings);
             }
         };
         weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
 
-        stationsManager = new StationsManager(context);
-        final Spinner stationsSpinner = (Spinner) findViewById(R.id.stations_spinner);
-        final AdapterView.OnItemSelectedListener changeListener = new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-                // save options & get data if new item is different from previous station.
-                if (!weatherSettings.station_name.equals(stationsManager.getName(pos))){
-                    if (stationsManager.setStation(pos)) {
-                        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+stationsManager.getDescription(pos),Toast.LENGTH_LONG).show();
-                        PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
-                        PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(pos)+ "("+stationsManager.getName(pos)+")");
-                        PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
-                        getWeatherForecast();
-                    }
-                }
-            }
+        loadStationsSpinner(weatherSettings);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        };
-
-        stationsManager.new AsyncStationsReader(){
-            @Override
-            public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
-                super.onLoadingListFinished(stations);
-                ArrayList<String> stationnames = new ArrayList<String>();
-                for (int j=0;j<stations.size(); j++){
-                    stationnames.add(stations.get(j).description);
-                }
-
-                ArrayAdapter<String> stationAdapter = new ArrayAdapter<String>(context,R.layout.custom_spinner_item,stationnames);
-                station_descriptions = stationnames;
-                stationAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
-                stationsSpinner.setAdapter(stationAdapter);
-                stationsSpinner.setOnItemSelectedListener(changeListener);
-                spinner_initial_position = stationsManager.getSetPosition();
-                if (spinner_initial_position != -1){
-                    stationsSpinner.setSelection(spinner_initial_position);
-                }
-            }
-        }.execute();
-
-        // station_descriptions = stationsManager.getStationNames();
+       // station_descriptions = stationsManager.getStationNames();
 
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
         // get new data from api or display present data.
@@ -196,6 +155,56 @@ public class MainActivity extends Activity {
         forecastReader.doInBackground();
         forecastReader.execute();
         */
+    }
+
+    public void loadStationsSpinner(final WeatherSettings weatherSettings){
+        final Context context = this.getApplicationContext();
+        stationsManager = new StationsManager(context);
+        final Spinner stationsSpinner = (Spinner) findViewById(R.id.stations_spinner);
+        final AdapterView.OnItemSelectedListener changeListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+                // save options & get data if new item is different from previous station.
+                if (!weatherSettings.station_name.equals(stationsManager.getName(pos))){
+                    if (stationsManager.setStation(pos)) {
+                        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+stationsManager.getDescription(pos),Toast.LENGTH_LONG).show();
+                        PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+                        PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(pos)+ "("+stationsManager.getName(pos)+")");
+                        PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+                        getWeatherForecast();
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        };
+        stationsManager.new AsyncStationsReader(){
+            @Override
+            public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
+                super.onLoadingListFinished(stations);
+                ArrayList<String> stationnames = new ArrayList<String>();
+                for (int j=0;j<stations.size(); j++){
+                    String stat_description = stations.get(j).description;
+                    if (weatherSettings.display_station_geo){
+                        stat_description = stat_description + " ("+stations.get(j).longitude+", "+stations.get(j).latitude+")";
+                    }
+                    stationnames.add(stat_description);
+                }
+
+                ArrayAdapter<String> stationAdapter = new ArrayAdapter<String>(context,R.layout.custom_spinner_item,stationnames);
+                station_descriptions = stationnames;
+                stationAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
+                stationsSpinner.setAdapter(stationAdapter);
+                stationsSpinner.setOnItemSelectedListener(changeListener);
+                spinner_initial_position = stationsManager.getSetPosition();
+                if (spinner_initial_position != -1){
+                    stationsSpinner.setSelection(spinner_initial_position);
+                }
+            }
+        }.execute();
     }
 
     public void displayWeatherForecast(CurrentWeatherInfo weatherCard){

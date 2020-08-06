@@ -52,12 +52,12 @@ public class StationsManager {
     }
 
     /*
-     * Latitude <------> Breitengrad
      *               .
      *              /|\
      * Longitude     |   Längengrad
      *              \|/
      *               .
+     * Latitude <------> Breitengrad
      *
      * Angaben in den DWD-Daten:
      * z.B.: HAMBURG INNENSTADT;P0489;9.98,53.55,8.0
@@ -69,6 +69,9 @@ public class StationsManager {
 
 
     public class AsyncStationsReader extends AsyncTask<Void, Void, ArrayList<Weather.WeatherLocation>> {
+
+        private Context context;
+        private WeatherSettings weatherSettings;
 
         @Override
         protected ArrayList<Weather.WeatherLocation> doInBackground(Void... voids) {

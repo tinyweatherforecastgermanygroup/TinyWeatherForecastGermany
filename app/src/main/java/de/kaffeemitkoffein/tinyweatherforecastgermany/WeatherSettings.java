@@ -30,6 +30,7 @@ public class WeatherSettings {
     public static final String PREF_STATION_LONGITUDE = "PREF_station_longitude";
     public static final String PREF_STATION_LATIDTUDE = "PREF_station_latitude";
     public static final String PREF_STATION_ALTITUDE  = "PREF_station_altitude";
+    public static final String PREF_DISPLAY_STATION_GEO = "PREF_display_station_geo";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_AGGRESSIVE_UPDATE = "PREF_aggressive_update";
@@ -46,6 +47,7 @@ public class WeatherSettings {
     public static final double PREF_STATION_LONGITUDE_DEFAULT = 9.98;
     public static final double PREF_STATION_LATIDTUDE_DEFAULT = 53.55;
     public static final double PREF_STATION_ALTITUDE_DEFAULT  = 8.0;
+    public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
     public static final boolean PREF_SETALARM_DEFAULT = false;
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "6";
@@ -62,6 +64,7 @@ public class WeatherSettings {
     public double station_longitude = PREF_STATION_LONGITUDE_DEFAULT;
     public double station_latitude = PREF_STATION_LATIDTUDE_DEFAULT;
     public double station_altitude = PREF_STATION_LATIDTUDE_DEFAULT;
+    public boolean display_station_geo = PREF_DISPLAY_STATION_GEO_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public boolean aggressive_update = PREF_AGGRESSIVE_UPDATE_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
@@ -89,6 +92,7 @@ public class WeatherSettings {
         this.station_latitude = readPreference(PREF_STATION_LATIDTUDE,PREF_STATION_LATIDTUDE_DEFAULT);
         this.station_altitude = readPreference(PREF_STATION_ALTITUDE,PREF_STATION_ALTITUDE_DEFAULT);
         this.setalarm = readPreference(PREF_SETALARM,PREF_SETALARM_DEFAULT);
+        this.display_station_geo = readPreference(PREF_DISPLAY_STATION_GEO,PREF_DISPLAY_STATION_GEO_DEFAULT);
         this.aggressive_update = readPreference(PREF_AGGRESSIVE_UPDATE,PREF_AGGRESSIVE_UPDATE_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL,PREF_UPDATEINTERVAL_DEFAULT);
         this.is_weatherprovider = readPreference(PREF_ISWEATHERPROVIDER,PREF_ISWEATHERPROVIDER_DEFAULT);
@@ -105,6 +109,7 @@ public class WeatherSettings {
         applyPreference(PREF_STATION_LONGITUDE,this.station_longitude);
         applyPreference(PREF_STATION_LATIDTUDE,this.station_latitude);
         applyPreference(PREF_STATION_ALTITUDE,this.station_altitude);
+        applyPreference(PREF_DISPLAY_STATION_GEO,this.display_station_geo);
         applyPreference(PREF_SETALARM,this.setalarm);
         applyPreference(PREF_AGGRESSIVE_UPDATE,this.aggressive_update);
         applyPreference(PREF_UPDATEINTERVAL,this.updateinterval);

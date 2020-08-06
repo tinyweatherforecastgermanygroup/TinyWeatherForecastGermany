@@ -444,7 +444,7 @@ public class RawWeatherInfo{
         return null;
     }
 
-    public double getMaxTemperature(int first, int last){
+    public Double getMaxTemperature(int first, int last){
         return getMaxDoubleValue(TTT,first,last);
     }
 

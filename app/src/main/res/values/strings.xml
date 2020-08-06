@@ -79,6 +79,8 @@
     <string name="preference_setalarm_summary">Update weather data regularly. This may increase battery usage.</string>
     <string name="preference_set_aggresive_alarm_title">Repeat failed updates</string>
     <string name="preference_set_aggresive_alarm_summary">When no network available, retry again and again after 5 minutes. This will use more battery.</string>
+    <string name="preference_display_station_geo_title">geographic coordinates</string>
+    <string name="preference_display_station_geo_summary">Display geographic coordinates of stations</string>
     <string name="preference_screen_gadgetbridge_title">Gadgetbridge support</string>
     <string name="preference_screen_gadgetbridge_summary">Options for integrating the weather data of this app into Gadgetbridge. </string>
     <string name="preference_gadgetbridge_serve_title">Enable</string>

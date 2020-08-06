@@ -42,6 +42,12 @@
             android:summary="@string/preference_set_aggresive_alarm_summary"
             android:defaultValue="false"/>
 
+        <CheckBoxPreference
+            android:key="PREF_display_station_geo"
+            android:title="@string/preference_display_station_geo_title"
+            android:summary="@string/preference_display_station_geo_summary"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
