@@ -7,6 +7,8 @@ Version 0.40:
 - new experimental feature to catch up on a due update once there is a network available
 - new options for local logging (debugging)
 - revised settings
+- fixed crash of the updater when the device was in doze mode
+- multiple bugfixes
 
 With this version, the app changes the API at the Deutscher Wetterdienst. With this change, more accurate forecasts can be displayed, but it goes with a very fundamental remodeling. Therefore, new errors may occur.
 
