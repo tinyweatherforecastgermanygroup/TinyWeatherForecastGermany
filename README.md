@@ -87,13 +87,13 @@ Credits
  
  *How often does the app update the weather forecast?*
  
- The weather forecast data from the Deutscher Wetterdienst that is used by Tiny Weather Forecast Germany gets updated every 6 hours. Therefore, it does not make sense to pull weather data more frequently than this from the DWD API. However, a manual data update triggered by the user's selection in the main app always forces an update of forecast data. When changing sensors/locations, the data always gets updated, too. The app does not store forecast data for multiple locations.
- 
- The forecast data covers the next ten days. So it is pretty feasible to present a weather forecast for some time without polling new data.
+ The Deutscher Wetterdienst updates the forecast data that is used every 6 hours. Therefore, it does not make sense to pull weather data more frequently than this from the DWD API. However, a manual data update triggered by the user's selection in the main app always forces an update of forecast data. When changing sensors/locations, the data always gets updated, too. The app does not store forecast data for multiple locations. The forecast data covers the next ten days. So it is pretty feasible to present a weather forecast for some time without polling new data.
  
  *How often does the GadgetBridge app gets updated (when this feature is enabled)?*
  
-  When GadgetBridge support is enabled, the app will, in the best case, update GadgetBridge every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called for this. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in doze mode, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
+  When GadgetBridge support is **enabled**, the app will, in the best case, update GadgetBridge every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called for this. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in *doze mode*, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
+  
+  If you encounter problems with GadgetBridge not updating, placing the widget on the home screen may help, since the widget will try to also update GadgetBridge every time the widget itself gets updated by the system.
   
  Contributing
  ------------
