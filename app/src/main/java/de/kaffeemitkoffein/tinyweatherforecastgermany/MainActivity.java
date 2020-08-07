@@ -191,7 +191,7 @@ public class MainActivity extends Activity {
                 for (int j=0;j<stations.size(); j++){
                     String stat_description = stations.get(j).description;
                     if (weatherSettings.display_station_geo){
-                        stat_description = stat_description + " ("+stations.get(j).longitude+", "+stations.get(j).latitude+")";
+                        stat_description = stat_description + " ("+stations.get(j).latitude+", "+stations.get(j).longitude+")";
                     }
                     station_descriptions.add(stat_description);
                 }
