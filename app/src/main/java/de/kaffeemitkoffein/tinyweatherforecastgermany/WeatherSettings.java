@@ -39,6 +39,7 @@ public class WeatherSettings {
     public static final String PREF_WIDGET_SHOWDWDNOTE = "PREF_widget_showdwdnote";
     public static final String PREF_LAST_VERSION_CODE = "PREF_last_version_code";
     public static final String PREF_SERVE_GADGETBRIDGE = "PREF_serve_gadgetbridge";
+    public static final String PREF_GADGETBRIDGE_LAST_UPDATE_TIME = "PREF_gadgetbridge_last_update_time";
     public static final String PREF_GADGETBRIDGE_PACKAGENAME = "PREF_gadgetbridge_packagename";
     public static final String PREF_LOGGING = "PREF_logging";
 
@@ -56,6 +57,7 @@ public class WeatherSettings {
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
     public final int PREF_LAST_VERSION_CODE_DEFAULT = 0;
     public static final boolean PREF_SERVE_GADGETBRIDGE_DEFAULT = false;
+    public static final long PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
     public static final boolean PREF_LOGGING_DEFAULT = false;
 
@@ -73,6 +75,7 @@ public class WeatherSettings {
     public boolean widget_showdwdnote = PREF_WIDGET_SHOWDWDNOTE_DEFAULT;
     public int last_version_code = PREF_LAST_VERSION_CODE_DEFAULT;
     public boolean serve_gadgetbridge = PREF_SERVE_GADGETBRIDGE_DEFAULT;
+    public long gadgetbridge_last_update_time;
     public String gadgetbridge_packagename = PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;
     public boolean logging = PREF_LOGGING_DEFAULT;
 
@@ -100,6 +103,7 @@ public class WeatherSettings {
         this.widget_showdwdnote = readPreference(PREF_WIDGET_SHOWDWDNOTE,PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
         this.last_version_code = readPreference(PREF_LAST_VERSION_CODE,PREF_LAST_VERSION_CODE_DEFAULT);
         this.serve_gadgetbridge = readPreference(PREF_SERVE_GADGETBRIDGE,PREF_SERVE_GADGETBRIDGE_DEFAULT);
+        this.gadgetbridge_last_update_time = readPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT);
         this.logging = readPreference(PREF_LOGGING,PREF_LOGGING_DEFAULT);
    }
 
@@ -118,6 +122,7 @@ public class WeatherSettings {
         applyPreference(PREF_WIDGET_SHOWDWDNOTE,this.widget_showdwdnote);
         applyPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
         applyPreference(PREF_SERVE_GADGETBRIDGE,this.serve_gadgetbridge);
+        applyPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,this.gadgetbridge_last_update_time);
         applyPreference(PREF_LOGGING,this.logging);
     }
 
@@ -135,6 +140,10 @@ public class WeatherSettings {
 
     public float readPreference(String p, float d){
         return sharedPreferences.getFloat(p,d);
+    }
+
+    public long readPreference(String p, long d){
+        return sharedPreferences.getLong(p,d);
     }
 
     public double readPreference(String p, double d){
@@ -162,6 +171,12 @@ public class WeatherSettings {
     public void applyPreference(String pref, float value){
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putFloat(pref,value);
+        pref_editor.apply();
+    }
+
+    public void applyPreference(String pref, long value){
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(pref,value);
         pref_editor.apply();
     }
 

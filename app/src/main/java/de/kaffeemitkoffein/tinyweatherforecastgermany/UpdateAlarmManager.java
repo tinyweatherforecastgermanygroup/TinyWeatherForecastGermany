@@ -70,7 +70,14 @@ public class UpdateAlarmManager {
             Intent intent = new Intent(context,WeatherUpdateService.class);
             intent.putExtra(WeatherUpdateService.SERVICE_FORCEUPDATE,true);
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-            context.startService(intent);
+            try {
+                context.startService(intent);
+            } catch (SecurityException e){
+                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService not started because of a SecurityException: "+e.getMessage());
+            }
+            catch (IllegalStateException e){
+                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
+            }
             // set result to true, as update was initiated
             result = true;
         } else {
@@ -87,9 +94,14 @@ public class UpdateAlarmManager {
          * it should be handled like the widget: update with known data every 30 minutes.
          */
         if (weatherSettings.serve_gadgetbridge){
-            GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-            gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-            next_update_due_in_millis = 30*60*1000; // 30 minutes
+            // check if gadgetbridge update is due
+            if (weatherSettings.gadgetbridge_last_update_time + GadgetbridgeAPI.GADGETBRIDGE_MAXUPDATETIME < Calendar.getInstance().getTimeInMillis()){
+                GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+                gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+            } else {
+                PrivateLog.log(context,Tag.ALARMMANAGER,"Gadgetbridge not updated, because last update is less than 10 minutes ago.");
+            }
+            next_update_due_in_millis = GadgetbridgeAPI.GADGETBRIDGE_UPDATE_INTERVAL;
             next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
         }
         // update later, set timer if wanted by user
