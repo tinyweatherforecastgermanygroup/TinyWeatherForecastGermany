@@ -510,7 +510,7 @@ public final class Weather {
         }
 
         public int getVisibility(){
-            return prob_freezing_rain;
+            return visibility;
         }
 
         public boolean hasUV(){

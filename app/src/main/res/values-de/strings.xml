@@ -29,6 +29,7 @@
     <string name="triggerupdate_button">Über...</string>
     <string name="whatsnew_button">Was ist neu?</string>
     <string name="classicwidget_description">Wetter Widget</string>
+    <string name="largewidget_description">Weather Widget mit Vorhersage</string>
     <string name="weathercode_UNKNOWN">unbekannt</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">Gewitter</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">gefrierender Sprühregen</string>

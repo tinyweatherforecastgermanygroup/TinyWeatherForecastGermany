@@ -196,5 +196,12 @@ public class StationsManager {
         return false;
     }
 
+    public int getStationCount(){
+        if (stations != null){
+            return stations.size();
+        }
+        return 0;
+    }
+
 }
 

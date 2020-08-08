@@ -98,8 +98,9 @@ public class UpdateAlarmManager {
             if (weatherSettings.gadgetbridge_last_update_time + GadgetbridgeAPI.GADGETBRIDGE_MAXUPDATETIME < Calendar.getInstance().getTimeInMillis()){
                 GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
                 gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-            } else {
-                PrivateLog.log(context,Tag.ALARMMANAGER,"Gadgetbridge not updated, because last update is less than 10 minutes ago.");
+                // save the last update time
+                weatherSettings.gadgetbridge_last_update_time = Calendar.getInstance().getTimeInMillis();
+                weatherSettings.applyPreference(WeatherSettings.PREF_GADGETBRIDGE_LAST_UPDATE_TIME,weatherSettings.gadgetbridge_last_update_time);
             }
             next_update_due_in_millis = GadgetbridgeAPI.GADGETBRIDGE_UPDATE_INTERVAL;
             next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;

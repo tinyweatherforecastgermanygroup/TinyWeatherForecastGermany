@@ -647,7 +647,7 @@ public final class WeatherCodeContract {
          * thunderstorms
          */
         if (weatherInfo.hasProbThunderstorms()){
-            if (weatherInfo.getProbFreezingRain()>=5){
+            if (weatherInfo.getProbThunderStorms()>=5){
                 condition = SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW;
             }
         }

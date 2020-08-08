@@ -22,7 +22,9 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.*;
 import android.os.Bundle;
 import android.app.*;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,6 +45,10 @@ public class MainActivity extends Activity {
     private final static String SIS_WHATSNEW_DIALOG_STATE="WHATSNEW_DIALOG_VISIBLE";
 
     public final static String MAINAPP_CUSTOM_REFRESH_ACTION     = "MAINAPP_CUSTOM_ACTION_REFRESH";
+    public final static String STATION_POSITION_EXTRA = "STATION_POSITION_EXTRA";
+
+    public final static boolean API_TESTING_ENABLED = false;
+    private int test_position = 3285;
 
     StationsManager stationsManager;
     ArrayList<String> station_descriptions;
@@ -61,6 +67,10 @@ public class MainActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
                 displayWeatherForecast();
+                if (API_TESTING_ENABLED){
+                    test_position ++;
+                    testAPI_Call();
+                }
             }
         }
     };
@@ -121,10 +131,11 @@ public class MainActivity extends Activity {
         final Context context = getApplicationContext();
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 // update widgets
                 Intent intent = new Intent(context,ClassicWidget.class);
                 intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
+                Log.v("WIDGET","Main app => listener => updates widgets");
                 sendBroadcast(intent);
                 // check for alarm sets
                 WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
@@ -132,32 +143,32 @@ public class MainActivity extends Activity {
                 if (weatherSettings.setalarm){
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
                 }
-                // reload spinner
-                stationsManager = new StationsManager(context);
-                loadStationsSpinner(weatherSettings);
+                // reload spinner, but only if geo coordinates setting was changed
+                if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
+                    stationsManager = new StationsManager(context);
+                    loadStationsSpinner(weatherSettings);
+                }
             }
         };
-        weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+        if (!API_TESTING_ENABLED){
+            weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+        }
         stationsManager = new StationsManager(context);
         loadStationsSpinner(weatherSettings);
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
         // get new data from api or display present data.
-        if (weatherCard!=null){
-            displayWeatherForecast(weatherCard);
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
-        } else {
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
+        if (!API_TESTING_ENABLED){
+            if (weatherCard!=null){
+                displayWeatherForecast(weatherCard);
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
+            } else {
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
+            }
         }
-        // show whats new dialog if necessary
-        registerForBroadcast();
-        // TEST OF NEW API
-        /*
-        Weather.WeatherLocation wl = new Weather().new WeatherLocation();
-        wl.name="01194";
-        Weather.WeatherForecastReader forecastReader = new Weather().new WeatherForecastReader(this,wl);
-        forecastReader.doInBackground();
-        forecastReader.execute();
-        */
+        // test API
+        if (API_TESTING_ENABLED){
+            testAPI_Init();
+        }
     }
 
     public void loadStationsSpinner(final WeatherSettings weatherSettings){
@@ -207,7 +218,62 @@ public class MainActivity extends Activity {
         }.execute();
     }
 
+    private void testAPI_Worker(){
+        if (test_position<stationsManager.getStationCount()){
+            final WeatherSettings weatherSettings = new WeatherSettings(this);
+            weatherSettings.station_name = stationsManager.getName(test_position);
+            weatherSettings.applyPreference(WeatherSettings.PREF_STATION_NAME,weatherSettings.station_name);
+            final String name = stationsManager.getName(test_position);
+            final String description = stationsManager.getDescription(test_position);
+            Handler handler = new Handler();
+            Log.v(Tag.MAIN,"Waiting.");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.v(Tag.MAIN,"------------------------------------------");
+                    Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
+                    Log.v(Tag.MAIN,"-------------------------------------------");
+                    getWeatherForecast();
+                }
+            },2000);
+        } else {
+            Log.v(Tag.MAIN,"Testing finished.");
+        }
+    }
+
+    private void testAPI_Call(){
+        final Context context = this;
+        registerForBroadcast();
+        if (stationsManager.getStationCount()==0){
+            stationsManager.new AsyncStationsReader(){
+                @Override
+                public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
+                    super.onLoadingListFinished(stations);
+                    testAPI_Worker();
+                }
+            }.execute();
+        } else {
+            testAPI_Worker();
+        }
+    }
+
+    private void testAPI_Init(){
+        // reset preferences
+        PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
+        // set start position
+        final WeatherSettings weatherSettings = new WeatherSettings(this);
+        // disable gadgetbridge support for testing und set start position in settings
+        weatherSettings.serve_gadgetbridge = false;
+        weatherSettings.station_name = stationsManager.getName(test_position);
+        weatherSettings.applyPreference(WeatherSettings.PREF_SERVE_GADGETBRIDGE,false);
+        weatherSettings.applyPreference(WeatherSettings.PREF_STATION_NAME,weatherSettings.station_name);
+        testAPI_Call();
+    }
+
     public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
+        if (API_TESTING_ENABLED){
+            Log.v(Tag.MAIN,"Station to display: "+weatherCard.city);
+        }
         // date
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
         String updatetime = simpleDateFormat.format(new Date(weatherCard.polling_time));

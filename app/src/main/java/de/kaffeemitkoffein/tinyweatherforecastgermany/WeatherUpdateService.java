@@ -84,6 +84,7 @@ public class WeatherUpdateService extends Service {
         WeatherForecastReader weatherForecastReader = new WeatherForecastReader(this){
             @Override
             public void onPositiveResult(){
+                // notifiy GadgetBridge
                 GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
                 gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
                 // notify widget

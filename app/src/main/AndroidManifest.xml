@@ -51,9 +51,17 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/classicwidget"></meta-data>
         </receiver>
+
+        <receiver android:name=".LargeWidget" android:icon="@mipmap/ic_launcher"
+            android:label="@string/largewidget_description">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/largewidget"></meta-data>
+        </receiver>
+
         <receiver android:name=".WeatherUpdateBroadcastReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="de.kaffeemitkoffein.broadcast.REQUEST_UPDATE" />

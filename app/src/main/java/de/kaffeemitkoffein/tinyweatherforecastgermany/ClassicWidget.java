@@ -92,7 +92,7 @@ public class ClassicWidget extends AppWidgetProvider {
      *
      */
 
-    private void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c){
+    public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c){
         remoteViews.setTextViewText(R.id.classicwidget_locationtext,weatherCard.getCity());
         if (weatherCard.currentWeather.hasCondition()){
             int weathercondition = weatherCard.currentWeather.getCondition();
