@@ -136,7 +136,6 @@ public class MainActivity extends Activity {
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                Log.v("WIDGET","Main app => listener => updates widgets");
                 // update widgets
                 WidgetRefresher.refresh(context.getApplicationContext());
                 // check for alarm sets
@@ -158,9 +157,9 @@ public class MainActivity extends Activity {
         PrivateLog.log(this,Tag.MAIN,"Building spinner.");
         stationsManager = new StationsManager(context);
         loadStationsSpinner(weatherSettings);
-        PrivateLog.log(this,Tag.MAIN,"Getting weather.");
+        PrivateLog.log(this,Tag.MAIN,"Getting local weather data.");
         weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
-        PrivateLog.log(this,Tag.MAIN,"Got weather.");
+        PrivateLog.log(this,Tag.MAIN,"Got local weather data.");
         // get new data from api or display present data.
         if (!API_TESTING_ENABLED){
             if (weatherCard!=null){

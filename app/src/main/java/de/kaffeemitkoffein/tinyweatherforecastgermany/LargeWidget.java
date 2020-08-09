@@ -23,8 +23,8 @@ public class LargeWidget extends ClassicWidget{
                 PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.largewidget_layout);
                 remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer,pendingIntent);
-                // setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
-                // fillForecastBar(c,remoteViews,weatherCard);
+                setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
+                fillForecastBar(c,remoteViews,weatherCard);
                 awm.updateAppWidget(widget_instances[i],remoteViews);
             }
         }
