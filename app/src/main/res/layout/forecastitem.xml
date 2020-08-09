@@ -56,19 +56,147 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <TextView android:id="@+id/fcitem_clouds"
-                android:textSize="@dimen/fcmain_textsize_medium"
-                android:textColor="@color/widget_textcolor"
-                android:layout_gravity="center"
+            <LinearLayout
+                android:id="@+id/fcitem_iconbar1"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:layout_gravity="left"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
 
-            <TextView android:id="@+id/fcitem_rain"
-                android:textSize="@dimen/fcmain_textsize_medium"
-                android:textColor="@color/widget_textcolor"
-                android:layout_gravity="center"
+                <ImageView android:id="@+id/fcitem_precipitation_symbol"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_weight="2"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/symbol_precipitation" />
+
+                <TextView android:id="@+id/fcitem_precipitation_text"
+                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textColor="@color/widget_textcolor"
+                    android:layout_gravity="left"
+                    android:layout_weight="8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="12%, 0.0 kg/m²"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fcitem_iconbar2"
+                android:orientation="horizontal"
+                android:weightSum="12"
+                android:layout_gravity="left"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+
+                <ImageView android:id="@+id/fcitem_var1_symbol"
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/symbol_cloud" />
+
+                <TextView android:id="@+id/fcitem_var1_text"
+                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textColor="@color/widget_textcolor"
+                    android:layout_gravity="left"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="12%"/>
+
+                <ImageView android:id="@+id/fcitem_var2_symbol"
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/symbol_lightning" />
+
+                <TextView android:id="@+id/fcitem_var2_text"
+                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textColor="@color/widget_textcolor"
+                    android:layout_gravity="left"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="0%"/>
+
+                <ImageView android:id="@+id/fcitem_var3_symbol"
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/symbol_hail" />
+
+                <TextView android:id="@+id/fcitem_var3_text"
+                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textColor="@color/widget_textcolor"
+                    android:layout_gravity="left"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="0%"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fcitem_iconbar3"
+                android:orientation="horizontal"
+                android:weightSum="12"
+                android:layout_gravity="left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView android:id="@+id/fcitem_var4_symbol"
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/symbol_freezing_rain" />
+
+                <TextView android:id="@+id/fcitem_var4_text"
+                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textColor="@color/widget_textcolor"
+                    android:layout_gravity="left"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="12%"/>
+
+                <ImageView android:id="@+id/fcitem_var5_symbol"
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/symbol_fog" />
+
+                <TextView android:id="@+id/fcitem_var5_text"
+                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textColor="@color/widget_textcolor"
+                    android:layout_gravity="left"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="0%"/>
+
+                <ImageView android:id="@+id/fcitem_var6_symbol"
+                    android:layout_width="0dp"
+                    android:layout_height="12dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="left|center_vertical"
+                    android:src="@drawable/symbol_drizzle" />
+
+                <TextView android:id="@+id/fcitem_var6_text"
+                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textColor="@color/widget_textcolor"
+                    android:layout_gravity="left"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="0%"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -127,7 +255,6 @@
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-
             </LinearLayout>
 
 

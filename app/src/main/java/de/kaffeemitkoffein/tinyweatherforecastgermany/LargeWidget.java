@@ -4,7 +4,6 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import java.text.SimpleDateFormat;
@@ -12,10 +11,9 @@ import java.util.Date;
 
 
 public class LargeWidget extends ClassicWidget{
-    @Override
 
+    @Override
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances) {
-        Log.v("WIDGET","Updating LargeWidget....");
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         WeatherSettings weatherSettings = new WeatherSettings(c);
         if (weatherCard != null) {
@@ -25,8 +23,8 @@ public class LargeWidget extends ClassicWidget{
                 PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.largewidget_layout);
                 remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer,pendingIntent);
-                setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
-                fillForecastBar(c,remoteViews,weatherCard);
+                // setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
+                // fillForecastBar(c,remoteViews,weatherCard);
                 awm.updateAppWidget(widget_instances[i],remoteViews);
             }
         }

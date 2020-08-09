@@ -25,7 +25,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:updatePeriodMillis="1800000"
-    android:previewImage="@drawable/widget_preview"
+    android:previewImage="@drawable/widget_preview_large"
     android:initialLayout="@layout/largewidget_layout"
     android:layout="@layout/largewidget_layout"
     android:resizeMode="horizontal|vertical"

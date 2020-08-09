@@ -41,18 +41,25 @@ public class UpdateAlarmManager {
     public static final boolean FORCE_UPDATE = true;
     public static final boolean CHECK_FOR_UPDATE = false;
 
+    static CurrentWeatherInfo weatherCard;
+    static WeatherSettings weatherSettings;
+
     private UpdateAlarmManager(){
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static boolean updateAndSetAlarmsIfAppropriate(Context context, boolean force_update){
-        WeatherSettings weatherSettings = new WeatherSettings(context);
+        if (weatherSettings==null){
+            weatherSettings = new WeatherSettings(context);
+        }
+        if (weatherCard==null){
+            weatherCard = new Weather().getCurrentWeatherInfo(context);
+        }
         /*
          * update_period: this is the update interval from the settings. It means how often
          * data should be pulled from the DWD API.
          */
         long update_period = weatherSettings.getUpdateIntervalInMillis();
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         // set time for timer to equal next interval as set up by user
         // weatherCard can be null on first app launch or after clearing memory
         // update_time_utc is used to calculate if an update from the DWD API is due.
@@ -149,8 +156,10 @@ public class UpdateAlarmManager {
         return updateAndSetAlarmsIfAppropriate(context,CHECK_FOR_UPDATE);
     }
 
-    public static boolean updateAndSetAlarmsIfAppropriate(Context context, String debugtext){
-        return updateAndSetAlarmsIfAppropriate(context,CHECK_FOR_UPDATE);
+    public static boolean updateAndSetAlarmsIfAppropriate(Context context, CurrentWeatherInfo currentWeatherInfo, WeatherSettings ws, boolean force_update){
+        weatherCard = currentWeatherInfo;
+        weatherSettings = ws;
+        return updateAndSetAlarmsIfAppropriate(context,force_update);
     }
 
     public static void setEarlyAlarm(Context context){

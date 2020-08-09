@@ -183,6 +183,10 @@ public final class Weather {
         private Integer visibility;
         private Double uv;
 
+        public WeatherInfo(){
+
+        }
+
         public void setTimestamp(long timestamp){
             this.timestamp = timestamp;
         }

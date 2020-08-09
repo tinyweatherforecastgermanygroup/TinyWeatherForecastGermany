@@ -116,18 +116,18 @@
                     android:targetClass="de.kaffeemitkoffein.tinyweatherforecastgermany.LoggingActivity"/>
             </Preference>
 
-        </PreferenceScreen>
+            <Preference
+                android:key="PREF_feedback"
+                android:title="@string/preference_feedback_title"
+                android:summary="@string/preference_feedback_summary">
+                <intent android:action="android.intent.action.SENDTO"
+                    android:data="mailto:weather@kaffeemitkoffein.de">
+                    <extra android:name="android.intent.extra.SUBJECT" android:value="@string/feedback_mail_subject"/>
+                    <extra android:name="android.intent.extra.TEXT" android:value="@string/feedback_mail_text"/>
+                </intent>
+            </Preference>
 
-        <Preference
-            android:key="PREF_feedback"
-            android:title="@string/preference_feedback_title"
-            android:summary="@string/preference_feedback_summary">
-            <intent android:action="android.intent.action.SENDTO"
-                android:data="mailto:weather@kaffeemitkoffein.de">
-                <extra android:name="android.intent.extra.SUBJECT" android:value="@string/feedback_mail_subject"/>
-                <extra android:name="android.intent.extra.TEXT" android:value="@string/feedback_mail_text"/>
-            </intent>
-        </Preference>
+        </PreferenceScreen>
 
     </PreferenceCategory>
 

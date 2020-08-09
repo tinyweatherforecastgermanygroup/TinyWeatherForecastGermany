@@ -46,7 +46,7 @@
             android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
             android:syncable="false" />
 
-        <receiver android:name=".ClassicWidget" android:icon="@mipmap/ic_launcher"
+        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClassicWidget" android:icon="@mipmap/ic_launcher"
             android:label="@string/classicwidget_description">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -54,7 +54,7 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/classicwidget"></meta-data>
         </receiver>
 
-        <receiver android:name=".LargeWidget" android:icon="@mipmap/ic_launcher"
+        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.LargeWidget" android:icon="@mipmap/ic_launcher"
             android:label="@string/largewidget_description">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

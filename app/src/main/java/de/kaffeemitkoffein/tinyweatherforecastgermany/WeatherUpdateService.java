@@ -87,12 +87,10 @@ public class WeatherUpdateService extends Service {
                 // notifiy GadgetBridge
                 GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
                 gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-                // notify widget
-                Intent intent = new Intent();
-                intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
-                sendBroadcast(intent);
+                // notify widgets
+                WidgetRefresher.refresh(context);
                 // notify main class
-                intent = new Intent();
+                Intent intent = new Intent();
                 intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
                 sendBroadcast(intent);
                 PrivateLog.log(context,Tag.SERVICE,"update from API: success");

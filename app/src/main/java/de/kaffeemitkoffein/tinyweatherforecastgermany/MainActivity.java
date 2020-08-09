@@ -44,16 +44,18 @@ public class MainActivity extends Activity {
     private final static String SIS_ABOUT_DIALOG_STATE="ABOUT_DIALOG_VISIBLE";
     private final static String SIS_WHATSNEW_DIALOG_STATE="WHATSNEW_DIALOG_VISIBLE";
 
-    public final static String MAINAPP_CUSTOM_REFRESH_ACTION     = "MAINAPP_CUSTOM_ACTION_REFRESH";
-    public final static String STATION_POSITION_EXTRA = "STATION_POSITION_EXTRA";
+    public final static String MAINAPP_CUSTOM_REFRESH_ACTION = "MAINAPP_CUSTOM_ACTION_REFRESH";
 
     public final static boolean API_TESTING_ENABLED = false;
-    private int test_position = 3285;
+    private int test_position = 0;
 
     StationsManager stationsManager;
     ArrayList<String> station_descriptions;
     int spinner_initial_position;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
+
+    CurrentWeatherInfo weatherCard;
+
     long last_updateweathercall = Calendar.getInstance().getTimeInMillis();
 
     private Dialog aboutDialog;
@@ -123,8 +125,10 @@ public class MainActivity extends Activity {
         PrivateLog.log(this,Tag.MAIN,"App started.");
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
-            // remove shared preferences on app update.
-            PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
+            // remove shared preferences on app update if installed app is lower than build 6
+            if (weatherSettings.last_version_code<6){
+                PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
+            }
             showWhatsNewDialog();
         }
         PrivateLog.log(this,Tag.MAIN,"Settings loaded.");
@@ -132,16 +136,14 @@ public class MainActivity extends Activity {
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                // update widgets
-                Intent intent = new Intent(context,ClassicWidget.class);
-                intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
                 Log.v("WIDGET","Main app => listener => updates widgets");
-                sendBroadcast(intent);
+                // update widgets
+                WidgetRefresher.refresh(context.getApplicationContext());
                 // check for alarm sets
                 WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
                 // only react if regular updates are set
                 if (weatherSettings.setalarm){
-                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
+                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),weatherCard,weatherSettings,UpdateAlarmManager.CHECK_FOR_UPDATE);
                 }
                 // reload spinner, but only if geo coordinates setting was changed
                 if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
@@ -153,14 +155,17 @@ public class MainActivity extends Activity {
         if (!API_TESTING_ENABLED){
             weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         }
+        PrivateLog.log(this,Tag.MAIN,"Building spinner.");
         stationsManager = new StationsManager(context);
         loadStationsSpinner(weatherSettings);
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
+        PrivateLog.log(this,Tag.MAIN,"Getting weather.");
+        weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
+        PrivateLog.log(this,Tag.MAIN,"Got weather.");
         // get new data from api or display present data.
         if (!API_TESTING_ENABLED){
             if (weatherCard!=null){
                 displayWeatherForecast(weatherCard);
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext());
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),weatherCard,weatherSettings,UpdateAlarmManager.CHECK_FOR_UPDATE);
             } else {
                 UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
             }
@@ -284,9 +289,7 @@ public class MainActivity extends Activity {
         ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly);
         weatherList.setAdapter(forecastAdapter);
         // Upate the widgets, so that everything displays the same
-        Intent intent = new Intent(this,ClassicWidget.class);
-        intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
-        sendBroadcast(intent);
+        WidgetRefresher.refresh(this.getApplicationContext());
    }
 
     public void displayWeatherForecast(){
@@ -295,7 +298,7 @@ public class MainActivity extends Activity {
     }
 
     public void getWeatherForecast(){
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE);
     }
 
     @Override

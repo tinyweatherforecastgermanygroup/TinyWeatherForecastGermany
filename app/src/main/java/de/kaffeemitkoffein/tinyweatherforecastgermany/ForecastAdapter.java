@@ -76,6 +76,7 @@ public class ForecastAdapter extends BaseAdapter {
             Integer weathercondition = weatherInfo.getCondition();
             textView_weathercondition.setText(new WeatherCodeContract().getWeatherConditionText(context,weathercondition));
         }
+        /*
         TextView textView_clouds = (TextView) view.findViewById(R.id.fcitem_clouds);
         if (weatherInfo.hasClouds()){
             textView_clouds.setText(context.getResources().getString(R.string.clouds)+" "+weatherInfo.getClouds()+"%");
@@ -83,6 +84,76 @@ public class ForecastAdapter extends BaseAdapter {
         TextView textView_rain = (TextView) view.findViewById(R.id.fcitem_rain);
         if ((weatherInfo.hasPrecipitation()) && (weatherInfo.hasProbPrecipitation())){
             textView_rain.setText(context.getResources().getString(R.string.rain)+" "+weatherInfo.getProbPrecipitation()+"% "+weatherInfo.getPrecipitation()+ " kg/m²");
+        }
+        */
+        // precipitation information
+        String precipitation_string = "";
+        if (weatherInfo.hasProbPrecipitation()){
+            precipitation_string = weatherInfo.getProbPrecipitation()+"% ";
+        }
+        if (weatherInfo.hasPrecipitation()){
+            precipitation_string = precipitation_string + weatherInfo.getPrecipitation()+" kg/m²";
+        }
+        // hide bar if no precipitation information available
+        if (precipitation_string.equals("")){
+            View iconbar1_view = (View) view.findViewById(R.id.fcitem_iconbar1);
+            iconbar1_view.setVisibility(View.INVISIBLE);
+        } else {
+            TextView precipitation_textview = (TextView) view.findViewById(R.id.fcitem_precipitation_text);
+            precipitation_textview.setText(precipitation_string);
+        }
+        // weather probablities icons, sorted by priority
+        // clouds
+        int index = 1;
+        if (weatherInfo.hasClouds()){
+            ImageView clouds_view = getSymbolView(view,index);
+            clouds_view.setImageResource(R.drawable.symbol_cloud);
+            TextView clouds_text = getTextView(view,index);
+            clouds_text.setText(weatherInfo.getClouds()+"%");
+            index ++;
+        }
+        if (weatherInfo.hasProbThunderstorms()){
+            ImageView lightning_view = getSymbolView(view,index);
+            lightning_view.setImageResource(R.drawable.symbol_lightning);
+            TextView lightning_text = getTextView(view,index);
+            lightning_text.setText(weatherInfo.getProbThunderStorms()+"%");
+            index ++;
+        }
+        if (weatherInfo.hasProbSolidPrecipitation()){
+            ImageView solid_view = getSymbolView(view,index);
+            solid_view.setImageResource(R.drawable.symbol_hail);
+            TextView solid_text = getTextView(view,index);
+            solid_text.setText(weatherInfo.getProbSolidPrecipitation()+"%");
+            index ++;
+        }
+        if (weatherInfo.hasProbFreezingRain()){
+            ImageView freezingrain_view = getSymbolView(view,index);
+            freezingrain_view.setImageResource(R.drawable.symbol_freezing_rain);
+            TextView freezingrain_text = getTextView(view,index);
+            freezingrain_text.setText(weatherInfo.getProbFreezingRain()+"%");
+            index ++;
+        }
+        if (weatherInfo.hasProbFog()){
+            ImageView fog_view = getSymbolView(view,index);
+            fog_view.setImageResource(R.drawable.symbol_fog);
+            TextView fog_text = getTextView(view,index);
+            fog_text.setText(weatherInfo.getProbFog()+"%");
+            index ++;
+        }
+        if (weatherInfo.hasProbDrizzle()){
+            ImageView drizzle_view = getSymbolView(view,index);
+            drizzle_view.setImageResource(R.drawable.symbol_drizzle);
+            TextView drizzle_text = getTextView(view,index);
+            drizzle_text.setText(weatherInfo.getProbDrizzle()+"%");
+            index ++;
+        }
+        // make remaining icons invisible
+        while (index<6){
+            ImageView iv = getSymbolView(view,index);
+            iv.setVisibility(View.INVISIBLE);
+            TextView tv = getTextView(view,index);
+            tv.setVisibility(View.INVISIBLE);
+            index++;
         }
         // weather icon
         ImageView weather_icon = (ImageView) view.findViewById(R.id.fcitem_weatherconditionicon);
@@ -112,6 +183,32 @@ public class ForecastAdapter extends BaseAdapter {
             imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context));
         }
         return view;
+    }
+
+    private ImageView getSymbolView(View view, int pos){
+        ImageView result = null;
+        switch (pos){
+            case 1: result = (ImageView) view.findViewById(R.id.fcitem_var1_symbol); break;
+            case 2: result = (ImageView) view.findViewById(R.id.fcitem_var2_symbol); break;
+            case 3: result = (ImageView) view.findViewById(R.id.fcitem_var3_symbol); break;
+            case 4: result = (ImageView) view.findViewById(R.id.fcitem_var4_symbol); break;
+            case 5: result = (ImageView) view.findViewById(R.id.fcitem_var5_symbol); break;
+            case 6: result = (ImageView) view.findViewById(R.id.fcitem_var6_symbol); break;
+        }
+        return result;
+    }
+
+    private TextView getTextView(View view, int pos){
+        TextView result = null;
+        switch (pos){
+            case 1: result = (TextView) view.findViewById(R.id.fcitem_var1_text); break;
+            case 2: result = (TextView) view.findViewById(R.id.fcitem_var2_text); break;
+            case 3: result = (TextView) view.findViewById(R.id.fcitem_var3_text); break;
+            case 4: result = (TextView) view.findViewById(R.id.fcitem_var4_text); break;
+            case 5: result = (TextView) view.findViewById(R.id.fcitem_var5_text); break;
+            case 6: result = (TextView) view.findViewById(R.id.fcitem_var6_text); break;
+        }
+        return result;
     }
 
 }
