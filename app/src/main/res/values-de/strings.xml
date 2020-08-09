@@ -26,10 +26,14 @@
     <string name="new_station">Region geändert zu </string>
     <string name="license_button">Lizenz</string>
     <string name="about_button">Über...</string>
-    <string name="triggerupdate_button">Über...</string>
+    <string name="update_button">Aktualisieren</string>
+    <string name="settings_button">Einstellungen</string>
     <string name="whatsnew_button">Was ist neu?</string>
     <string name="classicwidget_description">Klassisch</string>
     <string name="largewidget_description">Groß</string>
+    <string name="station_does_not_exist">Die eingegebene Wetterstation existiert nicht. Wähle eine aus den Vorschlägen aus.</string>
+    <string name="actionbar_textinput_title">Ort hier eingeben:</string>
+    <string name="actionbar_textinput_hint">Um Ergebnisse zu verbessern, versuche Umlaute durch AE, OE und UE zu ersetzen.</string>
     <string name="weathercode_UNKNOWN">unbekannt</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">Gewitter</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">gefrierender Sprühregen</string>

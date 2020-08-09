@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.ArrayList;
+
 public class WeatherSettings {
 
     public static final String PREF_STATION_NAME = "PREF_station_name";
@@ -42,6 +44,7 @@ public class WeatherSettings {
     public static final String PREF_GADGETBRIDGE_LAST_UPDATE_TIME = "PREF_gadgetbridge_last_update_time";
     public static final String PREF_GADGETBRIDGE_PACKAGENAME = "PREF_gadgetbridge_packagename";
     public static final String PREF_LOGGING = "PREF_logging";
+    public static final String PREF_FAVORITESDATA = "PREF_favoritesdata";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -60,6 +63,7 @@ public class WeatherSettings {
     public static final long PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
     public static final boolean PREF_LOGGING_DEFAULT = false;
+    public static final String PREF_FAVORITESDATA_DEFAULT = "HAMBURG;BERLIN;WASHINGTON;MOSCOW;Zwoenitz";
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -78,9 +82,12 @@ public class WeatherSettings {
     public long gadgetbridge_last_update_time;
     public String gadgetbridge_packagename = PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;
     public boolean logging = PREF_LOGGING_DEFAULT;
+    public String favoritesdata = PREF_FAVORITESDATA_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
+
+    final static String FAVORITES_SEPERATOR = ";";
 
     public WeatherSettings(Context c){
         this.context = c;
@@ -105,6 +112,7 @@ public class WeatherSettings {
         this.serve_gadgetbridge = readPreference(PREF_SERVE_GADGETBRIDGE,PREF_SERVE_GADGETBRIDGE_DEFAULT);
         this.gadgetbridge_last_update_time = readPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT);
         this.logging = readPreference(PREF_LOGGING,PREF_LOGGING_DEFAULT);
+        this.favoritesdata = readPreference(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
    }
 
     public void savePreferences(){
@@ -203,6 +211,23 @@ public class WeatherSettings {
         weatherLocation.latitude = this.station_latitude;
         weatherLocation.altitude = this.station_altitude;
         return weatherLocation;
+    }
+
+    public void updateFavorites(ArrayList<String> favorites){
+        String result = "";
+        for (int i=0; i<favorites.size(); i++){
+            result = result + favorites.get(i)+ FAVORITES_SEPERATOR;
+        }
+        applyPreference(PREF_FAVORITESDATA,result);
+    }
+
+    public ArrayList<String> getFavorites(){
+        ArrayList<String> result = new ArrayList<String>();
+        String[] split_descriptions = this.favoritesdata.split(FAVORITES_SEPERATOR);
+        for (int i=0; i< split_descriptions.length; i++){
+            result.add(split_descriptions[i]);
+        }
+        return result;
     }
 
 }

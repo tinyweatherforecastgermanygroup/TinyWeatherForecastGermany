@@ -203,5 +203,18 @@ public class StationsManager {
         return 0;
     }
 
+    public Integer getPositionFromDescription(String description){
+        if (stations!=null){
+            int index = 0;
+            while (index < stations.size()){
+                if (stations.get(index).description.equals(description)){
+                    return index;
+                }
+                index ++;
+            }
+        }
+        return null;
+    }
+
 }
 

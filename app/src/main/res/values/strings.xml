@@ -30,11 +30,15 @@
     </string>
     <string name="new_station">Region changed to</string>
     <string name="license_button">License</string>
+    <string name="update_button">Update</string>
+    <string name="settings_button">Settings</string>
     <string name="about_button">About...</string>
-    <string name="triggerupdate_button">About...</string>
     <string name="whatsnew_button">What\'s new</string>
     <string name="classicwidget_description">Classic</string>
     <string name="largewidget_description">Large</string>
+    <string name="station_does_not_exist">The station you have entered does not exist. Please select from the suggested stations in the list.</string>
+    <string name="actionbar_textinput_title">Enter place here:</string>
+    <string name="actionbar_textinput_hint">To improve search results, you might try to replace "Umlauts" with AE, OE and UE.</string>
     <string name="weathercode_UNKNOWN">unknown</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">thunderstorm</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">freezing drizzle</string>

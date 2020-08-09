@@ -24,20 +24,18 @@ import android.os.Bundle;
 import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 
 public class MainActivity extends Activity {
 
@@ -50,8 +48,12 @@ public class MainActivity extends Activity {
     private int test_position = 0;
 
     StationsManager stationsManager;
-    ArrayList<String> station_descriptions;
+
+    ArrayList<SpinnerLocationItem> spinnerItems;
+    Spinner spinner;
     int spinner_initial_position;
+
+    ArrayList<String> station_descriptions_onlytext;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
     CurrentWeatherInfo weatherCard;
@@ -122,7 +124,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        PrivateLog.log(this,Tag.MAIN,"App started.");
+        // action bar layout
+        ActionBar actionBar = getActionBar();
+        actionBar.setCustomView(R.layout.actionbar);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
+        // actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowHomeEnabled(false);
+
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             // remove shared preferences on app update if installed app is lower than build 6
@@ -133,6 +141,19 @@ public class MainActivity extends Activity {
         }
         PrivateLog.log(this,Tag.MAIN,"Settings loaded.");
         final Context context = getApplicationContext();
+
+        final AdapterView.OnItemSelectedListener changeListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        };
+
+        loadStationsSpinner(weatherSettings);
+
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -147,7 +168,7 @@ public class MainActivity extends Activity {
                 // reload spinner, but only if geo coordinates setting was changed
                 if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
                     stationsManager = new StationsManager(context);
-                    loadStationsSpinner(weatherSettings);
+                    loadStationsData(weatherSettings);
                 }
             }
         };
@@ -175,49 +196,94 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void loadStationsSpinner(final WeatherSettings weatherSettings){
+    private void loadStationsSpinner(final WeatherSettings weatherSettings){
+        // spinner code
+        spinner = (Spinner) findViewById(R.id.stations_spinner);
+        spinnerItems = getSpinnerItems(weatherSettings);
+        ArrayAdapter<SpinnerLocationItem> spinnerArrayAdapter = new ArrayAdapter<SpinnerLocationItem>(getApplicationContext(),R.layout.custom_spinner_item,spinnerItems);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
+        spinner.setAdapter(spinnerArrayAdapter);
+    }
+
+    public void loadStationsData(final WeatherSettings weatherSettings){
         final Context context = this.getApplicationContext();
-        final Spinner stationsSpinner = (Spinner) findViewById(R.id.stations_spinner);
-        final AdapterView.OnItemSelectedListener changeListener = new AdapterView.OnItemSelectedListener() {
+        // for the textview
+        final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                // save options & get data if new item is different from previous station.
-                if (!weatherSettings.station_name.equals(stationsManager.getName(pos)) && (last_updateweathercall+3000<Calendar.getInstance().getTimeInMillis())){
-                    final String display_text = stationsManager.getDescription(pos);
-                    if (stationsManager.setStation(pos)) {
-                        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+display_text,Toast.LENGTH_LONG).show();
-                        PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
-                        PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(pos)+ "("+stationsManager.getName(pos)+")");
-                        PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
-                        last_updateweathercall = Calendar.getInstance().getTimeInMillis();
-                        getWeatherForecast();
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                /*
+                 * We found a bug; compare to https://developer.android.com/reference/android/widget/AdapterView.OnItemClickListener.
+                 * pos is the same as id, returning the position of the clicked item from top like shown on the screen, but
+                 * NOT the position in the adapter. We therefore have to get it manually from our own StationsManager class.
+                 */
+                Log.v("MAIN","Position: "+pos);
+                Log.v("MAIN","Row id  : "+id);
+                TextView tv = (TextView) view.findViewById(R.id.spinner_textitem);
+                Log.v("MAIN","View    : "+tv.getText().toString());
+                Integer station_pos = stationsManager.getPositionFromDescription(tv.getText().toString());
+                Log.v("MAIN","Adapter : "+station_pos);
+                if (station_pos!=null){
+                    if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall+3000<Calendar.getInstance().getTimeInMillis())){
+                        final String display_text = stationsManager.getDescription(station_pos);
+                        if (stationsManager.setStation(station_pos)) {
+                            Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+display_text,Toast.LENGTH_LONG).show();
+                            PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+                            PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
+                            PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+                            last_updateweathercall = Calendar.getInstance().getTimeInMillis();
+                            getWeatherForecast();
+                        }
                     }
+                } else {
+                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
                 }
             }
+        };
+        // for the search icon
+        final View.OnClickListener searchListener = new View.OnClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onClick(View view) {
+                Log.v("MAIN","Imagelistener called.");
+                AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+                Integer station_pos = stationsManager.getPositionFromDescription(autoCompleteTextView.getText().toString());
+                if (station_pos!=null){
+                    if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall+3000<Calendar.getInstance().getTimeInMillis())){
+                        final String display_text = stationsManager.getDescription(station_pos);
+                        if (stationsManager.setStation(station_pos)) {
+                            Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+display_text,Toast.LENGTH_LONG).show();
+                            PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+                            PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
+                            PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+                            last_updateweathercall = Calendar.getInstance().getTimeInMillis();
+                            getWeatherForecast();
+                        }
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
+                }
             }
         };
         stationsManager.new AsyncStationsReader(){
             @Override
             public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
                 super.onLoadingListFinished(stations);
-                station_descriptions = new ArrayList<String>();
+                station_descriptions_onlytext = new ArrayList<String>();
                 for (int j=0;j<stations.size(); j++){
                     String stat_description = stations.get(j).description;
-                    if (weatherSettings.display_station_geo){
-                        stat_description = stat_description + " ("+stations.get(j).latitude+", "+stations.get(j).longitude+")";
-                    }
-                    station_descriptions.add(stat_description);
+                    station_descriptions_onlytext.add(stat_description);
                 }
-                ArrayAdapter<String> stationAdapter = new ArrayAdapter<String>(context,R.layout.custom_spinner_item,station_descriptions);
-                stationAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
-                stationsSpinner.setAdapter(stationAdapter);
-                stationsSpinner.setOnItemSelectedListener(changeListener);
-                spinner_initial_position = stationsManager.getSetPosition();
-                if (spinner_initial_position != -1){
-                    stationsSpinner.setSelection(spinner_initial_position);
-                }
+                // text searcher
+                ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context,R.layout.custom_spinner_item,station_descriptions_onlytext);
+                AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+                autoCompleteTextView.setAdapter(stringArrayAdapter);
+                autoCompleteTextView.setCompletionHint(context.getResources().getString(R.string.actionbar_textinput_hint));
+                autoCompleteTextView.setDropDownWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+                autoCompleteTextView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                autoCompleteTextView.setOnItemClickListener(clickListener);
+                // anchor search icon to search
+                ImageView search_icon = (ImageView) findViewById(R.id.actionbar_search_icon);
+                Log.v("MAIN","Imagelistener erstablished.");
+                search_icon.setOnClickListener(searchListener);
             }
         }.execute();
     }
@@ -283,6 +349,9 @@ public class MainActivity extends Activity {
         String updatetime = simpleDateFormat.format(new Date(weatherCard.polling_time));
         TextView textView_update_time = (TextView) findViewById(R.id.main_update_time);
         textView_update_time.setText(getApplicationContext().getResources().getString(R.string.main_updatetime)+" "+updatetime);
+        // update text entry with full description
+        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+        autoCompleteTextView.setText(weatherCard.getCity());
         // listview
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly);
@@ -304,8 +373,18 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater mi = getMenuInflater();
         mi.inflate(R.menu.main_activity,menu);
+        if (menu.getClass().getSimpleName().equals("MenuBuilder")){
+            try {
+                Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible",Boolean.TYPE);
+                method.setAccessible(true);
+                method.invoke(menu,true);
+            } catch (Exception e){
+                // todo
+            }
+        }
         return super.onCreateOptionsMenu(menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem mi){
@@ -412,6 +491,63 @@ public class MainActivity extends Activity {
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         registerReceiver(receiver,filter);
     }
+
+    class SpinnerLocationItem{
+        boolean favorite = false;
+        String description;
+
+        public SpinnerLocationItem(boolean favorite, String s){
+            this.favorite = favorite;
+            description = s;
+        }
+
+        @Override
+        public String toString() {
+            return description;
+        }
+    }
+
+    private ArrayList<SpinnerLocationItem> getSpinnerItems(WeatherSettings weatherSettings){
+        ArrayList<String> fav_descriptions = weatherSettings.getFavorites();
+        ArrayList<SpinnerLocationItem> spinnerLocationItems = new ArrayList<SpinnerLocationItem>();
+        for (int i=0; i<fav_descriptions.size();i++){
+            SpinnerLocationItem spinnerLocationItem = new SpinnerLocationItem(true,fav_descriptions.get(i));
+            spinnerLocationItems.add(spinnerLocationItem);
+        }
+        return spinnerLocationItems;
+    }
+
+    class FavoritesAdapter extends BaseAdapter{
+
+        private ArrayList<SpinnerLocationItem> spinnerItems;
+        private Context context;
+        LayoutInflater layoutInflater;
+
+        @Override
+        public int getCount() {
+            return spinnerItems.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return spinnerItems.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            return null;
+        }
+    }
+
+    private void addToSpinner(){
+
+    }
+
 
 }
 

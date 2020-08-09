@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/actionbar_linearmasterlayout"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/actionbar_search_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="left|center_vertical"
+        android:src="@mipmap/ic_search_white_24dp"/>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/actionbar_linearinputlayout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/actionbar_text"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textColor="@color/textColor"
+            android:text="@string/actionbar_textinput_title" />
+
+        <AutoCompleteTextView
+            android:id="@+id/actionbar_textview"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:layout_marginBottom="2dp"
+            android:text=""/>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
