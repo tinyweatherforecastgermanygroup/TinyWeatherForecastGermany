@@ -76,10 +76,10 @@
         <ImageView android:id="@+id/main_reset_favorites"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="18dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
             android:tint="@color/textColor"
-            android:src="@mipmap/ic_grade_white_24dp"/>
+            android:src="@mipmap/ic_highlight_off_white_24dp"/>
 
     </LinearLayout>
 
