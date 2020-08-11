@@ -21,13 +21,7 @@
     <string name="app_name">Tiny Weather Forecast Germany</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Last Update:</string>
-    <string name="main_isprovider">Please note that this service is registered as the weather provider service in
-        lineageos. You cannot change the weather location here. To change the location, go to the widget settings of the
-        system clock and select the location there.
-    </string>
-    <string name="dwd_notice">Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual
-        values.
-    </string>
+    <string name="dwd_notice">Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual values.</string>
     <string name="new_station">Region changed to</string>
     <string name="license_button">License</string>
     <string name="update_button">Update</string>
@@ -39,7 +33,7 @@
     <string name="station_does_not_exist">The station you have entered does not exist. Please select from the suggested stations in the list.</string>
     <string name="favorites_cleared">Favorites are deleted.</string>
     <string name="actionbar_textinput_title">Enter place here:</string>
-    <string name="actionbar_textinput_hint">To improve search results, you might try to replace "Umlauts" with AE, OE and UE.</string>
+    <string name="actionbar_textinput_hint">Try to replace "Umlauts" with AE, OE and UE.</string>
     <string name="weathercode_UNKNOWN">unknown</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">thunderstorm</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">freezing drizzle</string>
