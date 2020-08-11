@@ -32,6 +32,7 @@
     <string name="classicwidget_description">Klassisch</string>
     <string name="largewidget_description">Groß</string>
     <string name="station_does_not_exist">Die eingegebene Wetterstation existiert nicht. Wähle eine aus den Vorschlägen aus.</string>
+    <string name="favorites_cleared">Die Favoriten wurden zurückgesetzt.</string>
     <string name="actionbar_textinput_title">Ort hier eingeben:</string>
     <string name="actionbar_textinput_hint">Um Ergebnisse zu verbessern, versuche Umlaute durch AE, OE und UE zu ersetzen.</string>
     <string name="weathercode_UNKNOWN">unbekannt</string>

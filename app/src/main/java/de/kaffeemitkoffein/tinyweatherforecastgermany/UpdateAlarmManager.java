@@ -49,6 +49,8 @@ public class UpdateAlarmManager {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static boolean updateAndSetAlarmsIfAppropriate(Context context, boolean force_update){
+        // remove old entries from the data base
+        new Weather().cleanDataBase(context);
         if (weatherSettings==null){
             weatherSettings = new WeatherSettings(context);
         }

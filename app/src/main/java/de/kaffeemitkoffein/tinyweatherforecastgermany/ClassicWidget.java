@@ -33,6 +33,7 @@ import android.widget.RemoteViews;
 public class ClassicWidget extends AppWidgetProvider {
 
     public static final String WIDGET_CUSTOM_REFRESH_ACTION     = "de.kaffeemitkoffein.feinstaubwidget.WIDGET_CUSTOM_ACTION_REFRESH";
+    public static final String NOT_AVAILABLE = "-";
 
     /**
      * This is called when the widget gets enabled.
@@ -98,13 +99,26 @@ public class ClassicWidget extends AppWidgetProvider {
             int weathercondition = weatherCard.currentWeather.getCondition();
             remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,new WeatherCodeContract().getWeatherConditionText(c,weathercondition));
             remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,new WeatherCodeContract().getWeatherConditionDrawableResource(weathercondition,weatherCard.currentWeather.isDaytime()));
+        } else {
+            remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,NOT_AVAILABLE);
+            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,R.drawable.not_available);
         }
         if (weatherCard.currentWeather.hasTemperature()){
             remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.currentWeather.getTemperatureInCelsiusInt()+"°"));
+        } else {
+            remoteViews.setTextViewText(R.id.classicwidget_temperature,NOT_AVAILABLE);
         }
-        if ((weatherCard.currentWeather.hasMinTemperature())&&(weatherCard.currentWeather.hasMaxTemperature())){
-            remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,weatherCard.currentWeather.getMinTemperatureInCelsiusInt()+"° | "+weatherCard.currentWeather.getMaxTemperatureInCelsiusInt()+"°");
+        String lowhigh = NOT_AVAILABLE;
+        if (weatherCard.currentWeather.hasMinTemperature()){
+            lowhigh = String.valueOf(weatherCard.currentWeather.getMinTemperatureInCelsiusInt()+"°");
         }
+        lowhigh = lowhigh + " | ";
+        if (weatherCard.currentWeather.hasMaxTemperature()){
+            lowhigh = lowhigh + String.valueOf(weatherCard.currentWeather.getMaxTemperatureInCelsiusInt()+"°");
+        } else {
+            lowhigh = lowhigh + NOT_AVAILABLE;
+        }
+        remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,lowhigh);
         if (weatherCard.currentWeather.hasWindSpeed()){
             String s = String.valueOf(weatherCard.currentWeather.getWindSpeedInKmhInt());
             if (weatherCard.currentWeather.hasFlurries()){
@@ -112,9 +126,13 @@ public class ClassicWidget extends AppWidgetProvider {
             }
             remoteViews.setTextViewText(R.id.classicwidget_wind,s);
             remoteViews.setTextViewText(R.id.classicwidget_wind_unit,"km/h");
+        } else {
+            remoteViews.setTextViewText(R.id.classicwidget_wind,NOT_AVAILABLE);
         }
         if (weatherCard.currentWeather.hasWindDirection()){
             remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getArrowBitmap(c));
+        } else {
+            remoteViews.setImageViewResource(R.id.classicwidget_windarrow,R.drawable.not_available);
         }
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
         remoteViews.setInt(R.id.classicwidget_maincontainer,"setBackgroundColor",getBackgroundInt(opacity));

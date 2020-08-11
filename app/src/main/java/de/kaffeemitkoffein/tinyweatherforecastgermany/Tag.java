@@ -27,4 +27,5 @@ public class Tag {
     public static final String GB = "gadgetbridge-api";
     public static final String WUBR = "weatherupdate-broadcast-receiver";
     public static final String UPDATEJOBSERVICE = "UpdateJobService";
+    public static final String DATABASE = "Database";
 }

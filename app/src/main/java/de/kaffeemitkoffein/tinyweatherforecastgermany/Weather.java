@@ -624,7 +624,8 @@ public final class Weather {
         return rows;
     }
 
-    public static final String[] SQL_COMMAND_QUERYTIMECOLUMN = {WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_timestamp};
+    public static final String[] SQL_COMMAND_QUERYTIMECOLUMN = {WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_timestamp,
+                                                                WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name};
 
     private ArrayList<RawWeatherInfo> getTimestampArrayList(Context context) {
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
@@ -652,9 +653,12 @@ public final class Weather {
         int deleted_count = 0;
         for (int i=0; i<size; i++) {
             if (data.get(i).timestamp + weatherSettings.getUpdateIntervalInMillis() < Calendar.getInstance().getTimeInMillis()){
-                deleteWeatherDataSet(context,i);
+                // never remove the current location from the database, even if data is old
+                if (!data.get(i).name.toUpperCase().equals(weatherSettings.station_name.toUpperCase()))
+                    deleted_count = deleted_count + deleteWeatherDataSet(context,i);
             }
         }
+        PrivateLog.log(context,Tag.DATABASE,"Garbage collected "+deleted_count+" data sets.");
     }
 
     public void cleanDataBase(Context context){

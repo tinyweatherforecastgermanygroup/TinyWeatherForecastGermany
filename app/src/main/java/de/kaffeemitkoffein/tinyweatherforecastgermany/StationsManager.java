@@ -207,7 +207,7 @@ public class StationsManager {
         if (stations!=null){
             int index = 0;
             while (index < stations.size()){
-                if (stations.get(index).description.equals(description)){
+                if (stations.get(index).description.toUpperCase().equals(description.toUpperCase())){
                     return index;
                 }
                 index ++;

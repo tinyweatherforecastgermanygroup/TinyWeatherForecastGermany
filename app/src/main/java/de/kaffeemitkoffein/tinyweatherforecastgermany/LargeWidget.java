@@ -48,16 +48,22 @@ public class LargeWidget extends ClassicWidget{
         if (id_condition != 0){
             if (weatherInfo.hasCondition()){
                 remoteViews.setImageViewResource(id_condition,new WeatherCodeContract().getWeatherConditionDrawableResource(weatherInfo.getCondition(),true));
+            } else {
+                remoteViews.setImageViewResource(id_condition,R.drawable.not_available);
             }
         }
         if (id_max != 0){
             if (weatherInfo.hasMaxTemperature()){
                 remoteViews.setTextViewText(id_max,weatherInfo.getMaxTemperatureInCelsiusInt()+"°");
+            } else {
+                remoteViews.setTextViewText(id_max,NOT_AVAILABLE);
             }
         }
         if (id_min != 0){
             if (weatherInfo.hasMinTemperature()){
                 remoteViews.setTextViewText(id_min,weatherInfo.getMinTemperatureInCelsiusInt()+"°");
+            } else {
+                remoteViews.setTextViewText(id_min,NOT_AVAILABLE);
             }
         }
     }
