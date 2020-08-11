@@ -7,8 +7,7 @@ Version 0.40:
 - experimentelles Feature, bei dem eine fällige Aktualisierung nachgeholt wird, sobald ein Netzwerk verfügbar ist
 - Optionen für lokales Logging (Protokoll) zur Fehlersuche hinzugefügt
 - Einstellungen überarbeitet
-- Fehler behoben, der den Update-Prozess abstürzen ließ, wenn das Gerät im "Doze Mode" war
-- diverse Fehler behoben
+
 
 Die App wechselt mit dieser Version die Schnittstelle beim Deutschen Wetterdienst. Damit sind viel genauere Vorhersagen darstellbar, allerdings ist damit ein sehr grundlegender Umbau der App verbunden. Somit können neue Fehler auftreten.
 

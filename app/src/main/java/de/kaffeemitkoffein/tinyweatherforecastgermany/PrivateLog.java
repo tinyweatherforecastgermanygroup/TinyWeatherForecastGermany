@@ -78,6 +78,8 @@ public class PrivateLog {
                         PrivateLog.log(context,"Product: "+ Build.PRODUCT);
                         PrivateLog.log(context,"Model: "+ Build.MODEL);
                         PrivateLog.log(context,"Manufacturer: "+ Build.MANUFACTURER);
+                        PrivateLog.log(context,"App build: "+ BuildConfig.VERSION_CODE);
+                        PrivateLog.log(context,"App build name: "+ BuildConfig.VERSION_NAME);
                         PrivateLog.log(context,"------------------------------------------------------");
                     }
                 } catch (Exception e) {

@@ -57,7 +57,8 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
             zipInputStream.getNextEntry();
             // init new RawWeatherInfo instance to fill with data
             RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
-            // rawWeatherInfo.description = weatherLocation.description;
+            // populate name from settings, as name is file-name in API but not repeated in the content
+            rawWeatherInfo.name = weatherLocation.name;
             try {
                 DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
                 Document document = documentBuilder.parse(zipInputStream);

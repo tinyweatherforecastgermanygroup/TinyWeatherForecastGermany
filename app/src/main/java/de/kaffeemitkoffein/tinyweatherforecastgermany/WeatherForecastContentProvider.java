@@ -28,6 +28,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class WeatherForecastContentProvider extends ContentProvider {
 
@@ -83,11 +84,12 @@ public class WeatherForecastContentProvider extends ContentProvider {
 
     public static class WeatherForecastDatabaseHelper extends SQLiteOpenHelper {
 
-        public static final int DATABASE_VERSION = 3;
+        public static final int DATABASE_VERSION = 4;
         public static final String DATABASE_NAME = "weatherforecast";
         public static final String TABLE_NAME = "tables";
         public static final String KEY_id="id";
         public static final String KEY_timetext="timetext";
+        public static final String KEY_name="name";
         public static final String KEY_description="description";
         public static final String KEY_polling_time="polling_time";
         public static final String KEY_elements="elements";
@@ -214,6 +216,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
         public static final String SQL_COMMAND_CREATE = "CREATE TABLE " + TABLE_NAME + "("
                 + KEY_id + " INTEGER PRIMARY KEY ASC,"
                 + KEY_timetext + " TEXT,"
+                + KEY_name + " TEXT,"
                 + KEY_description + " TEXT,"
                 + KEY_timesteps + " TEXT,"
                 + KEY_TTT + " TEXT,"
@@ -367,8 +370,8 @@ public class WeatherForecastContentProvider extends ContentProvider {
 
         public ContentValues getContentValuesFromWeatherCard(RawWeatherInfo rawWeatherInfo){
             ContentValues contentValues = new ContentValues();
-            //Log.v("DATABASE",serializeString(rawWeatherInfo.timesteps));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_timetext,rawWeatherInfo.timetext);
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_name,rawWeatherInfo.name);
             contentValues.put(WeatherForecastDatabaseHelper.KEY_description,rawWeatherInfo.description);
             contentValues.put(WeatherForecastDatabaseHelper.KEY_timesteps,serializeString(rawWeatherInfo.timesteps));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_TTT,serializeString(rawWeatherInfo.TTT));
@@ -494,19 +497,6 @@ public class WeatherForecastContentProvider extends ContentProvider {
             return contentValues;
         }
 
-        public Uri writeWeatherForecast(Context c,RawWeatherInfo weatherCard){
-            ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
-
-            contentResolver.delete(WeatherForecastContentProvider.URI_SENSORDATA,null,null);
-            return contentResolver.insert(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard));
-        }
-
-        public RawWeatherInfo readWeatherForecast(Context c){
-            ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
-            Cursor cursor = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,null,null,null,null,null);
-            return getWeatherCardFromCursor(cursor);
-        }
-
         public RawWeatherInfo getWeatherCardFromCursor(Cursor c){
             if (c==null){
                 return null;
@@ -514,6 +504,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
                 RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
                 if (c.moveToFirst()){
                     rawWeatherInfo.timetext = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timetext));
+                    rawWeatherInfo.name = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_name));
                     rawWeatherInfo.description = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_description));
                     rawWeatherInfo.timesteps = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timesteps)));
                     rawWeatherInfo.TTT = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_TTT)));
@@ -642,6 +633,29 @@ public class WeatherForecastContentProvider extends ContentProvider {
                 }
             }
         }
+
+    public int writeWeatherForecast(Context c,RawWeatherInfo weatherCard){
+        ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
+        // contentResolver.delete(WeatherForecastContentProvider.URI_SENSORDATA,null,null);
+        // return contentResolver.insert(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard));
+        WeatherSettings weatherSettings = new WeatherSettings(c);
+        int i = contentResolver.update(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard),WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name+"=?",new String[] {weatherSettings.station_name});
+        Log.v("ADAPTER"," ** Rows updated: "+i);
+        if (i==0){
+            contentResolver.insert(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard));
+            i = 1;
+            Log.v("ADAPTER"," ** inserted.");
+        }
+        return i;
     }
+
+    // deprecated
+    private RawWeatherInfo readWeatherForecast(Context c){
+        ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
+        Cursor cursor = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,null,null,null,null,null);
+        return getWeatherCardFromCursor(cursor);
+    }
+
+}
 
 

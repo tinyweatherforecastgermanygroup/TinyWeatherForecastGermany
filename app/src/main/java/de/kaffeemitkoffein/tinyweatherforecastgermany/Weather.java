@@ -1,10 +1,14 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.util.Log;
 
+import java.nio.channels.spi.AbstractSelectableChannel;
 import java.util.*;
 
 public final class Weather {
@@ -557,6 +561,7 @@ public final class Weather {
 
     }
 
+    /**
     public CurrentWeatherInfo getCurrentWeatherInfo(Context context){
         WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         RawWeatherInfo rawWeatherInfo = weatherForecastContentProvider.readWeatherForecast(context);
@@ -566,5 +571,97 @@ public final class Weather {
         }
         return null;
     }
+     **/
 
+    public static final String[] SQL_COMMAND_QUERYALLCOLUMNS = {"SELECT * FROM " + WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME};
+    public static final String[] SQL_PROJECTION = {"SELECT * FROM " + WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME};
+
+    public CurrentWeatherInfo getCurrentWeatherInfo(Context context){
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        String station_name = weatherSettings.station_name;
+        Log.v("ADAPTER","*************************************");
+        Log.v("ADAPTER","Adapter called:");
+        Log.v("ADAPTER","station name: "+station_name+", called "+weatherSettings.station_description);
+        Cursor cursor;
+        String[] selectionArg={station_name};
+        try {
+            cursor = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,
+                    null,WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name+" = ?",selectionArg,null);
+            // read only fist element. Database should not hold more than one data set for one station.
+            Log.v("ADAPTER","query passed "+station_name);
+            if (cursor.moveToFirst()){
+                Log.v("ADAPTER","cursor has item");
+                WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
+                RawWeatherInfo rawWeatherInfo = weatherForecastContentProvider.getWeatherCardFromCursor(cursor);
+                CurrentWeatherInfo currentWeatherInfo = new CurrentWeatherInfo(rawWeatherInfo);
+                // check if local weather data is outdated
+                if (currentWeatherInfo.polling_time<Calendar.getInstance().getTimeInMillis()+weatherSettings.getUpdateIntervalInMillis()){
+                    return currentWeatherInfo;
+                } else {
+                    Log.v("ADAPTER","outdated.");
+                    return null;
+                }
+            } else{
+                Log.v("ADAPTER","no item :-(");
+            }
+        } catch (Exception e) {
+            Log.v("ADAPTER",e.getMessage());
+        }
+        // return null if no correspondig data set found in local database.
+        return null;
+    }
+
+    private int deleteWeatherDataSet(Context context, int i){
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        int rows = 0;
+        try {
+            rows = contentResolver.delete(WeatherForecastContentProvider.URI_SENSORDATA,WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_id+"=?",new String[] {String.valueOf(i)});
+            //rows = sql_db.delete(TABLE_NAME, KEY_id+"=?", new String[] {String.valueOf(i)});
+        } catch (Exception e) {
+            // do nothing here
+        }
+        return rows;
+    }
+
+    public static final String[] SQL_COMMAND_QUERYTIMECOLUMN = {WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_timestamp};
+
+    private ArrayList<RawWeatherInfo> getTimestampArrayList(Context context) {
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        ArrayList<RawWeatherInfo> dataArrayList = new ArrayList<RawWeatherInfo>();
+        Cursor c = null;
+        try {
+            c = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,SQL_COMMAND_QUERYTIMECOLUMN,null,null,null);
+            if (c.moveToFirst()) {
+                do {
+                    RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
+                    dataArrayList.add(rawWeatherInfo);
+                } while (c.moveToNext());
+            }
+        } catch (Exception SQLiteException){
+            // onCreate(sql_db);
+        }
+        if (c!=null)
+            c.close();
+        return dataArrayList;
+    }
+
+    private void cleanDataBase(Context context, ArrayList<RawWeatherInfo> data){
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        int size = data.size();
+        int deleted_count = 0;
+        for (int i=0; i<size; i++) {
+            if (data.get(i).timestamp + weatherSettings.getUpdateIntervalInMillis() < Calendar.getInstance().getTimeInMillis()){
+                deleteWeatherDataSet(context,i);
+            }
+        }
+    }
+
+    public void cleanDataBase(Context context){
+        ArrayList<RawWeatherInfo> dataArrayList = getTimestampArrayList(context);
+        if (dataArrayList != null){
+            cleanDataBase(context,dataArrayList);
+        }
+    }
 }
+

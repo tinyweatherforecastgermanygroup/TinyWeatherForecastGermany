@@ -60,17 +60,36 @@
         android:textSize="@dimen/fcmain_textsize_medium"
         android:id="@+id/main_dwd_notice_text"/>
 
-    <Spinner android:id="@+id/stations_spinner"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_below="@id/main_selectstation_text"/>
+    <LinearLayout
+        android:id="@+id/main_spinner_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="20"
+        android:layout_below="@id/main_selectstation_text">
+
+        <Spinner android:id="@+id/stations_spinner"
+            android:layout_width="0dp"
+            android:layout_weight="19"
+            android:layout_height="wrap_content"/>
+
+        <ImageView android:id="@+id/main_star"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:tint="@color/colorAccent"
+            android:src="@mipmap/ic_grade_white_24dp"/>
+
+    </LinearLayout>
+
 
     <ListView android:id="@+id/main_listview"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:divider="@color/colorPrimaryLight"
               android:dividerHeight="1dp"
-              android:layout_below="@id/stations_spinner"
+              android:layout_below="@id/main_spinner_linearlayout"
               android:layout_above="@id/main_dwd_notice_text"
               android:footerDividersEnabled="true"/>
 

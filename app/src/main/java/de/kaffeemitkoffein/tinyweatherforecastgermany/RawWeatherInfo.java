@@ -9,6 +9,7 @@ public class RawWeatherInfo{
     long polling_time;       // polling time from API in millis UTC
     long timestamp;         // currently not used.
     int elements;            // # of elements read
+    String name;            // station name (should be unique)
     String description;     // sensor description, usually city name
     String timetext;    // text; original timestamp
     String[] timesteps; // millis; UTC stamp for forecast
@@ -134,8 +135,8 @@ public class RawWeatherInfo{
         initEmptyValues();
     }
 
-    public RawWeatherInfo(long polling_time, int elements, String description,
-                          String timetext, String[] timesteps, String[]  TTT, String[] E_TTT, String[] T5cm, String[] Td, String[] E_Td, String[] Tx, String[] Tn, String[] TM, String[] TG,
+    public RawWeatherInfo(long polling_time, int elements, String name, String description,
+                          String timetext, String[] timesteps, String[] TTT, String[] E_TTT, String[] T5cm, String[] Td, String[] E_Td, String[] Tx, String[] Tn, String[] TM, String[] TG,
                           String[] DD, String[] E_DD, String[] FF, String[] E_FF, String[] FX1, String[] FX3, String[] FXh, String[] FXh25, String[] FXh40, String[] FXh55, String[] FX625, String[] FX640,
                           String[] FX655, String[] RR1c, String[] RRL1c, String[] RR3, String[] RR6, String[] RR3c, String[] RR6c, String[] RRhc, String[] RRdc, String[] RRS1c, String[] RRS3c,
                           String[] R101, String[]  R102, String[]  R103, String[]  R105, String[] R107, String[] R110, String[] R120, String[] R130, String[] R150, String[] RR1o1, String[] RR1w1,
@@ -148,6 +149,7 @@ public class RawWeatherInfo{
                           String[] wwM, String[] wwM6, String[] wwMh, String[] wwMd, String[] PEvap){
         this.polling_time = polling_time;
         this.elements = elements;
+        this.name = name;
         this.description = description;
         this.timetext=timetext; this.timesteps=timesteps; this.TTT=TTT; this.E_TTT=E_TTT; this.T5cm=T5cm;this.Td=Td; this.E_Td=E_Td; this.Tx=Tx; this.Tn=Tn; this.TM=TM; this.TG=TG;
         this.DD=DD; this.E_DD=E_DD; this.FF=FF; this.E_FF=E_FF; this.FX1=FX1; this.FX3=FX3; this.FXh=FXh; this.FXh25=FXh25; this.FXh40=FXh40; this.FXh55=FXh55; this.FX625=FX625; this.FX640=FX640;
@@ -162,7 +164,7 @@ public class RawWeatherInfo{
     }
 
     public RawWeatherInfo copy(){
-        return new RawWeatherInfo(polling_time,elements,description,timetext, timesteps, TTT, E_TTT, T5cm, Td, E_Td, Tx, Tn, TM, TG, DD, E_DD, FF, E_FF, FX1, FX3, FXh, FXh25, FXh40, FXh55, FX625, FX640, FX655, RR1c,
+        return new RawWeatherInfo(polling_time,elements,name,description,timetext, timesteps, TTT, E_TTT, T5cm, Td, E_Td, Tx, Tn, TM, TG, DD, E_DD, FF, E_FF, FX1, FX3, FXh, FXh25, FXh40, FXh55, FX625, FX640, FX655, RR1c,
                 RRL1c, RR3, RR6, RR3c, RR6c, RRhc, RRdc, RRS1c, RRS3c, R101, R102, R103, R105, R107, R110, R120, R130, R150, RR1o1, RR1w1, RR1u1, R600, Rh00, R602, Rh02, Rd02, R610,
                 Rh10, R650, Rh50, Rd00, Rd10, Rd50, wwPd, DRR1, wwZ, wwZ6, wwZh, wwD, wwD6, wwDh, wwC, wwC6, wwCh, wwT, wwT6, wwTh, wwTd, wwL, wwL6, wwLh, wwS, wwS6, wwSh, wwF, wwF6,
                 wwFh, wwP, wwP6, wwPh, VV10, ww, ww3, W1W2, WPc31, WPc61, WPch1, WPcd1, N, N05, Nl, Nm, Nh, Nlm, H_BsC, PPPP, E_PPP, RadS3, RRad1, Rad1h, RadL3, VV, D1, SunD, SunD3,
@@ -172,6 +174,7 @@ public class RawWeatherInfo{
     private void initEmptyValues(){
         int DATA_SIZE = Weather.DATA_SIZE;
         timetext = "";
+        name="";
         description = "";
         elements = 0;
         timesteps = new String[DATA_SIZE];TTT = new String[DATA_SIZE];E_TTT = new String[DATA_SIZE];T5cm = new String[DATA_SIZE];Td = new String[DATA_SIZE];E_Td = new String[DATA_SIZE];Tx = new String[DATA_SIZE];
