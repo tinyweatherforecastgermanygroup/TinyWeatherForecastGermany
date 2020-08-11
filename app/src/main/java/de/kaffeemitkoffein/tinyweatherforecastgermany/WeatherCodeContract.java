@@ -546,8 +546,8 @@ public final class WeatherCodeContract {
         /*
          * continuous mixed snow & rain conditions
          */
-        if (weatherInfo.hasProbPrecipitation() && (weatherInfo.hasProbSolidPrecipitation())){
-            if ((weatherInfo.getProbSolidPrecipitation()>THRESHOLD_PROB_FOR_RAIN) & (weatherInfo.getProbPrecipitation()>THRESHOLD_PROB_FOR_RAIN)){
+        if (weatherInfo.hasProbPrecipitation() && (weatherInfo.hasProbSolidPrecipitation()) && weatherInfo.hasTemperature()){
+            if ((weatherInfo.getProbSolidPrecipitation()>THRESHOLD_PROB_FOR_RAIN) && (weatherInfo.getProbPrecipitation()>THRESHOLD_PROB_FOR_RAIN) && (weatherInfo.getTemperatureInCelsiusInt()<0)){
                 condition = SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY;
                 if (weatherInfo.hasPrecipitation()){
                     if (weatherInfo.getPrecipitation()<10){
@@ -562,11 +562,6 @@ public final class WeatherCodeContract {
         boolean snow_condition = false;
         if (rain_condition) {
             if (weatherInfo.getTemperatureInCelsius()<0){
-                snow_condition = true;
-            }
-        }
-        if (weatherInfo.hasProbSolidPrecipitation()) {
-            if (weatherInfo.getProbSolidPrecipitation() > THRESHOLD_PROB_FOR_RAIN) {
                 snow_condition = true;
             }
         }
@@ -607,8 +602,8 @@ public final class WeatherCodeContract {
         /*
          * mixed rain & snow showers
          */
-        if (weatherInfo.hasProbPrecipitation() && (weatherInfo.hasProbSolidPrecipitation())){
-            if ((weatherInfo.getProbSolidPrecipitation()<=THRESHOLD_PROB_FOR_RAIN) & (weatherInfo.getProbPrecipitation()>THRESHOLD_PROB_FOR_RAIN)){
+        if (weatherInfo.hasProbPrecipitation() && (weatherInfo.hasProbSolidPrecipitation()) && weatherInfo.hasTemperature()){
+            if ((weatherInfo.getProbSolidPrecipitation()<=THRESHOLD_PROB_FOR_RAIN) && (weatherInfo.getProbPrecipitation()>THRESHOLD_PROB_FOR_RAIN) && (weatherInfo.getTemperatureInCelsiusInt()<0)){
                 condition = SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY;
                 if (weatherInfo.hasPrecipitation()){
                     if (weatherInfo.getPrecipitation()<10){
