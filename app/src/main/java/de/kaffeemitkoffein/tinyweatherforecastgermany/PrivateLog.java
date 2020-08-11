@@ -24,7 +24,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -63,7 +62,7 @@ public class PrivateLog {
 
     public static boolean log(Context context, String s){
         if (loggingEnabled(context)) {
-            Log.v("TWF",s);
+            // Log.v("TWF",s);
             File path = context.getFilesDir();
             File logfile = new File(path,LOGFILENAME);
             if (!logfile.exists()){

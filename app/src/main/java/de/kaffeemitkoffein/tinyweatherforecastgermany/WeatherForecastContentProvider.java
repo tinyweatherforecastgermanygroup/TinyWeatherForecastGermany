@@ -28,7 +28,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 public class WeatherForecastContentProvider extends ContentProvider {
 
@@ -640,11 +639,9 @@ public class WeatherForecastContentProvider extends ContentProvider {
         // return contentResolver.insert(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard));
         WeatherSettings weatherSettings = new WeatherSettings(c);
         int i = contentResolver.update(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard),WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name+"=?",new String[] {weatherSettings.station_name});
-        Log.v("ADAPTER"," ** Rows updated: "+i);
         if (i==0){
             contentResolver.insert(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard));
             i = 1;
-            Log.v("ADAPTER"," ** inserted.");
         }
         return i;
     }

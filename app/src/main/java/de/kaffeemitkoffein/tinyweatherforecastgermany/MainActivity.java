@@ -25,7 +25,6 @@ import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -70,7 +69,6 @@ public class MainActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
-                Log.v("MAIN","call displayWeatherForecast");
                 displayWeatherForecast();
                 if (API_TESTING_ENABLED){
                     test_position ++;
@@ -241,7 +239,6 @@ public class MainActivity extends Activity {
                 Integer station_pos = stationsManager.getPositionFromDescription(station_description);
                 if (station_pos!=null){
                     if ((!weatherSettings.station_name.equals(stationsManager.getName(station_pos))) && (last_updateweathercall + 3000 < Calendar.getInstance().getTimeInMillis())) {
-                        Log.v("MAIN","changing: "+station_description);
                         newWeatherRegionSelected(weatherSettings,station_description);
                     }
                 }
@@ -310,7 +307,6 @@ public class MainActivity extends Activity {
         final View.OnClickListener searchListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v("MAIN","Imagelistener called.");
                 AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
                 String station_description = autoCompleteTextView.getText().toString();
                 Integer station_pos = stationsManager.getPositionFromDescription(station_description);
@@ -342,7 +338,6 @@ public class MainActivity extends Activity {
                 autoCompleteTextView.setOnItemClickListener(clickListener);
                 // anchor search icon to search
                 ImageView search_icon = (ImageView) findViewById(R.id.actionbar_search_icon);
-                Log.v("MAIN","Imagelistener erstablished.");
                 search_icon.setOnClickListener(searchListener);
             }
         }.execute();
@@ -356,18 +351,18 @@ public class MainActivity extends Activity {
             final String name = stationsManager.getName(test_position);
             final String description = stationsManager.getDescription(test_position);
             Handler handler = new Handler();
-            Log.v(Tag.MAIN,"Waiting.");
+            // Log.v(Tag.MAIN,"Waiting.");
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Log.v(Tag.MAIN,"------------------------------------------");
-                    Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
-                    Log.v(Tag.MAIN,"-------------------------------------------");
+                   //  Log.v(Tag.MAIN,"------------------------------------------");
+                   // Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
+                   // Log.v(Tag.MAIN,"-------------------------------------------");
                     getWeatherForecast();
                 }
             },2000);
         } else {
-            Log.v(Tag.MAIN,"Testing finished.");
+            // Log.v(Tag.MAIN,"Testing finished.");
         }
     }
 
@@ -403,7 +398,6 @@ public class MainActivity extends Activity {
     }
 
     public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
-        Log.v(Tag.MAIN,"Station to display: "+weatherCard.city);
         // date
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
         String updatetime = simpleDateFormat.format(new Date(weatherCard.polling_time));

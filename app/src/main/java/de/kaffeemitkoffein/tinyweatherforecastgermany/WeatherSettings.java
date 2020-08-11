@@ -22,7 +22,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import java.util.ArrayList;
 
 public class WeatherSettings {

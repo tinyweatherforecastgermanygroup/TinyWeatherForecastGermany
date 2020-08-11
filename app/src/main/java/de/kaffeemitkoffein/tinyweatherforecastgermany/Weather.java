@@ -1,3 +1,22 @@
+/*
+ * This file is part of TinyWeatherForecastGermany.
+ *
+ * Copyright (c) 2020 Pawel Dube
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.ContentResolver;
@@ -6,9 +25,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.util.Log;
-
-import java.nio.channels.spi.AbstractSelectableChannel;
 import java.util.*;
 
 public final class Weather {
@@ -580,18 +596,13 @@ public final class Weather {
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         WeatherSettings weatherSettings = new WeatherSettings(context);
         String station_name = weatherSettings.station_name;
-        Log.v("ADAPTER","*************************************");
-        Log.v("ADAPTER","Adapter called:");
-        Log.v("ADAPTER","station name: "+station_name+", called "+weatherSettings.station_description);
         Cursor cursor;
         String[] selectionArg={station_name};
         try {
             cursor = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,
                     null,WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name+" = ?",selectionArg,null);
             // read only fist element. Database should not hold more than one data set for one station.
-            Log.v("ADAPTER","query passed "+station_name);
             if (cursor.moveToFirst()){
-                Log.v("ADAPTER","cursor has item");
                 WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
                 RawWeatherInfo rawWeatherInfo = weatherForecastContentProvider.getWeatherCardFromCursor(cursor);
                 CurrentWeatherInfo currentWeatherInfo = new CurrentWeatherInfo(rawWeatherInfo);
@@ -599,14 +610,11 @@ public final class Weather {
                 if (currentWeatherInfo.polling_time<Calendar.getInstance().getTimeInMillis()+weatherSettings.getUpdateIntervalInMillis()){
                     return currentWeatherInfo;
                 } else {
-                    Log.v("ADAPTER","outdated.");
                     return null;
                 }
-            } else{
-                Log.v("ADAPTER","no item :-(");
             }
         } catch (Exception e) {
-            Log.v("ADAPTER",e.getMessage());
+            PrivateLog.log(context,Tag.DATABASE,"database error when getting weather data: "+e.getMessage());
         }
         // return null if no correspondig data set found in local database.
         return null;
