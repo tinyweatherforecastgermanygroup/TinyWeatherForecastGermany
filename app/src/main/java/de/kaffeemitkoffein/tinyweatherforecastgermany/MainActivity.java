@@ -220,6 +220,32 @@ public class MainActivity extends Activity {
             autoCompleteTextView.setText("");
             autoCompleteTextView.clearListSelection();
         }
+        // notifiy GadgetBridge
+        GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+        gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+    }
+
+    private class SpinnerListener implements View.OnTouchListener, AdapterView.OnItemSelectedListener{
+        private boolean user_touched_spinner = false;
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            user_touched_spinner = true;
+            return false;
+        }
+        public void handleItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            // to the stuff
+            user_touched_spinner = false;
+        }
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            if (user_touched_spinner){
+                handleItemSelected(adapterView, view,  i, l);
+            }
+        }
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
+        }
     }
 
     private void loadStationsSpinner(final WeatherSettings weatherSettings) {
@@ -231,23 +257,29 @@ public class MainActivity extends Activity {
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_spinner_item, spinnerItems);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
         spinner.setAdapter(spinnerArrayAdapter);
+        final Context context = this;
         // for the spinner
-        final AdapterView.OnItemSelectedListener spinnerListerner = new AdapterView.OnItemSelectedListener() {
+        final SpinnerListener spinnerListener = new SpinnerListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                String station_description = spinnerItems.get(pos);
+            public void handleItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                // weather settings must be read at the time of selection!
+                WeatherSettings weatherSettings = new WeatherSettings(context);
+                TextView tv = (TextView) view.findViewById(R.id.spinner_textitem);
+                String station_description = tv.getText().toString();
                 Integer station_pos = stationsManager.getPositionFromDescription(station_description);
-                if (station_pos!=null){
-                    if ((!weatherSettings.station_name.equals(stationsManager.getName(station_pos))) && (last_updateweathercall + 3000 < Calendar.getInstance().getTimeInMillis())) {
-                        newWeatherRegionSelected(weatherSettings,station_description);
+                if (station_pos != null) {
+                    if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))) {
+                        newWeatherRegionSelected(weatherSettings, station_description);
                     }
+                } else {
+                    PrivateLog.log(context, Tag.MAIN, "Station from favorites not found!");
+                    loadStationsSpinner(weatherSettings);
                 }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+                super.handleItemSelected(adapterView, view, pos, l);
             }
         };
-        spinner.setOnItemSelectedListener(spinnerListerner);
+        spinner.setOnItemSelectedListener(spinnerListener);
+        spinner.setOnTouchListener(spinnerListener);
     }
 
     private void addToSpinner(WeatherSettings weatherSettings, String s){
@@ -278,6 +310,8 @@ public class MainActivity extends Activity {
         final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                // weather settings must be read at the time of selection!
+                WeatherSettings weatherSettings = new WeatherSettings(context);
                 /*
                  * We found a bug; compare to https://developer.android.com/reference/android/widget/AdapterView.OnItemClickListener.
                  * pos is the same as id, returning the position of the clicked item from top like shown on the screen, but
@@ -307,6 +341,8 @@ public class MainActivity extends Activity {
         final View.OnClickListener searchListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // weather settings must be read at the time of selection!
+                WeatherSettings weatherSettings = new WeatherSettings(context);
                 AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
                 String station_description = autoCompleteTextView.getText().toString();
                 Integer station_pos = stationsManager.getPositionFromDescription(station_description);

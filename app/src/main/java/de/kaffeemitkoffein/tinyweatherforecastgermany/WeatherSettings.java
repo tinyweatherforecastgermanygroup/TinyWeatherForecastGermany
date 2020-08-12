@@ -62,7 +62,7 @@ public class WeatherSettings {
     public static final long PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
     public static final boolean PREF_LOGGING_DEFAULT = false;
-    public static final String PREF_FAVORITESDATA_DEFAULT = "HAMBURG;BERLIN;WASHINGTON;MOSCOW;Zwoenitz";
+    public static final String PREF_FAVORITESDATA_DEFAULT = PREF_STATION_DESCRIPTION_DEFAULT;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
