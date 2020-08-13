@@ -116,6 +116,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume(){
         registerForBroadcast();
+        // this is necessary if the update of weather data occurs while the app is in the background
+        weatherCard = new Weather().getCurrentWeatherInfo(this);
+        displayWeatherForecast(weatherCard);
         super.onResume();
     }
 
@@ -127,8 +130,6 @@ public class MainActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
-        // actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        // actionBar.setDisplayShowHomeEnabled(false);
 
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
@@ -433,12 +434,16 @@ public class MainActivity extends Activity {
         testAPI_Call();
     }
 
-    public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
-        // date
+    public void displayUpdateTime(CurrentWeatherInfo currentWeatherInfo){
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
         String updatetime = simpleDateFormat.format(new Date(weatherCard.polling_time));
         TextView textView_update_time = (TextView) findViewById(R.id.main_update_time);
         textView_update_time.setText(getApplicationContext().getResources().getString(R.string.main_updatetime)+" "+updatetime);
+    }
+
+    public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
+        // date
+        displayUpdateTime(weatherCard);
         // update text entry with full description
         // AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
         // autoCompleteTextView.setText(weatherCard.getCity());

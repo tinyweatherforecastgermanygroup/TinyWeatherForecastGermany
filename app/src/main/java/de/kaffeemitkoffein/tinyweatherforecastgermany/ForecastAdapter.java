@@ -20,6 +20,8 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,16 @@ public class ForecastAdapter extends BaseAdapter {
         this.context = context;
         this.weatherForecasts = weatherForecasts;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    private final static int SCALE_CONDITION_ICON = 2;
+    private final static int SCALE_MINI_ICON = 8;
+
+    private Bitmap loadScaledIcon(int id, int scale){
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = scale;
+        final Bitmap result = BitmapFactory.decodeResource(context.getResources(),id,options);
+        return result;
     }
 
     @Override
@@ -107,42 +119,48 @@ public class ForecastAdapter extends BaseAdapter {
         int index = 1;
         if (weatherInfo.hasClouds()){
             ImageView clouds_view = getSymbolView(view,index);
-            clouds_view.setImageResource(R.drawable.symbol_cloud);
+            //clouds_view.setImageResource(R.drawable.symbol_cloud);
+            clouds_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_cloud,SCALE_MINI_ICON));
             TextView clouds_text = getTextView(view,index);
             clouds_text.setText(weatherInfo.getClouds()+"%");
             index ++;
         }
         if (weatherInfo.hasProbThunderstorms()){
             ImageView lightning_view = getSymbolView(view,index);
-            lightning_view.setImageResource(R.drawable.symbol_lightning);
+            // lightning_view.setImageResource(R.drawable.symbol_lightning);
+            lightning_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_lightning,SCALE_MINI_ICON));
             TextView lightning_text = getTextView(view,index);
             lightning_text.setText(weatherInfo.getProbThunderStorms()+"%");
             index ++;
         }
         if (weatherInfo.hasProbSolidPrecipitation()){
             ImageView solid_view = getSymbolView(view,index);
-            solid_view.setImageResource(R.drawable.symbol_hail);
+            // solid_view.setImageResource(R.drawable.symbol_hail);
+            solid_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_hail,SCALE_MINI_ICON));
             TextView solid_text = getTextView(view,index);
             solid_text.setText(weatherInfo.getProbSolidPrecipitation()+"%");
             index ++;
         }
         if (weatherInfo.hasProbFreezingRain()){
             ImageView freezingrain_view = getSymbolView(view,index);
-            freezingrain_view.setImageResource(R.drawable.symbol_freezing_rain);
+            //freezingrain_view.setImageResource(R.drawable.symbol_freezing_rain);
+            freezingrain_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_freezing_rain,SCALE_MINI_ICON));
             TextView freezingrain_text = getTextView(view,index);
             freezingrain_text.setText(weatherInfo.getProbFreezingRain()+"%");
             index ++;
         }
         if (weatherInfo.hasProbFog()){
             ImageView fog_view = getSymbolView(view,index);
-            fog_view.setImageResource(R.drawable.symbol_fog);
+            // fog_view.setImageResource(R.drawable.symbol_fog);
+            fog_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_fog,SCALE_MINI_ICON));
             TextView fog_text = getTextView(view,index);
             fog_text.setText(weatherInfo.getProbFog()+"%");
             index ++;
         }
         if (weatherInfo.hasProbDrizzle()){
             ImageView drizzle_view = getSymbolView(view,index);
-            drizzle_view.setImageResource(R.drawable.symbol_drizzle);
+            //drizzle_view.setImageResource(R.drawable.symbol_drizzle);
+            drizzle_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_drizzle,SCALE_MINI_ICON));
             TextView drizzle_text = getTextView(view,index);
             drizzle_text.setText(weatherInfo.getProbDrizzle()+"%");
             index ++;
@@ -159,7 +177,8 @@ public class ForecastAdapter extends BaseAdapter {
         ImageView weather_icon = (ImageView) view.findViewById(R.id.fcitem_weatherconditionicon);
         if (weatherInfo.hasCondition()){
             Integer weathercondition = weatherInfo.getCondition();
-            weather_icon.setImageDrawable(new WeatherCodeContract().getWeatherConditionDrawable(context,weathercondition,weatherInfo.isDaytime()));
+            // weather_icon.setImageDrawable(new WeatherCodeContract().getWeatherConditionDrawable(context,weathercondition,weatherInfo.isDaytime()));
+            weather_icon.setImageBitmap(loadScaledIcon(new WeatherCodeContract().getWeatherConditionDrawableResource(weathercondition,weatherInfo.isDaytime()),SCALE_CONDITION_ICON));
         }
         // right column
         TextView textView_temp = (TextView) view.findViewById(R.id.fcitem_temperature);
@@ -210,5 +229,7 @@ public class ForecastAdapter extends BaseAdapter {
         }
         return result;
     }
+
+
 
 }
