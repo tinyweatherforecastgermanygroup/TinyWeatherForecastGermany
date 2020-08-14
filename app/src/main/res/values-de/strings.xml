@@ -28,6 +28,7 @@
     <string name="update_button">Aktualisieren</string>
     <string name="settings_button">Einstellungen</string>
     <string name="whatsnew_button">Was ist neu?</string>
+    <string name="boldwidget_description">Kräftig</string>
     <string name="classicwidget_description">Klassisch</string>
     <string name="largewidget_description">Groß</string>
     <string name="station_does_not_exist">Die eingegebene Wetterstation existiert nicht. Wähle eine aus den Vorschlägen aus.</string>

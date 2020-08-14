@@ -17,22 +17,17 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<resources>
-
-    <dimen name="widget_textsize_verylarge">18sp</dimen>
-    <dimen name="widget_textsize_large">14sp</dimen>
-    <dimen name="widget_textsize_medium">12sp</dimen>
-    <dimen name="widget_textsize_small">7sp</dimen>
-
-    <dimen name="widget_textsize_fc_day">10sp</dimen>
-    <dimen name="widget_textsize_fc_temperature">10sp</dimen>
-
-    <dimen name="fcmain_textsize_large">18sp</dimen>
-    <dimen name="fcmain_textsize_medium">12sp</dimen>
-    <dimen name="fcmain_textsize_small">7sp</dimen>
-
-    <dimen name="licence_textsize">10sp</dimen>
-    <dimen name="about_textsize">12sp</dimen>
-    <dimen name="whatsnew_textsize">14sp</dimen>
-
-</resources>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="250dp"
+    android:minHeight="40dp"
+    android:minResizeWidth="40dp"
+    android:minResizeHeight="40dp"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:updatePeriodMillis="1800000"
+    android:previewImage="@drawable/widget_preview"
+    android:initialLayout="@layout/boldwidget_layout"
+    android:layout="@layout/boldwidget_layout"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen">
+</appwidget-provider>

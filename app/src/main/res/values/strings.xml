@@ -28,6 +28,7 @@
     <string name="settings_button">Settings</string>
     <string name="about_button">About...</string>
     <string name="whatsnew_button">What\'s new</string>
+    <string name="boldwidget_description">Bold</string>
     <string name="classicwidget_description">Classic</string>
     <string name="largewidget_description">Large</string>
     <string name="station_does_not_exist">The station you have entered does not exist. Please select from the suggested stations in the list.</string>

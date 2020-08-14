@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/boldwidget_maincontainer"
+    android:orientation="horizontal"
+    android:weightSum="20"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <!--
+        TODAY
+     -->
+
+    <LinearLayout android:id="@+id/boldwidget_today_container"
+        android:orientation="vertical"
+        android:layout_weight="10"
+        android:weightSum="10"
+        android:layout_height="match_parent"
+        android:layout_width="0dp">
+
+        <LinearLayout android:id="@+id/boldwidget_today_horizontal_container"
+            android:orientation="horizontal"
+            android:layout_weight="8"
+            android:weightSum="10"
+            android:layout_gravity="center"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content">
+
+            <TextView android:id="@+id/boldwidget_current_temperature"
+                android:textSize="@dimen/widget_textsize_verylarge"
+                android:textColor="@color/widget_textcolor"
+                android:gravity="center"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content" tools:ignore="NestedWeights"
+                android:text="17°"/>
+
+            <ImageView android:id="@+id/classicwidget_weatherconditionicon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:src="@drawable/partly_cloudy_day" />
+
+            <LinearLayout android:id="@+id/boldwidget_today_temperature_container"
+                android:orientation="vertical"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="0dp">
+
+                <TextView android:id="@+id/boldwidget_today_max"
+                    android:textSize="@dimen/widget_textsize_large"
+                    android:textColor="@color/widget_textcolor"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23°"/>
+
+                <TextView android:id="@+id/boldwidget_today_min"
+                    android:textSize="@dimen/widget_textsize_large"
+                    android:textColor="@color/widget_textcolor"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="11°"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView android:id="@+id/boldwidget_dayofweek_today"
+            android:textSize="@dimen/widget_textsize_large"
+            android:textColor="@color/widget_textcolor"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="today"/>
+    </LinearLayout>
+
+    <!--
+    FC 1st DAY
+    -->
+
+    <LinearLayout android:id="@+id/boldwidget_fc1_container"
+        android:orientation="vertical"
+        android:layout_weight="5"
+        android:weightSum="10"
+        android:layout_height="match_parent"
+        android:layout_width="0dp">
+
+        <LinearLayout android:id="@+id/boldwidget_fc1_horizontal_container"
+            android:orientation="horizontal"
+            android:layout_weight="8"
+            android:weightSum="6"
+            android:layout_gravity="center"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content">
+
+            <ImageView android:id="@+id/boldwidget_fc1_weatherconditionicon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:src="@drawable/moderate_showers" />
+
+            <LinearLayout android:id="@+id/boldwidget_fc1_temperature_container"
+                android:orientation="vertical"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="0dp">
+
+                <TextView android:id="@+id/boldwidget_fc1_max"
+                    android:textSize="@dimen/widget_textsize_large"
+                    android:textColor="@color/widget_textcolor"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="24°"/>
+
+                <TextView android:id="@+id/boldwidget_fc1_min"
+                    android:textSize="@dimen/widget_textsize_large"
+                    android:textColor="@color/widget_textcolor"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="16°"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView android:id="@+id/boldwidget_dayofweek_fc1"
+            android:textSize="@dimen/widget_textsize_large"
+            android:textColor="@color/widget_textcolor"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mo"/>
+    </LinearLayout>
+
+    <!--
+    FC 2nd DAY
+    -->
+
+    <LinearLayout android:id="@+id/boldwidget_fc2_container"
+        android:orientation="vertical"
+        android:layout_weight="5"
+        android:weightSum="10"
+        android:layout_height="match_parent"
+        android:layout_width="0dp">
+
+        <LinearLayout android:id="@+id/boldwidget_fc2_horizontal_container"
+            android:orientation="horizontal"
+            android:layout_weight="8"
+            android:weightSum="6"
+            android:layout_gravity="center"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content">
+
+            <ImageView android:id="@+id/boldwidget_fc2_weatherconditionicon"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:src="@drawable/thunderstorm" />
+
+            <LinearLayout android:id="@+id/boldwidget_fc2_temperature_container"
+                android:orientation="vertical"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="0dp">
+
+                <TextView android:id="@+id/boldwidget_fc2_max"
+                    android:textSize="@dimen/widget_textsize_large"
+                    android:textColor="@color/widget_textcolor"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="29°"/>
+
+                <TextView android:id="@+id/boldwidget_fc2_min"
+                    android:textSize="@dimen/widget_textsize_large"
+                    android:textColor="@color/widget_textcolor"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23°"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView android:id="@+id/boldwidget_dayofweek_fc2"
+            android:textSize="@dimen/widget_textsize_large"
+            android:textColor="@color/widget_textcolor"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tue"/>
+    </LinearLayout>
+
+</LinearLayout>

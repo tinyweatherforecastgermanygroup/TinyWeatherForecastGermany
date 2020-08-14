@@ -466,7 +466,7 @@ public final class Weather {
         }
 
         public int getFlurriesInKmhInt(){
-            Double d = (wind_speed*3.6);
+            Double d = (flurries*3.6);
             int flurries = d.intValue();
             return flurries;
         }
