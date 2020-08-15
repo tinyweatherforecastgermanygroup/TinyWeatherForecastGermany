@@ -1,4 +1,10 @@
-Wettervorschau mit Widget für die nächsten 24 Stunden, basierend auf Open Data des Deutschen Wetterdienstes (DWD).
+Wettervorschau mit verschiedenen Widgets für bis zu 10 Tage, basierend auf Open Data des Deutschen Wetterdienstes (DWD).
+
+Eine Vorhersage ist für über 5000 Stationen in Deutschland und weltweit verfügbar.
+
+- detaillierte Wettervorhersage
+- schlankes Design
+- unterstützt Gadgetbridge (experimentell)
 
 Berechtigungen:
 - INTERNET: benötigt, um auf die Daten des Deutschen Wetterdienstes (DWD) zuzugreifen.

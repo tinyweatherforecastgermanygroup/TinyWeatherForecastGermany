@@ -161,11 +161,15 @@ public class MainActivity extends Activity {
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 // update widgets
                 WidgetRefresher.refresh(context.getApplicationContext());
-                // check for alarm sets
-                WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-                // only react if regular updates are set
-                if (weatherSettings.setalarm){
-                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),weatherCard,weatherSettings,UpdateAlarmManager.CHECK_FOR_UPDATE);
+                // reload stuff
+                if (key.equals(WeatherSettings.PREF_STATION_NAME)){
+                    Log.v("ALARM","THIS IS LAUNCHED BY PREF-CHANGE.");
+                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
+                    getWeatherForecast();
+                    AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+                    // notifiy GadgetBridge
+                    GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+                    gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
                 }
                 // reload spinner, but only if geo coordinates setting was changed
                 if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
@@ -182,9 +186,8 @@ public class MainActivity extends Activity {
         if (!API_TESTING_ENABLED){
             if (weatherCard!=null){
                 displayWeatherForecast(weatherCard);
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),weatherCard,weatherSettings,UpdateAlarmManager.CHECK_FOR_UPDATE);
             } else {
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
+                // UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
             }
         }
         // test API
@@ -216,15 +219,18 @@ public class MainActivity extends Activity {
         PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
         last_updateweathercall = Calendar.getInstance().getTimeInMillis();
         addToSpinner(weatherSettings,station_description);
-        getWeatherForecast();
+        // getWeatherForecast();
         AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
         if (autoCompleteTextView!=null){
             autoCompleteTextView.setText("");
             autoCompleteTextView.clearListSelection();
         }
         // notifiy GadgetBridge
-        GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-        gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+        // GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+        // gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+        // check if weather data needs to be updated; the UpdateAlarmManager may launch an
+        // async weather data through the service....
+        // UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
     }
 
     private class SpinnerListener implements View.OnTouchListener, AdapterView.OnItemSelectedListener{
@@ -437,23 +443,20 @@ public class MainActivity extends Activity {
 
     public void displayUpdateTime(CurrentWeatherInfo currentWeatherInfo){
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
-        String updatetime = simpleDateFormat.format(new Date(weatherCard.polling_time));
+        String updatetime = simpleDateFormat.format(new Date(currentWeatherInfo.polling_time));
         TextView textView_update_time = (TextView) findViewById(R.id.main_update_time);
         textView_update_time.setText(getApplicationContext().getResources().getString(R.string.main_updatetime)+" "+updatetime);
     }
 
     public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
-        // date
         displayUpdateTime(weatherCard);
-        // update text entry with full description
-        // AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
-        // autoCompleteTextView.setText(weatherCard.getCity());
-        // listview
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly);
         weatherList.setAdapter(forecastAdapter);
         // Upate the widgets, so that everything displays the same
         WidgetRefresher.refresh(this.getApplicationContext());
+        // finally, check for updates.
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
    }
 
     public void displayWeatherForecast(){

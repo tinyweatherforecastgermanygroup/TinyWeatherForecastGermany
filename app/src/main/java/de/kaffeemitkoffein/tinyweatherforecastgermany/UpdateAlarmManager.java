@@ -30,7 +30,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
-
 import java.util.Calendar;
 
 public class UpdateAlarmManager {
@@ -41,9 +40,6 @@ public class UpdateAlarmManager {
     public static final boolean FORCE_UPDATE = true;
     public static final boolean CHECK_FOR_UPDATE = false;
 
-    static CurrentWeatherInfo weatherCard;
-    static WeatherSettings weatherSettings;
-
     private UpdateAlarmManager(){
     }
 
@@ -51,12 +47,8 @@ public class UpdateAlarmManager {
     public static boolean updateAndSetAlarmsIfAppropriate(Context context, boolean force_update){
         // remove old entries from the data base
         new Weather().cleanDataBase(context);
-        if (weatherSettings==null){
-            weatherSettings = new WeatherSettings(context);
-        }
-        if (weatherCard==null){
-            weatherCard = new Weather().getCurrentWeatherInfo(context);
-        }
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         /*
          * update_period: this is the update interval from the settings. It means how often
          * data should be pulled from the DWD API.
@@ -156,12 +148,6 @@ public class UpdateAlarmManager {
 
     public static boolean updateAndSetAlarmsIfAppropriate(Context context){
         return updateAndSetAlarmsIfAppropriate(context,CHECK_FOR_UPDATE);
-    }
-
-    public static boolean updateAndSetAlarmsIfAppropriate(Context context, CurrentWeatherInfo currentWeatherInfo, WeatherSettings ws, boolean force_update){
-        weatherCard = currentWeatherInfo;
-        weatherSettings = ws;
-        return updateAndSetAlarmsIfAppropriate(context,force_update);
     }
 
     public static void setEarlyAlarm(Context context){

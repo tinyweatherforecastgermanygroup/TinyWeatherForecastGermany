@@ -167,7 +167,7 @@ public class ClassicWidget extends AppWidgetProvider {
         }
     }
 
-    private int getBackgroundInt(int alpha){
+    public int getBackgroundInt(int alpha){
         String hex_string = Integer.toHexString(Math.round((float)alpha * (float)2.55));
         if (hex_string.length()<2)
         {

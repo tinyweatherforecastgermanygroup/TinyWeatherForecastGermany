@@ -133,6 +133,25 @@ public class WeatherSettings {
         applyPreference(PREF_LOGGING,this.logging);
     }
 
+    public void commitPreferences(){
+        commitPreference(PREF_STATION_DESCRIPTION,this.station_description);
+        commitPreference(PREF_STATION_NAME,this.station_name);
+        commitPreference(PREF_STATION_LONGITUDE,this.station_longitude);
+        commitPreference(PREF_STATION_LATIDTUDE,this.station_latitude);
+        commitPreference(PREF_STATION_ALTITUDE,this.station_altitude);
+        commitPreference(PREF_DISPLAY_STATION_GEO,this.display_station_geo);
+        commitPreference(PREF_SETALARM,this.setalarm);
+        commitPreference(PREF_AGGRESSIVE_UPDATE,this.aggressive_update);
+        commitPreference(PREF_UPDATEINTERVAL,this.updateinterval);
+        commitPreference(PREF_ISWEATHERPROVIDER,this.is_weatherprovider);
+        commitPreference(PREF_WIDGET_OPACITY,this.widget_opacity);
+        commitPreference(PREF_WIDGET_SHOWDWDNOTE,this.widget_showdwdnote);
+        commitPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
+        commitPreference(PREF_SERVE_GADGETBRIDGE,this.serve_gadgetbridge);
+        commitPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,this.gadgetbridge_last_update_time);
+        commitPreference(PREF_LOGGING,this.logging);
+    }
+
     public String readPreference(String p, String d){
         return sharedPreferences.getString(p,d);
     }
@@ -191,6 +210,42 @@ public class WeatherSettings {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         applyPreference(pref, (float) value);
         pref_editor.apply();
+    }
+
+    public void commitPreference(String pref, String value){
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putString(pref,value);
+        pref_editor.commit();
+    }
+
+    public void commitPreference(String pref, Boolean value){
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(pref,value);
+        pref_editor.commit();
+    }
+
+    public void commitPreference(String pref, int value){
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putInt(pref,value);
+        pref_editor.commit();
+    }
+
+    public void commitPreference(String pref, float value){
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putFloat(pref,value);
+        pref_editor.commit();
+    }
+
+    public void commitPreference(String pref, long value){
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(pref,value);
+        pref_editor.commit();
+    }
+
+    public void commitPreference(String pref, double value){
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        applyPreference(pref, (float) value);
+        pref_editor.commit();
     }
 
     public int getUpdateInterval(){

@@ -37,7 +37,7 @@ public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
                 PrivateLog.log(context,Tag.WUBR,"+-> intent has action.");
             }
             if (intent.getAction().equals(UPDATE_ACTION)) {
-                PrivateLog.log(context,Tag.WUBR,"+-> action is a custom request update, handling by the UpdateAlarmManager.");
+                PrivateLog.log(context,Tag.WUBR,"+-> action is a update request.");
                 UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context);
             }
         }

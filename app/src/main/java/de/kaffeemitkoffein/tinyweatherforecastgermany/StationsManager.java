@@ -20,7 +20,10 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -202,13 +205,14 @@ public class StationsManager {
     public boolean setStation(int position){
         if (stations != null) {
             if (position < stations.size()) {
-                WeatherSettings weatherSettings = new WeatherSettings(context);
-                weatherSettings.station_name = stations.get(position).name;
-                weatherSettings.station_description = stations.get(position).description;
-                weatherSettings.station_longitude = stations.get(position).longitude;
-                weatherSettings.station_latitude = stations.get(position).latitude;
-                weatherSettings.station_altitude = stations.get(position).altitude;
-                weatherSettings.savePreferences();
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString(WeatherSettings.PREF_STATION_NAME,stations.get(position).name);
+                editor.putString(WeatherSettings.PREF_STATION_DESCRIPTION,stations.get(position).description);
+                editor.putFloat(WeatherSettings.PREF_STATION_LONGITUDE,(float) stations.get(position).longitude);
+                editor.putFloat(WeatherSettings.PREF_STATION_LATIDTUDE,(float) stations.get(position).latitude);
+                editor.putFloat(WeatherSettings.PREF_STATION_ALTITUDE,(float) stations.get(position).altitude);
+                editor.commit();
                 return true;
             }
         }
