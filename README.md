@@ -9,8 +9,6 @@ Screenshots
 ![Screenshot #1](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
 ![Screenshot #2](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
 ![Screenshot #3](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
-![Screenshot #3](fastlane/metadata/android/en-US/images/phoneScreenshots/4.png)
-
 
 How to get the app
 ------------------
