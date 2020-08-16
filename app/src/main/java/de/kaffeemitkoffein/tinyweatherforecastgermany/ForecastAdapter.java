@@ -249,7 +249,7 @@
                 if (weatherInfo.hasFlurries()){
                     s = s + "("+weatherInfo.getFlurriesInKmhInt()+") ";
                 }
-                s = s +" km/h";
+                s = s +"km/h";
                 textView_wind.setText(s);
             }
             if (imageView_windarrow == null){

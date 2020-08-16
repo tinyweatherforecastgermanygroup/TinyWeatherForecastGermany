@@ -25,7 +25,6 @@ import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -476,7 +475,6 @@ public class MainActivity extends Activity {
         // Upate the widgets, so that everything displays the same
         WidgetRefresher.refresh(this.getApplicationContext());
         // finally, check for updates.
-        Log.v("ALARM","calling update manager....");
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
    }
 
