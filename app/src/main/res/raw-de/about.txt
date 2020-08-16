@@ -8,7 +8,7 @@ Version: [VERSION]
 Credits:
 --------
 
-Einige Icons sind Copyright © Google Inc., lizenziert unter der Apache 2.0 Lizenz.
+Material Design Icons Copyright © Google Inc., lizenziert unter der Apache 2.0 Lizenz.
 
 Diese App benutzt Gradle und den Gradle Wrapper, Copyright © Gradle Inc, lizenziert unter der Apache 2.0 Lizenz.
 
@@ -28,6 +28,19 @@ Dieses Programm wird in der Hoffnung, dass es nützlich sein wird, aber OHNE JED
 Sie sollten eine Kopie der GNU General Public License zusammen mit diesem Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 
 Author: Pawel Dube (pdube@gmx.de)
+
+Datenschutz:
+------------
+
+Tiny Weather Forecast Germany ruft Wetterdaten aus dem Open-Data-Portal des Deutschen Wetterdienstes <https://www.dwd.de/DE/Home/home_node.html> ab.
+
+Dazu ist es technisch notwendig, im Rahmen der Internetverbindung die IP-Adresse an den Deutschen Wetterdienst zu übermitteln und den Sensor, dessen Daten abgerufen werden sollen. Wie der Deutsche Wetterdienst mit diesen Daten umgeht und wie er sie speichert kann in der Datenschutzerklärung des Deutschen Wetterdienstes <https://www.dwd.de/DE/service/datenschutz/datenschutz_node.html> nachgelesen werden.
+
+Die abgerufenen Wettervorhersagen werden lokal auf dem Gerät gespeichert, ebenso der eingestellte Sensor, die weiteren Einstellungen und wenige interne Variablen wie z.B. wann zuletzt eine Wettervorhersage abgerufen wurde.
+
+Sofern vom Benutzer aktiviert, gibt Tiny Weather Forecast Germany die Wetterdaten lokal auf dem Gerät an die App Gadgetbridge <https://codeberg.org/Freeyourgadget/Gadgetbridge> weiter, damit die Wetterdaten auch auf Wearables angezeigt werden können.
+
+Darüber hinaus speichert, versendet und teilt Tiny Weather Forecast Germany keine Daten.
 
 Zum Projekt beitragen:
 ----------------------------

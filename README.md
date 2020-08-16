@@ -14,7 +14,7 @@ Screenshots
 How to get the app
 ------------------
 
-This app is currently in a beta state, current official builds are not available yet - but this will shortly change.
+This app is currently in a beta state. Builds are available through the f-droid repo of @izzydroid: <https://android.izzysoft.de/repo.php>.
 
 You get builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/NxjPfLNfAfYB9PN>
 
@@ -64,17 +64,12 @@ Credits
  Concept
  -------
  
- When installing [lineageos](https://lineageos.org/) on your device, you will perhaps miss the out of the box functionality of the cLock stock app to display a weather forecast. 
- To do so, you need to install a third-party weather provider service. The first idea was to code a weather forecast provider that uses the open data from the Deutscher Wetterdienst (DWD).
+ The idea is to create a simple, floss and light-weight weather forecast app with a focus on home screen widgets that uses open data from the Deutscher Wetterdienst (DWD) and that does not track the users.
  
- However, although some basic functionality could be established in a test version, the lineageos classes to integrate a [weather provider service](https://lineageos.github.io/android_lineage-sdk/reference/lineageos/weatherservice/WeatherProviderService.html) turned out to be quite inflexible (e.g. you need to provide a forecast for exactly 7 days to achieve full functionality, some additional data available form the DWD could not be displayed, etc.).
+ Tiny Weather Forecast Germany does not use any third-party libraries.
  
- Therefore, this idea was dropped in favour of a widget that could be placed comfortably on the home screen and adjusted to the needs of the user, displaying more detailed weather data that would have been possible using a weather provider service.
- 
- Furthermore, this approach makes this app also available to anyone, not requiring lineageos to be installed on the device.
- 
- Please also note that the DWD presents huge amounts of open weather data. The scope of this app is to poll a simple, 24 hours weather forecast from the DWD, and not more at the present time. 
- 
+ Please see the   
+  
  FAQ
  ---
  *For locations in a different time zone the day/night icons seem incorrect.*
@@ -87,7 +82,7 @@ Credits
  
  *How often does the app update the weather forecast?*
  
- The Deutscher Wetterdienst updates the forecast data that is used every 6 hours. Therefore, it does not make sense to pull weather data more frequently than this from the DWD API. However, a manual data update triggered by the user's selection in the main app always forces an update of forecast data. When changing sensors/locations, the data always gets updated, too. The app does not store forecast data for multiple locations. The forecast data covers the next ten days. So it is pretty feasible to present a weather forecast for some time without polling new data.
+ The Deutscher Wetterdienst updates the forecast data that is used every 6 hours. Therefore, it does not make sense to pull weather data more frequently than this from the DWD API. However, a manual data update triggered by the user's selection in the main app always forces an update of forecast data. The forecast data covers the next ten days. So it is pretty feasible to present a weather forecast for some time without polling new data.
  
  *How often does the GadgetBridge app gets updated (when this feature is enabled)?*
  

@@ -24,7 +24,7 @@
     <string name="dwd_notice">Quelle: Deutscher Wetterdienst, eigene Elemente ergänzt, einige Einzelwerte gemittelt.</string>
     <string name="new_station">Region geändert zu </string>
     <string name="license_button">Lizenz</string>
-    <string name="about_button">Über...</string>
+    <string name="about_button">Datenschutz/Über...</string>
     <string name="update_button">Aktualisieren</string>
     <string name="settings_button">Einstellungen</string>
     <string name="whatsnew_button">Was ist neu?</string>
