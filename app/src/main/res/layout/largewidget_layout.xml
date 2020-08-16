@@ -94,7 +94,7 @@
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="23°|11°"/>
+                android:text="11° | 23°"/>
 
             <LinearLayout
                 android:id="@+id/classicwidget_wind_horizontal_container"

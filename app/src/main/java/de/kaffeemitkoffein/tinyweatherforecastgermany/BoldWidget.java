@@ -23,7 +23,6 @@ public class BoldWidget extends ClassicWidget{
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.boldwidget_layout);
                 fillBoldWidgetItems(c,remoteViews,weatherSettings,weatherCard);
                 remoteViews.setOnClickPendingIntent(R.id.boldwidget_maincontainer,pendingIntent);
-                // todo
                 awm.updateAppWidget(widget_instances[i],remoteViews);
             }
         }
