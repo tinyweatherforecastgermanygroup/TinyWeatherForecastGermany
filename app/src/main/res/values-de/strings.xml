@@ -29,6 +29,7 @@
     <string name="settings_button">Einstellungen</string>
     <string name="whatsnew_button">Was ist neu?</string>
     <string name="today">Heute</string>
+    <string name="station">Station</string>
     <string name="boldwidget_description">Kräftig</string>
     <string name="classicwidget_description">Klassisch</string>
     <string name="largewidget_description">Groß</string>
@@ -39,7 +40,7 @@
     <string name="weathercode_UNKNOWN">unbekannt</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">Gewitter</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">gefrierender Sprühregen</string>
-    <string name="weathercode_DRIZZLE_FREEZING_SLIGHT">gerfierender, leichter Sprühregen</string>
+    <string name="weathercode_DRIZZLE_FREEZING_SLIGHT">gefierender, leichter Sprühregen</string>
     <string name="weathercode_RAIN_FREEZING_MODERATE_OR_HEAVY">grfierender Regen</string>
     <string name="weathercode_RAIN_FREEZING_SLIGHT">gefrierender, leichter Regen</string>
     <string name="weathercode_SNOW_SHOWERS_MODERATE_OR_HEAVY">Schneeschauer</string>

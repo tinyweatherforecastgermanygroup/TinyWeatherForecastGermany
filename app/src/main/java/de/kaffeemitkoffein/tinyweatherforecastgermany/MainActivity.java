@@ -455,7 +455,7 @@ public class MainActivity extends Activity {
         if (weatherSettings.display_station_geo){
             String s = "Lat.: "+weatherSettings.station_latitude+" Long.: "+weatherSettings.station_longitude+" Alt.: "+weatherSettings.station_altitude;
             try {
-                textView_station_geo.setText("Lat.: "+new DecimalFormat("0.00").format(weatherSettings.station_latitude)+
+                textView_station_geo.setText(getApplicationContext().getResources().getString(R.string.station)+" Lat.: "+new DecimalFormat("0.00").format(weatherSettings.station_latitude)+
                         " Long.: "+new DecimalFormat("0.00").format(weatherSettings.station_longitude)+
                         " Alt.: "+new DecimalFormat("0.00").format(weatherSettings.station_altitude));
             } catch (Exception e){

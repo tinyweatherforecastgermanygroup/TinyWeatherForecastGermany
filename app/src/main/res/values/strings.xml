@@ -28,6 +28,7 @@
     <string name="settings_button">Settings</string>
     <string name="about_button">About...</string>
     <string name="today">Today</string>
+    <string name="station">Station</string>
     <string name="whatsnew_button">What\'s new</string>
     <string name="boldwidget_description">Bold</string>
     <string name="classicwidget_description">Classic</string>
