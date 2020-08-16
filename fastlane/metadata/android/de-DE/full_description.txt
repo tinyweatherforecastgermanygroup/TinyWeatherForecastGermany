@@ -1,4 +1,4 @@
-Wettervorschau mit verschiedenen Widgets für bis zu 10 Tage, basierend auf Open Data des Deutschen Wetterdienstes (DWD).
+Wettervorschau mit Widgets für bis zu 10 Tage, basierend auf Open Data des Deutschen Wetterdienstes (DWD).
 
 Eine Vorhersage ist für über 5000 Stationen in Deutschland und weltweit verfügbar.
 

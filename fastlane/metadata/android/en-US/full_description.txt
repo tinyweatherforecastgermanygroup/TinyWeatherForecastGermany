@@ -1,4 +1,4 @@
-Weather forecast with different widget for up to 10 days, based on open data from the Deutscher Wetterdienst (DWD).
+Weather forecast with widgets for up to 10 days, based on open data from the Deutscher Wetterdienst (DWD).
 
 A forecast ist available for over 5000 stations in Germany and worldwide.
 
