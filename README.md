@@ -9,6 +9,7 @@ Screenshots
 ![Screenshot #1](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
 ![Screenshot #2](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
 ![Screenshot #3](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
+![Screenshot #3](fastlane/metadata/android/en-US/images/phoneScreenshots/4.png)
 
 
 How to get the app
@@ -67,8 +68,6 @@ Credits
  The idea is to create a simple, floss and light-weight weather forecast app with a focus on home screen widgets that uses open data from the Deutscher Wetterdienst (DWD) and that does not track the users.
  
  Tiny Weather Forecast Germany does not use any third-party libraries.
- 
- Please see the   
   
  FAQ
  ---
