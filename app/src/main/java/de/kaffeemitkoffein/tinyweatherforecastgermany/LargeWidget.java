@@ -24,7 +24,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

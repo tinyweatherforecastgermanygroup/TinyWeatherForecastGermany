@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;

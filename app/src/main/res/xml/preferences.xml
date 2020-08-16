@@ -59,7 +59,7 @@
             android:summary="@string/preference_opacity_summary"
             android:entries="@array/widget_opacity_text"
             android:entryValues="@array/widget_opacity_values"
-            android:defaultValue="1"/>
+            android:defaultValue="10"/>
 
         <CheckBoxPreference
             android:key="PREF_widget_showdwdnote"
