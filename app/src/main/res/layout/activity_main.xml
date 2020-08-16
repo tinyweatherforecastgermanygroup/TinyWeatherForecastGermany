@@ -91,6 +91,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="2dp"
             android:layout_gravity="center"
+            android:gravity="center"
             android:tint="@color/textColor"
             android:src="@mipmap/ic_highlight_off_white_24dp"/>
 

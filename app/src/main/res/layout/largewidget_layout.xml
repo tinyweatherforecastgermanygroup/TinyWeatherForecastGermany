@@ -86,7 +86,7 @@
                 android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="18°"/>
+                android:text="17°"/>
 
             <TextView android:id="@+id/classicwidget_temperature_highlow"
                 android:textSize="@dimen/widget_textsize_large"
@@ -94,7 +94,7 @@
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="13°|21°"/>
+                android:text="23°|11°"/>
 
             <LinearLayout
                 android:id="@+id/classicwidget_wind_horizontal_container"
@@ -181,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/cloudy">
+                android:src="@drawable/moderate_showers">
             </ImageView>
 
             <TextView
@@ -191,7 +191,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="12°"
+                android:text="24°"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -201,7 +201,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="3°"
+                android:text="16°"
                 android:layout_gravity="center"/>
         </LinearLayout>
 
@@ -230,7 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/cloudy">
+                android:src="@drawable/thunderstorm">
             </ImageView>
 
             <TextView
@@ -240,7 +240,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="12°"
+                android:text="29°"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -250,7 +250,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="3°"
+                android:text="23°"
                 android:layout_gravity="center"/>
         </LinearLayout>
 
@@ -279,7 +279,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/cloudy">
+                android:src="@drawable/sunny">
             </ImageView>
 
             <TextView
@@ -289,7 +289,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="12°"
+                android:text="19°"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -299,7 +299,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="3°"
+                android:text="12°"
                 android:layout_gravity="center"/>
         </LinearLayout>
 
@@ -328,7 +328,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/cloudy">
+                android:src="@drawable/showers_partly">
             </ImageView>
 
             <TextView
@@ -338,7 +338,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="12°"
+                android:text="21°"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -348,7 +348,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="3°"
+                android:text="16°"
                 android:layout_gravity="center"/>
         </LinearLayout>
 
@@ -377,7 +377,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/cloudy">
+                android:src="@drawable/light_showers">
             </ImageView>
 
             <TextView
@@ -387,7 +387,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="12°"
+                android:text="21°"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -397,7 +397,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="3°"
+                android:text="18°"
                 android:layout_gravity="center"/>
         </LinearLayout>
 
@@ -426,7 +426,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/cloudy">
+                android:src="@drawable/heavy_showers">
             </ImageView>
 
             <TextView
@@ -436,7 +436,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="12°"
+                android:text="19°"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -446,7 +446,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="3°"
+                android:text="15°"
                 android:layout_gravity="center"/>
         </LinearLayout>
 
@@ -475,7 +475,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/cloudy">
+                android:src="@drawable/light_drizzle">
             </ImageView>
 
             <TextView
@@ -485,7 +485,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="12°"
+                android:text="21°"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -495,7 +495,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="3°"
+                android:text="11°"
                 android:layout_gravity="center"/>
         </LinearLayout>
 
@@ -524,7 +524,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/cloudy">
+                android:src="@drawable/partly_cloudy_day">
             </ImageView>
 
             <TextView
@@ -534,7 +534,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="12°"
+                android:text="23°"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -544,7 +544,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="3°"
+                android:text="12°"
                 android:layout_gravity="center"/>
         </LinearLayout>
 
@@ -573,7 +573,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/cloudy">
+                android:src="@drawable/mostly_cloudy_day">
             </ImageView>
 
             <TextView
@@ -622,7 +622,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/cloudy">
+                android:src="@drawable/partly_cloudy_day">
             </ImageView>
 
             <TextView
@@ -632,7 +632,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="12°"
+                android:text="26°"
                 android:layout_gravity="center"/>
 
             <TextView
@@ -642,7 +642,7 @@
                 android:layout_weight="22"
                 android:textSize="@dimen/widget_textsize_fc_temperature"
                 android:textColor="@color/widget_textcolor"
-                android:text="3°"
+                android:text="14°"
                 android:layout_gravity="center"/>
         </LinearLayout>
 

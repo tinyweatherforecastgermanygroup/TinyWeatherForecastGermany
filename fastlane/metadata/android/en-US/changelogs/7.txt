@@ -1,9 +1,10 @@
 
 New features in this version:
-- two new widgets
+- new widgets
 - new station search
 - favorites
 - app reuses recent forecast data for different stations
+- more detailed weather information
 - various performance improvements
 
 Bug fixes:

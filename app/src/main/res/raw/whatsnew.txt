@@ -1,21 +1,16 @@
 What is new in this version ([VERSION]):
 
-- Gadgetbridge-Support: fixed max. temperature in forecast
-- experimental, new and hopefully more frequent delivery of weather data to the GadgetBridge App
-- change of weather icons
-- weather forecast now available for the next 10 days
-- new option to repeat update every 15 minutes when there is no network
-- new experimental feature to catch up on a due update once there is a network available
-- new options for local logging (debugging)
-- revised settings
-- fixed crash of the updater when the device was in doze mode
-- multiple bugfixes
+New features in this version:
+- new widgets
+- new station search
+- favorites
+- app reuses recent forecast data for different stations
+- more detailed weather information
+- various performance improvements
 
-With this version, the app changes the API at the Deutscher Wetterdienst. With this change, more accurate forecasts can be displayed, but it goes with a very fundamental remodeling. Therefore, new errors may occur.
+Bug fixes:
+- improbable snow conditions far above 0° are excluded
+- fixed flurries equal to wind speed
+- various bug fixes related to the new features
 
-Settings have been set back to the default values.
-
-Important notice:
-Should the app crash after a change of the weather station, please report this station to me.
-
-The app can be brought back into a functional state by deleting the app data; this will set back the default values as well and the app will display the weather in Hamburg again.
+Important notice: when upgrading from a version lower than 0.40, the settings have been set back to the default values!

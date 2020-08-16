@@ -1,12 +1,13 @@
 
 Neue Funktionen in dieser Version:
-- zwei neue Widgets
+- neue Widgets
 - neue Suche der Station
 - Favoriten
 - Vorschau-Daten verschiedener Stationen werden weiter benutzt
+- detailliertere Wetter-Informationen
 - zahlreiche Performance-Verbesserungen
 
 Fehler-Korrekturen:
-- unwahrscheinliche Schnee-Voraussagen weit über 0° sind entfernt
+- unwahrscheinliche Schnee-Voraussagen weit über 0° wurden entfernt
 - Böeen waren mit der Windgeschwindigkeit gleich
 - diverse Fehler-Korrekturen bei den neuen Funktionen
