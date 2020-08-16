@@ -49,6 +49,18 @@
     </TextView>
 
     <TextView
+        android:id="@+id/main_station_geo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_update_time"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/fcmain_textsize_medium"
+        android:text="">
+    </TextView>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/dwd_notice"

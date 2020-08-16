@@ -1,0 +1,12 @@
+
+New features in this version:
+- two new widgets
+- new station search
+- favorites
+- app reuses recent forecast data for different stations
+- various performance improvements
+
+Bug fixes:
+- improbable snow conditions far above 0° are excluded
+- fixed flurries equal to wind speed
+- various bug fixes related to the new features

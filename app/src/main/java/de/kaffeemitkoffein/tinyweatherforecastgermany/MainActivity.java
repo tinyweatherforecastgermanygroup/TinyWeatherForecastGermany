@@ -25,14 +25,13 @@ import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -119,7 +118,9 @@ public class MainActivity extends Activity {
         registerForBroadcast();
         // this is necessary if the update of weather data occurs while the app is in the background
         weatherCard = new Weather().getCurrentWeatherInfo(this);
-        displayWeatherForecast(weatherCard);
+        if (weatherCard!=null){
+            displayWeatherForecast(weatherCard);
+        }
         super.onResume();
     }
 
@@ -163,7 +164,6 @@ public class MainActivity extends Activity {
                 WidgetRefresher.refresh(context.getApplicationContext());
                 // reload stuff
                 if (key.equals(WeatherSettings.PREF_STATION_NAME)){
-                    Log.v("ALARM","THIS IS LAUNCHED BY PREF-CHANGE.");
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
                     getWeatherForecast();
                     AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
@@ -175,6 +175,10 @@ public class MainActivity extends Activity {
                 if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
                     stationsManager = new StationsManager(context);
                     loadStationsData(weatherSettings);
+                }
+                // show geo
+                if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
+                    displayUpdateTime(weatherCard);
                 }
             }
         };
@@ -446,6 +450,21 @@ public class MainActivity extends Activity {
         String updatetime = simpleDateFormat.format(new Date(currentWeatherInfo.polling_time));
         TextView textView_update_time = (TextView) findViewById(R.id.main_update_time);
         textView_update_time.setText(getApplicationContext().getResources().getString(R.string.main_updatetime)+" "+updatetime);
+        TextView textView_station_geo = (TextView) findViewById(R.id.main_station_geo);
+        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+        if (weatherSettings.display_station_geo){
+            String s = "Lat.: "+weatherSettings.station_latitude+" Long.: "+weatherSettings.station_longitude+" Alt.: "+weatherSettings.station_altitude;
+            try {
+                textView_station_geo.setText("Lat.: "+new DecimalFormat("0.00").format(weatherSettings.station_latitude)+
+                        " Long.: "+new DecimalFormat("0.00").format(weatherSettings.station_longitude)+
+                        " Alt.: "+new DecimalFormat("0.00").format(weatherSettings.station_altitude));
+            } catch (Exception e){
+                textView_station_geo.setText("-");
+            }
+        } else {
+            textView_station_geo.setVisibility(View.INVISIBLE);
+            textView_station_geo.invalidate();
+        }
     }
 
     public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
