@@ -178,7 +178,9 @@ public class MainActivity extends Activity {
                 }
                 // show geo
                 if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
-                    displayUpdateTime(weatherCard);
+                    if (weatherCard != null){
+                        displayUpdateTime(weatherCard);
+                    }
                 }
             }
         };

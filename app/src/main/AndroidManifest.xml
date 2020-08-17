@@ -19,6 +19,7 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="internalOnly"
     package="de.kaffeemitkoffein.tinyweatherforecastgermany">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -26,7 +27,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <application android:allowBackup="true" android:icon="@mipmap/ic_launcher" android:installLocation="internalOnly"
+    <application android:allowBackup="true" android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher" android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity android:name=".LoggingActivity" android:label="@string/logging_title"

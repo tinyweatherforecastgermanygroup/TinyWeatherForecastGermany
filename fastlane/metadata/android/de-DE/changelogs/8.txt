@@ -1,0 +1,3 @@
+
+- fixed application sometimes installing on SD-card, making widgets not accessible
+- fixed minor bug making the app crash when settings are called too early on 1st app launch

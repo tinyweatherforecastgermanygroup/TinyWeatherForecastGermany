@@ -322,28 +322,6 @@ public final class WeatherCodeContract {
         return s;
     }
 
-    @SuppressWarnings("deprecation")
-    public Drawable getWeatherConditionDrawable(Context context, int weathercondition) {
-        Drawable drawable;
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable = context.getResources().getDrawable(getWeatherConditionDrawableResource(weathercondition, true), null);
-        } else {
-            drawable = context.getResources().getDrawable(weathercondition);
-        }
-        return drawable;
-    }
-
-    @SuppressWarnings("deprecation")
-    public Drawable getWeatherConditionDrawable(Context context, int weathercondition, boolean daytime) {
-        Drawable drawable;
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            drawable = context.getResources().getDrawable(getWeatherConditionDrawableResource(weathercondition, daytime), null);
-        } else {
-            drawable = context.getResources().getDrawable(weathercondition);
-        }
-        return drawable;
-    }
-
     public static int getWeatherConditionTextResource(int weathercondition) {
         int result = R.string.weathercode_UNKNOWN;
         switch (weathercondition) {

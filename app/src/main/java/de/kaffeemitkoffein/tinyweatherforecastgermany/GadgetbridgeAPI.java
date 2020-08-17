@@ -55,9 +55,8 @@ public class GadgetbridgeAPI {
             weatherSpec.location             = weatherCard.getCity();
             weatherSpec.timestamp            = (int) (weatherCard.polling_time / 1000);
             if (weatherCard.currentWeather.hasCondition()){
-                int currentWeatherCondition = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
                 weatherSpec.currentConditionCode = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
-                weatherSpec.currentCondition     = new WeatherCodeContract().getWeatherConditionText(context,currentWeatherCondition);
+                weatherSpec.currentCondition     = new WeatherCodeContract().getWeatherConditionText(context,weatherCard.currentWeather.getCondition());
             }
             if (weatherCard.currentWeather.hasTemperature()){
                 weatherSpec.currentTemp          = weatherCard.currentWeather.getTemperatureInt();
@@ -90,18 +89,18 @@ public class GadgetbridgeAPI {
                         0);
                 weatherSpec.forecasts.add(forecast);
             }
-        /*
-        Log.v("GADGETBRIDGE-API","Timestamp          : "+weatherSpec.timestamp);
-        Log.v("GADGETBRIDGE-API","Condition          : "+weatherSpec.currentCondition);
-        Log.v("GADGETBRIDGE-API","Temperature current: "+weatherSpec.currentTemp);
-        Log.v("GADGETBRIDGE-API","Temperature min    : "+weatherSpec.todayMinTemp);
-        Log.v("GADGETBRIDGE-API","Temperature max    : "+weatherSpec.todayMaxTemp);
-        Log.v("GADGETBRIDGE-API","FC-Temperature max : "+weatherSpec.forecasts.get(0).minTemp);
-        Log.v("GADGETBRIDGE-API","FC-Temperature max : "+weatherSpec.forecasts.get(0).maxTemp);
-        Log.v("GADGETBRIDGE-API","FC-Condition       : "+weatherSpec.forecasts.get(0).conditionCode);
-        Log.v("GADGETBRIDGE-API","Windspeed          : "+weatherSpec.windSpeed);
-        Log.v("GADGETBRIDGE-API","Windspeed direct.  : "+weatherSpec.windDirection);
-        */
+
+            PrivateLog.log(context,Tag.GB,"Timestamp          : "+weatherSpec.timestamp);
+            PrivateLog.log(context,Tag.GB,"Condition          : "+weatherSpec.currentCondition);
+            PrivateLog.log(context,Tag.GB,"Temperature current: "+weatherSpec.currentTemp);
+            PrivateLog.log(context,Tag.GB,"Temperature min    : "+weatherSpec.todayMinTemp);
+            PrivateLog.log(context,Tag.GB,"Temperature max    : "+weatherSpec.todayMaxTemp);
+            PrivateLog.log(context,Tag.GB,"FC-Temperature max : "+weatherSpec.forecasts.get(0).minTemp);
+            PrivateLog.log(context,Tag.GB,"FC-Temperature max : "+weatherSpec.forecasts.get(0).maxTemp);
+            PrivateLog.log(context,Tag.GB,"FC-Condition       : "+weatherSpec.forecasts.get(0).conditionCode);
+            PrivateLog.log(context,Tag.GB,"Windspeed          : "+weatherSpec.windSpeed);
+            PrivateLog.log(context,Tag.GB,"Windspeed direct.  : "+weatherSpec.windDirection);
+
         }
     }
 
