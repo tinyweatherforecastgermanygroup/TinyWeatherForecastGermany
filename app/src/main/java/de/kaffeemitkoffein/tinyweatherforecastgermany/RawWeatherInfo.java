@@ -275,12 +275,20 @@ public class RawWeatherInfo{
         long current_time = Calendar.getInstance().getTimeInMillis();
         long[] timeteps = getTimeSteps();
         int i=0;
-        //Log.v("TIME","Elements:"+elements);
         while ((timeteps[i]<current_time) && (i<elements)){
-            //Log.v("TIME","step:"+timeteps[i]+" current:"+current_time);
             i++;
         }
         return i;
+    }
+
+    public long getCurrentForecastPositionTime(){
+        int position = getCurrentForecastPosition();
+        if (position<elements){
+            long[] timeteps = getTimeSteps();
+            return timeteps[position];
+        } else {
+            return 0;
+        }
     }
 
     public long getTime(int index){

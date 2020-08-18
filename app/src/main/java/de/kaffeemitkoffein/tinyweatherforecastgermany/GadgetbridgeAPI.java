@@ -53,7 +53,7 @@ public class GadgetbridgeAPI {
             // build the WeatherSpec instance with current weather
             weatherSpec = new WeatherSpec();
             weatherSpec.location             = weatherCard.getCity();
-            weatherSpec.timestamp            = (int) (weatherCard.polling_time / 1000);
+            weatherSpec.timestamp            = (int) (weatherCard.currentWeather.getTimestamp() / 1000);
             if (weatherCard.currentWeather.hasCondition()){
                 weatherSpec.currentConditionCode = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
                 weatherSpec.currentCondition     = new WeatherCodeContract().getWeatherConditionText(context,weatherCard.currentWeather.getCondition());
@@ -91,6 +91,7 @@ public class GadgetbridgeAPI {
             }
 
             PrivateLog.log(context,Tag.GB,"Timestamp          : "+weatherSpec.timestamp);
+            PrivateLog.log(context,Tag.GB,"Condition Code     : "+weatherSpec.currentConditionCode);
             PrivateLog.log(context,Tag.GB,"Condition          : "+weatherSpec.currentCondition);
             PrivateLog.log(context,Tag.GB,"Temperature current: "+weatherSpec.currentTemp);
             PrivateLog.log(context,Tag.GB,"Temperature min    : "+weatherSpec.todayMinTemp);
@@ -98,6 +99,7 @@ public class GadgetbridgeAPI {
             PrivateLog.log(context,Tag.GB,"FC-Temperature max : "+weatherSpec.forecasts.get(0).minTemp);
             PrivateLog.log(context,Tag.GB,"FC-Temperature max : "+weatherSpec.forecasts.get(0).maxTemp);
             PrivateLog.log(context,Tag.GB,"FC-Condition       : "+weatherSpec.forecasts.get(0).conditionCode);
+            PrivateLog.log(context,Tag.GB,"# of day forecasts : "+weatherSpec.forecasts.size());
             PrivateLog.log(context,Tag.GB,"Windspeed          : "+weatherSpec.windSpeed);
             PrivateLog.log(context,Tag.GB,"Windspeed direct.  : "+weatherSpec.windDirection);
 
