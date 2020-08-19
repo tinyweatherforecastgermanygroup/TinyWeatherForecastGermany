@@ -28,7 +28,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 7
-        versionName "0.41 beta - debug 01"
+        versionName "0.41 beta - debug 03"
     }
 
     buildTypes {

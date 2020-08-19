@@ -19,7 +19,10 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class CurrentWeatherInfo{
 
@@ -114,7 +117,6 @@ public class CurrentWeatherInfo{
         currentWeather.setProbFreezingRain(getIntItem(rawWeatherInfo.wwF[current_weather_position]));
         currentWeather.setVisibility(getIntItem(rawWeatherInfo.VV[current_weather_position]));
         currentWeather.setUV(getDoubleItem(rawWeatherInfo.RRad1[current_weather_position]));
-
         // fill 6h forecast arraylist
         forecast6hourly = new ArrayList<Weather.WeatherInfo>();
         int index = rawWeatherInfo.getNext6hPosition();

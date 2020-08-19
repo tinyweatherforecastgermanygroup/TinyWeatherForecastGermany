@@ -90,6 +90,8 @@
     <string name="preference_gadgetbridge_serve_summary">Wenn altiviert, werden alle Wetterdaten lokal an die Gadgetbridge-App auf dem Gerät geschickt.</string>
     <string name="preference_gadgetbridge_packagename_title">Paketname</string>
     <string name="preference_gadgetbridge_packagename_summary">Hier kann der Paketname verändert werden, z.B. falls ein Gadgetbridge-Fork verwendet wird. Name löschen, um zum Standard-Paketnamen zurück zu kehren.</string>
+    <string name="preference_gadgetbridge_faketimestamp_title">Zeit fälschen</string>
+    <string name="preference_gadgetbridge_faketimestamp_summary">Einige Wearables akzeptieren keine Vorschau als aktuelles Wetter, statt dessen immer aktuelle Zeit übermitteln.</string>
     <string name="preference_gadgetbridge_note_title">Wichtig!</string>
     <string name="preference_gadgetbridge_note_summary">Der Gadgetbridge-Support ist noch experimentell.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge-Paketname wurde zurückgesetzt!</string>

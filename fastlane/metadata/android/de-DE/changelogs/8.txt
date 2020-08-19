@@ -2,3 +2,4 @@
 - fixed application sometimes installing on SD-card, making widgets not accessible
 - fixed minor bug making the app crash when settings are called too early on 1st app launch
 - fixed wearables not displaying weather condition text properly
+- changed timestamp in Gadgetbridge API from polling time to forecast time; this should solve the issue of some wearables complaining about missing weather info

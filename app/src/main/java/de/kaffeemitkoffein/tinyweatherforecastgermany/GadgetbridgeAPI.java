@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.Intent;
 import nodomain.freeyourgadget.gadgetbridge.model.WeatherSpec;
 
+import java.util.Calendar;
+
 public class GadgetbridgeAPI {
 
     public final static String WEATHER_EXTRA="WeatherSpec";
@@ -46,6 +48,7 @@ public class GadgetbridgeAPI {
     }
 
     private void setWeatherData(){
+        WeatherSettings weatherSettings = new WeatherSettings(context);
         if (weatherCard==null){
             weatherCard = new Weather().getCurrentWeatherInfo(context);
         }
@@ -53,7 +56,13 @@ public class GadgetbridgeAPI {
             // build the WeatherSpec instance with current weather
             weatherSpec = new WeatherSpec();
             weatherSpec.location             = weatherCard.getCity();
-            weatherSpec.timestamp            = (int) (weatherCard.currentWeather.getTimestamp() / 1000);
+            // fake timestamp for current weather if desired by user; some wearables do not accept a forecast
+            // for current weather.
+            if (weatherSettings.gadgetbridge_fake_timestamp){
+                weatherSpec.timestamp            = (int) Calendar.getInstance().getTimeInMillis();
+            } else {
+                weatherSpec.timestamp            = (int) (weatherCard.currentWeather.getTimestamp() / 1000);
+            }
             if (weatherCard.currentWeather.hasCondition()){
                 weatherSpec.currentConditionCode = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
                 weatherSpec.currentCondition     = new WeatherCodeContract().getWeatherConditionText(context,weatherCard.currentWeather.getCondition());

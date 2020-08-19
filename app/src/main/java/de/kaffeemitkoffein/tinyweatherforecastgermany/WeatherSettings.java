@@ -42,6 +42,7 @@ public class WeatherSettings {
     public static final String PREF_SERVE_GADGETBRIDGE = "PREF_serve_gadgetbridge";
     public static final String PREF_GADGETBRIDGE_LAST_UPDATE_TIME = "PREF_gadgetbridge_last_update_time";
     public static final String PREF_GADGETBRIDGE_PACKAGENAME = "PREF_gadgetbridge_packagename";
+    public static final String PREF_GADGETBRIDGE_FAKE_TIMESTAMP = "PREF_gadgetbridge_fake_timestamp";
     public static final String PREF_LOGGING = "PREF_logging";
     public static final String PREF_FAVORITESDATA = "PREF_favoritesdata";
 
@@ -61,6 +62,7 @@ public class WeatherSettings {
     public static final boolean PREF_SERVE_GADGETBRIDGE_DEFAULT = false;
     public static final long PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
+    public static final boolean PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT = false;
     public static final boolean PREF_LOGGING_DEFAULT = false;
     public static final String PREF_FAVORITESDATA_DEFAULT = PREF_STATION_DESCRIPTION_DEFAULT;
 
@@ -80,6 +82,7 @@ public class WeatherSettings {
     public boolean serve_gadgetbridge = PREF_SERVE_GADGETBRIDGE_DEFAULT;
     public long gadgetbridge_last_update_time;
     public String gadgetbridge_packagename = PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;
+    public boolean gadgetbridge_fake_timestamp = PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT;
     public boolean logging = PREF_LOGGING_DEFAULT;
     public String favoritesdata = PREF_FAVORITESDATA_DEFAULT;
 
@@ -110,6 +113,7 @@ public class WeatherSettings {
         this.last_version_code = readPreference(PREF_LAST_VERSION_CODE,PREF_LAST_VERSION_CODE_DEFAULT);
         this.serve_gadgetbridge = readPreference(PREF_SERVE_GADGETBRIDGE,PREF_SERVE_GADGETBRIDGE_DEFAULT);
         this.gadgetbridge_last_update_time = readPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT);
+        this.gadgetbridge_fake_timestamp = readPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT);
         this.logging = readPreference(PREF_LOGGING,PREF_LOGGING_DEFAULT);
         this.favoritesdata = readPreference(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
    }
@@ -129,6 +133,7 @@ public class WeatherSettings {
         applyPreference(PREF_WIDGET_SHOWDWDNOTE,this.widget_showdwdnote);
         applyPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
         applyPreference(PREF_SERVE_GADGETBRIDGE,this.serve_gadgetbridge);
+        applyPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,this.gadgetbridge_fake_timestamp);
         applyPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,this.gadgetbridge_last_update_time);
         applyPreference(PREF_LOGGING,this.logging);
     }
@@ -148,6 +153,7 @@ public class WeatherSettings {
         commitPreference(PREF_WIDGET_SHOWDWDNOTE,this.widget_showdwdnote);
         commitPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
         commitPreference(PREF_SERVE_GADGETBRIDGE,this.serve_gadgetbridge);
+        commitPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,this.gadgetbridge_fake_timestamp);
         commitPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,this.gadgetbridge_last_update_time);
         commitPreference(PREF_LOGGING,this.logging);
     }
