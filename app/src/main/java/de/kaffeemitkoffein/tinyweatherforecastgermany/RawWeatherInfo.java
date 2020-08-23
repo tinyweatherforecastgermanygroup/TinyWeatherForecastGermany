@@ -255,7 +255,6 @@ public class RawWeatherInfo{
 
     public long[] getTimeSteps(){
         long[] result = new long[Weather.DATA_SIZE];
-        // SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
         SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         kml_dateFormat.setLenient(true);
         for (int i=0; i<elements; i++){

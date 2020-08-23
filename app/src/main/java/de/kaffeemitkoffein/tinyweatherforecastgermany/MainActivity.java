@@ -128,6 +128,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // TESTING
+        WeatherWarnings weatherWarnings = new WeatherWarnings();
+        weatherWarnings.WarningsToLog(getApplicationContext());
+
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);

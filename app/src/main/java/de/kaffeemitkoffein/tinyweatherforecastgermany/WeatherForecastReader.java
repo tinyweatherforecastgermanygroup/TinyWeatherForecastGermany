@@ -34,8 +34,8 @@ import java.util.zip.ZipInputStream;
 
 public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> {
 
-    private Context context;
-    private Weather.WeatherLocation weatherLocation;
+    public Context context;
+    public Weather.WeatherLocation weatherLocation;
 
     private String[] seperateValues(String s){
         String[] resultarray = new String[Weather.DATA_SIZE];
@@ -43,11 +43,8 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
         while (String.valueOf(s.charAt(index)).equals(" ")){
             index++;
         }
-        //Log.v("PPPP","Spaces:"+index);
         s=s.substring(index);
-        //Log.v("PPPP",s);
         resultarray = s.split(" +");
-        // String[] resultarray2 = new String[Weather.DATA_SIZE];
         return resultarray;
     }
 
