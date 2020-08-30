@@ -170,121 +170,116 @@ public class WeatherWarningContentProvider extends ContentProvider {
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE);
             onCreate(sqLiteDatabase);
         }
-
-        private final static String serial_serparator = "_,_";
-
-        private String serializeString(ArrayList<String> s) {
-            return TextUtils.join(serial_serparator, s);
-        }
-
-        private ArrayList<String> deSerializeString(String s) {
-            String[] results = TextUtils.split(s, serial_serparator);
-            ArrayList<String> list = new ArrayList<String>();
-            for (int i = 0; i < results.length; i++) {
-                list.add(results[i]);
-            }
-            return list;
-        }
-
-        public ContentValues getContentValuesFromWeatherWarning(WeatherWarning weatherWarning) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_polling_time, weatherWarning.polling_time);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_identifier, weatherWarning.identifier);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_sender, weatherWarning.sender);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_sent, weatherWarning.sent);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_status, weatherWarning.status);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_msgType, weatherWarning.msgType);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_source, weatherWarning.source);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_scope, weatherWarning.scope);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_codes, serializeString(weatherWarning.codes));
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_references, serializeString(weatherWarning.references));
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_language, weatherWarning.language);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_category, weatherWarning.category);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_event, weatherWarning.event);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_responseType, weatherWarning.responseType);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_urgency, weatherWarning.urgency);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_severity, weatherWarning.severity);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_certainty, weatherWarning.certainty);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_effective, weatherWarning.effective);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_onset, weatherWarning.onset);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_expires, weatherWarning.expires);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_senderName, weatherWarning.senderName);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_headline, weatherWarning.headline);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_description, weatherWarning.description);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_instruction, weatherWarning.instruction);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_web, weatherWarning.web);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_contact, weatherWarning.contact);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_profile_version, weatherWarning.profile_version);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_license, weatherWarning.license);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_ii, weatherWarning.ii);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_groups, serializeString(weatherWarning.groups));
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_area_color, weatherWarning.area_color);
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_parameter_names, serializeString(weatherWarning.parameter_names));
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_parameter_values, serializeString(weatherWarning.parameter_values));
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_polygons, serializeString(weatherWarning.polygons));
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_area_names, serializeString(weatherWarning.area_names));
-            contentValues.put(WeatherWarningDatabaseHelper.KEY_area_warncellIDs, serializeString(weatherWarning.area_warncellIDs));
-            return contentValues;
-        }
-
-        public WeatherWarning getWeatherWarningFromCursor(Cursor c) {
-            if (c == null) {
-                return null;
-            } else {
-                WeatherWarning weatherWarning = new WeatherWarning();
-                if (c.moveToFirst()) {
-                    weatherWarning.polling_time = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_polling_time));
-                    weatherWarning.identifier = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_identifier));
-                    weatherWarning.sender = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_sender));
-                    weatherWarning.sent = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_sent));
-                    weatherWarning.status = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_status));
-                    weatherWarning.msgType = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_msgType));
-                    weatherWarning.source = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_source));
-                    weatherWarning.scope = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_scope));
-                    weatherWarning.codes = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_codes)));
-                    weatherWarning.references = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_references)));
-                    weatherWarning.language = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_language));
-                    weatherWarning.category = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_category));
-                    weatherWarning.event = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_event));
-                    weatherWarning.responseType = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_responseType));
-                    weatherWarning.urgency = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_urgency));
-                    weatherWarning.severity = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_severity));
-                    weatherWarning.certainty = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_certainty));
-                    weatherWarning.effective = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_effective));
-                    weatherWarning.onset = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_onset));
-                    weatherWarning.expires = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_expires));
-                    weatherWarning.senderName = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_senderName));
-                    weatherWarning.headline = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_headline));
-                    weatherWarning.description = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_description));
-                    weatherWarning.instruction = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_instruction));
-                    weatherWarning.web = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_web));
-                    weatherWarning.contact = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_contact));
-                    weatherWarning.profile_version = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_profile_version));
-                    weatherWarning.license = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_license));
-                    weatherWarning.ii = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_ii));
-                    weatherWarning.groups = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_groups)));
-                    weatherWarning.area_color = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_area_color));
-                    weatherWarning.parameter_names = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_parameter_names)));
-                    weatherWarning.parameter_values = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_parameter_values)));
-                    weatherWarning.polygons = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_polygons)));
-                    weatherWarning.area_names = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_area_names)));
-                    weatherWarning.area_warncellIDs = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_area_warncellIDs)));
-                    return weatherWarning;
-                } else {
-                    return null;
-                }
-            }
-        }
-
-        public int writeWeatherWarning(Context c, WeatherWarning weatherWarning) {
-            ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
-            int i = contentResolver.update(WeatherForecastContentProvider.URI_SENSORDATA, getContentValuesFromWeatherWarning(weatherWarning), WeatherWarningDatabaseHelper.KEY_identifier + "=?", new String[]{weatherWarning.identifier});
-            if (i == 0) {
-                contentResolver.insert(WeatherForecastContentProvider.URI_SENSORDATA, getContentValuesFromWeatherWarning(weatherWarning));
-                i = 1;
-            }
-            return i;
-        }
-
     }
+
+    private final static String serial_serparator = "_,_";
+
+    private String serializeString(ArrayList<String> s) {
+        return TextUtils.join(serial_serparator, s);
+    }
+
+    private ArrayList<String> deSerializeString(String s) {
+        String[] results = TextUtils.split(s, serial_serparator);
+        ArrayList<String> list = new ArrayList<String>();
+        for (int i = 0; i < results.length; i++) {
+            list.add(results[i]);
+        }
+        return list;
+    }
+
+    public ContentValues getContentValuesFromWeatherWarning(WeatherWarning weatherWarning) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_polling_time, weatherWarning.polling_time);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_identifier, weatherWarning.identifier);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_sender, weatherWarning.sender);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_sent, weatherWarning.sent);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_status, weatherWarning.status);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_msgType, weatherWarning.msgType);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_source, weatherWarning.source);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_scope, weatherWarning.scope);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_codes, serializeString(weatherWarning.codes));
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_references, serializeString(weatherWarning.references));
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_language, weatherWarning.language);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_category, weatherWarning.category);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_event, weatherWarning.event);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_responseType, weatherWarning.responseType);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_urgency, weatherWarning.urgency);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_severity, weatherWarning.severity);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_certainty, weatherWarning.certainty);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_effective, weatherWarning.effective);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_onset, weatherWarning.onset);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_expires, weatherWarning.expires);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_senderName, weatherWarning.senderName);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_headline, weatherWarning.headline);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_description, weatherWarning.description);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_instruction, weatherWarning.instruction);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_web, weatherWarning.web);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_contact, weatherWarning.contact);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_profile_version, weatherWarning.profile_version);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_license, weatherWarning.license);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_ii, weatherWarning.ii);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_groups, serializeString(weatherWarning.groups));
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_area_color, weatherWarning.area_color);
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_parameter_names, serializeString(weatherWarning.parameter_names));
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_parameter_values, serializeString(weatherWarning.parameter_values));
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_polygons, serializeString(weatherWarning.polygons));
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_area_names, serializeString(weatherWarning.area_names));
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_area_warncellIDs, serializeString(weatherWarning.area_warncellIDs));
+        return contentValues;
+    }
+
+    public WeatherWarning getWeatherWarningFromCursor(Cursor c) {
+        if (c == null) {
+            return null;
+        } else {
+            WeatherWarning weatherWarning = new WeatherWarning();
+            if (c.moveToFirst()) {
+                weatherWarning.polling_time = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_polling_time));
+                weatherWarning.identifier = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_identifier));
+                weatherWarning.sender = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_sender));
+                weatherWarning.sent = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_sent));
+                weatherWarning.status = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_status));
+                weatherWarning.msgType = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_msgType));
+                weatherWarning.source = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_source));
+                weatherWarning.scope = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_scope));
+                weatherWarning.codes = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_codes)));
+                weatherWarning.references = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_references)));
+                weatherWarning.language = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_language));
+                weatherWarning.category = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_category));
+                weatherWarning.event = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_event));
+                weatherWarning.responseType = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_responseType));
+                weatherWarning.urgency = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_urgency));
+                weatherWarning.severity = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_severity));
+                weatherWarning.certainty = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_certainty));
+                weatherWarning.effective = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_effective));
+                weatherWarning.onset = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_onset));
+                weatherWarning.expires = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_expires));
+                weatherWarning.senderName = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_senderName));
+                weatherWarning.headline = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_headline));
+                weatherWarning.description = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_description));
+                weatherWarning.instruction = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_instruction));
+                weatherWarning.web = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_web));
+                weatherWarning.contact = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_contact));
+                weatherWarning.profile_version = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_profile_version));
+                weatherWarning.license = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_license));
+                weatherWarning.ii = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_ii));
+                weatherWarning.groups = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_groups)));
+                weatherWarning.area_color = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_area_color));
+                weatherWarning.parameter_names = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_parameter_names)));
+                weatherWarning.parameter_values = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_parameter_values)));
+                weatherWarning.polygons = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_polygons)));
+                weatherWarning.area_names = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_area_names)));
+                weatherWarning.area_warncellIDs = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_area_warncellIDs)));
+                return weatherWarning;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public void writeWeatherWarning(Context c,WeatherWarning weatherWarning){
+        ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
+        contentResolver.insert(WeatherWarningContentProvider.URI_SENSORDATA,getContentValuesFromWeatherWarning(weatherWarning));
+    }
+
 }

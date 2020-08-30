@@ -1,6 +1,9 @@
 
+- added support for weather warnings
+- changed timestamp in Gadgetbridge API from polling time to forecast time; this should solve the issue of some wearables complaining about missing weather info
+- added setting to set the timestamp of the current weather forecast to the current time instead of the forecast time, as some wearables do not accept a forecast as current weather
+- fixed broken garbage collector for old forecast data
 - fixed application sometimes installing on SD-card, making widgets not accessible
 - fixed minor bug making the app crash when settings are called too early on 1st app launch
 - fixed wearables not displaying weather condition text properly
-- changed timestamp in Gadgetbridge API from polling time to forecast time; this should solve the issue of some wearables complaining about missing weather info
-- added setting to set the timestamp of the current weather to the current time instead of the forecast time, as some wearables do not accept a forecast as current weather.
+

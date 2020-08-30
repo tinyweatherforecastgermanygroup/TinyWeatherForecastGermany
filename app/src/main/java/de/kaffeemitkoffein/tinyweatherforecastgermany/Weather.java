@@ -636,6 +636,7 @@ public final class Weather {
                                                                 WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name};
 
     private ArrayList<RawWeatherInfo> getTimestampArrayList(Context context) {
+        WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         ArrayList<RawWeatherInfo> dataArrayList = new ArrayList<RawWeatherInfo>();
         Cursor c = null;
@@ -643,7 +644,7 @@ public final class Weather {
             c = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,SQL_COMMAND_QUERYTIMECOLUMN,null,null,null);
             if (c.moveToFirst()) {
                 do {
-                    RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
+                    RawWeatherInfo rawWeatherInfo = weatherForecastContentProvider.getWeatherCardFromCursor(c);
                     dataArrayList.add(rawWeatherInfo);
                 } while (c.moveToNext());
             }

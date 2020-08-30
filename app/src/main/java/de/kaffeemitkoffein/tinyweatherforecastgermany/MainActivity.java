@@ -129,10 +129,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TESTING
-        WeatherWarnings weatherWarnings = new WeatherWarnings();
-        weatherWarnings.WarningsToLog(getApplicationContext());
-
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);
@@ -186,6 +182,10 @@ public class MainActivity extends Activity {
                     if (weatherCard != null){
                         displayUpdateTime(weatherCard);
                     }
+                }
+                // invalidate menu if warnings visibility has changed
+                if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
+                    invalidateOptionsMenu();
                 }
             }
         };
@@ -509,6 +509,7 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater mi = getMenuInflater();
         mi.inflate(R.menu.main_activity,menu);
+        // try to show incons in drop-down menu
         if (menu.getClass().getSimpleName().equals("MenuBuilder")){
             try {
                 Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible",Boolean.TYPE);
@@ -516,6 +517,15 @@ public class MainActivity extends Activity {
                 method.invoke(menu,true);
             } catch (Exception e){
                 // todo
+            }
+        }
+        // disable weather warnings if desired by user
+        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+        if (weatherSettings.warnings_disabled){
+            for (int i=0; i<menu.size(); i++){
+                if (menu.getItem(i).getItemId()==R.id.menu_warnings){
+                    menu.getItem(i).setVisible(false);
+                }
             }
         }
         return super.onCreateOptionsMenu(menu);
@@ -528,6 +538,11 @@ public class MainActivity extends Activity {
         if (item_id == R.id.menu_refresh){
             PrivateLog.log(this,Tag.MAIN,"user requests update => force update");
             forcedWeatherUpdate();
+            return true;
+        }
+        if (item_id == R.id.menu_warnings) {
+            Intent i = new Intent(this, WeatherWarningActivity.class);
+            startActivity(i);
             return true;
         }
         if (item_id == R.id.menu_settings) {

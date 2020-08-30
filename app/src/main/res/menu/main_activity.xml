@@ -27,27 +27,32 @@
         android:showAsAction="ifRoom"
         android:orderInCategory="1">
     </item>
+    <item android:id="@+id/menu_warnings"
+        android:title="@string/warnings_button"
+        android:showAsAction="never"
+        android:orderInCategory="2">
+    </item>
     <item android:id="@+id/menu_settings"
         android:title="@string/settings_button"
         android:icon="@mipmap/ic_settings_white_24dp"
         android:showAsAction="never"
-        android:orderInCategory="2">
+        android:orderInCategory="3">
     </item>
     <item android:id="@+id/menu_about"
         android:title="@string/about_button"
         android:icon="@mipmap/ic_info_outline_white_24dp"
         android:showAsAction="never"
-        android:orderInCategory="3">
+        android:orderInCategory="4">
     </item>
     <item android:id="@+id/menu_license"
         android:title="@string/license_button"
         android:showAsAction="never"
-        android:orderInCategory="4">
+        android:orderInCategory="5">
     </item>
     <item android:id="@+id/menu_whatsnew"
         android:title="@string/whatsnew_button"
         android:showAsAction="never"
-        android:orderInCategory="5">
+        android:orderInCategory="6">
     </item>
 
 </menu>

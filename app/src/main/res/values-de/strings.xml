@@ -22,12 +22,14 @@
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Letzte Aktualisierung:</string>
     <string name="dwd_notice">Quelle: Deutscher Wetterdienst, eigene Elemente ergänzt, einige Einzelwerte gemittelt.</string>
+    <string name="dwd_warnings_notice">Data basis: Deutscher Wetterdienst, gekürzte Warnungen dargestellt.</string>
     <string name="new_station">Region geändert zu </string>
     <string name="license_button">Lizenz</string>
     <string name="about_button">Datenschutz/Über...</string>
     <string name="update_button">Aktualisieren</string>
     <string name="settings_button">Einstellungen</string>
     <string name="whatsnew_button">Was ist neu?</string>
+    <string name="warnings_button">Wetterwarnungen</string>
     <string name="today">Heute</string>
     <string name="station">Station</string>
     <string name="boldwidget_description">Kräftig</string>
@@ -67,17 +69,24 @@
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8">Mäßig bewölkt</string>
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8">Leicht bewölkt</string>
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8">heiter</string>
+    <string name="title_activity_warnings">Wetterwarnungen</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="clouds">Bewölkung: </string>
     <string name="rain">Niederschlag: </string>
     <string name="preference_category_general">Allgemein</string>
     <string name="preference_category_widget">Widget-Einstellungen</string>
+    <string name="preference_category_warnings">Weather warnings</string>
+    <string name="preference_category_other">Sonstiges</string>
     <string name="preference_updateinterval_title">Aktualisierungs-Intervall</string>
     <string name="preference_pdateinterval_summary">Wie oft sollen Wetterdaten aktualisiert werden</string>
     <string name="preference_opacity_title">Deckkraft Widget</string>
     <string name="preference_opacity_summary">Bestimmt die Transparenz des Widgets auf dem Homescreen.</string>
     <string name="preference_displaynoteinwidget_title">DWD-Hinweis anzeigen</string>
     <string name="preference_displaynoteinwidget_summary">Zeigt den Hinweis auf die Datenquelle Deutscher Wetterdienst im Widget.</string>
+    <string name="preference_cache_warnings_title">Warnungen zwischenspeichern</string>
+    <string name="preference_cache_warnings_summary">Wie lange Warnungen angezeigt werden ohne sie vom Deutschen Wetterdienst neu zu laden.</string>
+    <string name="preference_disable_warnings_title">Warnungen ausschalten</string>
+    <string name="preference_disable_warnings_summary">Keine Wetterwarnungen anzeigen.</string>
     <string name="preference_setalarm_title">Automatisch aktualisieren</string>
     <string name="preference_setalarm_summary">Wetterdaten regelmäßig aktualisieren. Das kann den Akkuverbrauch erhöhen.</string>
     <string name="preference_set_aggresive_alarm_title">Aktualisierung wiederholen</string>
@@ -95,7 +104,6 @@
     <string name="preference_gadgetbridge_note_title">Wichtig!</string>
     <string name="preference_gadgetbridge_note_summary">Der Gadgetbridge-Support ist noch experimentell.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge-Paketname wurde zurückgesetzt!</string>
-    <string name="preference_category_other">Sonstiges</string>
     <string name="preference_loggingscreen_title">Fehler finden</string>
     <string name="preference_loggingscreen_summary">Protokoll aufzeichnen und verwalten.</string>
     <string name="preference_logging_title">Protokoll</string>
@@ -126,4 +134,9 @@
     <string name="preference_feedback_summary">Dem Entwickler Feedback per Mail geben.</string>
     <string name="feedback_mail_subject">Feedback: TinyWeatherForecastGermany</string>
     <string name="feedback_mail_text">Wenn es sich um einen Fehler handelt, bitte auch ein Protokoll kopieren &amp; hier einfügen, falls möglich.</string>
+    <string name="warnings_until">bis</string>
+    <string name="warnings_update">Aktualisiere Warnungen...</string>
+    <string name="warnings">Warnungen</string>
+    <string name="warnings_updatetime">aktualisiert:</string>
+
 </resources>

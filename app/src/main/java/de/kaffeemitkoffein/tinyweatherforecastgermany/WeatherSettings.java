@@ -35,7 +35,6 @@ public class WeatherSettings {
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_AGGRESSIVE_UPDATE = "PREF_aggressive_update";
-    public static final String PREF_ISWEATHERPROVIDER = "PREF_isregisteredweatherprovider";
     public static final String PREF_WIDGET_OPACITY = "PREF_widget_opacity";
     public static final String PREF_WIDGET_SHOWDWDNOTE = "PREF_widget_showdwdnote";
     public static final String PREF_LAST_VERSION_CODE = "PREF_last_version_code";
@@ -45,6 +44,8 @@ public class WeatherSettings {
     public static final String PREF_GADGETBRIDGE_FAKE_TIMESTAMP = "PREF_gadgetbridge_fake_timestamp";
     public static final String PREF_LOGGING = "PREF_logging";
     public static final String PREF_FAVORITESDATA = "PREF_favoritesdata";
+    public static final String PREF_WARNINGS_CACHETIME = "PREF_warnings_cachetime";
+    public static final String PREF_WARNINGS_DISABLE = "PREF_warnings_diable";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -56,7 +57,6 @@ public class WeatherSettings {
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";
-    public static final boolean PREF_ISWEATHERPROVIDER_DEFAULT = false;
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
     public final int PREF_LAST_VERSION_CODE_DEFAULT = 0;
     public static final boolean PREF_SERVE_GADGETBRIDGE_DEFAULT = false;
@@ -65,6 +65,8 @@ public class WeatherSettings {
     public static final boolean PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT = false;
     public static final boolean PREF_LOGGING_DEFAULT = false;
     public static final String PREF_FAVORITESDATA_DEFAULT = PREF_STATION_DESCRIPTION_DEFAULT;
+    public static final String PREF_WARNINGS_CACHETIME_DEFAULT = "30";
+    public static final boolean PREF_WARNINGS_DISABLE_DEFAULT = false;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -75,7 +77,6 @@ public class WeatherSettings {
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public boolean aggressive_update = PREF_AGGRESSIVE_UPDATE_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
-    public boolean is_weatherprovider = PREF_ISWEATHERPROVIDER_DEFAULT;
     public String widget_opacity = PREF_WIDGET_OPACITY_DEFAULT;
     public boolean widget_showdwdnote = PREF_WIDGET_SHOWDWDNOTE_DEFAULT;
     public int last_version_code = PREF_LAST_VERSION_CODE_DEFAULT;
@@ -85,6 +86,8 @@ public class WeatherSettings {
     public boolean gadgetbridge_fake_timestamp = PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT;
     public boolean logging = PREF_LOGGING_DEFAULT;
     public String favoritesdata = PREF_FAVORITESDATA_DEFAULT;
+    public String warnings_cache_time = PREF_WARNINGS_CACHETIME_DEFAULT;
+    public boolean warnings_disabled = PREF_WARNINGS_DISABLE_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -107,7 +110,6 @@ public class WeatherSettings {
         this.display_station_geo = readPreference(PREF_DISPLAY_STATION_GEO,PREF_DISPLAY_STATION_GEO_DEFAULT);
         this.aggressive_update = readPreference(PREF_AGGRESSIVE_UPDATE,PREF_AGGRESSIVE_UPDATE_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL,PREF_UPDATEINTERVAL_DEFAULT);
-        this.is_weatherprovider = readPreference(PREF_ISWEATHERPROVIDER,PREF_ISWEATHERPROVIDER_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY,PREF_WIDGET_OPACITY_DEFAULT);
         this.widget_showdwdnote = readPreference(PREF_WIDGET_SHOWDWDNOTE,PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
         this.last_version_code = readPreference(PREF_LAST_VERSION_CODE,PREF_LAST_VERSION_CODE_DEFAULT);
@@ -116,6 +118,8 @@ public class WeatherSettings {
         this.gadgetbridge_fake_timestamp = readPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT);
         this.logging = readPreference(PREF_LOGGING,PREF_LOGGING_DEFAULT);
         this.favoritesdata = readPreference(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
+        this.warnings_cache_time = readPreference(PREF_WARNINGS_CACHETIME,PREF_WARNINGS_CACHETIME_DEFAULT);
+        this.warnings_disabled = readPreference(PREF_WARNINGS_DISABLE,PREF_WARNINGS_DISABLE_DEFAULT);
    }
 
     public void savePreferences(){
@@ -128,7 +132,6 @@ public class WeatherSettings {
         applyPreference(PREF_SETALARM,this.setalarm);
         applyPreference(PREF_AGGRESSIVE_UPDATE,this.aggressive_update);
         applyPreference(PREF_UPDATEINTERVAL,this.updateinterval);
-        applyPreference(PREF_ISWEATHERPROVIDER,this.is_weatherprovider);
         applyPreference(PREF_WIDGET_OPACITY,this.widget_opacity);
         applyPreference(PREF_WIDGET_SHOWDWDNOTE,this.widget_showdwdnote);
         applyPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
@@ -136,6 +139,8 @@ public class WeatherSettings {
         applyPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,this.gadgetbridge_fake_timestamp);
         applyPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,this.gadgetbridge_last_update_time);
         applyPreference(PREF_LOGGING,this.logging);
+        applyPreference(PREF_WARNINGS_CACHETIME,this.warnings_cache_time);
+        applyPreference(PREF_WARNINGS_DISABLE,this.warnings_disabled);
     }
 
     public void commitPreferences(){
@@ -148,7 +153,6 @@ public class WeatherSettings {
         commitPreference(PREF_SETALARM,this.setalarm);
         commitPreference(PREF_AGGRESSIVE_UPDATE,this.aggressive_update);
         commitPreference(PREF_UPDATEINTERVAL,this.updateinterval);
-        commitPreference(PREF_ISWEATHERPROVIDER,this.is_weatherprovider);
         commitPreference(PREF_WIDGET_OPACITY,this.widget_opacity);
         commitPreference(PREF_WIDGET_SHOWDWDNOTE,this.widget_showdwdnote);
         commitPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
@@ -156,6 +160,8 @@ public class WeatherSettings {
         commitPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,this.gadgetbridge_fake_timestamp);
         commitPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,this.gadgetbridge_last_update_time);
         commitPreference(PREF_LOGGING,this.logging);
+        commitPreference(PREF_WARNINGS_CACHETIME,this.warnings_cache_time);
+        commitPreference(PREF_WARNINGS_DISABLE,this.warnings_disabled);
     }
 
     public String readPreference(String p, String d){
@@ -288,6 +294,12 @@ public class WeatherSettings {
             result.add(split_descriptions[i]);
         }
         return result;
+    }
+
+    public long getWarningsCacheTimeInMillis(){
+        long l = Long.parseLong(this.warnings_cache_time);
+        l = l * 60 * 1000;
+        return l;
     }
 
 }

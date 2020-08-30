@@ -94,7 +94,6 @@
             android:gravity="center"
             android:tint="@color/textColor"
             android:src="@mipmap/ic_highlight_off_white_24dp"/>
-
     </LinearLayout>
 
 

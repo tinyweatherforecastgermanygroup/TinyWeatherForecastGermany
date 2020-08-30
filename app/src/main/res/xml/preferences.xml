@@ -70,6 +70,25 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+            android:title="@string/preference_category_warnings">
+
+        <ListPreference
+            android:key="PREF_warnings_cachetime"
+            android:title="@string/preference_cache_warnings_title"
+            android:summary="@string/preference_cache_warnings_summary"
+            android:entries="@array/cache_warnings_time_text"
+            android:entryValues="@array/cache_warnings_time_values"
+            android:defaultValue="30"/>
+
+        <CheckBoxPreference
+            android:key="PREF_warnings_diable"
+            android:title="@string/preference_disable_warnings_title"
+            android:summary="@string/preference_disable_warnings_summary"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/preference_category_other">
 
         <PreferenceScreen

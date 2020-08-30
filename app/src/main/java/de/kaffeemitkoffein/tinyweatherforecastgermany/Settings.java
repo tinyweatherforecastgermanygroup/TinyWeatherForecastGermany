@@ -19,6 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -41,6 +42,10 @@ public class Settings extends PreferenceActivity{
         super.onCreate(bundle);
         addPreferencesFromResource(R.xml.preferences);
         updateValuesDisplay();
+        // action bar layout
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
+
     }
 
     @Override

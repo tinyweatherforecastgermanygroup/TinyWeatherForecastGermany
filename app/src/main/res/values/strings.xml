@@ -22,11 +22,13 @@
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Last Update:</string>
     <string name="dwd_notice">Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual values.</string>
+    <string name="dwd_warnings_notice">Data basis: Deutscher Wetterdienst, displaying condensed warnings. </string>
     <string name="new_station">Region changed to</string>
     <string name="license_button">License</string>
     <string name="update_button">Update</string>
     <string name="settings_button">Settings</string>
     <string name="about_button">Privacy/About</string>
+    <string name="warnings_button">Weather warnings</string>
     <string name="today">Today</string>
     <string name="station">Station</string>
     <string name="whatsnew_button">What\'s new</string>
@@ -67,17 +69,24 @@
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8">moderate clouds</string>
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8">slightly cloudy</string>
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8">fair</string>
+    <string name="title_activity_warnings">Weather Warnings</string>
     <string name="title_activity_settings">Settings</string>
     <string name="clouds">Clouds:</string>
     <string name="rain">Rain:</string>
     <string name="preference_category_general">General</string>
     <string name="preference_category_widget">Widget settigs</string>
+    <string name="preference_category_warnings">Weather warnings</string>
+    <string name="preference_category_other">Other</string>
     <string name="preference_updateinterval_title">Update interval</string>
     <string name="preference_pdateinterval_summary">Select how often the weather data should be updated.</string>
     <string name="preference_opacity_title">Widget opacity</string>
     <string name="preference_opacity_summary">Select how transparent the widget is on your home screen.</string>
     <string name="preference_displaynoteinwidget_title">Display DWD note</string>
     <string name="preference_displaynoteinwidget_summary">Show the data source string.</string>
+    <string name="preference_cache_warnings_title">Cache warnings</string>
+    <string name="preference_cache_warnings_summary">How long warnings should be displayed without re-loading from the Deutscher Wetterdienst.</string>
+    <string name="preference_disable_warnings_title">Disable warnings</string>
+    <string name="preference_disable_warnings_summary">Do not display weather warnings.</string>
     <string name="preference_setalarm_title">Update automatically</string>
     <string name="preference_setalarm_summary">Update weather data regularly. This may increase battery usage.</string>
     <string name="preference_set_aggresive_alarm_title">Repeat failed updates</string>
@@ -95,7 +104,6 @@
     <string name="preference_gadgetbridge_faketimestamp_summary">Some wearables do not accept a forecast for current weather, always send current time.</string>
     <string name="preference_gadgetbridge_note_summary">Gadgetbridge support is still experimental.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge package name is set back to default.</string>
-    <string name="preference_category_other">Other</string>
     <string name="preference_loggingscreen_title">Debug</string>
     <string name="preference_loggingscreen_summary">Set up logging options for debugging.</string>
     <string name="preference_logging_title">Logging</string>
@@ -126,4 +134,8 @@
     <string name="preference_feedback_summary">Give the developer some feedback by mail.</string>
     <string name="feedback_mail_subject">Feedback: TinyWeatherForecastGermany</string>
     <string name="feedback_mail_text">When sending a bug report, please also copy &amp; paste logs, if possible.</string>
+    <string name="warnings_until">until</string>
+    <string name="warnings_update">Updating warnings...</string>
+    <string name="warnings">Warnings</string>
+    <string name="warnings_updatetime">updated:</string>
 </resources>

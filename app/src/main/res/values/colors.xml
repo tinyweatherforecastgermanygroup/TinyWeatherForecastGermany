@@ -27,7 +27,15 @@
     <color name="widget_textcolor">#FFFFFF</color>
     <color name="textColor">#eeeeee</color>
     <color name="textColorGrey">#999999</color>
-
     <color name="background_holo_dark">@color/colorPrimary</color>
+
+    <color name="warning_color">@color/textColor</color>
+    <color name="warning_accent">@color/colorAccent</color>
+    <color name="warning_action">@color/widget_textcolor</color>
+    <color name="warning_minor">#eeee00</color>
+    <color name="warning_moderate">#ee6600</color>
+    <color name="warning_severe">#ee0000</color>
+
+
 
 </resources>

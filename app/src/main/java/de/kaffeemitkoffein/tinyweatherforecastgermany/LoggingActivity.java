@@ -32,6 +32,10 @@ public class LoggingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logging);
+        // action bar layout
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
+
         final TextView logview = (TextView) findViewById(R.id.logging_infoTextView);
         logview.setText("Loading...");
         // Read the logs asynchronously

@@ -19,6 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -62,34 +63,40 @@ public class WeatherWarning {
     ArrayList<String> area_names;
     ArrayList<String> area_warncellIDs;
 
-    float[] polygonX;
-    float[] polygonY;
-    int nvert;
 
-    /**
-     * determines if point is inside a polygon.
-     *
-     * Adapted to java from C, see https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html,
-     * original code Copyright (c) 1970-2003, Wm. Randolph Franklin, see COPYING.txt for
-     * license.
-     *
-     * @param nvert
-     * @param vertx
-     * @param verty
-     * @param testx
-     * @param testy
-     * @return
-     */
+    ArrayList<Polygon> polygonlist;
 
-    private boolean isInPolygon(int nvert, float[] vertx, float[] verty, float testx, float testy ){
-        boolean c = false;
-        int i, j;
-        for (i = 0, j = nvert-1; i < nvert; j = i++) {
-            if ( ((verty[i]>testy) != (verty[j]>testy)) &&
-                    (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]) )
-                c = !c;
+    public void initPolygons(){
+        polygonlist = new ArrayList<Polygon>();
+        for (int j=0; j<polygons.size(); j++){
+            Polygon polygon = new Polygon(polygons.get(j));
+            polygonlist.add(polygon);
         }
-        return c;
+    }
+
+    public boolean isInPolygonGeo(float testx, float testy){
+        if (polygonlist==null){
+            initPolygons();
+        }
+        if (polygons==null){
+            return false;
+        }
+        if (polygons.size()==0){
+            return false;
+        }
+        for (int j=0; j<polygons.size(); j++){
+            Polygon polygon = new Polygon(polygons.get(j));
+            if (polygon.isInPolygon(testx,testy)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getWarningColor(){
+        String[] colors = area_color.trim().split("\\s+");
+        int result = Color.rgb(Integer.parseInt(colors[0]),Integer.parseInt(colors[1]),Integer.parseInt(colors[2]));
+        return result;
     }
 
     public void outputToLog(){
