@@ -1,17 +1,19 @@
 Neu in dieser Version ([VERSION]):
 
-Neue Funktionen in dieser Version:
-- neue Widgets
-- neue Suche der Station
-- Favoriten
-- Vorschau-Daten verschiedener Stationen werden weiter benutzt
-- detailliertere Wetter-Informationen
-- zahlreiche Performance-Verbesserungen
+- Wetter-Warnungen hinzu gefügt
+- skalierte Wetter-Icons und Symbol-Sets für verschiedene Bildschirme hinzu gefügt, um die Performance zu steigern
+- bessere Unterstützung breiter Bildschirme
+- Einführungs-Bilder hinzugefügt, welche die Haupt-Features erklären
+- defekte Löschroutine für veraltete Wetterdaten repariert
+- behoben: das Programm wurde gelegentlich auf der SD-Karte installiert, was dazu führte, dass die Widgets nicht erreichbar waren
+- behoben: kleinerer Fehler, der die App zum Absturz brachte, wenn die Einstellungen beim ersten App-Start zu früh aufgerufen wurden
 
-Fehler-Korrekturen:
-- unwahrscheinliche Schnee-Voraussagen weit über 0° wurden entfernt
-- Böeen waren mit der Windgeschwindigkeit gleich
-- diverse Fehler-Korrekturen bei den neuen Funktionen
+Gadgetbridge Unterstützung:
+
+- Zeitstempel in der Gadgetbridge API von der Abfrage-Zeit auf die Vorhersage-Zeit geändert; dies sollte das Problem beheben, dass einige Wearables sich über nicht vorhandene Wetterdaten beschwerten
+- Option hinzugefügt, um als Zeitstempel die aktuelle Uhrzeit anstelle der Vorhersage-Zeit zu setzen, da einige Wearables eine Vorhersage nicht als aktuelles Wetter akzeptieren
+- behoben: unbekannter Update-Zeitpunkt beim ersten App-Start
+- behoben: Wetter-Text auf Wearables wurde nicht korrekt dargestellt
 
 Achtung: die Einstellungen werden bei einem Update von Version kleiner 0.40 auf die Standard-Werte zurückgesetzt!
 

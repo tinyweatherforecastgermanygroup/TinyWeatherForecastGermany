@@ -1,15 +1,15 @@
 
-- added weather warnings
-- added scaled weather icon and symbol sets for different screen densities to improve performance
-- added better support for wide screens
-- added an introduction screen explaining the main features
-- fixed broken garbage collector for old forecast data
-- fixed application sometimes installing on SD-card, making widgets not accessible
-- fixed minor bug making the app crash when settings are called too early on 1st app launch
+- Wetter-Warnungen hinzu gefügt
+- skalierte Wetter-Icons und Symbol-Sets für verschiedene Bildschirme hinzu gefügt, um die Performance zu steigern
+- bessere Unterstützung breiter Bildschirme
+- Einführungs-Bilder hinzugefügt, welche die Haupt-Features erklären
+- defekte Löschroutine für veraltete Wetterdaten repariert
+- behoben: das Programm wurde gelegentlich auf der SD-Karte installiert, was dazu führte, dass die Widgets nicht erreichbar waren
+- behoben: kleinerer Fehler, der die App zum Absturz brachte, wenn die Einstellungen beim ersten App-Start zu früh aufgerufen wurden
 
-Gadgetbridge supprt:
-- changed timestamp in Gadgetbridge API from polling time to forecast time; this should solve the issue of some wearables complaining about missing weather info
-- added setting to set the timestamp of the current weather forecast to the current time instead of the forecast time, as some wearables do not accept a forecast as current weather
-- fixed gadgetbridge last update time unknown at first app launch
-- fixed wearables not displaying weather condition text properly
+Gadgetbridge Unterstützung:
 
+- Zeitstempel in der Gadgetbridge API von der Abfrage-Zeit auf die Vorhersage-Zeit geändert; dies sollte das Problem beheben, dass einige Wearables sich über nicht vorhandene Wetterdaten beschwerten
+- Option hinzugefügt, um als Zeitstempel die aktuelle Uhrzeit anstelle der Vorhersage-Zeit zu setzen, da einige Wearables eine Vorhersage nicht als aktuelles Wetter akzeptieren
+- behoben: unbekannter Update-Zeitpunkt beim ersten App-Start
+- behoben: Wetter-Text auf Wearables wurde nicht korrekt dargestellt

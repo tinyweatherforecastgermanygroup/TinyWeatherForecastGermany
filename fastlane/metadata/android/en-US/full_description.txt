@@ -4,6 +4,7 @@ A forecast ist available for over 5000 stations in Germany and worldwide.
 
 - detailed weather forecast
 - slim design
+- weather warnings for Germany
 - supports Gadgetbridge (experimental)
 
 Permissions:

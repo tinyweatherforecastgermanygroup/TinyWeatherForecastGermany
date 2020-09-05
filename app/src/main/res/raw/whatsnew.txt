@@ -1,16 +1,17 @@
 What is new in this version ([VERSION]):
 
-New features in this version:
-- new widgets
-- new station search
-- favorites
-- app reuses recent forecast data for different stations
-- more detailed weather information
-- various performance improvements
+- added weather warnings
+- added scaled weather icon and symbol sets for different screen densities to improve performance
+- added better support for wide screens
+- added an introduction screen explaining the main features
+- fixed broken garbage collector for old forecast data
+- fixed application sometimes installing on SD-card, making widgets not accessible
+- fixed minor bug making the app crash when settings are called too early on 1st app launch
 
-Bug fixes:
-- improbable snow conditions far above 0° are excluded
-- fixed flurries equal to wind speed
-- various bug fixes related to the new features
+Gadgetbridge support:
+- changed timestamp in Gadgetbridge API from polling time to forecast time; this should solve the issue of some wearables complaining about missing weather info
+- added setting to set the timestamp of the current weather forecast to the current time instead of the forecast time, as some wearables do not accept a forecast as current weather
+- fixed gadgetbridge last update time unknown at first app launch
+- fixed wearables not displaying weather condition text properly
 
 Important notice: when upgrading from a version lower than 0.40, the settings have been set back to the default values!

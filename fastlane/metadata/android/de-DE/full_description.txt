@@ -4,6 +4,7 @@ Eine Vorhersage ist für über 5000 Stationen in Deutschland und weltweit verfü
 
 - detaillierte Wettervorhersage
 - schlankes Design
+- Wetter-Warnungen für Deutschland
 - unterstützt Gadgetbridge (experimentell)
 
 Berechtigungen:
