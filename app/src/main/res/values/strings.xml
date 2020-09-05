@@ -137,7 +137,7 @@
     <string name="feedback_mail_subject">Feedback: TinyWeatherForecastGermany</string>
     <string name="feedback_mail_text">When sending a bug report, please also copy &amp; paste logs, if possible.</string>
     <string name="warnings_until">until</string>
-    <string name="warnings_update">Updating warnings...</string>
+    <string name="warnings_update">Warnings updated.</string>
     <string name="warnings">Warnings</string>
     <string name="warnings_updatetime">updated:</string>
     <string name="warnings_outdated">The weather warnings are outdated.</string>
@@ -158,7 +158,7 @@
     <string name="welcome_s2_text5">freezing rain</string>
     <string name="welcome_s2_text6">fog</string>
     <string name="welcome_s2_text7">drizzle</string>
-    <string name="welcome_s2_text8">wind</string>
+    <string name="welcome_s2_text8">wind direction</string>
     <string name="welcome_s3_text1">Click/Touch the icon in the upper left corner to collapse the map.</string>
     <string name="welcome_s3_text2">Click/Touch the list of cities/locations in the warning to expand it!</string>
     <string name="welcome_s3_text3">Add some widgets to your home screen:</string>
