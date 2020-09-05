@@ -20,10 +20,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.graphics.Color;
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class WeatherWarning implements Comparable<WeatherWarning> {
     // <alert>
@@ -119,6 +116,7 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         return result;
     }
 
+    /*
     public void outputToLog(){
         Log.v(Tag.WARNINGS,"====================================================");
         Log.v(Tag.WARNINGS,"Identifier: "+identifier);
@@ -157,7 +155,7 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         Log.v(Tag.WARNINGS, "WarnCellID #: "+area_warncellIDs.size());
     }
 
-
+     */
 
     @Override
     public int compareTo(WeatherWarning w) {

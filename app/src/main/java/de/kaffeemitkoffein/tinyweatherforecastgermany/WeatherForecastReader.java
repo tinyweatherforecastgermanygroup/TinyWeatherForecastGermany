@@ -21,7 +21,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -246,7 +245,6 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
     }
 
     public void onPositiveResult(RawWeatherInfo rawWeatherInfo){
-        Log.v("STRING",rawWeatherInfo.toString());
         onPositiveResult();
     }
 

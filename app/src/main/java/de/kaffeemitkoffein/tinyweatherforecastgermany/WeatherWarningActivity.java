@@ -123,19 +123,19 @@ public class WeatherWarningActivity extends Activity {
     }
 
     public void updateWarnings(){
-        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.warnings_update),Toast.LENGTH_LONG).show();
-        final Context context = getApplicationContext();
+        final Context this_context = getApplicationContext();
         final WeatherWarningReader weatherWarningReader = new WeatherWarningReader(getApplicationContext()){
             @Override
             public void onPositiveResult(ArrayList<WeatherWarning> warnings){
                 super.onPositiveResult(warnings);
+                Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.warnings_update),Toast.LENGTH_LONG).show();
                 weatherWarnings = warnings;
                 PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings updated successfully.");
                 displayWarnings();
             }
             public void onNegativeResult(){
                 PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
-                Toast.makeText(context,context.getResources().getString(R.string.warnings_update_fail),Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.warnings_update_fail),Toast.LENGTH_LONG).show();
                 if (weatherWarnings!=null){
                     updateActionBarLabels();
                 }
@@ -193,17 +193,11 @@ public class WeatherWarningActivity extends Activity {
         bitmap.eraseColor(Color.TRANSPARENT);
         MAP_HEIGHT = resource_bitmap.getHeight();
         MAP_WIDTH  = resource_bitmap.getWidth();
-
         X_FACTOR = (float) (MAP_WIDTH / 12.130930434);
         Y_FACTOR = (float) (MAP_HEIGHT / 8.804865172);
-
         polygoncache = new ArrayList<Polygon>();
         excluded_polygoncache = new ArrayList<Polygon>();
-
         Canvas canvas = new Canvas(bitmap);
-
-        // canvas.drawBitmap(resource_bitmap, 0,0,null);
-        // Längengrad = x, Breitengrad = y
         for (int warning_counter=0; warning_counter<weatherWarnings.size(); warning_counter++){
             WeatherWarning warning = weatherWarnings.get(warning_counter);
             warning.initPolygons();
@@ -344,10 +338,8 @@ public class WeatherWarningActivity extends Activity {
         float view_height = germany.getMeasuredHeight();
         float x_laengengrade_pro_pixel = (float) (12.130930434 / view_width);
         float y_breitengrade_pro_pixel = (float) (8.804865172 / view_height);
-        //Log.v("MOTIONEVENT ONTOUCH","IMAGE  "+view_width+"/"+view_height);
         float x_geo = x_laengengrade_pro_pixel*x + X_GEO_MAPOFFSET;
         float y_geo = y_breitengrade_pro_pixel*(view_height-y) + Y_GEO_MAPOFFSET;
-        //Log.v("MOTIONEVENT ONTOUCH",x+"/"+y+" => "+x_geo+"/"+y_geo);
         if (polygoncache!=null){
             int position = 0;
             // first check if pointer is in excluded polygon; it is more efficient to do this first.

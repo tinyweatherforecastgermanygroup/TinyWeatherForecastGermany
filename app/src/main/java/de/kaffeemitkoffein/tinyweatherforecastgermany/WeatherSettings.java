@@ -48,6 +48,7 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_CACHETIME = "PREF_warnings_cachetime";
     public static final String PREF_WARNINGS_DISABLE = "PREF_warnings_diable";
     public static final String PREF_WARNINGS_LAST_UPDATE_TIME = "PREF_warnings_last_update_time";
+    public static final String PREF_IS_FIRST_APP_LAUNCH = "PREF_is_first_app_launch";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -70,6 +71,7 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_CACHETIME_DEFAULT = "30";
     public static final boolean PREF_WARNINGS_DISABLE_DEFAULT = false;
     public static final long PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT = 0;
+    public static final boolean PREF_IS_FIRST_APP_LAUNCH_DEFAULT = true;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -92,6 +94,7 @@ public class WeatherSettings {
     public String favoritesdata = PREF_FAVORITESDATA_DEFAULT;
     public String warnings_cache_time = PREF_WARNINGS_CACHETIME_DEFAULT;
     public boolean warnings_disabled = PREF_WARNINGS_DISABLE_DEFAULT;
+    public boolean is_first_app_launch = true;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -319,6 +322,18 @@ public class WeatherSettings {
 
     public void setWarningsLastUpdateTime(){
         setWarningsLastUpdateTime(Calendar.getInstance().getTimeInMillis());
+    }
+
+    public static boolean isFirstAppLaunch(Context c){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        return sharedPreferences.getBoolean(PREF_IS_FIRST_APP_LAUNCH,PREF_IS_FIRST_APP_LAUNCH_DEFAULT);
+    }
+
+    public static void setAppLaunchedFlag(Context c){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_IS_FIRST_APP_LAUNCH,false);
+        pref_editor.apply();
     }
 
 }

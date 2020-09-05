@@ -20,8 +20,6 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 
 public final class WeatherCodeContract {
     public final static int NOT_AVAILABLE = 999;

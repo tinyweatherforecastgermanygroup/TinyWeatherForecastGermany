@@ -19,10 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class CurrentWeatherInfo{
 

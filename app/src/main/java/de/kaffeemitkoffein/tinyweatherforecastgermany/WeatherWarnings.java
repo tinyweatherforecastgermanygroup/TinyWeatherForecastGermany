@@ -22,7 +22,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;

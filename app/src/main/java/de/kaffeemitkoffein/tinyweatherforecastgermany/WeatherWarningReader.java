@@ -1,16 +1,33 @@
+/*
+ * This file is part of TinyWeatherForecastGermany.
+ *
+ * Copyright (c) 2020 Pawel Dube
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -114,8 +131,6 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
             warning.scope =  element.getFirstChild().getNodeValue();
         }
 
-        Log.v(Tag.WARNINGS,"reaching code....");
-
         nl = document.getElementsByTagName("code");
         warning.codes = new ArrayList<String>();
         for (int i=0;i<nl.getLength(); i++){
@@ -123,8 +138,6 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
             Element element = (Element) nl.item(i);
             warning.codes.add(element.getFirstChild().getNodeValue());
         }
-
-        Log.v(Tag.WARNINGS,"reaching references....");
 
         nl = document.getElementsByTagName("references");
         warning.references = new ArrayList<String>();
@@ -134,8 +147,6 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
             String reference = element.getFirstChild().getNodeValue();
             warning.references.add(reference.substring(reference.indexOf(",")+1,reference.lastIndexOf(",")));
         }
-
-        Log.v(Tag.WARNINGS,"reaching info....");
 
         nl = document.getElementsByTagName("info");
         for (int n=0; n< nl.getLength(); n++){
@@ -233,6 +244,7 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
         return warning;
     }
 
+    @SuppressWarnings("deprecation")
     private String getUrlString(Context context){
         String country = "EN";
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
@@ -252,7 +264,6 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
 
     @Override
     protected ArrayList<WeatherWarning> doInBackground(Void... voids) {
-        Log.v(Tag.WARNINGS,"Entered doInBackground.");
         ArrayList<WeatherWarning> warnings = new ArrayList<WeatherWarning>();
         try {
             // URL warningsUrl = new URL("https://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_DE.zip");
@@ -262,7 +273,6 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
             int warnings_counter = 0;
             while (zipInputStream.getNextEntry() != null){
                 warnings_counter ++;
-                Log.v(Tag.WARNINGS,"Warning: "+warnings_counter);
                 StringBuffer stringBuffer = new StringBuffer();
                 byte[] buffer = new byte[4096];
                 int l=0;
@@ -272,7 +282,6 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
                 try {
                     WeatherWarning warning = parseWarning(stringBuffer.toString());
                     warnings.add(warning);
-                    Log.v(Tag.WARNINGS,"Warning added: "+warnings_counter);
                 } catch (ParserConfigurationException e){
                     PrivateLog.log(context,Tag.WARNINGS,"Could not configure parser, skipping a warning:"+e.getMessage());
                 } catch (IOException e){
@@ -288,7 +297,6 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
             PrivateLog.log(context,Tag.WARNINGS,"Unable to open DWD stream:"+e.getMessage());
             return null;
         }
-        Log.v(Tag.WARNINGS,"DoInBeckground did ok!");
         return warnings;
     }
 
@@ -301,30 +309,18 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
     }
 
     public void onPositiveResult(ArrayList<WeatherWarning> warnings){
-        Log.v(Tag.WARNINGS,"onposres");
-        for (int i=0; i<warnings.size(); i++){
-            warnings.get(i).outputToLog();
-        }
         onPositiveResult();
     }
 
     protected void onPostExecute(ArrayList<WeatherWarning> warnings) {
-        Log.v(Tag.WARNINGS,"entered postexecute");
         if (warnings!=null){
-            Log.v(Tag.WARNINGS,"postexec has results");
-            // write warnings to data base, update if present
             WeatherWarningContentProvider weatherWarningContentProvider = new WeatherWarningContentProvider();
             WeatherWarnings.cleanWeatherWarningsDatabase(context);
             WeatherWarnings.writeWarningsToDatabase(context,warnings);
-            /*
-            for (int i=0; i<warnings.size(); i++){
-                Log.v(Tag.WARNINGS,"Writing warning: "+i);
-                weatherWarningContentProvider.writeWeatherWarning(context,warnings.get(i));
-            }
-             */
             onPositiveResult(warnings);
         } else {
             PrivateLog.log(context,Tag.WARNINGS,"Fatal: warnings failed.");
+            onNegativeResult();
         }
     }
 }

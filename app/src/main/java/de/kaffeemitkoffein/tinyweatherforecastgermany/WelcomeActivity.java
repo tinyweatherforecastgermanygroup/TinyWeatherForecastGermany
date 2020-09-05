@@ -26,13 +26,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class WelcomeActivity  extends Activity {
+public class WelcomeActivity extends Activity {
 
     RelativeLayout pager;
     LayoutInflater layoutInflater;
@@ -47,80 +46,83 @@ public class WelcomeActivity  extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
-
-        // action bar layout
-        ActionBar actionBar = getActionBar();
-        if (actionBar!=null){
-            actionBar.hide();
+        if (WeatherSettings.isFirstAppLaunch(getApplicationContext())){
+            WeatherSettings.setAppLaunchedFlag(getApplicationContext());
+            setContentView(R.layout.activity_welcome);
+            // action bar layout
+            ActionBar actionBar = getActionBar();
+            if (actionBar!=null){
+                actionBar.hide();
+            }
+            pager = (RelativeLayout) findViewById(R.id.welcome_pager);
+            layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            // View screen1 = layoutInflater.inflate(R.layout.welcome_screen1,pager,true);
+            dot1 = (ImageView) findViewById(R.id.welcome_dot1);
+            dot1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    page = 1;
+                    setPage(page);
+                }
+            });
+            dot2 = (ImageView) findViewById(R.id.welcome_dot2);
+            dot2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    page = 2;
+                    setPage(page);
+                }
+            });
+            dot3 = (ImageView) findViewById(R.id.welcome_dot3);
+            dot3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    page = 3;
+                    setPage(page);
+                }
+            });
+            pager.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (page<3) {
+                        page++;
+                        setPage(page);
+                    } else {
+                        startMainActivityAndShowCircle();
+                    }
+                }
+            });
+            setPage(page);
+            arrow_right = (ImageView) findViewById(R.id.welcome_arrow_right);
+            arrow_right.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (page<3) {
+                        page++;
+                        setPage(page);
+                    }
+                }
+            });
+            arrow_left = (ImageView) findViewById(R.id.welcome_arrow_left);
+            arrow_left.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (page>1){
+                        page--;
+                        setPage(page);
+                    }
+                }
+            });
+            skip = (TextView) findViewById(R.id.welcome_skip);
+            skip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startMainActivityAndShowCircle();
+                }
+            });
+        } else {
+            startMainActivity();
         }
-
-        pager = (RelativeLayout) findViewById(R.id.welcome_pager);
-        layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        // View screen1 = layoutInflater.inflate(R.layout.welcome_screen1,pager,true);
-        dot1 = (ImageView) findViewById(R.id.welcome_dot1);
-        dot1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                page = 1;
-                setPage(page);
-            }
-        });
-        dot2 = (ImageView) findViewById(R.id.welcome_dot2);
-        dot2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                page = 2;
-                setPage(page);
-            }
-        });
-        dot3 = (ImageView) findViewById(R.id.welcome_dot3);
-        dot3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                page = 3;
-                setPage(page);
-            }
-        });
-        pager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (page<3) {
-                    page++;
-                    setPage(page);
-                } else {
-                    startMainActivity();
-                }
-            }
-        });
-        setPage(page);
-        arrow_right = (ImageView) findViewById(R.id.welcome_arrow_right);
-        arrow_right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (page<3) {
-                    page++;
-                    setPage(page);
-                }
-            }
-        });
-        arrow_left = (ImageView) findViewById(R.id.welcome_arrow_left);
-        arrow_left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (page>1){
-                    page--;
-                    setPage(page);
-                }
-            }
-        });
-        skip = (TextView) findViewById(R.id.welcome_skip);
-        skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startMainActivity();
-            }
-        });
     }
 
     private View setPage(int page){
@@ -156,10 +158,14 @@ public class WelcomeActivity  extends Activity {
     }
 
     private void startMainActivity(){
-        setPage(4);
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
+    }
+
+    private void startMainActivityAndShowCircle(){
+        setPage(4);
+        startMainActivity();
     }
 
 

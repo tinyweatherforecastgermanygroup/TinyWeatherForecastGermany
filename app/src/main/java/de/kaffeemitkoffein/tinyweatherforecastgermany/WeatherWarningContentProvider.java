@@ -28,8 +28,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -53,8 +51,6 @@ public class WeatherWarningContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         sqLiteDatabase = weatherWarningDatabaseHelper.getReadableDatabase();
         Cursor c = sqLiteDatabase.query(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
-        Log.v(Tag.DATABASE,"Queried.");
-        Log.v(Tag.DATABASE,"Queried. Cursor: "+ Arrays.toString(c.getColumnNames()));
         return c;
     }
 
@@ -68,7 +64,6 @@ public class WeatherWarningContentProvider extends ContentProvider {
         sqLiteDatabase = weatherWarningDatabaseHelper.getWritableDatabase();
         sqLiteDatabase.enableWriteAheadLogging();
         sqLiteDatabase.insert(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME,null,contentValues);
-        Log.v(Tag.DATABASE,"written to database...."+contentValues.getAsString(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_description));
         return uri;
     }
 

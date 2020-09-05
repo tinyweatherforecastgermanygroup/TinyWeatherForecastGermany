@@ -27,7 +27,6 @@ import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class LargeWidget extends ClassicWidget{
 
     @Override
