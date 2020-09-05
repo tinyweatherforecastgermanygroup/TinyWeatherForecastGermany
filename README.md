@@ -79,7 +79,10 @@ Credits
  
  *How to read the widget?*
  
- The widget icon, the weather description text and the current temperature refer to the weather forecast that can be expected until the next full hour. The low and high temperatures refer to the values that can be expected to occur from now to midnight.
+ The widget icon, the weather description and the current temperature refer to the weather forecast that can be expected until the next full hour. The low and high temperatures refer to the values that can be expected to occur from now to midnight.
+ 
+ [Screenshot #3](app/src/main/res/mipmap-mdpi/symbol_precipitation.png) precipitation
+ 
  
  *How often does the app update the weather forecast?*
  
