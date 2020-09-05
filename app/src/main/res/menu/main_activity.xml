@@ -29,6 +29,7 @@
     </item>
     <item android:id="@+id/menu_warnings"
         android:title="@string/warnings_button"
+        android:icon="@mipmap/warning_icon"
         android:showAsAction="never"
         android:orderInCategory="2">
     </item>
@@ -46,11 +47,13 @@
     </item>
     <item android:id="@+id/menu_license"
         android:title="@string/license_button"
+        android:icon="@mipmap/ic_copyright_white_24dp"
         android:showAsAction="never"
         android:orderInCategory="5">
     </item>
     <item android:id="@+id/menu_whatsnew"
         android:title="@string/whatsnew_button"
+        android:icon="@mipmap/ic_announcement_white_24dp"
         android:showAsAction="never"
         android:orderInCategory="6">
     </item>

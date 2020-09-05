@@ -163,7 +163,9 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="de.kaffeemitkoffein.tinyweatherforecastgermany"
-            android:targetClass="de.kaffeemitkoffein.tinyweatherforecastgermany.WelcomeActivity"/>
+            android:targetClass="de.kaffeemitkoffein.tinyweatherforecastgermany.WelcomeActivity">
+            <extra android:name="mode" android:value="replay"/>
+        </intent>
     </Preference>
 
 </PreferenceScreen>

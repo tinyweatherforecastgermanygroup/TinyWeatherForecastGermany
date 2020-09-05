@@ -49,9 +49,9 @@
         private final static int SCALE_MINI_ICON = 8;
 
         private Bitmap loadScaledIcon(int id, int scale){
-            final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = scale;
-            final Bitmap result = BitmapFactory.decodeResource(context.getResources(),id,options);
+            // final BitmapFactory.Options options = new BitmapFactory.Options();
+            // options.inSampleSize = scale;
+            final Bitmap result = BitmapFactory.decodeResource(context.getResources(),id,null);
             return result;
         }
 

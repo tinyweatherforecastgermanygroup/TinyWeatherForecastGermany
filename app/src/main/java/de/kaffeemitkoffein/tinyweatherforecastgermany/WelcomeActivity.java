@@ -46,7 +46,20 @@ public class WelcomeActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (WeatherSettings.isFirstAppLaunch(getApplicationContext())){
+        Boolean force_replay = false;
+        Intent intent = getIntent();
+        if (intent!=null){
+            Bundle bundle = intent.getExtras();
+            if (bundle!=null){
+                String action = bundle.getString("mode");
+                if (action!=null){
+                    if (action.equals("replay")){
+                        force_replay = true;
+                    }
+                }
+            }
+        }
+        if ((WeatherSettings.isFirstAppLaunch(getApplicationContext())) || (force_replay)){
             WeatherSettings.setAppLaunchedFlag(getApplicationContext());
             setContentView(R.layout.activity_welcome);
             // action bar layout
