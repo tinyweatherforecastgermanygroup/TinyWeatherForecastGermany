@@ -291,7 +291,7 @@ public final class Weather {
         }
 
         private Bitmap getArrowBitmap(Context context, float degrees){
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.arrow);
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.arrow);
             if (bitmap != null){
                 Matrix m = new Matrix();
                 m.postRotate(degrees);
@@ -303,7 +303,7 @@ public final class Weather {
 
         public Bitmap getArrowBitmap(Context context){
             if (wind_direction!=null){
-                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.arrow);
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.arrow);
                 if (bitmap != null){
                     Matrix m = new Matrix();
                     m.postRotate(wind_direction.floatValue());

@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/partly_cloudy_day" />
+                android:src="@mipmap/partly_cloudy_day" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/classicwidget_rightcontainer"
@@ -108,7 +108,7 @@
                     android:layout_width="@dimen/widget_textsize_medium"
                     android:layout_height="@dimen/widget_textsize_medium"
                     android:layout_gravity="center"
-                    android:src="@drawable/arrow">
+                    android:src="@mipmap/arrow">
                 </ImageView>
 
                 <TextView android:id="@+id/classicwidget_wind"
@@ -181,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/moderate_showers">
+                android:src="@mipmap/moderate_showers">
             </ImageView>
 
             <TextView
@@ -230,7 +230,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/thunderstorm">
+                android:src="@mipmap/thunderstorm">
             </ImageView>
 
             <TextView
@@ -279,7 +279,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/sunny">
+                android:src="@mipmap/sunny">
             </ImageView>
 
             <TextView
@@ -328,7 +328,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/showers_partly">
+                android:src="@mipmap/showers_partly">
             </ImageView>
 
             <TextView
@@ -377,7 +377,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/light_showers">
+                android:src="@mipmap/light_showers">
             </ImageView>
 
             <TextView
@@ -426,7 +426,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/heavy_showers">
+                android:src="@mipmap/heavy_showers">
             </ImageView>
 
             <TextView
@@ -475,7 +475,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/light_drizzle">
+                android:src="@mipmap/light_drizzle">
             </ImageView>
 
             <TextView
@@ -524,7 +524,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/partly_cloudy_day">
+                android:src="@mipmap/partly_cloudy_day">
             </ImageView>
 
             <TextView
@@ -573,7 +573,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/mostly_cloudy_day">
+                android:src="@mipmap/mostly_cloudy_day">
             </ImageView>
 
             <TextView
@@ -622,7 +622,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="34"
-                android:src="@drawable/partly_cloudy_day">
+                android:src="@mipmap/partly_cloudy_day">
             </ImageView>
 
             <TextView

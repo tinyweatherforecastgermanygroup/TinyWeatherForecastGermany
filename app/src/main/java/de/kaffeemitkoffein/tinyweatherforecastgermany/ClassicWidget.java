@@ -101,7 +101,7 @@ public class ClassicWidget extends AppWidgetProvider {
             remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,new WeatherCodeContract().getWeatherConditionDrawableResource(weathercondition,weatherCard.currentWeather.isDaytime()));
         } else {
             remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,NOT_AVAILABLE);
-            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,R.drawable.not_available);
+            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,R.mipmap.not_available);
         }
         if (weatherCard.currentWeather.hasTemperature()){
             remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.currentWeather.getTemperatureInCelsiusInt()+"°"));
@@ -132,7 +132,7 @@ public class ClassicWidget extends AppWidgetProvider {
         if (weatherCard.currentWeather.hasWindDirection()){
             remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getArrowBitmap(c));
         } else {
-            remoteViews.setImageViewResource(R.id.classicwidget_windarrow,R.drawable.not_available);
+            remoteViews.setImageViewResource(R.id.classicwidget_windarrow,R.mipmap.not_available);
         }
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
         remoteViews.setInt(R.id.classicwidget_maincontainer,"setBackgroundColor",getBackgroundInt(opacity));

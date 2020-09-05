@@ -22,7 +22,7 @@
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Letzte Aktualisierung:</string>
     <string name="dwd_notice">Quelle: Deutscher Wetterdienst, eigene Elemente ergänzt, einige Einzelwerte gemittelt.</string>
-    <string name="dwd_warnings_notice">Data basis: Deutscher Wetterdienst, gekürzte Warnungen dargestellt.</string>
+    <string name="dwd_warnings_notice">Quelle: Deutscher Wetterdienst, Warnungen gekürzt dargestellt.</string>
     <string name="new_station">Region geändert zu </string>
     <string name="license_button">Lizenz</string>
     <string name="about_button">Datenschutz/Über...</string>
@@ -73,9 +73,9 @@
     <string name="title_activity_settings">Einstellungen</string>
     <string name="clouds">Bewölkung: </string>
     <string name="rain">Niederschlag: </string>
-    <string name="preference_category_general">Allgemein</string>
+    <string name="preference_category_general">Wetter-Daten</string>
     <string name="preference_category_widget">Widget-Einstellungen</string>
-    <string name="preference_category_warnings">Weather warnings</string>
+    <string name="preference_category_warnings">Wetter-Warnungen</string>
     <string name="preference_category_other">Sonstiges</string>
     <string name="preference_updateinterval_title">Aktualisierungs-Intervall</string>
     <string name="preference_pdateinterval_summary">Wie oft sollen Wetterdaten aktualisiert werden</string>
@@ -99,13 +99,15 @@
     <string name="preference_gadgetbridge_serve_summary">Wenn altiviert, werden alle Wetterdaten lokal an die Gadgetbridge-App auf dem Gerät geschickt.</string>
     <string name="preference_gadgetbridge_packagename_title">Paketname</string>
     <string name="preference_gadgetbridge_packagename_summary">Hier kann der Paketname verändert werden, z.B. falls ein Gadgetbridge-Fork verwendet wird. Name löschen, um zum Standard-Paketnamen zurück zu kehren.</string>
-    <string name="preference_gadgetbridge_faketimestamp_title">Zeit fälschen</string>
+    <string name="preference_gadgetbridge_faketimestamp_title">Aktuelle Zeit senden</string>
     <string name="preference_gadgetbridge_faketimestamp_summary">Einige Wearables akzeptieren keine Vorschau als aktuelles Wetter, statt dessen immer aktuelle Zeit übermitteln.</string>
     <string name="preference_gadgetbridge_note_title">Wichtig!</string>
     <string name="preference_gadgetbridge_note_summary">Der Gadgetbridge-Support ist noch experimentell.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge-Paketname wurde zurückgesetzt!</string>
     <string name="preference_loggingscreen_title">Fehler finden</string>
     <string name="preference_loggingscreen_summary">Protokoll aufzeichnen und verwalten.</string>
+    <string name="preference_intro_title">Intro</string>
+    <string name="preference_intro_summary">Intro nochmal starten.</string>
     <string name="preference_logging_title">Protokoll</string>
     <string name="preference_logging_summary">Protokollierung aktivieren. Das Protokoll wird LOKAL gespeichert und NICHT automatisch vesandt.</string>
     <string name="preference_loggingactivity_title">Protokoll verwalten</string>
@@ -138,5 +140,26 @@
     <string name="warnings_update">Aktualisiere Warnungen...</string>
     <string name="warnings">Warnungen</string>
     <string name="warnings_updatetime">aktualisiert:</string>
-
+    <string name="warnings_outdated">Die Wetter-Warnungen sind veraltet.</string>
+    <string name="warnings_update_fail">Aktualisierung der Warnungen fehlgeschlagen!</string>
+    <string name="warnings_none">Aktuell gibt es keine Wetterwarnungen für Deutschland.</string>
+    <string name="welcome_skip">START</string>
+    <string name="welcome_next">WEITER</string>
+    <string name="welcome_ready">FERTIG!</string>
+    <string name="welcome_s1_text1">frei und open source</string>
+    <string name="welcome_s1_text2">unterstützt > 5000 Orte</string>
+    <string name="welcome_s1_text3">Vorhersage für bis zu 10 Tage</string>
+    <string name="welcome_s1_text4">Wetter-Warnungen für Deutschland</string>
+    <string name="welcome_s1_text5">Homescreen-Widgets</string>
+    <string name="welcome_s2_text1">Niederschlag</string>
+    <string name="welcome_s2_text2">Wolken</string>
+    <string name="welcome_s2_text3">Gewitter</string>
+    <string name="welcome_s2_text4">Hagel</string>
+    <string name="welcome_s2_text5">gefrierender Regen</string>
+    <string name="welcome_s2_text6">Nebel</string>
+    <string name="welcome_s2_text7">Sprühregen</string>
+    <string name="welcome_s2_text8">Wind</string>
+    <string name="welcome_s3_text1">Icon in der linken, oberen Ecke klappt die Karte zu.</string>
+    <string name="welcome_s3_text2">Ein Klick/Berührung der Ortsliste in der Warnung klappt sie aus!</string>
+    <string name="welcome_s3_text3">Plaziere Widgets auf dem Home Screen:</string>
 </resources>

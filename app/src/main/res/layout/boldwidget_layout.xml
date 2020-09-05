@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:src="@drawable/partly_cloudy_day" />
+                    android:src="@mipmap/partly_cloudy_day" />
 
                 <LinearLayout android:id="@+id/boldwidget_today_temperature_container"
                     android:orientation="vertical"
@@ -103,7 +103,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="3dp"
-                        android:src="@drawable/white_bar"/>
+                        android:src="@mipmap/white_bar"/>
 
                     <TextView android:id="@+id/boldwidget_today_min"
                         android:textSize="@dimen/widget_textsize_large"
@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:src="@drawable/moderate_showers" />
+                    android:src="@mipmap/moderate_showers" />
 
                 <LinearLayout android:id="@+id/boldwidget_fc1_temperature_container"
                     android:orientation="vertical"
@@ -173,7 +173,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="3dp"
-                        android:src="@drawable/white_bar"/>
+                        android:src="@mipmap/white_bar"/>
 
 
                     <TextView android:id="@+id/boldwidget_fc1_min"
@@ -223,7 +223,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:src="@drawable/thunderstorm" />
+                    android:src="@mipmap/thunderstorm" />
 
                 <LinearLayout android:id="@+id/boldwidget_fc2_temperature_container"
                     android:orientation="vertical"
@@ -244,7 +244,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="3dp"
-                        android:src="@drawable/white_bar"/>
+                        android:src="@mipmap/white_bar"/>
 
                     <TextView android:id="@+id/boldwidget_fc2_min"
                         android:textSize="@dimen/widget_textsize_large"

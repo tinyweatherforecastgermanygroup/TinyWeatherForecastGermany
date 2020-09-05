@@ -51,25 +51,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/preference_category_widget">
-
-        <ListPreference
-            android:key="PREF_widget_opacity"
-            android:title="@string/preference_opacity_title"
-            android:summary="@string/preference_opacity_summary"
-            android:entries="@array/widget_opacity_text"
-            android:entryValues="@array/widget_opacity_values"
-            android:defaultValue="10"/>
-
-        <CheckBoxPreference
-            android:key="PREF_widget_showdwdnote"
-            android:title="@string/preference_displaynoteinwidget_title"
-            android:summary="@string/preference_displaynoteinwidget_summary"
-            android:defaultValue="true"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
             android:title="@string/preference_category_warnings">
 
         <ListPreference
@@ -85,6 +66,25 @@
             android:title="@string/preference_disable_warnings_title"
             android:summary="@string/preference_disable_warnings_summary"
             android:defaultValue="false"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/preference_category_widget">
+
+        <ListPreference
+            android:key="PREF_widget_opacity"
+            android:title="@string/preference_opacity_title"
+            android:summary="@string/preference_opacity_summary"
+            android:entries="@array/widget_opacity_text"
+            android:entryValues="@array/widget_opacity_values"
+            android:defaultValue="10"/>
+
+        <CheckBoxPreference
+            android:key="PREF_widget_showdwdnote"
+            android:title="@string/preference_displaynoteinwidget_title"
+            android:summary="@string/preference_displaynoteinwidget_summary"
+            android:defaultValue="true"/>
 
     </PreferenceCategory>
 
@@ -155,6 +155,16 @@
         </PreferenceScreen>
 
     </PreferenceCategory>
+
+    <Preference
+        android:key="PREF_intro"
+        android:title="@string/preference_intro_title"
+        android:summary="@string/preference_intro_summary">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="de.kaffeemitkoffein.tinyweatherforecastgermany"
+            android:targetClass="de.kaffeemitkoffein.tinyweatherforecastgermany.WelcomeActivity"/>
+    </Preference>
 
 </PreferenceScreen>
 

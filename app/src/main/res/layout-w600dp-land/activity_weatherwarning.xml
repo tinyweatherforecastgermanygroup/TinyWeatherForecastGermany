@@ -58,13 +58,52 @@
 
     </RelativeLayout>
 
-
-    <ListView android:id="@+id/warningactivity_listview"
+    <RelativeLayout
+        android:id="@+id/warningactivity_rightcontainer"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
         android:layout_weight="12"
-        android:divider="@color/textColorGrey"
-        android:dividerHeight="3dp"
-        android:footerDividersEnabled="true"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/warnings_outdated"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@color/warning_moderate"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="@dimen/fcmain_textsize_medium"
+            android:visibility="gone"
+            android:paddingTop="@dimen/warning_ip"
+            android:paddingBottom="@dimen/warning_ip"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/warningactivity_warnings_deprecated"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@color/warning_clear"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="@dimen/fcmain_textsize_medium"
+            android:visibility="gone"
+            android:text="@string/warnings_none"
+            android:paddingTop="@dimen/warning_ip"
+            android:paddingBottom="@dimen/warning_ip"
+            android:layout_above="@id/warningactivity_warnings_deprecated"
+            android:id="@+id/warningactivity_no_warnings"/>
+
+        <ListView android:id="@+id/warningactivity_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/textColorGrey"
+            android:dividerHeight="3dp"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/warningactivity_no_warnings"
+            android:footerDividersEnabled="true"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

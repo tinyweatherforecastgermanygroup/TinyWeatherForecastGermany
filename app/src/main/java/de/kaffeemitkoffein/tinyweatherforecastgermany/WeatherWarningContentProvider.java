@@ -28,54 +28,71 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
 
 public class WeatherWarningContentProvider extends ContentProvider {
 
     static final String AUTHORITY = "de.kaffeemitkoffein.tinyweatherforecastgermany.warnings";
     static final String DATASERVICE = "weatherwarnings";
-    static final String URL_SENSORDATA = "content://" + AUTHORITY + "/" + DATASERVICE;
-    static final Uri URI_SENSORDATA = Uri.parse(URL_SENSORDATA);
+    static final String URL_WARNINGDATA = "content://" + AUTHORITY + "/" + DATASERVICE;
+    static final Uri URI_WARNINGDATA = Uri.parse(URL_WARNINGDATA);
 
     private WeatherWarningDatabaseHelper weatherWarningDatabaseHelper;
     private SQLiteDatabase sqLiteDatabase;
 
     @Override
     public boolean onCreate() {
-        return false;
+        weatherWarningDatabaseHelper = new WeatherWarningDatabaseHelper(getContext().getApplicationContext());
+        return true;
     }
 
     @Override
-    public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
-        return null;
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        sqLiteDatabase = weatherWarningDatabaseHelper.getReadableDatabase();
+        Cursor c = sqLiteDatabase.query(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
+        Log.v(Tag.DATABASE,"Queried.");
+        Log.v(Tag.DATABASE,"Queried. Cursor: "+ Arrays.toString(c.getColumnNames()));
+        return c;
     }
 
-    @Override
+        @Override
     public String getType(Uri uri) {
-        return null;
+            return "text/plain";
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        return null;
+        sqLiteDatabase = weatherWarningDatabaseHelper.getWritableDatabase();
+        sqLiteDatabase.enableWriteAheadLogging();
+        sqLiteDatabase.insert(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME,null,contentValues);
+        Log.v(Tag.DATABASE,"written to database...."+contentValues.getAsString(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_description));
+        return uri;
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        return 0;
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        int i = 0;
+        sqLiteDatabase = weatherWarningDatabaseHelper.getWritableDatabase();
+        sqLiteDatabase.enableWriteAheadLogging();
+        i = sqLiteDatabase.delete(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME,selection,selectionArgs);
+        return i;
+
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        sqLiteDatabase = weatherWarningDatabaseHelper.getWritableDatabase();
+        sqLiteDatabase.enableWriteAheadLogging();
+        return sqLiteDatabase.update(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME,contentValues,selection,selectionArgs);
     }
 
     public static class WeatherWarningDatabaseHelper extends SQLiteOpenHelper {
 
         public static final int DATABASE_VERSION = 1;
-        public static final String DATABASE_NAME = "weatherforecast";
+        public static final String DATABASE_NAME = "weatherwarnings";
         public static final String TABLE_NAME = "tables";
         public static final String KEY_id = "id";
         public static final String KEY_polling_time = "polling_time";
@@ -112,6 +129,7 @@ public class WeatherWarningContentProvider extends ContentProvider {
         public static final String KEY_parameter_names = "parameter_names";
         public static final String KEY_parameter_values = "parameter_values";
         public static final String KEY_polygons = "polygons";
+        public static final String KEY_excluded_polygons = "excluded_polygons";
         public static final String KEY_area_names = "area_names";
         public static final String KEY_area_warncellIDs = "area_warncellIDs";
 
@@ -151,6 +169,7 @@ public class WeatherWarningContentProvider extends ContentProvider {
                 + KEY_parameter_names + " TEXT,"
                 + KEY_parameter_values + " TEXT,"
                 + KEY_polygons + " TEXT,"
+                + KEY_excluded_polygons + " TEXT,"
                 + KEY_area_names + " TEXT,"
                 + KEY_area_warncellIDs + " TEXT" + ");";
 
@@ -223,6 +242,7 @@ public class WeatherWarningContentProvider extends ContentProvider {
         contentValues.put(WeatherWarningDatabaseHelper.KEY_parameter_names, serializeString(weatherWarning.parameter_names));
         contentValues.put(WeatherWarningDatabaseHelper.KEY_parameter_values, serializeString(weatherWarning.parameter_values));
         contentValues.put(WeatherWarningDatabaseHelper.KEY_polygons, serializeString(weatherWarning.polygons));
+        contentValues.put(WeatherWarningDatabaseHelper.KEY_excluded_polygons, serializeString(weatherWarning.excluded_polygons));
         contentValues.put(WeatherWarningDatabaseHelper.KEY_area_names, serializeString(weatherWarning.area_names));
         contentValues.put(WeatherWarningDatabaseHelper.KEY_area_warncellIDs, serializeString(weatherWarning.area_warncellIDs));
         return contentValues;
@@ -233,7 +253,6 @@ public class WeatherWarningContentProvider extends ContentProvider {
             return null;
         } else {
             WeatherWarning weatherWarning = new WeatherWarning();
-            if (c.moveToFirst()) {
                 weatherWarning.polling_time = c.getLong(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_polling_time));
                 weatherWarning.identifier = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_identifier));
                 weatherWarning.sender = c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_sender));
@@ -268,18 +287,16 @@ public class WeatherWarningContentProvider extends ContentProvider {
                 weatherWarning.parameter_names = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_parameter_names)));
                 weatherWarning.parameter_values = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_parameter_values)));
                 weatherWarning.polygons = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_polygons)));
+                weatherWarning.excluded_polygons = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_excluded_polygons)));
                 weatherWarning.area_names = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_area_names)));
                 weatherWarning.area_warncellIDs = deSerializeString(c.getString(c.getColumnIndex(WeatherWarningDatabaseHelper.KEY_area_warncellIDs)));
                 return weatherWarning;
-            } else {
-                return null;
-            }
         }
     }
 
     public void writeWeatherWarning(Context c,WeatherWarning weatherWarning){
         ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
-        contentResolver.insert(WeatherWarningContentProvider.URI_SENSORDATA,getContentValuesFromWeatherWarning(weatherWarning));
+        contentResolver.insert(WeatherWarningContentProvider.URI_WARNINGDATA,getContentValuesFromWeatherWarning(weatherWarning));
     }
 
 }

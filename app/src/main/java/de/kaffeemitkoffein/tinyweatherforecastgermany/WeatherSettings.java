@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class WeatherSettings {
 
@@ -46,6 +47,7 @@ public class WeatherSettings {
     public static final String PREF_FAVORITESDATA = "PREF_favoritesdata";
     public static final String PREF_WARNINGS_CACHETIME = "PREF_warnings_cachetime";
     public static final String PREF_WARNINGS_DISABLE = "PREF_warnings_diable";
+    public static final String PREF_WARNINGS_LAST_UPDATE_TIME = "PREF_warnings_last_update_time";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -67,6 +69,7 @@ public class WeatherSettings {
     public static final String PREF_FAVORITESDATA_DEFAULT = PREF_STATION_DESCRIPTION_DEFAULT;
     public static final String PREF_WARNINGS_CACHETIME_DEFAULT = "30";
     public static final boolean PREF_WARNINGS_DISABLE_DEFAULT = false;
+    public static final long PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT = 0;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -81,7 +84,8 @@ public class WeatherSettings {
     public boolean widget_showdwdnote = PREF_WIDGET_SHOWDWDNOTE_DEFAULT;
     public int last_version_code = PREF_LAST_VERSION_CODE_DEFAULT;
     public boolean serve_gadgetbridge = PREF_SERVE_GADGETBRIDGE_DEFAULT;
-    public long gadgetbridge_last_update_time;
+    public long gadgetbridge_last_update_time = PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT;
+    public long warnings_last_update_time = PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT;
     public String gadgetbridge_packagename = PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;
     public boolean gadgetbridge_fake_timestamp = PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT;
     public boolean logging = PREF_LOGGING_DEFAULT;
@@ -120,6 +124,7 @@ public class WeatherSettings {
         this.favoritesdata = readPreference(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
         this.warnings_cache_time = readPreference(PREF_WARNINGS_CACHETIME,PREF_WARNINGS_CACHETIME_DEFAULT);
         this.warnings_disabled = readPreference(PREF_WARNINGS_DISABLE,PREF_WARNINGS_DISABLE_DEFAULT);
+        this.warnings_last_update_time=readPreference(PREF_WARNINGS_LAST_UPDATE_TIME,PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
    }
 
     public void savePreferences(){
@@ -141,6 +146,7 @@ public class WeatherSettings {
         applyPreference(PREF_LOGGING,this.logging);
         applyPreference(PREF_WARNINGS_CACHETIME,this.warnings_cache_time);
         applyPreference(PREF_WARNINGS_DISABLE,this.warnings_disabled);
+        applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME,this.warnings_last_update_time);
     }
 
     public void commitPreferences(){
@@ -162,6 +168,7 @@ public class WeatherSettings {
         commitPreference(PREF_LOGGING,this.logging);
         commitPreference(PREF_WARNINGS_CACHETIME,this.warnings_cache_time);
         commitPreference(PREF_WARNINGS_DISABLE,this.warnings_disabled);
+        commitPreference(PREF_WARNINGS_LAST_UPDATE_TIME,this.warnings_last_update_time);
     }
 
     public String readPreference(String p, String d){
@@ -300,6 +307,18 @@ public class WeatherSettings {
         long l = Long.parseLong(this.warnings_cache_time);
         l = l * 60 * 1000;
         return l;
+    }
+
+    public long getWarningsLastUpdateTime(){
+        return warnings_last_update_time;
+    }
+
+    public void setWarningsLastUpdateTime(long time){
+        applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME,time);
+    }
+
+    public void setWarningsLastUpdateTime(){
+        setWarningsLastUpdateTime(Calendar.getInstance().getTimeInMillis());
     }
 
 }

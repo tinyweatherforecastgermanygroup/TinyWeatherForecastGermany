@@ -40,4 +40,16 @@
     <dimen name="warning_small">10sp</dimen>
     <dimen name="warning_ip">3dp</dimen>
 
+    <dimen name="warning_note_padding">8dp</dimen>
+
+    <dimen name="welcome_icon_size">36dp</dimen>
+    <dimen name="welcome_action_size">24sp</dimen>
+    <dimen name="welcome_text_size">16sp</dimen>
+    <dimen name="welcome_icondesc_size">16dp</dimen>
+    <dimen name="welcome_icondesc_padding">0dp</dimen>
+    <dimen name="welcome_icontext_padding">16dp</dimen>
+    <dimen name="welcome_text_padding">8dp</dimen>
+    <dimen name="welcome_action_padding">24dp</dimen>
+    <dimen name="welcome_line_height">28dp</dimen>
+
 </resources>

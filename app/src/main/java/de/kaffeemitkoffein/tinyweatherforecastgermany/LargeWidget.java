@@ -67,7 +67,7 @@ public class LargeWidget extends ClassicWidget{
             if (weatherInfo.hasCondition()){
                 remoteViews.setImageViewResource(id_condition,new WeatherCodeContract().getWeatherConditionDrawableResource(weatherInfo.getCondition(),true));
             } else {
-                remoteViews.setImageViewResource(id_condition,R.drawable.not_available);
+                remoteViews.setImageViewResource(id_condition,R.mipmap.not_available);
             }
         }
         if (id_max != 0){

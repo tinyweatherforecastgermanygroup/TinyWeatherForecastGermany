@@ -2,6 +2,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -20,6 +21,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.zip.ZipInputStream;
 
@@ -62,6 +64,7 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = documentBuilder.parse(new InputSource(new StringReader(zipfile)));
         NodeList nl = document.getElementsByTagName("identifier");
+        warning.polling_time = Calendar.getInstance().getTimeInMillis();
         for (int i=0;i<nl.getLength(); i++){
             // should be only one, but we take the latest
             Element elIdentifier = (Element) nl.item(i);
@@ -190,6 +193,7 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
 
         nl = document.getElementsByTagName("area");
         warning.polygons = new ArrayList<String>();
+        warning.excluded_polygons = new ArrayList<String>();
         warning.area_names = new ArrayList<String>();
         warning.area_warncellIDs = new ArrayList<String>();
         for (int n=0; n< nl.getLength(); n++){
@@ -206,11 +210,19 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
                         Node subnode = subnodelist.item(mm);
                         if (subnode.getNodeType() == Node.ELEMENT_NODE){
                             Element subelement = (Element) subnode;
-                            String warnid = getValue(subelement,"value");
-                            if (warnid == null){
-                                warnid="-";
+                            String valueName = getValue(subelement,"valueName");
+                            String value = getValue(subelement,"value");
+                            if (valueName.equals("EXCLUDE_POLYGON")){
+                                if (value!=null){
+                                    warning.excluded_polygons.add(value);
+                                }
                             }
-                            warning.area_warncellIDs.add(warnid);
+                            if (valueName.equals("WARNCELLID")){
+                                if (value == null){
+                                    value="-";
+                                }
+                                warning.area_warncellIDs.add(value);
+                            }
                         }
                     }
 
@@ -221,12 +233,30 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
         return warning;
     }
 
+    private String getUrlString(Context context){
+        String country = "EN";
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+            country = context.getResources().getConfiguration().getLocales().get(0).getCountry();
+        } else {
+            country = context.getResources().getConfiguration().locale.getCountry();
+        }
+        final String C_FIRST ="https://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_";
+        final String C_LAST  = ".zip";
+        switch (country){
+            case "FR": return C_FIRST+"FR"+C_LAST;
+            case "ES": return C_FIRST+"ES"+C_LAST;
+            case "DE": return C_FIRST+"DE"+C_LAST;
+        }
+        return C_FIRST+"EN"+C_LAST;
+    }
+
     @Override
     protected ArrayList<WeatherWarning> doInBackground(Void... voids) {
         Log.v(Tag.WARNINGS,"Entered doInBackground.");
         ArrayList<WeatherWarning> warnings = new ArrayList<WeatherWarning>();
         try {
-            URL warningsUrl = new URL("https://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_DE.zip");
+            // URL warningsUrl = new URL("https://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_DE.zip");
+            URL warningsUrl = new URL(getUrlString(context));
             ZipInputStream zipInputStream = new ZipInputStream(warningsUrl.openStream());
             // iterate through the warnings; each warning is a file
             int warnings_counter = 0;
@@ -256,7 +286,7 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
             return null;
         } catch (IOException e){
             PrivateLog.log(context,Tag.WARNINGS,"Unable to open DWD stream:"+e.getMessage());
-            // return null;
+            return null;
         }
         Log.v(Tag.WARNINGS,"DoInBeckground did ok!");
         return warnings;
@@ -280,15 +310,18 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
 
     protected void onPostExecute(ArrayList<WeatherWarning> warnings) {
         Log.v(Tag.WARNINGS,"entered postexecute");
-        Log.v(Tag.WARNINGS,"entered , size "+warnings.size());
         if (warnings!=null){
             Log.v(Tag.WARNINGS,"postexec has results");
             // write warnings to data base, update if present
             WeatherWarningContentProvider weatherWarningContentProvider = new WeatherWarningContentProvider();
+            WeatherWarnings.cleanWeatherWarningsDatabase(context);
+            WeatherWarnings.writeWarningsToDatabase(context,warnings);
+            /*
             for (int i=0; i<warnings.size(); i++){
                 Log.v(Tag.WARNINGS,"Writing warning: "+i);
                 weatherWarningContentProvider.writeWeatherWarning(context,warnings.get(i));
             }
+             */
             onPositiveResult(warnings);
         } else {
             PrivateLog.log(context,Tag.WARNINGS,"Fatal: warnings failed.");

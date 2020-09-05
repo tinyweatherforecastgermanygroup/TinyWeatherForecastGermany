@@ -200,7 +200,7 @@
             } else {
                 viewHolder.warning_item_instruction.setVisibility(View.GONE);
             }
-            String parameters = new String();
+            String parameters = "";
             if ((warning.parameter_names!=null) && (warning.parameter_values!=null)){
                 for (int j=0; (j<warning.parameter_names.size())&&(j<warning.parameter_values.size()); j++){
                     parameters = parameters + warning.parameter_names.get(j) + " " + warning.parameter_values.get(j);
@@ -209,6 +209,11 @@
                     }
                 }
                 viewHolder.warning_item_elements.setText(parameters);
+            }
+            if (parameters.equals("")){
+                viewHolder.warning_item_elements.setVisibility(View.GONE);
+            } else {
+                viewHolder.warning_item_elements.setVisibility(View.VISIBLE);
             }
             return view;
         }

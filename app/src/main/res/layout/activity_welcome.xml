@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/welcome_main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:background="@color/welcome_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/welcome_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/welcome_horizontal_container"
+        android:visibility="visible">
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/welcome_horizontal_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="40dp"
+        android:weightSum="20"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/welcome_arrow_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:src="@mipmap/ic_chevron_left_white_24dp"/>
+
+        <ImageView
+            android:id="@+id/welcome_dot1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_radio_button_checked_white_24dp"/>
+
+        <ImageView
+            android:id="@+id/welcome_dot2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_radio_button_unchecked_white_24dp"/>
+
+        <ImageView
+            android:id="@+id/welcome_dot3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_radio_button_unchecked_white_24dp"/>
+
+        <ImageView
+            android:id="@+id/welcome_arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:src="@mipmap/ic_chevron_right_white_24dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/welcome_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/widget_textcolor"
+        android:text="@string/welcome_skip"
+        android:textSize="@dimen/welcome_action_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingRight="12dp"
+        android:paddingBottom="12dp"/>
+</RelativeLayout>

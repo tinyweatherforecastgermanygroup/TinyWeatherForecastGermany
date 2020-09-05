@@ -23,18 +23,15 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.util.Log;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
-
+import java.util.Collections;
 
 public class WeatherWarnings {
 
     public final static int COMMUNEUNION_DWD_DIFF = 0;
     public final static int COMMUNEUNION_DWD_STAT = 1;
-
 
     private static URL getWarningsUrl(int mode) throws MalformedURLException {
         switch (mode){
@@ -43,45 +40,37 @@ public class WeatherWarnings {
         return new URL("https://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_DE.zip");
     }
 
-    public void WarningsToLog(Context context){
-        Log.v(Tag.WARNINGS,"Warnings started!");
-        WeatherWarningReader weatherWarningReader = new WeatherWarningReader(context);
-        Log.v(Tag.WARNINGS,"Warnings initalized");
-        weatherWarningReader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        Log.v(Tag.WARNINGS,"Warnings executed");
-    }
-
     public static void writeWarningsToDatabase(Context context, ArrayList<WeatherWarning> warnings){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         WeatherWarningContentProvider weatherWarningContentProvider = new WeatherWarningContentProvider();
         if (warnings!=null){
             for (int i=0; i<warnings.size(); i++){
-                contentResolver.insert(WeatherWarningContentProvider.URI_SENSORDATA,
-                                        weatherWarningContentProvider.getContentValuesFromWeatherWarning(warnings.get(i)));
-                Log.v("WEATHER WARNINGS", "written to database: "+i);
+                contentResolver.insert(WeatherWarningContentProvider.URI_WARNINGDATA, weatherWarningContentProvider.getContentValuesFromWeatherWarning(warnings.get(i)));
             }
         } else {
             PrivateLog.log(context,"Nothing written to database, fetched warning list is empty.");
         }
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        weatherSettings.setWarningsLastUpdateTime();
     }
 
     public static ArrayList<WeatherWarning> getCurrentWarnings(Context context){
+        WeatherWarningContentProvider weatherWarningContentProvider = new WeatherWarningContentProvider();
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        Cursor cursor;
+        Cursor cursor  = null;
         ArrayList<WeatherWarning> warnings = new ArrayList<WeatherWarning>();
         try {
-            cursor = contentResolver.query(WeatherWarningContentProvider.URI_SENSORDATA,
-                    null,null,null,null);
+            cursor = contentResolver.query(WeatherWarningContentProvider.URI_WARNINGDATA, null,null,null,null);
+            int i=0;
             if (cursor.moveToFirst()){
-                WeatherWarningContentProvider weatherWarningContentProvider = new WeatherWarningContentProvider();
-                while (!cursor.isAfterLast()){
+                do {
                     WeatherWarning weatherWarning = weatherWarningContentProvider.getWeatherWarningFromCursor(cursor);
                     if (weatherWarning!=null){
                         warnings.add(weatherWarning);
                     }
-                }
-                cursor.moveToNext();
+                } while (cursor.moveToNext());
             }
+            Collections.sort(warnings);
             return warnings;
         } catch (Exception e) {
             PrivateLog.log(context,Tag.DATABASE,"database error when getting weather warnings: "+e.getMessage());
@@ -92,51 +81,8 @@ public class WeatherWarnings {
 
     public static void cleanWeatherWarningsDatabase(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        int i = contentResolver.delete(WeatherWarningContentProvider.URI_SENSORDATA,null,null);
+        int i = contentResolver.delete(WeatherWarningContentProvider.URI_WARNINGDATA,null,null);
         PrivateLog.log(context,Tag.WARNINGS,i+" warnings removed from database.");
-    }
-
-    public static long getOldestPollingTime(Context context){
-        WeatherWarningContentProvider weatherWarningContentProvider = new WeatherWarningContentProvider();
-        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        ArrayList<WeatherWarning> weatherWarnings = new ArrayList<WeatherWarning>();
-        Cursor cursor;
-        String[] projection={WeatherWarningContentProvider.WeatherWarningDatabaseHelper.KEY_polling_time};
-        try {
-            cursor = contentResolver.query(WeatherWarningContentProvider.URI_SENSORDATA,
-                    projection,null,null,null);
-            if (cursor!=null){
-                do {
-                    WeatherWarning warning = weatherWarningContentProvider.getWeatherWarningFromCursor(cursor);
-                    if (warning!=null){
-                        weatherWarnings.add(warning);
-                    }
-                } while (cursor.moveToNext());
-            } else {
-                Log.v(Tag.WARNINGS,"polling time : cursor is null.");
-            }
-        } catch (Exception e){
-            PrivateLog.log(context,Tag.WARNINGS,"Reading timestamps for cleanup failed: "+e.getMessage());
-        }
-        if (weatherWarnings.size()==0){
-            Log.v(Tag.WARNINGS,"polling time : empty list!");
-            return 0;
-        }
-        long oldest_poll = weatherWarnings.get(0).polling_time;
-        Log.v(Tag.WARNINGS,"polling time A: "+oldest_poll);
-        for (int j=1; j<weatherWarnings.size(); j++){
-            if (weatherWarnings.get(j).polling_time<oldest_poll){
-                oldest_poll = weatherWarnings.get(j).polling_time;
-                Log.v(Tag.WARNINGS,"polling time B: "+oldest_poll);
-            }
-        }
-        return oldest_poll;
-    }
-
-    public static boolean areWarningsOutdated(Context context){
-        long oldest_poll = getOldestPollingTime(context);
-        WeatherSettings weatherSettings = new WeatherSettings(context);
-        return oldest_poll + weatherSettings.getWarningsCacheTimeInMillis() <= Calendar.getInstance().getTimeInMillis();
     }
 
 }

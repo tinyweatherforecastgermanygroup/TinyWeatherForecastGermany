@@ -183,133 +183,133 @@ public final class WeatherCodeContract {
     }
 
     public static int getWeatherConditionDrawableResource(int weathercondition, boolean daytime) {
-        int result = R.drawable.not_available;
+        int result = R.mipmap.not_available;
         switch (weathercondition) {
             case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:
-                result = R.drawable.thunderstorm;
+                result = R.mipmap.thunderstorm;
                 break;
             case DRIZZLE_FREEZING_MODERATE_OR_HEAVY:
-                result = R.drawable.freezing_drizzle;
+                result = R.mipmap.freezing_drizzle;
                 break;
             case DRIZZLE_FREEZING_SLIGHT:
-                result = R.drawable.freezing_drizzle_slight;
+                result = R.mipmap.freezing_drizzle_slight;
                 break;
             case RAIN_FREEZING_MODERATE_OR_HEAVY:
-                result = R.drawable.freezing_rain;
+                result = R.mipmap.freezing_rain;
                 break;
             case RAIN_FREEZING_SLIGHT:
-                result = R.drawable.freezing_rain_slight;
+                result = R.mipmap.freezing_rain_slight;
                 break;
             case SNOW_SHOWERS_MODERATE_OR_HEAVY:
                 if (daytime) {
-                    result = R.drawable.snow_showers_partly;
+                    result = R.mipmap.snow_showers_partly;
                 } else {
-                    result = R.drawable.snow_showers_partly_night;
+                    result = R.mipmap.snow_showers_partly_night;
                 }
                 break;
             case SNOW_SHOWERS_SLIGHT:
                 if (daytime) {
-                    result = R.drawable.light_snow_showers_partly;
+                    result = R.mipmap.light_snow_showers_partly;
                 } else {
-                    result = R.drawable.light_snow_showers_partly_night;
+                    result = R.mipmap.light_snow_showers_partly_night;
                 }
                 break;
             case SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY:
                 if (daytime) {
-                    result = R.drawable.mixed_rain_and_snow_partly;
+                    result = R.mipmap.mixed_rain_and_snow_partly;
                 } else {
-                    result = R.drawable.mixed_rain_and_snow_partly_night;
+                    result = R.mipmap.mixed_rain_and_snow_partly_night;
                 }
                 break;
             case SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT:
                 if (daytime) {
-                    result = R.drawable.light_mixed_rain_and_snow_partly;
+                    result = R.mipmap.light_mixed_rain_and_snow_partly;
                 } else {
-                    result = R.drawable.light_mixed_rain_and_snow_partly_night;
+                    result = R.mipmap.light_mixed_rain_and_snow_partly_night;
                 }
                 break;
             case EXTREMELY_HEAVY_RAIN_SHOWER:
                 if (daytime) {
-                    result = R.drawable.extremely_heavy_showers_partly;
+                    result = R.mipmap.extremely_heavy_showers_partly;
                 } else {
-                    result = R.drawable.extremely_heavy_showers_partly_night;
+                    result = R.mipmap.extremely_heavy_showers_partly_night;
                 }
             case MODERATE_OR_HEAVY_RAIN_SHOWERS:
                 if (daytime) {
-                    result = R.drawable.showers_partly;
+                    result = R.mipmap.showers_partly;
                 } else {
-                    result = R.drawable.showers_partly_night;
+                    result = R.mipmap.showers_partly_night;
                 }
                 break;
             case SLIGHT_RAIN_SHOWER:
                 if (daytime) {
-                    result = R.drawable.light_showers_partly;
+                    result = R.mipmap.light_showers_partly;
                 } else {
-                    result = R.drawable.light_showers_partly_night;
+                    result = R.mipmap.light_showers_partly_night;
                 }
                 break;
             case HEAVY_SNOWFALL_CONTINUOUS:
-                result = R.drawable.heavy_snow_showers;
+                result = R.mipmap.heavy_snow_showers;
                 break;
             case MODERATE_SNOWFALL_CONTINUOUS:
-                result = R.drawable.moderate_snow_showers;
+                result = R.mipmap.moderate_snow_showers;
                 break;
             case SLIGHT_SNOWFALL_CONTINUOUS:
-                result = R.drawable.light_snow_showers;
+                result = R.mipmap.light_snow_showers;
                 break;
             case MODERATE_OR_HEAVY_RAIN_AND_SNOW:
-                result = R.drawable.mixed_rain_and_snow;
+                result = R.mipmap.mixed_rain_and_snow;
                 break;
             case SLIGHT_RAIN_AND_SNOW:
-                result = R.drawable.light_mixed_rain_and_snow;
+                result = R.mipmap.light_mixed_rain_and_snow;
                 break;
             case HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS:
-                result = R.drawable.heavy_drizzle;
+                result = R.mipmap.heavy_drizzle;
                 break;
             case MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS:
-                result = R.drawable.moderate_drizzle;
+                result = R.mipmap.moderate_drizzle;
                 break;
             case SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS:
-                result = R.drawable.light_drizzle;
+                result = R.mipmap.light_drizzle;
                 break;
             case HEAVY_RAIN_NOT_FREEZING_CONTINUOUS:
-                result = R.drawable.heavy_showers;
+                result = R.mipmap.heavy_showers;
                 break;
             case MODERATE_RAIN_NOT_FREEZING_CONTINUOUS:
-                result = R.drawable.moderate_showers;
+                result = R.mipmap.moderate_showers;
                 break;
             case SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS:
-                result = R.drawable.light_showers;
+                result = R.mipmap.light_showers;
                 break;
             case ICE_FOG_SKY_NOT_RECOGNIZABLE:
-                result = R.drawable.ice_fog;
+                result = R.mipmap.ice_fog;
                 break;
             case FOG_SKY_NOT_RECOGNIZABLE:
-                result = R.drawable.fog;
+                result = R.mipmap.fog;
                 break;
             case EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8:
-                result = R.drawable.cloudy;
+                result = R.mipmap.cloudy;
                 break;
             case EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8:
                 if (daytime) {
-                    result = R.drawable.mostly_cloudy_day;
+                    result = R.mipmap.mostly_cloudy_day;
                 } else {
-                    result = R.drawable.mostly_cloudy_night;
+                    result = R.mipmap.mostly_cloudy_night;
                 }
                 break;
             case EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8:
                 if (daytime) {
-                    result = R.drawable.partly_cloudy_day;
+                    result = R.mipmap.partly_cloudy_day;
                 } else {
-                    result = R.drawable.partly_cloudy_night;
+                    result = R.mipmap.partly_cloudy_night;
                     break;
                 }
                 break;
             case EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8:
                 if (daytime) {
-                    result = R.drawable.sunny;
+                    result = R.mipmap.sunny;
                 } else {
-                    result = R.drawable.clear_night;
+                    result = R.mipmap.clear_night;
                 }
                 break;
         }

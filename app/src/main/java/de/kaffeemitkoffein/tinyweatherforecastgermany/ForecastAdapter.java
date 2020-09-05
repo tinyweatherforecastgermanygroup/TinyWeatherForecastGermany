@@ -168,42 +168,42 @@
             int index = 0;
             if (weatherInfo.hasClouds()){
                 ImageView clouds_view = getSymbolView(view,index,symbols,viewHolder);
-                clouds_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_cloud,SCALE_MINI_ICON));
+                clouds_view.setImageBitmap(loadScaledIcon(R.mipmap.symbol_cloud,SCALE_MINI_ICON));
                 TextView clouds_text = getTextView(view,index,labels,viewHolder);
                 clouds_text.setText(weatherInfo.getClouds()+"%");
                 index ++;
             }
             if (weatherInfo.hasProbThunderstorms()){
                 ImageView lightning_view = getSymbolView(view,index,symbols,viewHolder);
-                lightning_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_lightning,SCALE_MINI_ICON));
+                lightning_view.setImageBitmap(loadScaledIcon(R.mipmap.symbol_lightning,SCALE_MINI_ICON));
                 TextView lightning_text = getTextView(view,index,labels,viewHolder);
                 lightning_text.setText(weatherInfo.getProbThunderStorms()+"%");
                 index ++;
             }
             if (weatherInfo.hasProbSolidPrecipitation()){
                 ImageView solid_view = getSymbolView(view,index,symbols,viewHolder);
-                solid_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_hail,SCALE_MINI_ICON));
+                solid_view.setImageBitmap(loadScaledIcon(R.mipmap.symbol_hail,SCALE_MINI_ICON));
                 TextView solid_text = getTextView(view,index,labels,viewHolder);
                 solid_text.setText(weatherInfo.getProbSolidPrecipitation()+"%");
                 index ++;
             }
             if (weatherInfo.hasProbFreezingRain()){
                 ImageView freezingrain_view = getSymbolView(view,index,symbols,viewHolder);
-                freezingrain_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_freezing_rain,SCALE_MINI_ICON));
+                freezingrain_view.setImageBitmap(loadScaledIcon(R.mipmap.symbol_freezing_rain,SCALE_MINI_ICON));
                 TextView freezingrain_text = getTextView(view,index,labels,viewHolder);
                 freezingrain_text.setText(weatherInfo.getProbFreezingRain()+"%");
                 index ++;
             }
             if (weatherInfo.hasProbFog()){
                 ImageView fog_view = getSymbolView(view,index,symbols,viewHolder);
-                fog_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_fog,SCALE_MINI_ICON));
+                fog_view.setImageBitmap(loadScaledIcon(R.mipmap.symbol_fog,SCALE_MINI_ICON));
                 TextView fog_text = getTextView(view,index,labels,viewHolder);
                 fog_text.setText(weatherInfo.getProbFog()+"%");
                 index ++;
             }
             if (weatherInfo.hasProbDrizzle()){
                 ImageView drizzle_view = getSymbolView(view,index,symbols,viewHolder);
-                drizzle_view.setImageBitmap(loadScaledIcon(R.drawable.symbol_drizzle,SCALE_MINI_ICON));
+                drizzle_view.setImageBitmap(loadScaledIcon(R.mipmap.symbol_drizzle,SCALE_MINI_ICON));
                 TextView drizzle_text = getTextView(view,index,labels,viewHolder);
                 drizzle_text.setText(weatherInfo.getProbDrizzle()+"%");
                 index ++;

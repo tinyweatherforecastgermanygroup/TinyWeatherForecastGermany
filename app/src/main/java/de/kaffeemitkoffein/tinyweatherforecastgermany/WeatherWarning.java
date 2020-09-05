@@ -23,8 +23,9 @@ import android.graphics.Color;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
-public class WeatherWarning {
+public class WeatherWarning implements Comparable<WeatherWarning> {
     // <alert>
     long polling_time;
     String identifier;      // id of the warning
@@ -60,17 +61,27 @@ public class WeatherWarning {
     ArrayList<String> parameter_names;
     ArrayList<String> parameter_values;
     ArrayList<String> polygons;
+    ArrayList<String> excluded_polygons;
     ArrayList<String> area_names;
     ArrayList<String> area_warncellIDs;
 
-
     ArrayList<Polygon> polygonlist;
+    ArrayList<Polygon> excluded_polygonlist;
 
     public void initPolygons(){
         polygonlist = new ArrayList<Polygon>();
-        for (int j=0; j<polygons.size(); j++){
-            Polygon polygon = new Polygon(polygons.get(j));
-            polygonlist.add(polygon);
+        excluded_polygonlist = new ArrayList<Polygon>();
+        if (polygons!=null){
+            for (int j=0; j<polygons.size(); j++){
+                Polygon polygon = new Polygon(polygons.get(j));
+                polygonlist.add(polygon);
+            }
+            if (excluded_polygons!=null){
+                for (int j=0; j<excluded_polygons.size(); j++){
+                    Polygon polygon = new Polygon(excluded_polygons.get(j));
+                    excluded_polygonlist.add(polygon);
+                }
+            }
         }
     }
 
@@ -84,12 +95,21 @@ public class WeatherWarning {
         if (polygons.size()==0){
             return false;
         }
+        // return false if point is in excluded poygon; it is efficient to check this first.
+        for (int j=0; j<excluded_polygons.size(); j++){
+            Polygon polygon = new Polygon(excluded_polygons.get(j));
+            if (polygon.isInPolygon(testx,testy)){
+                return false;
+            }
+        }
+        // return true if point is in polygon
         for (int j=0; j<polygons.size(); j++){
             Polygon polygon = new Polygon(polygons.get(j));
             if (polygon.isInPolygon(testx,testy)){
                 return true;
             }
         }
+        // otherwise false
         return false;
     }
 
@@ -128,11 +148,30 @@ public class WeatherWarning {
         Log.v(Tag.WARNINGS, "Instruction: "+instruction);
         Log.v(Tag.WARNINGS, "Web: "+web);
         Log.v(Tag.WARNINGS, "Contact: "+contact);
-        Log.v(Tag.WARNINGS, "Groups    #: "+groups.size());
-        Log.v(Tag.WARNINGS, "Paramters #: "+parameter_names.size());
-        Log.v(Tag.WARNINGS, "Values    #: "+parameter_values.size());
-        Log.v(Tag.WARNINGS, "Polygons  #: "+polygons.size());
-        Log.v(Tag.WARNINGS, "Cities    #: "+area_names.size());
-        Log.v(Tag.WARNINGS, "WarnCellID#: "+area_warncellIDs.size());
+        Log.v(Tag.WARNINGS, "Groups     #: "+groups.size());
+        Log.v(Tag.WARNINGS, "Paramters  #: "+parameter_names.size());
+        Log.v(Tag.WARNINGS, "Values     #: "+parameter_values.size());
+        Log.v(Tag.WARNINGS, "Polygons   #: "+polygons.size());
+        Log.v(Tag.WARNINGS, "(-)Polygons#: "+excluded_polygons.size());
+        Log.v(Tag.WARNINGS, "Cities     #: "+area_names.size());
+        Log.v(Tag.WARNINGS, "WarnCellID #: "+area_warncellIDs.size());
     }
+
+
+
+    @Override
+    public int compareTo(WeatherWarning w) {
+        if ((this.effective==0)||(w.effective==0)){
+            // when one of the objects has no effective time stamp, they are regarded "equal"
+            return 0;
+        }
+        if (this.effective<w.effective){
+            return -1;
+        }
+        if (this.effective> w.effective){
+            return 1;
+        }
+        return 0;
+    }
+
 }

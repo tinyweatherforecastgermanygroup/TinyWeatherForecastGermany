@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/partly_cloudy_day" />
+                android:src="@mipmap/partly_cloudy_day" />
         </LinearLayout>
 
         <LinearLayout android:id="@+id/classicwidget_rightcontainer"
@@ -107,7 +107,7 @@
                     android:layout_width="@dimen/widget_textsize_medium"
                     android:layout_height="@dimen/widget_textsize_medium"
                     android:layout_gravity="center"
-                    android:src="@drawable/arrow">
+                    android:src="@mipmap/arrow">
                 </ImageView>
 
                 <TextView android:id="@+id/classicwidget_wind"

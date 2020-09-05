@@ -69,7 +69,7 @@
                     android:layout_height="12dp"
                     android:layout_weight="2"
                     android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/symbol_precipitation" />
+                    android:src="@mipmap/symbol_precipitation" />
 
                 <TextView android:id="@+id/fcitem_precipitation_text"
                     android:textSize="@dimen/fcmain_textsize_medium"
@@ -95,7 +95,7 @@
                     android:layout_height="12dp"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/symbol_cloud" />
+                    android:src="@mipmap/symbol_cloud" />
 
                 <TextView android:id="@+id/fcitem_var1_text"
                     android:textSize="@dimen/fcmain_textsize_medium"
@@ -111,7 +111,7 @@
                     android:layout_height="12dp"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/symbol_lightning" />
+                    android:src="@mipmap/symbol_lightning" />
 
                 <TextView android:id="@+id/fcitem_var2_text"
                     android:textSize="@dimen/fcmain_textsize_medium"
@@ -127,7 +127,7 @@
                     android:layout_height="12dp"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/symbol_hail" />
+                    android:src="@mipmap/symbol_hail" />
 
                 <TextView android:id="@+id/fcitem_var3_text"
                     android:textSize="@dimen/fcmain_textsize_medium"
@@ -153,7 +153,7 @@
                     android:layout_height="12dp"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/symbol_freezing_rain" />
+                    android:src="@mipmap/symbol_freezing_rain" />
 
                 <TextView android:id="@+id/fcitem_var4_text"
                     android:textSize="@dimen/fcmain_textsize_medium"
@@ -169,7 +169,7 @@
                     android:layout_height="12dp"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/symbol_fog" />
+                    android:src="@mipmap/symbol_fog" />
 
                 <TextView android:id="@+id/fcitem_var5_text"
                     android:textSize="@dimen/fcmain_textsize_medium"
@@ -185,7 +185,7 @@
                     android:layout_height="12dp"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
-                    android:src="@drawable/symbol_drizzle" />
+                    android:src="@mipmap/symbol_drizzle" />
 
                 <TextView android:id="@+id/fcitem_var6_text"
                     android:textSize="@dimen/fcmain_textsize_medium"

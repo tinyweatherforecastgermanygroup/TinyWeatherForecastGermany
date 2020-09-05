@@ -18,6 +18,8 @@ Dieses Programm benutzt die WeatherSpec Klasse von Gadgetbridge, Copyright (C) 2
 
 Dieses Programm benutzt PNPOLY - Point Inclusion in Polygon Test by W. Randolph Franklin (WRF), Copyright (c) 1970-2003, Wm. Randolph Franklin
 
+PAT maps by Ian Macky <http://ian.macky.net/pat>.
+
 Folgende Personen haben zum Projekt beigetragen: Andreas Shimokawa (bugfixes for the Gadgetbridge API)
 
 Lizenz:
@@ -34,15 +36,16 @@ Author: Pawel Dube (pdube@gmx.de)
 Datenschutz:
 ------------
 
-Tiny Weather Forecast Germany ruft Wetterdaten aus dem Open-Data-Portal des Deutschen Wetterdienstes <https://www.dwd.de/DE/Home/home_node.html> ab.
+Tiny Weather Forecast Germany ruft Wetterdaten und Wetter-Warnungen aus dem Open-Data-Portal des Deutschen Wetterdienstes <https://www.dwd.de/DE/Home/home_node.html> ab.
 
-Dazu ist es technisch notwendig, im Rahmen der Internetverbindung die IP-Adresse an den Deutschen Wetterdienst zu übermitteln und den Sensor, dessen Daten abgerufen werden sollen. Wie der Deutsche Wetterdienst mit diesen Daten umgeht und wie er sie speichert kann in der Datenschutzerklärung des Deutschen Wetterdienstes <https://www.dwd.de/DE/service/datenschutz/datenschutz_node.html> nachgelesen werden.
+Dazu ist es technisch notwendig, im Rahmen der Internetverbindung die IP-Adresse an den Deutschen Wetterdienst zu übermitteln und den Ort/Sensor, dessen Daten abgerufen werden sollen. Wie der Deutsche Wetterdienst mit diesen Daten umgeht und wie er sie speichert kann in der Datenschutzerklärung des Deutschen Wetterdienstes <https://www.dwd.de/DE/service/datenschutz/datenschutz_node.html> nachgelesen werden.
 
-Die abgerufenen Wettervorhersagen werden lokal auf dem Gerät gespeichert, ebenso der eingestellte Sensor, die weiteren Einstellungen und wenige interne Variablen wie z.B. wann zuletzt eine Wettervorhersage abgerufen wurde.
+Die abgerufenen Wettervorhersagen und Warnungen werden lokal auf dem Gerät gespeichert, ebenso die eingestellten Orte/Sensoren. Die Einstellungen und wenige interne Variablen wie z.B. wann zuletzt eine Wetterwarnung abgerufen wurde werden ebenfalls auf dem Gerät lokal gespeichert.
 
 Sofern vom Benutzer aktiviert, gibt Tiny Weather Forecast Germany die Wetterdaten lokal auf dem Gerät an die App Gadgetbridge <https://codeberg.org/Freeyourgadget/Gadgetbridge> weiter, damit die Wetterdaten auch auf Wearables angezeigt werden können.
 
 Darüber hinaus speichert, versendet und teilt Tiny Weather Forecast Germany keine Daten.
+
 
 Zum Projekt beitragen:
 ----------------------------

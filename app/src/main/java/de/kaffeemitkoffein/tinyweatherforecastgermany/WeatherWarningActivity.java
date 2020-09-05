@@ -25,23 +25,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.*;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class WeatherWarningActivity extends Activity {
 
     ArrayList<WeatherWarning> weatherWarnings;
     ArrayList<Polygon> polygoncache;
+    ArrayList<Polygon> excluded_polygoncache;
     ImageView germany;
     ImageView map_collapsed;
     private GestureDetector gestureDetector;
@@ -65,12 +60,9 @@ public class WeatherWarningActivity extends Activity {
         // action bar layout
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
-
         weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext());
-        // Log.v("POLLVALUE","Warnings size: "+weatherWarnings.size());
         if (areWarningsOutdated()){
             PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings outdated, getting new ones.");
-            // read warnings
             updateWarnings();
         } else {
             PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings not outdated, recycling.");
@@ -120,16 +112,19 @@ public class WeatherWarningActivity extends Activity {
     }
 
     public void updateActionBarLabels(){
-        long updatetime = getOldestPollValue();
+        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
-        String update = simpleDateFormat.format(updatetime);
-        actionBar.setSubtitle(getApplicationContext().getResources().getString(R.string.warnings)+": "+weatherWarnings.size()+" "+update);
-
+        String update = simpleDateFormat.format(weatherSettings.getWarningsLastUpdateTime());
+        if (weatherWarnings!=null){
+            actionBar.setSubtitle(getApplicationContext().getResources().getString(R.string.warnings)+": "+update+" ("+weatherWarnings.size()+")");
+        } else {
+            actionBar.setSubtitle(getApplicationContext().getResources().getString(R.string.warnings_update_fail));
+        }
     }
 
     public void updateWarnings(){
         Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.warnings_update),Toast.LENGTH_LONG).show();
-        WeatherWarnings.cleanWeatherWarningsDatabase(getApplicationContext());
+        final Context context = getApplicationContext();
         final WeatherWarningReader weatherWarningReader = new WeatherWarningReader(getApplicationContext()){
             @Override
             public void onPositiveResult(ArrayList<WeatherWarning> warnings){
@@ -137,44 +132,46 @@ public class WeatherWarningActivity extends Activity {
                 weatherWarnings = warnings;
                 PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings updated successfully.");
                 displayWarnings();
-                if (warnings!=null){
-                    updateActionBarLabels();
-                }
             }
             public void onNegativeResult(){
                 PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
-                // to do !
+                Toast.makeText(context,context.getResources().getString(R.string.warnings_update_fail),Toast.LENGTH_LONG).show();
+                if (weatherWarnings!=null){
+                    updateActionBarLabels();
+                }
             }
         };
         weatherWarningReader.execute();
     }
 
     private void displayWarnings(){
+        if (weatherWarnings!=null){
+            updateActionBarLabels();
+            TextView noWarnings = (TextView) findViewById(R.id.warningactivity_no_warnings);
+            if (weatherWarnings.size()==0){
+                noWarnings.setVisibility(View.VISIBLE);
+            } else {
+                noWarnings.setVisibility(View.GONE);
+            }
+            TextView warningsDeprecated = (TextView) findViewById(R.id.warningactivity_warnings_deprecated);
+            if (areWarningsOutdated()){
+                warningsDeprecated.setVisibility(View.VISIBLE);
+            } else {
+                warningsDeprecated.setVisibility(View.GONE);
+            }
+        }
         weatherList = (ListView) findViewById(R.id.warningactivity_listview);
         WeatherWarningAdapter weatherWarningAdapter = new WeatherWarningAdapter(getApplicationContext(),weatherWarnings);
         weatherList.setAdapter(weatherWarningAdapter);
-        displayMap();
+        if (weatherWarnings!=null){
+            displayMap();
+        }
     }
 
-    private long getOldestPollValue(){
-        long oldest_poll = 0;
-        if (weatherWarnings!=null){
-            if (weatherWarnings.size()>0){
-                oldest_poll = weatherWarnings.get(0).polling_time;
-                for (int i=1; i<weatherWarnings.size(); i++){
-                    Log.v("POLLVALUE","time: "+weatherWarnings.get(i).polling_time);
-                    if (weatherWarnings.get(i).polling_time<oldest_poll){
-                        oldest_poll = weatherWarnings.get(i).polling_time;
-                    }
-                }
-            }
-        }
-        return oldest_poll;
-    }
 
     private boolean areWarningsOutdated(){
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-        return getOldestPollValue() + weatherSettings.getWarningsCacheTimeInMillis() <= Calendar.getInstance().getTimeInMillis();
+        return weatherSettings.getWarningsLastUpdateTime() + weatherSettings.getWarningsCacheTimeInMillis() <= Calendar.getInstance().getTimeInMillis();
     }
 
     private float getX(float x_coordinate){
@@ -193,7 +190,7 @@ public class WeatherWarningActivity extends Activity {
             resource_bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.germany);
         }
         Bitmap bitmap = Bitmap.createBitmap(resource_bitmap.getWidth(),resource_bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-
+        bitmap.eraseColor(Color.TRANSPARENT);
         MAP_HEIGHT = resource_bitmap.getHeight();
         MAP_WIDTH  = resource_bitmap.getWidth();
 
@@ -201,9 +198,11 @@ public class WeatherWarningActivity extends Activity {
         Y_FACTOR = (float) (MAP_HEIGHT / 8.804865172);
 
         polygoncache = new ArrayList<Polygon>();
+        excluded_polygoncache = new ArrayList<Polygon>();
 
         Canvas canvas = new Canvas(bitmap);
-        canvas.drawBitmap(resource_bitmap, 0,0,null);
+
+        // canvas.drawBitmap(resource_bitmap, 0,0,null);
         // Längengrad = x, Breitengrad = y
         for (int warning_counter=0; warning_counter<weatherWarnings.size(); warning_counter++){
             WeatherWarning warning = weatherWarnings.get(warning_counter);
@@ -220,16 +219,34 @@ public class WeatherWarningActivity extends Activity {
                         path.lineTo(getX(polygonX[vertex_count]),getY(polygonY[vertex_count]));
                     }
                     Paint polypaint = new Paint();
-                    Color color = new Color();
-                    color.blue(125);
-                    color.red(polygon_counter*2);
-                    color.green(polygon_counter*3);
                     polypaint.setColor(warning.getWarningColor());
                     polypaint.setStyle(Paint.Style.FILL_AND_STROKE);
                     canvas.drawPath(path,polypaint);
                 }
             }
+            // draw black excluded polygons after other polygons were drawn
+            for (int polygon_counter=0; polygon_counter<warning.excluded_polygonlist.size(); polygon_counter++){
+                float[] polygonX = warning.excluded_polygonlist.get(polygon_counter).polygonX;
+                float[] polygonY = warning.excluded_polygonlist.get(polygon_counter).polygonY;
+                // add excluded-polygon to cache
+                excluded_polygoncache.add(new Polygon(polygonX,polygonY,warning.identifier));
+                if (polygonX.length>0){
+                    Path path = new Path();
+                    path.moveTo(getX(polygonX[0]),getY(polygonY[0]));
+                    for (int vertex_count=1; vertex_count<polygonX.length; vertex_count++){
+                        path.lineTo(getX(polygonX[vertex_count]),getY(polygonY[vertex_count]));
+                    }
+                    Paint polypaint = new Paint();
+                    Color color = new Color();
+                    polypaint.setColor(Color.TRANSPARENT);
+                    polypaint.setStyle(Paint.Style.FILL_AND_STROKE);
+                    canvas.drawPath(path,polypaint);
+                }
+            }
         }
+        Paint cp = new Paint();
+        cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
+        canvas.drawBitmap(resource_bitmap, 0,0,cp);
         germany = (ImageView) findViewById(R.id.warningactivity_map);
         germany.setImageBitmap(bitmap);
         gestureDetector = new GestureDetector(this,new MapGestureListener());
@@ -333,6 +350,17 @@ public class WeatherWarningActivity extends Activity {
         //Log.v("MOTIONEVENT ONTOUCH",x+"/"+y+" => "+x_geo+"/"+y_geo);
         if (polygoncache!=null){
             int position = 0;
+            // first check if pointer is in excluded polygon; it is more efficient to do this first.
+            if (excluded_polygoncache!=null){
+                while (position<excluded_polygoncache.size()){
+                    if (excluded_polygoncache.get(position).isInPolygon(x_geo,y_geo)){
+                        // break (& do nothing) if pointer is in excluded polygon.
+                        return true;
+                    }
+                    position++;
+                }
+            }
+            position = 0;
             while (position<polygoncache.size()){
                 if (polygoncache.get(position).isInPolygon(x_geo,y_geo)){
                     jumpListViewToSelection(polygoncache.get(position));

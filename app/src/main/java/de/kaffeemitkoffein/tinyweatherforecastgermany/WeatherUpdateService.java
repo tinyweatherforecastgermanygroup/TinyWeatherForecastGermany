@@ -127,7 +127,7 @@ public class WeatherUpdateService extends Service {
             n = new Notification.Builder(getApplicationContext())
                             .setContentTitle(getResources().getString(R.string.service_notification_title))
                             .setContentText(getResources().getString(R.string.service_notification_text))
-                            .setSmallIcon(R.drawable.schirm_weiss)
+                            .setSmallIcon(R.mipmap.schirm_weiss)
                             .setAutoCancel(true)
                             .setOngoing(false)
                             .setChannelId(IC_ID)
@@ -136,7 +136,7 @@ public class WeatherUpdateService extends Service {
                     n = new Notification.Builder(getApplicationContext())
                             .setContentTitle(getResources().getString(R.string.service_notification_title))
                             .setContentText(getResources().getString(R.string.service_notification_text))
-                            .setSmallIcon(R.drawable.schirm_weiss)
+                            .setSmallIcon(R.mipmap.schirm_weiss)
                             .setAutoCancel(true)
                             .build();
                 }

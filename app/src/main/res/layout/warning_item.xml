@@ -32,6 +32,7 @@
         android:id="@+id/warning_item_line1container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/warning_ip"
         android:orientation="horizontal">
 
         <TextView
@@ -198,6 +199,7 @@
         android:layout_height="match_parent"
         android:textColor="@color/textColorGrey"
         android:textSize="@dimen/warning_medium"
+        android:paddingBottom="@dimen/warning_ip"
         android:gravity="left">
     </TextView>
 

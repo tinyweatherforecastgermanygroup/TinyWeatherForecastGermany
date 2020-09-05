@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/welcome_screen1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:background="@color/welcome_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/welcome_screen2_linear_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="top"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="40dp"
+        android:paddingTop="40dp"
+        android:weightSum="20"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/welcome_screen2_image"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:visibility="visible"
+            android:layout_weight="8"
+            android:src="@mipmap/light_mixed_rain_and_snow_partly">
+        </ImageView>
+
+        <LinearLayout
+            android:id="@+id/welcome_screen2_line1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/welcome_line_height"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/welcome_screen2_icon1"
+                android:layout_width="@dimen/welcome_icondesc_size"
+                android:layout_height="@dimen/welcome_icondesc_size"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="@dimen/welcome_icondesc_padding"
+                android:src="@mipmap/symbol_precipitation">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/welcome_screen2_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/widget_textcolor"
+                android:text="@string/welcome_s2_text1"
+                android:textSize="@dimen/welcome_text_size"
+                android:paddingLeft="@dimen/welcome_icontext_padding"
+                android:paddingBottom="@dimen/welcome_text_padding"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/welcome_screen2_line2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/welcome_line_height"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/welcome_screen2_icon2"
+                android:layout_width="@dimen/welcome_icondesc_size"
+                android:layout_height="@dimen/welcome_icondesc_size"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="@dimen/welcome_icondesc_padding"
+                android:src="@mipmap/symbol_cloud">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/welcome_screen2_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/widget_textcolor"
+                android:text="@string/welcome_s2_text2"
+                android:textSize="@dimen/welcome_text_size"
+                android:paddingLeft="@dimen/welcome_icontext_padding"
+                android:paddingBottom="@dimen/welcome_text_padding"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/welcome_screen2_line3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/welcome_line_height"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/welcome_screen2_icon3"
+                android:layout_width="@dimen/welcome_icondesc_size"
+                android:layout_height="@dimen/welcome_icondesc_size"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="@dimen/welcome_icondesc_padding"
+                android:src="@mipmap/symbol_lightning">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/welcome_screen2_text3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/widget_textcolor"
+                android:text="@string/welcome_s2_text3"
+                android:textSize="@dimen/welcome_text_size"
+                android:paddingLeft="@dimen/welcome_icontext_padding"
+                android:paddingBottom="@dimen/welcome_text_padding"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/welcome_screen2_line4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/welcome_line_height"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/welcome_screen2_icon4"
+                android:layout_width="@dimen/welcome_icondesc_size"
+                android:layout_height="@dimen/welcome_icondesc_size"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="@dimen/welcome_icondesc_padding"
+                android:src="@mipmap/symbol_hail">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/welcome_screen2_text4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/widget_textcolor"
+                android:text="@string/welcome_s2_text4"
+                android:textSize="@dimen/welcome_text_size"
+                android:paddingLeft="@dimen/welcome_icontext_padding"
+                android:paddingBottom="@dimen/welcome_text_padding"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/welcome_screen2_line5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/welcome_line_height"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/welcome_screen2_icon5"
+                android:layout_width="@dimen/welcome_icondesc_size"
+                android:layout_height="@dimen/welcome_icondesc_size"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="@dimen/welcome_icondesc_padding"
+                android:src="@mipmap/symbol_freezing_rain">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/welcome_screen2_text5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/widget_textcolor"
+                android:text="@string/welcome_s2_text5"
+                android:textSize="@dimen/welcome_text_size"
+                android:paddingLeft="@dimen/welcome_icontext_padding"
+                android:paddingBottom="@dimen/welcome_text_padding"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/welcome_screen2_line6"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/welcome_line_height"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/welcome_screen2_icon6"
+                android:layout_width="@dimen/welcome_icondesc_size"
+                android:layout_height="@dimen/welcome_icondesc_size"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="@dimen/welcome_icondesc_padding"
+                android:src="@mipmap/symbol_fog">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/welcome_screen2_text6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/widget_textcolor"
+                android:text="@string/welcome_s2_text6"
+                android:textSize="@dimen/welcome_text_size"
+                android:paddingLeft="@dimen/welcome_icontext_padding"
+                android:paddingBottom="@dimen/welcome_text_padding"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/welcome_screen2_line7"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/welcome_line_height"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/welcome_screen2_icon7"
+                android:layout_width="@dimen/welcome_icondesc_size"
+                android:layout_height="@dimen/welcome_icondesc_size"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="@dimen/welcome_icondesc_padding"
+                android:src="@mipmap/symbol_drizzle">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/welcome_screen2_text7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/widget_textcolor"
+                android:text="@string/welcome_s2_text7"
+                android:textSize="@dimen/welcome_text_size"
+                android:paddingLeft="@dimen/welcome_icontext_padding"
+                android:paddingBottom="@dimen/welcome_text_padding"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/welcome_screen2_line8"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/welcome_line_height"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/welcome_screen2_icon8"
+                android:layout_width="@dimen/welcome_icondesc_size"
+                android:layout_height="@dimen/welcome_icondesc_size"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="@dimen/welcome_icondesc_padding"
+                android:src="@mipmap/arrow">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/welcome_screen2_text8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/widget_textcolor"
+                android:text="@string/welcome_s2_text8"
+                android:textSize="@dimen/welcome_text_size"
+                android:paddingLeft="@dimen/welcome_icontext_padding"
+                android:paddingBottom="@dimen/welcome_text_padding"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/welcome_screen2_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/widget_textcolor"
+        android:text="@string/welcome_next"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="@dimen/welcome_action_size"
+        android:paddingBottom="@dimen/welcome_action_padding"/>
+
+
+</RelativeLayout>
