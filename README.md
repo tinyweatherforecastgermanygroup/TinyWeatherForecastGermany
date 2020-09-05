@@ -109,6 +109,10 @@ Credits
   
   If you encounter problems with GadgetBridge not updating, placing the widget on the home screen may help, since the widget will try to also update GadgetBridge every time the widget itself gets updated by the system.
   
+  *Why is percipitation displayed in kg/m² instead of cm?*
+  
+  Because the DWD provides this data this way. This cannot be changed. Please consider that this unit is more precise regarding the amount of hail and snow.
+  
  Contributing
  ------------
 
