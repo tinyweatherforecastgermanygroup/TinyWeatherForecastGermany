@@ -52,6 +52,10 @@ Credits
  Daniele Gobbetti, licensed under the GNU AFFRERO GENERAL PUBLIC LICENSE,
  Version 3, 19 November 2007. 
  
+ This program uses PNPOLY - Point Inclusion in Polygon Test by W. Randolph Franklin (WRF), Copyright (c) 1970-2003, Wm. Randolph Franklin
+ 
+ PAT maps by Ian Macky <http://ian.macky.net/pat>.
+ 
  Contributors:
  - Andreas Shimokawa (bugfixes & support for the Gadgetbridge API)
  
@@ -96,4 +100,4 @@ Credits
  https://codeberg.org/Starfish/TinyWeatherForecastGermany
  
  Alternatively, for suggestions and bug reports, you can contact me
- by email: pawel (at) kaffeemitkoffein.de 
+ by email: weather (at) kaffeemitkoffein.de 
