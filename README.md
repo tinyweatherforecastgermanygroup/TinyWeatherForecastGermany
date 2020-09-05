@@ -81,9 +81,24 @@ Credits
  
  The widget icon, the weather description and the current temperature refer to the weather forecast that can be expected until the next full hour. The low and high temperatures refer to the values that can be expected to occur from now to midnight.
  
- [Screenshot #3](app/src/main/res/mipmap-mdpi/symbol_precipitation.png) precipitation
+ Symbols used:
  
+ ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_precipitation.png) precipitation
  
+ ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_cloud.png) clouds
+ 
+ ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_lightning.png) thunderstorm
+ 
+ ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_hail.png) hail
+ 
+ ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_freezing_rain.png) freezing rain
+ 
+ ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_fog.png) fog
+ 
+ ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_drizzle.png) drizzle
+ 
+ ![symbol #1](app/src/main/res/mipmap-mdpi/arrow.png) wind direction
+        
  *How often does the app update the weather forecast?*
  
  The Deutscher Wetterdienst updates the forecast data that is used every 6 hours. Therefore, it does not make sense to pull weather data more frequently than this from the DWD API. However, a manual data update triggered by the user's selection in the main app always forces an update of forecast data. The forecast data covers the next ten days. So it is pretty feasible to present a weather forecast for some time without polling new data.
