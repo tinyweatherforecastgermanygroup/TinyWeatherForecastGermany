@@ -476,6 +476,7 @@ public class MainActivity extends Activity {
 
     public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
         displayUpdateTime(weatherCard);
+        PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.name);
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly);
         weatherList.setAdapter(forecastAdapter);

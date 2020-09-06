@@ -306,7 +306,7 @@ public final class Weather {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.arrow);
                 if (bitmap != null){
                     Matrix m = new Matrix();
-                    m.postRotate(wind_direction.floatValue());
+                    m.postRotate(360-wind_direction.floatValue());
                     return Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
                 }
             }

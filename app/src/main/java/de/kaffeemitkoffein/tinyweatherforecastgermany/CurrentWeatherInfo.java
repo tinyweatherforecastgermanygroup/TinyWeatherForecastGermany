@@ -25,6 +25,7 @@ public class CurrentWeatherInfo{
 
     public static final String EMPTY_TAG = "-";
     String city;
+    String name;
     long issue_timestamp;
     long polling_time;
     Weather.WeatherInfo currentWeather;
@@ -89,6 +90,7 @@ public class CurrentWeatherInfo{
             return;
         }
         city = rawWeatherInfo.description;
+        name = rawWeatherInfo.name;
         polling_time = rawWeatherInfo.polling_time;
         currentWeather = new Weather.WeatherInfo();
         // get timesteps_long in long
