@@ -65,6 +65,7 @@ public class ClassicWidget extends AppWidgetProvider {
         // checks for update & launches update if necessary;
         // refresh widgets, if no update was made.
         // in case of an update, the widgets are refreshed by a callback of WIDGET_CUSTOM_REFRESH_ACTION
+        PrivateLog.log(c,Tag.WIDGET,"Updating widget (system): "+getClass().toString());
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c);
         updateWidgetDisplay(c,awm,widget_instances);
     }
@@ -83,6 +84,7 @@ public class ClassicWidget extends AppWidgetProvider {
         if (i != null){
             String action = i.getAction();
             if (action.equals(WIDGET_CUSTOM_REFRESH_ACTION)){
+                PrivateLog.log(c,Tag.WIDGET,"Updating widget (app, custom): "+getClass().toString());
                 widgetRefreshAction(c,i);
             }
       }

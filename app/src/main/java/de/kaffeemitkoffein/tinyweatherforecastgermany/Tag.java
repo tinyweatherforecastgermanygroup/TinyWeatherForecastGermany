@@ -29,4 +29,5 @@ public class Tag {
     public static final String UPDATEJOBSERVICE = "UpdateJobService";
     public static final String DATABASE = "Database";
     public static final String WARNINGS = "Weather Alerts";
+    public static final String WIDGET = "widget";
 }

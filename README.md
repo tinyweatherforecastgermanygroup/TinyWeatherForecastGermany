@@ -113,6 +113,10 @@ Credits
   
   Because the DWD provides this data this way. This cannot be changed. Please consider that this unit is more precise regarding the amount of hail and snow.
   
+  *Does the app display the actual, current weather?*
+  
+  No. This app is about weather forecasts. You see the weather you can expect to occur until the displayed time. The widgets (classic, bold, large) display the weather that will occur until the next full hour.  
+  
  Contributing
  ------------
 
