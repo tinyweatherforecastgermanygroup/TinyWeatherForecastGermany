@@ -81,6 +81,8 @@ Credits
  
  The widget icon, the weather description and the current temperature refer to the weather forecast that can be expected until the next full hour. The low and high temperatures refer to the values that can be expected to occur from now to midnight.
  
+ *What do the symbols in the main app mean?*
+ 
  Symbols used:
  
  ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_precipitation.png) precipitation
@@ -98,6 +100,10 @@ Credits
  ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_drizzle.png) drizzle
  
  ![symbol #1](app/src/main/res/mipmap-mdpi/arrow.png) wind direction
+ 
+ *Does the app display the actual, current weather?*
+   
+ No. This app is about weather forecasts. You see the weather you can expect to occur until the displayed time. For the widgets, see above.  
         
  *How often does the app update the weather forecast?*
  
@@ -112,10 +118,6 @@ Credits
   *Why is percipitation displayed in kg/m² instead of cm?*
   
   Because the DWD provides this data this way. This cannot be changed. Please consider that this unit is more precise regarding the amount of hail and snow.
-  
-  *Does the app display the actual, current weather?*
-  
-  No. This app is about weather forecasts. You see the weather you can expect to occur until the displayed time. The widgets (classic, bold, large) display the weather that will occur until the next full hour.  
   
  Contributing
  ------------
