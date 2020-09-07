@@ -1,4 +1,7 @@
 
+- fixed wearables displaying wrong weather icon (always sunny)
+- fixed arrow displaying wrong wind direction
+
 - added weather warnings
 - added scaled weather icon and symbol sets for different screen densities to improve performance
 - added better support for wide screens

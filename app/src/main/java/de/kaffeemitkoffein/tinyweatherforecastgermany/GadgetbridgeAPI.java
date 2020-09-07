@@ -64,7 +64,7 @@ public class GadgetbridgeAPI {
                 weatherSpec.timestamp            = (int) (weatherCard.currentWeather.getTimestamp() / 1000);
             }
             if (weatherCard.currentWeather.hasCondition()){
-                weatherSpec.currentConditionCode = new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.currentWeather.getCondition());
+                weatherSpec.currentConditionCode = new WeatherCodeContract().translateToOpenWeatherCode(weatherCard.currentWeather.getCondition());
                 weatherSpec.currentCondition     = new WeatherCodeContract().getWeatherConditionText(context,weatherCard.currentWeather.getCondition());
             }
             if (weatherCard.currentWeather.hasTemperature()){
@@ -94,8 +94,7 @@ public class GadgetbridgeAPI {
                 WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(
                         weatherCard.forecast24hourly.get(i).getMinTemperatureInt(),
                         weatherCard.forecast24hourly.get(i).getMaxTemperatureInt(),
-                        new WeatherCodeContract().getLineageOSWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),
-                        0);
+                        new WeatherCodeContract().translateToOpenWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),0);
                 weatherSpec.forecasts.add(forecast);
             }
 

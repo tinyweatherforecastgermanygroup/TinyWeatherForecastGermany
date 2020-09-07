@@ -86,7 +86,7 @@ public final class WeatherCodeContract {
         public final static int PARTLY_CLOUDY = 41;
     }
 
-    public int getLineageOSWeatherCode(int weathercode) {
+    private int getLineageOSWeatherCode(int weathercode) {
         int result = LineageOsWeatherContract.NOT_AVAILABLE;
         switch (weathercode) {
             case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:
@@ -175,6 +175,116 @@ public final class WeatherCodeContract {
                 break;
             case EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8:
                 result = LineageOsWeatherContract.SUNNY;
+                break;
+        }
+        return result;
+    }
+
+    public final class OpenWeatherContract{
+        public final static int THUNDERSTORM = 211;
+        public final static int FREEZING_RAIN = 511;
+        public final static int HEAVY_SHOWER_SNOW = 622;
+        public final static int LIGHT_SHOWER_SNOW = 620;
+        public final static int RAIN_AND_SNOW = 616;
+        public final static int LIGHT_RAIN_AND_SNOW = 615;
+        public final static int HEAVY_INTENSITY_SHOWER_RAIN = 522;
+        public final static int EXTREME_RAIN = 504;
+        public final static int LIGHT_INTENSITY_SHOWER_RAIN = 520;
+        public final static int HEAVY_SNOW = 602;
+        public final static int SNOW = 601;
+        public final static int LIGHT_SNOW = 600;
+        public final static int HEAVY_INTENSITY_DRIZZE = 302;
+        public final static int DRIZZLE = 301;
+        public final static int LIGHT_INTENSITY_DRIZZLE = 300;
+        public final static int HEAVY_INTENSITY_RAIN = 502;
+        public final static int MODERATE_RAIN = 501;
+        public final static int LIGHT_RAIN = 500;
+        public final static int FOG = 741;
+        public final static int OVERCAST_CLOUDS = 804;
+        public final static int BROKEN_CLOUDS = 803;
+        public final static int SCATTERED_CLOUDS = 802;
+        public final static int FEW_CLOUDS = 801;
+        public final static int CLEAR_SKY = 800;
+        public final static int UNKNOWN = 3200;
+    }
+
+    public int translateToOpenWeatherCode(int code){
+        int result = OpenWeatherContract.UNKNOWN;
+        switch (code) {
+            case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:
+                result = OpenWeatherContract.THUNDERSTORM;
+                break;
+            case DRIZZLE_FREEZING_MODERATE_OR_HEAVY:
+            case RAIN_FREEZING_SLIGHT:
+            case RAIN_FREEZING_MODERATE_OR_HEAVY:
+            case DRIZZLE_FREEZING_SLIGHT:
+                result = OpenWeatherContract.FREEZING_RAIN;
+                break;
+            case SNOW_SHOWERS_MODERATE_OR_HEAVY:
+                result = OpenWeatherContract.HEAVY_SHOWER_SNOW;
+                break;
+            case SNOW_SHOWERS_SLIGHT:
+                result = OpenWeatherContract.LIGHT_SHOWER_SNOW;
+                break;
+            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY:
+            case MODERATE_OR_HEAVY_RAIN_AND_SNOW:
+                result = OpenWeatherContract.RAIN_AND_SNOW;
+                break;
+            case SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT:
+            case SLIGHT_RAIN_AND_SNOW:
+                result = OpenWeatherContract.LIGHT_RAIN_AND_SNOW;
+                break;
+            case EXTREMELY_HEAVY_RAIN_SHOWER:
+                result = OpenWeatherContract.EXTREME_RAIN;
+                break;
+            case MODERATE_OR_HEAVY_RAIN_SHOWERS:
+                result = OpenWeatherContract.HEAVY_INTENSITY_SHOWER_RAIN;
+                break;
+            case SLIGHT_RAIN_SHOWER:
+                result = OpenWeatherContract.LIGHT_INTENSITY_SHOWER_RAIN;
+                break;
+            case HEAVY_SNOWFALL_CONTINUOUS:
+                result = OpenWeatherContract.HEAVY_SNOW;
+                break;
+            case MODERATE_SNOWFALL_CONTINUOUS:
+                result = OpenWeatherContract.SNOW;
+                break;
+            case SLIGHT_SNOWFALL_CONTINUOUS:
+                result = OpenWeatherContract.LIGHT_SNOW;
+                break;
+            case HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = OpenWeatherContract.HEAVY_INTENSITY_DRIZZE;
+                break;
+            case MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = OpenWeatherContract.DRIZZLE;
+                break;
+            case SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS:
+                result = OpenWeatherContract.LIGHT_INTENSITY_DRIZZLE;
+                break;
+            case HEAVY_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = OpenWeatherContract.HEAVY_INTENSITY_RAIN;
+                break;
+            case MODERATE_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = OpenWeatherContract.MODERATE_RAIN;
+                break;
+            case SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS:
+                result = OpenWeatherContract.LIGHT_RAIN;
+                break;
+            case ICE_FOG_SKY_NOT_RECOGNIZABLE:
+            case FOG_SKY_NOT_RECOGNIZABLE:
+                result = OpenWeatherContract.FOG;
+                break;
+            case EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8:
+                result = OpenWeatherContract.OVERCAST_CLOUDS;
+                break;
+            case EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8:
+                result = OpenWeatherContract.BROKEN_CLOUDS;
+                break;
+            case EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8:
+                result = OpenWeatherContract.SCATTERED_CLOUDS;
+                break;
+            case EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8:
+                result = OpenWeatherContract.CLEAR_SKY;
                 break;
         }
         return result;
