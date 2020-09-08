@@ -30,15 +30,6 @@ public class GadgetbridgeAPI {
     public final static String WEATHER_EXTRA="WeatherSpec";
     public final static String WEATHER_ACTION="de.kaffeemitkoffein.broadcast.WEATHERDATA";
 
-    /*
-     * GADGETBRIDGE_UPDATE_INTERVAL is the intended update interval for GadgetBridge.
-     * GADGETBRIDGE_MAXUPDATETIME is the time period since the last GadgetBridge update, in which
-     * an GadgetBridge update will be suppressed. This is set to 10 minutes.
-     */
-
-    public final static int GADGETBRIDGE_UPDATE_INTERVAL = 30*60*1000; // 30 minutes;
-    public final static int GADGETBRIDGE_MAXUPDATETIME   = 10*60*1000; // 10 minutes;
-
     private WeatherSpec weatherSpec;
     private Context context;
     CurrentWeatherInfo weatherCard;

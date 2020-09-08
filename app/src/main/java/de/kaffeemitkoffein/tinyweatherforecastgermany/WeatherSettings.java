@@ -40,7 +40,7 @@ public class WeatherSettings {
     public static final String PREF_WIDGET_SHOWDWDNOTE = "PREF_widget_showdwdnote";
     public static final String PREF_LAST_VERSION_CODE = "PREF_last_version_code";
     public static final String PREF_SERVE_GADGETBRIDGE = "PREF_serve_gadgetbridge";
-    public static final String PREF_GADGETBRIDGE_LAST_UPDATE_TIME = "PREF_gadgetbridge_last_update_time";
+    public static final String PREF_VIEWS_LAST_UPDATE_TIME = "PREF_views_last_update_time";
     public static final String PREF_GADGETBRIDGE_PACKAGENAME = "PREF_gadgetbridge_packagename";
     public static final String PREF_GADGETBRIDGE_FAKE_TIMESTAMP = "PREF_gadgetbridge_fake_timestamp";
     public static final String PREF_LOGGING = "PREF_logging";
@@ -49,7 +49,6 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_DISABLE = "PREF_warnings_diable";
     public static final String PREF_WARNINGS_LAST_UPDATE_TIME = "PREF_warnings_last_update_time";
     public static final String PREF_IS_FIRST_APP_LAUNCH = "PREF_is_first_app_launch";
-
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
     public static final double PREF_STATION_LONGITUDE_DEFAULT = 9.98;
@@ -63,7 +62,7 @@ public class WeatherSettings {
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
     public final int PREF_LAST_VERSION_CODE_DEFAULT = 0;
     public static final boolean PREF_SERVE_GADGETBRIDGE_DEFAULT = false;
-    public static final long PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT = 0;
+    public static final long PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
     public static final boolean PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT = false;
     public static final boolean PREF_LOGGING_DEFAULT = false;
@@ -86,7 +85,7 @@ public class WeatherSettings {
     public boolean widget_showdwdnote = PREF_WIDGET_SHOWDWDNOTE_DEFAULT;
     public int last_version_code = PREF_LAST_VERSION_CODE_DEFAULT;
     public boolean serve_gadgetbridge = PREF_SERVE_GADGETBRIDGE_DEFAULT;
-    public long gadgetbridge_last_update_time = PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT;
+    public long views_last_update_time = PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT;
     public long warnings_last_update_time = PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT;
     public String gadgetbridge_packagename = PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;
     public boolean gadgetbridge_fake_timestamp = PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT;
@@ -121,13 +120,14 @@ public class WeatherSettings {
         this.widget_showdwdnote = readPreference(PREF_WIDGET_SHOWDWDNOTE,PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
         this.last_version_code = readPreference(PREF_LAST_VERSION_CODE,PREF_LAST_VERSION_CODE_DEFAULT);
         this.serve_gadgetbridge = readPreference(PREF_SERVE_GADGETBRIDGE,PREF_SERVE_GADGETBRIDGE_DEFAULT);
-        this.gadgetbridge_last_update_time = readPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,PREF_GADGETBRIDGE_LAST_UPDATE_TIME_DEFAULT);
+        this.views_last_update_time = readPreference(PREF_VIEWS_LAST_UPDATE_TIME,PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT);
         this.gadgetbridge_fake_timestamp = readPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT);
         this.logging = readPreference(PREF_LOGGING,PREF_LOGGING_DEFAULT);
         this.favoritesdata = readPreference(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
         this.warnings_cache_time = readPreference(PREF_WARNINGS_CACHETIME,PREF_WARNINGS_CACHETIME_DEFAULT);
         this.warnings_disabled = readPreference(PREF_WARNINGS_DISABLE,PREF_WARNINGS_DISABLE_DEFAULT);
         this.warnings_last_update_time=readPreference(PREF_WARNINGS_LAST_UPDATE_TIME,PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
+        this.is_first_app_launch=readPreference(PREF_IS_FIRST_APP_LAUNCH,PREF_IS_FIRST_APP_LAUNCH_DEFAULT);
    }
 
     public void savePreferences(){
@@ -145,11 +145,12 @@ public class WeatherSettings {
         applyPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
         applyPreference(PREF_SERVE_GADGETBRIDGE,this.serve_gadgetbridge);
         applyPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,this.gadgetbridge_fake_timestamp);
-        applyPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,this.gadgetbridge_last_update_time);
+        applyPreference(PREF_VIEWS_LAST_UPDATE_TIME,this.views_last_update_time);
         applyPreference(PREF_LOGGING,this.logging);
         applyPreference(PREF_WARNINGS_CACHETIME,this.warnings_cache_time);
         applyPreference(PREF_WARNINGS_DISABLE,this.warnings_disabled);
         applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME,this.warnings_last_update_time);
+        applyPreference(PREF_IS_FIRST_APP_LAUNCH,this.is_first_app_launch);
     }
 
     public void commitPreferences(){
@@ -167,11 +168,12 @@ public class WeatherSettings {
         commitPreference(PREF_LAST_VERSION_CODE,this.last_version_code);
         commitPreference(PREF_SERVE_GADGETBRIDGE,this.serve_gadgetbridge);
         commitPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,this.gadgetbridge_fake_timestamp);
-        commitPreference(PREF_GADGETBRIDGE_LAST_UPDATE_TIME,this.gadgetbridge_last_update_time);
+        commitPreference(PREF_VIEWS_LAST_UPDATE_TIME,this.views_last_update_time);
         commitPreference(PREF_LOGGING,this.logging);
         commitPreference(PREF_WARNINGS_CACHETIME,this.warnings_cache_time);
         commitPreference(PREF_WARNINGS_DISABLE,this.warnings_disabled);
         commitPreference(PREF_WARNINGS_LAST_UPDATE_TIME,this.warnings_last_update_time);
+        commitPreference(PREF_IS_FIRST_APP_LAUNCH,this.is_first_app_launch);
     }
 
     public String readPreference(String p, String d){

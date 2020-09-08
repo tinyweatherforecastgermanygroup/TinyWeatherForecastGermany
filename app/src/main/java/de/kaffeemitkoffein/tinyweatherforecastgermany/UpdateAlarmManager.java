@@ -36,7 +36,15 @@ public class UpdateAlarmManager {
 
     private static final int PRIVATE_ALARM_IDENTIFIER = 0;
     private static final int PRIVATE_JOBINFO_IDENTIFIER = 1;
+
+     // time to elapse before a next update try when network not available.
     private static final int EARLY_ALARM_TIME = 1000*60*15; // 15 minutes in millis
+
+    // time interval to loop the JobSheduler/Alarm manager
+    public final static int VIEWS_UPDATE_INTERVAL = 30*60*1000; // 30 minutes;
+    // suppress any view update actions if this time did not pass since last view update
+    public final static int VIEWS_MAXUPDATETIME   = 10*60*1000; // 10 minutes;
+
     public static final boolean FORCE_UPDATE = true;
     public static final boolean CHECK_FOR_UPDATE = false;
 
@@ -51,7 +59,7 @@ public class UpdateAlarmManager {
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         /*
          * update_period: this is the update interval from the settings. It means how often
-         * data should be pulled from the DWD API.
+         * data should be polled from the DWD API.
          */
         long update_period = weatherSettings.getUpdateIntervalInMillis();
         // set time for timer to equal next interval as set up by user
@@ -62,12 +70,13 @@ public class UpdateAlarmManager {
             update_time_utc = weatherCard.polling_time + update_period;
         }
         // Define alarm or job time for update.
-        long next_update_time_realtime = SystemClock.elapsedRealtime()+update_period;
-        long next_update_due_in_millis = update_period;
+        // note that realtime refers to device up time and not utc.
+        long next_update_due_in_millis = VIEWS_UPDATE_INTERVAL;
+        long next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
         boolean result;
         if (((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) || (force_update)){
             // update now
-            PrivateLog.log(context,Tag.ALARMMANAGER,"triggering weather update");
+            PrivateLog.log(context,Tag.ALARMMANAGER,"triggering weather update from API...");
             Intent intent = new Intent(context,WeatherUpdateService.class);
             intent.putExtra(WeatherUpdateService.SERVICE_FORCEUPDATE,true);
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
@@ -82,66 +91,55 @@ public class UpdateAlarmManager {
             // set result to true, as update was initiated
             result = true;
         } else {
-            // update not due, but it is safer to renew the alarm anyway
-            // the time left until next update is considered:
-            PrivateLog.log(context,Tag.ALARMMANAGER,"update not due");
-            next_update_due_in_millis = update_time_utc-Calendar.getInstance().getTimeInMillis();
-            next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
-            // set result to false, as only timer was refreshed and update is not due
+            // update not due
+            PrivateLog.log(context,Tag.ALARMMANAGER,"update from API not due.");
             result = false;
         }
         /*
-         * override the times with 30 minutes, because otherwise the smart device is not updated.
-         * it should be handled like the widget: update with known data every 30 minutes.
+         * Check if views need to be updated.
+         * Views means widgets and gadgetbridge.
          */
-        if (weatherSettings.serve_gadgetbridge){
-            // check if gadgetbridge update is due
-            if (weatherSettings.gadgetbridge_last_update_time + GadgetbridgeAPI.GADGETBRIDGE_MAXUPDATETIME < Calendar.getInstance().getTimeInMillis()){
+        if (weatherSettings.views_last_update_time + VIEWS_MAXUPDATETIME < Calendar.getInstance().getTimeInMillis()){
+            // update gadgetbridge
+            if (weatherSettings.serve_gadgetbridge) {
                 GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
                 gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-                // save the last update time
-                weatherSettings.gadgetbridge_last_update_time = Calendar.getInstance().getTimeInMillis();
-                weatherSettings.applyPreference(WeatherSettings.PREF_GADGETBRIDGE_LAST_UPDATE_TIME,weatherSettings.gadgetbridge_last_update_time);
             }
-            next_update_due_in_millis = GadgetbridgeAPI.GADGETBRIDGE_UPDATE_INTERVAL;
+            // update widgets unconditionally
+            PrivateLog.log(context,Tag.ALARMMANAGER,"updating widgets.");
+            WidgetRefresher.refresh(context);
+            // save the last update time
+            weatherSettings.views_last_update_time = Calendar.getInstance().getTimeInMillis();
+            weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,weatherSettings.views_last_update_time);
+        } else {
+            // set a shorter update period considering the time passed since last update
+            long millis_since_last_update = Calendar.getInstance().getTimeInMillis() - weatherSettings.views_last_update_time;
+            next_update_due_in_millis = VIEWS_UPDATE_INTERVAL - millis_since_last_update;
             next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
         }
-        // update later, set timer if wanted by user
         /*
          * For API < 27 we use AlarmManager, for API equal or greater 27 we use JobSheduler with JobWorkItem.
         */
-        if ((weatherSettings.setalarm) || (weatherSettings.serve_gadgetbridge)){
-            if (Build.VERSION.SDK_INT < 26) {
-                PrivateLog.log(context,Tag.ALARMMANAGER,"setting new alarm in "+next_update_due_in_millis/1000/60+" minutes.");
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                Intent intent = new Intent(context,WeatherUpdateBroadcastReceiver.class);
-                intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-                intent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context,PRIVATE_ALARM_IDENTIFIER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.setExact(AlarmManager.ELAPSED_REALTIME,next_update_time_realtime,pendingIntent);
-            } else {
-                final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-                Intent jobintent = new Intent(context,UpdateJobService.class);
-                jobintent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-                jobintent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
-                final JobWorkItem jobWorkItem = new JobWorkItem(jobintent);
-                final JobInfo jobInfo;
-                if (weatherSettings.serve_gadgetbridge){
-                    jobInfo = new JobInfo.Builder(PRIVATE_JOBINFO_IDENTIFIER,new ComponentName(context,UpdateJobService.class))
-                            .setMinimumLatency(next_update_due_in_millis)
-                            .build();
-                    PrivateLog.log(context,Tag.ALARMMANAGER,"job defined in "+next_update_due_in_millis/1000/60+" minutes.");
-                } else {
-                    jobInfo = new JobInfo.Builder(PRIVATE_JOBINFO_IDENTIFIER,new ComponentName(context,UpdateJobService.class))
-                            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                            .setMinimumLatency(next_update_due_in_millis)
-                            .build();
-                    PrivateLog.log(context,Tag.ALARMMANAGER,"job defined in "+next_update_due_in_millis/1000/60+" minutes, only when network available.");
-                }
-                jobScheduler.enqueue(jobInfo,jobWorkItem);
-                PrivateLog.log(context, Tag.ALARMMANAGER,"job scheduled.");
-            }
+        if (Build.VERSION.SDK_INT < 26) {
+            PrivateLog.log(context,Tag.ALARMMANAGER,"setting new alarm in "+next_update_due_in_millis/1000/60+" minutes.");
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context,WeatherUpdateBroadcastReceiver.class);
+            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            intent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,PRIVATE_ALARM_IDENTIFIER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager.setExact(AlarmManager.ELAPSED_REALTIME,next_update_time_realtime,pendingIntent);
+        } else {
+            final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+            Intent jobintent = new Intent(context,UpdateJobService.class);
+            jobintent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            jobintent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
+            final JobWorkItem jobWorkItem = new JobWorkItem(jobintent);
+            final JobInfo jobInfo;
+            jobInfo = new JobInfo.Builder(PRIVATE_JOBINFO_IDENTIFIER,new ComponentName(context,UpdateJobService.class))
+                    .setMinimumLatency(next_update_due_in_millis)
+                    .build();
+            jobScheduler.enqueue(jobInfo,jobWorkItem);
+            PrivateLog.log(context, Tag.ALARMMANAGER,"job scheduled in "+next_update_due_in_millis/1000/60+" minutes.");
         }
         return result;
     }
