@@ -99,10 +99,8 @@
     <string name="preference_gadgetbridge_serve_summary">When enabled, all weather data is sent locally to the Gadgetbridge app on your device.</string>
     <string name="preference_gadgetbridge_packagename_title">Package name</string>
     <string name="preference_gadgetbridge_packagename_summary">You can set a custom package name here, e.g. when using a fork of Gadgetbridge. Remove the name to return to the default package name.</string>
-    <string name="preference_gadgetbridge_note_title">Important!</string>
     <string name="preference_gadgetbridge_faketimestamp_title">Send current time</string>
     <string name="preference_gadgetbridge_faketimestamp_summary">Some wearables do not accept a forecast for current weather, always send current time instead.</string>
-    <string name="preference_gadgetbridge_note_summary">Gadgetbridge support is still experimental.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge package name is set back to default.</string>
     <string name="preference_loggingscreen_title">Debug</string>
     <string name="preference_loggingscreen_summary">Set up logging options for debugging.</string>

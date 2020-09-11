@@ -161,9 +161,10 @@ public class MainActivity extends Activity {
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                // update widgets
-                WidgetRefresher.refresh(context.getApplicationContext());
-                // reload stuff
+                if (key.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (key.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
+                    WidgetRefresher.refresh(context.getApplicationContext());
+                }
+                // reload weather data if necessary
                 if (key.equals(WeatherSettings.PREF_STATION_NAME)){
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
                     getWeatherForecast();
@@ -236,12 +237,6 @@ public class MainActivity extends Activity {
             autoCompleteTextView.setText("");
             autoCompleteTextView.clearListSelection();
         }
-        // notifiy GadgetBridge
-        // GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-        // gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-        // check if weather data needs to be updated; the UpdateAlarmManager may launch an
-        // async weather data through the service....
-        // UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
     }
 
     private class SpinnerListener implements View.OnTouchListener, AdapterView.OnItemSelectedListener{
@@ -480,9 +475,6 @@ public class MainActivity extends Activity {
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly);
         weatherList.setAdapter(forecastAdapter);
-        // Upate the widgets, so that everything displays the same
-        WidgetRefresher.refresh(this.getApplicationContext());
-        // finally, check for updates.
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
    }
 

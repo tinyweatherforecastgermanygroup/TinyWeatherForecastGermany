@@ -1,5 +1,5 @@
-What is new in this version ([VERSION]):
 
+Version 0.50.1:
 - fixed wearables displaying wrong weather icon
 - fixed arrow displaying wrong wind direction
 - improved widget refreshing to be more reliable
@@ -20,5 +20,3 @@ Gadgetbridge support:
 - added setting to set the timestamp of the current weather forecast to the current time instead of the forecast time, as some wearables do not accept a forecast as current weather
 - fixed gadgetbridge last update time unknown at first app launch
 - fixed wearables not displaying weather condition text properly
-
-Warning: when updating from a version prior to 0.40, all settings are set back to default!

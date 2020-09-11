@@ -1,4 +1,5 @@
 
+Version 0.50:
 - Wetter-Warnungen hinzu gefügt
 - skalierte Wetter-Icons und Symbol-Sets für verschiedene Bildschirme hinzu gefügt, um die Performance zu steigern
 - bessere Unterstützung breiter Bildschirme

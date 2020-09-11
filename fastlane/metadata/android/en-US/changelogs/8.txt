@@ -1,11 +1,9 @@
 
-- fixed wearables displaying wrong weather icon (always sunny)
-- fixed arrow displaying wrong wind direction
-
-- added weather warnings
-- added scaled weather icon and symbol sets for different screen densities to improve performance
+Version 0.50:
+- added DWD weather warnings
+- added scaled weather icon and symbol sets to improve performance
 - added better support for wide screens
-- added an introduction screen explaining the main features
+- added an introduction screen explaining the main app features
 - fixed broken garbage collector for old forecast data
 - fixed application sometimes installing on SD-card, making widgets not accessible
 - fixed minor bug making the app crash when settings are called too early on 1st app launch

@@ -55,7 +55,7 @@ public class WeatherSettings {
     public static final double PREF_STATION_LATIDTUDE_DEFAULT = 53.55;
     public static final double PREF_STATION_ALTITUDE_DEFAULT  = 8.0;
     public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
-    public static final boolean PREF_SETALARM_DEFAULT = false;
+    public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";

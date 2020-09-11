@@ -1,5 +1,5 @@
-Neu in dieser Version ([VERSION]):
 
+Version 0.50.1:
 - behoben: Wearables zeigten falsches Wetter-Icon an
 - behoben: Pfeil zeigte falsche Windrichtung
 - Widget-Aktualusierungen finden nun zuverlässiger statt
@@ -21,5 +21,4 @@ Gadgetbridge Unterstützung:
 - behoben: unbekannter Update-Zeitpunkt beim ersten App-Start
 - behoben: Wetter-Text auf Wearables wurde nicht korrekt dargestellt
 
-Achtung: die Einstellungen werden bei einem Update von Version kleiner 0.40 auf die Standard-Werte zurückgesetzt!
 

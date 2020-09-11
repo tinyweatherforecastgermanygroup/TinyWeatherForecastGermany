@@ -114,11 +114,6 @@
                 android:summary="@string/preference_gadgetbridge_packagename_summary"
                 android:defaultValue="nodomain.freeyourgadget.gadgetbridge"/>
 
-            <Preference
-                android:key="PREF_gadgetbridge_note"
-                android:title="@string/preference_gadgetbridge_note_title"
-                android:summary="@string/preference_gadgetbridge_note_summary"/>
-
         </PreferenceScreen>
 
         <PreferenceScreen

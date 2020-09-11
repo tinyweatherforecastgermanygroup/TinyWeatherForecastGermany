@@ -1,11 +1,12 @@
 Wettervorschau mit Widgets für bis zu 10 Tage, basierend auf Open Data des Deutschen Wetterdienstes (DWD).
 
+Zeigt auch vom DWD herausgegebene Wetterwarnungen für Deutschland an.
+
 Eine Vorhersage ist für über 5000 Stationen in Deutschland und weltweit verfügbar.
 
 - detaillierte Wettervorhersage
 - schlankes Design
-- Wetter-Warnungen für Deutschland
-- unterstützt Gadgetbridge (experimentell)
+- unterstützt Wearables über Gadgetbridge
 
 Berechtigungen:
 - INTERNET: benötigt, um auf die Daten des Deutschen Wetterdienstes (DWD) zuzugreifen.

@@ -101,8 +101,6 @@
     <string name="preference_gadgetbridge_packagename_summary">Hier kann der Paketname verändert werden, z.B. falls ein Gadgetbridge-Fork verwendet wird. Name löschen, um zum Standard-Paketnamen zurück zu kehren.</string>
     <string name="preference_gadgetbridge_faketimestamp_title">Aktuelle Zeit senden</string>
     <string name="preference_gadgetbridge_faketimestamp_summary">Einige Wearables akzeptieren keine Vorschau als aktuelles Wetter, statt dessen immer aktuelle Zeit übermitteln.</string>
-    <string name="preference_gadgetbridge_note_title">Wichtig!</string>
-    <string name="preference_gadgetbridge_note_summary">Der Gadgetbridge-Support ist noch experimentell.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge-Paketname wurde zurückgesetzt!</string>
     <string name="preference_loggingscreen_title">Fehler finden</string>
     <string name="preference_loggingscreen_summary">Protokoll aufzeichnen und verwalten.</string>
