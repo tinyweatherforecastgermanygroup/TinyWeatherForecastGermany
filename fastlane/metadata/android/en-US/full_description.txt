@@ -1,14 +1,11 @@
-Weather forecast with widgets for up to 10 days, based on open data from the Deutscher Wetterdienst (DWD).
+<p>Weather forecast with widgets for up to 10 days, based on open data from the Deutscher Wetterdienst (DWD).</p>
+<p>Also displays weather warnings issued by the DWD for Germany.</p>
+<p>A forecast ist available for over 5000 stations in Germany and worldwide.</p><ul>
+<li>detailed weather forecast</li>
+<li>slim design</li>
+<li>supports wearables through Gadgetbridge</li></ul>
 
-Also displays weather warnings issued by the DWD for Germany.
-
-A forecast ist available for over 5000 stations in Germany and worldwide.
-
-- detailed weather forecast
-- slim design
-- supports wearables through Gadgetbridge
-
-Permissions:
-- INTERNET: needed to access the open data from the Deutscher Wetterdienst (DWD).
-- FOREGROUND_SERVICE: needed to be able to update weather data regularly.
-- RECEIVE_BOOT COMPLETED: needed to set up regular weather updates after device started.
+<p><b>Permissions:</b></b><ul>
+<li>INTERNET: needed to access the open data from the Deutscher Wetterdienst (DWD).</li>
+<li>FOREGROUND_SERVICE: needed to be able to update weather data regularly.</li>
+<li>RECEIVE_BOOT COMPLETED: needed to set up regular weather updates after device started.</li></ul>
