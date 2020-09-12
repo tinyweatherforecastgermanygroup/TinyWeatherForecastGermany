@@ -13,7 +13,7 @@ Screenshots
 How to get the app
 ------------------
 
-This app is currently in a beta state. Builds are available through the f-droid repo of @izzydroid: <https://android.izzysoft.de/repo.php>.
+Builds are available through the f-droid repo of @izzydroid: <https://android.izzysoft.de/repo.php>.
 
 You get builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/NxjPfLNfAfYB9PN>
 
