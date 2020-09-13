@@ -20,7 +20,7 @@ This program uses PNPOLY - Point Inclusion in Polygon Test by W. Randolph Frankl
 
 PAT maps by Ian Macky <http://ian.macky.net/pat>.
 
-The following persons contributed to this project: Andreas Shimokawa (bugfixes for the Gadgetbridge API)
+The following persons contributed to this project: Andreas Shimokawa (bugfixes for the Gadgetbridge API), Izzy (metadata improvements)
 
 License:
 --------
