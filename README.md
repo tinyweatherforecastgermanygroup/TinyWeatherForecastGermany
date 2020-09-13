@@ -38,7 +38,7 @@ License
 Credits
 -------
 
- The Material Design icons are Copyright (c) by Google Inc., licensed 
+ The Material Design icons are Copyright (c) Google Inc., licensed 
  under the Apache License Version 2.0.
  
  This app uses gradle and the gradle wrapper, Copyright by Gradle Inc,
