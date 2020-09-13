@@ -1,0 +1,3 @@
+Version 0.50.2:
+
+- minimale Widget-Größe angepasst für bessere Integration in benutzerdefinierte Raster-Größen auf dem Home-Screen

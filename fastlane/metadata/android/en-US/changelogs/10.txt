@@ -1,0 +1,3 @@
+Version 0.50.2:
+
+- adjusted minimum widget height for better integration into custom grid sizes on the home screen
