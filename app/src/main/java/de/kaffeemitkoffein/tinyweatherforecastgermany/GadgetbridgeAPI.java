@@ -50,7 +50,7 @@ public class GadgetbridgeAPI {
             // fake timestamp for current weather if desired by user; some wearables do not accept a forecast
             // for current weather.
             if (weatherSettings.gadgetbridge_fake_timestamp){
-                weatherSpec.timestamp            = (int) Calendar.getInstance().getTimeInMillis();
+                weatherSpec.timestamp            = (int) (Calendar.getInstance().getTimeInMillis()/1000);
             } else {
                 weatherSpec.timestamp            = (int) (weatherCard.currentWeather.getTimestamp() / 1000);
             }

@@ -156,7 +156,7 @@ public class MainActivity extends Activity {
 
         stationsManager = new StationsManager(context);
         loadStationsSpinner(weatherSettings);
-        loadStationsData(weatherSettings);
+        loadStationsData();
 
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
@@ -169,14 +169,16 @@ public class MainActivity extends Activity {
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
                     getWeatherForecast();
                     AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
-                    // notifiy GadgetBridge
+                    // notify GadgetBridge
                     GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
                     gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+                    // update widgets unconditonally
+                    WidgetRefresher.refresh(getApplicationContext());
                 }
                 // reload spinner, but only if geo coordinates setting was changed
                 if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
                     stationsManager = new StationsManager(context);
-                    loadStationsData(weatherSettings);
+                    loadStationsData();
                 }
                 // show geo
                 if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
@@ -231,6 +233,8 @@ public class MainActivity extends Activity {
         PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
         last_updateweathercall = Calendar.getInstance().getTimeInMillis();
         addToSpinner(weatherSettings,station_description);
+        // we do not get the forecast data here since this triggers the preference-changed-listener. This
+        // listener takes care of the weather data update and updates widgets and gadgetbridge.
         // getWeatherForecast();
         AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
         if (autoCompleteTextView!=null){
@@ -318,7 +322,7 @@ public class MainActivity extends Activity {
         loadStationsSpinner(weatherSettings);
     }
 
-    public void loadStationsData(final WeatherSettings weatherSettings){
+    public void loadStationsData(){
         final Context context = this.getApplicationContext();
         // for the textview
         final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {

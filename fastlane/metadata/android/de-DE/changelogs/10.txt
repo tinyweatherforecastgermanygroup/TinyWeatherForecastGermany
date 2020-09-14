@@ -1,3 +1,5 @@
 Version 0.50.2:
 
 - minimale Widget-Größe angepasst für bessere Integration in benutzerdefinierte Raster-Größen auf dem Home-Screen
+- fixed: widgets not promptly updating to new location in some circumstances
+- fixed: broken gadgetbridge option "send current time"

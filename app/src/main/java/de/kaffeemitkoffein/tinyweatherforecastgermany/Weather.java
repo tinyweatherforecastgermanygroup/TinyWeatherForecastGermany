@@ -280,7 +280,7 @@ public final class Weather {
         }
 
         public long getTimestamp(){
-            return timestamp;
+            return this.timestamp;
         }
 
         public boolean hasWindDirection(){
