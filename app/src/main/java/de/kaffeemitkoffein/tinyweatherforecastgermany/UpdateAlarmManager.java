@@ -75,18 +75,28 @@ public class UpdateAlarmManager {
         long next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
         boolean result;
         if (((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) || (force_update)){
-            // update now
+            // update now.
+            // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
+            // from the service. Therefore, views are only updated from here if the service has not been called.
             PrivateLog.log(context,Tag.ALARMMANAGER,"triggering weather update from API...");
             Intent intent = new Intent(context,WeatherUpdateService.class);
             intent.putExtra(WeatherUpdateService.SERVICE_FORCEUPDATE,true);
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             try {
-                context.startService(intent);
+                if (Build.VERSION.SDK_INT<26){
+                    context.startService(intent);
+                } else {
+                    context.startForegroundService(intent);
+                }
             } catch (SecurityException e){
                 PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService not started because of a SecurityException: "+e.getMessage());
+                // views need to be updated from here, because starting service failed!
+                updateAppViews(context);
             }
             catch (IllegalStateException e){
                 PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
+                // views need to be updated from here, because starting service failed!
+                updateAppViews(context);
             }
             // set result to true, as update was initiated
             result = true;
@@ -94,28 +104,18 @@ public class UpdateAlarmManager {
             // update not due
             PrivateLog.log(context,Tag.ALARMMANAGER,"update from API not due.");
             result = false;
-        }
-        /*
-         * Check if views need to be updated.
-         * Views means widgets and gadgetbridge.
-         */
-        if (weatherSettings.views_last_update_time + VIEWS_MAXUPDATETIME < Calendar.getInstance().getTimeInMillis()){
-            // update gadgetbridge
-            if (weatherSettings.serve_gadgetbridge) {
-                GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-                gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+            /*
+             * Check if views need to be updated.
+             * Views means widgets and gadgetbridge.
+             */
+            if (weatherSettings.views_last_update_time + VIEWS_MAXUPDATETIME < Calendar.getInstance().getTimeInMillis()){
+                updateAppViews(context);
+            } else {
+                // set a shorter update period considering the time passed since last update
+                long millis_since_last_update = Calendar.getInstance().getTimeInMillis() - weatherSettings.views_last_update_time;
+                next_update_due_in_millis = VIEWS_UPDATE_INTERVAL - millis_since_last_update;
+                next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
             }
-            // update widgets unconditionally
-            PrivateLog.log(context,Tag.ALARMMANAGER,"updating widgets.");
-            WidgetRefresher.refresh(context);
-            // save the last update time
-            weatherSettings.views_last_update_time = Calendar.getInstance().getTimeInMillis();
-            weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,weatherSettings.views_last_update_time);
-        } else {
-            // set a shorter update period considering the time passed since last update
-            long millis_since_last_update = Calendar.getInstance().getTimeInMillis() - weatherSettings.views_last_update_time;
-            next_update_due_in_millis = VIEWS_UPDATE_INTERVAL - millis_since_last_update;
-            next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
         }
         /*
          * For API < 27 we use AlarmManager, for API equal or greater 27 we use JobSheduler with JobWorkItem.
@@ -142,6 +142,21 @@ public class UpdateAlarmManager {
             PrivateLog.log(context, Tag.ALARMMANAGER,"job scheduled in "+next_update_due_in_millis/1000/60+" minutes.");
         }
         return result;
+    }
+
+    public static void updateAppViews(Context context){
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        // update GadgetBridge
+        if (weatherSettings.serve_gadgetbridge) {
+            GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+            gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+        }
+        // update widgets unconditionally
+        PrivateLog.log(context,Tag.ALARMMANAGER,"updating widgets.");
+        WidgetRefresher.refresh(context);
+        // save the last update time
+        weatherSettings.views_last_update_time = Calendar.getInstance().getTimeInMillis();
+        weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,weatherSettings.views_last_update_time);
     }
 
     public static boolean updateAndSetAlarmsIfAppropriate(Context context){

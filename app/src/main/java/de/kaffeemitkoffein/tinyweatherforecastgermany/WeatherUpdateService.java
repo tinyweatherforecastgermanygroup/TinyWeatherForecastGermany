@@ -84,11 +84,8 @@ public class WeatherUpdateService extends Service {
         WeatherForecastReader weatherForecastReader = new WeatherForecastReader(this){
             @Override
             public void onPositiveResult(){
-                // notifiy GadgetBridge
-                GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-                gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-                // notify widgets
-                WidgetRefresher.refresh(context);
+                // update GadgetBridge and widgets
+                UpdateAlarmManager.updateAppViews(context);
                 // notify main class
                 Intent intent = new Intent();
                 intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
@@ -99,6 +96,8 @@ public class WeatherUpdateService extends Service {
             @Override
             public void onNegativeResult(){
                 PrivateLog.log(context,Tag.SERVICE,"update from API: failed, error.");
+                // need to update views with old data: GadgetBridge and widgets
+                UpdateAlarmManager.updateAppViews(context);
                 stopSelf();
             }
         };

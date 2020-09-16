@@ -24,8 +24,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
