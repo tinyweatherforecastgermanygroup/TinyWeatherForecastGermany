@@ -41,7 +41,7 @@ Credits
  The Material Design icons are Copyright (c) Google Inc., licensed 
  under the Apache License Version 2.0.
  
- This app uses gradle and the gradle wrapper, Copyright by Gradle Inc,
+ This app uses gradle and the gradle wrapper, Copyright Gradle Inc,
  licensed under the Apache 2.0 license.
  
  Data source: Deutscher Wetterdienst, own elements added, some data 
