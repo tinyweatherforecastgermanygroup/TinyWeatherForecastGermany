@@ -1,3 +1,6 @@
 Version 0.50.2:
 
 - adjusted minimum widget height for better integration into custom grid sizes on the home screen
+- fixed widgets not promptly updating to new location in some circumstances
+- fixed broken gadgetbridge option "send current time"
+- fixed update service not started because activity not in foreground on devices with API>25

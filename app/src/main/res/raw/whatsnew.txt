@@ -1,24 +1,6 @@
 What is new in this version ([VERSION]):
 
-- fixed wearables displaying wrong weather icon
-- fixed arrow displaying wrong wind direction
-- improved widget refreshing to be more reliable
-- removed redundant widget updates to increase performance of the main app
-- automatic updates are now enabled by default
-
-Version 0.50.0:
-- added DWD weather warnings
-- added scaled weather icon and symbol sets to improve performance
-- added better support for wide screens
-- added an introduction screen explaining the main app features
-- fixed broken garbage collector for old forecast data
-- fixed application sometimes installing on SD-card, making widgets not accessible
-- fixed minor bug making the app crash when settings are called too early on 1st app launch
-
-Gadgetbridge support:
-- changed timestamp in Gadgetbridge API from polling time to forecast time; this should solve the issue of some wearables complaining about missing weather info
-- added setting to set the timestamp of the current weather forecast to the current time instead of the forecast time, as some wearables do not accept a forecast as current weather
-- fixed gadgetbridge last update time unknown at first app launch
-- fixed wearables not displaying weather condition text properly
-
-Warning: when updating from a version prior to 0.40, all settings are set back to default!
+- adjusted minimum widget height for better integration into custom grid sizes on the home screen
+- fixed widgets not promptly updating to new location in some circumstances
+- fixed broken gadgetbridge option "send current time"
+- fixed update service not started because activity not in foreground on devices with API>25

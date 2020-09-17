@@ -1,5 +1,7 @@
 Version 0.50.2:
 
 - minimale Widget-Größe angepasst für bessere Integration in benutzerdefinierte Raster-Größen auf dem Home-Screen
-- fixed: widgets not promptly updating to new location in some circumstances
-- fixed: broken gadgetbridge option "send current time"
+- behoben: Widgets aktualisierten sich nicht immer sofort bei Ortswechsel in der App
+- defekte Option "aktuelle Zeit senden" repariert
+- behoben: Aktualisierungs-Service wurde bei Geräten mit API>25 nicht gestartet, wenn die App nicht im Vordergrund war
+

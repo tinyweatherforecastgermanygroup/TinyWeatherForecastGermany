@@ -1,25 +1,7 @@
 Neu in dieser Version ([VERSION]):
 
-- behoben: Wearables zeigten falsches Wetter-Icon an
-- behoben: Pfeil zeigte falsche Windrichtung
-- Widget-Aktualusierungen finden nun zuverlässiger statt
-- unnötige Widget-Aktualisierungen entfernt, um die Leistung der Haupt-App zu verbessern
-- automatische Updates sind nun standardmäßig aktiviert
-
-Version 0.50.0:
-- Wetter-Warnungen des DWD hinzu gefügt
-- skalierte Wetter-Icons und Symbol-Sets hinzu gefügt, um die Performance zu steigern
-- bessere Unterstützung breiter Bildschirme
-- Einführungs-Bilder hinzugefügt, welche die Haupt-Features der App erklären
-- defekte Löschroutine für veraltete Wetterdaten repariert
-- behoben: das Programm wurde gelegentlich auf der SD-Karte installiert, was dazu führte, dass die Widgets nicht erreichbar waren
-- behoben: kleinerer Fehler, der die App zum Absturz brachte, wenn die Einstellungen beim ersten App-Start zu früh aufgerufen wurden
-
-Gadgetbridge Unterstützung:
-- Zeitstempel in der Gadgetbridge API von der Abfrage-Zeit auf die Vorhersage-Zeit geändert; dies sollte das Problem beheben, dass einige Wearables sich über nicht vorhandene Wetterdaten beschwerten
-- Option hinzu gefügt, um als Zeitstempel die aktuelle Uhrzeit anstelle der Vorhersage-Zeit zu setzen, da einige Wearables eine Vorhersage nicht als aktuelles Wetter akzeptieren
-- behoben: unbekannter Update-Zeitpunkt beim ersten App-Start
-- behoben: Wetter-Text auf Wearables wurde nicht korrekt dargestellt
-
-Achtung: die Einstellungen werden bei einem Update von Version kleiner 0.40 auf die Standard-Werte zurückgesetzt!
+- minimale Widget-Größe angepasst für bessere Integration in benutzerdefinierte Raster-Größen auf dem Home-Screen
+- behoben: Widgets aktualisierten sich nicht immer sofort bei Ortswechsel in der App
+- defekte Option "aktuelle Zeit senden" repariert
+- behoben: Aktualisierungs-Service wurde bei Geräten mit API>25 nicht gestartet, wenn die App nicht im Vordergrund war
 
