@@ -22,6 +22,20 @@
     <PreferenceCategory
         android:title="@string/preference_category_general">
 
+        <ListPreference
+            android:key="PREF_display_type"
+            android:title="@string/preference_displaytype_title"
+            android:summary="@string/preference_displaytype_summary"
+            android:entries="@array/display_type_text"
+            android:entryValues="@array/display_type_values"
+            android:defaultValue="3"/>
+
+        <CheckBoxPreference
+            android:key="PREF_display_bar"
+            android:title="@string/preference_showforecastbar_title"
+            android:summary="@string/preference_showforecastbar_summary"
+            android:defaultValue="false"/>
+
         <CheckBoxPreference
             android:key="PREF_setalarm"
             android:title="@string/preference_setalarm_title"

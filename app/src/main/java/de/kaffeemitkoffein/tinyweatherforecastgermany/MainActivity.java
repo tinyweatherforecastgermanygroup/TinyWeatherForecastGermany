@@ -31,6 +31,7 @@ import android.widget.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.security.Security;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -189,6 +190,10 @@ public class MainActivity extends Activity {
                 // invalidate menu if warnings visibility has changed
                 if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
                     invalidateOptionsMenu();
+                }
+                // invalidate weather display beacuse the display type or bar visibility have changed
+                if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR))){
+                    displayWeatherForecast(weatherCard);
                 }
             }
         };
@@ -473,11 +478,44 @@ public class MainActivity extends Activity {
         }
     }
 
+    private int get24passedPosition(CurrentWeatherInfo currentWeatherInfo,int lasthourlypostion){
+        long last1hourtime = currentWeatherInfo.forecast1hourly.get(lasthourlypostion).getTimestamp();
+        if (currentWeatherInfo.forecast6hourly.size()>0){
+            int position = 0;
+            long time = currentWeatherInfo.forecast6hourly.get(position).getTimestamp();
+            while (position<currentWeatherInfo.forecast6hourly.size() && time<last1hourtime){
+                position++;
+                time = currentWeatherInfo.forecast6hourly.get(position).getTimestamp();
+            }
+            return position;
+        }
+        return 0;
+    }
+
+    private ArrayList<Weather.WeatherInfo> getCustomForecastWeatherInfoArray(CurrentWeatherInfo weatherCard){
+        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+        if (weatherSettings.getDisplayType() == WeatherSettings.DISPLAYTYPE_6HOURS){
+            return weatherCard.forecast6hourly;
+        }
+        if (weatherSettings.getDisplayType() == WeatherSettings.DISPLAYTYPE_1HOUR){
+            return weatherCard.forecast1hourly;
+        }
+        ArrayList<Weather.WeatherInfo> weatherInfos = new ArrayList<Weather.WeatherInfo>();
+        for (int i=0; i<24 && i<weatherCard.forecast1hourly.size(); i++){
+            weatherInfos.add(weatherCard.forecast1hourly.get(i));
+        }
+        for (int i=get24passedPosition(weatherCard,weatherInfos.size()-1); i<weatherCard.forecast6hourly.size(); i++){
+            weatherInfos.add(weatherCard.forecast6hourly.get(i));
+        }
+        return weatherInfos;
+    }
+
     public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
         displayUpdateTime(weatherCard);
         PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.name);
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
-        ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly);
+        // ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly,weatherCard.forecast1hourly);
+        ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly);
         weatherList.setAdapter(forecastAdapter);
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
    }

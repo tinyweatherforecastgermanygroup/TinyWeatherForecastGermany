@@ -29,6 +29,7 @@ public class CurrentWeatherInfo{
     long issue_timestamp;
     long polling_time;
     Weather.WeatherInfo currentWeather;
+    ArrayList<Weather.WeatherInfo> forecast1hourly;
     ArrayList<Weather.WeatherInfo> forecast6hourly;
     ArrayList<Weather.WeatherInfo> forecast24hourly;
 
@@ -93,6 +94,7 @@ public class CurrentWeatherInfo{
         name = rawWeatherInfo.name;
         polling_time = rawWeatherInfo.polling_time;
         currentWeather = new Weather.WeatherInfo();
+        currentWeather.setForecastType(Weather.WeatherInfo.ForecastType.CURRENT);
         // get timesteps_long in long
         long[] timesteps = rawWeatherInfo.getTimeSteps();
         // get current weather data
@@ -116,11 +118,45 @@ public class CurrentWeatherInfo{
         currentWeather.setProbFreezingRain(getIntItem(rawWeatherInfo.wwF[current_weather_position]));
         currentWeather.setVisibility(getIntItem(rawWeatherInfo.VV[current_weather_position]));
         currentWeather.setUV(getDoubleItem(rawWeatherInfo.RRad1[current_weather_position]));
-        // fill 6h forecast arraylist
-        forecast6hourly = new ArrayList<Weather.WeatherInfo>();
-        int index = rawWeatherInfo.getNext6hPosition();
+        if (!currentWeather.hasCondition()){
+            currentWeather.calculateMissingCondition();
+        }
+        // fill 1h forecast arraylist
+        forecast1hourly = new ArrayList<Weather.WeatherInfo>();
+        int index = rawWeatherInfo.getCurrentForecastPosition();
         while (index<rawWeatherInfo.elements){
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
+            wi.setForecastType(Weather.WeatherInfo.ForecastType.ONE_HOUR);
+            wi.setTimestamp(timesteps[index]);
+            wi.setConditionCode(getIntItem(rawWeatherInfo.ww[index]));
+            wi.setClouds(getIntItem(rawWeatherInfo.N[index]));
+            wi.setTemperature(getDoubleItem(rawWeatherInfo.TTT[index]));
+            wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
+            wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
+            wi.setWindSpeed(getDoubleItem(rawWeatherInfo.FF[index]));
+            wi.setWindDirection(getDoubleItem(rawWeatherInfo.DD[index]));
+            wi.setFlurries(getDoubleItem(rawWeatherInfo.FX1[index]));
+            wi.setPrecipitation(getDoubleItem(rawWeatherInfo.RR1c[index]));
+            wi.setProbPrecipitation(getIntItem(rawWeatherInfo.wwP[index]));
+            wi.setProbDrizzle(getIntItem(rawWeatherInfo.wwZ[index]));
+            wi.setProbThunderstorms(getIntItem(rawWeatherInfo.wwT[index]));
+            wi.setProbFog(getIntItem(rawWeatherInfo.wwM[index]));
+            wi.setProbSolidPrecipitation(getIntItem(rawWeatherInfo.wwS[index]));
+            wi.setProbFreezingRain(getIntItem(rawWeatherInfo.wwF[index]));
+            wi.setVisibility(getIntItem(rawWeatherInfo.VV[index]));
+            wi.setUV(getDoubleItem(rawWeatherInfo.RRad1[index]));
+            if (!currentWeather.hasCondition()){
+                currentWeather.calculateMissingCondition();
+            }
+            forecast1hourly.add(wi);
+            index++;
+        }
+        // fill 6h forecast arraylist
+        forecast6hourly = new ArrayList<Weather.WeatherInfo>();
+        index = rawWeatherInfo.getNext6hPosition();
+        while (index<rawWeatherInfo.elements){
+            Weather.WeatherInfo wi = new Weather.WeatherInfo();
+            wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_6);
             wi.setTimestamp(timesteps[index]);
                 wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
                 wi.setClouds(rawWeatherInfo.getAverageClouds(index - 5, index));
@@ -178,6 +214,7 @@ public class CurrentWeatherInfo{
         index = rawWeatherInfo.getNext24hPosition();
         while (index<rawWeatherInfo.elements){
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
+            wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_24);
             wi.setTimestamp(timesteps[index]);
                 wi.setConditionCode(getIntItem(rawWeatherInfo.WPcd1[index]));
                 wi.setClouds(rawWeatherInfo.getAverageClouds(index-23,index));

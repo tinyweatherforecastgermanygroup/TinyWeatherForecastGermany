@@ -65,4 +65,11 @@
         <item>6 Stunden</item>
     </string-array>
 
+    <string-array name="display_type_text">
+        <item>stündliche Vorschau</item>
+        <item>6-stündliche Vorschau</item>
+        <item>gemischt</item>
+    </string-array>
+
+
 </resources>

@@ -72,4 +72,17 @@
         <item>180</item>
         <item>360</item>
     </string-array>
+
+    <string-array name="display_type_text">
+        <item>hourly forecast</item>
+        <item>6-hourly forecast</item>
+        <item>mixed</item>
+    </string-array>
+
+    <string-array name="display_type_values">
+        <item>1</item>
+        <item>3</item>
+        <item>265</item>
+    </string-array>
+
 </resources>

@@ -184,6 +184,7 @@ public final class Weather {
 
     public static class WeatherInfo{
         private long timestamp;
+        private int forecast_type = ForecastType.UNKNOWN;
         private Integer condition_code;
         private boolean condition_is_calculated = false;
         private Double temperature;
@@ -203,12 +204,26 @@ public final class Weather {
         private Integer visibility;
         private Double uv;
 
+        final class ForecastType{
+            public static final int CURRENT  = 0;
+            public static final int ONE_HOUR = 1;
+            public static final int HOURS_3  = 2;
+            public static final int HOURS_6  = 3;
+            public static final int HOURS_12 = 4;
+            public static final int HOURS_24 = 5;
+            public static final int UNKNOWN  = 128;
+        }
+
         public WeatherInfo(){
 
         }
 
         public void setTimestamp(long timestamp){
             this.timestamp = timestamp;
+        }
+
+        public void setForecastType(int i){
+            this.forecast_type = i;
         }
 
         public void setConditionCode(Integer condition_code){
@@ -281,6 +296,10 @@ public final class Weather {
 
         public long getTimestamp(){
             return this.timestamp;
+        }
+
+        public int getForecastType(){
+            return this.forecast_type;
         }
 
         public boolean hasWindDirection(){
@@ -676,5 +695,6 @@ public final class Weather {
             cleanDataBase(context,dataArrayList);
         }
     }
+
 }
 

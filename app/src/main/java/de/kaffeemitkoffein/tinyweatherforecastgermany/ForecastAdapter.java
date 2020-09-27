@@ -36,12 +36,17 @@
     public class ForecastAdapter extends BaseAdapter {
 
         private ArrayList<Weather.WeatherInfo> weatherForecasts;
+        private ArrayList<Weather.WeatherInfo> weatherForecasts_hourly;
         private Context context;
+        private boolean display_bar;
         LayoutInflater layoutInflater;
 
-        public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts){
+        public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly){
             this.context = context;
             this.weatherForecasts = weatherForecasts;
+            this.weatherForecasts_hourly = weatherForecasts_hourly;
+            WeatherSettings weatherSettings = new WeatherSettings(context);
+            this.display_bar = weatherSettings.display_bar;
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -49,8 +54,6 @@
         private final static int SCALE_MINI_ICON = 8;
 
         private Bitmap loadScaledIcon(int id, int scale){
-            // final BitmapFactory.Options options = new BitmapFactory.Options();
-            // options.inSampleSize = scale;
             final Bitmap result = BitmapFactory.decodeResource(context.getResources(),id,null);
             return result;
         }
@@ -67,6 +70,7 @@
             ImageView imageView_windarrow;
             ImageView[] symbols;
             TextView[] labels;
+            ImageView imageView_forecastBar;
 
             public ViewHolder(){
                 symbols = new ImageView[6];
@@ -102,6 +106,7 @@
             TextView textView_highlow = null;
             TextView textView_wind = null;
             ImageView imageView_windarrow = null;
+            ImageView imageView_forecastBar = null;
             ImageView[] symbols = new ImageView[6];
             TextView[] labels = new TextView[6];
             if (view == null){
@@ -122,6 +127,7 @@
                 imageView_windarrow = viewHolder.imageView_windarrow;
                 symbols = viewHolder.symbols;
                 labels = viewHolder.labels;
+                imageView_forecastBar = viewHolder.imageView_forecastBar;
             }
             // now fill the item with content
             if (textView_weathercondition==null){
@@ -133,7 +139,7 @@
             if (textView_heading==null){
                 textView_heading = (TextView) view.findViewById(R.id.fcitem_heading);
             }
-            SimpleDateFormat format = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm");
             Date date = new Date();
             date.setTime(weatherForecasts.get(i).getTimestamp());
             String timetext = format.format(date);
@@ -259,6 +265,35 @@
             if (weatherInfo.hasWindDirection()){
                 imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context));
             }
+            if (imageView_forecastBar == null){
+                imageView_forecastBar = (ImageView) view.findViewById(R.id.fcitem_forecastbar);
+                viewHolder.imageView_forecastBar = imageView_forecastBar;
+            }
+            // hourly forecast bar, display only if forecast is 6h
+            if ((weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6) && (display_bar)){
+                imageView_forecastBar.setVisibility(View.VISIBLE);
+                // calculate offset
+                int start  = getLastHourlyForecast();
+                int offset = getHourlyOffset(start,i);
+                int count = 6;
+                if (offset<start){
+                    count = 6 - (start-offset);
+                    offset = start;
+                }
+                // construct arraylist with 0-6 items
+                ArrayList<Weather.WeatherInfo> baritems = new ArrayList<Weather.WeatherInfo>();
+                for (int j=offset; j<=offset+count; j++){
+                    baritems.add(weatherForecasts_hourly.get(j));
+                }
+                ForecastBitmap forecastBitmap = new ForecastBitmap.Builder()
+                        .setWetherInfos(baritems)
+                        .setAnticipatedWidth(6)
+                        .create(context);
+                imageView_forecastBar.setImageBitmap(forecastBitmap.getForecastBitmap());
+            } else {
+                // hide forecast bar when not needed
+                imageView_forecastBar.setVisibility(View.GONE);
+            }
             if (newView){
                 view.setTag(viewHolder);
             }
@@ -299,6 +334,21 @@
             return labels[pos];
         }
 
+        private int getLastHourlyForecast(){
+            int position = weatherForecasts.size()-1;
+            while ((weatherForecasts.get(position).getForecastType()!=Weather.WeatherInfo.ForecastType.ONE_HOUR) && (position>0)){
+                position--;
+            }
+            return position;
+        }
 
+        private int getHourlyOffset(int start, int position6h){
+            int position = start;
+            // calculates corresponding position in hourly forecasts that corresponds to 6-hourly forecasts.
+            while (weatherForecasts_hourly.get(position).getTimestamp()<weatherForecasts.get(position6h).getTimestamp()){
+                position++;
+            }
+            return position - 6; // display 6 hours before
+        }
 
     }

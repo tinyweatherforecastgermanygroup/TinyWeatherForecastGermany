@@ -87,6 +87,10 @@
     <string name="preference_cache_warnings_summary">Wie lange Warnungen angezeigt werden ohne sie vom Deutschen Wetterdienst neu zu laden.</string>
     <string name="preference_disable_warnings_title">Warnungen ausschalten</string>
     <string name="preference_disable_warnings_summary">Keine Wetterwarnungen anzeigen.</string>
+    <string name="preference_displaytype_title">Vorhersage-Intervalle</string>
+    <string name="preference_displaytype_summary">Zeige stündliche, 6-stündliche oder gemischte Vorhersage.</string>
+    <string name="preference_showforecastbar_title">Zeige stündliche Daten</string>
+    <string name="preference_showforecastbar_summary">Zeigte Balken mit stündlichen Daten in der 6-stündlichen Vorschau.</string>
     <string name="preference_setalarm_title">Automatisch aktualisieren</string>
     <string name="preference_setalarm_summary">Wetterdaten regelmäßig aktualisieren. Das kann den Akkuverbrauch erhöhen.</string>
     <string name="preference_set_aggresive_alarm_title">Aktualisierung wiederholen</string>

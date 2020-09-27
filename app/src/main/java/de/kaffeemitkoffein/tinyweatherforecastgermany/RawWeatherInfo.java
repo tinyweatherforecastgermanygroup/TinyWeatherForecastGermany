@@ -259,10 +259,10 @@ public class RawWeatherInfo{
         kml_dateFormat.setLenient(true);
         for (int i=0; i<elements; i++){
             try {
-                //Log.v("TIME","timestep string:"+timesteps[i]);
+                // Log.v("TIME","timestep string:"+timesteps[i]);
                 Date parse = kml_dateFormat.parse(timesteps[i]);
                 result[i] = parse.getTime();
-                //Log.v("TIME","timestep result:"+result[i]);
+                // Log.v("TIME","timestep result:"+result[i]);
             } catch (Exception e){
                 // nothing to dd
             }
@@ -272,9 +272,9 @@ public class RawWeatherInfo{
 
     public int getCurrentForecastPosition(){
         long current_time = Calendar.getInstance().getTimeInMillis();
-        long[] timeteps = getTimeSteps();
+        long[] timesteps = getTimeSteps();
         int i=0;
-        while ((timeteps[i]<current_time) && (i<elements)){
+        while ((timesteps[i]<current_time) && (i<elements)){
             i++;
         }
         return i;
@@ -310,6 +310,10 @@ public class RawWeatherInfo{
             i++;
         }
         return i;
+    }
+
+    public int getNext1hPosition(){
+        return getCurrentForecastPosition() + 1;
     }
 
     public int getNext6hPosition(){

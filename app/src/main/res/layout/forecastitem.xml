@@ -33,12 +33,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <ImageView android:id="@+id/fcitem_forecastbar"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"/>
+
     <LinearLayout
+
         android:id="@+id/fcitem_linearlayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/fcitem_heading"
+        android:layout_above="@id/fcitem_forecastbar"
         android:weightSum="3"
         android:gravity="center">
 
@@ -256,8 +263,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
-
-
 
         </LinearLayout>
     </LinearLayout>

@@ -27,12 +27,20 @@ import java.util.Calendar;
 
 public class WeatherSettings {
 
+    final static String FAVORITES_SEPERATOR = ";";
+
+    public final static int DISPLAYTYPE_1HOUR  = 1;
+    public final static int DISPLAYTYPE_6HOURS = 3;
+    public final static int DISPLAYTYPE_MIXED  = 256;
+
     public static final String PREF_STATION_NAME = "PREF_station_name";
     public static final String PREF_STATION_DESCRIPTION = "PREF_station_description";
     public static final String PREF_STATION_LONGITUDE = "PREF_station_longitude";
     public static final String PREF_STATION_LATIDTUDE = "PREF_station_latitude";
     public static final String PREF_STATION_ALTITUDE  = "PREF_station_altitude";
     public static final String PREF_DISPLAY_STATION_GEO = "PREF_display_station_geo";
+    public static final String PREF_DISPLAY_TYPE = "PREF_display_type";
+    public static final String PREF_DISPLAY_BAR = "PREF_display_bar";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_AGGRESSIVE_UPDATE = "PREF_aggressive_update";
@@ -55,6 +63,8 @@ public class WeatherSettings {
     public static final double PREF_STATION_LATIDTUDE_DEFAULT = 53.55;
     public static final double PREF_STATION_ALTITUDE_DEFAULT  = 8.0;
     public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
+    public static final String PREF_DISPLAY_TYPE_DEFAULT = "3";
+    public static final boolean PREF_DISPLAY_BAR_DEFAULT = false;
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
@@ -78,6 +88,8 @@ public class WeatherSettings {
     public double station_latitude = PREF_STATION_LATIDTUDE_DEFAULT;
     public double station_altitude = PREF_STATION_LATIDTUDE_DEFAULT;
     public boolean display_station_geo = PREF_DISPLAY_STATION_GEO_DEFAULT;
+    public String display_type = PREF_DISPLAY_TYPE_DEFAULT;
+    public boolean display_bar = PREF_DISPLAY_BAR_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public boolean aggressive_update = PREF_AGGRESSIVE_UPDATE_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
@@ -98,8 +110,6 @@ public class WeatherSettings {
     private Context context;
     public SharedPreferences sharedPreferences;
 
-    final static String FAVORITES_SEPERATOR = ";";
-
     public WeatherSettings(Context c){
         this.context = c;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
@@ -114,6 +124,8 @@ public class WeatherSettings {
         this.station_altitude = readPreference(PREF_STATION_ALTITUDE,PREF_STATION_ALTITUDE_DEFAULT);
         this.setalarm = readPreference(PREF_SETALARM,PREF_SETALARM_DEFAULT);
         this.display_station_geo = readPreference(PREF_DISPLAY_STATION_GEO,PREF_DISPLAY_STATION_GEO_DEFAULT);
+        this.display_type = readPreference(PREF_DISPLAY_TYPE,PREF_DISPLAY_TYPE_DEFAULT);
+        this.display_bar = readPreference(PREF_DISPLAY_BAR,PREF_DISPLAY_BAR_DEFAULT);
         this.aggressive_update = readPreference(PREF_AGGRESSIVE_UPDATE,PREF_AGGRESSIVE_UPDATE_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL,PREF_UPDATEINTERVAL_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY,PREF_WIDGET_OPACITY_DEFAULT);
@@ -137,6 +149,8 @@ public class WeatherSettings {
         applyPreference(PREF_STATION_LATIDTUDE,this.station_latitude);
         applyPreference(PREF_STATION_ALTITUDE,this.station_altitude);
         applyPreference(PREF_DISPLAY_STATION_GEO,this.display_station_geo);
+        applyPreference(PREF_DISPLAY_TYPE,this.display_type);
+        applyPreference(PREF_DISPLAY_BAR,this.display_bar);
         applyPreference(PREF_SETALARM,this.setalarm);
         applyPreference(PREF_AGGRESSIVE_UPDATE,this.aggressive_update);
         applyPreference(PREF_UPDATEINTERVAL,this.updateinterval);
@@ -160,6 +174,8 @@ public class WeatherSettings {
         commitPreference(PREF_STATION_LATIDTUDE,this.station_latitude);
         commitPreference(PREF_STATION_ALTITUDE,this.station_altitude);
         commitPreference(PREF_DISPLAY_STATION_GEO,this.display_station_geo);
+        commitPreference(PREF_DISPLAY_TYPE,this.display_type);
+        commitPreference(PREF_DISPLAY_BAR,this.display_bar);
         commitPreference(PREF_SETALARM,this.setalarm);
         commitPreference(PREF_AGGRESSIVE_UPDATE,this.aggressive_update);
         commitPreference(PREF_UPDATEINTERVAL,this.updateinterval);
@@ -306,6 +322,19 @@ public class WeatherSettings {
             result.add(split_descriptions[i]);
         }
         return result;
+    }
+
+    public int getDisplayType(){
+        try {
+            int i = Integer.parseInt(this.display_type);
+            return i;
+        } catch (NumberFormatException e){
+            // return to default if entry is corrupted (not a number)
+            this.display_type = PREF_DISPLAY_TYPE_DEFAULT;
+            applyPreference(PREF_DISPLAY_TYPE,display_type);
+            // return default
+            return DISPLAYTYPE_6HOURS;
+        }
     }
 
     public long getWarningsCacheTimeInMillis(){
