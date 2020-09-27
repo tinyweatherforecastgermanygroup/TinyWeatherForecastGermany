@@ -1,0 +1,3 @@
+
+- die Vorhersage-Intervalle können nun frei gewählt werden: stündlich, 6-stündlich, gemischt (erste 24 Stunden stündlich, danach 6-stündlich).
+- bei 6-stündiger Vorhersage optionaler Balken, der eine stundengenaue Vorhersage anzeigt

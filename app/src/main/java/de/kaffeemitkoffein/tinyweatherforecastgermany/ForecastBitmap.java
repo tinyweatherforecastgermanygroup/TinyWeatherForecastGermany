@@ -5,7 +5,6 @@ import android.graphics.*;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -121,12 +120,6 @@ public class ForecastBitmap{
         for (int i=0; i<poly_x.length; i++){
             path.lineTo(poly_x[i],poly_y[i]);
         }
-        /*
-        path.lineTo(bitmapWidth,poly_y[poly_y.length-1]);
-        path.lineTo(bitmapWidth,bitmapHeight);
-        path.lineTo(0,bitmapHeight);
-        path.lineTo(0,poly_y[0]);
-         */
         canvas.drawPath(path,poly_paint);
     }
 
@@ -146,10 +139,8 @@ public class ForecastBitmap{
         fontSize_medium  = (float) (bitmapHeight/3);
         fontSize_small   = (float) (bitmapHeight/3.6);
         Paint paint = new Paint();
-        // paint.setColor(context.getResources().getColor(R.color.textColor));
         paint.setColor(getColorFromResource(R.color.textColor));
         paint.setTextSize(fontSize_medium);
-        //canvas.drawLine(0,0,bitmapWidth,bitmapHeight,paint);
         float x_offset = (bitmapWidth - itemWidth);
         // draw polygons for rain and clouds
         float[] x_polygon = new float[weatherInfos.size()+4];
@@ -157,7 +148,6 @@ public class ForecastBitmap{
         float[] y_polygon_clouds = new float[weatherInfos.size()+4];
         // calculate offset of polygons when less than 6 items
         float polygon_x_offset = (6-weatherInfos.size())*itemWidth;
-        //canvas.drawLine(polygon_x_offset,0,polygon_x_offset,bitmapHeight,paint);
         // calculate values of polygons
         for (int j=0; j<weatherInfos.size(); j++){
             x_polygon[j] = polygon_x_offset + itemWidth*j + itemWidth/2;
@@ -165,14 +155,12 @@ public class ForecastBitmap{
             if (wi.hasProbPrecipitation()){
                 float pp = (float) wi.getProbPrecipitation()/100;
                 y_polygon_rain[j] = (float) (bitmapHeight - pp*bitmapHeight);
-                //Log.v("TWF",wi.getProbPrecipitation()+" y_polygon_rain["+j+"] = "+((int)y_polygon_rain[j]));
             } else {
                 y_polygon_rain[j] = bitmapHeight;
             }
             if (wi.hasClouds()){
                 float pc = (float) wi.getClouds()/100;
                 y_polygon_clouds[j] = (float) (bitmapHeight - pc*bitmapHeight);
-                //Log.v("TWF",wi.getClouds()+" y_polygon_clouds["+j+"] = "+((int)y_polygon_clouds[j]));
             } else {
                 y_polygon_clouds[j] = bitmapHeight;
             }
@@ -202,7 +190,6 @@ public class ForecastBitmap{
             String timetext = format.format(date);
             paint.setTextSize(fontSize_small);
             paint.setAlpha(255);
-            // canvas.drawText(timetext,x_offset+itemWidth/2-paint.measureText(timetext)/2,fontSize_small,paint);
             canvas.drawText(timetext,x_offset,fontSize_small,paint);
             // draw icon
             Weather.WeatherInfo wi = weatherInfos.get(position);
@@ -214,7 +201,6 @@ public class ForecastBitmap{
             // place temperature
             paint.setTextSize(fontSize_medium);
             canvas.drawText(weatherInfos.get(position).getTemperatureInCelsiusInt()+"°",x_offset+itemWidth*iconRatio,(float) (bitmapHeight/2)+fontSize_medium/2,paint);
-            //canvas.drawText(weatherInfos.get(position).getMinTemperatureInCelsiusInt()+"°",x_offset+itemWidth*iconRatio,bitmapHeight,paint);
             x_offset = x_offset - itemWidth;
             position--;
         }

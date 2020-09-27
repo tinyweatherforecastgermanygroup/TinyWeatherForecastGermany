@@ -29,7 +29,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.text.TextUtils;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class WeatherWarningContentProvider extends ContentProvider {
 
