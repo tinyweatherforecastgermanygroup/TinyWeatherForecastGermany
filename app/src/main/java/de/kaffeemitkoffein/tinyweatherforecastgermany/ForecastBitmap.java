@@ -1,5 +1,6 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.*;
 import android.os.Build;
