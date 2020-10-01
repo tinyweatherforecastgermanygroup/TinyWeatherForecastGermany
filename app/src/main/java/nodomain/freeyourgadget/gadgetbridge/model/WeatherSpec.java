@@ -36,6 +36,7 @@ public class WeatherSpec implements Parcelable {
             return new WeatherSpec[size];
         }
     };
+    public static final int VERSION = 2;
     public int timestamp;
     public String location;
     public int currentTemp;
@@ -54,15 +55,20 @@ public class WeatherSpec implements Parcelable {
     }
 
     protected WeatherSpec(Parcel in) {
-        timestamp = in.readInt();
-        location = in.readString();
-        currentTemp = in.readInt();
-        currentConditionCode = in.readInt();
-        currentCondition = in.readString();
-        currentHumidity = in.readInt();
-        todayMaxTemp = in.readInt();
-        todayMinTemp = in.readInt();
-        in.readList(forecasts, Forecast.class.getClassLoader());
+        int version = in.readInt();
+        if (version == VERSION) {
+            timestamp = in.readInt();
+            location = in.readString();
+            currentTemp = in.readInt();
+            currentConditionCode = in.readInt();
+            currentCondition = in.readString();
+            currentHumidity = in.readInt();
+            todayMaxTemp = in.readInt();
+            todayMinTemp = in.readInt();
+            windSpeed = in.readFloat();
+            windDirection = in.readInt();
+            in.readList(forecasts, Forecast.class.getClassLoader());
+        }
     }
 
     @Override
@@ -72,6 +78,7 @@ public class WeatherSpec implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(VERSION);
         dest.writeInt(timestamp);
         dest.writeString(location);
         dest.writeInt(currentTemp);
@@ -80,6 +87,8 @@ public class WeatherSpec implements Parcelable {
         dest.writeInt(currentHumidity);
         dest.writeInt(todayMaxTemp);
         dest.writeInt(todayMinTemp);
+        dest.writeFloat(windSpeed);
+        dest.writeInt(windDirection);
         dest.writeList(forecasts);
     }
 
