@@ -25,6 +25,7 @@ import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
+import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -155,7 +156,7 @@ public class MainActivity extends Activity {
         };
 
         stationsManager = new StationsManager(context);
-        loadStationsSpinner(weatherSettings);
+        loadStationsSpinner();
         loadStationsData();
 
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -218,7 +219,7 @@ public class MainActivity extends Activity {
             reset_favorites_imageview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    clearFavorites(weatherSettings);
+                    clearFavorites();
                     Toast.makeText(context,getApplicationContext().getResources().getString(R.string.favorites_cleared),Toast.LENGTH_LONG).show();
                 }
             });
@@ -236,7 +237,7 @@ public class MainActivity extends Activity {
         PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
         PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
         last_updateweathercall = Calendar.getInstance().getTimeInMillis();
-        addToSpinner(weatherSettings,station_description);
+        addToSpinner(station_description);
         // we do not get the forecast data here since this triggers the preference-changed-listener. This
         // listener takes care of the weather data update and updates widgets and gadgetbridge.
         // getWeatherForecast();
@@ -270,12 +271,11 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void loadStationsSpinner(final WeatherSettings weatherSettings) {
+    private void loadStationsSpinner() {
+        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         // spinner code
         spinner = (Spinner) findViewById(R.id.stations_spinner);
-        if (spinnerItems == null) {
-            spinnerItems = weatherSettings.getFavorites();
-        }
+        spinnerItems = weatherSettings.getFavorites();
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_spinner_item, spinnerItems);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
         spinner.setAdapter(spinnerArrayAdapter);
@@ -295,7 +295,7 @@ public class MainActivity extends Activity {
                     }
                 } else {
                     PrivateLog.log(context, Tag.MAIN, "Station from favorites not found!");
-                    loadStationsSpinner(weatherSettings);
+                    loadStationsSpinner();
                 }
                 super.handleItemSelected(adapterView, view, pos, l);
             }
@@ -304,7 +304,9 @@ public class MainActivity extends Activity {
         spinner.setOnTouchListener(spinnerListener);
     }
 
-    private void addToSpinner(WeatherSettings weatherSettings, String s){
+    private void addToSpinner(String s){
+        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+        spinnerItems = weatherSettings.getFavorites();
         ArrayList<String> new_spinner_items = new ArrayList<String>();
         new_spinner_items.add(s);
         for (int i=0; i<spinnerItems.size() && i<10; i++){
@@ -315,15 +317,16 @@ public class MainActivity extends Activity {
         }
         spinnerItems = new_spinner_items;
         weatherSettings.updateFavorites(spinnerItems);
-        loadStationsSpinner(weatherSettings);
+        loadStationsSpinner();
     }
 
-    private void clearFavorites(WeatherSettings weatherSettings){
+    private void clearFavorites(){
+        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         ArrayList<String> new_spinner_items = new ArrayList<String>();
         new_spinner_items.add(weatherSettings.station_description);
         spinnerItems = new_spinner_items;
         weatherSettings.updateFavorites(spinnerItems);
-        loadStationsSpinner(weatherSettings);
+        loadStationsSpinner();
     }
 
     public void loadStationsData(){
@@ -368,8 +371,14 @@ public class MainActivity extends Activity {
                 AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
                 String station_description = autoCompleteTextView.getText().toString();
                 Integer station_pos = stationsManager.getPositionFromDescription(station_description);
+                Log.v("TWF","Pressed icon, something selected: "+station_pos);
                 if (station_pos!=null){
-                    if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall+3000<Calendar.getInstance().getTimeInMillis())){
+                    Log.v("TWF","Selection is not null.");
+                    Log.v("TWF","Settings: "+weatherSettings.station_name);
+                    Log.v("TWF","Chosen  : "+stationsManager.getName(station_pos));
+                    // if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall+3000<Calendar.getInstance().getTimeInMillis())){
+                    if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
+                        Log.v("TWF","Selection is not the current station.");
                         newWeatherRegionSelected(weatherSettings,station_description);
                         }
                 } else {
@@ -395,6 +404,7 @@ public class MainActivity extends Activity {
                 autoCompleteTextView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 autoCompleteTextView.setOnItemClickListener(clickListener);
                 // anchor search icon to search
+                Log.v("TWF","anchored button.");
                 ImageView search_icon = (ImageView) findViewById(R.id.actionbar_search_icon);
                 search_icon.setOnClickListener(searchListener);
             }
