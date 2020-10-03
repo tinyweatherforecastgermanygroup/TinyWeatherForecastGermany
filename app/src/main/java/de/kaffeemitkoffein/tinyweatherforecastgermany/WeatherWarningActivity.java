@@ -54,6 +54,12 @@ public class WeatherWarningActivity extends Activity {
     static float MAP_HEIGHT;
 
     @Override
+    protected void onResume() {
+        updateWarningsIfNeeded();
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weatherwarning);
@@ -61,14 +67,7 @@ public class WeatherWarningActivity extends Activity {
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext());
-        if (areWarningsOutdated()){
-            PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings outdated, getting new ones.");
-            updateWarnings();
-        } else {
-            PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings not outdated, recycling.");
-            displayWarnings();
-            updateActionBarLabels();
-        }
+        updateWarningsIfNeeded();
         map_collapsed = (ImageView) findViewById(R.id.warningactivity_map_collapsed);
         // in layout w6600dp-land this element does not exist. This is the safest way to
         // limit collapse-function to portrait mode.
@@ -172,6 +171,17 @@ public class WeatherWarningActivity extends Activity {
     private boolean areWarningsOutdated(){
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         return weatherSettings.getWarningsLastUpdateTime() + weatherSettings.getWarningsCacheTimeInMillis() <= Calendar.getInstance().getTimeInMillis();
+    }
+
+    private void updateWarningsIfNeeded(){
+        if (areWarningsOutdated()){
+            PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings outdated, getting new ones.");
+            updateWarnings();
+        } else {
+            PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings not outdated, recycling.");
+            displayWarnings();
+            updateActionBarLabels();
+        }
     }
 
     private float getX(float x_coordinate){

@@ -1,0 +1,7 @@
+
+- weather warnings now also get updated properly when app goes foreground, but was not killed
+
+
+Version 0.50.3:
+- forecast intervals can now be set up: hourly, 6-hourly, mixed (first 24h hourly, 6-hourly afterwards)
+- optional bar that shows hourly forecast details in the 6-hourly forecast
