@@ -71,8 +71,6 @@ Credits
  -------
  
  The idea is to create a simple, floss and light-weight weather forecast app with a focus on home screen widgets that uses open data from the Deutscher Wetterdienst (DWD) and that does not track the users.
- 
- Tiny Weather Forecast Germany does not use any third-party libraries.
   
  FAQ
  ---
