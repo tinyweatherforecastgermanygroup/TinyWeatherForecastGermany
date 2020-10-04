@@ -673,6 +673,13 @@ the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
 -------------------------------------------------------------------------
+This program uses the Astronomy class,
+Copyright (C) 2010-2012, Helmut Lehmeyer <helmut.lehmeyer@gmail.com>,
+licensed under the GNU General Public License version 3.
+
+<https://lexikon.astronomie.info/java/sunmoon/progs/Astronomy.java>
+License: <http://www.gnu.org/licenses/>
+-------------------------------------------------------------------------
 This program uses the WeatherSpec class of Gadgetbridge,
 Copyright (C) 2016-2020 Andreas Shimokawa, Carsten Pfeiffer,
 Daniele Gobbetti, licensed under the GNU AFFRERO GENERAL PUBLIC LICENSE,

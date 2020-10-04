@@ -25,11 +25,15 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.util.Log;
+import org.astronomie.info.Astronomy;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public final class Weather {
 
     public final static double KelvinConstant = 273.15;
+    public final static int MILLIS_IN_HOUR = 60*60*1000;
 
     public static class WeatherLocation implements Comparator<WeatherLocation> {
         public String description;
@@ -568,7 +572,17 @@ public final class Weather {
             return j;
         }
 
-        public boolean isDaytime(){
+        public boolean isDaytime(WeatherLocation weatherLocation){
+            Log.v("TWF","Longitude: "+weatherLocation.longitude);
+            Log.v("TWF","Latitude : "+weatherLocation.latitude);
+            boolean result = Weather.isDaytime(weatherLocation,timestamp);
+            if (result){
+                Log.v("TWF","=> Daytime at "+timestamp);
+            } else {
+                Log.v("TWF","=> Night at "+timestamp);
+            }
+            return result;
+            /*
             // daytime = 6:00 - 19:00
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(timestamp);
@@ -577,6 +591,7 @@ public final class Weather {
                 return true;
             }
             return false;
+             */
         }
 
         public boolean calculateMissingCondition(){
@@ -682,7 +697,7 @@ public final class Weather {
         for (int i=0; i<size; i++) {
             if (data.get(i).timestamp + weatherSettings.getUpdateIntervalInMillis() < Calendar.getInstance().getTimeInMillis()){
                 // never remove the current location from the database, even if data is old
-                if (!data.get(i).name.toUpperCase().equals(weatherSettings.station_name.toUpperCase()))
+                if (!data.get(i).weatherLocation.name.toUpperCase().equals(weatherSettings.station_name.toUpperCase()))
                     deleted_count = deleted_count + deleteWeatherDataSet(context,i);
             }
         }
@@ -694,6 +709,61 @@ public final class Weather {
         if (dataArrayList != null){
             cleanDataBase(context,dataArrayList);
         }
+    }
+
+    private static double getJulianDay(){
+        Calendar c1 = Calendar.getInstance();
+        c1.clear();
+        c1.set(Calendar.YEAR,2020);
+        c1.set(Calendar.MONTH,0);
+        c1.set(Calendar.DAY_OF_MONTH,0);
+        c1.set(Calendar.HOUR,0);
+        c1.set(Calendar.MINUTE,0);
+        c1.set(Calendar.SECOND,0);
+        c1.set(Calendar.MILLISECOND,0);
+        double days_since_2020 = TimeUnit.DAYS.convert(Calendar.getInstance().getTimeInMillis() - c1.getTimeInMillis(),TimeUnit.MILLISECONDS);
+        Log.v("TWF","Days since 01.01.2020: "+days_since_2020);
+        double julian_days = 2458849 + days_since_2020; // 2458849.41667 = 01.01.2020 00:00:00
+        return julian_days;
+    }
+
+    public static boolean isDaytime(Weather.WeatherLocation weatherLocation, long time){
+        // determine timezone offset
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        int zone = ((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) /(1000*60*60));
+        Log.v("TWF","Zone      :"+zone);
+        Log.v("TWF","Julian day:"+getJulianDay());
+        Astronomy.Riseset riseset = Astronomy.sunRise(getJulianDay(),
+                69,
+                Math.toRadians(weatherLocation.longitude),
+                Math.toRadians(weatherLocation.latitude),
+                zone,false);
+        Log.v("TWF","Time UP   :"+getSunriseInUTC(riseset,time));
+        Log.v("TWF","Time      :"+time);
+        Log.v("TWF","Time Down :"+getSunsetInUTC(riseset,time));
+        Log.v("TWF","Sunrise   :"+riseset.rise);
+        Log.v("TWF","Sunset    :"+riseset.set);
+        // now compare in utc....
+        if ((time>=getSunriseInUTC(riseset,time)) && (time<getSunsetInUTC(riseset,time))){
+            return true;
+        }
+        return false;
+    }
+
+    public static long getSunsetInUTC(Astronomy.Riseset riseset, long time){
+        Calendar c = Calendar.getInstance();
+        // set calendar to midnight
+        c.setTimeInMillis(time);
+        c.set(Calendar.HOUR_OF_DAY,0);
+        return (long) (c.getTimeInMillis() + riseset.set * MILLIS_IN_HOUR);
+    }
+
+    public static long getSunriseInUTC(Astronomy.Riseset riseset, long time){
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(time);
+        // set calendar to midnight
+        c.set(Calendar.HOUR_OF_DAY,0);
+        return (long) (c.getTimeInMillis() + riseset.rise * MILLIS_IN_HOUR);
     }
 
 }

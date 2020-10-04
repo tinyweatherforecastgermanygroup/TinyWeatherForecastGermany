@@ -54,6 +54,8 @@ Credits
  
  This program uses PNPOLY - Point Inclusion in Polygon Test by W. Randolph Franklin (WRF), Copyright (c) 1970-2003, Wm. Randolph Franklin
  
+ This program uses the Astronomy class, Copyright (C) 2010-2012, Helmut Lehmeyer <helmut.lehmeyer@gmail.com>, licensed under the GNU General Public License version 3.
+ 
  PAT maps by Ian Macky <http://ian.macky.net/pat>.
  
  Contributors:

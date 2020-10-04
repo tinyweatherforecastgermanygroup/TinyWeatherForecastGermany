@@ -129,7 +129,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        // force a database access at the beginning to check for a needed database upgrade
+        WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);
@@ -371,14 +372,9 @@ public class MainActivity extends Activity {
                 AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
                 String station_description = autoCompleteTextView.getText().toString();
                 Integer station_pos = stationsManager.getPositionFromDescription(station_description);
-                Log.v("TWF","Pressed icon, something selected: "+station_pos);
                 if (station_pos!=null){
-                    Log.v("TWF","Selection is not null.");
-                    Log.v("TWF","Settings: "+weatherSettings.station_name);
-                    Log.v("TWF","Chosen  : "+stationsManager.getName(station_pos));
                     // if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall+3000<Calendar.getInstance().getTimeInMillis())){
                     if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
-                        Log.v("TWF","Selection is not the current station.");
                         newWeatherRegionSelected(weatherSettings,station_description);
                         }
                 } else {
@@ -404,7 +400,6 @@ public class MainActivity extends Activity {
                 autoCompleteTextView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
                 autoCompleteTextView.setOnItemClickListener(clickListener);
                 // anchor search icon to search
-                Log.v("TWF","anchored button.");
                 ImageView search_icon = (ImageView) findViewById(R.id.actionbar_search_icon);
                 search_icon.setOnClickListener(searchListener);
             }
@@ -521,10 +516,10 @@ public class MainActivity extends Activity {
 
     public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
         displayUpdateTime(weatherCard);
-        PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.name);
+        PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.weatherLocation.name);
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         // ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly,weatherCard.forecast1hourly);
-        ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly);
+        ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
         weatherList.setAdapter(forecastAdapter);
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
    }

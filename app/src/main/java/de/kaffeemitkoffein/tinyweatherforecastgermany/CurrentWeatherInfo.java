@@ -24,9 +24,7 @@ import java.util.ArrayList;
 public class CurrentWeatherInfo{
 
     public static final String EMPTY_TAG = "-";
-    String city;
-    String name;
-    long issue_timestamp;
+    Weather.WeatherLocation weatherLocation;
     long polling_time;
     Weather.WeatherInfo currentWeather;
     ArrayList<Weather.WeatherInfo> forecast1hourly;
@@ -90,8 +88,7 @@ public class CurrentWeatherInfo{
         if (rawWeatherInfo.elements==0){
             return;
         }
-        city = rawWeatherInfo.description;
-        name = rawWeatherInfo.name;
+        weatherLocation = rawWeatherInfo.weatherLocation;
         polling_time = rawWeatherInfo.polling_time;
         currentWeather = new Weather.WeatherInfo();
         currentWeather.setForecastType(Weather.WeatherInfo.ForecastType.CURRENT);
@@ -258,7 +255,7 @@ public class CurrentWeatherInfo{
     }
 
     public String getCity(){
-        return city;
+        return weatherLocation.description;
     }
 
 }

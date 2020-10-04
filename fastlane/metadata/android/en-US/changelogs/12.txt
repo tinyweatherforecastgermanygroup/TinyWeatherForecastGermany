@@ -1,6 +1,6 @@
 
 - weather warnings now also get updated properly when app goes foreground, but was not killed
-
+- fix station name not updating after reset of favorites
 
 Version 0.50.3:
 - forecast intervals can now be set up: hourly, 6-hourly, mixed (first 24h hourly, 6-hourly afterwards)

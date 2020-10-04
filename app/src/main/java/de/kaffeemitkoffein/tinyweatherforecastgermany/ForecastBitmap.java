@@ -14,6 +14,7 @@ public class ForecastBitmap{
 
     private Context context;
     private ArrayList<Weather.WeatherInfo> weatherInfos;
+    private Weather.WeatherLocation weatherLocation;
     private int bitmapWidth = 0;
     private int bitmapHeight = 0;
     private int anticipatedWidth = 0;
@@ -26,6 +27,7 @@ public class ForecastBitmap{
 
     static class Builder{
         private ArrayList<Weather.WeatherInfo> weatherInfos;
+        private Weather.WeatherLocation weatherLocation;
         private int bitmapWidth=0;
         private int bitmapHeight=0;
         private int anticipatedWidth =0;
@@ -34,6 +36,11 @@ public class ForecastBitmap{
 
         public Builder setWetherInfos(ArrayList<Weather.WeatherInfo> weatherInfos){
             this.weatherInfos = weatherInfos;
+            return this;
+        }
+
+        public Builder setWeatherLocation(Weather.WeatherLocation weatherLocation){
+            this.weatherLocation = weatherLocation;
             return this;
         }
 
@@ -70,6 +77,7 @@ public class ForecastBitmap{
     private ForecastBitmap(Context context, final Builder builder){
         this.context = context;
         this.weatherInfos =  builder.weatherInfos;
+        this.weatherLocation = builder.weatherLocation;
         this.anticipatedWidth = builder.anticipatedWidth;
         this.bitmapWidth = builder.bitmapWidth;
         this.bitmapHeight = builder.bitmapHeight;
@@ -103,7 +111,12 @@ public class ForecastBitmap{
         } else {
             condition = WeatherCodeContract.calculateCustomWeatherconditionFromData(weatherInfo);
         }
+        // display always daytime
         int resource = WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(),true);
+        // calculate daytime precisely if location is set
+        if (weatherLocation!=null){
+            resource = WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(), weatherInfo.isDaytime(this.weatherLocation));
+        }
         Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(),resource),
                 bitmapWidth,
                 bitmapHeight,

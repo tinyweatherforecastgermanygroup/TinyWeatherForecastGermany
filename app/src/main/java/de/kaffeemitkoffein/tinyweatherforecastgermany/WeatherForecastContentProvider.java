@@ -83,13 +83,16 @@ public class WeatherForecastContentProvider extends ContentProvider {
 
     public static class WeatherForecastDatabaseHelper extends SQLiteOpenHelper {
 
-        public static final int DATABASE_VERSION = 4;
+        public static final int DATABASE_VERSION = 7;
         public static final String DATABASE_NAME = "weatherforecast";
         public static final String TABLE_NAME = "tables";
         public static final String KEY_id="id";
         public static final String KEY_timetext="timetext";
         public static final String KEY_name="name";
         public static final String KEY_description="description";
+        public static final String KEY_longitude="longitude";
+        public static final String KEY_latitude="latitude";
+        public static final String KEY_altitude="altitude";
         public static final String KEY_polling_time="polling_time";
         public static final String KEY_elements="elements";
         public static final String KEY_timesteps="timesteps";
@@ -217,6 +220,9 @@ public class WeatherForecastContentProvider extends ContentProvider {
                 + KEY_timetext + " TEXT,"
                 + KEY_name + " TEXT,"
                 + KEY_description + " TEXT,"
+                + KEY_longitude + " REAL,"
+                + KEY_latitude + " REAL,"
+                + KEY_altitude + " REAL,"
                 + KEY_timesteps + " TEXT,"
                 + KEY_TTT + " TEXT,"
                 + KEY_E_TTT + " TEXT,"
@@ -351,7 +357,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int old_version, int new_version) {
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE);
             onCreate(sqLiteDatabase);
         }
@@ -370,8 +376,11 @@ public class WeatherForecastContentProvider extends ContentProvider {
         public ContentValues getContentValuesFromWeatherCard(RawWeatherInfo rawWeatherInfo){
             ContentValues contentValues = new ContentValues();
             contentValues.put(WeatherForecastDatabaseHelper.KEY_timetext,rawWeatherInfo.timetext);
-            contentValues.put(WeatherForecastDatabaseHelper.KEY_name,rawWeatherInfo.name);
-            contentValues.put(WeatherForecastDatabaseHelper.KEY_description,rawWeatherInfo.description);
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_name,rawWeatherInfo.weatherLocation.name);
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_description,rawWeatherInfo.weatherLocation.description);
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_longitude,rawWeatherInfo.weatherLocation.longitude);
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_latitude,rawWeatherInfo.weatherLocation.latitude);
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_altitude,rawWeatherInfo.weatherLocation.altitude);
             contentValues.put(WeatherForecastDatabaseHelper.KEY_timesteps,serializeString(rawWeatherInfo.timesteps));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_TTT,serializeString(rawWeatherInfo.TTT));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_E_TTT,serializeString(rawWeatherInfo.E_TTT));
@@ -503,8 +512,11 @@ public class WeatherForecastContentProvider extends ContentProvider {
                 RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
                 if (c.moveToFirst()){
                     rawWeatherInfo.timetext = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timetext));
-                    rawWeatherInfo.name = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_name));
-                    rawWeatherInfo.description = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_description));
+                    rawWeatherInfo.weatherLocation.name = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_name));
+                    rawWeatherInfo.weatherLocation.description = c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_description));
+                    rawWeatherInfo.weatherLocation.longitude = c.getDouble(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_longitude));
+                    rawWeatherInfo.weatherLocation.latitude = c.getDouble(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_latitude));
+                    rawWeatherInfo.weatherLocation.altitude = c.getDouble(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_altitude));
                     rawWeatherInfo.timesteps = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_timesteps)));
                     rawWeatherInfo.TTT = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_TTT)));
                     rawWeatherInfo.E_TTT = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_E_TTT)));
@@ -652,6 +664,16 @@ public class WeatherForecastContentProvider extends ContentProvider {
         Cursor cursor = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,null,null,null,null,null);
         return getWeatherCardFromCursor(cursor);
     }
+
+    public static int checkForDatabaseUpgrade(Context c) {
+        WeatherForecastDatabaseHelper weatherForecastDatabaseHelper = new WeatherForecastDatabaseHelper(c);
+        SQLiteDatabase sqLiteDatabase = weatherForecastDatabaseHelper.getWritableDatabase();
+        int i = sqLiteDatabase.getVersion();
+        sqLiteDatabase.close();
+        return i;
+        // this should have triggered the update.
+    }
+
 
 }
 

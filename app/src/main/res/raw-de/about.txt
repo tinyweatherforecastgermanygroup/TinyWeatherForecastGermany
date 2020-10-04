@@ -18,6 +18,8 @@ Dieses Programm benutzt die WeatherSpec Klasse von Gadgetbridge, Copyright © 20
 
 Dieses Programm benutzt PNPOLY - Point Inclusion in Polygon Test by W. Randolph Franklin (WRF), Copyright © 1970-2003, Wm. Randolph Franklin
 
+Dieses Programm benutzt die Astronomy Klasse, Copyright (C) 2010-2012, Helmut Lehmeyer <helmut.lehmeyer@gmail.com>, lizenziert unter der GNU General Public License Version 3.
+
 PAT maps by Ian Macky <http://ian.macky.net/pat>.
 
 Folgende Personen haben zum Projekt beigetragen: Andreas Shimokawa (bugfixes for the Gadgetbridge API), Izzy (Metadata-Verbesserungen)

@@ -21,6 +21,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -74,11 +75,11 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
             // init new RawWeatherInfo instance to fill with data
             RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
             // populate name from settings, as name is file-name in API but not repeated in the content
-            rawWeatherInfo.name = weatherLocation.name;
+            rawWeatherInfo.weatherLocation = this.weatherLocation;
             try {
                 DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
                 Document document = documentBuilder.parse(zipInputStream);
-            rawWeatherInfo.description = "?";
+            rawWeatherInfo.weatherLocation.description = "?";
             // get sensor description, usually city name. This should be equal to weatherLocation.description,
             // but we take it from the api to be sure nothing changed and the right city gets displayed!
 
@@ -87,7 +88,7 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
                 // should be only one, but we take the latest
                 Element placemark_element = (Element) placemark_nodes.item(i);
                 String description = placemark_element.getFirstChild().getNodeValue();
-                rawWeatherInfo.description = description;
+                rawWeatherInfo.weatherLocation.description = description;
             }
 
             NodeList timesteps = document.getElementsByTagName("dwd:TimeStep");

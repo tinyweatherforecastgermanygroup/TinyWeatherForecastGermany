@@ -37,14 +37,16 @@
 
         private ArrayList<Weather.WeatherInfo> weatherForecasts;
         private ArrayList<Weather.WeatherInfo> weatherForecasts_hourly;
+        private Weather.WeatherLocation weatherLocation;
         private Context context;
         private boolean display_bar;
         LayoutInflater layoutInflater;
 
-        public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly){
+        public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, Weather.WeatherLocation weatherLocation) {
             this.context = context;
             this.weatherForecasts = weatherForecasts;
             this.weatherForecasts_hourly = weatherForecasts_hourly;
+            this.weatherLocation = weatherLocation;
             WeatherSettings weatherSettings = new WeatherSettings(context);
             this.display_bar = weatherSettings.display_bar;
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -228,8 +230,8 @@
                 viewHolder.weather_icon = weather_icon;
             }
             if (weatherInfo.hasCondition()){
-                Integer weathercondition = weatherInfo.getCondition();
-                weather_icon.setImageBitmap(loadScaledIcon(new WeatherCodeContract().getWeatherConditionDrawableResource(weathercondition,weatherInfo.isDaytime()),SCALE_CONDITION_ICON));
+                int weathercondition = weatherInfo.getCondition();
+                weather_icon.setImageBitmap(loadScaledIcon(new WeatherCodeContract().getWeatherConditionDrawableResource(weathercondition,weatherInfo.isDaytime(weatherLocation)),SCALE_CONDITION_ICON));
             }
             // right column
             if (textView_temp == null){
@@ -288,6 +290,7 @@
                 ForecastBitmap forecastBitmap = new ForecastBitmap.Builder()
                         .setWetherInfos(baritems)
                         .setAnticipatedWidth(6)
+                        .setWeatherLocation(weatherLocation)
                         .create(context);
                 imageView_forecastBar.setImageBitmap(forecastBitmap.getForecastBitmap());
             } else {
