@@ -120,6 +120,10 @@ Credits
   
   Because the DWD provides this data this way. This cannot be changed. Please consider that this unit is more precise regarding the amount of hail and snow.
   
+  *Why does the app not display sunrise und sunset?*
+  
+  Sunrise and sunset cannot be reliably calculated with the formulas used for latitudes < -65° and > 65°. When this is the case, this feature is disabled.
+  
  Contributing
  ------------
 
