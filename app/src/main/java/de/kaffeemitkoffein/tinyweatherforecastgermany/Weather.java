@@ -25,7 +25,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.util.Log;
 import org.astronomie.info.Astronomy;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -573,25 +572,8 @@ public final class Weather {
         }
 
         public boolean isDaytime(WeatherLocation weatherLocation){
-            Log.v("TWF","Longitude: "+weatherLocation.longitude);
-            Log.v("TWF","Latitude : "+weatherLocation.latitude);
             boolean result = Weather.isDaytime(weatherLocation,timestamp);
-            if (result){
-                Log.v("TWF","=> Daytime at "+timestamp);
-            } else {
-                Log.v("TWF","=> Night at "+timestamp);
-            }
             return result;
-            /*
-            // daytime = 6:00 - 19:00
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(timestamp);
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            if ((hour>6) && (hour<=19)){
-                return true;
-            }
-            return false;
-             */
         }
 
         public boolean calculateMissingCondition(){
@@ -711,7 +693,7 @@ public final class Weather {
         }
     }
 
-    private static double getJulianDay(){
+    private static double getJulianDay(long time){
         Calendar c1 = Calendar.getInstance();
         c1.clear();
         c1.set(Calendar.YEAR,2020);
@@ -721,33 +703,58 @@ public final class Weather {
         c1.set(Calendar.MINUTE,0);
         c1.set(Calendar.SECOND,0);
         c1.set(Calendar.MILLISECOND,0);
-        double days_since_2020 = TimeUnit.DAYS.convert(Calendar.getInstance().getTimeInMillis() - c1.getTimeInMillis(),TimeUnit.MILLISECONDS);
-        Log.v("TWF","Days since 01.01.2020: "+days_since_2020);
+        double days_since_2020 = TimeUnit.DAYS.convert(time - c1.getTimeInMillis(),TimeUnit.MILLISECONDS);
+        //Log.v("TWF","Days since 01.01.2020: "+days_since_2020);
         double julian_days = 2458849 + days_since_2020; // 2458849.41667 = 01.01.2020 00:00:00
         return julian_days;
     }
 
     public static boolean isDaytime(Weather.WeatherLocation weatherLocation, long time){
-        // determine timezone offset
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        int zone = ((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) /(1000*60*60));
-        Log.v("TWF","Zone      :"+zone);
-        Log.v("TWF","Julian day:"+getJulianDay());
-        Astronomy.Riseset riseset = Astronomy.sunRise(getJulianDay(),
-                69,
-                Math.toRadians(weatherLocation.longitude),
-                Math.toRadians(weatherLocation.latitude),
-                zone,false);
-        Log.v("TWF","Time UP   :"+getSunriseInUTC(riseset,time));
-        Log.v("TWF","Time      :"+time);
-        Log.v("TWF","Time Down :"+getSunsetInUTC(riseset,time));
-        Log.v("TWF","Sunrise   :"+riseset.rise);
-        Log.v("TWF","Sunset    :"+riseset.set);
-        // now compare in utc....
-        if ((time>=getSunriseInUTC(riseset,time)) && (time<getSunsetInUTC(riseset,time))){
-            return true;
+        if (usePreciseIsDaytime(weatherLocation)){
+            // use precise calculation, as geo-location qualifies for use of formula
+            // determine timezone offset
+            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            int zone = ((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) /(1000*60*60));
+            //Log.v("TWF","Zone      :"+zone);
+            //Log.v("TWF","Julian day:"+getJulianDay());
+            Astronomy.Riseset riseset = Astronomy.sunRise(getJulianDay(time),
+                    69,
+                    Math.toRadians(weatherLocation.longitude),
+                    Math.toRadians(weatherLocation.latitude),
+                    zone,false);
+            //Log.v("TWF","Time UP   :"+getSunriseInUTC(riseset,time));
+            //Log.v("TWF","Time      :"+time);
+            //Log.v("TWF","Time Down :"+getSunsetInUTC(riseset,time));
+            //Log.v("TWF","Sunrise   :"+riseset.rise);
+            //Log.v("TWF","Sunset    :"+riseset.set);
+            // now compare in utc....
+            if ((time>=getSunriseInUTC(riseset,time)) && (time<getSunsetInUTC(riseset,time))){
+                return true;
+            }
+            return false;
+        } else {
+            // simple, static formula
+            // daytime = 6:00 - 19:00
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(time);
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            return (hour > 6) && (hour <= 19);
         }
-        return false;
+    }
+
+    /**
+     * Returns if a precise calculation of day/night time with the Astronomy class makes sense. It
+     * makes sense between a latutide of -65° to +65°, but not further south or north.
+     *
+     * @param weatherLocation
+     * @return
+     */
+
+    public static boolean usePreciseIsDaytime(WeatherLocation weatherLocation){
+        if ((weatherLocation.latitude<65) || (weatherLocation.latitude>65)){
+            return false;
+        }
+        return true;
     }
 
     public static long getSunsetInUTC(Astronomy.Riseset riseset, long time){
