@@ -22,12 +22,14 @@
     import android.content.Context;
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
     import android.widget.BaseAdapter;
     import android.widget.ImageView;
     import android.widget.TextView;
+    import org.astronomie.info.Astronomy;
 
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
@@ -73,6 +75,9 @@
             ImageView[] symbols;
             TextView[] labels;
             ImageView imageView_forecastBar;
+            TextView rise1;
+            TextView rise2;
+            ImageView sunset;
 
             public ViewHolder(){
                 symbols = new ImageView[6];
@@ -111,6 +116,9 @@
             ImageView imageView_forecastBar = null;
             ImageView[] symbols = new ImageView[6];
             TextView[] labels = new TextView[6];
+            TextView rise1 = null;
+            TextView rise2 = null;
+            ImageView sunset = null;
             if (view == null){
                 // view is not available from cache
                 newView = true;
@@ -130,6 +138,9 @@
                 symbols = viewHolder.symbols;
                 labels = viewHolder.labels;
                 imageView_forecastBar = viewHolder.imageView_forecastBar;
+                rise1 = viewHolder.rise1;
+                rise2 = viewHolder.rise2;
+                sunset = viewHolder.sunset;
             }
             // now fill the item with content
             if (textView_weathercondition==null){
@@ -296,6 +307,70 @@
             } else {
                 // hide forecast bar when not needed
                 imageView_forecastBar.setVisibility(View.GONE);
+            }
+            if (rise1 == null){
+                rise1 = (TextView) view.findViewById(R.id.fcitem_rise1);
+                viewHolder.rise1 = rise1;
+            }
+            if (rise2 == null){
+                rise2 = (TextView) view.findViewById(R.id.fcitem_rise2);
+                viewHolder.rise2 = rise2;
+            }
+            if (sunset == null){
+                sunset = (ImageView) view.findViewById(R.id.fcitem_sunet);
+                viewHolder.sunset = sunset;
+            }
+            if (Weather.usePreciseIsDaytime(weatherLocation)){
+                Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,weatherInfo.getTimestamp());
+                long time_interval_start = weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR;
+                if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6){
+                    time_interval_start = weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*6;
+                }
+                if (Weather.isSunriseInIntervalUTC(riseset,time_interval_start,weatherInfo.getTimestamp()) && (Weather.isSunsetInIntervalUTC(riseset,time_interval_start,weatherInfo.getTimestamp()))){
+                    // handle rare case that sunrise & sunset are in the same interval, then display sundrise & sunset
+                    rise1.setVisibility(View.VISIBLE);
+                    rise2.setVisibility(View.VISIBLE);
+                    sunset.setVisibility(View.VISIBLE);
+                    String string_sunrise = context.getResources().getString(R.string.sunrise);
+                    String string_sunset = context.getResources().getString(R.string.sunset);
+                    string_sunrise = string_sunrise+": "+Weather.toHourMinuteString(Weather.getSunriseInUTC(riseset,weatherInfo.getTimestamp()));
+                    string_sunset = string_sunset+": "+Weather.toHourMinuteString(Weather.getSunsetInUTC(riseset,weatherInfo.getTimestamp()));
+                    rise1.setText(string_sunrise);
+                    rise2.setText(string_sunset);
+                } else
+                if (Weather.isSunriseInIntervalUTC(riseset,time_interval_start,weatherInfo.getTimestamp())){
+                    // when runrise is in the interval, display twilight & sunrise
+                    rise1.setVisibility(View.VISIBLE);
+                    rise2.setVisibility(View.VISIBLE);
+                    sunset.setVisibility(View.VISIBLE);
+                    String string_sunrise = context.getResources().getString(R.string.sunrise);
+                    String string_twilight = context.getResources().getString(R.string.twilight);
+                    string_sunrise = string_sunrise+": "+Weather.toHourMinuteString(Weather.getSunriseInUTC(riseset,weatherInfo.getTimestamp()));
+                    string_twilight = string_twilight+": "+Weather.toHourMinuteString(Weather.getCivilTwilightMorning(riseset, weatherInfo.getTimestamp()));
+                    rise1.setText(string_twilight);
+                    rise2.setText(string_sunrise);
+                } else
+                if (Weather.isSunsetInIntervalUTC(riseset,time_interval_start,weatherInfo.getTimestamp())){
+                    // when sunset is in the interval, display sunset and twilight
+                    rise1.setVisibility(View.VISIBLE);
+                    rise2.setVisibility(View.VISIBLE);
+                    sunset.setVisibility(View.VISIBLE);
+                    String string_sunset = context.getResources().getString(R.string.sunset);
+                    string_sunset = string_sunset+": "+Weather.toHourMinuteString(Weather.getSunsetInUTC(riseset,weatherInfo.getTimestamp()));
+                    String string_twilight = context.getResources().getString(R.string.twilight);
+                    string_twilight = string_twilight+": "+Weather.toHourMinuteString(Weather.getCivilTwilightEvening(riseset, weatherInfo.getTimestamp()));
+                    rise1.setText(string_sunset);
+                    rise2.setText(string_twilight);
+                } else {
+                    rise1.setVisibility(View.INVISIBLE);
+                    rise2.setVisibility(View.INVISIBLE);
+                    sunset.setVisibility(View.INVISIBLE);
+                }
+            } else {
+                // hide if sunrise & sunset cannot be calculated (too far north or south)
+                rise1.setVisibility(View.INVISIBLE);
+                rise2.setVisibility(View.INVISIBLE);
+                sunset.setVisibility(View.INVISIBLE);
             }
             if (newView){
                 view.setTag(viewHolder);

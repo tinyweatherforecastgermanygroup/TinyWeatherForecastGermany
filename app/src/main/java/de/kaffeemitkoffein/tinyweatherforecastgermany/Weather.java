@@ -25,7 +25,10 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.util.Log;
 import org.astronomie.info.Astronomy;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +36,7 @@ public final class Weather {
 
     public final static double KelvinConstant = 273.15;
     public final static int MILLIS_IN_HOUR = 60*60*1000;
+    public final static int DELTA_T = 69;
 
     public static class WeatherLocation implements Comparator<WeatherLocation> {
         public String description;
@@ -593,18 +597,6 @@ public final class Weather {
 
     }
 
-    /**
-    public CurrentWeatherInfo getCurrentWeatherInfo(Context context){
-        WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-        RawWeatherInfo rawWeatherInfo = weatherForecastContentProvider.readWeatherForecast(context);
-        if (rawWeatherInfo!=null){
-            CurrentWeatherInfo currentWeatherInfo = new CurrentWeatherInfo(rawWeatherInfo);
-            return currentWeatherInfo;
-        }
-        return null;
-    }
-     **/
-
     public static final String[] SQL_COMMAND_QUERYALLCOLUMNS = {"SELECT * FROM " + WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME};
     public static final String[] SQL_PROJECTION = {"SELECT * FROM " + WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME};
 
@@ -709,19 +701,21 @@ public final class Weather {
         return julian_days;
     }
 
+    public static Astronomy.Riseset getRiseset(Weather.WeatherLocation weatherLocation, long time){
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        int zone = ((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) /(1000*60*60));
+        return Astronomy.sunRise(getJulianDay(time),
+                DELTA_T,
+                Math.toRadians(weatherLocation.longitude),
+                Math.toRadians(weatherLocation.latitude),
+                zone,false);
+    }
+
     public static boolean isDaytime(Weather.WeatherLocation weatherLocation, long time){
         if (usePreciseIsDaytime(weatherLocation)){
+            Astronomy.Riseset riseset = getRiseset(weatherLocation,time);
             // use precise calculation, as geo-location qualifies for use of formula
             // determine timezone offset
-            Calendar calendar = Calendar.getInstance(Locale.getDefault());
-            int zone = ((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) /(1000*60*60));
-            //Log.v("TWF","Zone      :"+zone);
-            //Log.v("TWF","Julian day:"+getJulianDay());
-            Astronomy.Riseset riseset = Astronomy.sunRise(getJulianDay(time),
-                    69,
-                    Math.toRadians(weatherLocation.longitude),
-                    Math.toRadians(weatherLocation.latitude),
-                    zone,false);
             //Log.v("TWF","Time UP   :"+getSunriseInUTC(riseset,time));
             //Log.v("TWF","Time      :"+time);
             //Log.v("TWF","Time Down :"+getSunsetInUTC(riseset,time));
@@ -751,7 +745,7 @@ public final class Weather {
      */
 
     public static boolean usePreciseIsDaytime(WeatherLocation weatherLocation){
-        if ((weatherLocation.latitude<65) || (weatherLocation.latitude>65)){
+        if ((weatherLocation.latitude<-65) || (weatherLocation.latitude>65)){
             return false;
         }
         return true;
@@ -762,6 +756,9 @@ public final class Weather {
         // set calendar to midnight
         c.setTimeInMillis(time);
         c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE,0);
+        c.set(Calendar.SECOND,0);
+        c.set(Calendar.MILLISECOND,0);
         return (long) (c.getTimeInMillis() + riseset.set * MILLIS_IN_HOUR);
     }
 
@@ -770,8 +767,61 @@ public final class Weather {
         c.setTimeInMillis(time);
         // set calendar to midnight
         c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE,0);
+        c.set(Calendar.SECOND,0);
+        c.set(Calendar.MILLISECOND,0);
         return (long) (c.getTimeInMillis() + riseset.rise * MILLIS_IN_HOUR);
     }
+
+    public static long getCivilTwilightMorning(Astronomy.Riseset riseset, long time){
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(time);
+        // set calendar to midnight
+        c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE,0);
+        c.set(Calendar.SECOND,0);
+        c.set(Calendar.MILLISECOND,0);
+        return (long) (c.getTimeInMillis() + riseset.cicilTwilightMorning*MILLIS_IN_HOUR);
+    }
+
+    public static long getCivilTwilightEvening(Astronomy.Riseset riseset, long time){
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(time);
+        // set calendar to midnight
+        c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE,0);
+        c.set(Calendar.SECOND,0);
+        c.set(Calendar.MILLISECOND,0);
+        return (long) (c.getTimeInMillis() + riseset.cicilTwilightEvening*MILLIS_IN_HOUR);
+    }
+
+    public static boolean isSunriseInIntervalUTC(Astronomy.Riseset riseset, long start, long stop){
+        long sunrise = getSunriseInUTC(riseset,(start+stop)/2);
+        //Log.v("TWF","Time start  :"+toHourMinuteString(start));
+        //Log.v("TWF","Time Sunrise:"+toHourMinuteString(sunrise));
+        //Log.v("TWF","Time stop   :"+toHourMinuteString(stop));
+        if ((sunrise>=start) && (sunrise<=stop)){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isSunsetInIntervalUTC(Astronomy.Riseset riseset, long start, long stop){
+        long sunset = getSunsetInUTC(riseset,(start+stop)/2);
+        //Log.v("TWF","Time start  :"+toHourMinuteString(start)+" "+start);
+        //Log.v("TWF","Time Sunset :"+toHourMinuteString(sunset)+" "+sunset);
+        //Log.v("TWF","Time stop   :"+toHourMinuteString(stop)+" "+stop);
+        if ((sunset>=start) && (sunset<=stop)){
+            return true;
+        }
+        return false;
+    }
+
+    public static String toHourMinuteString(long time){
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        return simpleDateFormat.format(new Date(time));
+    }
+
 
 }
 

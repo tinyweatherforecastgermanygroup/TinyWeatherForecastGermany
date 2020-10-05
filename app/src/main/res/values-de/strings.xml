@@ -134,6 +134,9 @@
     <string name="direction_southwest">SW</string>
     <string name="direction_northwest">NW</string>
     <string name="direction_calm">-</string>
+    <string name="sunset">Untergang</string>
+    <string name="sunrise">Aufgang</string>
+    <string name="twilight">Dämmerung</string>
     <string name="preference_feedback_title">Feedback</string>
     <string name="preference_feedback_summary">Dem Entwickler Feedback per Mail geben.</string>
     <string name="feedback_mail_subject">Feedback: TinyWeatherForecastGermany</string>
