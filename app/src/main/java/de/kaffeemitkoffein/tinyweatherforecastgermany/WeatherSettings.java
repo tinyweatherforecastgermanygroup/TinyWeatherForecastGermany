@@ -57,6 +57,7 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_DISABLE = "PREF_warnings_diable";
     public static final String PREF_WARNINGS_LAST_UPDATE_TIME = "PREF_warnings_last_update_time";
     public static final String PREF_IS_FIRST_APP_LAUNCH = "PREF_is_first_app_launch";
+
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
     public static final double PREF_STATION_LONGITUDE_DEFAULT = 9.98;
@@ -64,7 +65,7 @@ public class WeatherSettings {
     public static final double PREF_STATION_ALTITUDE_DEFAULT  = 8.0;
     public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
     public static final String PREF_DISPLAY_TYPE_DEFAULT = "3";
-    public static final boolean PREF_DISPLAY_BAR_DEFAULT = false;
+    public static final boolean PREF_DISPLAY_BAR_DEFAULT = true;
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
