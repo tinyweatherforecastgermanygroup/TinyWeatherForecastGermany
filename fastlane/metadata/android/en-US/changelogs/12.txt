@@ -1,7 +1,9 @@
 
 - weather warnings now also get updated properly when app goes foreground, but was not killed
-- fix station name not updating after reset of favorites
+- fixed station name not updating after reset of favorites
 - added precise day/night calculation and display of sunrise & sunset
+- added surface air pressure
+- added visibility
 - bar with hourly forecast is now displayed by default
 
 Version 0.50.3:

@@ -169,9 +169,9 @@ public final class Weather {
         double PPPP;        // Pa, surface pressure reduced
         double E_PPP;       // Pa, absolute error of PPPP
         double RadS3;       // kJ/m²; short wave radiation balance during last 3h
-        double RRad1;       // kJ/m²; global irradiance within the last hour
+        double RRad1;       // % (0..80); global irradiance within the last hour
         double Rad1h;       // kJ/m²; global irradiance
-        double RadL3;       // kJ/m²; long wave radiation balance during last 3h (UVA)
+        double RadL3;       // kJ/m²; long wave radiation balance during last 3h 
         double VV;          // m; visibility
         double D1;          // s; sunshine duration during last hour
         double SunD;        // s; sunshine duration during last day
@@ -209,6 +209,8 @@ public final class Weather {
         private Integer prob_freezing_rain;
         private Integer prob_fog;
         private Integer visibility;
+        private Integer prob_visibility_below_1km;
+        private Double pressure;
         private Double uv;
 
         final class ForecastType{
@@ -293,8 +295,16 @@ public final class Weather {
             this.prob_fog = prob_fog;
         }
 
+        public void setProbVisibilityBelow1km(Integer prob_visibility_below_1km){
+            this.prob_visibility_below_1km = prob_visibility_below_1km;
+        }
+
         public void setVisibility(Integer visibility){
             this.visibility = visibility;
+        }
+
+        public void setPressure(Double pressure){
+            this.pressure = pressure;
         }
 
         public void setUV(Double uv){
@@ -563,6 +573,23 @@ public final class Weather {
             return visibility;
         }
 
+        public boolean hasProbVisibilityBelow1km(){
+            return prob_visibility_below_1km!=null;
+        }
+
+        public int getProbVisibilityBelow1km(){
+            return prob_visibility_below_1km;
+        }
+
+        public boolean hasPressure() {
+            return pressure!=null;
+        }
+
+        public int getPressure(){
+            int p = pressure.intValue();
+            return p;
+        }
+
         public boolean hasUV(){
             if (uv!=null){
                 return true;
@@ -574,6 +601,7 @@ public final class Weather {
             int j = uv.intValue();
             return j;
         }
+
 
         public boolean isDaytime(WeatherLocation weatherLocation){
             boolean result = Weather.isDaytime(weatherLocation,timestamp);

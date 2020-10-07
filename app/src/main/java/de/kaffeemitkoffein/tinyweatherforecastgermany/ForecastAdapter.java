@@ -22,12 +22,12 @@
     import android.content.Context;
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
-    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
     import android.widget.BaseAdapter;
     import android.widget.ImageView;
+    import android.widget.LinearLayout;
     import android.widget.TextView;
     import org.astronomie.info.Astronomy;
 
@@ -42,6 +42,9 @@
         private Weather.WeatherLocation weatherLocation;
         private Context context;
         private boolean display_bar;
+        private boolean display_visibility;
+        private boolean display_pressure;
+        private boolean display_sunrise;
         LayoutInflater layoutInflater;
 
         public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, Weather.WeatherLocation weatherLocation) {
@@ -51,6 +54,9 @@
             this.weatherLocation = weatherLocation;
             WeatherSettings weatherSettings = new WeatherSettings(context);
             this.display_bar = weatherSettings.display_bar;
+            this.display_pressure = weatherSettings.display_pressure;
+            this.display_visibility = weatherSettings.display_visibility;
+            this.display_sunrise = weatherSettings.display_sunrise;
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -71,6 +77,8 @@
             TextView textView_temp;
             TextView textView_highlow;
             TextView textView_wind;
+            LinearLayout linearLayout_visibility;
+            TextView textview_visibility;
             ImageView imageView_windarrow;
             ImageView[] symbols;
             TextView[] labels;
@@ -112,6 +120,8 @@
             TextView textView_temp = null;
             TextView textView_highlow = null;
             TextView textView_wind = null;
+            LinearLayout linearLayout_visibility = null;
+            TextView textview_visibility = null;
             ImageView imageView_windarrow = null;
             ImageView imageView_forecastBar = null;
             ImageView[] symbols = new ImageView[6];
@@ -134,6 +144,8 @@
                 textView_temp = viewHolder.textView_temp;
                 textView_highlow = viewHolder.textView_highlow;
                 textView_wind = viewHolder.textView_wind;
+                linearLayout_visibility = viewHolder.linearLayout_visibility;
+                textview_visibility = viewHolder.textview_visibility;
                 imageView_windarrow = viewHolder.imageView_windarrow;
                 symbols = viewHolder.symbols;
                 labels = viewHolder.labels;
@@ -256,9 +268,14 @@
                 textView_highlow = (TextView) view.findViewById(R.id.fcitem_temperature_highlow);
                 viewHolder.textView_highlow = textView_highlow;
             }
+            String temp_low_high_pressure = "";
             if (weatherInfo.hasMinTemperature() && weatherInfo.hasMaxTemperature()){
-                textView_highlow.setText(weatherInfo.getMinTemperatureInCelsiusInt()+"° | "+weatherInfo.getMaxTemperatureInCelsiusInt()+"°");
+                temp_low_high_pressure = temp_low_high_pressure + weatherInfo.getMinTemperatureInCelsiusInt()+"° | "+weatherInfo.getMaxTemperatureInCelsiusInt()+"°";
             }
+            if (weatherInfo.hasPressure() && display_pressure){
+                temp_low_high_pressure = temp_low_high_pressure + ", "+weatherInfo.getPressure()/10+ " hPa";
+            }
+            textView_highlow.setText(temp_low_high_pressure);
             if (textView_wind == null){
                 textView_wind = (TextView) view.findViewById(R.id.fcitem_wind);
                 viewHolder.textView_wind = textView_wind;
@@ -277,6 +294,28 @@
             }
             if (weatherInfo.hasWindDirection()){
                 imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context));
+            }
+            if (linearLayout_visibility == null){
+                linearLayout_visibility = (LinearLayout) view.findViewById(R.id.fcitem_visibility_container);
+                viewHolder.linearLayout_visibility = linearLayout_visibility;
+            }
+            if (textview_visibility == null){
+                textview_visibility = (TextView) view.findViewById(R.id.fcitem_visibility);
+                viewHolder.textview_visibility = textview_visibility;
+            }
+            if (display_visibility){
+                String visibility = getVisibilityString(weatherInfo);
+                if (visibility!=null){
+                    linearLayout_visibility.setVisibility(View.VISIBLE);
+                    textview_visibility.setVisibility(View.VISIBLE);
+                    textview_visibility.setText(visibility);
+                } else {
+                    linearLayout_visibility.setVisibility(View.GONE);
+                    textview_visibility.setVisibility(View.GONE);
+                }
+            } else {
+                linearLayout_visibility.setVisibility(View.GONE);
+                textview_visibility.setVisibility(View.GONE);
             }
             if (imageView_forecastBar == null){
                 imageView_forecastBar = (ImageView) view.findViewById(R.id.fcitem_forecastbar);
@@ -320,7 +359,7 @@
                 sunset = (ImageView) view.findViewById(R.id.fcitem_sunet);
                 viewHolder.sunset = sunset;
             }
-            if (Weather.usePreciseIsDaytime(weatherLocation)){
+            if (Weather.usePreciseIsDaytime(weatherLocation) && display_sunrise){
                 Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,weatherInfo.getTimestamp());
                 long time_interval_start = weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR;
                 if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6){
@@ -429,4 +468,26 @@
             return position - 6; // display 6 hours before
         }
 
+        public static String getVisibilityString(Weather.WeatherInfo weatherInfo) {
+            if (!weatherInfo.hasVisibility() && !weatherInfo.hasProbVisibilityBelow1km()) {
+                return null;
+            } else {
+                String s = "";
+                if (weatherInfo.hasVisibility()) {
+                    int v = weatherInfo.getVisibility();
+                    if (v >= 10000) {
+                        s = s + v / 1000 + " km";
+                    } else {
+                        s = s + v + " m";
+                    }
+                }
+                if (weatherInfo.hasVisibility() && weatherInfo.hasProbVisibilityBelow1km()) {
+                    s = s + ", ";
+                }
+                if (weatherInfo.hasProbVisibilityBelow1km()) {
+                    s = s + "<1km: " + weatherInfo.getProbVisibilityBelow1km() + "%";
+                }
+                return s;
+            }
+        }
     }

@@ -292,6 +292,32 @@
                     android:layout_height="wrap_content"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/fcitem_visibility_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/fcitem_binocular"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="2dp"
+                    android:src="@mipmap/biocular">
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/fcitem_visibility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:layout_gravity="center"
+                    android:textColor="@color/widget_textcolor"/>
+            </LinearLayout>
+
+
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

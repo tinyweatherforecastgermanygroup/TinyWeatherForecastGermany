@@ -177,11 +177,6 @@ public class MainActivity extends Activity {
                     // update widgets unconditonally
                     WidgetRefresher.refresh(getApplicationContext());
                 }
-                // reload spinner, but only if geo coordinates setting was changed
-                if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
-                    stationsManager = new StationsManager(context);
-                    loadStationsData();
-                }
                 // show geo
                 if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
                     if (weatherCard != null){
@@ -192,8 +187,9 @@ public class MainActivity extends Activity {
                 if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
                     invalidateOptionsMenu();
                 }
-                // invalidate weather display beacuse the display type or bar visibility have changed
-                if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR))){
+                // invalidate weather display beacuse the display options have changed
+                if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
+                        (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) ){
                     displayWeatherForecast(weatherCard);
                 }
             }

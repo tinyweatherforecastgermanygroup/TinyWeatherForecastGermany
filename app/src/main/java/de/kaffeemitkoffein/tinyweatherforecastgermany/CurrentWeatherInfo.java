@@ -114,6 +114,8 @@ public class CurrentWeatherInfo{
         currentWeather.setProbSolidPrecipitation(getIntItem(rawWeatherInfo.wwS[current_weather_position]));
         currentWeather.setProbFreezingRain(getIntItem(rawWeatherInfo.wwF[current_weather_position]));
         currentWeather.setVisibility(getIntItem(rawWeatherInfo.VV[current_weather_position]));
+        currentWeather.setProbVisibilityBelow1km(getIntItem(rawWeatherInfo.VV10[current_weather_position]));
+        currentWeather.setPressure(getDoubleItem(rawWeatherInfo.PPPP[current_weather_position]));
         currentWeather.setUV(getDoubleItem(rawWeatherInfo.RRad1[current_weather_position]));
         if (!currentWeather.hasCondition()){
             currentWeather.calculateMissingCondition();
@@ -141,6 +143,8 @@ public class CurrentWeatherInfo{
             wi.setProbSolidPrecipitation(getIntItem(rawWeatherInfo.wwS[index]));
             wi.setProbFreezingRain(getIntItem(rawWeatherInfo.wwF[index]));
             wi.setVisibility(getIntItem(rawWeatherInfo.VV[index]));
+            wi.setProbVisibilityBelow1km(getIntItem(rawWeatherInfo.VV10[index]));
+            wi.setPressure(getDoubleItem(rawWeatherInfo.PPPP[index]));
             wi.setUV(getDoubleItem(rawWeatherInfo.RRad1[index]));
             if (!currentWeather.hasCondition()){
                 currentWeather.calculateMissingCondition();
@@ -199,6 +203,8 @@ public class CurrentWeatherInfo{
                     wi.setProbFreezingRain(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS, index -5,index));
                 }
                 wi.setVisibility(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.VV, index - 5, index));
+                wi.setProbVisibilityBelow1km(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.VV10,index - 5, index));
+                wi.setPressure(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.PPPP, index - 5, index));
                 wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1, index - 5, index));
                 if (!wi.hasCondition()){
                     wi.calculateMissingCondition();
@@ -245,6 +251,8 @@ public class CurrentWeatherInfo{
                 wi.setProbSolidPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS,index-23,index));
                 wi.setProbFreezingRain(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwF,index-23,index));
                 wi.setVisibility(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.VV,index-23,index));
+                wi.setProbVisibilityBelow1km(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.VV10,index-23, index));
+                wi.setPressure(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1,index-23,index));
                 wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1,index-23,index));
                 if (!wi.hasCondition()){
                     wi.calculateMissingCondition();
