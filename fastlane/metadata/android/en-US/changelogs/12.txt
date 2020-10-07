@@ -1,11 +1,13 @@
 
-- weather warnings now also get updated properly when app goes foreground, but was not killed
+- weather warnings now also get updated properly when app goes foreground again
 - fixed station name not updating after reset of favorites
 - added precise day/night calculation and display of sunrise & sunset
+- fixed crashes after update from older app versions
 - added surface air pressure
 - added visibility
 - bar with hourly forecast is now displayed by default
+- extended options to customize display
 
-Version 0.50.3:
-- forecast intervals can now be set up: hourly, 6-hourly, mixed (first 24h hourly, 6-hourly afterwards)
-- optional bar that shows hourly forecast details in the 6-hourly forecast
+- Changelog of version 0.50.3 was not displayed properly inside the app:
+   - forecast intervals can now be set up: hourly, 6-hourly, mixed (first 24h hourly, 6-hourly afterwards)
+   - optional bar that shows hourly forecast details in the 6-hourly forecast

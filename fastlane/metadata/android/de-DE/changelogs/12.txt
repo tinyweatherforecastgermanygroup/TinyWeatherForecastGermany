@@ -1,5 +1,3 @@
-What is new in this version ([VERSION]):
-
 - Wetterwarnungen werden nun regelkonform aktualisiert, wenn die App wieder in den Vordergrund geht
 - behoben: Name der Wetterstation wurde nach einem Zurücksetzen der Favoriten nicht korrekt dargestellt
 - prezise Tag/Nacht-Berechnung und Anzeige des Sonnenaufgangs und Untergangs hinzu gefügt
@@ -12,4 +10,3 @@ What is new in this version ([VERSION]):
 - Neuerungen der Version 0.50.3 wurden in der App nicht korrekt dargestellt:
    - die Vorhersage-Intervalle können nun frei gewählt werden: stündlich, 6-stündlich, gemischt (erste 24 Stunden stündlich, danach 6-stündlich).
    - bei 6-stündiger Vorhersage optionaler Balken, der eine stundengenaue Vorhersage anzeigt
-
