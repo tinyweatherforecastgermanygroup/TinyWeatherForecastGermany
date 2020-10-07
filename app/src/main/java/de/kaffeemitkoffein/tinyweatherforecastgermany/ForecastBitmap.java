@@ -168,13 +168,13 @@ public class ForecastBitmap{
             Weather.WeatherInfo wi = weatherInfos.get(j);
             if (wi.hasProbPrecipitation()){
                 float pp = (float) wi.getProbPrecipitation()/100;
-                y_polygon_rain[j] = (float) (bitmapHeight - pp*bitmapHeight);
+                y_polygon_rain[j] = (bitmapHeight - pp*bitmapHeight);
             } else {
                 y_polygon_rain[j] = bitmapHeight;
             }
             if (wi.hasClouds()){
                 float pc = (float) wi.getClouds()/100;
-                y_polygon_clouds[j] = (float) (bitmapHeight - pc*bitmapHeight);
+                y_polygon_clouds[j] = (bitmapHeight - pc*bitmapHeight);
             } else {
                 y_polygon_clouds[j] = bitmapHeight;
             }
@@ -221,6 +221,7 @@ public class ForecastBitmap{
         return bitmap;
     }
 
+    @SuppressWarnings("deprecation")
     public int getColorFromResource(int id){
         int color;
         if (Build.VERSION.SDK_INT<23){

@@ -160,7 +160,7 @@
             // left column
             if (weatherInfo.hasCondition()){
                 Integer weathercondition = weatherInfo.getCondition();
-                textView_weathercondition.setText(new WeatherCodeContract().getWeatherConditionText(context,weathercondition));
+                textView_weathercondition.setText(WeatherCodeContract.getWeatherConditionText(context,weathercondition));
             }
             String precipitation_string = "";
             if (weatherInfo.hasProbPrecipitation()){
@@ -171,7 +171,7 @@
             }
             if (precipitation_string.equals("")){
                 if (iconbar1_view == null){
-                    iconbar1_view = (View) view.findViewById(R.id.fcitem_iconbar1);
+                    iconbar1_view = view.findViewById(R.id.fcitem_iconbar1);
                     viewHolder.iconbar1_view = iconbar1_view;
                 }
                 iconbar1_view.setVisibility(View.INVISIBLE);
@@ -242,7 +242,7 @@
             }
             if (weatherInfo.hasCondition()){
                 int weathercondition = weatherInfo.getCondition();
-                weather_icon.setImageBitmap(loadScaledIcon(new WeatherCodeContract().getWeatherConditionDrawableResource(weathercondition,weatherInfo.isDaytime(weatherLocation)),SCALE_CONDITION_ICON));
+                weather_icon.setImageBitmap(loadScaledIcon(WeatherCodeContract.getWeatherConditionDrawableResource(weathercondition,weatherInfo.isDaytime(weatherLocation)),SCALE_CONDITION_ICON));
             }
             // right column
             if (textView_temp == null){

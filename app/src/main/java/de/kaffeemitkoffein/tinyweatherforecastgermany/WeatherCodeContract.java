@@ -208,7 +208,7 @@ public final class WeatherCodeContract {
         public final static int UNKNOWN = 3200;
     }
 
-    public int translateToOpenWeatherCode(int code){
+    public static int translateToOpenWeatherCode(int code){
         int result = OpenWeatherContract.UNKNOWN;
         switch (code) {
             case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:
@@ -342,6 +342,7 @@ public final class WeatherCodeContract {
                 } else {
                     result = R.mipmap.extremely_heavy_showers_partly_night;
                 }
+                break;
             case MODERATE_OR_HEAVY_RAIN_SHOWERS:
                 if (daytime) {
                     result = R.mipmap.showers_partly;
@@ -424,7 +425,7 @@ public final class WeatherCodeContract {
         return result;
     }
 
-    public String getWeatherConditionText(Context context, int weathercondition) {
+    public static String getWeatherConditionText(Context context, int weathercondition) {
         int resource = getWeatherConditionTextResource(weathercondition);
         String s = context.getResources().getString(resource);
         return s;

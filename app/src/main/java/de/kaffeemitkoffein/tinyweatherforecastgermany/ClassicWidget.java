@@ -99,8 +99,8 @@ public class ClassicWidget extends AppWidgetProvider {
         remoteViews.setTextViewText(R.id.classicwidget_locationtext,weatherCard.getCity());
         if (weatherCard.currentWeather.hasCondition()){
             int weathercondition = weatherCard.currentWeather.getCondition();
-            remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,new WeatherCodeContract().getWeatherConditionText(c,weathercondition));
-            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,new WeatherCodeContract().getWeatherConditionDrawableResource(weathercondition,weatherCard.currentWeather.isDaytime(weatherCard.weatherLocation)));
+            remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,WeatherCodeContract.getWeatherConditionText(c,weathercondition));
+            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,WeatherCodeContract.getWeatherConditionDrawableResource(weathercondition,weatherCard.currentWeather.isDaytime(weatherCard.weatherLocation)));
         } else {
             remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,NOT_AVAILABLE);
             remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,R.mipmap.not_available);
