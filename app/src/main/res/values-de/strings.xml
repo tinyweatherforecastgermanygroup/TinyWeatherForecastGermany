@@ -95,7 +95,7 @@
     <string name="preference_displayforecastbar_summary">Zeigte Balken mit stündlichen Daten in der 6-stündlichen Vorhersage.</string>
     <string name="preference_displaypressure_title">Luftdruck</string>
     <string name="preference_displaypressure_summary">Zeige bodennahen Luftdruck in der Vorhersage.</string>
-    <string name="preference_displayvisibility_title">ZSichtweite</string>
+    <string name="preference_displayvisibility_title">Sichtweite</string>
     <string name="preference_displayvisibility_summary">Zeige Sichtweite in der Vorhersage.</string>
     <string name="preference_displaysunrise_title">Sonnerauf- und Untergang</string>
     <string name="preference_displaysunrise_summary">Zeige Sonnenaufgang, Sonnenuntergang und Zeit der Dämmerung in der Vorhersage.</string>
