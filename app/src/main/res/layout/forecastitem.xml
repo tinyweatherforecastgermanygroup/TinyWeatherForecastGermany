@@ -317,7 +317,6 @@
                     android:textColor="@color/widget_textcolor"/>
             </LinearLayout>
 
-
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
