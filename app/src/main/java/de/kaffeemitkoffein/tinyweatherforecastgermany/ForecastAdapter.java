@@ -273,7 +273,7 @@
                 temp_low_high_pressure = temp_low_high_pressure + weatherInfo.getMinTemperatureInCelsiusInt()+"° | "+weatherInfo.getMaxTemperatureInCelsiusInt()+"°";
             }
             if (weatherInfo.hasPressure() && display_pressure){
-                temp_low_high_pressure = temp_low_high_pressure + ", "+weatherInfo.getPressure()/10+ " hPa";
+                temp_low_high_pressure = temp_low_high_pressure + ", "+weatherInfo.getPressure()/100+ " hPa";
             }
             textView_highlow.setText(temp_low_high_pressure);
             if (textView_wind == null){
