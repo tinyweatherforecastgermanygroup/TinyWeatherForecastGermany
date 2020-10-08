@@ -118,6 +118,7 @@ public class RawWeatherInfo{
     String[] ww;             // significant weather
     String[] ww3;            // significant weather at last 3h
     String[] W1W2;           // weather during last 6h
+    String[] WPc11;          // optional significant weather (highest priority) during last hour
     String[] WPc31;          // optional significant weather (highest priority) during last 3h
     String[] WPc61;          // optional significant weather (highest priority) during last 6h
     String[] WPch1;          // optional significant weather (highest priority) during last 12h
@@ -161,7 +162,7 @@ public class RawWeatherInfo{
                           String[] RR1u1, String[] R600, String[] Rh00, String[] R602, String[] Rh02, String[] Rd02, String[] R610, String[] Rh10, String[] R650, String[] Rh50, String[] Rd00,
                           String[] Rd10, String[] Rd50, String[] wwPd, String[] DRR1, String[] wwZ, String[] wwZ6, String[] wwZh, String[] wwD, String[] wwD6, String[] wwDh, String[] wwC, String[] wwC6,
                           String[] wwCh, String[] wwT, String[] wwT6, String[] wwTh, String[] wwTd, String[] wwL, String[] wwL6, String[] wwLh, String[] wwS, String[] wwS6, String[] wwSh,
-                          String[] wwF, String[] wwF6, String[] wwFh, String[] wwP, String[] wwP6, String[] wwPh, String[] VV10, String[] ww, String[] ww3, String[] W1W2, String[] WPc31,
+                          String[] wwF, String[] wwF6, String[] wwFh, String[] wwP, String[] wwP6, String[] wwPh, String[] VV10, String[] ww, String[] ww3, String[] W1W2, String[] WPc11, String[] WPc31,
                           String[] WPc61, String[] WPch1, String[] WPcd1, String[] N, String[] N05, String[] Nl, String[] Nm, String[] Nh, String[] Nlm, String[] H_BsC, String[] PPPP, String[] E_PPP,
                           String[] RadS3, String[] RRad1, String[] Rad1h, String[] RadL3, String[] VV, String[] D1, String[] SunD, String[] SunD3, String[] RSunD, String[] PSd00, String[] PSd30, String[] PSd60,
                           String[] wwM, String[] wwM6, String[] wwMh, String[] wwMd, String[] PEvap){
@@ -175,7 +176,7 @@ public class RawWeatherInfo{
         this.RR1u1=RR1u1; this.R600=R600;this.Rh00=Rh00;this.R602=R602;this.Rh02=Rh02;this.Rd02=Rd02;this.R610=R610;this.Rh10=Rh10;this.R650=R650;this.Rh50=Rh50;this.Rd00=Rd00;
         this.Rd10=Rd10;this.Rd50=Rd50;this.wwPd=wwPd;this.DRR1=DRR1;this.wwZ=wwZ;this.wwZ6=wwZ6;this.wwZh=wwZh;this.wwD=wwD;this.wwD6=wwD6;this.wwDh=wwDh;this.wwC=wwC;this.wwC6=wwC6;this.wwCh=wwCh;
         this.wwT=wwT;this.wwT6=wwT6;this.wwTh=wwTh;this.wwTd=wwTd;this.wwL=wwL;this.wwL6=wwL6;this.wwLh=wwLh;this.wwS=wwS;this.wwS6=wwS6;this.wwSh=wwSh;this.wwF=wwF;this.wwF6=wwF6;
-        this.wwFh=wwFh;this.wwP=wwP;this.wwP6=wwP6;this.wwPh=wwPh;this.VV10=VV10;this.ww=ww;this.ww3=ww3;this.W1W2=W1W2;this.WPc31=WPc31;this.WPc61=WPc61;this.WPch1=WPch1;this.WPcd1=WPcd1;
+        this.wwFh=wwFh;this.wwP=wwP;this.wwP6=wwP6;this.wwPh=wwPh;this.VV10=VV10;this.ww=ww;this.ww3=ww3;this.W1W2=W1W2; this.WPc11=WPc11; this.WPc31=WPc31;this.WPc61=WPc61;this.WPch1=WPch1;this.WPcd1=WPcd1;
         this.N=N;this.N05=N05;this.Nl=Nl;this.Nm=Nm;this.Nh=Nh;this.Nlm=Nlm;this.H_BsC=H_BsC;this.PPPP=PPPP;this.E_PPP=E_PPP;this.RadS3=RadS3;this.RRad1=RRad1;this.Rad1h=Rad1h;this.RadL3=RadL3;
         this.VV=VV;this.D1=D1;this.SunD=SunD;this.SunD3=SunD3;this.RSunD=RSunD;this.PSd00=PSd00;this.PSd30=PSd30;this.PSd60=PSd60;this.wwM=wwM;this.wwM6=wwM6;this.wwMh=wwMh;this.wwMd=wwMd;this.PEvap=PEvap;
     }
@@ -184,7 +185,7 @@ public class RawWeatherInfo{
         return new RawWeatherInfo(polling_time,elements,weatherLocation,timetext, timesteps, TTT, E_TTT, T5cm, Td, E_Td, Tx, Tn, TM, TG, DD, E_DD, FF, E_FF, FX1, FX3, FXh, FXh25, FXh40, FXh55, FX625, FX640, FX655, RR1c,
                 RRL1c, RR3, RR6, RR3c, RR6c, RRhc, RRdc, RRS1c, RRS3c, R101, R102, R103, R105, R107, R110, R120, R130, R150, RR1o1, RR1w1, RR1u1, R600, Rh00, R602, Rh02, Rd02, R610,
                 Rh10, R650, Rh50, Rd00, Rd10, Rd50, wwPd, DRR1, wwZ, wwZ6, wwZh, wwD, wwD6, wwDh, wwC, wwC6, wwCh, wwT, wwT6, wwTh, wwTd, wwL, wwL6, wwLh, wwS, wwS6, wwSh, wwF, wwF6,
-                wwFh, wwP, wwP6, wwPh, VV10, ww, ww3, W1W2, WPc31, WPc61, WPch1, WPcd1, N, N05, Nl, Nm, Nh, Nlm, H_BsC, PPPP, E_PPP, RadS3, RRad1, Rad1h, RadL3, VV, D1, SunD, SunD3,
+                wwFh, wwP, wwP6, wwPh, VV10, ww, ww3, W1W2, WPc11, WPc31, WPc61, WPch1, WPcd1, N, N05, Nl, Nm, Nh, Nlm, H_BsC, PPPP, E_PPP, RadS3, RRad1, Rad1h, RadL3, VV, D1, SunD, SunD3,
                 RSunD, PSd00, PSd30, PSd60, wwM, wwM6, wwMh, wwMd, PEvap);
     }
 
@@ -206,7 +207,8 @@ public class RawWeatherInfo{
         wwDh = new String[DATA_SIZE];wwC = new String[DATA_SIZE];wwC6 = new String[DATA_SIZE];wwCh = new String[DATA_SIZE];wwT = new String[DATA_SIZE];wwT6 = new String[DATA_SIZE];wwTh = new String[DATA_SIZE];
         wwTd = new String[DATA_SIZE];wwL = new String[DATA_SIZE];wwL6 = new String[DATA_SIZE];wwLh = new String[DATA_SIZE];wwS = new String[DATA_SIZE];wwS6 = new String[DATA_SIZE];
         wwSh = new String[DATA_SIZE];wwF = new String[DATA_SIZE];wwF6 = new String[DATA_SIZE];wwFh = new String[DATA_SIZE];wwP = new String[DATA_SIZE];wwP6 = new String[DATA_SIZE];
-        wwPh = new String[DATA_SIZE];VV10 = new String[DATA_SIZE];ww = new String[DATA_SIZE];ww3 = new String[DATA_SIZE];W1W2 = new String[DATA_SIZE];WPc31 = new String[DATA_SIZE];
+        wwPh = new String[DATA_SIZE];VV10 = new String[DATA_SIZE];ww = new String[DATA_SIZE];ww3 = new String[DATA_SIZE];W1W2 = new String[DATA_SIZE];
+        WPc11 = new String[DATA_SIZE]; WPc31 = new String[DATA_SIZE];
         WPc61 = new String[DATA_SIZE];WPch1 = new String[DATA_SIZE];WPcd1 = new String[DATA_SIZE];N = new String[DATA_SIZE];N05 = new String[DATA_SIZE];Nl = new String[DATA_SIZE];
         Nm = new String[DATA_SIZE];Nh = new String[DATA_SIZE];Nlm = new String[DATA_SIZE];H_BsC = new String[DATA_SIZE];PPPP = new String[DATA_SIZE];E_PPP = new String[DATA_SIZE];
         RadS3 = new String[DATA_SIZE];RRad1 = new String[DATA_SIZE];Rad1h = new String[DATA_SIZE];RadL3 = new String[DATA_SIZE];VV = new String[DATA_SIZE];D1 = new String[DATA_SIZE];

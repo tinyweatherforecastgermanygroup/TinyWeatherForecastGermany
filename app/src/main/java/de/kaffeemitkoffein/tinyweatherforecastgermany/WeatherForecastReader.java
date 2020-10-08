@@ -189,6 +189,7 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
                     case "ww": rawWeatherInfo.ww = assigntoRaw(element); break;
                     case "ww3": rawWeatherInfo.ww3 = assigntoRaw(element); break;
                     case "W1W2": rawWeatherInfo.W1W2 = assigntoRaw(element); break;
+                    case "WPc11": rawWeatherInfo.WPc11 = assigntoRaw(element); break;
                     case "WPc31": rawWeatherInfo.WPc31 = assigntoRaw(element); break;
                     case "WPc61": rawWeatherInfo.WPc61 = assigntoRaw(element); break;
                     case "WPch1": rawWeatherInfo.WPch1 = assigntoRaw(element); break;

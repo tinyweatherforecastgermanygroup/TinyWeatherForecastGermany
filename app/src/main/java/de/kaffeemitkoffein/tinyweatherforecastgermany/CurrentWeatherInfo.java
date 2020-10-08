@@ -98,7 +98,11 @@ public class CurrentWeatherInfo{
         int current_weather_position = rawWeatherInfo.getCurrentForecastPosition();
         int next_midnight_position   = rawWeatherInfo.getNextMidnightAfterCurrentForecastPosition();
         currentWeather.setTimestamp(timesteps[current_weather_position]);
-        currentWeather.setConditionCode(getIntItem(rawWeatherInfo.ww[current_weather_position]));
+        // try significant weather, highest priority first
+        currentWeather.setConditionCode(getIntItem((rawWeatherInfo.WPc11[current_weather_position])));
+        if (!currentWeather.hasCondition()){
+            currentWeather.setConditionCode(getIntItem(rawWeatherInfo.ww[current_weather_position]));
+        }
         currentWeather.setClouds(getIntItem(rawWeatherInfo.N[current_weather_position]));
         currentWeather.setTemperature(getDoubleItem(rawWeatherInfo.TTT[current_weather_position]));
         currentWeather.setLowTemperature(rawWeatherInfo.getMinTemperature(current_weather_position,next_midnight_position));
@@ -127,7 +131,11 @@ public class CurrentWeatherInfo{
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.ONE_HOUR);
             wi.setTimestamp(timesteps[index]);
-            wi.setConditionCode(getIntItem(rawWeatherInfo.ww[index]));
+            // try significant weather, highest priority first
+            wi.setConditionCode(getIntItem((rawWeatherInfo.WPc11[index])));
+            if (!wi.hasCondition()){
+                wi.setConditionCode(getIntItem(rawWeatherInfo.ww[index]));
+            }
             wi.setClouds(getIntItem(rawWeatherInfo.N[index]));
             wi.setTemperature(getDoubleItem(rawWeatherInfo.TTT[index]));
             wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));

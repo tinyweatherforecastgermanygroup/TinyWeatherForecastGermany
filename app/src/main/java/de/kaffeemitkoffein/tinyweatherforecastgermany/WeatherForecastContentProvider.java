@@ -83,7 +83,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
 
     public static class WeatherForecastDatabaseHelper extends SQLiteOpenHelper {
 
-        public static final int DATABASE_VERSION = 7;
+        public static final int DATABASE_VERSION = 8;
         public static final String DATABASE_NAME = "weatherforecast";
         public static final String TABLE_NAME = "tables";
         public static final String KEY_id="id";
@@ -183,6 +183,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
         public static final String KEY_ww="ww";
         public static final String KEY_ww3="ww3";
         public static final String KEY_W1W2="W1W2";
+        public static final String KEY_WPc11="WPc11";
         public static final String KEY_WPc31="WPc31";
         public static final String KEY_WPc61="WPc61";
         public static final String KEY_WPch1="WPch1";
@@ -311,6 +312,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
                 + KEY_ww + " TEXT,"
                 + KEY_ww3 + " TEXT,"
                 + KEY_W1W2 + " TEXT,"
+                + KEY_WPc11 + " TEXT,"
                 + KEY_WPc31 + " TEXT,"
                 + KEY_WPc61 + " TEXT,"
                 + KEY_WPch1 + " TEXT,"
@@ -469,6 +471,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
             contentValues.put(WeatherForecastDatabaseHelper.KEY_ww,serializeString(rawWeatherInfo.ww));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_ww3,serializeString(rawWeatherInfo.ww3));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_W1W2,serializeString(rawWeatherInfo.W1W2));
+            contentValues.put(WeatherForecastDatabaseHelper.KEY_WPc11,serializeString(rawWeatherInfo.WPc11));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_WPc31,serializeString(rawWeatherInfo.WPc31));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_WPc61,serializeString(rawWeatherInfo.WPc61));
             contentValues.put(WeatherForecastDatabaseHelper.KEY_WPch1,serializeString(rawWeatherInfo.WPch1));
@@ -605,6 +608,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
                     rawWeatherInfo.ww = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_ww)));
                     rawWeatherInfo.ww3 = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_ww3)));
                     rawWeatherInfo.W1W2 = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_W1W2)));
+                    rawWeatherInfo.WPc11 = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_WPc11)));
                     rawWeatherInfo.WPc31 = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_WPc31)));
                     rawWeatherInfo.WPc61 = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_WPc61)));
                     rawWeatherInfo.WPch1 = deSerializeString(c.getString(c.getColumnIndex(WeatherForecastDatabaseHelper.KEY_WPch1)));
@@ -647,8 +651,6 @@ public class WeatherForecastContentProvider extends ContentProvider {
 
     public int writeWeatherForecast(Context c,RawWeatherInfo weatherCard){
         ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
-        // contentResolver.delete(WeatherForecastContentProvider.URI_SENSORDATA,null,null);
-        // return contentResolver.insert(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard));
         WeatherSettings weatherSettings = new WeatherSettings(c);
         int i = contentResolver.update(WeatherForecastContentProvider.URI_SENSORDATA,getContentValuesFromWeatherCard(weatherCard),WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name+"=?",new String[] {weatherSettings.station_name});
         if (i==0){

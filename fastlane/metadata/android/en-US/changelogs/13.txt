@@ -1,0 +1,3 @@
+
+- fixed error in conversion from pascal to hectopascal (air pressure)
+- hourly weather icon is now the one with the higher priority, when available. This should harmonize more with the 6-hourly and daily icons.
