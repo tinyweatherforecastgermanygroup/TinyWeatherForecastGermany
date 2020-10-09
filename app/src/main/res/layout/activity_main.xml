@@ -96,7 +96,6 @@
             android:src="@mipmap/ic_highlight_off_white_24dp"/>
     </LinearLayout>
 
-
     <ListView android:id="@+id/main_listview"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -104,6 +103,10 @@
               android:dividerHeight="1dp"
               android:layout_below="@id/main_spinner_linearlayout"
               android:layout_above="@id/main_dwd_notice_text"
+              android:scrollbars="vertical"
+              android:scrollbarThumbVertical="@color/textColorGrey"
+              android:verticalScrollbarPosition="right"
+              android:scrollbarSize="6dp"
               android:footerDividersEnabled="true"/>
 
     <ProgressBar

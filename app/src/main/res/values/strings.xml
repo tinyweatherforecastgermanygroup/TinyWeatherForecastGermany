@@ -101,6 +101,8 @@
     <string name="preference_displaysunrise_summary">Display sunrise, sunset and twilight times.</string>
     <string name="preference_displayendofdaybar_title">Separate days</string>
     <string name="preference_displayendofdaybar_summary">Display a bar to separate days.</string>
+    <string name="preference_display_gradient_title">Time gradient</string>
+    <string name="preference_display_gradient_summary">Display color gradient to indicate the time of the forecast.</string>
     <string name="preference_setalarm_title">Update automatically</string>
     <string name="preference_setalarm_summary">Update weather data regularly. This may increase battery usage.</string>
     <string name="preference_set_aggresive_alarm_title">Repeat failed updates</string>
@@ -120,10 +122,16 @@
     <string name="preference_loggingscreen_summary">Set up logging options for debugging.</string>
     <string name="preference_logging_title">Logging</string>
     <string name="preference_logging_summary">Activate logging. Logs are saved LOCALLY on your device and are NOT sent automatically.</string>
+    <string name="preference_log_to_logcat_title">Log to Logcat</string>
+    <string name="preference_log_to_logcat_summary">Insert the logs into the system log on the device. Caution: this may be a privacy leak, other apps can access the system log.</string>
     <string name="preference_loggingactivity_title">Manage logs</string>
     <string name="preference_loggingactivity_summary">Send and/or clear the logs.</string>
     <string name="preference_intro_title">Intro</string>
     <string name="preference_intro_summary">Start the intro again.</string>
+    <string name="alertdialog_yes">Yes</string>
+    <string name="alertdialog_no">No</string>
+    <string name="alertdialog_1_title">Warning</string>
+    <string name="alertdialog_1_text">Logging to logcat may leak private information to other apps. Are you sure and do you know what you are doing?</string>
     <string name="logging_button_back">Back</string>
     <string name="logging_button_clear">Clear Logs</string>
     <string name="logging_button_copy">Copy Logs to Clipboard</string>

@@ -65,6 +65,12 @@
                 android:summary="@string/preference_displayendofdaybar_summary"
                 android:defaultValue="true"/>
 
+            <CheckBoxPreference
+                android:key="PREF_display_gradient"
+                android:title="@string/preference_display_gradient_title"
+                android:summary="@string/preference_display_gradient_summary"
+                android:defaultValue="true"/>
+
         </PreferenceScreen>
 
         <CheckBoxPreference
@@ -170,6 +176,11 @@
                 android:key="PREF_logging"
                 android:title="@string/preference_logging_title"
                 android:summary="@string/preference_logging_summary"/>
+
+            <CheckBoxPreference
+                android:key="PREF_log_to_logcat"
+                android:title="@string/preference_log_to_logcat_title"
+                android:summary="@string/preference_log_to_logcat_summary"/>
 
             <Preference
                 android:key="PREF_start_loggingactivity"

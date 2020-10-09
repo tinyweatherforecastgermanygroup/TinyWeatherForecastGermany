@@ -22,13 +22,11 @@
     import android.content.Context;
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
+    import android.graphics.Color;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
-    import android.widget.BaseAdapter;
-    import android.widget.ImageView;
-    import android.widget.LinearLayout;
-    import android.widget.TextView;
+    import android.widget.*;
     import org.astronomie.info.Astronomy;
 
     import java.text.SimpleDateFormat;
@@ -70,6 +68,7 @@
         }
 
         static class ViewHolder {
+            RelativeLayout main_container;
             TextView textView_heading;
             TextView condition_text;
             View iconbar1_view;
@@ -115,6 +114,7 @@
         public View getView(int i, View view, ViewGroup viewGroup) {
             boolean newView = false;
             ViewHolder viewHolder = new ViewHolder();
+            RelativeLayout main_container = null;
             TextView textView_weathercondition = null;
             TextView textView_heading = null;
             View iconbar1_view = null;
@@ -141,6 +141,7 @@
             } else {
                 // recycle view information
                 viewHolder = (ViewHolder) view.getTag();
+                main_container = viewHolder.main_container;
                 textView_weathercondition = viewHolder.condition_text;
                 textView_heading = viewHolder.textView_heading;
                 iconbar1_view = viewHolder.iconbar1_view;
@@ -162,6 +163,12 @@
                 endofday_bar = viewHolder.endofday_bar;
             }
             // now fill the item with content
+            if (main_container==null) {
+                main_container = (RelativeLayout) view.findViewById(R.id.fcitem_maincontainer);
+                viewHolder.main_container = main_container;
+            }
+            int gradient = getColorGradient(i);
+            main_container.setBackgroundColor(Color.argb(96,gradient,gradient,gradient));
             if (textView_weathercondition==null){
                 textView_weathercondition = (TextView) view.findViewById(R.id.fcitem_weatherconditiontext);
                 viewHolder.condition_text = textView_weathercondition;
@@ -529,4 +536,11 @@
             }
             return false;
         }
+
+        private int getColorGradient(int position){
+            float c_step = (float) (255/weatherForecasts.size());
+            int pos = Math.round(c_step * position);
+            return pos;
+        }
+
     }

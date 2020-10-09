@@ -28,7 +28,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 12
-        versionName "0.51"
+        versionName "0.51 userdebug3"
     }
 
     buildTypes {

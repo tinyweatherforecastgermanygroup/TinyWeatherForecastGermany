@@ -20,19 +20,52 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
+import android.preference.CheckBoxPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 public class Settings extends PreferenceActivity{
 
+    private Context context;
+
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
             updateValuesDisplay();
+            if (s.equals(WeatherSettings.PREF_LOG_TO_LOGCAT)){
+                WeatherSettings ws = new WeatherSettings(context);
+                if (ws.log_to_logcat){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle(context.getResources().getString(R.string.alertdialog_1_title));
+                    builder.setMessage(context.getResources().getString(R.string.alertdialog_1_text));
+                    builder.setIcon(R.mipmap.ic_warning_white_24dp);
+                    builder.setPositiveButton(context.getResources().getString(R.string.alertdialog_yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton(context.getResources().getString(R.string.alertdialog_no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            WeatherSettings weatherSettings = new WeatherSettings(context);
+                            weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT,false);
+                            SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(context);
+                            CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_LOG_TO_LOGCAT);
+                            checkBoxPreference.setChecked(false);
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+            }
         }
     };
 
@@ -40,6 +73,7 @@ public class Settings extends PreferenceActivity{
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
+        context = this;
         addPreferencesFromResource(R.xml.preferences);
         updateValuesDisplay();
         // action bar layout
@@ -52,6 +86,7 @@ public class Settings extends PreferenceActivity{
     @SuppressWarnings("deprecation")
     protected void onResume(){
         super.onResume();
+        context = this;
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(listener);
     }
 
@@ -67,7 +102,6 @@ public class Settings extends PreferenceActivity{
     @SuppressWarnings("deprecation")
     private void updateValuesDisplay(){
         SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(this);
-        Preference p;
         String gadgetbridge_packagename = sp.getString(WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME,WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT);
         if (gadgetbridge_packagename.equals("")){
             gadgetbridge_packagename = WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;

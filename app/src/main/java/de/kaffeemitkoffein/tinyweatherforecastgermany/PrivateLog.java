@@ -24,6 +24,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,6 +42,11 @@ public class PrivateLog {
     private static boolean loggingEnabled(Context context){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         return weatherSettings.logging;
+    }
+
+    private static boolean logToLogcat(Context context){
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        return weatherSettings.log_to_logcat;
     }
 
     public static String getLogs(Context context){
@@ -63,7 +69,9 @@ public class PrivateLog {
 
     public static boolean log(Context context, String s){
         if (loggingEnabled(context)) {
-            // Log.v("TWF",s);
+            if (logToLogcat(context)){
+                Log.v("TWFG",s);
+            }
             File path = context.getFilesDir();
             File logfile = new File(path,LOGFILENAME);
             if (!logfile.exists()){
