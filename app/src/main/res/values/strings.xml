@@ -99,6 +99,8 @@
     <string name="preference_displayvisibility_summary">Display visibility in forecasts.</string>
     <string name="preference_displaysunrise_title">Sunrise and sunset</string>
     <string name="preference_displaysunrise_summary">Display sunrise, sunset and twilight times.</string>
+    <string name="preference_displayendofdaybar_title">Separate days</string>
+    <string name="preference_displayendofdaybar_summary">Display a bar to separate days.</string>
     <string name="preference_setalarm_title">Update automatically</string>
     <string name="preference_setalarm_summary">Update weather data regularly. This may increase battery usage.</string>
     <string name="preference_set_aggresive_alarm_title">Repeat failed updates</string>

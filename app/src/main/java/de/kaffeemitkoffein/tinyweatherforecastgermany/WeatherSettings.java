@@ -44,6 +44,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_PRESSURE = "PREF_display_pressure";
     public static final String PREF_DISPLAY_VISIBILITY = "PREF_display_visibility";
     public static final String PREF_DISPLAY_SUNRISE = "PREF_display_sunrise";
+    public static final String PREF_DISPLAY_ENDOFDAY_BAR = "PREF_display_end_of_day_bar";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_AGGRESSIVE_UPDATE = "PREF_aggressive_update";
@@ -72,6 +73,7 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_PRESSURE_DEFAULT = true;
     public static final boolean PREF_DISPLAY_VISIBILITY_DEFAULT = true;
     public static final boolean PREF_DISPLAY_SUNRISE_DEFAULT = true;
+    public static final boolean PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT = true;
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
@@ -100,6 +102,7 @@ public class WeatherSettings {
     public boolean display_pressure = PREF_DISPLAY_PRESSURE_DEFAULT;
     public boolean display_visibility = PREF_DISPLAY_VISIBILITY_DEFAULT;
     public boolean display_sunrise = PREF_DISPLAY_SUNRISE_DEFAULT;
+    public boolean display_endofday_bar = PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public boolean aggressive_update = PREF_AGGRESSIVE_UPDATE_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
@@ -139,6 +142,7 @@ public class WeatherSettings {
         this.display_pressure = readPreference(PREF_DISPLAY_PRESSURE,PREF_DISPLAY_PRESSURE_DEFAULT);
         this.display_visibility = readPreference(PREF_DISPLAY_VISIBILITY,PREF_DISPLAY_VISIBILITY_DEFAULT);
         this.display_sunrise = readPreference(PREF_DISPLAY_SUNRISE,PREF_DISPLAY_SUNRISE_DEFAULT);
+        this.display_endofday_bar = readPreference(PREF_DISPLAY_ENDOFDAY_BAR,PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT);
         this.aggressive_update = readPreference(PREF_AGGRESSIVE_UPDATE,PREF_AGGRESSIVE_UPDATE_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL,PREF_UPDATEINTERVAL_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY,PREF_WIDGET_OPACITY_DEFAULT);
@@ -167,6 +171,7 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_PRESSURE,this.display_pressure);
         applyPreference(PREF_DISPLAY_VISIBILITY,this.display_visibility);
         applyPreference(PREF_DISPLAY_SUNRISE,this.display_sunrise);
+        applyPreference(PREF_DISPLAY_ENDOFDAY_BAR,this.display_endofday_bar);
         applyPreference(PREF_SETALARM,this.setalarm);
         applyPreference(PREF_AGGRESSIVE_UPDATE,this.aggressive_update);
         applyPreference(PREF_UPDATEINTERVAL,this.updateinterval);
@@ -195,6 +200,7 @@ public class WeatherSettings {
         commitPreference(PREF_DISPLAY_PRESSURE,this.display_pressure);
         commitPreference(PREF_DISPLAY_VISIBILITY,this.display_visibility);
         commitPreference(PREF_DISPLAY_SUNRISE,this.display_sunrise);
+        commitPreference(PREF_DISPLAY_ENDOFDAY_BAR,this.display_endofday_bar);
         commitPreference(PREF_SETALARM,this.setalarm);
         commitPreference(PREF_AGGRESSIVE_UPDATE,this.aggressive_update);
         commitPreference(PREF_UPDATEINTERVAL,this.updateinterval);

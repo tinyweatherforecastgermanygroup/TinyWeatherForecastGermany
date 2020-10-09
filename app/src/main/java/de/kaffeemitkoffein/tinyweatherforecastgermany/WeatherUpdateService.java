@@ -26,6 +26,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
+
 import java.util.Calendar;
 
 public class WeatherUpdateService extends Service {
@@ -102,6 +103,11 @@ public class WeatherUpdateService extends Service {
             }
         };
         PrivateLog.log(this,Tag.SERVICE,"starting update from API");
+        // display progressbar in main app
+        Intent progressbar_intent = new Intent();
+        progressbar_intent.setAction(MainActivity.MAINAPP_SHOW_PROGRESS);
+        sendBroadcast(progressbar_intent);
+        // start update
         weatherForecastReader.execute();
         return START_STICKY;
     }
@@ -109,6 +115,10 @@ public class WeatherUpdateService extends Service {
     @Override
     public void onDestroy(){
         notificationManager.cancel(notification_id);
+        // hide progressbar in main app
+        Intent progressbar_intent = new Intent();
+        progressbar_intent.setAction(MainActivity.MAINAPP_HIDE_PROGRESS);
+        sendBroadcast(progressbar_intent);
         PrivateLog.log(this,Tag.SERVICE,"destroyed.");
     }
 

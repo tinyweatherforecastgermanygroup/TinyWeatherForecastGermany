@@ -33,6 +33,7 @@
 
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
+    import java.util.Calendar;
     import java.util.Date;
 
     public class ForecastAdapter extends BaseAdapter {
@@ -85,7 +86,9 @@
             ImageView imageView_forecastBar;
             TextView rise1;
             TextView rise2;
-            ImageView sunset;
+            ImageView sunset1;
+            ImageView sunset2;
+            View endofday_bar;
 
             public ViewHolder(){
                 symbols = new ImageView[6];
@@ -128,7 +131,9 @@
             TextView[] labels = new TextView[6];
             TextView rise1 = null;
             TextView rise2 = null;
-            ImageView sunset = null;
+            ImageView sunset1 = null;
+            ImageView sunset2 = null;
+            View endofday_bar = null;
             if (view == null){
                 // view is not available from cache
                 newView = true;
@@ -152,7 +157,9 @@
                 imageView_forecastBar = viewHolder.imageView_forecastBar;
                 rise1 = viewHolder.rise1;
                 rise2 = viewHolder.rise2;
-                sunset = viewHolder.sunset;
+                sunset1 = viewHolder.sunset1;
+                sunset2 = viewHolder.sunset2;
+                endofday_bar = viewHolder.endofday_bar;
             }
             // now fill the item with content
             if (textView_weathercondition==null){
@@ -355,9 +362,13 @@
                 rise2 = (TextView) view.findViewById(R.id.fcitem_rise2);
                 viewHolder.rise2 = rise2;
             }
-            if (sunset == null){
-                sunset = (ImageView) view.findViewById(R.id.fcitem_sunet);
-                viewHolder.sunset = sunset;
+            if (sunset1 == null){
+                sunset1 = (ImageView) view.findViewById(R.id.fcitem_sunet1);
+                viewHolder.sunset1 = sunset1;
+            }
+            if (sunset2 == null){
+                sunset2 = (ImageView) view.findViewById(R.id.fcitem_sunet2);
+                viewHolder.sunset2 = sunset2;
             }
             if (Weather.usePreciseIsDaytime(weatherLocation) && display_sunrise){
                 Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,weatherInfo.getTimestamp());
@@ -369,7 +380,9 @@
                     // handle rare case that sunrise & sunset are in the same interval, then display sundrise & sunset
                     rise1.setVisibility(View.VISIBLE);
                     rise2.setVisibility(View.VISIBLE);
-                    sunset.setVisibility(View.VISIBLE);
+                    sunset1.setVisibility(View.VISIBLE);
+                    // in this case, display no arrow
+                    sunset2.setVisibility(View.INVISIBLE);
                     String string_sunrise = context.getResources().getString(R.string.sunrise);
                     String string_sunset = context.getResources().getString(R.string.sunset);
                     string_sunrise = string_sunrise+": "+Weather.toHourMinuteString(Weather.getSunriseInUTC(riseset,weatherInfo.getTimestamp()));
@@ -381,7 +394,10 @@
                     // when runrise is in the interval, display twilight & sunrise
                     rise1.setVisibility(View.VISIBLE);
                     rise2.setVisibility(View.VISIBLE);
-                    sunset.setVisibility(View.VISIBLE);
+                    sunset1.setVisibility(View.VISIBLE);
+                    sunset2.setVisibility(View.VISIBLE);
+                    sunset1.setImageBitmap(loadScaledIcon(R.mipmap.arrow_up,SCALE_MINI_ICON));
+                    sunset2.setImageBitmap(loadScaledIcon(R.mipmap.sunset,SCALE_MINI_ICON));
                     String string_sunrise = context.getResources().getString(R.string.sunrise);
                     String string_twilight = context.getResources().getString(R.string.twilight);
                     string_sunrise = string_sunrise+": "+Weather.toHourMinuteString(Weather.getSunriseInUTC(riseset,weatherInfo.getTimestamp()));
@@ -393,7 +409,10 @@
                     // when sunset is in the interval, display sunset and twilight
                     rise1.setVisibility(View.VISIBLE);
                     rise2.setVisibility(View.VISIBLE);
-                    sunset.setVisibility(View.VISIBLE);
+                    sunset1.setVisibility(View.VISIBLE);
+                    sunset2.setVisibility(View.VISIBLE);
+                    sunset1.setImageBitmap(loadScaledIcon(R.mipmap.sunset,SCALE_MINI_ICON));
+                    sunset2.setImageBitmap(loadScaledIcon(R.mipmap.arrow_down,SCALE_MINI_ICON));
                     String string_sunset = context.getResources().getString(R.string.sunset);
                     string_sunset = string_sunset+": "+Weather.toHourMinuteString(Weather.getSunsetInUTC(riseset,weatherInfo.getTimestamp()));
                     String string_twilight = context.getResources().getString(R.string.twilight);
@@ -403,13 +422,24 @@
                 } else {
                     rise1.setVisibility(View.INVISIBLE);
                     rise2.setVisibility(View.INVISIBLE);
-                    sunset.setVisibility(View.INVISIBLE);
+                    sunset1.setVisibility(View.INVISIBLE);
+                    sunset2.setVisibility(View.INVISIBLE);
                 }
             } else {
                 // hide if sunrise & sunset cannot be calculated (too far north or south)
                 rise1.setVisibility(View.INVISIBLE);
                 rise2.setVisibility(View.INVISIBLE);
-                sunset.setVisibility(View.INVISIBLE);
+                sunset1.setVisibility(View.INVISIBLE);
+                sunset2.setVisibility(View.INVISIBLE);
+            }
+            if (endofday_bar == null){
+                endofday_bar = (View) view.findViewById(R.id.fcitem_endofday_bar);
+                viewHolder.endofday_bar = endofday_bar;
+            }
+            if (isEndOfDay(weatherInfo)){
+                endofday_bar.setVisibility(View.VISIBLE);
+            } else {
+                endofday_bar.setVisibility(View.GONE);
             }
             if (newView){
                 view.setTag(viewHolder);
@@ -489,5 +519,14 @@
                 }
                 return s;
             }
+        }
+
+        private boolean isEndOfDay(Weather.WeatherInfo weatherInfo){
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(weatherInfo.getTimestamp());
+            if (c.get(Calendar.HOUR_OF_DAY)==0){
+                return true;
+            }
+            return false;
         }
     }

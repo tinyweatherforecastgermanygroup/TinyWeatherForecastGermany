@@ -127,19 +127,22 @@ public class WeatherWarningActivity extends Activity {
             @Override
             public void onPositiveResult(ArrayList<WeatherWarning> warnings){
                 super.onPositiveResult(warnings);
-                Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.warnings_update),Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.warnings_update),Toast.LENGTH_LONG).show();
                 weatherWarnings = warnings;
                 PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings updated successfully.");
+                hideProgressBar();
                 displayWarnings();
             }
             public void onNegativeResult(){
                 PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
+                hideProgressBar();
                 Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.warnings_update_fail),Toast.LENGTH_LONG).show();
                 if (weatherWarnings!=null){
                     updateActionBarLabels();
                 }
             }
         };
+        showProgressBar();
         weatherWarningReader.execute();
     }
 
@@ -394,4 +397,19 @@ public class WeatherWarningActivity extends Activity {
         }
         return true;
     }
+
+    private void showProgressBar(){
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.warningactivity_progressbar);
+        if (progressBar!=null){
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideProgressBar(){
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.warningactivity_progressbar);
+        if (progressBar!=null){
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
 }

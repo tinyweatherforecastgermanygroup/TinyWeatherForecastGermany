@@ -33,32 +33,46 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TextView android:id="@+id/fcitem_rise1"
-        android:textSize="@dimen/fcmain_textsize_medium"
-        android:textColor="@color/widget_textcolor"
-        android:layout_gravity="right"
+    <LinearLayout
+        android:id="@+id/fcitem_rise_textcontainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sunrise: 6:55"/>
+        android:orientation="vertical">
 
-    <TextView android:id="@+id/fcitem_rise2"
-        android:textSize="@dimen/fcmain_textsize_medium"
-        android:textColor="@color/widget_textcolor"
-        android:layout_gravity="right"
-        android:layout_below="@id/fcitem_rise1"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Twilight: 5:30"/>
+        <TextView android:id="@+id/fcitem_rise1"
+            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textColor="@color/widget_textcolor"
+            android:layout_gravity="right"
 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sunrise: 6:55"/>
 
-    <ImageView android:id="@+id/fcitem_sunet"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_toLeftOf="@id/fcitem_rise1"
+        <TextView android:id="@+id/fcitem_rise2"
+            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textColor="@color/widget_textcolor"
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Twilight: 5:30"/>
+    </LinearLayout>
+
+    <ImageView android:id="@+id/fcitem_sunet1"
+        android:layout_width="24dp"
+        android:layout_height="12dp"
+        android:layout_toLeftOf="@id/fcitem_rise_textcontainer"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="2dp"
         android:src="@mipmap/sunset"/>
+
+    <ImageView android:id="@+id/fcitem_sunet2"
+        android:layout_width="24dp"
+        android:layout_height="12dp"
+        android:layout_toLeftOf="@id/fcitem_rise_textcontainer"
+        android:layout_below="@id/fcitem_sunet1"
+        android:src="@mipmap/arrow_down"/>
 
 
     <ImageView android:id="@+id/fcitem_forecastbar"
@@ -319,4 +333,12 @@
 
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:id="@+id/fcitem_endofday_bar"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:background="@color/colorAccent"/>
 </RelativeLayout>

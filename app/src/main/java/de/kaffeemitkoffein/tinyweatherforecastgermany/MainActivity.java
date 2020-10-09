@@ -25,7 +25,6 @@ import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -44,6 +43,8 @@ public class MainActivity extends Activity {
     private final static String SIS_WHATSNEW_DIALOG_STATE="WHATSNEW_DIALOG_VISIBLE";
 
     public final static String MAINAPP_CUSTOM_REFRESH_ACTION = "MAINAPP_CUSTOM_ACTION_REFRESH";
+    public final static String MAINAPP_SHOW_PROGRESS = "MAINAPP_SHOW_PROGRESS";
+    public final static String MAINAPP_HIDE_PROGRESS = "MAINAPP_HIDE_PROGRESS";
 
     public final static boolean API_TESTING_ENABLED = false;
     private int test_position = 0;
@@ -74,6 +75,18 @@ public class MainActivity extends Activity {
                 if (API_TESTING_ENABLED){
                     test_position ++;
                     testAPI_Call();
+                }
+            }
+            if (intent.getAction().equals(MAINAPP_SHOW_PROGRESS)){
+                ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
+                if (progressBar!=null){
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            }
+            if (intent.getAction().equals(MAINAPP_HIDE_PROGRESS)){
+                ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
+                if (progressBar!=null){
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
         }
@@ -674,6 +687,8 @@ public class MainActivity extends Activity {
     private void registerForBroadcast(){
         IntentFilter filter = new IntentFilter();
         filter.addAction(MAINAPP_CUSTOM_REFRESH_ACTION);
+        filter.addAction(MAINAPP_SHOW_PROGRESS);
+        filter.addAction(MAINAPP_HIDE_PROGRESS);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         registerReceiver(receiver,filter);
     }
