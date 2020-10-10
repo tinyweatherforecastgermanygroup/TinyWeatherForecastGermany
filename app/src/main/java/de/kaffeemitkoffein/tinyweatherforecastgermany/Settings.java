@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.widget.Toast;
 
 public class Settings extends PreferenceActivity{
@@ -75,11 +76,24 @@ public class Settings extends PreferenceActivity{
         super.onCreate(bundle);
         context = this;
         addPreferencesFromResource(R.xml.preferences);
+        if (!WeatherSettings.appReleaseIsUserdebug()){
+            disableLogCatLogging();
+        }
         updateValuesDisplay();
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
+    }
 
+    @SuppressWarnings("deprecation")
+    public void disableLogCatLogging(){
+        SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(context);
+        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_LOG_TO_LOGCAT);
+        checkBoxPreference.setChecked(false);
+        checkBoxPreference.setEnabled(false);
+        checkBoxPreference.setShouldDisableView(true);
+        PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
+        preferenceScreen.removePreference(checkBoxPreference);
     }
 
     @Override

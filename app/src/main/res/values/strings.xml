@@ -130,8 +130,12 @@
     <string name="preference_intro_summary">Start the intro again.</string>
     <string name="alertdialog_yes">Yes</string>
     <string name="alertdialog_no">No</string>
+    <string name="alertdialog_ok">Ok</string>
     <string name="alertdialog_1_title">Warning</string>
     <string name="alertdialog_1_text">Logging to logcat may leak private information to other apps. Are you sure and do you know what you are doing?</string>
+    <string name="alertdialog_2_title">Logcat</string>
+    <string name="alertdialog_2_text">This app currently logs to logcat. Logging to logcat will be disabled, since this feature is not intended for official releases.</string>
+    <string name="alertdialog_2_toast">Logging to Logcat is deactivated.</string>
     <string name="logging_button_back">Back</string>
     <string name="logging_button_clear">Clear Logs</string>
     <string name="logging_button_copy">Copy Logs to Clipboard</string>

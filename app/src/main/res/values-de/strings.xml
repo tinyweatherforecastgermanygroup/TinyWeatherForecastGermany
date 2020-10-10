@@ -130,8 +130,12 @@
     <string name="preference_loggingactivity_summary">Protokoll senden/löschen.</string>
     <string name="alertdialog_yes">Ja</string>
     <string name="alertdialog_no">Nein</string>
+    <string name="alertdialog_ok">Ok</string>
     <string name="alertdialog_1_title">Warnung</string>
     <string name="alertdialog_1_text">Logging nach Logcat kann private Informationen anderen Apps zugänglich machen. Bist Du sicher und weißt Du, was Du tust?</string>
+    <string name="alertdialog_2_title">Logcat</string>
+    <string name="alertdialog_2_text">Diese App fügt aktuell Logs in Logcat ein. Dies wird abgeschaltet, da diese Funktion nicht für offizielle Versionen gedacht ist.</string>
+    <string name="alertdialog_2_toast">Logging nach Logcat deaktiviert.</string>
     <string name="logging_button_back">Zurück</string>
     <string name="logging_button_clear">Protokoll löschen</string>
     <string name="logging_button_copy">Protokoll in die Zwischenablage kopieren</string>

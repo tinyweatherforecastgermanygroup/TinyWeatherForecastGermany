@@ -142,6 +142,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // disable log to logcat if release is not a userdebug
+        disableLogToLogcatIfNotUserDebug();
         // force a database access at the beginning to check for a needed database upgrade
         WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
         // action bar layout
@@ -691,6 +693,29 @@ public class MainActivity extends Activity {
         filter.addAction(MAINAPP_HIDE_PROGRESS);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         registerReceiver(receiver,filter);
+    }
+
+    private void disableLogToLogcatIfNotUserDebug(){
+        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+        if (!WeatherSettings.appReleaseIsUserdebug()){
+            if (weatherSettings.log_to_logcat){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setIcon(R.mipmap.ic_warning_white_24dp);
+                builder.setTitle(getApplicationContext().getResources().getString(R.string.alertdialog_2_title));
+                builder.setMessage(getApplicationContext().getResources().getString(R.string.alertdialog_2_text));
+                final Context context = getApplicationContext();
+                builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        WeatherSettings weatherSettings = new WeatherSettings(context);
+                        weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT,WeatherSettings.PREF_LOG_TO_LOGCAT_DEFAULT);
+                        PrivateLog.log(context,Tag.MAIN,"Logging to logcat has been disabled.");
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        }
     }
 
 }
