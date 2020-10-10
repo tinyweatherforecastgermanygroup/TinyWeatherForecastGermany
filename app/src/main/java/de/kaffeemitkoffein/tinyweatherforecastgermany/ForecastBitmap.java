@@ -112,7 +112,7 @@ public class ForecastBitmap{
             condition = WeatherCodeContract.calculateCustomWeatherconditionFromData(weatherInfo);
         }
         // set default resource to not available;
-        int resource = WeatherCodeContract.NOT_AVAILABLE;
+        int resource = R.mipmap.not_available;
         if (weatherInfo.hasCondition()){
             // display always daytime
             resource = WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(),true);

@@ -435,7 +435,7 @@ public class MainActivity extends Activity {
                    Log.v(Tag.MAIN,"-------------------------------------------");
                     getWeatherForecast();
                 }
-            },5000);
+            },4000);
         } else {
             // Log.v(Tag.MAIN,"Testing finished.");
         }
