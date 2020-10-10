@@ -35,6 +35,7 @@ public class Settings extends PreferenceActivity{
 
     private Context context;
 
+    @SuppressWarnings("deprecation")
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {

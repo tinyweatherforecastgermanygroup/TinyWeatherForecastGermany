@@ -38,12 +38,12 @@ android {
         }
         userdebug {
             initWith release
-            versionNameSuffix "-userdebug_"+new Date().format("yyyyMMDD-HHmmss")
+            versionNameSuffix "-userdebug_"+new Date().format("yyyyMMDD")
         }
         debug {
             initWith release
             signingConfig signingConfigs.debug
-            versionNameSuffix "-debug_"+new Date().format("yyyyMMDD-HHmmss")
+            versionNameSuffix "-debug_"+new Date().format("yyyyMMDD-HHmm00ss")
         }
     }
 }
