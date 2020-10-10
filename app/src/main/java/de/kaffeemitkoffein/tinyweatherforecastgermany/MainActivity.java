@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
     public final static String MAINAPP_HIDE_PROGRESS = "MAINAPP_HIDE_PROGRESS";
 
     public final static boolean API_TESTING_ENABLED = true;
-    private int test_position = 0;
+    private int test_position = 20;
 
     StationsManager stationsManager;
 

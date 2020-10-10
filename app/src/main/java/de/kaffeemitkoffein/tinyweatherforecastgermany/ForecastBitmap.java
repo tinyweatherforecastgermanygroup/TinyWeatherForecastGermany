@@ -105,12 +105,6 @@ public class ForecastBitmap{
     }
 
     private Bitmap getIconBitmap(Context context, Weather.WeatherInfo weatherInfo, int bitmapWidth, int bitmapHeight){
-        int condition = WeatherCodeContract.NOT_AVAILABLE;
-        if (weatherInfo.hasCondition()){
-            condition = weatherInfo.getCondition();
-        } else {
-            condition = WeatherCodeContract.calculateCustomWeatherconditionFromData(weatherInfo);
-        }
         // set default resource to not available;
         int resource = R.mipmap.not_available;
         if (weatherInfo.hasCondition()){
