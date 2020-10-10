@@ -97,7 +97,7 @@
     <string name="preference_displaypressure_summary">Zeige bodennahen Luftdruck in der Vorhersage.</string>
     <string name="preference_displayvisibility_title">Sichtweite</string>
     <string name="preference_displayvisibility_summary">Zeige Sichtweite in der Vorhersage.</string>
-    <string name="preference_displaysunrise_title">Sonnerauf- und Untergang</string>
+    <string name="preference_displaysunrise_title">Sonnenauf- und Untergang</string>
     <string name="preference_displaysunrise_summary">Zeige Sonnenaufgang, Sonnenuntergang und Zeit der Dämmerung in der Vorhersage.</string>
     <string name="preference_displayendofdaybar_title">Tage trennen</string>
     <string name="preference_displayendofdaybar_summary">Zeige Balken, um Tage zu trennen.</string>

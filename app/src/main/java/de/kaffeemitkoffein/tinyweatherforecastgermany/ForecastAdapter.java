@@ -44,6 +44,7 @@
         private boolean display_visibility;
         private boolean display_pressure;
         private boolean display_sunrise;
+        private boolean display_endofday_bar;
         LayoutInflater layoutInflater;
 
         public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, Weather.WeatherLocation weatherLocation) {
@@ -56,6 +57,7 @@
             this.display_pressure = weatherSettings.display_pressure;
             this.display_visibility = weatherSettings.display_visibility;
             this.display_sunrise = weatherSettings.display_sunrise;
+            this.display_endofday_bar = weatherSettings.display_endofday_bar;
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -443,7 +445,8 @@
                 endofday_bar = (View) view.findViewById(R.id.fcitem_endofday_bar);
                 viewHolder.endofday_bar = endofday_bar;
             }
-            if (isEndOfDay(weatherInfo)){
+
+            if (isEndOfDay(weatherInfo) && (display_endofday_bar)){
                 endofday_bar.setVisibility(View.VISIBLE);
             } else {
                 endofday_bar.setVisibility(View.GONE);

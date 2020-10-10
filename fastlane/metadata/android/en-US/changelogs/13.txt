@@ -4,4 +4,6 @@
 - a cyan bar separates days
 - sunrise and sunset are now displayed with an arrow, icon size slightly reduced
 - a circular progress bar indicates when new weather data and new warnings are loaded
-- the scroll bar has a brighter color and is a little bit wider
+- the scroll bar has a brighter color and is a little bit wider now
+- optional color gradient to indicate forecast time (turned off by default)
+- userdebug builds now have the possibility to log to logcat (disabled in official versions)

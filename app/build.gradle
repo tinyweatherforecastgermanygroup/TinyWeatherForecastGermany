@@ -33,12 +33,17 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         userdebug {
             initWith release
             versionNameSuffix "-userdebug_"+new Date().format("yyyyMMDD-HHmmss")
+        }
+        debug {
+            initWith release
+            signingConfig signingConfigs.debug
+            versionNameSuffix "-debug_"+new Date().format("yyyyMMDD-HHmmss")
         }
     }
 }
