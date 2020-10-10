@@ -25,6 +25,7 @@ import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
+import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -46,7 +47,7 @@ public class MainActivity extends Activity {
     public final static String MAINAPP_SHOW_PROGRESS = "MAINAPP_SHOW_PROGRESS";
     public final static String MAINAPP_HIDE_PROGRESS = "MAINAPP_HIDE_PROGRESS";
 
-    public final static boolean API_TESTING_ENABLED = false;
+    public final static boolean API_TESTING_ENABLED = true;
     private int test_position = 0;
 
     StationsManager stationsManager;
@@ -425,16 +426,16 @@ public class MainActivity extends Activity {
             final String name = stationsManager.getName(test_position);
             final String description = stationsManager.getDescription(test_position);
             Handler handler = new Handler();
-            // Log.v(Tag.MAIN,"Waiting.");
+            Log.v(Tag.MAIN,"Waiting.");
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                   //  Log.v(Tag.MAIN,"------------------------------------------");
-                   // Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
-                   // Log.v(Tag.MAIN,"-------------------------------------------");
+                   Log.v(Tag.MAIN,"------------------------------------------");
+                   Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
+                   Log.v(Tag.MAIN,"-------------------------------------------");
                     getWeatherForecast();
                 }
-            },2000);
+            },5000);
         } else {
             // Log.v(Tag.MAIN,"Testing finished.");
         }
@@ -544,7 +545,7 @@ public class MainActivity extends Activity {
 
     public void getWeatherForecast(){
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(this);
-        if (weatherCard == null){
+        if ((weatherCard == null) || (API_TESTING_ENABLED)){
             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE);
         } else {
             displayWeatherForecast(weatherCard);
@@ -707,9 +708,10 @@ public class MainActivity extends Activity {
                 builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        PrivateLog.log(context,Tag.MAIN,"Logging to logcat is being disabled...");
                         WeatherSettings weatherSettings = new WeatherSettings(context);
                         weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT,WeatherSettings.PREF_LOG_TO_LOGCAT_DEFAULT);
-                        PrivateLog.log(context,Tag.MAIN,"Logging to logcat has been disabled.");
+                        Toast.makeText(context,context.getResources().getString(R.string.alertdialog_2_toast),Toast.LENGTH_LONG).show();
                     }
                 });
                 AlertDialog alertDialog = builder.create();

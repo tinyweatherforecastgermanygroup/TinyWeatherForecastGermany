@@ -111,11 +111,15 @@ public class ForecastBitmap{
         } else {
             condition = WeatherCodeContract.calculateCustomWeatherconditionFromData(weatherInfo);
         }
-        // display always daytime
-        int resource = WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(),true);
-        // calculate daytime precisely if location is set
-        if (weatherLocation!=null){
-            resource = WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(), weatherInfo.isDaytime(this.weatherLocation));
+        // set default resource to not available;
+        int resource = WeatherCodeContract.NOT_AVAILABLE;
+        if (weatherInfo.hasCondition()){
+            // display always daytime
+            resource = WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(),true);
+            // calculate daytime precisely if location is set
+            if (weatherLocation!=null){
+                resource = WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(), weatherInfo.isDaytime(this.weatherLocation));
+            }
         }
         Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(),resource),
                 bitmapWidth,

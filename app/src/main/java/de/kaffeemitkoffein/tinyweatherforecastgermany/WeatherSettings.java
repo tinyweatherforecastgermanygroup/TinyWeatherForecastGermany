@@ -404,7 +404,7 @@ public class WeatherSettings {
     }
 
     public static boolean appReleaseIsUserdebug() {
-        return (BuildConfig.VERSION_NAME.contains("userdebug"));
+        return BuildConfig.VERSION_NAME.contains("debug");
     }
 
 }
