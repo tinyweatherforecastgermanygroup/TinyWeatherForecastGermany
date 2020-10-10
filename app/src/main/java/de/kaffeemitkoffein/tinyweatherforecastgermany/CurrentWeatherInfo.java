@@ -154,8 +154,8 @@ public class CurrentWeatherInfo{
             wi.setProbVisibilityBelow1km(getIntItem(rawWeatherInfo.VV10[index]));
             wi.setPressure(getDoubleItem(rawWeatherInfo.PPPP[index]));
             wi.setUV(getDoubleItem(rawWeatherInfo.RRad1[index]));
-            if (!currentWeather.hasCondition()){
-                currentWeather.calculateMissingCondition();
+            if (!wi.hasCondition()){
+                wi.calculateMissingCondition();
             }
             forecast1hourly.add(wi);
             index++;
