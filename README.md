@@ -13,7 +13,7 @@ Screenshots
 How to get the app
 ------------------
 
-Tiny Weather Forecast Germany is available on the F-Droid main repository.
+Tiny Weather Forecast Germany is available from the F-Droid main repository. You can download it here:
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" 
     alt="Get it on F-Droid"
