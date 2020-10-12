@@ -13,7 +13,11 @@ Screenshots
 How to get the app
 ------------------
 
-Builds are available through the f-droid repo of @izzydroid: <https://android.izzysoft.de/repo.php>.
+Tiny Weather Forecast Germany is available on the F-Droid main repository.
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" 
+    alt="Get it on F-Droid"
+    height="80">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
 You get builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/NxjPfLNfAfYB9PN>
 
