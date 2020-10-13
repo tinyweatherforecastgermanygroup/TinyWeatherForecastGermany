@@ -45,14 +45,15 @@ public class UpdateAlarmManager {
     // suppress any view update actions if this time did not pass since last view update
     public final static int VIEWS_MAXUPDATETIME   = 10*60*1000; // 10 minutes;
 
-    public static final boolean FORCE_UPDATE = true;
-    public static final boolean CHECK_FOR_UPDATE = false;
+    public static final int FORCE_UPDATE = 0;
+    public static final int WIDGET_UPDATE = 1;
+    public static final int  CHECK_FOR_UPDATE = 2;
 
     private UpdateAlarmManager(){
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static boolean updateAndSetAlarmsIfAppropriate(Context context, boolean force_update){
+    public static boolean updateAndSetAlarmsIfAppropriate(Context context, int update_mode){
         // remove old entries from the data base
         new Weather().cleanDataBase(context);
         WeatherSettings weatherSettings = new WeatherSettings(context);
@@ -74,7 +75,9 @@ public class UpdateAlarmManager {
         long next_update_due_in_millis = VIEWS_UPDATE_INTERVAL;
         long next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
         boolean result;
-        if (((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) || (force_update)){
+        if (((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
+                ((update_mode==WIDGET_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
+                (update_mode==FORCE_UPDATE)){
             // update now.
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.

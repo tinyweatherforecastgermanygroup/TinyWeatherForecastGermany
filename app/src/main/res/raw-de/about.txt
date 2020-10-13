@@ -22,7 +22,7 @@ Dieses Programm benutzt die Astronomy Klasse, Copyright (C) 2010-2012, Helmut Le
 
 PAT maps by Ian Macky <http://ian.macky.net/pat>.
 
-Folgende Personen haben zum Projekt beigetragen: Andreas Shimokawa (bugfixes for the Gadgetbridge API), Izzy (Metadata-Verbesserungen)
+Folgende Personen haben zum Projekt beigetragen: Andreas Shimokawa (bugfixes for the Gadgetbridge API), Izzy (Metadata-Verbesserungen), Jonas Lochmann (.gitignore)
 
 Lizenz:
 --------

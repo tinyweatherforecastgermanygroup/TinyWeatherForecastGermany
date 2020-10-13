@@ -33,7 +33,7 @@ public class OnBootCompletedReceiver extends BroadcastReceiver {
                 PrivateLog.log(context,Tag.ONBOOT,"+-> intent has action");
                 if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
                     PrivateLog.log(context,Tag.ONBOOT,"+-> action is ACTION_BOOT_COMPLETED, triggering alarm update.");
-                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context);
+                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.CHECK_FOR_UPDATE);
                 }
             }
         }

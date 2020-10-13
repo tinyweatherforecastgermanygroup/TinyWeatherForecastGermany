@@ -24,14 +24,27 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
+    <TextView android:id="@+id/classicwidget_reference_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="0dp"
+        android:textColor="@color/widget_textcolor"
+        android:textSize="@dimen/widget_textsize_small"
+        android:visibility="visible"
+        android:gravity="center"
+        android:text="@string/dwd_notice"/>
+
     <LinearLayout
         android:id="@+id/classicwidget_linearlayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:weightSum="3"
-        android:gravity="center"
+        android:gravity="top"
+        android:layout_alignParentTop="true"
         android:layout_above="@+id/classicwidget_reference_text"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout android:id="@+id/classicwidget_leftcontainer"
             android:layout_width="0dp"
@@ -132,17 +145,5 @@
 
        </LinearLayout>
     </LinearLayout>
-
-    <TextView android:id="@+id/classicwidget_reference_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="2dp"
-        android:textColor="@color/widget_textcolor"
-        android:textSize="@dimen/widget_textsize_small"
-        android:visibility="visible"
-        android:gravity="center"
-        android:text="@string/dwd_notice"/>
 
 </RelativeLayout>
