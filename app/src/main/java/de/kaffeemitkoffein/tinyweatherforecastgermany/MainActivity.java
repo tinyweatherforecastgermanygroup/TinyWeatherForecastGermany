@@ -48,7 +48,7 @@ public class MainActivity extends Activity {
     public final static String MAINAPP_HIDE_PROGRESS = "MAINAPP_HIDE_PROGRESS";
 
     public final static boolean API_TESTING_ENABLED = false;
-    private int test_position = 1523;
+    private int test_position = 0;
 
     StationsManager stationsManager;
 
@@ -206,7 +206,10 @@ public class MainActivity extends Activity {
                 // invalidate weather display beacuse the display options have changed
                 if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
                         (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) ){
-                    displayWeatherForecast(weatherCard);
+                    // on 1st app call, weatherCard can be still null
+                    if (weatherCard!=null){
+                        displayWeatherForecast(weatherCard);
+                    }
                 }
             }
         };
@@ -530,7 +533,6 @@ public class MainActivity extends Activity {
         displayUpdateTime(weatherCard);
         PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.weatherLocation.name);
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
-        // ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),weatherCard.forecast6hourly,weatherCard.forecast1hourly);
         ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
         weatherList.setAdapter(forecastAdapter);
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);

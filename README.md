@@ -65,6 +65,7 @@ Credits
  Contributors:
  - Andreas Shimokawa (bugfixes & support for the Gadgetbridge API)
  - Izzy (metadata improvements)
+ - Jonas Lochmann (.gitignore)
  
  Privacy
  -------
