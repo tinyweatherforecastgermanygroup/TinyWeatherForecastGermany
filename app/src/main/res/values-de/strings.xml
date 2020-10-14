@@ -103,8 +103,8 @@
     <string name="preference_displayendofdaybar_summary">Zeige Balken, um Tage zu trennen.</string>
     <string name="preference_display_gradient_title">Zeit-Gradient</string>
     <string name="preference_display_gradient_summary">Zeige einen Farbgradienten, um die Zeit der Vorhersage anzudeuten.</string>
-    <string name="preference_setalarm_title">Automatisch aktualisieren</string>
-    <string name="preference_setalarm_summary">Wetterdaten regelmäßig aktualisieren. Das kann den Akkuverbrauch erhöhen.</string>
+    <string name="preference_setalarm_title">Immer aktualisieren</string>
+    <string name="preference_setalarm_summary">Immer Wetterdaten regelmäßig aktualisieren.</string>
     <string name="preference_set_aggresive_alarm_title">Aktualisierung wiederholen</string>
     <string name="preference_set_aggresive_alarm_summary">Bei fehlender Netzwerk-Verbindung nach 15 Min. immer wieder nochmal versuchen. Erhöht den Stromverbrauch.</string>
     <string name="preference_display_station_geo_title">Geographische Koordinaten</string>

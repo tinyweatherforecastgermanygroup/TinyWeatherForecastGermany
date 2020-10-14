@@ -47,7 +47,7 @@ public class UpdateAlarmManager {
 
     public static final int FORCE_UPDATE = 0;
     public static final int WIDGET_UPDATE = 1;
-    public static final int  CHECK_FOR_UPDATE = 2;
+    public static final int CHECK_FOR_UPDATE = 2;
 
     private UpdateAlarmManager(){
     }
@@ -75,7 +75,8 @@ public class UpdateAlarmManager {
         long next_update_due_in_millis = VIEWS_UPDATE_INTERVAL;
         long next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
         boolean result;
-        if (((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
+        if (    ((weatherSettings.serve_gadgetbridge) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
+                ((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode==WIDGET_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 (update_mode==FORCE_UPDATE)){
             // update now.
