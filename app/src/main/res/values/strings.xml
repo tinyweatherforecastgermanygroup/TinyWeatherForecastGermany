@@ -105,7 +105,7 @@
     <string name="preference_display_gradient_summary">Display color gradient to indicate the time of the forecast.</string>
     <string name="preference_setalarm_title">Always update</string>
     <string name="preference_setalarm_summary">Always update weather data regularly.</string>
-    <string name="preference_setalarm_notice"> NOTICE: this is currently not available, since enabled Gadgetbridge support forces automatic updates anyway.</string>
+    <string name="preference_setalarm_notice">NOTICE: this is currently not available, since enabled Gadgetbridge support forces automatic updates anyway.</string>
     <string name="preference_set_aggresive_alarm_title">Repeat failed updates</string>
     <string name="preference_set_aggresive_alarm_summary">When no network available, retry again and again after 15 minutes. This will use more battery.</string>
     <string name="preference_display_station_geo_title">Geographic coordinates</string>
