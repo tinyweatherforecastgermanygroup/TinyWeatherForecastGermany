@@ -68,6 +68,10 @@ public class Settings extends PreferenceActivity{
                     alertDialog.show();
                 }
             }
+            if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)){
+                setAlarmSettingAllowed();
+            }
+
         }
     };
 
@@ -80,6 +84,8 @@ public class Settings extends PreferenceActivity{
         if (!WeatherSettings.appReleaseIsUserdebug()){
             disableLogCatLogging();
         }
+        // allow changing alarm state?
+        setAlarmSettingAllowed();
         updateValuesDisplay();
         // action bar layout
         ActionBar actionBar = getActionBar();
@@ -88,13 +94,25 @@ public class Settings extends PreferenceActivity{
 
     @SuppressWarnings("deprecation")
     public void disableLogCatLogging(){
-        SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(context);
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_LOG_TO_LOGCAT);
         checkBoxPreference.setChecked(false);
         checkBoxPreference.setEnabled(false);
         checkBoxPreference.setShouldDisableView(true);
         PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
         preferenceScreen.removePreference(checkBoxPreference);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setAlarmSettingAllowed(){
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_SETALARM);
+        checkBoxPreference.setEnabled(!weatherSettings.serve_gadgetbridge);
+        checkBoxPreference.setShouldDisableView(true);
+        if (weatherSettings.serve_gadgetbridge){
+            checkBoxPreference.setSummary(context.getResources().getString(R.string.preference_setalarm_summary)+System.getProperty("line.separator")+context.getResources().getString(R.string.preference_setalarm_notice));
+        } else {
+            checkBoxPreference.setSummary(context.getResources().getString(R.string.preference_setalarm_summary));
+        }
     }
 
     @Override

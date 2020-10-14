@@ -148,8 +148,8 @@ public class ForecastBitmap{
         Bitmap bitmap = Bitmap.createBitmap(bitmapWidth,bitmapHeight,Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         itemWidth = (float) (bitmapWidth / anticipatedWidth);
-        fontSize_medium  = (float) (bitmapHeight/3);
-        fontSize_small   = (float) (bitmapHeight/3.6);
+        fontSize_medium  = (float) (bitmapHeight/2.2);
+        fontSize_small   = (float) (bitmapHeight/3.3);
         Paint paint = new Paint();
         paint.setColor(getColorFromResource(R.color.textColor));
         paint.setTextSize(fontSize_medium);
