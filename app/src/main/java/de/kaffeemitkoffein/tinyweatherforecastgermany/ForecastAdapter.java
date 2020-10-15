@@ -45,6 +45,8 @@
         private boolean display_pressure;
         private boolean display_sunrise;
         private boolean display_endofday_bar;
+        private boolean display_gradient;
+        private int displayTimeOfDayType;
         LayoutInflater layoutInflater;
 
         public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, Weather.WeatherLocation weatherLocation) {
@@ -58,6 +60,8 @@
             this.display_visibility = weatherSettings.display_visibility;
             this.display_sunrise = weatherSettings.display_sunrise;
             this.display_endofday_bar = weatherSettings.display_endofday_bar;
+            this.display_gradient = weatherSettings.display_gradient;
+            this.displayTimeOfDayType = weatherSettings.getTimeOfDayDisplayType();
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -169,23 +173,33 @@
                 main_container = (RelativeLayout) view.findViewById(R.id.fcitem_maincontainer);
                 viewHolder.main_container = main_container;
             }
-            int gradient = getColorGradient(i);
-            main_container.setBackgroundColor(Color.argb(96,gradient,gradient,gradient));
+            Weather.WeatherInfo weatherInfo = weatherForecasts.get(i);
+            // optinal color gradient
+            if (display_gradient){
+                int gradient = getColorGradient(i);
+                main_container.setBackgroundColor(Color.argb(96,gradient,gradient,gradient));
+            }
+            // heading with time of day
+            if (textView_heading==null){
+                textView_heading = (TextView) view.findViewById(R.id.fcitem_heading);
+            }
+            if (displayTimeOfDayType==Weather.TimeOfDay.DISPLAY_SCIENTIFIC){
+                SimpleDateFormat format = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm");
+                String timetext = format.format(new Date(weatherForecasts.get(i).getTimestamp()));
+                textView_heading.setText(timetext);
+            } else {
+                SimpleDateFormat format1 = new SimpleDateFormat("EE, dd.MM.");
+                String timetext1 = format1.format(new Date(weatherForecasts.get(i).getTimestamp()));
+                SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
+                String timetext2 = format2.format(new Date(sixHoursAgo(weatherForecasts.get(i).getTimestamp())));
+                String timetext3 = format2.format(new Date(weatherForecasts.get(i).getTimestamp()));
+                textView_heading.setText(timetext1+", "+timetext2+" - "+timetext3);
+            }
+            // left column
             if (textView_weathercondition==null){
                 textView_weathercondition = (TextView) view.findViewById(R.id.fcitem_weatherconditiontext);
                 viewHolder.condition_text = textView_weathercondition;
             }
-            Weather.WeatherInfo weatherInfo = weatherForecasts.get(i);
-            // heading
-            if (textView_heading==null){
-                textView_heading = (TextView) view.findViewById(R.id.fcitem_heading);
-            }
-            SimpleDateFormat format = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm");
-            Date date = new Date();
-            date.setTime(weatherForecasts.get(i).getTimestamp());
-            String timetext = format.format(date);
-            textView_heading.setText(timetext);
-            // left column
             if (weatherInfo.hasCondition()){
                 Integer weathercondition = weatherInfo.getCondition();
                 textView_weathercondition.setText(WeatherCodeContract.getWeatherConditionText(context,weathercondition));
@@ -544,6 +558,16 @@
             float c_step = (float) (255/weatherForecasts.size());
             int pos = Math.round(c_step * position);
             return pos;
+        }
+
+        private long sixHoursAgo(long time){
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(time);
+            calendar.roll(Calendar.HOUR_OF_DAY,-6);
+            if (calendar.getTimeInMillis()<Calendar.getInstance().getTimeInMillis()){
+                return Calendar.getInstance().getTimeInMillis();
+            }
+            return calendar.getTimeInMillis();
         }
 
     }

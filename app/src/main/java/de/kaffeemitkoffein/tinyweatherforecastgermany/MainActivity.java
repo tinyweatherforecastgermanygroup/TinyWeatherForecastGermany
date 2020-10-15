@@ -25,7 +25,6 @@ import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -429,13 +428,13 @@ public class MainActivity extends Activity {
             final String name = stationsManager.getName(test_position);
             final String description = stationsManager.getDescription(test_position);
             Handler handler = new Handler();
-            Log.v(Tag.MAIN,"Waiting.");
+            //Log.v(Tag.MAIN,"Waiting.");
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                   Log.v(Tag.MAIN,"------------------------------------------");
-                   Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
-                   Log.v(Tag.MAIN,"-------------------------------------------");
+                   //Log.v(Tag.MAIN,"------------------------------------------");
+                   //Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
+                   //Log.v(Tag.MAIN,"-------------------------------------------");
                     getWeatherForecast();
                 }
             },4000);

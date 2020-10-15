@@ -40,6 +40,7 @@ public class WeatherSettings {
     public static final String PREF_STATION_ALTITUDE = "PREF_station_altitude";
     public static final String PREF_DISPLAY_STATION_GEO = "PREF_display_station_geo";
     public static final String PREF_DISPLAY_TYPE = "PREF_display_type";
+    public static final String PREF_DISPLAY_TIMEOFDAY = "PREF_display_timeofday";
     public static final String PREF_DISPLAY_BAR = "PREF_display_bar";
     public static final String PREF_DISPLAY_PRESSURE = "PREF_display_pressure";
     public static final String PREF_DISPLAY_VISIBILITY = "PREF_display_visibility";
@@ -71,6 +72,7 @@ public class WeatherSettings {
     public static final double PREF_STATION_ALTITUDE_DEFAULT = 8.0;
     public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
     public static final String PREF_DISPLAY_TYPE_DEFAULT = "3";
+    public static final String PREF_DISPLAY_TIMEOFDAY_DEFAULT = "scientific";
     public static final boolean PREF_DISPLAY_BAR_DEFAULT = true;
     public static final boolean PREF_DISPLAY_PRESSURE_DEFAULT = true;
     public static final boolean PREF_DISPLAY_VISIBILITY_DEFAULT = true;
@@ -101,6 +103,7 @@ public class WeatherSettings {
     public double station_altitude = PREF_STATION_LATIDTUDE_DEFAULT;
     public boolean display_station_geo = PREF_DISPLAY_STATION_GEO_DEFAULT;
     public String display_type = PREF_DISPLAY_TYPE_DEFAULT;
+    public String display_timeofday = PREF_DISPLAY_TIMEOFDAY_DEFAULT;
     public boolean display_bar = PREF_DISPLAY_BAR_DEFAULT;
     public boolean display_pressure = PREF_DISPLAY_PRESSURE_DEFAULT;
     public boolean display_visibility = PREF_DISPLAY_VISIBILITY_DEFAULT;
@@ -143,6 +146,7 @@ public class WeatherSettings {
         this.setalarm = readPreference(PREF_SETALARM, PREF_SETALARM_DEFAULT);
         this.display_station_geo = readPreference(PREF_DISPLAY_STATION_GEO, PREF_DISPLAY_STATION_GEO_DEFAULT);
         this.display_type = readPreference(PREF_DISPLAY_TYPE, PREF_DISPLAY_TYPE_DEFAULT);
+        this.display_timeofday = readPreference(PREF_DISPLAY_TIMEOFDAY,PREF_DISPLAY_TIMEOFDAY_DEFAULT);
         this.display_bar = readPreference(PREF_DISPLAY_BAR, PREF_DISPLAY_BAR_DEFAULT);
         this.display_pressure = readPreference(PREF_DISPLAY_PRESSURE, PREF_DISPLAY_PRESSURE_DEFAULT);
         this.display_visibility = readPreference(PREF_DISPLAY_VISIBILITY, PREF_DISPLAY_VISIBILITY_DEFAULT);
@@ -174,6 +178,7 @@ public class WeatherSettings {
         applyPreference(PREF_STATION_ALTITUDE, this.station_altitude);
         applyPreference(PREF_DISPLAY_STATION_GEO, this.display_station_geo);
         applyPreference(PREF_DISPLAY_TYPE, this.display_type);
+        applyPreference(PREF_DISPLAY_TIMEOFDAY,this.display_timeofday);
         applyPreference(PREF_DISPLAY_BAR, this.display_bar);
         applyPreference(PREF_DISPLAY_PRESSURE, this.display_pressure);
         applyPreference(PREF_DISPLAY_VISIBILITY, this.display_visibility);
@@ -205,6 +210,7 @@ public class WeatherSettings {
         commitPreference(PREF_STATION_ALTITUDE, this.station_altitude);
         commitPreference(PREF_DISPLAY_STATION_GEO, this.display_station_geo);
         commitPreference(PREF_DISPLAY_TYPE, this.display_type);
+        commitPreference(PREF_DISPLAY_TIMEOFDAY,this.display_timeofday);
         commitPreference(PREF_DISPLAY_BAR, this.display_bar);
         commitPreference(PREF_DISPLAY_PRESSURE, this.display_pressure);
         commitPreference(PREF_DISPLAY_VISIBILITY, this.display_visibility);
@@ -405,6 +411,13 @@ public class WeatherSettings {
 
     public static boolean appReleaseIsUserdebug() {
         return BuildConfig.VERSION_NAME.contains("debug");
+    }
+
+    public int getTimeOfDayDisplayType(){
+        if (this.display_timeofday.equals("scientific")){
+            return Weather.TimeOfDay.DISPLAY_SCIENTIFIC;
+        }
+        return Weather.TimeOfDay.DISPLAY_COMMON;
     }
 
 }

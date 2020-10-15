@@ -25,7 +25,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.util.Log;
 import org.astronomie.info.Astronomy;
 
 import java.text.SimpleDateFormat;
@@ -850,6 +849,15 @@ public final class Weather {
         return simpleDateFormat.format(new Date(time));
     }
 
+    public static String toFullDateTimeString(long time){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm");
+        return simpleDateFormat.format(new Date(time));
+    }
+
+    public static class TimeOfDay{
+        public final static int DISPLAY_SCIENTIFIC = 128;
+        public final static int DISPLAY_COMMON = 129;
+    }
 
 }
 

@@ -71,5 +71,9 @@
         <item>gemischt</item>
     </string-array>
 
+    <string-array name="timeofday_display_text">
+        <item>wissenschaftlich</item>
+        <item>allgemein</item>
+    </string-array>
 
 </resources>

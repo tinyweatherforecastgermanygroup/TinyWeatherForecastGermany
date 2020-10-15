@@ -18,7 +18,6 @@
  */
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
-
 import java.util.ArrayList;
 
 public class CurrentWeatherInfo{
@@ -167,7 +166,7 @@ public class CurrentWeatherInfo{
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_6);
             wi.setTimestamp(timesteps[index]);
-                wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
+            wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
                 wi.setClouds(rawWeatherInfo.getAverageClouds(index - 5, index));
                 wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT,index - 5, index));
                 wi.setLowTemperature(rawWeatherInfo.getMinTemperature(index - 5, index));

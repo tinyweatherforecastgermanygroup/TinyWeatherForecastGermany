@@ -258,10 +258,8 @@ public class RawWeatherInfo{
         kml_dateFormat.setLenient(true);
         for (int i=0; i<elements; i++){
             try {
-                // Log.v("TIME","timestep string:"+timesteps[i]);
                 Date parse = kml_dateFormat.parse(timesteps[i]);
                 result[i] = parse.getTime();
-                // Log.v("TIME","timestep result:"+result[i]);
             } catch (Exception e){
                 // nothing to dd
             }

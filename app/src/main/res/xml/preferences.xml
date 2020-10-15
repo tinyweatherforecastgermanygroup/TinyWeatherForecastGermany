@@ -35,6 +35,14 @@
                 android:entryValues="@array/display_type_values"
                 android:defaultValue="3"/>
 
+            <ListPreference
+                android:key="PREF_display_timeofday"
+                android:title="@string/preference_display_timeofday_title"
+                android:summary="@string/preference_display_timeofday_summary"
+                android:entries="@array/timeofday_display_text"
+                android:entryValues="@array/timeofday_display_values"
+                android:defaultValue="scientific"/>
+
             <CheckBoxPreference
                 android:key="PREF_display_bar"
                 android:title="@string/preference_displayforecastbar_title"

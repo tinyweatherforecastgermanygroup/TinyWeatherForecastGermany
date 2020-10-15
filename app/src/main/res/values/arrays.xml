@@ -85,4 +85,14 @@
         <item>265</item>
     </string-array>
 
+    <string-array name="timeofday_display_text">
+        <item>scientific</item>
+        <item>common</item>
+    </string-array>
+
+    <string-array name="timeofday_display_values">
+        <item>scientific</item>
+        <item>common</item>
+    </string-array>
+
 </resources>

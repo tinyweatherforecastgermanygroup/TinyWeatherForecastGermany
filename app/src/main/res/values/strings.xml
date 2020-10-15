@@ -91,6 +91,8 @@
     <string name="preference_screen_display_summary">Customize the forecast display.</string>
     <string name="preference_displaytype_title">Forecast intervals</string>
     <string name="preference_displaytype_summary">Display hourly, 6-hourly or mixed forecasts.</string>
+    <string name="preference_display_timeofday_title">Time of Day</string>
+    <string name="preference_display_timeofday_summary">How to display the time of day in the 6-hourly forecasts.</string>
     <string name="preference_displayforecastbar_title">Hourly forecast</string>
     <string name="preference_displayforecastbar_summary">Display a bar with hourly data in 6-hourly forecasts.</string>
     <string name="preference_displaypressure_title">Pressure</string>

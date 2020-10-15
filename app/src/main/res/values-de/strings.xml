@@ -91,6 +91,8 @@
     <string name="preference_screen_display_summary">Passe die Anzeige der Vorhersagen an.</string>
     <string name="preference_displaytype_title">Vorhersage-Intervalle</string>
     <string name="preference_displaytype_summary">Zeige stündliche, 6-stündliche oder gemischte Vorhersage.</string>
+    <string name="preference_display_timeofday_title">Tageszeit</string>
+    <string name="preference_display_timeofday_summary">Wie die Tageszeit in der 6-stündlichen Vorhersage angezeigt werden soll.</string>
     <string name="preference_displayforecastbar_title">stündliche Vorhersage</string>
     <string name="preference_displayforecastbar_summary">Zeigte Balken mit stündlichen Daten in der 6-stündlichen Vorhersage.</string>
     <string name="preference_displaypressure_title">Luftdruck</string>
