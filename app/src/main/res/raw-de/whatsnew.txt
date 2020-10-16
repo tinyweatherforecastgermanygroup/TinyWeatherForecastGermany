@@ -3,11 +3,13 @@ Neu in dieser Version ([VERSION]):
 - behoben: Umrechnungsfehler von Pascal zu Hektopascal (Luftdruck)
 - behoben: App-Absturz beim ersten Aufrufen der Einstellungen
 - das stündliche Wetter-Icon ist nun das mit der höchsten Priorität, wenn verfügbar; dies sollte zu einer besseren Übereinstimmung mit den 6-stündlichen Icons und Tages-Icons führen
-- ein türkiser Balken trennt Tage
+- ein türkiser Balken trennt Tage falls zutreffend
 - Sonnenauf- und Untergang werden nun mit einem Pfeil dargestellt und die Icon-Größe ist geringfügig verkleinert
 - ein runde Fortschritts-Anzeige macht deutlich, wenn neue Wetter-Daten und neue Wetter-Warnungen gerade abgerufen werden
 - der Scroll-Balken hat nun eine hellere Farbe und ist etwas breiter
 - ein optionaler Farbgradient deutet die Vorhersage-Zeit an (standardmäßig ausgeschaltet)
 - Userdebug-Builds haben nun die Möglichkeit, nach Logcat zu loggen (deaktiviert in offiziellen Versionen)
 - Wetter-Daten werden nun immer regelmäßig aktualisiert, wenn Widgets oder Gadgetbridge-Support aktiviert sind
+- Zeit-Anzeige in der 6-stündlichen Vorhersage ist konfigurierbar
+
 
