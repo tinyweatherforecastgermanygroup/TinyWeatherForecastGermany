@@ -23,6 +23,7 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,35 +53,48 @@ public class LargeWidget extends ClassicWidget{
         int id_condition = getConditionResource(pos);
         int id_max = getMaxResource(pos);
         int id_min = getMinResource(pos);
-        if (id_day != 0){
-            if (weatherInfo.hasMaxTemperature()){
-                long l = weatherInfo.getTimestamp();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
-                Date date = new Date();
-                date.setTime(l);
-                String weekday = simpleDateFormat.format(date);
-                remoteViews.setTextViewText(id_day,weekday);
+        if (weatherInfo==null){
+            remoteViews.setViewVisibility(id_day, View.INVISIBLE);
+            remoteViews.setViewVisibility(id_condition, View.INVISIBLE);
+            remoteViews.setViewVisibility(id_max, View.INVISIBLE);
+            remoteViews.setViewVisibility(id_min, View.INVISIBLE);
+        } else {
+            if (id_day != 0){
+                if ((weatherInfo.hasMaxTemperature())||(weatherInfo.hasMinTemperature())||(weatherInfo.hasCondition())){
+                    long l = weatherInfo.getTimestamp();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
+                    Date date = new Date();
+                    date.setTime(l);
+                    String weekday = simpleDateFormat.format(date);
+                    remoteViews.setViewVisibility(id_day, View.VISIBLE);
+                    remoteViews.setTextViewText(id_day,weekday);
+                } else {
+                    remoteViews.setViewVisibility(id_day, View.INVISIBLE);
+                }
             }
-        }
-        if (id_condition != 0){
-            if (weatherInfo.hasCondition()){
-                remoteViews.setImageViewResource(id_condition,WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(),true));
-            } else {
-                remoteViews.setImageViewResource(id_condition,R.mipmap.not_available);
+            if (id_condition != 0){
+                if (weatherInfo.hasCondition()){
+                    remoteViews.setViewVisibility(id_condition, View.VISIBLE);
+                    remoteViews.setImageViewResource(id_condition,WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(),true));
+                } else {
+                    remoteViews.setViewVisibility(id_condition, View.INVISIBLE);
+                }
             }
-        }
-        if (id_max != 0){
-            if (weatherInfo.hasMaxTemperature()){
-                remoteViews.setTextViewText(id_max,weatherInfo.getMaxTemperatureInCelsiusInt()+"°");
-            } else {
-                remoteViews.setTextViewText(id_max,NOT_AVAILABLE);
+            if (id_max != 0){
+                if (weatherInfo.hasMaxTemperature()){
+                    remoteViews.setViewVisibility(id_max, View.VISIBLE);
+                    remoteViews.setTextViewText(id_max,weatherInfo.getMaxTemperatureInCelsiusInt()+"°");
+                } else {
+                    remoteViews.setViewVisibility(id_max, View.INVISIBLE);
+                }
             }
-        }
-        if (id_min != 0){
-            if (weatherInfo.hasMinTemperature()){
-                remoteViews.setTextViewText(id_min,weatherInfo.getMinTemperatureInCelsiusInt()+"°");
-            } else {
-                remoteViews.setTextViewText(id_min,NOT_AVAILABLE);
+            if (id_min != 0){
+                if (weatherInfo.hasMinTemperature()){
+                    remoteViews.setViewVisibility(id_min, View.VISIBLE);
+                    remoteViews.setTextViewText(id_min,weatherInfo.getMinTemperatureInCelsiusInt()+"°");
+                } else {
+                    remoteViews.setViewVisibility(id_min, View.INVISIBLE);
+                }
             }
         }
     }
@@ -90,6 +104,11 @@ public class LargeWidget extends ClassicWidget{
         while ((index < currentWeatherInfo.forecast24hourly.size() && (index<=10))) {
             fillForecastItem(c,index + 1, remoteViews, currentWeatherInfo.forecast24hourly.get(index));
             index ++;
+        }
+        Weather.WeatherInfo noInfo = new Weather.WeatherInfo();
+        noInfo.setConditionCode(WeatherCodeContract.NOT_AVAILABLE);
+        while ((index<=10)){
+
         }
     }
 

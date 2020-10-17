@@ -81,7 +81,9 @@
             TextView precipitation_textview;
             ImageView weather_icon;
             TextView textView_temp;
-            TextView textView_highlow;
+            TextView textView_temphigh;
+            TextView textView_templow;
+            TextView textView_pressure;
             TextView textView_wind;
             LinearLayout linearLayout_visibility;
             TextView textview_visibility;
@@ -127,7 +129,9 @@
             TextView precipitation_textview = null;
             ImageView weather_icon = null;
             TextView textView_temp = null;
-            TextView textView_highlow = null;
+            TextView textView_temphigh = null;
+            TextView textView_templow = null;
+            TextView textView_pressure = null;
             TextView textView_wind = null;
             LinearLayout linearLayout_visibility = null;
             TextView textview_visibility = null;
@@ -154,7 +158,9 @@
                 precipitation_textview = viewHolder.precipitation_textview;
                 weather_icon = viewHolder.weather_icon;
                 textView_temp = viewHolder.textView_temp;
-                textView_highlow = viewHolder.textView_highlow;
+                textView_temphigh = viewHolder.textView_temphigh;
+                textView_templow = viewHolder.textView_templow;
+                textView_pressure = viewHolder.textView_pressure;
                 textView_wind = viewHolder.textView_wind;
                 linearLayout_visibility = viewHolder.linearLayout_visibility;
                 textview_visibility = viewHolder.textview_visibility;
@@ -294,18 +300,27 @@
             if (weatherInfo.hasTemperature()){
                 textView_temp.setText(String.valueOf(weatherInfo.getTemperatureInCelsiusInt()+"°"));
             }
-            if (textView_highlow == null){
-                textView_highlow = (TextView) view.findViewById(R.id.fcitem_temperature_highlow);
-                viewHolder.textView_highlow = textView_highlow;
+            if (textView_temphigh == null){
+                textView_temphigh = (TextView) view.findViewById(R.id.fcitem_temperature_high);
+                viewHolder.textView_temphigh = textView_temphigh;
             }
-            String temp_low_high_pressure = "";
-            if (weatherInfo.hasMinTemperature() && weatherInfo.hasMaxTemperature()){
-                temp_low_high_pressure = temp_low_high_pressure + weatherInfo.getMinTemperatureInCelsiusInt()+"° | "+weatherInfo.getMaxTemperatureInCelsiusInt()+"°";
+            if (textView_templow == null){
+                textView_templow = (TextView) view.findViewById(R.id.fcitem_temperature_low);
+                viewHolder.textView_templow = textView_templow;
             }
-            if (weatherInfo.hasPressure() && display_pressure){
-                temp_low_high_pressure = temp_low_high_pressure + ", "+weatherInfo.getPressure()/100+ " hPa";
+            if (textView_pressure == null){
+                textView_pressure = (TextView) view.findViewById(R.id.fcitem_pressure);
+                viewHolder.textView_pressure = textView_pressure;
             }
-            textView_highlow.setText(temp_low_high_pressure);
+            if (weatherInfo.hasMaxTemperature()){
+                textView_temphigh.setText(weatherInfo.getMaxTemperatureInCelsiusInt()+"°");
+            }
+            if (weatherInfo.hasMinTemperature()){
+                textView_templow.setText(weatherInfo.getMinTemperatureInCelsiusInt()+"°");
+            }
+            if (weatherInfo.hasPressure()){
+                textView_pressure.setText(weatherInfo.getPressure()/100+ " hPa");
+            }
             if (textView_wind == null){
                 textView_wind = (TextView) view.findViewById(R.id.fcitem_wind);
                 viewHolder.textView_wind = textView_wind;

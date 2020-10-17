@@ -325,21 +325,11 @@ public final class Weather {
             return false;
         }
 
-        private Bitmap getArrowBitmap(Context context, float degrees){
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.arrow);
-            if (bitmap != null){
-                Matrix m = new Matrix();
-                m.postRotate(degrees);
-                return Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
-            } else {
-                return null;
-            }
-        }
-
         public Bitmap getArrowBitmap(Context context){
             if (wind_direction!=null){
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.arrow);
                 if (bitmap != null){
+                    // adjust to screen density to keep arrow really round
                     Matrix m = new Matrix();
                     m.postRotate(360-wind_direction.floatValue());
                     return Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
