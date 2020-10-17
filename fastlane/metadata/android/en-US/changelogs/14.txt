@@ -6,4 +6,4 @@ Gadgetbridge versions above 0.47.2, please update Gadgetbridge accordingly to ke
 data supply for your wearable working!
 
 - minor ui improvements (temperature & wind direction display)
-- fixed: crash of bold widget resulting in wrong display under certain conditions
+- fixed: widgets displaying wrong weather data under certain conditions

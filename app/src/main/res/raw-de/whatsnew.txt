@@ -9,6 +9,6 @@ parallel Gadgetbridge, um die Lieferung der Wetter-Daten an Dein Wearable am Lau
 zu halten!
 
 - kleine Verbesserungen der Bedienungsoberfläche (Temperatur und Wind-Richtungs-Anzeige)
-- behoben: Absturz des kräftigen Widgets, der unter bestimmten Bedingungen zu falscher Wetter-Darstellung führte
+- behoben: Widgets zeigten unter bestimmten Umständen falsche Wetterdaten
 
 
