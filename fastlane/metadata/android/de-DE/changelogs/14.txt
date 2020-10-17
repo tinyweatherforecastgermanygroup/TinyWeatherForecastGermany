@@ -1,5 +1,3 @@
-Neu in dieser Version ([VERSION]):
-
 Gadgetbridge Wetter-Format aktualisiert, um Versionen höher als  0.47.2 (build 181) zu
 unterstützen.
 
@@ -10,5 +8,3 @@ zu halten!
 
 - kleine Verbesserungen der Bedienungsoberfläche (Temperatur und Wind-Richtungs-Anzeige)
 - behoben: Absturz des kräftigen Widgets, der unter bestimmten Bedingungen zu falscher Wetter-Darstellung führte
-
-

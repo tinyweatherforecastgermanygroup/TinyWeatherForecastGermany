@@ -147,6 +147,8 @@ public class MainActivity extends Activity {
         disableLogToLogcatIfNotUserDebug();
         // force a database access at the beginning to check for a needed database upgrade
         WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
+        // update widgets
+        WidgetRefresher.refresh(this);
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);

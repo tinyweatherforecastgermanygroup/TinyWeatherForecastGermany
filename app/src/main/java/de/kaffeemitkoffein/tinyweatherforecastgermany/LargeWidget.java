@@ -34,17 +34,15 @@ public class LargeWidget extends ClassicWidget{
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances) {
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         WeatherSettings weatherSettings = new WeatherSettings(c);
-        if (weatherCard != null) {
-            for (int i=0; i<widget_instances.length; i++){
-                // sets up a pending intent to launch main activity when the widget is touched.
-                Intent intent = new Intent(c,MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
-                RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.largewidget_layout);
-                remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer,pendingIntent);
-                setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
-                fillForecastBar(c,remoteViews,weatherCard);
-                awm.updateAppWidget(widget_instances[i],remoteViews);
-            }
+        for (int i=0; i<widget_instances.length; i++) {
+            // sets up a pending intent to launch main activity when the widget is touched.
+            Intent intent = new Intent(c, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
+            RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.largewidget_layout);
+            remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer, pendingIntent);
+            setClassicWidgetItems(remoteViews, weatherSettings, weatherCard, c);
+            fillForecastBar(c, remoteViews, weatherCard);
+            awm.updateAppWidget(widget_instances[i], remoteViews);
         }
     }
 
@@ -100,15 +98,18 @@ public class LargeWidget extends ClassicWidget{
     }
 
     private void fillForecastBar(Context c, RemoteViews remoteViews, CurrentWeatherInfo currentWeatherInfo){
+        if (currentWeatherInfo==null){
+            currentWeatherInfo = new CurrentWeatherInfo();
+            currentWeatherInfo.setToEmpty();
+        }
         int index = 0;
         while ((index < currentWeatherInfo.forecast24hourly.size() && (index<=10))) {
             fillForecastItem(c,index + 1, remoteViews, currentWeatherInfo.forecast24hourly.get(index));
             index ++;
         }
-        Weather.WeatherInfo noInfo = new Weather.WeatherInfo();
-        noInfo.setConditionCode(WeatherCodeContract.NOT_AVAILABLE);
         while ((index<=10)){
-
+            fillForecastItem(c,index + 1, remoteViews, null);
+            index++;
         }
     }
 

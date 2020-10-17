@@ -34,6 +34,14 @@ public class CurrentWeatherInfo{
 
     }
 
+    public void setToEmpty(){
+        weatherLocation = new Weather.WeatherLocation("","",0,0,0);
+        currentWeather = new Weather.WeatherInfo();
+        forecast1hourly = new ArrayList<Weather.WeatherInfo>();
+        forecast6hourly = new ArrayList<Weather.WeatherInfo>();
+        forecast24hourly = new ArrayList<Weather.WeatherInfo>();
+    }
+
     private Integer getIntItem(String s){
         Integer i;
         if (s != null){

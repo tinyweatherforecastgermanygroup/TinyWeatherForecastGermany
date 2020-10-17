@@ -96,6 +96,10 @@ public class ClassicWidget extends AppWidgetProvider {
      */
 
     public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c){
+        if (weatherCard==null){
+            weatherCard = new CurrentWeatherInfo();
+            weatherCard.setToEmpty();
+        }
         remoteViews.setTextViewText(R.id.classicwidget_locationtext,weatherCard.getCity());
         if (weatherCard.currentWeather.hasCondition()){
             int weathercondition = weatherCard.currentWeather.getCondition();
@@ -148,16 +152,14 @@ public class ClassicWidget extends AppWidgetProvider {
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         WeatherSettings weatherSettings = new WeatherSettings(c);
-        if (weatherCard != null) {
-            for (int i=0; i<widget_instances.length; i++){
-                // sets up a pending intent to launch main activity when the widget is touched.
-                Intent intent = new Intent(c,MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
-                RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.classicwidget_layout);
-                remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer,pendingIntent);
-                setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
-                awm.updateAppWidget(widget_instances[i],remoteViews);
-            }
+        for (int i=0; i<widget_instances.length; i++){
+            // sets up a pending intent to launch main activity when the widget is touched.
+            Intent intent = new Intent(c,MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
+            RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.classicwidget_layout);
+            remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer,pendingIntent);
+            setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
+            awm.updateAppWidget(widget_instances[i],remoteViews);
         }
     }
 
