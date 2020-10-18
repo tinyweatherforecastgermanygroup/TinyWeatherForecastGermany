@@ -91,8 +91,8 @@
     <string name="preference_screen_display_summary">Customize the forecast display.</string>
     <string name="preference_displaytype_title">Forecast intervals</string>
     <string name="preference_displaytype_summary">Display hourly, 6-hourly or mixed forecasts.</string>
-    <string name="preference_display_timeofday_title">Time of Day</string>
-    <string name="preference_display_timeofday_summary">How to display the time of day in the 6-hourly forecasts.</string>
+    <string name="preference_display_layout_title">Time of Day</string>
+    <string name="preference_display_layout_summary">How to display the weather data.</string>
     <string name="preference_displayforecastbar_title">Hourly forecast</string>
     <string name="preference_displayforecastbar_summary">Display a bar with hourly data in 6-hourly forecasts.</string>
     <string name="preference_displaypressure_title">Pressure</string>
@@ -120,6 +120,8 @@
     <string name="preference_gadgetbridge_packagename_summary">You can set a custom package name here, e.g. when using a fork of Gadgetbridge. Remove the name to return to the default package name.</string>
     <string name="preference_gadgetbridge_faketimestamp_title">Send current time</string>
     <string name="preference_gadgetbridge_faketimestamp_summary">Some wearables do not accept a forecast for current weather, always send current time instead.</string>
+    <string name="preference_gadgetbridge_notice_title">Important Notice</string>
+    <string name="preference_gadgetbridge_notice_summary">You need at least Gadgetbridge version 0.48.0, weather data support does not work on lower versions of Gadgetbridge.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge package name is set back to default.</string>
     <string name="preference_loggingscreen_title">Debug</string>
     <string name="preference_loggingscreen_summary">Set up logging options for debugging.</string>

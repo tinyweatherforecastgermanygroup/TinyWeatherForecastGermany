@@ -147,8 +147,6 @@ public class MainActivity extends Activity {
         disableLogToLogcatIfNotUserDebug();
         // force a database access at the beginning to check for a needed database upgrade
         WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
-        // update widgets
-        WidgetRefresher.refresh(this);
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);
@@ -255,6 +253,7 @@ public class MainActivity extends Activity {
         PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
         PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
         last_updateweathercall = Calendar.getInstance().getTimeInMillis();
+        addToSpinner(station_description);
         addToSpinner(station_description);
         // we do not get the forecast data here since this triggers the preference-changed-listener. This
         // listener takes care of the weather data update and updates widgets and gadgetbridge.
@@ -535,7 +534,6 @@ public class MainActivity extends Activity {
         displayUpdateTime(weatherCard);
         PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.weatherLocation.name);
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
         ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
         weatherList.setAdapter(forecastAdapter);
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);

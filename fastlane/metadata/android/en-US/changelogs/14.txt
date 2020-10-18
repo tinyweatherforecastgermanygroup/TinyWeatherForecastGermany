@@ -1,9 +1,7 @@
 
-Gadgetbridge weather data format updated to support versions above 0.47.2 (build 181)
+Gadgetbridge weather data format updated to support version 0.48.0 (build 182) or higher.
 
-IMPORTANT: this version of Tiny Weather Forecast Germany and future versions will only support
-Gadgetbridge versions above 0.47.2, please update Gadgetbridge accordingly to keep the weather
-data supply for your wearable working!
+IMPORTANT: this version of Tiny Weather Forecast Germany and future versions will only support Gadgetbridge versions 0.48.0 or higher, please update Gadgetbridge accordingly to keep the weather data supply for your wearable working!
 
-- minor ui improvements (temperature & wind direction display)
+- minor ui improvements (time, temperature & wind direction display)
 - fixed: widgets displaying wrong weather data under certain conditions

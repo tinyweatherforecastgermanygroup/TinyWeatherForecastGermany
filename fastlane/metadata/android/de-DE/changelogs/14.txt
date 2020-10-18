@@ -1,10 +1,6 @@
-Gadgetbridge Wetter-Format aktualisiert, um Versionen höher als  0.47.2 (build 181) zu
-unterstützen.
+Gadgetbridge Wetter-Format aktualisiert, um Versionen ab 0.48.0 (build 182) zu unterstützen.
 
-WICHTIG: diese Version der Kleinen Wettervorschau Deutschland und zukünftige Versionen
-werden nur Gadgetbridge-Versionen höher als 0.47.2 unterstützen, bitte aktualisiere
-parallel Gadgetbridge, um die Lieferung der Wetter-Daten an Dein Wearable am Laufen
-zu halten!
+WICHTIG: diese Version der Kleinen Wettervorschau Deutschland und zukünftige Versionen unterstützen nur Gadgetbridge ab Version 0.48.0, bitte aktualisiere Gadgetbridge, um die Lieferung der Wetter-Daten an Dein Wearable am Laufen zu halten!
 
-- kleine Verbesserungen der Bedienungsoberfläche (Temperatur und Wind-Richtungs-Anzeige)
+- kleine Verbesserungen der Bedienungsoberfläche (Zeit, Temperatur und Wind-Richtungs-Anzeige)
 - Widgets zeigten unter bestimmten Umständen falsche Wetterdaten

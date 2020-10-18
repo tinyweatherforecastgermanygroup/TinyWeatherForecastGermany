@@ -844,9 +844,8 @@ public final class Weather {
         return simpleDateFormat.format(new Date(time));
     }
 
-    public static class TimeOfDay{
-        public final static int DISPLAY_SCIENTIFIC = 128;
-        public final static int DISPLAY_COMMON = 129;
+    public static class DisplayLayout{
+        public final static int DEFAULT = 0;
     }
 
 }

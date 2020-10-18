@@ -46,7 +46,7 @@
         private boolean display_sunrise;
         private boolean display_endofday_bar;
         private boolean display_gradient;
-        private int displayTimeOfDayType;
+        private int display_layout;
         LayoutInflater layoutInflater;
 
         public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, Weather.WeatherLocation weatherLocation) {
@@ -61,7 +61,7 @@
             this.display_sunrise = weatherSettings.display_sunrise;
             this.display_endofday_bar = weatherSettings.display_endofday_bar;
             this.display_gradient = weatherSettings.display_gradient;
-            this.displayTimeOfDayType = weatherSettings.getTimeOfDayDisplayType();
+            this.display_layout = weatherSettings.getDisplayLayout();
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -189,18 +189,12 @@
             if (textView_heading==null){
                 textView_heading = (TextView) view.findViewById(R.id.fcitem_heading);
             }
-            if (displayTimeOfDayType==Weather.TimeOfDay.DISPLAY_SCIENTIFIC){
-                SimpleDateFormat format = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm");
-                String timetext = format.format(new Date(weatherForecasts.get(i).getTimestamp()));
-                textView_heading.setText(timetext);
-            } else {
-                SimpleDateFormat format1 = new SimpleDateFormat("EE, dd.MM.");
-                String timetext1 = format1.format(new Date(weatherForecasts.get(i).getTimestamp()));
-                SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
-                String timetext2 = format2.format(new Date(sixHoursAgo(weatherForecasts.get(i).getTimestamp())));
-                String timetext3 = format2.format(new Date(weatherForecasts.get(i).getTimestamp()));
-                textView_heading.setText(timetext1+", "+timetext2+" - "+timetext3);
-            }
+            long six_hours_ago = neededHoursAgo(weatherInfo);
+            SimpleDateFormat format1 = new SimpleDateFormat("EE, dd.MM., HH:mm");
+            String timetext1 = format1.format(new Date(six_hours_ago));
+            SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
+            String timetext2 = format2.format(new Date(weatherInfo.getTimestamp()));
+            textView_heading.setText(timetext1+" - "+timetext2);
             // left column
             if (textView_weathercondition==null){
                 textView_weathercondition = (TextView) view.findViewById(R.id.fcitem_weatherconditiontext);
@@ -575,10 +569,14 @@
             return pos;
         }
 
-        private long sixHoursAgo(long time){
+        private long neededHoursAgo(Weather.WeatherInfo weatherInfo){
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(time);
-            calendar.roll(Calendar.HOUR_OF_DAY,-6);
+            calendar.setTimeInMillis(weatherInfo.getTimestamp());
+            if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6){
+                calendar.add(Calendar.HOUR_OF_DAY,-6);
+            } else {
+                calendar.add(Calendar.HOUR_OF_DAY,-1);
+            }
             if (calendar.getTimeInMillis()<Calendar.getInstance().getTimeInMillis()){
                 return Calendar.getInstance().getTimeInMillis();
             }

@@ -91,8 +91,8 @@
     <string name="preference_screen_display_summary">Passe die Anzeige der Vorhersagen an.</string>
     <string name="preference_displaytype_title">Vorhersage-Intervalle</string>
     <string name="preference_displaytype_summary">Zeige stündliche, 6-stündliche oder gemischte Vorhersage.</string>
-    <string name="preference_display_timeofday_title">Tageszeit</string>
-    <string name="preference_display_timeofday_summary">Wie die Tageszeit in der 6-stündlichen Vorhersage angezeigt werden soll.</string>
+    <string name="preference_display_layout_title">Layout</string>
+    <string name="preference_display_layout_summary">Wie das Wetter dargestellt werden soll.</string>
     <string name="preference_displayforecastbar_title">stündliche Vorhersage</string>
     <string name="preference_displayforecastbar_summary">Zeigte Balken mit stündlichen Daten in der 6-stündlichen Vorhersage.</string>
     <string name="preference_displaypressure_title">Luftdruck</string>
@@ -120,6 +120,8 @@
     <string name="preference_gadgetbridge_packagename_summary">Hier kann der Paketname verändert werden, z.B. falls ein Gadgetbridge-Fork verwendet wird. Name löschen, um zum Standard-Paketnamen zurück zu kehren.</string>
     <string name="preference_gadgetbridge_faketimestamp_title">Aktuelle Zeit senden</string>
     <string name="preference_gadgetbridge_faketimestamp_summary">Einige Wearables akzeptieren keine Vorschau als aktuelles Wetter, statt dessen immer aktuelle Zeit übermitteln.</string>
+    <string name="preference_gadgetbridge_notice_title">Wichtiger Hinweis</string>
+    <string name="preference_gadgetbridge_notice_summary">Benötigt wird Gadgetbridge version 0.48.0 oder höher, mit niedrigeren Versionen funktioniert die Übertragung der Wetterdaten nicht.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge-Paketname wurde zurückgesetzt!</string>
     <string name="preference_loggingscreen_title">Fehler finden</string>
     <string name="preference_loggingscreen_summary">Protokoll aufzeichnen und verwalten.</string>
