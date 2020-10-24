@@ -81,6 +81,22 @@
                 android:summary="@string/preference_display_gradient_summary"
                 android:defaultValue="false"/>
 
+            <ListPreference
+                android:key="PREF_display_wind_type"
+                android:title="@string/preference_display_wind_type_title"
+                android:summary="@string/preference_display_wind_type_summary"
+                android:entries="@array/display_wind_type_text"
+                android:entryValues="@array/display_wind_type_values"
+                android:defaultValue="0"/>
+
+            <ListPreference
+                android:key="PREF_display_wind_unit"
+                android:title="@string/preference_display_wind_unit_title"
+                android:summary="@string/preference_display_wind_unit_summary"
+                android:entries="@array/display_wind_unit_text"
+                android:entryValues="@array/display_wind_unit_values"
+                android:defaultValue="0"/>
+
         </PreferenceScreen>
 
         <CheckBoxPreference

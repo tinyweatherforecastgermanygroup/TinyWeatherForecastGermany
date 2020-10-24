@@ -105,6 +105,10 @@
     <string name="preference_displayendofdaybar_summary">Zeige Balken, um Tage zu trennen.</string>
     <string name="preference_display_gradient_title">Zeit-Gradient</string>
     <string name="preference_display_gradient_summary">Zeige einen Farbgradienten, um die Zeit der Vorhersage anzudeuten.</string>
+    <string name="preference_display_wind_type_title">Windrichtung</string>
+    <string name="preference_display_wind_type_summary">Wie die Windrichtung dargestellt werden soll.</string>
+    <string name="preference_display_wind_unit_title">Windgeschwindigkeit</string>
+    <string name="preference_display_wind_unit_summary">Wähle die Einheit für die Windgeschwindigkeit.</string>
     <string name="preference_setalarm_title">Immer aktualisieren</string>
     <string name="preference_setalarm_summary">Immer Wetterdaten regelmäßig aktualisieren.</string>
     <string name="preference_setalarm_notice">HINWEIS: aktuell nicht verfügbar, da aktivierter Gadgetbridge-Support ohnehin automatische Aktualisierungen erfordert.</string>

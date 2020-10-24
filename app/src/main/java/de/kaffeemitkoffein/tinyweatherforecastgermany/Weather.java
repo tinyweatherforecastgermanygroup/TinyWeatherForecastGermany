@@ -326,16 +326,77 @@ public final class Weather {
         }
 
         public Bitmap getArrowBitmap(Context context){
+            // wind direction is in ° and is the direction where the wind comes from.
+            // new arrow icon neutral position is 0°.
+            // rotation is clockwise.
             if (wind_direction!=null){
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.arrow);
                 if (bitmap != null){
-                    // adjust to screen density to keep arrow really round
                     Matrix m = new Matrix();
-                    m.postRotate(360-wind_direction.floatValue());
+                    m.postRotate(wind_direction.floatValue());
                     return Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
                 }
             }
             return null;
+        }
+
+        public Bitmap getBeaufortBitmap(Context context){
+            if (wind_direction!=null) {
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getBeaufortIconResourceID(getWindSpeedInBeaufortInt()));
+                if (bitmap != null) {
+                    Matrix m = new Matrix();
+                    m.postRotate(wind_direction.floatValue());
+                    return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, false);
+                }
+            }
+            return null;
+        }
+
+        private int getBeaufortIconResourceID(int windspeed_beaufort){
+            switch (windspeed_beaufort){
+                case 0: return R.mipmap.wind_beaufort_00;
+                case 1: return R.mipmap.wind_beaufort_01;
+                case 2: return R.mipmap.wind_beaufort_02;
+                case 3: return R.mipmap.wind_beaufort_03;
+                case 4: return R.mipmap.wind_beaufort_04;
+                case 5: return R.mipmap.wind_beaufort_05;
+                case 6: return R.mipmap.wind_beaufort_06;
+                case 7: return R.mipmap.wind_beaufort_07;
+                case 8: return R.mipmap.wind_beaufort_08;
+                case 9: return R.mipmap.wind_beaufort_09;
+                case 10: return R.mipmap.wind_beaufort_10;
+                case 11: return R.mipmap.wind_beaufort_11;
+                case 12: return R.mipmap.wind_beaufort_12;
+            }
+            return 12;
+        }
+
+        public String getWindDirectionString(Context context){
+            if ((wind_direction>337.5) || (wind_direction<=22.5)){
+                return context.getResources().getString(R.string.direction_north);
+            }
+            if ((wind_direction>22.5) && (wind_direction<=67.5)){
+                return context.getResources().getString(R.string.direction_northeast);
+            }
+            if ((wind_direction>67.5) && (wind_direction<=112.5)){
+                return context.getResources().getString(R.string.direction_east);
+            }
+            if ((wind_direction>112.5) && (wind_direction<=157.5)){
+                return context.getResources().getString(R.string.direction_southeast);
+            }
+            if ((wind_direction>157.5) && (wind_direction<=202.5)){
+                return context.getResources().getString(R.string.direction_south);
+            }
+            if ((wind_direction>202.5) && (wind_direction<=247.5)){
+                return context.getResources().getString(R.string.direction_southwest);
+            }
+            if ((wind_direction>247.5) && (wind_direction<=292.5)){
+                return context.getResources().getString(R.string.direction_west);
+            }
+            if ((wind_direction>292.5) && (wind_direction<=337.5)) {
+                return context.getResources().getString(R.string.direction_northwest);
+            }
+          return "?";
         }
 
         public double getWindDirection(){
@@ -473,14 +534,65 @@ public final class Weather {
             return false;
         }
 
-        public String getWindSpeedString(){
-            return String.valueOf(wind_speed+ "m/s");
+        public int getWindSpeedInMsInt(){
+            Double d = wind_speed;
+            return d.intValue();
         }
 
         public int getWindSpeedInKmhInt(){
             Double d = (wind_speed*3.6);
             int speed = d.intValue();
             return speed;
+        }
+
+        private int fromKmhToBeaufort(int wind_kmh){
+            int beauford = 12;
+            if (wind_kmh<=117){
+                beauford = 11;
+            }
+            if (wind_kmh<=102){
+                beauford = 10;
+            }
+            if (wind_kmh<=88){
+                beauford = 9;
+            }
+            if (wind_kmh<=74){
+                beauford = 8;
+            }
+            if (wind_kmh<=61){
+                beauford = 7;
+            }
+            if (wind_kmh<=49){
+                beauford = 6;
+            }
+            if (wind_kmh<=38){
+                beauford = 5;
+            }
+            if (wind_kmh<=28){
+                beauford = 4;
+            }
+            if (wind_kmh<=19){
+                beauford = 3;
+            }
+            if (wind_kmh<=11){
+                beauford = 2;
+            }
+            if (wind_kmh<=5){
+                beauford = 1;
+            }
+            if (wind_kmh<=1){
+                beauford = 0;
+            }
+            return beauford;
+        }
+
+        public int getWindSpeedInBeaufortInt(){
+            return fromKmhToBeaufort(getWindSpeedInKmhInt());
+        }
+
+        public int getWindSpeedInKnotsInt(){
+            Double d = wind_speed*0.514;
+            return d.intValue();
         }
 
         public boolean hasFlurries(){
@@ -490,10 +602,24 @@ public final class Weather {
             return false;
         }
 
+        public int getFlurriesInMhInt(){
+            Double d = flurries;
+            return d.intValue();
+        }
+
         public int getFlurriesInKmhInt(){
             Double d = (flurries*3.6);
             int flurries = d.intValue();
             return flurries;
+        }
+
+        public int getFlurriesInBeaufortInt(){
+            return fromKmhToBeaufort(getFlurriesInKmhInt());
+        }
+
+        public int getFlurriesInKnotsInt(){
+            Double d = flurries*0.514;
+            return d.intValue();
         }
 
         public boolean hasClouds(){
@@ -846,6 +972,29 @@ public final class Weather {
 
     public static class DisplayLayout{
         public final static int DEFAULT = 0;
+    }
+
+    public static class WindDisplayType{
+        public final static int ARROW = 0;
+        public final static int BEAUFORT = 1;
+        public final static int TEXT = 2;
+    }
+
+    public static class WindDisplayUnit{
+        public final static int METERS_PER_SECOND = 0;
+        public final static int KILOMETERS_PER_HOUR = 1;
+        public final static int BEAUFORT = 2;
+        public final static int KNOTS = 3;
+    }
+
+    public static String getWindUnitString(int type){
+        switch (type){
+            case WindDisplayUnit.METERS_PER_SECOND: return "m/s";
+            case WindDisplayUnit.KILOMETERS_PER_HOUR: return "km/h";
+            case WindDisplayUnit.BEAUFORT: return "bf";
+            case WindDisplayUnit.KNOTS: return "kn";
+        }
+        return "?";
     }
 
 }

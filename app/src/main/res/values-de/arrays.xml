@@ -71,9 +71,18 @@
         <item>gemischt</item>
     </string-array>
 
-    <string-array name="timeofday_display_text">
-        <item>wissenschaftlich</item>
-        <item>allgemein</item>
+    <string-array name="display_wind_type_text">
+        <item>Pfeil</item>
+        <item>Beaufort</item>
+        <item>Text</item>
     </string-array>
+
+    <string-array name="display_wind_unit_text">
+        <item>m/s</item>
+        <item>km/h</item>
+        <item>Beaufort (bf)</item>
+        <item>Knoten (kn)</item>
+    </string-array>
+
 
 </resources>

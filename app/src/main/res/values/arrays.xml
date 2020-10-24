@@ -85,14 +85,30 @@
         <item>265</item>
     </string-array>
 
-    <string-array name="timeofday_display_text">
-        <item>scientific</item>
-        <item>common</item>
+    <string-array name="display_wind_type_text">
+        <item>Arrow</item>
+        <item>Beaufort</item>
+        <item>Text</item>
     </string-array>
 
-    <string-array name="timeofday_display_values">
-        <item>scientific</item>
-        <item>common</item>
+    <string-array name="display_wind_type_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="display_wind_unit_text">
+        <item>m/s</item>
+        <item>km/h</item>
+        <item>beaufort (bf)</item>
+        <item>knots (kn)</item>
+    </string-array>
+
+    <string-array name="display_wind_unit_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
 </resources>

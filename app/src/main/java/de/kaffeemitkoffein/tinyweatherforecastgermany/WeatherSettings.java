@@ -47,6 +47,8 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_SUNRISE = "PREF_display_sunrise";
     public static final String PREF_DISPLAY_ENDOFDAY_BAR = "PREF_display_end_of_day_bar";
     public static final String PREF_DISPLAY_GRADIENT = "PREF_display_gradient";
+    public static final String PREF_DISPLAY_WIND_TYPE = "PREF_display_wind_type";
+    public static final String PREF_DISPLAY_WIND_UNIT = "PREF_display_wind_unit";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_AGGRESSIVE_UPDATE = "PREF_aggressive_update";
@@ -64,7 +66,6 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_DISABLE = "PREF_warnings_diable";
     public static final String PREF_WARNINGS_LAST_UPDATE_TIME = "PREF_warnings_last_update_time";
     public static final String PREF_IS_FIRST_APP_LAUNCH = "PREF_is_first_app_launch";
-
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
     public static final double PREF_STATION_LONGITUDE_DEFAULT = 9.98;
@@ -79,6 +80,8 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_SUNRISE_DEFAULT = true;
     public static final boolean PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT = true;
     public static final boolean PREF_DISPLAY_GRADIENT_DEFAULT = false;
+    public static final String PREF_DISPLAY_WIND_TYPE_DEFAULT = "0";
+    public static final String PREF_DISPLAY_WIND_UNIT_DEFAULT = "0";
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
@@ -110,6 +113,8 @@ public class WeatherSettings {
     public boolean display_sunrise = PREF_DISPLAY_SUNRISE_DEFAULT;
     public boolean display_endofday_bar = PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT;
     public boolean display_gradient = PREF_DISPLAY_GRADIENT_DEFAULT;
+    public String display_wind_type = PREF_DISPLAY_WIND_TYPE_DEFAULT;
+    public String display_wind_unit = PREF_DISPLAY_WIND_UNIT_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public boolean aggressive_update = PREF_AGGRESSIVE_UPDATE_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
@@ -153,6 +158,8 @@ public class WeatherSettings {
         this.display_sunrise = readPreference(PREF_DISPLAY_SUNRISE, PREF_DISPLAY_SUNRISE_DEFAULT);
         this.display_endofday_bar = readPreference(PREF_DISPLAY_ENDOFDAY_BAR, PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT);
         this.display_gradient = readPreference(PREF_DISPLAY_GRADIENT, PREF_DISPLAY_GRADIENT_DEFAULT);
+        this.display_wind_type = readPreference(PREF_DISPLAY_WIND_TYPE,PREF_DISPLAY_WIND_TYPE_DEFAULT);
+        this.display_wind_unit = readPreference(PREF_DISPLAY_WIND_UNIT,PREF_DISPLAY_WIND_TYPE_DEFAULT);
         this.aggressive_update = readPreference(PREF_AGGRESSIVE_UPDATE, PREF_AGGRESSIVE_UPDATE_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY, PREF_WIDGET_OPACITY_DEFAULT);
@@ -185,6 +192,8 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_SUNRISE, this.display_sunrise);
         applyPreference(PREF_DISPLAY_ENDOFDAY_BAR, this.display_endofday_bar);
         applyPreference(PREF_DISPLAY_GRADIENT, this.display_gradient);
+        applyPreference(PREF_DISPLAY_WIND_TYPE,this.display_wind_type);
+        applyPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
         applyPreference(PREF_SETALARM, this.setalarm);
         applyPreference(PREF_AGGRESSIVE_UPDATE, this.aggressive_update);
         applyPreference(PREF_UPDATEINTERVAL, this.updateinterval);
@@ -217,6 +226,8 @@ public class WeatherSettings {
         commitPreference(PREF_DISPLAY_SUNRISE, this.display_sunrise);
         commitPreference(PREF_DISPLAY_ENDOFDAY_BAR, this.display_endofday_bar);
         commitPreference(PREF_DISPLAY_GRADIENT, this.display_gradient);
+        commitPreference(PREF_DISPLAY_WIND_TYPE,this.display_wind_type);
+        commitPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
         commitPreference(PREF_SETALARM, this.setalarm);
         commitPreference(PREF_AGGRESSIVE_UPDATE, this.aggressive_update);
         commitPreference(PREF_UPDATEINTERVAL, this.updateinterval);
@@ -418,6 +429,32 @@ public class WeatherSettings {
             return Weather.DisplayLayout.DEFAULT;
         }
         return Weather.DisplayLayout.DEFAULT;
+    }
+
+    public int getWindDisplayType(){
+        try {
+            int i = Integer.parseInt(this.display_wind_type);
+            return i;
+        } catch (NumberFormatException e) {
+            // return to default if entry is corrupted (not a number)
+            this.display_wind_type = PREF_DISPLAY_WIND_TYPE_DEFAULT;
+            applyPreference(PREF_DISPLAY_WIND_TYPE, display_wind_type);
+            // return default
+            return Weather.WindDisplayType.ARROW;
+        }
+    }
+
+    public int getWindDisplayUnit(){
+        try {
+            int i = Integer.parseInt(this.display_wind_unit);
+            return i;
+        } catch (NumberFormatException e) {
+            // return to default if entry is corrupted (not a number)
+            this.display_wind_unit = PREF_DISPLAY_WIND_UNIT_DEFAULT;
+            applyPreference(PREF_DISPLAY_WIND_UNIT, display_wind_unit);
+            // return default
+            return Weather.WindDisplayUnit.METERS_PER_SECOND;
+        }
     }
 
 }

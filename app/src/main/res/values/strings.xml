@@ -105,6 +105,10 @@
     <string name="preference_displayendofdaybar_summary">Display a bar to separate days.</string>
     <string name="preference_display_gradient_title">Time gradient</string>
     <string name="preference_display_gradient_summary">Display color gradient to indicate the time of the forecast.</string>
+    <string name="preference_display_wind_type_title">Wind direction</string>
+    <string name="preference_display_wind_type_summary">How to display wind direction.</string>
+    <string name="preference_display_wind_unit_title">Wind speed</string>
+    <string name="preference_display_wind_unit_summary">Select the unit for wind speed.</string>
     <string name="preference_setalarm_title">Always update</string>
     <string name="preference_setalarm_summary">Always update weather data regularly.</string>
     <string name="preference_setalarm_notice">NOTICE: this is currently not available, since enabled Gadgetbridge support forces automatic updates anyway.</string>

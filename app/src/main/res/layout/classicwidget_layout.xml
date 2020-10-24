@@ -43,7 +43,7 @@
         android:weightSum="3"
         android:gravity="top"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/classicwidget_reference_text"
+        android:layout_above="@id/classicwidget_reference_text"
         android:layout_height="wrap_content">
 
         <LinearLayout android:id="@+id/classicwidget_leftcontainer"
@@ -56,6 +56,7 @@
             <TextView android:id="@+id/classicwidget_locationtext"
                 android:textSize="@dimen/widget_textsize_large"
                 android:textColor="@color/widget_textcolor"
+                android:layout_marginLeft="2dp"
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,6 +65,7 @@
             <TextView android:id="@+id/classicwidget_weatherconditiontext"
                 android:textSize="@dimen/widget_textsize_medium"
                 android:textColor="@color/widget_textcolor"
+                android:layout_marginLeft="2dp"
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,8 +119,8 @@
 
                 <ImageView
                     android:id="@+id/classicwidget_windarrow"
-                    android:layout_width="@dimen/widget_textsize_medium"
-                    android:layout_height="@dimen/widget_textsize_medium"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_gravity="center"
                     android:src="@mipmap/arrow">
                 </ImageView>

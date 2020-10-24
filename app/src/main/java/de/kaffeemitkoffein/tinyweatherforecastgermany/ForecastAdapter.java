@@ -47,6 +47,8 @@
         private boolean display_endofday_bar;
         private boolean display_gradient;
         private int display_layout;
+        private int display_wind_type;
+        private int display_wind_unit;
         LayoutInflater layoutInflater;
 
         public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, Weather.WeatherLocation weatherLocation) {
@@ -61,6 +63,8 @@
             this.display_sunrise = weatherSettings.display_sunrise;
             this.display_endofday_bar = weatherSettings.display_endofday_bar;
             this.display_gradient = weatherSettings.display_gradient;
+            this.display_wind_type = weatherSettings.getWindDisplayType();
+            this.display_wind_unit = weatherSettings.getWindDisplayUnit();
             this.display_layout = weatherSettings.getDisplayLayout();
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
@@ -315,25 +319,56 @@
             if (weatherInfo.hasPressure()){
                 textView_pressure.setText(weatherInfo.getPressure()/100+ " hPa");
             }
+            if (imageView_windarrow == null){
+                imageView_windarrow = (ImageView) view.findViewById(R.id.fcitem_windarrow);
+                viewHolder.imageView_windarrow = imageView_windarrow;
+            }
+            String windstring="";
+            if (weatherInfo.hasWindDirection()){
+                if (display_wind_type==Weather.WindDisplayType.ARROW){
+                    imageView_windarrow.setVisibility(View.VISIBLE);
+                    imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context));
+                }
+                if (display_wind_type==Weather.WindDisplayType.BEAUFORT){
+                    imageView_windarrow.setVisibility(View.VISIBLE);
+                    imageView_windarrow.setImageBitmap(weatherInfo.getBeaufortBitmap(context));
+                }
+                if (display_wind_type==Weather.WindDisplayType.TEXT){
+                    imageView_windarrow.setVisibility(View.GONE);
+                    windstring=weatherInfo.getWindDirectionString(context)+" ";
+                }
+            }
             if (textView_wind == null){
                 textView_wind = (TextView) view.findViewById(R.id.fcitem_wind);
                 viewHolder.textView_wind = textView_wind;
             }
             if (weatherInfo.hasWindSpeed()){
-                String s = String.valueOf(weatherInfo.getWindSpeedInKmhInt()+" ");
-                if (weatherInfo.hasFlurries()){
-                    s = s + "("+weatherInfo.getFlurriesInKmhInt()+") ";
+                String windspeed = "";
+                if (display_wind_unit==Weather.WindDisplayUnit.METERS_PER_SECOND){
+                    windspeed = String.valueOf(weatherInfo.getWindSpeedInMsInt())+" ";
                 }
-                s = s +"km/h";
-                textView_wind.setText(s);
+                if (display_wind_unit==Weather.WindDisplayUnit.BEAUFORT){
+                    windspeed = String.valueOf(weatherInfo.getWindSpeedInBeaufortInt())+" ";
+                }
+                if (display_wind_unit==Weather.WindDisplayUnit.KILOMETERS_PER_HOUR){
+                    windspeed = String.valueOf(weatherInfo.getWindSpeedInKmhInt())+" ";
+                }
+                if (display_wind_unit==Weather.WindDisplayUnit.KNOTS){
+                    windspeed = String.valueOf(weatherInfo.getWindSpeedInKnotsInt())+" ";
+                }
+                windstring = windstring + windspeed + Weather.getWindUnitString(display_wind_unit);
             }
-            if (imageView_windarrow == null){
-                imageView_windarrow = (ImageView) view.findViewById(R.id.fcitem_windarrow);
-                viewHolder.imageView_windarrow = imageView_windarrow;
+            if (weatherInfo.hasFlurries()){
+                String flurries="";
+                switch (display_wind_unit){
+                    case Weather.WindDisplayUnit.METERS_PER_SECOND: flurries=String.valueOf(weatherInfo.getFlurriesInMhInt()); break;
+                    case Weather.WindDisplayUnit.BEAUFORT: flurries=String.valueOf(weatherInfo.getFlurriesInBeaufortInt()); break;
+                    case Weather.WindDisplayUnit.KILOMETERS_PER_HOUR: flurries=String.valueOf(weatherInfo.getWindSpeedInKmhInt()); break;
+                    case Weather.WindDisplayUnit.KNOTS: flurries=String.valueOf(weatherInfo.getFlurriesInKnotsInt());
+                }
+                windstring = windstring + " ("+flurries+") ";
             }
-            if (weatherInfo.hasWindDirection()){
-                imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context));
-            }
+            textView_wind.setText(windstring);
             if (linearLayout_visibility == null){
                 linearLayout_visibility = (LinearLayout) view.findViewById(R.id.fcitem_visibility_container);
                 viewHolder.linearLayout_visibility = linearLayout_visibility;
