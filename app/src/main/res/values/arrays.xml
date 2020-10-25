@@ -111,4 +111,14 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="display_distance_unit_text">
+        <item>metric (km, m)</item>
+        <item>nautic (nautic miles)</item>
+    </string-array>
+
+    <string-array name="display_distance_unit_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
 </resources>

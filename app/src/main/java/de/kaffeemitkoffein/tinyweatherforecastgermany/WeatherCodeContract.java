@@ -566,7 +566,7 @@ public final class WeatherCodeContract {
             }
         } else {
             if (weatherInfo.hasVisibility()) {
-                if (weatherInfo.getVisibility() < 2000) {
+                if (weatherInfo.getVisibilityInMetres() < 2000) {
                     condition = FOG_SKY_NOT_RECOGNIZABLE;
                 }
                 if (weatherInfo.getTemperatureInCelsius()<0){

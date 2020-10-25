@@ -29,6 +29,7 @@
     import android.widget.*;
     import org.astronomie.info.Astronomy;
 
+    import java.text.DecimalFormat;
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
     import java.util.Calendar;
@@ -49,6 +50,7 @@
         private int display_layout;
         private int display_wind_type;
         private int display_wind_unit;
+        private int display_distance_unit;
         LayoutInflater layoutInflater;
 
         public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, Weather.WeatherLocation weatherLocation) {
@@ -65,6 +67,7 @@
             this.display_gradient = weatherSettings.display_gradient;
             this.display_wind_type = weatherSettings.getWindDisplayType();
             this.display_wind_unit = weatherSettings.getWindDisplayUnit();
+            this.display_distance_unit = weatherSettings.getDistanceDisplayUnit();
             this.display_layout = weatherSettings.getDisplayLayout();
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
@@ -378,7 +381,7 @@
                 viewHolder.textview_visibility = textview_visibility;
             }
             if (display_visibility){
-                String visibility = getVisibilityString(weatherInfo);
+                String visibility = getVisibilityString(weatherInfo,display_distance_unit);
                 if (visibility!=null){
                     linearLayout_visibility.setVisibility(View.VISIBLE);
                     textview_visibility.setVisibility(View.VISIBLE);
@@ -566,17 +569,35 @@
             return position - 6; // display 6 hours before
         }
 
-        public static String getVisibilityString(Weather.WeatherInfo weatherInfo) {
+        public static String formatDistanceNumberToString(double d){
+            DecimalFormat decimalFormat = new DecimalFormat();
+            decimalFormat.setMinimumFractionDigits(2);
+            decimalFormat.setMaximumFractionDigits(2);
+            String r = decimalFormat.format(d);
+            return r;
+        }
+
+        public static String getVisibilityString(Weather.WeatherInfo weatherInfo, int display_distance_unit) {
             if (!weatherInfo.hasVisibility() && !weatherInfo.hasProbVisibilityBelow1km()) {
                 return null;
             } else {
                 String s = "";
                 if (weatherInfo.hasVisibility()) {
-                    int v = weatherInfo.getVisibility();
-                    if (v >= 10000) {
-                        s = s + v / 1000 + " km";
-                    } else {
-                        s = s + v + " m";
+                    if (display_distance_unit==Weather.DistanceDisplayUnit.METRIC){
+                        int v = weatherInfo.getVisibilityInMetres();
+                        if (v >= 10000) {
+                            s = s + v / 1000 + " km";
+                        } else {
+                            s = s + v + " m";
+                        }
+                    }
+                    if (display_distance_unit==Weather.DistanceDisplayUnit.NAUTIC){
+                        Double v = weatherInfo.getVisibilityInNauticMiles();
+                        String result = String.valueOf(v.intValue());
+                        if (v<1) {
+                            result = formatDistanceNumberToString(v);
+                        }
+                        s = s + result + " nm";
                     }
                 }
                 if (weatherInfo.hasVisibility() && weatherInfo.hasProbVisibilityBelow1km()) {

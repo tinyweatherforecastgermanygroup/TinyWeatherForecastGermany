@@ -49,6 +49,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_GRADIENT = "PREF_display_gradient";
     public static final String PREF_DISPLAY_WIND_TYPE = "PREF_display_wind_type";
     public static final String PREF_DISPLAY_WIND_UNIT = "PREF_display_wind_unit";
+    public static final String PREF_DISPLAY_DISTANCE_UNIT = "PREF_display_distance_unit";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_AGGRESSIVE_UPDATE = "PREF_aggressive_update";
@@ -82,6 +83,8 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_GRADIENT_DEFAULT = false;
     public static final String PREF_DISPLAY_WIND_TYPE_DEFAULT = "0";
     public static final String PREF_DISPLAY_WIND_UNIT_DEFAULT = "0";
+    public static final String PREF_DISPLAY_DISTANCE_UNIT_DEFAULT = "0";
+
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
@@ -115,6 +118,7 @@ public class WeatherSettings {
     public boolean display_gradient = PREF_DISPLAY_GRADIENT_DEFAULT;
     public String display_wind_type = PREF_DISPLAY_WIND_TYPE_DEFAULT;
     public String display_wind_unit = PREF_DISPLAY_WIND_UNIT_DEFAULT;
+    public String display_distance_unit = PREF_DISPLAY_DISTANCE_UNIT_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public boolean aggressive_update = PREF_AGGRESSIVE_UPDATE_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
@@ -160,6 +164,7 @@ public class WeatherSettings {
         this.display_gradient = readPreference(PREF_DISPLAY_GRADIENT, PREF_DISPLAY_GRADIENT_DEFAULT);
         this.display_wind_type = readPreference(PREF_DISPLAY_WIND_TYPE,PREF_DISPLAY_WIND_TYPE_DEFAULT);
         this.display_wind_unit = readPreference(PREF_DISPLAY_WIND_UNIT,PREF_DISPLAY_WIND_TYPE_DEFAULT);
+        this.display_distance_unit = readPreference(PREF_DISPLAY_DISTANCE_UNIT,PREF_DISPLAY_DISTANCE_UNIT_DEFAULT);
         this.aggressive_update = readPreference(PREF_AGGRESSIVE_UPDATE, PREF_AGGRESSIVE_UPDATE_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY, PREF_WIDGET_OPACITY_DEFAULT);
@@ -194,6 +199,7 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_GRADIENT, this.display_gradient);
         applyPreference(PREF_DISPLAY_WIND_TYPE,this.display_wind_type);
         applyPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
+        applyPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
         applyPreference(PREF_SETALARM, this.setalarm);
         applyPreference(PREF_AGGRESSIVE_UPDATE, this.aggressive_update);
         applyPreference(PREF_UPDATEINTERVAL, this.updateinterval);
@@ -228,6 +234,7 @@ public class WeatherSettings {
         commitPreference(PREF_DISPLAY_GRADIENT, this.display_gradient);
         commitPreference(PREF_DISPLAY_WIND_TYPE,this.display_wind_type);
         commitPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
+        commitPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
         commitPreference(PREF_SETALARM, this.setalarm);
         commitPreference(PREF_AGGRESSIVE_UPDATE, this.aggressive_update);
         commitPreference(PREF_UPDATEINTERVAL, this.updateinterval);
@@ -454,6 +461,19 @@ public class WeatherSettings {
             applyPreference(PREF_DISPLAY_WIND_UNIT, display_wind_unit);
             // return default
             return Weather.WindDisplayUnit.METERS_PER_SECOND;
+        }
+    }
+
+    public int getDistanceDisplayUnit(){
+        try {
+            int i = Integer.parseInt(this.display_distance_unit);
+            return i;
+        } catch (NumberFormatException e) {
+            // return to default if entry is corrupted (not a number)
+            this.display_distance_unit = PREF_DISPLAY_DISTANCE_UNIT_DEFAULT;
+            applyPreference(PREF_DISPLAY_DISTANCE_UNIT, display_distance_unit);
+            // return default
+            return Weather.DistanceDisplayUnit.METRIC;
         }
     }
 

@@ -109,6 +109,8 @@
     <string name="preference_display_wind_type_summary">How to display wind direction.</string>
     <string name="preference_display_wind_unit_title">Wind speed</string>
     <string name="preference_display_wind_unit_summary">Select the unit for wind speed.</string>
+    <string name="preference_display_distance_unit_title">Distance</string>
+    <string name="preference_display_distance_unit_summary">Select the unit for distances.</string>
     <string name="preference_setalarm_title">Always update</string>
     <string name="preference_setalarm_summary">Always update weather data regularly.</string>
     <string name="preference_setalarm_notice">NOTICE: this is currently not available, since enabled Gadgetbridge support forces automatic updates anyway.</string>

@@ -109,6 +109,8 @@
     <string name="preference_display_wind_type_summary">Wie die Windrichtung dargestellt werden soll.</string>
     <string name="preference_display_wind_unit_title">Windgeschwindigkeit</string>
     <string name="preference_display_wind_unit_summary">Wähle die Einheit für die Windgeschwindigkeit.</string>
+    <string name="preference_display_distance_unit_title">Entfernungen</string>
+    <string name="preference_display_distance_unit_summary">Wähle die Einheit für Entfernungen.</string>
     <string name="preference_setalarm_title">Immer aktualisieren</string>
     <string name="preference_setalarm_summary">Immer Wetterdaten regelmäßig aktualisieren.</string>
     <string name="preference_setalarm_notice">HINWEIS: aktuell nicht verfügbar, da aktivierter Gadgetbridge-Support ohnehin automatische Aktualisierungen erfordert.</string>

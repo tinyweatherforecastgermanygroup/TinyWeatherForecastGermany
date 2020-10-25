@@ -684,8 +684,14 @@ public final class Weather {
             return false;
         }
 
-        public int getVisibility(){
+        public int getVisibilityInMetres(){
             return visibility;
+        }
+
+        public double getVisibilityInNauticMiles(){
+            Double d = (double) visibility;
+            Double nm = d / 1852;
+            return nm;
         }
 
         public boolean hasProbVisibilityBelow1km(){
@@ -994,5 +1000,9 @@ public final class Weather {
         return "?";
     }
 
+    public static class DistanceDisplayUnit{
+        public final static int METRIC = 0;
+        public final static int NAUTIC = 1;
+    }
 }
 
