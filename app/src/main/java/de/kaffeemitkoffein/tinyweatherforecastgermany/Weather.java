@@ -740,9 +740,6 @@ public final class Weather {
 
     }
 
-    public static final String[] SQL_COMMAND_QUERYALLCOLUMNS = {"SELECT * FROM " + WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME};
-    public static final String[] SQL_PROJECTION = {"SELECT * FROM " + WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME};
-
     public CurrentWeatherInfo getCurrentWeatherInfo(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         WeatherSettings weatherSettings = new WeatherSettings(context);
