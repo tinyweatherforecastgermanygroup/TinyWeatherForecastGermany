@@ -86,9 +86,8 @@
 
     <string-array name="display_distance_unit_text">
         <item>metrisch (km, m)</item>
-        <item>nautisch (nautic miles)</item>
+        <item>nautisch (nautische Meilen)</item>
+        <item>imperial (Meilen, Yards)</item>
     </string-array>
-
-
 
 </resources>

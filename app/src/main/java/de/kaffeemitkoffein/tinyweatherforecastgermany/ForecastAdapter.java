@@ -599,6 +599,16 @@
                         }
                         s = s + result + " nm";
                     }
+                    if (display_distance_unit==Weather.DistanceDisplayUnit.IMPERIAL) {
+                        Double v = weatherInfo.getVisibilityInMiles();
+                        String result = String.valueOf(v.intValue() + " mi");
+                        if (v < 1) {
+                            Double yd = weatherInfo.getVisibilityInYards();
+                            result = String.valueOf(yd.intValue()) + " yd";
+                        }
+                        s = s + result;
+                    }
+
                 }
                 if (weatherInfo.hasVisibility() && weatherInfo.hasProbVisibilityBelow1km()) {
                     s = s + ", ";

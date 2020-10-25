@@ -694,6 +694,18 @@ public final class Weather {
             return nm;
         }
 
+        public double getVisibilityInMiles(){
+            Double d = (double) visibility;
+            Double nm = d / 1609.344;
+            return nm;
+        }
+
+        public double getVisibilityInYards(){
+            Double d = (double) visibility;
+            Double nm = d * 0.9144;
+            return nm;
+        }
+
         public boolean hasProbVisibilityBelow1km(){
             return prob_visibility_below_1km!=null;
         }
@@ -1003,6 +1015,7 @@ public final class Weather {
     public static class DistanceDisplayUnit{
         public final static int METRIC = 0;
         public final static int NAUTIC = 1;
+        public final static int IMPERIAL = 2;
     }
 }
 
