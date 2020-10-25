@@ -1,9 +1,6 @@
-What is new in this version ([VERSION]):
 
 - added wind units: m/s, beaufort (bf), knots (kn)
 - added distance units: nautic miles, miles & yards
 - wind direction can now be displayed in three ways: simple arrow, arrow with wind speed (beaufort), text
 - fixed error in bitmap rotation of arrow resulting in wrong wind direction display
 - minor layout improvements in the widgets
-
-IMPORTANT: this version of Tiny Weather Forecast Germany and future versions will only support Gadgetbridge versions 0.48.0 or higher, please update Gadgetbridge accordingly to keep the weather data supply for your wearable working!

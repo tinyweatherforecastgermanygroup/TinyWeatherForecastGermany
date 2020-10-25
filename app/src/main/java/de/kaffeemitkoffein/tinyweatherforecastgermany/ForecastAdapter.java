@@ -644,7 +644,11 @@
                 calendar.add(Calendar.HOUR_OF_DAY,-1);
             }
             if (calendar.getTimeInMillis()<Calendar.getInstance().getTimeInMillis()){
-                return Calendar.getInstance().getTimeInMillis();
+                Calendar result = Calendar.getInstance();
+                result.set(Calendar.MINUTE,0);
+                result.set(Calendar.SECOND,0);
+                result.set(Calendar.MILLISECOND,0);
+                return result.getTimeInMillis();
             }
             return calendar.getTimeInMillis();
         }

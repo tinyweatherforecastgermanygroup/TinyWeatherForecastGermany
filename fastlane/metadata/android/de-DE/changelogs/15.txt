@@ -1,12 +1,6 @@
-Neu in dieser Version ([VERSION]):
 
 - neue Einheiten für Wind: m/s, Beaufort (bf), Knoten (kn)
 - neue Einheiten für Entfernungen: nautische Meilen, Meilen & Yards
 - die Windrichtung kann nun als simpler Pfeil, Pfeil mit Windgeschwindigkeit (Beaufort) oder Text angezeigt werden
 - Fehler in der Bitmap-Drehung behoben, der zur falschen Anzeige der Windrichtung führte
 - kleine Layout-Verbesserungen in den Widgets
-
-WICHTIG: diese Version der Kleinen Wettervorschau Deutschland und zukünftige Versionen unterstützen nur Gadgetbridge ab Version 0.48.0, bitte aktualisiere Gadgetbridge, um die Lieferung der Wetter-Daten an Dein Wearable am Laufen zu halten!
-
-
-
