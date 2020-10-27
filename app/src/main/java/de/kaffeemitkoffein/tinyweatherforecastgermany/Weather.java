@@ -591,7 +591,7 @@ public final class Weather {
         }
 
         public int getWindSpeedInKnotsInt(){
-            Double d = wind_speed*0.514;
+            Double d = wind_speed*1.943844;
             return d.intValue();
         }
 
