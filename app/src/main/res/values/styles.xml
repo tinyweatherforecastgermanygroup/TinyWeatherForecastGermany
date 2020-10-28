@@ -21,8 +21,15 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo">
+        <!-- modify the ActionBar overflow icon -->
+        <item name="android:actionOverflowButtonStyle">@style/BurgerIcon</item>
     </style>
     <style name="AppTheme.NoActionBar">
+    </style>
+    
+    <!-- Customize ActionBar -->
+    <style name="BurgerIcon" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@mipmap/ic_more_vert_white_24dp</item>
     </style>
 
 </resources>
