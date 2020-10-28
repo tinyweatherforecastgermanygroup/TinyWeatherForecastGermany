@@ -143,7 +143,7 @@ public class ClassicWidget extends AppWidgetProvider {
             remoteViews.setViewVisibility(R.id.classicwidget_windarrow,View.GONE);
         }
         if (weatherCard.currentWeather.hasWindSpeed()){
-            String windspeed;
+            String windspeed = "";
             if (weatherSettings.getWindDisplayUnit()==Weather.WindDisplayUnit.METERS_PER_SECOND){
                 windspeed = String.valueOf(weatherCard.currentWeather.getWindSpeedInMsInt())+" ";
             }
@@ -155,20 +155,22 @@ public class ClassicWidget extends AppWidgetProvider {
             }
             if (weatherSettings.getWindDisplayUnit()==Weather.WindDisplayUnit.KNOTS){
                 windspeed = String.valueOf(weatherCard.currentWeather.getWindSpeedInKnotsInt())+" ";
-                windstring = windstring + windspeed + Weather.getWindUnitString(weatherSettings.getWindDisplayUnit());
             }
+            windstring = windstring + windspeed;
             if (weatherCard.currentWeather.hasFlurries()){
                 String flurries = "";
                 switch (weatherSettings.getWindDisplayUnit()){
                     case Weather.WindDisplayUnit.METERS_PER_SECOND: flurries=String.valueOf(weatherCard.currentWeather.getFlurriesInMsInt()); break;
                     case Weather.WindDisplayUnit.BEAUFORT: flurries=String.valueOf(weatherCard.currentWeather.getFlurriesInBeaufortInt()); break;
-                    case Weather.WindDisplayUnit.KILOMETERS_PER_HOUR: flurries=String.valueOf(weatherCard.currentWeather.getWindSpeedInKmhInt()); break;
+                    case Weather.WindDisplayUnit.KILOMETERS_PER_HOUR: flurries=String.valueOf(weatherCard.currentWeather.getFlurriesInKmhInt()); break;
                     case Weather.WindDisplayUnit.KNOTS: flurries=String.valueOf(weatherCard.currentWeather.getFlurriesInKnotsInt());
                 }
                 windstring = windstring + " ("+flurries+") ";
             }
             remoteViews.setViewVisibility(R.id.classicwidget_wind,View.VISIBLE);
             remoteViews.setTextViewText(R.id.classicwidget_wind,windstring);
+            remoteViews.setViewVisibility(R.id.classicwidget_wind_unit,View.VISIBLE);
+            remoteViews.setTextViewText(R.id.classicwidget_wind_unit,Weather.getWindUnitString(weatherSettings.getWindDisplayUnit()));
         } else {
             remoteViews.setViewVisibility(R.id.classicwidget_wind,View.INVISIBLE);
         }

@@ -25,7 +25,6 @@ import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
-import android.util.DisplayMetrics;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -205,10 +204,19 @@ public class MainActivity extends Activity {
                 }
                 // invalidate weather display beacuse the display options have changed
                 if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
-                        (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) ){
+                        (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT))){
                     // on 1st app call, weatherCard can be still null
                     if (weatherCard!=null){
                         displayWeatherForecast(weatherCard);
+                    }
+                }
+                // invalidate weather display and widgets
+                if ((key.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (key.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
+                    // on 1st app call, weatherCard can be still null
+                    if (weatherCard!=null){
+                        displayWeatherForecast(weatherCard);
+                        // refreshing widgets only makes sense when there is weather data
+                        WidgetRefresher.refresh(getApplicationContext());
                     }
                 }
             }
