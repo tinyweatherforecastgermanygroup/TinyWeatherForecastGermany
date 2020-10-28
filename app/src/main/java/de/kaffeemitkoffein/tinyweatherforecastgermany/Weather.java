@@ -602,7 +602,7 @@ public final class Weather {
             return false;
         }
 
-        public int getFlurriesInMhInt(){
+        public int getFlurriesInMsInt(){
             Double d = flurries;
             return d.intValue();
         }
@@ -618,7 +618,7 @@ public final class Weather {
         }
 
         public int getFlurriesInKnotsInt(){
-            Double d = flurries*0.514;
+            Double d = flurries*1.943844;
             return d.intValue();
         }
 
