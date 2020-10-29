@@ -30,6 +30,7 @@
         android:textColor="@color/widget_textcolor"
         android:layout_gravity="center_horizontal"
         android:textAlignment="center"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -85,7 +86,7 @@
         android:id="@+id/fcitem_linearlayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="90dp"
         android:layout_below="@id/fcitem_heading"
         android:layout_above="@id/fcitem_forecastbar"
         android:weightSum="3"
