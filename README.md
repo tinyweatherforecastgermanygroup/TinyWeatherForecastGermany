@@ -66,6 +66,7 @@ Credits
  - Andreas Shimokawa (bugfixes & support for the Gadgetbridge API)
  - Izzy (metadata improvements)
  - Jonas Lochmann (.gitignore)
+ - Janis Bitta (new app icon)
  
  Privacy
  -------
