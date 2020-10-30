@@ -1,4 +1,3 @@
-What is new in this version ([VERSION]):
 
 - new app icon (credits go to Janis Bitta)
 - fixed bug in conversion from m/s to knots (kn)
