@@ -1,8 +1,8 @@
 
 - neues App Icon (Danke an Janis Bitta!)
 - behoben: Fehler in der Umrechnung m/s zu Knoten (kn)
-- behoben: mehrere Fehler und Probleme hinsichtlich der Wind-Darstellung in den Widgets
-- Burger-Icon zu Punkten geändert
-- behoben: Menüfarben im Action-Bar-Überlauf-Menü (Text war nicht immer weiß, Hintergrund ist nun immer grau)
-- behoben: stündliche Vorhersagen überlappten manchmal Wetter-Details in der App
 - behoben: Böen wurden nicht korrekt dargestellt, wenn km/h ausgewählt war
+- behoben: mehrere Fehler und Probleme hinsichtlich der Wind-Darstellung in den Widgets
+- behoben: stündliche Vorhersagen überlappten manchmal Wetter-Details in der App
+- mehrere, kleine Verbesserungen im Layout und der Darstellung
+

@@ -1,8 +1,7 @@
 
 - new app icon (credits go to Janis Bitta!)
 - fixed bug in conversion from m/s to knots (kn)
-- fixed multiple bugs and issues regarding the wind display in the widgets
-- changed burger icon to dots
-- fixed action bar overflow menu colors (text was not always white, background is now always grey)
-- fixed hourly forecasts sometimes overlapping weather details in main app
 - fixed flurries displayed wrong when km/h was selected
+- fixed multiple bugs and issues regarding the wind display in the widgets
+- fixed hourly forecasts sometimes overlapping weather details in main app
+- multiple small layout and display improvements
