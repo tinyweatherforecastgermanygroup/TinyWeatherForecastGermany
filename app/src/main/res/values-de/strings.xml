@@ -197,6 +197,7 @@
     <string name="welcome_s2_text6">Nebel</string>
     <string name="welcome_s2_text7">Sprühregen</string>
     <string name="welcome_s2_text8">Wind-Richtung</string>
+    <string name="welcome_s2_text9">Sichtweite</string>
     <string name="welcome_s3_text1">Icon in der linken, oberen Ecke klappt die Karte zu.</string>
     <string name="welcome_s3_text2">Ein Klick/Berührung der Ortsliste in der Warnung klappt sie aus!</string>
     <string name="welcome_s3_text3">Plaziere Widgets auf dem Home Screen:</string>

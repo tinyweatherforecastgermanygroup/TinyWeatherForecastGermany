@@ -179,6 +179,39 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:id="@+id/welcome_screen2_line5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/welcome_line_height"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/welcome_screen2_icon5"
+                    android:layout_width="@dimen/welcome_icondesc_size"
+                    android:layout_height="@dimen/welcome_icondesc_size"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingRight="@dimen/welcome_icondesc_padding"
+                    android:src="@mipmap/symbol_freezing_rain">
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/welcome_screen2_text5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/widget_textcolor"
+                    android:text="@string/welcome_s2_text5"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:paddingLeft="@dimen/welcome_icontext_padding"
+                    android:paddingBottom="@dimen/welcome_text_padding"/>
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
             <LinearLayout
@@ -190,37 +223,6 @@
                 android:paddingBottom="40dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/welcome_screen2_line5"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/welcome_line_height"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/welcome_screen2_icon5"
-                        android:layout_width="@dimen/welcome_icondesc_size"
-                        android:layout_height="@dimen/welcome_icondesc_size"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:paddingRight="@dimen/welcome_icondesc_padding"
-                        android:src="@mipmap/symbol_freezing_rain">
-                    </ImageView>
-
-                    <TextView
-                        android:id="@+id/welcome_screen2_text5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:textColor="@color/widget_textcolor"
-                        android:text="@string/welcome_s2_text5"
-                        android:textSize="@dimen/welcome_text_size"
-                        android:paddingLeft="@dimen/welcome_icontext_padding"
-                        android:paddingBottom="@dimen/welcome_text_padding"/>
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/welcome_screen2_line6"
@@ -314,6 +316,37 @@
                         android:paddingBottom="@dimen/welcome_text_padding"/>
 
             </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/welcome_screen2_line9"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/welcome_line_height"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/welcome_screen2_icon9"
+                        android:layout_width="@dimen/welcome_icondesc_size"
+                        android:layout_height="@dimen/welcome_icondesc_size"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:paddingRight="@dimen/welcome_icondesc_padding"
+                        android:src="@mipmap/biocular">
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/welcome_screen2_text9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/widget_textcolor"
+                        android:text="@string/welcome_s2_text9"
+                        android:textSize="@dimen/welcome_text_size"
+                        android:paddingLeft="@dimen/welcome_icontext_padding"
+                        android:paddingBottom="@dimen/welcome_text_padding"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
