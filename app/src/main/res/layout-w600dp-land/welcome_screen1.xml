@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/ic_launcher_foreground">
+            android:src="@mipmap/ic_launcher">
         </ImageView>
 
         <LinearLayout

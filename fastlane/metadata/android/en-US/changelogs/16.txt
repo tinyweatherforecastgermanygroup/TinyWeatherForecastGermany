@@ -1,5 +1,5 @@
 
-- new app icon (credits go to Janis Bitta)
+- new app icon (credits go to Janis Bitta!)
 - fixed bug in conversion from m/s to knots (kn)
 - fixed multiple bugs and issues regarding the wind display in the widgets
 - changed burger icon to dots

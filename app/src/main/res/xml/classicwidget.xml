@@ -27,7 +27,6 @@
     android:updatePeriodMillis="1800000"
     android:previewImage="@mipmap/widget_preview"
     android:initialLayout="@layout/classicwidget_layout"
-    android:layout="@layout/classicwidget_layout"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">
 </appwidget-provider>

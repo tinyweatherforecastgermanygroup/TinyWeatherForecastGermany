@@ -1,4 +1,3 @@
-Neu in dieser Version ([VERSION]):
 
 - neues App Icon (Danke an Janis Bitta!)
 - behoben: Fehler in der Umrechnung m/s zu Knoten (kn)
@@ -7,6 +6,3 @@ Neu in dieser Version ([VERSION]):
 - behoben: Menüfarben im Action-Bar-Überlauf-Menü (Text war nicht immer weiß, Hintergrund ist nun immer grau)
 - behoben: stündliche Vorhersagen überlappten manchmal Wetter-Details in der App
 - behoben: Böen wurden nicht korrekt dargestellt, wenn km/h ausgewählt war
-
-
-
