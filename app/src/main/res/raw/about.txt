@@ -22,7 +22,7 @@ This program uses the Astronomy class, Copyright (C) 2010-2012, Helmut Lehmeyer 
 
 PAT maps by Ian Macky <http://ian.macky.net/pat>.
 
-App icon: Janis Bitta.
+App icon by Janis Bitta.
 
 The following persons contributed to this project: Andreas Shimokawa (bugfixes for the Gadgetbridge API), Izzy (metadata improvements), Jonas Lochmann (.gitignore)
 

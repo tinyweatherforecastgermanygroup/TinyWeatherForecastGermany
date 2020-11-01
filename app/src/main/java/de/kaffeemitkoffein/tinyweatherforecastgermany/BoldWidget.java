@@ -77,9 +77,8 @@ public class BoldWidget extends ClassicWidget{
         }
         // FORECAST 1st DAY
         if (currentWeatherInfo.forecast24hourly.size()>=1) {
-            Long l = currentWeatherInfo.forecast24hourly.get(0).getTimestamp();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE");
-            String weekday = simpleDateFormat.format(new Date(l));
+            String weekday = simpleDateFormat.format(new Date(currentWeatherInfo.forecast24hourly.get(0).getTimestamp()));
             remoteViews.setTextViewText(R.id.boldwidget_dayofweek_fc1, weekday);
             if (currentWeatherInfo.forecast24hourly.get(0).hasCondition()){
                 remoteViews.setImageViewResource(R.id.boldwidget_fc1_weatherconditionicon,WeatherCodeContract.getWeatherConditionDrawableResource(currentWeatherInfo.forecast24hourly.get(0).getCondition(),true));
@@ -104,11 +103,8 @@ public class BoldWidget extends ClassicWidget{
         }
         // FORECAST 2nd DAY
         if (currentWeatherInfo.forecast24hourly.size()>=2){
-            Long l = currentWeatherInfo.forecast24hourly.get(1).getTimestamp();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE");
-            Date date = new Date();
-            date.setTime(l);
-            String weekday = simpleDateFormat.format(date);
+            String weekday = simpleDateFormat.format(new Date(currentWeatherInfo.forecast24hourly.get(1).getTimestamp()));
             remoteViews.setTextViewText(R.id.boldwidget_dayofweek_fc2,weekday);
             if (currentWeatherInfo.forecast24hourly.get(1).hasCondition()){
                 remoteViews.setImageViewResource(R.id.boldwidget_fc2_weatherconditionicon,WeatherCodeContract.getWeatherConditionDrawableResource(currentWeatherInfo.forecast24hourly.get(1).getCondition(),true));
