@@ -75,14 +75,14 @@
                     android:layout_width="0dp"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content" tools:ignore="NestedWeights"
-                    android:text="17°"/>
+                    android:text="-°"/>
 
                 <ImageView android:id="@+id/boldwidget_today_condition"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:src="@mipmap/partly_cloudy_day" />
+                    android:src="@mipmap/not_available" />
 
                 <LinearLayout android:id="@+id/boldwidget_today_temperature_container"
                     android:orientation="vertical"
@@ -98,7 +98,7 @@
                         android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="23°"/>
+                        android:text="-°"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -111,7 +111,7 @@
                         android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="11°"/>
+                        android:text="-°"/>
 
                 </LinearLayout>
 
@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:src="@mipmap/moderate_showers" />
+                    android:src="@mipmap/not_available" />
 
                 <LinearLayout android:id="@+id/boldwidget_fc1_temperature_container"
                     android:orientation="vertical"
@@ -168,7 +168,7 @@
                         android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="24°"/>
+                        android:text="-°"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -182,7 +182,7 @@
                         android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="16°"/>
+                        android:text="-°"/>
 
                 </LinearLayout>
 
@@ -196,7 +196,7 @@
                 android:layout_weight="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mo"/>
+                android:text="-"/>
         </LinearLayout>
 
         <!--
@@ -223,7 +223,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="3"
-                    android:src="@mipmap/thunderstorm" />
+                    android:src="@mipmap/not_available" />
 
                 <LinearLayout android:id="@+id/boldwidget_fc2_temperature_container"
                     android:orientation="vertical"
@@ -239,7 +239,7 @@
                         android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="29°"/>
+                        android:text="-°"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -252,7 +252,7 @@
                         android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="23°"/>
+                        android:text="-°"/>
 
                 </LinearLayout>
 
@@ -266,7 +266,7 @@
                 android:layout_weight="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tue"/>
+                android:text="-"/>
         </LinearLayout>
 
     </LinearLayout>
