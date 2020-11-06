@@ -19,6 +19,8 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -314,66 +316,21 @@ public class RawWeatherInfo{
     }
 
     public int getNext6hPosition(){
-        // try by RR6c field from DWD data set
+        // get a calendar instance for the next midnight position
+        long[] timesteps = getTimeSteps();
         int i = getCurrentForecastPosition();
-        while (i<elements){
-            if (!RR6c[i].equals("-")){
-                break;
-            }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timesteps[i]);
+        int hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);
+        while ((hour_of_day !=0) && (hour_of_day!=6) && (hour_of_day!=12) && (hour_of_day!=18) && (i<elements)){
+            calendar.add(Calendar.HOUR_OF_DAY,1);
+            hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);
             i++;
-        }
-        // if this fails, take 6h-intervals 00:00, 06:00, 12:00 etc.
-        if (i==elements){
-            i = getCurrentForecastPosition();
-            Calendar calendar = Calendar.getInstance();
-            long[] timeteps = getTimeSteps();
-            calendar.setTimeInMillis(timeteps[i]);
-            int hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);
-            int counter = i;
-            while ((hour_of_day !=0) && (hour_of_day!=6) && (hour_of_day!=12) && (hour_of_day!=18) && (counter<elements)){
-                calendar.add(Calendar.HOUR_OF_DAY,1);
-                hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);
-                counter++;
-            }
-            // if this also fails (for unknown reasons...) take "currentForecastPosition as start point
-            if (i==elements){
-                i = getCurrentForecastPosition();
-            }
-        }
-        return i;
-    }
-
-    public int getNext24hPosition_OLD(){
-        int i = getCurrentForecastPosition();
-        while (i<elements){
-            if (!WPcd1[i].equals("-")){
-                break;
-            }
-            i++;
-        }
-        // if this fails, take 24h-intervals from 00:00
-        if (i==elements){
-            i = getCurrentForecastPosition();
-            Calendar calendar = Calendar.getInstance();
-            long[] timeteps = getTimeSteps();
-            calendar.setTimeInMillis(timeteps[i]);
-            int hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);
-            int counter = i;
-            while ((hour_of_day !=0) && (counter<elements)){
-                calendar.add(Calendar.HOUR_OF_DAY,1);
-                hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);
-                counter++;
-            }
-            // if this also fails (for unknown reasons...) take "currentForecastPosition as start point
-            if (i==elements){
-                i = getCurrentForecastPosition();
-            }
         }
         return i;
     }
 
     public int getNext24hPosition(){
-        long[] timeteps = getTimeSteps();
         // get a calendar instance for the next midnight position
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH,1);
@@ -382,12 +339,14 @@ public class RawWeatherInfo{
         calendar.set(Calendar.SECOND,0);
         calendar.set(Calendar.MILLISECOND,0);
         long next_midnight_in_millis = calendar.getTimeInMillis();
-        int pos = timeteps.length-1;
-        while ((pos>0) && (timeteps[pos]>next_midnight_in_millis)){
+        long[] timesteps = getTimeSteps();
+        int pos = elements-1;
+        while ((pos>0) && (timesteps[pos]>next_midnight_in_millis)){
             pos--;
         }
         return pos;
     }
+
 
     public Double getAverageValueDouble(String[] item, int first, int last){
         if (first<0){
