@@ -343,7 +343,7 @@ public class RawWeatherInfo{
         return i;
     }
 
-    public int getNext24hPosition(){
+    public int getNext24hPosition_OLD(){
         int i = getCurrentForecastPosition();
         while (i<elements){
             if (!WPcd1[i].equals("-")){
@@ -369,8 +369,24 @@ public class RawWeatherInfo{
                 i = getCurrentForecastPosition();
             }
         }
-
         return i;
+    }
+
+    public int getNext24hPosition(){
+        long[] timeteps = getTimeSteps();
+        // get a calendar instance for the next midnight position
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH,1);
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        calendar.set(Calendar.MILLISECOND,0);
+        long next_midnight_in_millis = calendar.getTimeInMillis();
+        int pos = timeteps.length-1;
+        while ((pos>0) && (timeteps[pos]>next_midnight_in_millis)){
+            pos--;
+        }
+        return pos;
     }
 
     public Double getAverageValueDouble(String[] item, int first, int last){
@@ -439,7 +455,7 @@ public class RawWeatherInfo{
         }
         double[] itemlist = toDoubleArray(item);
         if (itemlist != null){
-            double d = itemlist[0];
+            double d = itemlist[first];
             for (int i=first; i<=last; i++){
                 if (itemlist[i]>d){
                     d = itemlist[i];
@@ -463,7 +479,7 @@ public class RawWeatherInfo{
         }
         double[] temperature = toDoubleArray(TTT);
         if (temperature!=null){
-            double d = temperature[0];
+            double d = temperature[first];
             for (int i=first; i<=last; i++){
                 if (temperature[i]<d){
                     d = temperature[i];
