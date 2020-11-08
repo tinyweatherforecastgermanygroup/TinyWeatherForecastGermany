@@ -28,6 +28,7 @@
     <string name="about_button">Datenschutz/Über...</string>
     <string name="update_button">Aktualisieren</string>
     <string name="settings_button">Einstellungen</string>
+    <string name="geoinput_button">Finde mit Standort</string>
     <string name="whatsnew_button">Was ist neu?</string>
     <string name="warnings_button">Wetterwarnungen</string>
     <string name="today">Heute</string>
@@ -201,4 +202,23 @@
     <string name="welcome_s3_text1">Icon in der linken, oberen Ecke klappt die Karte zu.</string>
     <string name="welcome_s3_text2">Ein Klick/Berührung der Ortsliste in der Warnung klappt sie aus!</string>
     <string name="welcome_s3_text3">Plaziere Widgets auf dem Home Screen:</string>
+    <string name="geoinput_title">Finde die nächste Wetterstation</string>
+    <string name="geoinput_hint_longitude">e.g. 10.1, -10:01.22342, 10:01:12345</string>
+    <string name="geoinput_hint_latitude">e.g. 53.575, -33:12.32, 21:43:12</string>
+    <string name="geoinput_intro">Gebe Längen- und Breitengrad manuell ein, um die Wetterstationen in Deiner Nähe zu finden oder benutze die Standortdienste Deines Gerätes, um sie zu finden.</string>
+    <string name="geoinput_longitude">Längengrad eingeben:</string>
+    <string name="geoinput_latitude">Breitengrad eingeben:</string>
+    <string name="geoinput_gps">Wähle dies aus, um die Standortdienste Deines Gerätes zu verwenden, anstelle die Werte einzugeben.</string>
+    <string name="geoinput_search">Starte Suche</string>
+    <string name="geoinput_cancel">Abbrechen</string>
+    <string name="geoinput_select">Wähle eine der folgenden Wetterstationen:</string>
+    <string name="geoinput_wrongformat">Die Koordinate hat kein gültiges Format. Mögliche Schreibweisen sind z.B. +53.12345 für Grade, oder -44.22:12.12345 für Grade und Minuten oder 33:12:12345 für Grade, Minuten und Sekunden. Bitte versuche es erneut.</string>
+    <string name="geoinput_wrongvalue">Längengrad muss zwischen -180 and +180, Breitengrad zwischen -90 and +90 sein. Bitte versuche es erneut.</string>
+    <string name="geoinput_rationale">Die Standortdienste werden nur einmalig benötigt, um die nächste Wetterstation zu finden. Sie können danach wieder deaktiviert werden. Ebenso können die Geokoordinaten manuell eingegeben werden, um die nächste Wetterstation zu finden.</string>
+    <string name="geoinput_noprovider">Kein brauchbarer Standort-Dienst gefunden. Bitte schalte Standort-Dienste an und versuche es erneut.</string>
+    <string name="geoinput_reflocation_title">Der Referenz-Standort ist:</string>
+    <string name="geoinput_reflocation_longitude">Längengrad:</string>
+    <string name="geoinput_reflocation_latitude">Breitengrad:</string>
+    <string name="geoinput_reflocation_time">Zeit:</string>
+
 </resources>

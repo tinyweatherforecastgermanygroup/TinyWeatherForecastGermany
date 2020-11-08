@@ -19,12 +19,23 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.*;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -33,9 +44,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 public class MainActivity extends Activity {
 
@@ -567,6 +576,19 @@ public class MainActivity extends Activity {
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE);
     }
 
+    @SuppressWarnings("deprecation")
+    private void setOverflowMenuItemColor(Menu menu, int id, int string_id,int color_id){
+        String s = getApplicationContext().getResources().getString(string_id);
+        MenuItem menuItem = menu.findItem(id);
+        SpannableString spannableString = new SpannableString(s);
+        if (Build.VERSION.SDK_INT>=23){
+            spannableString.setSpan(new ForegroundColorSpan(getApplicationContext().getResources().getColor(color_id,getTheme())),0,s.length(),0);
+        } else {
+            spannableString.setSpan(new ForegroundColorSpan(getApplicationContext().getResources().getColor(color_id)),0,s.length(),0);
+        }
+        menuItem.setTitle(spannableString);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater mi = getMenuInflater();
@@ -590,6 +612,13 @@ public class MainActivity extends Activity {
                 }
             }
         }
+        setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.color.textColor);
+        setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.color.textColor);
+        setOverflowMenuItemColor(menu,R.id.menu_settings,R.string.settings_button, R.color.textColor);
+        setOverflowMenuItemColor(menu,R.id.menu_geoinput,R.string.geoinput_button, R.color.textColor);
+        setOverflowMenuItemColor(menu,R.id.menu_about,R.string.about_button, R.color.textColor);
+        setOverflowMenuItemColor(menu,R.id.menu_license,R.string.license_button, R.color.textColor);
+        setOverflowMenuItemColor(menu,R.id.menu_whatsnew,R.string.whatsnew_button, R.color.textColor);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -610,6 +639,10 @@ public class MainActivity extends Activity {
         if (item_id == R.id.menu_settings) {
             Intent i = new Intent(this, Settings.class);
             startActivity(i);
+            return true;
+        }
+        if (item_id == R.id.menu_geoinput) {
+            startGeoinput();
             return true;
         }
         if (item_id==R.id.menu_license) {
@@ -731,6 +764,299 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void startGeoinput(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
+        LayoutInflater layoutInflater = this.getLayoutInflater();
+        final View view = layoutInflater.inflate(R.layout.geoinput,null,false);
+        final CheckBox useGPS = view.findViewById(R.id.geoinput_check_gps);
+        final EditText text_longitude = view.findViewById(R.id.geoinput_edit_longitude);
+        final EditText text_latitude = view.findViewById(R.id.geoinput_edit_latitude);
+        useGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    text_latitude.setEnabled(false);
+                    text_longitude.setEnabled(false);
+                } else {
+                    text_latitude.setEnabled(true);
+                    text_longitude.setEnabled(true);
+                }
+            }
+        });
+        builder.setIcon(R.mipmap.ic_gps_fixed_white_24dp);
+        builder.setView(view);
+        builder.setPositiveButton(R.string.geoinput_search, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                WeatherSettings.setUSEGPSFlag(getApplicationContext(),useGPS.isChecked());
+                if (useGPS.isChecked()){
+                    if (!hasLocationPermission()){
+                        requestLocationPermission();
+                    } else {
+                        startGPSLocationSearch();
+                    }
+                } else {
+                    Location own_location = new Location("manual");
+                    own_location.setTime(Calendar.getInstance().getTimeInMillis());
+                    try {
+                        double longitude = Location.convert(text_longitude.getText().toString());
+                        double latitude = Location.convert(text_latitude.getText().toString());
+                        own_location.setLongitude(longitude);
+                        own_location.setLatitude(latitude);
+                        if ((latitude>=-90) && (latitude<=90) && (longitude>=-180) && (longitude<=180)) {
+                            launchStationSearchByLocation(own_location);
+                        } else {
+                            showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongvalue));
+                        }
+                    } catch (Exception e) {
+                        showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongformat));
+                    }
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        useGPS.setChecked(WeatherSettings.getUseGPSFlag(getApplicationContext()));
+        Location location = getLastKnownLocation();
+        if (location!=null){
+            text_longitude.setText(new DecimalFormat("000.00000").format(location.getLongitude()));
+            text_latitude.setText(new DecimalFormat("00.00000").format(location.getLatitude()));
+        }
+    }
+
+    private void launchStationSearchByLocation(final Location own_location){
+        // load stations
+        final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
+        if (stations.size()>0){
+            calcualateClosestStations(stations,own_location);
+        } else
+        {
+            stationsManager. new AsyncStationsReader(){
+                @Override
+                public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> new_stations) {
+                    super.onLoadingListFinished(new_stations);
+                    calcualateClosestStations(stations,own_location);
+                }
+            }.execute();
+        }
+    }
+
+    private void calcualateClosestStations(ArrayList<Weather.WeatherLocation> stations, final Location own_location){
+        for (int i=0; i<stations.size(); i++){
+            Location location_station = new Location("weather");
+            location_station.setLatitude(stations.get(i).latitude);
+            location_station.setLongitude(stations.get(i).longitude);
+            stations.get(i).distance = location_station.distanceTo(own_location);
+        }
+        Collections.sort(stations, new Comparator<Weather.WeatherLocation>() {
+            @Override
+            public int compare(Weather.WeatherLocation t0, Weather.WeatherLocation t1) {
+                if (t0.distance<t1.distance){
+                    return -1;
+                }
+                if (t0.distance==t1.distance){
+                    return 0;
+                }
+                return 1;
+            }
+        });
+        ArrayList<String> stationDistanceList = new ArrayList<String>();
+        for (int i=0; (i<stations.size()) && (i<20); i++) {
+            // Log.v("TWFG", "pos " + i + " => " + stations.get(i).distance/1000 + " km " + stations.get(i).description);
+            stationDistanceList.add(stations.get(i).description+" ["+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]");
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
+        builder.setIcon(R.mipmap.ic_gps_fixed_white_24dp);
+        LayoutInflater layoutInflater = this.getLayoutInflater();
+        final View view = layoutInflater.inflate(R.layout.geochoice,null,false);
+        TextView textView_long = (TextView) view.findViewById(R.id.geochoice_reference_longitude);
+        TextView textView_lat  = (TextView) view.findViewById(R.id.geochoice_reference_latitude);
+        TextView textView_time = (TextView) view.findViewById(R.id.geochoice_reference_time);
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+        textView_long.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_longitude)+" "+new DecimalFormat("000.00000").format(own_location.getLongitude()));
+        textView_lat.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_latitude)+" "+new DecimalFormat("00.00000").format(own_location.getLatitude()));
+        textView_time.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_time)+" "+simpleDateFormat.format(new Date(own_location.getTime())));
+        builder.setView(view);
+        builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,R.layout.geochoice_item,R.id.geochoiceitem_text,stationDistanceList);
+        ListView listView = view.findViewById(R.id.geochoice_listview);
+        listView.setAdapter(arrayAdapter);
+        final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+                TextView textView = view.findViewById(R.id.geochoiceitem_text);
+                String station_description = textView.getText().toString();
+                station_description = station_description.substring(0,station_description.indexOf(" ["));
+                Integer station_pos = stationsManager.getPositionFromDescription(station_description);
+                if (station_pos!=null){
+                    if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
+                        alertDialog.dismiss();
+                        newWeatherRegionSelected(weatherSettings,station_description);
+                    } else {
+                        alertDialog.dismiss();
+                    }
+                } else {
+                    alertDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+        listView.setOnItemClickListener(clickListener);
+    }
+
+    private static final int PERMISSION_CALLBACK_LOCATION = 121;
+
+    private boolean hasLocationPermission(){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            {
+               // permission not granted
+                return false;
+            }
+            else
+            {
+                // permission is granted, ok
+                return true;
+            }
+        }
+        else
+        {
+            // before api 23, permissions are always granted, so everything is ok
+            return true;
+        }
+    }
+
+    private void requestLocationPermission(){
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CALLBACK_LOCATION);
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int permRequestCode, String perms[], int[] grantRes){
+        Boolean hasLocationPermission = false;
+        for (int i=0; i<grantRes.length; i++){
+            if ((perms[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
+                hasLocationPermission = true;
+            }
+        }
+        if (permRequestCode == PERMISSION_CALLBACK_LOCATION){
+            if (hasLocationPermission){
+                startGPSLocationSearch();
+            } else {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
+                    showLocationPermissionsRationale();
+                }
+            }
+        }
+    }
+
+    private void showSimpleLocationAlert(String text){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
+        builder.setIcon(R.mipmap.ic_gps_fixed_white_24dp);
+        builder.setMessage(text);
+        builder.setPositiveButton(R.string.alertdialog_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void showLocationPermissionsRationale(){
+        showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_rationale));
+    }
+
+    final LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            Log.v("TWFG","Got location...");
+            launchStationSearchByLocation(location);
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+            // nothing to do
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+            // nothing to do
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+            // nothing to do
+        }
+    };
+
+    private void startGPSLocationSearch(){
+        Log.v("TWFG","Starting GPS search...");
+        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager!=null){
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,locationListener,null);
+                Log.v("TWFG,","gps provider enabled...");
+            } else
+                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+                    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locationListener,null);
+                    Log.v("TWFG,","network provider enabled...");
+                } else
+                    if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)){
+                        Log.v("TWFG,","passive provider enabled...");
+                        locationManager.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER,locationListener,null);
+                    } else {
+                        showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_noprovider));
+                    }
+            }
+    }
+
+    private Location getLastKnownLocation(){
+        Location location = null;
+        if (hasLocationPermission()) {
+            final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (locationManager != null) {
+                if (locationManager.getProvider(LocationManager.GPS_PROVIDER) != null) {
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    }
+                }
+                if (location == null) {
+                    if (locationManager.getProvider(LocationManager.NETWORK_PROVIDER) != null) {
+                        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        }
+                    }
+                }
+                if (location == null) {
+                    if (locationManager.getProvider(LocationManager.PASSIVE_PROVIDER) != null) {
+                        if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
+                            location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                        }
+                    }
+                }
+            }
+        }
+        return location;
+    }
 }
 
 

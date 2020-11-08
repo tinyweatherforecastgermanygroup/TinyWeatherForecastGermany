@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/geochoice_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:padding="3dp">
+
+    <TextView
+        android:id="@+id/geochoice_text_into"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:textSize="@dimen/fcmain_textsize_large"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="6dp"
+        android:text="@string/geoinput_select"/>
+
+    <ImageView
+        android:id="@+id/geoinput_globe"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="12dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/geochoice_text_into"
+        android:layout_gravity="center_vertical|right"
+        android:gravity="center_vertical|right"
+        android:src="@drawable/geo_globe"/>
+
+    <TextView
+        android:id="@+id/geochoice_reference_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/fcmain_textsize_medium"
+        android:layout_below="@id/geochoice_text_into"
+        android:layout_marginBottom="4dp"
+        android:text="@string/geoinput_reflocation_title"/>
+
+    <TextView
+        android:id="@+id/geochoice_reference_longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/fcmain_textsize_medium"
+        android:layout_below="@id/geochoice_reference_title"
+        android:text="@string/geoinput_reflocation_longitude"/>
+
+    <TextView
+        android:id="@+id/geochoice_reference_latitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/fcmain_textsize_medium"
+        android:layout_below="@id/geochoice_reference_longitude"
+        android:text="@string/geoinput_reflocation_latitude"/>
+
+    <TextView
+        android:id="@+id/geochoice_reference_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/fcmain_textsize_medium"
+        android:layout_below="@id/geochoice_reference_latitude"
+        android:layout_marginBottom="6dp"
+        android:text="@string/geoinput_reflocation_time"/>
+
+    <ListView android:id="@+id/geochoice_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/colorPrimaryLight"
+        android:dividerHeight="1dp"
+        android:layout_below="@id/geochoice_reference_time"
+        android:scrollbars="vertical"
+        android:scrollbarThumbVertical="@color/textColorGrey"
+        android:verticalScrollbarPosition="right"
+        android:scrollbarSize="6dp"
+        android:footerDividersEnabled="true"/>
+
+</RelativeLayout>

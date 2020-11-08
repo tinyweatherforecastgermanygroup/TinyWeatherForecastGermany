@@ -22,6 +22,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo">
         <item name="android:textColorPrimary">@color/textColor</item>
+        <item name="android:actionMenuTextColor">@color/textColor</item>
         <!-- modify the ActionBar overflow icon -->
         <item name="android:actionOverflowButtonStyle">@style/BurgerIcon</item>
         <!-- modify the ActionBar overflow menu -->
@@ -38,6 +39,7 @@
     <!-- Customize overflow menu -->
     <style name="OverflowMenu" parent="android:Theme.Holo">
         <item name="android:popupBackground">@color/colorPrimaryLight</item>
+        <item name="android:color">@color/textColor</item>
     </style>
 
 

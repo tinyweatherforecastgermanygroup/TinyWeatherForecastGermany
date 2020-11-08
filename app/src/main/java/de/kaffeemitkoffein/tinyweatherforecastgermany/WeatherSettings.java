@@ -67,6 +67,7 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_DISABLE = "PREF_warnings_diable";
     public static final String PREF_WARNINGS_LAST_UPDATE_TIME = "PREF_warnings_last_update_time";
     public static final String PREF_IS_FIRST_APP_LAUNCH = "PREF_is_first_app_launch";
+    public static final String PREF_USEGPS = "PREF_usegps";
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
     public static final double PREF_STATION_LONGITUDE_DEFAULT = 9.98;
@@ -84,7 +85,6 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_WIND_TYPE_DEFAULT = "0";
     public static final String PREF_DISPLAY_WIND_UNIT_DEFAULT = "0";
     public static final String PREF_DISPLAY_DISTANCE_UNIT_DEFAULT = "0";
-
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
@@ -102,6 +102,8 @@ public class WeatherSettings {
     public static final boolean PREF_WARNINGS_DISABLE_DEFAULT = false;
     public static final long PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final boolean PREF_IS_FIRST_APP_LAUNCH_DEFAULT = true;
+    public static final boolean PREF_USEGPS_DEFAULT = false;
+
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
     public double station_longitude = PREF_STATION_LONGITUDE_DEFAULT;
@@ -136,6 +138,7 @@ public class WeatherSettings {
     public String warnings_cache_time = PREF_WARNINGS_CACHETIME_DEFAULT;
     public boolean warnings_disabled = PREF_WARNINGS_DISABLE_DEFAULT;
     public boolean is_first_app_launch = true;
+    public boolean usegps = PREF_USEGPS_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -180,6 +183,7 @@ public class WeatherSettings {
         this.warnings_disabled = readPreference(PREF_WARNINGS_DISABLE, PREF_WARNINGS_DISABLE_DEFAULT);
         this.warnings_last_update_time = readPreference(PREF_WARNINGS_LAST_UPDATE_TIME, PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
         this.is_first_app_launch = readPreference(PREF_IS_FIRST_APP_LAUNCH, PREF_IS_FIRST_APP_LAUNCH_DEFAULT);
+        this.usegps = readPreference(PREF_USEGPS,PREF_USEGPS_DEFAULT);
     }
 
     public void savePreferences() {
@@ -215,6 +219,7 @@ public class WeatherSettings {
         applyPreference(PREF_WARNINGS_DISABLE, this.warnings_disabled);
         applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME, this.warnings_last_update_time);
         applyPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
+        applyPreference(PREF_USEGPS,this.usegps);
     }
 
     public void commitPreferences() {
@@ -250,6 +255,7 @@ public class WeatherSettings {
         commitPreference(PREF_WARNINGS_DISABLE, this.warnings_disabled);
         commitPreference(PREF_WARNINGS_LAST_UPDATE_TIME, this.warnings_last_update_time);
         commitPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
+        commitPreference(PREF_USEGPS,this.usegps);
     }
 
     public String readPreference(String p, String d) {
@@ -424,6 +430,18 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_IS_FIRST_APP_LAUNCH, false);
+        pref_editor.apply();
+    }
+
+    public static boolean getUseGPSFlag(Context c){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        return sharedPreferences.getBoolean(PREF_USEGPS, PREF_USEGPS_DEFAULT);
+    }
+
+    public static void setUSEGPSFlag(Context c, boolean flag){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_USEGPS, flag);
         pref_editor.apply();
     }
 

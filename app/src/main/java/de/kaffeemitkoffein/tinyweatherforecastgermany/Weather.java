@@ -43,6 +43,7 @@ public final class Weather {
         double latitude;
         double longitude;
         double altitude;
+        float distance;
 
         public WeatherLocation(){
         }

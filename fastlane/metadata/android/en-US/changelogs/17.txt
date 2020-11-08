@@ -1,0 +1,3 @@
+
+- fixed error in calculation of min. and max. temperatures (might have been too high & too low)
+- incomplete time intervals (6h, 24h) now discard past data in calculations where possible

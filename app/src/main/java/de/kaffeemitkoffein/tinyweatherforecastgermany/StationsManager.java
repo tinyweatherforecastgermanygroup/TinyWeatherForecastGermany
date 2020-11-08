@@ -21,6 +21,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import java.io.IOException;
@@ -62,9 +63,9 @@ public class StationsManager {
             weatherLocation.description = station_values[0];
             weatherLocation.name = station_values[1];
             String[] station_coordinates = station_values[2].split(",");
-            weatherLocation.longitude = Double.parseDouble(station_coordinates[0]);
-            weatherLocation.latitude = Double.parseDouble(station_coordinates[1]);
-            weatherLocation.altitude = Double.parseDouble(station_coordinates[2]);
+            weatherLocation.longitude = Location.convert(station_coordinates[0]);
+            weatherLocation.latitude = Location.convert(station_coordinates[1]);
+            weatherLocation.altitude = Location.convert(station_coordinates[2]);
             stations.add(weatherLocation);
             count++;
         }
@@ -100,8 +101,9 @@ public class StationsManager {
             return stations;
         }
 
-        public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations){
+        public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> new_stations){
             // override as needed
+            stations = new_stations;
         }
 
         @Override

@@ -316,7 +316,6 @@ public class RawWeatherInfo{
     }
 
     public int getNext6hPosition(){
-        // get a calendar instance for the next midnight position
         long[] timesteps = getTimeSteps();
         int i = getCurrentForecastPosition();
         Calendar calendar = Calendar.getInstance();
