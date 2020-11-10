@@ -210,7 +210,7 @@
     <string name="geoinput_known_note">This is your location from:</string>
     <string name="geoinput_longitude">Enter longitude:</string>
     <string name="geoinput_latitude">Enter latitude:</string>
-    <string name="geoinput_gps">Check this to use the location services of your device to determine your current location.</string>
+    <string name="geoinput_gps">Use the location services of the device to determine your current location.</string>
     <string name="geoinput_search">Start Search</string>
     <string name="geoinput_cancel">Cancel</string>
     <string name="geoinput_select">Select one of the following weather stations:</string>
