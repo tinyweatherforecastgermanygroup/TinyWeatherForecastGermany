@@ -21,6 +21,7 @@
     <string name="app_name">Tiny Weather Forecast Germany</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Last Update:</string>
+    <string name="main_wait_for_gps_fix">Location is being determinded...</string>
     <string name="dwd_notice">Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual values.</string>
     <string name="dwd_warnings_notice">Data basis: Deutscher Wetterdienst, displaying condensed warnings. </string>
     <string name="new_station">Region changed to</string>
@@ -206,9 +207,10 @@
     <string name="geoinput_hint_longitude">z.B. 10.1, -10:01.22342, 10:01:12345</string>
     <string name="geoinput_hint_latitude">z.B. 53.575, -33:12.32, 21:43:12</string>
     <string name="geoinput_intro">Enter longitude and latitude manually to determine next weather stations or use the location services of your device to find them.</string>
+    <string name="geoinput_known_note">This is your location from:</string>
     <string name="geoinput_longitude">Enter longitude:</string>
     <string name="geoinput_latitude">Enter latitude:</string>
-    <string name="geoinput_gps">Check this to use the location services of your device instead of entering values.</string>
+    <string name="geoinput_gps">Check this to use the location services of your device to determine your current location.</string>
     <string name="geoinput_search">Start Search</string>
     <string name="geoinput_cancel">Cancel</string>
     <string name="geoinput_select">Select one of the following weather stations:</string>

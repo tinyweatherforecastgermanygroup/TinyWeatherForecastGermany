@@ -21,6 +21,7 @@
     <string name="app_name">Kleine Wettervorschau Deutschland</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Letzte Aktualisierung:</string>
+    <string name="main_wait_for_gps_fix">Der Standort wird gerade ermittelt...</string>
     <string name="dwd_notice">Quelle: Deutscher Wetterdienst, eigene Elemente ergänzt, einige Einzelwerte gemittelt.</string>
     <string name="dwd_warnings_notice">Quelle: Deutscher Wetterdienst, Warnungen gekürzt dargestellt.</string>
     <string name="new_station">Region geändert zu </string>
@@ -206,9 +207,10 @@
     <string name="geoinput_hint_longitude">e.g. 10.1, -10:01.22342, 10:01:12345</string>
     <string name="geoinput_hint_latitude">e.g. 53.575, -33:12.32, 21:43:12</string>
     <string name="geoinput_intro">Gebe Längen- und Breitengrad manuell ein, um die Wetterstationen in Deiner Nähe zu finden oder benutze die Standortdienste Deines Gerätes, um sie zu finden.</string>
+    <string name="geoinput_known_note">Das ist der Standort von:</string>
     <string name="geoinput_longitude">Längengrad eingeben:</string>
     <string name="geoinput_latitude">Breitengrad eingeben:</string>
-    <string name="geoinput_gps">Wähle dies aus, um die Standortdienste Deines Gerätes zu verwenden, anstelle die Werte einzugeben.</string>
+    <string name="geoinput_gps">Wähle dies aus, um die Standortdienste Deines Gerätes zu verwenden, um den aktuellen Standort zu bestimmen.</string>
     <string name="geoinput_search">Starte Suche</string>
     <string name="geoinput_cancel">Abbrechen</string>
     <string name="geoinput_select">Wähle eine der folgenden Wetterstationen:</string>

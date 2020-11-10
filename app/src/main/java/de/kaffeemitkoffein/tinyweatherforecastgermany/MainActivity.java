@@ -23,7 +23,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.*;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -35,7 +34,6 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -828,6 +826,10 @@ public class MainActivity extends Activity {
         if (location!=null){
             text_longitude.setText(new DecimalFormat("000.00000").format(location.getLongitude()));
             text_latitude.setText(new DecimalFormat("00.00000").format(location.getLatitude()));
+            TextView gps_known_knote = view.findViewById(R.id.geoinput_geoinput_known_note);
+            gps_known_knote.setVisibility(View.VISIBLE);
+            final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
+            gps_known_knote.setText(getApplicationContext().getResources().getString(R.string.geoinput_known_note)+" "+simpleDateFormat.format(location.getTime()));
         }
     }
 
@@ -849,6 +851,8 @@ public class MainActivity extends Activity {
     }
 
     private void calcualateClosestStations(ArrayList<Weather.WeatherLocation> stations, final Location own_location){
+        LinearLayout gps_spinner_layout = (LinearLayout) findViewById(R.id.main_gps_progress_holder);
+        gps_spinner_layout.setVisibility(View.GONE);
         for (int i=0; i<stations.size(); i++){
             Location location_station = new Location("weather");
             location_station.setLatitude(stations.get(i).latitude);
@@ -988,7 +992,6 @@ public class MainActivity extends Activity {
     final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            Log.v("TWFG","Got location...");
             launchStationSearchByLocation(location);
         }
 
@@ -1009,22 +1012,21 @@ public class MainActivity extends Activity {
     };
 
     private void startGPSLocationSearch(){
-        Log.v("TWFG","Starting GPS search...");
+        LinearLayout gps_spinner_layout = (LinearLayout) findViewById(R.id.main_gps_progress_holder);
+        gps_spinner_layout.setVisibility(View.VISIBLE);
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (locationManager!=null){
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,locationListener,null);
-                Log.v("TWFG,","gps provider enabled...");
             } else
                 if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
                     locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locationListener,null);
-                    Log.v("TWFG,","network provider enabled...");
                 } else
                     if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)){
-                        Log.v("TWFG,","passive provider enabled...");
                         locationManager.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER,locationListener,null);
                     } else {
                         showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_noprovider));
+                        gps_spinner_layout.setVisibility(View.GONE);
                     }
             }
     }

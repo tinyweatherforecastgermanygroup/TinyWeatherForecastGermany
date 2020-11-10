@@ -47,12 +47,23 @@
         android:text="@string/geoinput_intro"/>
 
     <TextView
+        android:id="@+id/geoinput_geoinput_known_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/fcmain_textsize_medium"
+        android:layout_below="@id/geoinput_text_into"
+        android:layout_marginBottom="6dp"
+        android:visibility="gone"
+        android:text="@string/geoinput_known_note"/>
+
+    <TextView
         android:id="@+id/geoinput_text_longitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/textColor"
         android:textSize="@dimen/fcmain_textsize_large"
-        android:layout_below="@id/geoinput_text_into"
+        android:layout_below="@id/geoinput_geoinput_known_note"
         android:text="@string/geoinput_longitude"/>
 
     <EditText
