@@ -93,20 +93,13 @@ Credits
  Symbols used:
  
  <img src="app/src/main/res/mipmap-mdpi/symbol_precipitation.png" height="16" width="16"/> precipitation
-
- ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_cloud.png) clouds
- 
- ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_lightning.png) thunderstorm
- 
- ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_hail.png) hail
- 
- ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_freezing_rain.png) freezing rain
- 
- ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_fog.png) fog
- 
- ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_drizzle.png) drizzle
- 
- ![symbol #1](app/src/main/res/mipmap-mdpi/arrow.png) wind direction
+<img src="app/src/main/res/mipmap-mdpi/symbol_cloud.png" height="16" width="16"/> clouds
+ <img src="app/src/main/res/mipmap-mdpi/symbol_lightning.png" height="16" width="16"/> thunderstorm
+ <img src="app/src/main/res/mipmap-mdpi/symbol_hail.png" height="16" width="16"/> hail
+ <img src="app/src/main/res/mipmap-mdpi/symbol_freezing_rain.png" height="16" width="16"/> freezing rain
+ <img src="app/src/main/res/mipmap-mdpi/symbol_fog.png" height="16" width="16"/>  fog
+ <img src="app/src/main/res/mipmap-mdpi/symbol_drizzle.png" height="16" width="16"/> drizzle
+ <img src="app/src/main/res/mipmap-mdpi/arrow.png" height="16" width="16"/> wind direction
  
  *Does the app display the actual, current weather?*
    
