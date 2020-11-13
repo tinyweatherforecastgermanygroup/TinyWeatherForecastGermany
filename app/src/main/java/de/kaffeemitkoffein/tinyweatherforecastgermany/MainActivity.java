@@ -112,6 +112,7 @@ public class MainActivity extends Activity {
             }
         }
         unregisterReceiver(receiver);
+        stopGPSLocationSearch();
         super.onPause();
     }
 
@@ -255,6 +256,13 @@ public class MainActivity extends Activity {
                 }
             });
         }
+        Button cancel_gps = (Button) findViewById(R.id.main_cancel_gps);
+        cancel_gps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopGPSLocationSearch();
+            }
+        });
     }
 
     private void newWeatherRegionSelected(WeatherSettings weatherSettings, String station_description){
@@ -851,8 +859,7 @@ public class MainActivity extends Activity {
     }
 
     private void calcualateClosestStations(ArrayList<Weather.WeatherLocation> stations, final Location own_location){
-        LinearLayout gps_spinner_layout = (LinearLayout) findViewById(R.id.main_gps_progress_holder);
-        gps_spinner_layout.setVisibility(View.GONE);
+        stopGPSLocationSearch();
         for (int i=0; i<stations.size(); i++){
             Location location_station = new Location("weather");
             location_station.setLatitude(stations.get(i).latitude);
@@ -1002,32 +1009,40 @@ public class MainActivity extends Activity {
 
         @Override
         public void onProviderEnabled(String s) {
-            // nothing to do
+            startGPSLocationSearch();
         }
 
         @Override
         public void onProviderDisabled(String s) {
-            // nothing to do
+            startGPSLocationSearch();
         }
     };
 
+    private void stopGPSLocationSearch(){
+        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager!=null){
+            if (locationListener != null) {
+                locationManager.removeUpdates(locationListener);
+            }
+        }
+        RelativeLayout gps_spinner_layout = (RelativeLayout) findViewById(R.id.main_gps_progress_holder);
+        gps_spinner_layout.setVisibility(View.GONE);
+    }
+
     private void startGPSLocationSearch(){
-        LinearLayout gps_spinner_layout = (LinearLayout) findViewById(R.id.main_gps_progress_holder);
+        RelativeLayout gps_spinner_layout = (RelativeLayout) findViewById(R.id.main_gps_progress_holder);
         gps_spinner_layout.setVisibility(View.VISIBLE);
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (locationManager!=null){
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,locationListener,null);
+            if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locationListener,null);
             } else
-                if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-                    locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locationListener,null);
-                } else
-                    if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)){
-                        locationManager.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER,locationListener,null);
-                    } else {
-                        showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_noprovider));
-                        gps_spinner_layout.setVisibility(View.GONE);
-                    }
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,locationListener,null);
+                }  else {
+                    showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_noprovider));
+                    gps_spinner_layout.setVisibility(View.GONE);
+                }
             }
     }
 
@@ -1036,25 +1051,25 @@ public class MainActivity extends Activity {
         if (hasLocationPermission()) {
             final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             if (locationManager != null) {
-                if (locationManager.getProvider(LocationManager.GPS_PROVIDER) != null) {
-                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    }
-                }
-                if (location == null) {
                     if (locationManager.getProvider(LocationManager.NETWORK_PROVIDER) != null) {
                         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                             location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         }
                     }
-                }
-                if (location == null) {
-                    if (locationManager.getProvider(LocationManager.PASSIVE_PROVIDER) != null) {
-                        if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
-                            location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                    if (location == null) {
+                        if (locationManager.getProvider(LocationManager.GPS_PROVIDER) != null) {
+                            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            }
                         }
                     }
-                }
+                    if (location == null) {
+                        if (locationManager.getProvider(LocationManager.PASSIVE_PROVIDER) != null) {
+                            if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
+                                location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+                            }
+                        }
+                    }
             }
         }
         return location;

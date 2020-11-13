@@ -25,4 +25,4 @@
     android:layout_height="wrap_content"
     android:textColor="@color/textColor"
     android:background="@color/colorPrimaryDark"
-    android:textSize="@dimen/fcmain_textsize_large"/>
+    android:textSize="@dimen/geo_textsize_large"/>

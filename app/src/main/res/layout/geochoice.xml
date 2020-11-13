@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/textColor"
-        android:textSize="@dimen/fcmain_textsize_large"
+        android:textSize="@dimen/geo_textsize_large"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="6dp"
         android:text="@string/geoinput_select"/>
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
-        android:textSize="@dimen/fcmain_textsize_medium"
+        android:textSize="@dimen/geo_textsize_medium"
         android:layout_below="@id/geochoice_text_into"
         android:layout_marginBottom="4dp"
         android:text="@string/geoinput_reflocation_title"/>
@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
-        android:textSize="@dimen/fcmain_textsize_medium"
+        android:textSize="@dimen/geo_textsize_medium"
         android:layout_below="@id/geochoice_reference_title"
         android:text="@string/geoinput_reflocation_longitude"/>
 
@@ -71,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
-        android:textSize="@dimen/fcmain_textsize_medium"
+        android:textSize="@dimen/geo_textsize_medium"
         android:layout_below="@id/geochoice_reference_longitude"
         android:text="@string/geoinput_reflocation_latitude"/>
 
@@ -80,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
-        android:textSize="@dimen/fcmain_textsize_medium"
+        android:textSize="@dimen/geo_textsize_medium"
         android:layout_below="@id/geochoice_reference_latitude"
         android:layout_marginBottom="6dp"
         android:text="@string/geoinput_reflocation_time"/>

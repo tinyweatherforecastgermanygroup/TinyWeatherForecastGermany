@@ -204,12 +204,12 @@
     <string name="welcome_s3_text2">Ein Klick/Berührung der Ortsliste in der Warnung klappt sie aus!</string>
     <string name="welcome_s3_text3">Plaziere Widgets auf dem Home Screen:</string>
     <string name="geoinput_title">Finde die nächste Wetterstation</string>
-    <string name="geoinput_hint_longitude">e.g. 10.1, -10:01.22342, 10:01:12345</string>
-    <string name="geoinput_hint_latitude">e.g. 53.575, -33:12.32, 21:43:12</string>
+    <string name="geoinput_hint_longitude">z.B. 10.1, -10:01.22342, 10:01:12345</string>
+    <string name="geoinput_hint_latitude">z.B. 53.575, -33:12.32, 21:43:12</string>
     <string name="geoinput_intro">Gebe Längen- und Breitengrad manuell ein, um die Wetterstationen in Deiner Nähe zu finden oder benutze die Standortdienste Deines Gerätes, um sie zu finden.</string>
     <string name="geoinput_known_note">Das ist der Standort von:</string>
-    <string name="geoinput_longitude">Längengrad eingeben:</string>
-    <string name="geoinput_latitude">Breitengrad eingeben:</string>
+    <string name="geoinput_longitude">Längengrad eingeben (-180 bis 180):</string>
+    <string name="geoinput_latitude">Breitengrad eingeben (-90 bis 90):</string>
     <string name="geoinput_gps">Standortdienste des Gerätes verwenden, um den aktuellen Standort zu bestimmen.</string>
     <string name="geoinput_search">Starte Suche</string>
     <string name="geoinput_cancel">Abbrechen</string>
