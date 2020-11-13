@@ -88,6 +88,7 @@ Credits
  
  The widget icon, the weather description and the current temperature refer to the weather forecast that can be expected until the next full hour. The low and high temperatures refer to the values that can be expected to occur from now to midnight.
  
+ 
  *What do the symbols in the main app mean?*
  
  Symbols used:
@@ -122,15 +123,6 @@ Credits
   
   Sunrise and sunset cannot be reliably calculated with the formulas used for latitudes < -65° and > 65°. When this is the case, this feature is disabled.
   
-  *Why do the weather icons of the hourly forecasts sometimes do not match the ones for 6 hours?*
-  
-  The availability of weather conditions (=icons) is not consistent for all stations. In the most detailed case, the DWD presents a "significant weather" and an other with "highest priority" for certain time intervals. 
-  
-  In versions prior to 0.51.1, the hourly forecast displays the significant weather and the 6-hourly and daily forecast the significant weather with highest priority.
-  
-  Form version 0.51.1 onward, the hourly forcast also displays the significant weather with highest priority, if available. If this is not available, the significant weather is displayed.
-  
- For some weather stations, especially outside Europe, a significant weather is not always available. In this case, the app tries to determine the weather condition on its own, if possible. In some rare cases, even this does not succeed due to limited data. 
   
  Contributing
  ------------
