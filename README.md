@@ -92,11 +92,8 @@ Credits
  
  Symbols used:
  
- [<img src="app/src/main/res/mipmap-mdpi/symbol_precipitation.png" height="30" width="30"/>]
- Test
- 
- ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_precipitation.png) precipitation
- 
+ <img src="app/src/main/res/mipmap-mdpi/symbol_precipitation.png" height="16" width="16"/> precipitation
+
  ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_cloud.png) clouds
  
  ![symbol #1](app/src/main/res/mipmap-mdpi/symbol_lightning.png) thunderstorm
