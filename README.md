@@ -91,7 +91,6 @@ Credits
  *What do the symbols in the main app mean?*
  
  Symbols used:
- 
  <img src="app/src/main/res/mipmap-mdpi/symbol_precipitation.png" height="16" width="16"/> precipitation
 <img src="app/src/main/res/mipmap-mdpi/symbol_cloud.png" height="16" width="16"/> clouds
  <img src="app/src/main/res/mipmap-mdpi/symbol_lightning.png" height="16" width="16"/> thunderstorm
