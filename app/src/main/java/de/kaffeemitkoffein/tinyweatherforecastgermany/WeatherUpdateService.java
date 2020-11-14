@@ -97,6 +97,12 @@ public class WeatherUpdateService extends Service {
             @Override
             public void onNegativeResult(){
                 PrivateLog.log(context,Tag.SERVICE,"update from API: failed, error.");
+                if (ssl_exception){
+                    PrivateLog.log(context,Tag.SERVICE,"SSL exception detected by service.");
+                    Intent ssl_intent = new Intent();
+                    ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
+                    sendBroadcast(ssl_intent);
+                }
                 // need to update views with old data: GadgetBridge and widgets
                 UpdateAlarmManager.updateAppViews(context);
                 stopSelf();

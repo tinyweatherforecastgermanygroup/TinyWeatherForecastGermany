@@ -50,6 +50,7 @@ public class MainActivity extends Activity {
     private final static String SIS_WHATSNEW_DIALOG_STATE="WHATSNEW_DIALOG_VISIBLE";
 
     public final static String MAINAPP_CUSTOM_REFRESH_ACTION = "MAINAPP_CUSTOM_ACTION_REFRESH";
+    public final static String MAINAPP_SSL_ERROR = "MAINAPP_SSL_ERROR";
     public final static String MAINAPP_SHOW_PROGRESS = "MAINAPP_SHOW_PROGRESS";
     public final static String MAINAPP_HIDE_PROGRESS = "MAINAPP_HIDE_PROGRESS";
 
@@ -77,11 +78,39 @@ public class MainActivity extends Activity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            PrivateLog.log(getApplicationContext(),Tag.MAIN,"Broadcast received: "+intent.getAction());
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
                 displayWeatherForecast();
                 if (API_TESTING_ENABLED){
                     test_position ++;
                     testAPI_Call();
+                }
+            }
+            if (intent.getAction().equals(MAINAPP_SSL_ERROR)){
+                PrivateLog.log(getApplicationContext(),Tag.MAIN,"ssl error intent received by main app.");
+                if ((!WeatherSettings.isTLSdisabled(context)) && (Build.VERSION.SDK_INT < 28)){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle(context.getResources().getString(R.string.connerror_title));
+                    builder.setIcon(R.mipmap.ic_announcement_white_24dp);
+                    builder.setMessage(context.getResources().getString(R.string.connerror_message));
+                    builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // do nothing
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton(R.string.alertdialog_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            WeatherSettings.setDisableTLS(getApplicationContext(),true);
+                            // re-launch the weather update via http
+                            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                 }
             }
             if (intent.getAction().equals(MAINAPP_SHOW_PROGRESS)){
@@ -740,6 +769,7 @@ public class MainActivity extends Activity {
     private void registerForBroadcast(){
         IntentFilter filter = new IntentFilter();
         filter.addAction(MAINAPP_CUSTOM_REFRESH_ACTION);
+        filter.addAction(MAINAPP_SSL_ERROR);
         filter.addAction(MAINAPP_SHOW_PROGRESS);
         filter.addAction(MAINAPP_HIDE_PROGRESS);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);

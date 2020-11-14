@@ -68,6 +68,8 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_LAST_UPDATE_TIME = "PREF_warnings_last_update_time";
     public static final String PREF_IS_FIRST_APP_LAUNCH = "PREF_is_first_app_launch";
     public static final String PREF_USEGPS = "PREF_usegps";
+    public static final String PREF_DISABLE_TLS = "PREF_disable_tls";
+
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
     public static final double PREF_STATION_LONGITUDE_DEFAULT = 9.98;
@@ -103,6 +105,7 @@ public class WeatherSettings {
     public static final long PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final boolean PREF_IS_FIRST_APP_LAUNCH_DEFAULT = true;
     public static final boolean PREF_USEGPS_DEFAULT = false;
+    public static final boolean PREF_DISABLE_TLS_DEFAULT = false;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -139,6 +142,7 @@ public class WeatherSettings {
     public boolean warnings_disabled = PREF_WARNINGS_DISABLE_DEFAULT;
     public boolean is_first_app_launch = true;
     public boolean usegps = PREF_USEGPS_DEFAULT;
+    public boolean disable_tls = PREF_DISABLE_TLS_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -184,6 +188,7 @@ public class WeatherSettings {
         this.warnings_last_update_time = readPreference(PREF_WARNINGS_LAST_UPDATE_TIME, PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
         this.is_first_app_launch = readPreference(PREF_IS_FIRST_APP_LAUNCH, PREF_IS_FIRST_APP_LAUNCH_DEFAULT);
         this.usegps = readPreference(PREF_USEGPS,PREF_USEGPS_DEFAULT);
+        this.disable_tls = readPreference(PREF_DISABLE_TLS,PREF_DISABLE_TLS_DEFAULT);
     }
 
     public void savePreferences() {
@@ -220,6 +225,7 @@ public class WeatherSettings {
         applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME, this.warnings_last_update_time);
         applyPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
         applyPreference(PREF_USEGPS,this.usegps);
+        applyPreference(PREF_DISABLE_TLS,this.disable_tls);
     }
 
     public void commitPreferences() {
@@ -256,6 +262,7 @@ public class WeatherSettings {
         commitPreference(PREF_WARNINGS_LAST_UPDATE_TIME, this.warnings_last_update_time);
         commitPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
         commitPreference(PREF_USEGPS,this.usegps);
+        commitPreference(PREF_DISABLE_TLS,this.disable_tls);
     }
 
     public String readPreference(String p, String d) {
@@ -442,6 +449,18 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_USEGPS, flag);
+        pref_editor.apply();
+    }
+
+    public static boolean isTLSdisabled(Context c){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        return sharedPreferences.getBoolean(PREF_DISABLE_TLS, PREF_DISABLE_TLS_DEFAULT);
+    }
+
+    public static void setDisableTLS(Context c, boolean flag){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_DISABLE_TLS, flag);
         pref_editor.apply();
     }
 

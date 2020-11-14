@@ -28,11 +28,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -262,13 +268,65 @@ public class WeatherWarningReader extends AsyncTask<Void, Void, ArrayList<Weathe
         return C_FIRST+"EN"+C_LAST;
     }
 
+    @SuppressWarnings("deprecation")
+    private String getLegacyUrlString(Context context){
+        String country = "EN";
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+            country = context.getResources().getConfiguration().getLocales().get(0).getCountry();
+        } else {
+            country = context.getResources().getConfiguration().locale.getCountry();
+        }
+        final String C_FIRST ="http://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_";
+        final String C_LAST  = ".zip";
+        switch (country){
+            case "FR": return C_FIRST+"FR"+C_LAST;
+            case "ES": return C_FIRST+"ES"+C_LAST;
+            case "DE": return C_FIRST+"DE"+C_LAST;
+        }
+        return C_FIRST+"EN"+C_LAST;
+    }
+
+    private InputStream getWeatherWarningInputStream() throws IOException {
+        URL url;
+        URL url_legacy;
+        try {
+            url = new URL(getUrlString(context));
+            url_legacy = new URL(getLegacyUrlString(context));
+        } catch (MalformedURLException e){
+            throw e;
+        }
+        try {
+            HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+            InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+            return inputStream;
+        } catch (SSLException e){
+            if (WeatherSettings.isTLSdisabled(context)){
+                // try fallback to http
+                try {
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
+                    InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
+                    PrivateLog.log(context,Tag.SERVICE,"Warning: weather warnings are polled over http without encryption.");
+                    return inputStream;
+                } catch (IOException e2){
+                    PrivateLog.log(context,Tag.SERVICE,"Reading weather warnings via http failed: "+e2.getMessage());
+                    throw e2;
+                }
+            } else {
+                PrivateLog.log(context,Tag.SERVICE,"Error: ssl connection could not be established, but http is not allowed.");
+                throw e;
+            }
+        }
+    }
+
     @Override
     protected ArrayList<WeatherWarning> doInBackground(Void... voids) {
         ArrayList<WeatherWarning> warnings = new ArrayList<WeatherWarning>();
         try {
             // URL warningsUrl = new URL("https://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_DE.zip");
-            URL warningsUrl = new URL(getUrlString(context));
-            ZipInputStream zipInputStream = new ZipInputStream(warningsUrl.openStream());
+            // URL warningsUrl = new URL(getUrlString(context));
+            // ZipInputStream zipInputStream = new ZipInputStream(warningsUrl.openStream());
+            InputStream inputStream = new BufferedInputStream(getWeatherWarningInputStream());
+            ZipInputStream zipInputStream = new ZipInputStream(inputStream);
             // iterate through the warnings; each warning is a file
             int warnings_counter = 0;
             while (zipInputStream.getNextEntry() != null){

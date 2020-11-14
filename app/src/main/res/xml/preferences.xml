@@ -242,6 +242,12 @@
                 </intent>
             </Preference>
 
+            <CheckBoxPreference
+                android:key="PREF_disable_tls"
+                android:title="@string/preference_ssl_title"
+                android:summary="@string/preference_ssl_summary"
+                android:defaultValue="false"/>
+
         </PreferenceScreen>
 
     </PreferenceCategory>

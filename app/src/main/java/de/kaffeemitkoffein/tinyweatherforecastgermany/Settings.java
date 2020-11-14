@@ -84,6 +84,9 @@ public class Settings extends PreferenceActivity{
         if (!WeatherSettings.appReleaseIsUserdebug()){
             disableLogCatLogging();
         }
+        if (!WeatherSettings.isTLSdisabled(context)){
+            disableTLSOption();
+        }
         // allow changing alarm state?
         setAlarmSettingAllowed();
         updateValuesDisplay();
@@ -95,6 +98,16 @@ public class Settings extends PreferenceActivity{
     @SuppressWarnings("deprecation")
     public void disableLogCatLogging(){
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_LOG_TO_LOGCAT);
+        checkBoxPreference.setChecked(false);
+        checkBoxPreference.setEnabled(false);
+        checkBoxPreference.setShouldDisableView(true);
+        PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
+        preferenceScreen.removePreference(checkBoxPreference);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void disableTLSOption(){
+        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_DISABLE_TLS);
         checkBoxPreference.setChecked(false);
         checkBoxPreference.setEnabled(false);
         checkBoxPreference.setShouldDisableView(true);

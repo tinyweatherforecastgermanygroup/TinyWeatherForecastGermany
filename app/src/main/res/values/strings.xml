@@ -141,6 +141,8 @@
     <string name="preference_loggingactivity_summary">Send and/or clear the logs.</string>
     <string name="preference_intro_title">Intro</string>
     <string name="preference_intro_summary">Start the intro again.</string>
+    <string name="preference_ssl_title">Disable SSL</string>
+    <string name="preference_ssl_summary">Disable encryption over https when polling weather data.</string>
     <string name="alertdialog_yes">Yes</string>
     <string name="alertdialog_no">No</string>
     <string name="alertdialog_ok">Ok</string>
@@ -222,5 +224,6 @@
     <string name="geoinput_reflocation_longitude">Longitude:</string>
     <string name="geoinput_reflocation_latitude">Latitude :</string>
     <string name="geoinput_reflocation_time">Time:</string>
-
+    <string name="connerror_title">TLS Issue</string>
+    <string name="connerror_message">The app was unable to establish an encrypted connection with the DWD open data server over https. Disable encryption?</string>
 </resources>

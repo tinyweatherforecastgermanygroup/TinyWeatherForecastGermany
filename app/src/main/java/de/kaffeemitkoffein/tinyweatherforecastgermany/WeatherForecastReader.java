@@ -24,9 +24,16 @@ import android.os.AsyncTask;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.zip.ZipInputStream;
@@ -35,6 +42,7 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
 
     public Context context;
     public Weather.WeatherLocation weatherLocation;
+    public boolean ssl_exception = false;
 
     private String[] seperateValues(String s){
         String[] resultarray = new String[Weather.DATA_SIZE];
@@ -64,12 +72,52 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
         this.weatherLocation = weatherSettings.getSetStationLocation();
     }
 
+    private InputStream getWeatherInputStream() throws IOException {
+        String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
+        String weather_url_legacy = "http://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
+        URL url;
+        URL url_legacy;
+        try {
+            url = new URL(weather_url);
+            url_legacy = new URL(weather_url_legacy);
+        } catch (MalformedURLException e){
+            throw e;
+        }
+        try {
+            HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+            InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+            return inputStream;
+        } catch (SSLException e){
+            ssl_exception = true;
+            if (WeatherSettings.isTLSdisabled(context)){
+                // try fallback to http
+                try {
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
+                    InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
+                    PrivateLog.log(context,Tag.SERVICE,"Warning: weather data is polled over http without encryption.");
+                    return inputStream;
+                } catch (IOException e2){
+                    throw e2;
+                }
+            } else {
+                PrivateLog.log(context,Tag.SERVICE,"Error: ssl connection could not be established, but http is not allowed.");
+                throw e;
+            }
+        } catch (Exception e){
+            throw e;
+        }
+    }
+
     @Override
     protected RawWeatherInfo doInBackground(Void... voids) {
-        String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
+        // String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
+        // String weather_url = "http://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
         try{
-            URL url = new URL(weather_url);
-            ZipInputStream zipInputStream = new ZipInputStream(new URL(weather_url).openStream());
+            // works:
+            // URL url = new URL(weather_url);
+            // ZipInputStream zipInputStream = new ZipInputStream(new URL(weather_url).openStream());
+            InputStream inputStream = new BufferedInputStream(getWeatherInputStream());
+            ZipInputStream zipInputStream = new ZipInputStream(inputStream);
             zipInputStream.getNextEntry();
             // init new RawWeatherInfo instance to fill with data
             RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
@@ -224,15 +272,17 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
             PrivateLog.log(context,"Elements read: "+rawWeatherInfo.elements);
             return rawWeatherInfo;
             } catch (Exception e){
+                // nothing to do
             }
         } catch (IOException e){
+            // nothing to do
         }
         return null;
     }
 
     public void onNegativeResult(){
         // do nothing at the moment.
-        PrivateLog.log(context,"","FAILED GETTING DATA!!!");
+        PrivateLog.log(context,Tag.SERVICE,"Failed getting data!");
     }
 
     /*
@@ -250,6 +300,7 @@ public class WeatherForecastReader extends AsyncTask<Void,Void, RawWeatherInfo> 
     }
 
     protected void onPostExecute(RawWeatherInfo rawWeatherInfo) {
+        PrivateLog.log(context,Tag.SERVICE,"Postexecute reached.");
         if (rawWeatherInfo == null) {
             onNegativeResult();
         } else {
