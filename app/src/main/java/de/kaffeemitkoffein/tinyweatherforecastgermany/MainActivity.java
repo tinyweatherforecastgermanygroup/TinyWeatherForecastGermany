@@ -78,7 +78,6 @@ public class MainActivity extends Activity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            PrivateLog.log(getApplicationContext(),Tag.MAIN,"Broadcast received: "+intent.getAction());
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
                 displayWeatherForecast();
                 if (API_TESTING_ENABLED){
