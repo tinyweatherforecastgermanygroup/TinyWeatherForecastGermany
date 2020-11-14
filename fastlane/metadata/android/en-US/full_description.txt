@@ -4,8 +4,3 @@
 <li>detailed weather forecast</li>
 <li>slim design</li>
 <li>supports wearables through Gadgetbridge</li></ul>
-
-<p><b>Permissions:</b></b><ul>
-<li>INTERNET: needed to access the open data from the Deutscher Wetterdienst (DWD).</li>
-<li>FOREGROUND_SERVICE: needed to be able to update weather data regularly.</li>
-<li>RECEIVE_BOOT COMPLETED: needed to set up regular weather updates after device started.</li></ul>

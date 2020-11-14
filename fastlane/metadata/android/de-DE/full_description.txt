@@ -4,8 +4,3 @@
 <li>detaillierte Wettervorhersage</li>
 <li>schlankes Design</li>
 <li>unterstützt Wearables über Gadgetbridge</li></ul>
-
-<p><b>Berechtigungen:</b></p><ul>
-<li>INTERNET: benötigt, um auf die Daten des Deutschen Wetterdienstes (DWD) zuzugreifen.</li>
-<li>FOREGROUND_SERVICE: benötigt, um Wetterdaten regelmäßig zu aktualisieren.</li>
-<li>RECEIVE_BOOT COMPLETED: benötigt, um die Aktualisierungen nach einem Neustart zu aktivieren.</li></ul>

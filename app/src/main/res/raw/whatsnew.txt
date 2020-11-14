@@ -1,8 +1,7 @@
 What is new in this version ([VERSION]):
 
-- new app icon (credits go to Janis Bitta!)
-- fixed bug in conversion from m/s to knots (kn)
-- fixed flurries displayed wrong when km/h was selected
-- fixed multiple bugs and issues regarding the wind display in the widgets
-- fixed hourly forecasts sometimes overlapping weather details in main app
-- multiple small layout and display improvements
+- added feature to find closest weather sensors by geo-coordinates or location services on the device
+- added fallback to http without ssl, if an encrypted connection fails on very old devices (e.g. 4.x.x) due to missing cipher-suites
+- incomplete time intervals (6h, 24h) now discard past data in calculations where possible
+- fixed error in calculation of min. and max. temperatures (might have been too high & too low)
+- multiple minor bugfixes

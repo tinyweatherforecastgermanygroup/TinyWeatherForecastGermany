@@ -1,6 +1,6 @@
 
 - added feature to find closest weather sensors by geo-coordinates or location services on the device
-- added fallback to http without ssl for very old devices when polling data
-- fixed error in calculation of min. and max. temperatures (might have been too high & too low)
+- added fallback to http without ssl, if an encrypted connection fails on very old devices (e.g. 4.x.x) due to missing cipher-suites
 - incomplete time intervals (6h, 24h) now discard past data in calculations where possible
-- fixed textcolor in menu sometimes not correct
+- fixed error in calculation of min. and max. temperatures (might have been too high & too low)
+- multiple minor bugfixes
