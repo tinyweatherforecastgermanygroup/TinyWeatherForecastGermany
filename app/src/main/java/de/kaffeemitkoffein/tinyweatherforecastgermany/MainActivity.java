@@ -813,9 +813,11 @@ public class MainActivity extends Activity {
                 if (b){
                     text_latitude.setEnabled(false);
                     text_longitude.setEnabled(false);
+                    WeatherSettings.setUSEGPSFlag(getApplicationContext(),true);
                 } else {
                     text_latitude.setEnabled(true);
                     text_longitude.setEnabled(true);
+                    WeatherSettings.setUSEGPSFlag(getApplicationContext(),false);
                 }
             }
         });
@@ -824,7 +826,6 @@ public class MainActivity extends Activity {
         builder.setPositiveButton(R.string.geoinput_search, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                WeatherSettings.setUSEGPSFlag(getApplicationContext(),useGPS.isChecked());
                 if (useGPS.isChecked()){
                     if (!hasLocationPermission()){
                         requestLocationPermission();
