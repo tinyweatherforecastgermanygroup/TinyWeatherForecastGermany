@@ -1,6 +1,11 @@
-<p>Wettervorschau mit Widgets für bis zu 10 Tage, basierend auf Open Data des Deutschen Wetterdienstes (DWD).</p>
-<p>Zeigt auch vom DWD herausgegebene Wetterwarnungen für Deutschland an.</p>
-<p>Eine Vorhersage ist für über 5000 Stationen in Deutschland und weltweit verfügbar.</p><ul>
-<li>detaillierte Wettervorhersage</li>
-<li>schlankes Design</li>
-<li>unterstützt Wearables über Gadgetbridge</li></ul>
+Detaillierte Wettervorschau für bis zu 10 Tage, basierend auf Open Data des Deutschen Wetterdienstes (DWD). Es werden auch die Wetterwarnungen des DWD für Deutschland angezeigt.
+
+Dargestellt wird die Vorschau für die gewünschte Wetterstation, die man anhand des Namens, der Geo-Koordinaten oder des eigenen Standorts suchen kann. Eine Wetter-Vorhersage ist für über 5000 Wetterstationen in Deutschland und weltweit verfügbar.
+
+Die App verfügt über ein schlankes Design. Ferner unterstützt sie optional auch Wearables über Gadgetbridge, so dass die Wetterdaten auch auf Wearables angezeigt werden können.
+
+Darüber hinaus bestehen vielfältige Möglichkeiten, die App in der Darstellung der Wetterdaten an die eigenen Bedürfnisse anzupassen. Es können auch die Zeiten von Sonnenaufgang, Sonnenuntergang und Dämmerung für den ausgewählten Standort angezeigt werden.
+
+Ebenso verfügt die App über eine Favoriten-Liste, mit der zwischen verschiedenen Wetterstationen schnell gewechselt werden kann. Sie bietet auch mehrere, verschieden große Widgets mit Wettervorhersage an, die auf dem Homescreen plaziert werden können und automatisch aktualisiert werden.
+
+

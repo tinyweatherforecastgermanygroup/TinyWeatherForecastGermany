@@ -81,11 +81,11 @@ Credits
  Permissions
  -------
  The app uses the following permissions:
- <li>*Internet*: needed to get forecast data from the DWD.</li> 
- <li>*Access network state*: query network state before getting data.</li>
- <li>*foreground service*: a foreground service is used to reliably get the forecast data. The service does not run all the time but only when a weather forecast update from the DWD needs to be done, and it runs until it is finished.</li>
- <li>*Receive boot completed*: the app needs to know about a reboot to restart periodic checks if an update is due, to update widgets and to send data to Gadgetbridge when enabled.</li>
- <li>*Access fine location*: used to determine the closest weather sensors to your position. This permission needs not to be granted if this feature is not used or if the search is performed based on manually entered geo-coordinates.</li>
+ <li>Internet: needed to get forecast data from the DWD.</li> 
+ <li>Access network state: query network state before getting data.</li>
+ <li>foreground service: a foreground service is used to reliably get the forecast data. The service does not run all the time but only when a weather forecast update from the DWD needs to be done, and it runs until it is finished.</li>
+ <li>Receive boot completed: the app needs to know about a reboot to restart periodic checks if an update is due, to update widgets and to send data to Gadgetbridge when enabled.</li>
+ <li>Access fine location: used to determine the closest weather sensors to your position. This permission needs not to be granted if this feature is not used or if the search is performed based on manually entered geo-coordinates.</li>
 
  FAQ
  ---

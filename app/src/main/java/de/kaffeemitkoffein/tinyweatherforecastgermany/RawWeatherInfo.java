@@ -19,8 +19,6 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
