@@ -394,6 +394,12 @@ public class WeatherSettings {
         for (int i = 0; i < split_descriptions.length; i++) {
             result.add(split_descriptions[i]);
         }
+        // if favorites are corrupted, simply reset to display current station only and return default
+        if (split_descriptions.length==0){
+            result.add(this.station_description);
+            this.favoritesdata = this.station_description;
+            applyPreference(PREF_FAVORITESDATA,this.favoritesdata);
+        }
         return result;
     }
 
