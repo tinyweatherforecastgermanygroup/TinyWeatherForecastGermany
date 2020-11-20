@@ -182,7 +182,7 @@ public class CurrentWeatherInfo{
             wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
             wi.setClouds(rawWeatherInfo.getAverageClouds(start, index));
             wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT,start, index));
-            if (index==startposition6h){
+            if (start==startposition6h){
                 wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
                 wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
             } else {
