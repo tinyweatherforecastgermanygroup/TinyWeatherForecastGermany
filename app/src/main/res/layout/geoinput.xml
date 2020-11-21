@@ -52,7 +52,7 @@
             android:text="@string/geoinput_intro"/>
 
         <TextView
-            android:id="@+id/geoinput_geoinput_known_note"
+            android:id="@+id/geoinput_known_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
@@ -63,31 +63,12 @@
             android:text="@string/geoinput_known_note"/>
 
         <TextView
-            android:id="@+id/geoinput_text_longitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/geo_textsize_large"
-            android:layout_below="@id/geoinput_geoinput_known_note"
-            android:text="@string/geoinput_longitude"/>
-
-        <EditText
-            android:id="@+id/geoinput_edit_longitude"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/geoinput_text_longitude"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/geo_textsize_large"
-            android:hint="@string/geoinput_hint_longitude"
-            android:inputType="text"/>
-
-        <TextView
             android:id="@+id/geoinput_text_latitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
             android:textSize="@dimen/geo_textsize_large"
-            android:layout_below="@id/geoinput_edit_longitude"
+            android:layout_below="@id/geoinput_known_note"
             android:text="@string/geoinput_latitude"/>
 
         <EditText
@@ -100,11 +81,30 @@
             android:hint="@string/geoinput_hint_latitude"
             android:inputType="text"/>
 
+        <TextView
+            android:id="@+id/geoinput_text_longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/geo_textsize_large"
+            android:layout_below="@id/geoinput_edit_latitude"
+            android:text="@string/geoinput_longitude"/>
+
+        <EditText
+            android:id="@+id/geoinput_edit_longitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/geoinput_text_longitude"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/geo_textsize_large"
+            android:hint="@string/geoinput_hint_longitude"
+            android:inputType="text"/>
+
         <CheckBox
             android:id="@+id/geoinput_check_gps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/geoinput_edit_latitude"
+            android:layout_below="@id/geoinput_edit_longitude"
             android:layout_alignParentLeft="true"
             android:textColor="@color/textColor"
             android:textSize="@dimen/fcmain_textsize_large"
@@ -117,7 +117,7 @@
             android:textColor="@color/textColor"
             android:textSize="@dimen/geo_textsize_large"
             android:layout_toRightOf="@id/geoinput_check_gps"
-            android:layout_below="@id/geoinput_edit_latitude"
+            android:layout_below="@id/geoinput_edit_longitude"
             android:text="@string/geoinput_gps"/>
 
     </RelativeLayout>

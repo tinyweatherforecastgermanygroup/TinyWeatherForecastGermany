@@ -1,0 +1,3 @@
+
+- fixes max. temperature too high in 1st 6-hourly entry in main app
+- latitude is displayed above longitude now

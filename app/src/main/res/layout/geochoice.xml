@@ -58,22 +58,22 @@
         android:text="@string/geoinput_reflocation_title"/>
 
     <TextView
-        android:id="@+id/geochoice_reference_longitude"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/geo_textsize_medium"
-        android:layout_below="@id/geochoice_reference_title"
-        android:text="@string/geoinput_reflocation_longitude"/>
-
-    <TextView
         android:id="@+id/geochoice_reference_latitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/geo_textsize_medium"
-        android:layout_below="@id/geochoice_reference_longitude"
+        android:layout_below="@id/geochoice_reference_title"
         android:text="@string/geoinput_reflocation_latitude"/>
+
+    <TextView
+        android:id="@+id/geochoice_reference_longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/geo_textsize_medium"
+        android:layout_below="@id/geochoice_reference_latitude"
+        android:text="@string/geoinput_reflocation_longitude"/>
 
     <TextView
         android:id="@+id/geochoice_reference_time"
@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/geo_textsize_medium"
-        android:layout_below="@id/geochoice_reference_latitude"
+        android:layout_below="@id/geochoice_reference_longitude"
         android:layout_marginBottom="6dp"
         android:text="@string/geoinput_reflocation_time"/>
 

@@ -864,7 +864,7 @@ public class MainActivity extends Activity {
         if (location!=null){
             text_longitude.setText(new DecimalFormat("000.00000").format(location.getLongitude()));
             text_latitude.setText(new DecimalFormat("00.00000").format(location.getLatitude()));
-            TextView gps_known_knote = view.findViewById(R.id.geoinput_geoinput_known_note);
+            TextView gps_known_knote = view.findViewById(R.id.geoinput_known_note);
             gps_known_knote.setVisibility(View.VISIBLE);
             final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
             gps_known_knote.setText(getApplicationContext().getResources().getString(R.string.geoinput_known_note)+" "+simpleDateFormat.format(location.getTime()));
