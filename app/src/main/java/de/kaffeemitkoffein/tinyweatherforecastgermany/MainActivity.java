@@ -302,27 +302,25 @@ public class MainActivity extends Activity {
                         if (intent_scheme.equals("geo")){
                             String received_geolocation = geo_intent.getData().toString();
                             if (received_geolocation!=null){
-                                //Log.v("TWFG",received_geolocation);
                                 try {
                                     String received_latitude = received_geolocation.substring(received_geolocation.indexOf(":")+1,received_geolocation.indexOf(","));
-                                    //Log.v("TWFG","Lat. "+received_latitude);
                                     String received_longitude = received_geolocation.substring(received_geolocation.indexOf(",")+1,received_geolocation.indexOf("?"));
-                                    //Log.v("TWFG","Lat. "+received_longitude);
                                     String received_zoom = received_geolocation.substring(received_geolocation.indexOf("z=")+2);
-                                    //Log.v("TWFG","Zoom "+received_zoom);
                                     Location own_location = new Location("manual");
                                     own_location.setTime(Calendar.getInstance().getTimeInMillis());
                                     try {
-                                        double latitude = Location.convert(received_latitude);
-                                        double longitude = Location.convert(received_longitude);
+                                        double latitude = Location.convert(standardizeGeo(received_latitude));
+                                        double longitude = Location.convert(standardizeGeo(received_longitude));
                                         own_location.setLatitude(latitude);
                                         own_location.setLongitude(longitude);
                                         launchStationSearchByLocation(own_location);
                                     } catch (Exception e){
-                                        // invalid coordinates
+                                        // invalid geo coordinates
+                                        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.georeceive_error),Toast.LENGTH_LONG).show();
                                     }
                                 } catch (IndexOutOfBoundsException e){
                                     // invalid geo-string (uri)
+                                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.georeceive_error),Toast.LENGTH_LONG).show();
                                 }
                             }
                         }
@@ -875,8 +873,8 @@ public class MainActivity extends Activity {
                     Location own_location = new Location("manual");
                     own_location.setTime(Calendar.getInstance().getTimeInMillis());
                     try {
-                        double longitude = Location.convert(text_longitude.getText().toString());
-                        double latitude = Location.convert(text_latitude.getText().toString());
+                        double longitude = Location.convert(standardizeGeo(text_longitude.getText().toString()));
+                        double latitude = Location.convert(standardizeGeo(text_latitude.getText().toString()));
                         own_location.setLongitude(longitude);
                         own_location.setLatitude(latitude);
                         if ((latitude>=-90) && (latitude<=90) && (longitude>=-180) && (longitude<=180)) {
@@ -1142,6 +1140,10 @@ public class MainActivity extends Activity {
             }
         }
         return location;
+    }
+
+    public String standardizeGeo(final String s){
+        return s.replace(",",".");
     }
 }
 

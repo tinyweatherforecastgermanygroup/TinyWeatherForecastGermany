@@ -224,6 +224,7 @@
     <string name="geoinput_reflocation_longitude">Longitude:</string>
     <string name="geoinput_reflocation_latitude">Latitude :</string>
     <string name="geoinput_reflocation_time">Time:</string>
+    <string name="georeceive_error">Error: unable to read geo coordinates.</string>
     <string name="connerror_title">TLS Issue</string>
     <string name="connerror_message">The app was unable to establish an encrypted connection with the DWD open data server over https. Disable encryption?</string>
 </resources>

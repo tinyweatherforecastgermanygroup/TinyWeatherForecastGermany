@@ -224,6 +224,7 @@
     <string name="geoinput_reflocation_longitude">Längengrad:</string>
     <string name="geoinput_reflocation_latitude">Breitengrad:</string>
     <string name="geoinput_reflocation_time">Zeit:</string>
+    <string name="georeceive_error">Fehler: Geo-Koordinaten konnten nicht gelesen werden.</string>
     <string name="connerror_title">TLS-Probleme</string>
     <string name="connerror_message">Die App konnte keine verschlüsselte https Verbindung zum Open Data Server des DWD aufbauen. Verschlüsselung deaktivieren?</string>
 </resources>
