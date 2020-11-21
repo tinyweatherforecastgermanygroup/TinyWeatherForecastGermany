@@ -291,6 +291,45 @@ public class MainActivity extends Activity {
                 stopGPSLocationSearch();
             }
         });
+        // check if a geo intent was sent
+        Intent geo_intent = getIntent();
+        if (geo_intent!=null){
+            String intent_action = geo_intent.getAction();
+            if (intent_action!=null){
+                if (intent_action.equals(Intent.ACTION_VIEW)){
+                    String intent_scheme = geo_intent.getScheme();
+                    if (intent_scheme!=null){
+                        if (intent_scheme.equals("geo")){
+                            String received_geolocation = geo_intent.getData().toString();
+                            if (received_geolocation!=null){
+                                //Log.v("TWFG",received_geolocation);
+                                try {
+                                    String received_latitude = received_geolocation.substring(received_geolocation.indexOf(":")+1,received_geolocation.indexOf(","));
+                                    //Log.v("TWFG","Lat. "+received_latitude);
+                                    String received_longitude = received_geolocation.substring(received_geolocation.indexOf(",")+1,received_geolocation.indexOf("?"));
+                                    //Log.v("TWFG","Lat. "+received_longitude);
+                                    String received_zoom = received_geolocation.substring(received_geolocation.indexOf("z=")+2);
+                                    //Log.v("TWFG","Zoom "+received_zoom);
+                                    Location own_location = new Location("manual");
+                                    own_location.setTime(Calendar.getInstance().getTimeInMillis());
+                                    try {
+                                        double latitude = Location.convert(received_latitude);
+                                        double longitude = Location.convert(received_longitude);
+                                        own_location.setLatitude(latitude);
+                                        own_location.setLongitude(longitude);
+                                        launchStationSearchByLocation(own_location);
+                                    } catch (Exception e){
+                                        // invalid coordinates
+                                    }
+                                } catch (IndexOutOfBoundsException e){
+                                    // invalid geo-string (uri)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void newWeatherRegionSelected(WeatherSettings weatherSettings, String station_description){

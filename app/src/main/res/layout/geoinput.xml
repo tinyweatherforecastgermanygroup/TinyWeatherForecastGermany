@@ -41,23 +41,13 @@
             android:src="@drawable/geo_globe"/>
 
         <TextView
-            android:id="@+id/geoinput_text_into"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/geo_textsize_large"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@id/geoinput_globe"
-            android:layout_marginBottom="12dp"
-            android:text="@string/geoinput_intro"/>
-
-        <TextView
             android:id="@+id/geoinput_known_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/geo_textsize_medium"
-            android:layout_below="@id/geoinput_text_into"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@id/geoinput_globe"
             android:layout_marginBottom="6dp"
             android:visibility="gone"
             android:text="@string/geoinput_known_note"/>
@@ -100,11 +90,21 @@
             android:hint="@string/geoinput_hint_longitude"
             android:inputType="text"/>
 
+        <TextView
+            android:id="@+id/geoinput_text_into"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/geo_textsize_large"
+            android:layout_marginBottom="12dp"
+            android:layout_below="@id/geoinput_edit_longitude"
+            android:text="@string/geoinput_intro"/>
+
         <CheckBox
             android:id="@+id/geoinput_check_gps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/geoinput_edit_longitude"
+            android:layout_below="@id/geoinput_text_into"
             android:layout_alignParentLeft="true"
             android:textColor="@color/textColor"
             android:textSize="@dimen/fcmain_textsize_large"
@@ -117,7 +117,7 @@
             android:textColor="@color/textColor"
             android:textSize="@dimen/geo_textsize_large"
             android:layout_toRightOf="@id/geoinput_check_gps"
-            android:layout_below="@id/geoinput_edit_longitude"
+            android:layout_below="@id/geoinput_text_into"
             android:text="@string/geoinput_gps"/>
 
     </RelativeLayout>
