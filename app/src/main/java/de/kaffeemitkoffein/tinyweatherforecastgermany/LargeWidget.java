@@ -23,7 +23,7 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
+import android.graphics.*;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,144 +41,185 @@ public class LargeWidget extends ClassicWidget{
             RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.largewidget_layout);
             remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer, pendingIntent);
             setClassicWidgetItems(remoteViews, weatherSettings, weatherCard, c);
-            fillForecastBar(c, remoteViews, weatherCard);
+            remoteViews.setImageViewBitmap(R.id.largewidget_10daysbitmap, get10DaysForecastBar(c,awm,widget_instances[i],weatherCard));
             awm.updateAppWidget(widget_instances[i], remoteViews);
         }
     }
 
-    private void fillForecastItem(Context c, int pos, RemoteViews remoteViews, Weather.WeatherInfo weatherInfo){
-        int id_day = getWeekDayResource(pos);
-        int id_condition = getConditionResource(pos);
-        int id_max = getMaxResource(pos);
-        int id_min = getMinResource(pos);
-        if (weatherInfo==null){
-            remoteViews.setViewVisibility(id_day, View.INVISIBLE);
-            remoteViews.setViewVisibility(id_condition, View.INVISIBLE);
-            remoteViews.setViewVisibility(id_max, View.INVISIBLE);
-            remoteViews.setViewVisibility(id_min, View.INVISIBLE);
-        } else {
-            if (id_day != 0){
-                if ((weatherInfo.hasMaxTemperature())||(weatherInfo.hasMinTemperature())||(weatherInfo.hasCondition())){
-                    long l = weatherInfo.getTimestamp();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
-                    Date date = new Date();
-                    date.setTime(l);
-                    String weekday = simpleDateFormat.format(date);
-                    remoteViews.setViewVisibility(id_day, View.VISIBLE);
-                    remoteViews.setTextViewText(id_day,weekday);
-                } else {
-                    remoteViews.setViewVisibility(id_day, View.INVISIBLE);
-                }
-            }
-            if (id_condition != 0){
-                if (weatherInfo.hasCondition()){
-                    remoteViews.setViewVisibility(id_condition, View.VISIBLE);
-                    remoteViews.setImageViewResource(id_condition,WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(),true));
-                } else {
-                    remoteViews.setViewVisibility(id_condition, View.INVISIBLE);
-                }
-            }
-            if (id_max != 0){
-                if (weatherInfo.hasMaxTemperature()){
-                    remoteViews.setViewVisibility(id_max, View.VISIBLE);
-                    remoteViews.setTextViewText(id_max,weatherInfo.getMaxTemperatureInCelsiusInt()+"°");
-                } else {
-                    remoteViews.setViewVisibility(id_max, View.INVISIBLE);
-                }
-            }
-            if (id_min != 0){
-                if (weatherInfo.hasMinTemperature()){
-                    remoteViews.setViewVisibility(id_min, View.VISIBLE);
-                    remoteViews.setTextViewText(id_min,weatherInfo.getMinTemperatureInCelsiusInt()+"°");
-                } else {
-                    remoteViews.setViewVisibility(id_min, View.INVISIBLE);
-                }
-            }
+   private final static float OFFSET_FONTSIZE = 60;
+    private final static float FONTSIZESTEP = 1;
+
+    private float getMaxPossibleFontsize(String string, float max_width, float max_height){
+        float textsize = OFFSET_FONTSIZE;
+        Paint paint = new Paint();
+        paint.setTextSize(textsize);
+        while ((textsize>0) && (paint.measureText(string)>max_width)){
+            textsize = textsize - FONTSIZESTEP;
+            paint.setTextSize(textsize);
         }
+        while ((textsize>0) && (paint.getTextSize()>max_height)){
+            textsize = textsize - FONTSIZESTEP;
+            paint.setTextSize(textsize);
+        }
+        return textsize;
     }
 
-    private void fillForecastBar(Context c, RemoteViews remoteViews, CurrentWeatherInfo currentWeatherInfo){
+    private float fontsize_temperature = OFFSET_FONTSIZE;
+    private float fontsize_dayofweek = OFFSET_FONTSIZE;
+
+    private void determineMaxFontSizes(CurrentWeatherInfo currentWeatherInfo, float max_width, float max_height){
+        for (int i=0; i<currentWeatherInfo.forecast24hourly.size(); i++){
+            String min_temp = currentWeatherInfo.forecast24hourly.get(i).getMinTemperatureInCelsiusInt()+"°";
+            String max_temp = currentWeatherInfo.forecast24hourly.get(i).getMaxTemperatureInCelsiusInt()+"°";
+            Paint p_temp = new Paint();
+            p_temp.setTextSize(fontsize_temperature);
+            float mf1 = getMaxPossibleFontsize(min_temp,max_width,max_height);
+            if (mf1<fontsize_temperature){
+                fontsize_temperature = mf1;
+            }
+            float mf2 = getMaxPossibleFontsize(max_temp,max_width,max_height);
+            if (mf2<fontsize_temperature){
+                fontsize_temperature = mf2;
+            }
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
+        for (int i=0; i<currentWeatherInfo.forecast24hourly.size(); i++){
+            String day      = simpleDateFormat.format(new Date(currentWeatherInfo.forecast24hourly.get(i).getTimestamp()));
+            Paint p_day = new Paint();
+            p_day.setTextSize(fontsize_dayofweek);
+            float mf3 = getMaxPossibleFontsize(day,max_width,max_height);
+            if (mf3<fontsize_dayofweek){
+                fontsize_dayofweek = mf3;
+            }
+        }
+        fontsize_temperature = (float) (fontsize_temperature * 0.85);
+        fontsize_dayofweek = (float) (fontsize_dayofweek * 0.85);
+    }
+
+    private Bitmap getDailyBar(Context context, float width_bar, float height_bar, Weather.WeatherInfo weatherInfo){
+        // create an empty bitmap with black being the transparent color
+        Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bar),Math.round(height_bar),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        bitmap.eraseColor(Color.TRANSPARENT);
+        // return empty, transparent bitmap if no weather data present
+        if (weatherInfo == null) {
+            return bitmap;
+        }
+        int item_count = 0;
+        if (weatherInfo.hasCondition()){
+            item_count ++;
+        }
+        if (weatherInfo.hasMinTemperature()){
+            item_count ++;
+        }
+        if (weatherInfo.hasMaxTemperature()){
+            item_count ++;
+        }
+        // return empty, transparent bitmap if no suitable weather data present
+        if (item_count==0){
+            return bitmap;
+        }
+        // weekday also is an item
+        float height_item = (height_bar / (item_count+1));
+        // *** draw the weekday ***
+        // get the day of week string
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
+        String weekday = simpleDateFormat.format(new Date(weatherInfo.getTimestamp()));
+        // determine max. possible fontsize
+        Paint paint_weekday = new Paint();
+        paint_weekday.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
+        // paint_weekday.setTextSize(getMaxPossibleFontsize(weekday,width_bar,height_item));
+        paint_weekday.setTextSize(fontsize_dayofweek);
+        float x_offset_day = (width_bar - paint_weekday.measureText(weekday))/2;
+        float y_offset_day = height_item - paint_weekday.getTextSize()/2;
+        canvas.drawText(weekday,x_offset_day,y_offset_day,paint_weekday);
+        // number of items may vary, so we need to iterate the y offset
+        float y_offset_counter = height_item;
+        // *** draw the weather icon ***
+        if (weatherInfo.hasCondition()){
+            Bitmap condition_icon = BitmapFactory.decodeResource(context.getResources(),WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(),true));
+            // determine the necessary icon size, the icon ratio is always 1:1
+            float max_icon_diameter = width_bar;
+            if (height_item<width_bar){
+                max_icon_diameter = height_item;
+            }
+            // scale the bitmap
+            condition_icon = Bitmap.createScaledBitmap(condition_icon,(int) max_icon_diameter,(int) max_icon_diameter,false);
+            float x_offset_condition = (width_bar - condition_icon.getWidth())/2;
+            float y_offset_condition = y_offset_counter;
+            canvas.drawBitmap(condition_icon,x_offset_condition,y_offset_condition,null);
+            // iterate offset
+            y_offset_counter = y_offset_counter + height_item;
+        }
+        // *** draw max. temperature ***
+        if (weatherInfo.hasMaxTemperature()){
+            String max_temperature_string = String.valueOf(weatherInfo.getMaxTemperatureInCelsiusInt())+"°";
+            Paint paint_maxtemp = new Paint();
+            paint_maxtemp.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
+            // paint_maxtemp.setTextSize(getMaxPossibleFontsize(max_temperature_string,width_bar,height_item));
+            paint_maxtemp.setTextSize(fontsize_temperature);
+            float x_offset_maxtemp = (width_bar - paint_weekday.measureText(max_temperature_string))/2;
+            float y_offset_maxtemp = y_offset_counter - paint_maxtemp.getTextSize()/2;
+            canvas.drawText(max_temperature_string,x_offset_maxtemp,y_offset_maxtemp+height_item,paint_maxtemp);
+            // iterate offset
+            y_offset_counter = y_offset_counter + height_item;
+        }
+        // *** draw min. temperature ***
+        if (weatherInfo.hasMaxTemperature()){
+            String min_temperature_string = String.valueOf(weatherInfo.getMinTemperatureInCelsiusInt())+"°";
+            Paint paint_mintemp = new Paint();
+            paint_mintemp.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
+            //paint_mintemp.setTextSize(getMaxPossibleFontsize(min_temperature_string,width_bar,height_item));
+            paint_mintemp.setTextSize(fontsize_temperature);
+            float x_offset_mintemp = (width_bar - paint_weekday.measureText(min_temperature_string))/2;
+            float y_offset_mintemp = y_offset_counter - paint_mintemp.getTextSize()/2;
+            canvas.drawText(min_temperature_string,x_offset_mintemp,y_offset_mintemp+height_item,paint_mintemp);
+            // iterate offset
+            y_offset_counter = y_offset_counter + height_item;
+        }
+        return bitmap;
+    }
+
+    private Bitmap get10DaysForecastBar(Context context, AppWidgetManager awm, int widget_instance, CurrentWeatherInfo currentWeatherInfo){
+        /*
+         * Determine the approximate diameters of the bitmap.
+         *
+         * The /2 is hardcoded from the largewidget_layout.xml: the forecast bitmap holding the 10 days
+         * forecast takes the lower half of the forecast bar.
+         *
+         * It may be a little bit smaller in fact if the reference text is displayed. However, this will be
+         * adapted by the system and/or launcher when the widget view gets inflated. It is the better choice to
+         * assume the larger size (image gets downscaled) than a too small size (image gets upscaled and may look
+         * awful).
+         */
+        WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(context, awm,widget_instance);
+        float width_bitmap = widgetDimensionManager.getWidgetWidth();
+        float height_bitmap = widgetDimensionManager.getWidgetHeight()/2;
+        if ((width_bitmap<=0) || (height_bitmap<=0)){
+            // make some fallback values if the widget dimensions remain unknown
+            width_bitmap = 500;
+            height_bitmap = 250;
+        }
+        // create an empty, transparent bitmap
+        Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bitmap),Math.round(height_bitmap),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        bitmap.eraseColor(Color.TRANSPARENT);
+        // return empty, transparent bitmap if no weather data present
         if (currentWeatherInfo==null){
-            currentWeatherInfo = new CurrentWeatherInfo();
-            currentWeatherInfo.setToEmpty();
+            return bitmap;
         }
-        int index = 0;
-        while ((index < currentWeatherInfo.forecast24hourly.size() && (index<=10))) {
-            fillForecastItem(c,index + 1, remoteViews, currentWeatherInfo.forecast24hourly.get(index));
-            index ++;
+        int number_of_forecast_days = currentWeatherInfo.forecast24hourly.size();
+        if (number_of_forecast_days==0){
+            return bitmap;
         }
-        while ((index<=10)){
-            fillForecastItem(c,index + 1, remoteViews, null);
-            index++;
+        float width_oneday = width_bitmap / number_of_forecast_days;
+        float height_oneday = height_bitmap;
+        determineMaxFontSizes(currentWeatherInfo,width_oneday,height_oneday);
+        for (int i=0; i<number_of_forecast_days; i++){
+            Bitmap item = getDailyBar(context,width_oneday,height_oneday,currentWeatherInfo.forecast24hourly.get(i));
+            canvas.drawBitmap(item,i*width_oneday,0,null);
         }
-    }
-
-    private int getWeekDayResource(int pos){
-        int result = 0;
-        switch (pos){
-            case 1: result = R.id.largewidget_forecast_day1; break;
-            case 2: result = R.id.largewidget_forecast_day2; break;
-            case 3: result = R.id.largewidget_forecast_day3; break;
-            case 4: result = R.id.largewidget_forecast_day4; break;
-            case 5: result = R.id.largewidget_forecast_day5; break;
-            case 6: result = R.id.largewidget_forecast_day6; break;
-            case 7: result = R.id.largewidget_forecast_day7; break;
-            case 8: result = R.id.largewidget_forecast_day8; break;
-            case 9: result = R.id.largewidget_forecast_day9; break;
-            case 10: result = R.id.largewidget_forecast_day10; break;
-        }
-        return result;
-    }
-
-    private int getConditionResource(int pos){
-        int result = 0;
-        switch (pos){
-            case 1: result = R.id.largewidget_forecast_icon1; break;
-            case 2: result = R.id.largewidget_forecast_icon2; break;
-            case 3: result = R.id.largewidget_forecast_icon3; break;
-            case 4: result = R.id.largewidget_forecast_icon4; break;
-            case 5: result = R.id.largewidget_forecast_icon5; break;
-            case 6: result = R.id.largewidget_forecast_icon6; break;
-            case 7: result = R.id.largewidget_forecast_icon7; break;
-            case 8: result = R.id.largewidget_forecast_icon8; break;
-            case 9: result = R.id.largewidget_forecast_icon9; break;
-            case 10: result = R.id.largewidget_forecast_icon10; break;
-        }
-        return result;
-    }
-
-    private int getMaxResource(int pos){
-        int result = 0;
-        switch (pos){
-            case 1: result = R.id.largewidget_forecast_high1; break;
-            case 2: result = R.id.largewidget_forecast_high2; break;
-            case 3: result = R.id.largewidget_forecast_high3; break;
-            case 4: result = R.id.largewidget_forecast_high4; break;
-            case 5: result = R.id.largewidget_forecast_high5; break;
-            case 6: result = R.id.largewidget_forecast_high6; break;
-            case 7: result = R.id.largewidget_forecast_high7; break;
-            case 8: result = R.id.largewidget_forecast_high8; break;
-            case 9: result = R.id.largewidget_forecast_high9; break;
-            case 10: result = R.id.largewidget_forecast_high10; break;
-        }
-        return result;
-    }
-
-    private int getMinResource(int pos){
-        int result = 0;
-        switch (pos){
-            case 1: result = R.id.largewidget_forecast_low1; break;
-            case 2: result = R.id.largewidget_forecast_low2; break;
-            case 3: result = R.id.largewidget_forecast_low3; break;
-            case 4: result = R.id.largewidget_forecast_low4; break;
-            case 5: result = R.id.largewidget_forecast_low5; break;
-            case 6: result = R.id.largewidget_forecast_low6; break;
-            case 7: result = R.id.largewidget_forecast_low7; break;
-            case 8: result = R.id.largewidget_forecast_low8; break;
-            case 9: result = R.id.largewidget_forecast_low9; break;
-            case 10: result = R.id.largewidget_forecast_low10; break;
-        }
-        return result;
+        return bitmap;
     }
 
 }

@@ -25,8 +25,10 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -214,6 +216,137 @@ public class ClassicWidget extends AppWidgetProvider {
         hex_string = hex_string+"101010";
         return Color.parseColor("#"+hex_string);
     }
+
+    /**
+     * This class provides some methods to determine the approximate current size of a widget in pixels.
+     */
+
+    public class WidgetDimensionManager {
+
+        /*
+         * You can get a Bundle from the AppWidgetManager (awm) that holds some metrics, which are
+         * poorly documented. Going by the docs, they provide a range of min-max in dp that the widget
+         * can have.
+         *
+         * Bundle bundle = awm.getAppWidgetOptions(widget_instances[i]);
+         *
+         * When yor home screen is in portrait mode, which should be the most common case, the
+         * following values apply quite accurate when compared to screenshots and measuring the widget
+         * sizes:
+         *
+         * OPTION_APPWIDGET_MIN_WIDTH  seems to roughly be the real widget width in dp (portrait mode).
+         * OPTION_APPWIDGET_MAX_HEIGHT seems to roughly be the real widget height in dp (portrait mode).
+         *
+         * However, should your device allow switching the home screen to landscape mode:
+         *
+         * OPTION_APPWIDGET_MIN_HEIGHT seems to roughly be the real widget height in dp (landscape mode).
+         * OPTION_APPWIDGET_MAX_WIDTH  seems to roughly be the real widget width in dp (landscape mode), but
+         * on my device I am getting a width that is a little bit too small.
+         *
+         * All values are not correct to the last pixel, as all the metrics seem to be further modified
+         * by the launcher before they get displayed.
+         *
+         * Therefore, depending too munch on the metrics from here puts the widget at risk to not work well
+         * with custom launchers that may come with some unpredictable behaviour.
+         *
+         * However, they can be a pretty nice estimate how large text & graphics should be generated before
+         * getting displayed.
+         */
+
+        int widget_width_portrait_dp;
+        int widget_height_portrait_dp;
+        int widget_width_landscape_dp;
+        int widget_height_landscape_dp;
+        float xdpi;
+        float ydpi;
+        int orientation;
+        int density;
+        float scaledDensity;
+        Context context;
+
+        /**
+         * Public constructor to be called from the widget.
+         * It fills all the local variables with values.
+         *
+         * @param c
+         * @param awm
+         * @param widget_instance
+         */
+
+        public WidgetDimensionManager(Context c, AppWidgetManager awm, int widget_instance){
+            this.context = c;
+            Bundle bundle = awm.getAppWidgetOptions(widget_instance);
+            widget_width_portrait_dp = bundle.getInt(awm.OPTION_APPWIDGET_MIN_WIDTH);
+            widget_width_landscape_dp = bundle.getInt(awm.OPTION_APPWIDGET_MAX_WIDTH);
+            widget_height_landscape_dp= bundle.getInt(awm.OPTION_APPWIDGET_MIN_HEIGHT);
+            widget_height_portrait_dp = bundle.getInt(awm.OPTION_APPWIDGET_MAX_HEIGHT);
+            DisplayMetrics metrics = c.getResources().getDisplayMetrics();
+            this.xdpi = metrics.xdpi;
+            this.ydpi = metrics.ydpi;
+            this.scaledDensity = metrics.scaledDensity;
+            this.orientation = c.getResources().getConfiguration().orientation;
+            this.density = c.getResources().getConfiguration().densityDpi;
+        }
+
+        /**
+         * Gets the approximate current widget width in pixels.
+         * @return
+         */
+
+        public float getWidgetWidth(){
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE){
+                return (float) widget_width_landscape_dp * (xdpi/160);
+            } else {
+                return (float) widget_width_portrait_dp * (xdpi/160);
+            }
+        }
+
+        /**
+         * Gets the approximate current widget height in pixels.
+         * @return
+         */
+
+        public float getWidgetHeight(){
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE){
+                return (float) widget_height_landscape_dp * (ydpi/160);
+            } else {
+                return (float) widget_height_portrait_dp * (ydpi/160);
+            }
+        }
+
+        /**
+         * Gets the approximate current widget width in pixels.
+         * @return
+         */
+
+        public int getWidgetWidthInt(){
+            return Math.round(getWidgetWidth());
+        }
+
+        /**
+         * Gets the approximate current widget height in pixels.
+         * @return
+         */
+
+        public int getWidgetHeightInt(){
+            return Math.round(getWidgetHeight());
+        }
+
+        public float getScaledDensity(){
+            return this.scaledDensity;
+        }
+
+        /**
+         * Gets the font height in pixels.
+         * @param fontsize is the fontsize in sp
+         * @return
+         */
+
+        public float getFontHeightInPixels(float fontsize){
+            return (float) fontsize * scaledDensity;
+        }
+    }
+
 
 
 }

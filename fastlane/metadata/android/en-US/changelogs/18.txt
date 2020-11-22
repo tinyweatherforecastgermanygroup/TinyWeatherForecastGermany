@@ -1,3 +1,6 @@
 
-- fixes max. temperature too high in 1st 6-hourly entry in main app
+- fixed max. temperature too high in 1st 6-hourly entry in main app
 - latitude is displayed above longitude now
+- improved layout in search dialog
+- fixed commas not accepted in geo-coordinates
+- app now receives geo-coordinates from other apps

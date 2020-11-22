@@ -648,6 +648,15 @@ public class MainActivity extends Activity {
     }
 
     @SuppressWarnings("deprecation")
+    public static int getColorFromResource(Context context, int id){
+        if (Build.VERSION.SDK_INT>=23){
+            return context.getApplicationContext().getResources().getColor(id, context.getTheme());
+        } else {
+            return context.getApplicationContext().getResources().getColor(id);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
     private void setOverflowMenuItemColor(Menu menu, int id, int string_id,int color_id){
         String s = getApplicationContext().getResources().getString(string_id);
         MenuItem menuItem = menu.findItem(id);
