@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.*;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,7 +95,8 @@ public class ForecastBitmap{
                 if (screenWidth>screenHeight){
                     // landscape mode
                     bitmapWidth  = (int) screenWidth;
-                    bitmapHeight = (int) ((((bitmapWidth/displayMetrics.xdpi) * (displayMetrics.ydpi)) / 20) * screenAspectRatio);
+                    //bitmapHeight = (int) ((((bitmapWidth/displayMetrics.xdpi) * (displayMetrics.ydpi)) / 20) * screenAspectRatio);
+                    bitmapHeight = (int) (((bitmapWidth/displayMetrics.xdpi) * (displayMetrics.ydpi)) / 20);
                 } else {
                     // portrait mode
                     bitmapWidth = displayMetrics.widthPixels;
@@ -147,7 +149,10 @@ public class ForecastBitmap{
         }
         Bitmap bitmap = Bitmap.createBitmap(bitmapWidth,bitmapHeight,Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
+        Log.v("TWFG","Width: "+bitmapWidth);
+        Log.v("TWFG","Hight: "+bitmapHeight);
         itemWidth = (float) (bitmapWidth / anticipatedWidth);
+        Log.v("TWFG","Item-Width: "+itemWidth);
         fontSize_medium  = (float) (bitmapHeight/2.2);
         fontSize_small   = (float) (bitmapHeight/3.3);
         Paint paint = new Paint();
@@ -209,13 +214,78 @@ public class ForecastBitmap{
             if (iconsize>bitmapHeight-fontSize_small-1){
                 iconsize = bitmapHeight-fontSize_small-1;
             }
-            canvas.drawBitmap(getIconBitmap(context, wi,(int) iconsize,(int) iconsize),x_offset, fontSize_small+1,paint);
+            Log.v("TWFG","Icon size: "+iconsize);
+            canvas.drawBitmap(getIconBitmap(context, wi,Math.round(iconsize),Math.round(iconsize)),x_offset, fontSize_small+1,paint);
             // place temperature
+            String temperature_text = weatherInfos.get(position).getTemperatureInCelsiusInt()+"°";
             paint.setTextSize(fontSize_medium);
-            canvas.drawText(weatherInfos.get(position).getTemperatureInCelsiusInt()+"°",x_offset+itemWidth*iconRatio,(float) (bitmapHeight/2)+fontSize_medium/2,paint);
+            // canvas.drawText(temperature_text,x_offset+itemWidth*iconRatio,(float) (bitmapHeight/2)+fontSize_medium/2,paint);
+            canvas.drawText(temperature_text,x_offset+iconsize+1,(float) (bitmapHeight/2)+fontSize_medium/2,paint);
+            // place further temperature information if space is available
+            float x_within_item_offset = paint.measureText(temperature_text)+iconsize+2;
+            if ((itemWidth-x_within_item_offset)>=fontSize_small*3){
+                Log.v("TWFG","Yes, we have further space.");
+                if (weatherInfos.get(position).hasMaxTemperature() || weatherInfos.get(position).hasMinTemperature()){
+                    Paint paint_minmax = new Paint();
+                    paint_minmax.setColor(getColorFromResource(R.color.textColor));
+                    paint_minmax.setAlpha(255);
+                    paint_minmax.setTextSize(fontSize_small);
+                    String temperature_max ="";
+                    String temperature_min ="";
+                    float max_text_width = 0;
+                    if (weatherInfos.get(position).hasMaxTemperature()){
+                        temperature_max = weatherInfos.get(position).getMaxTemperatureInCelsiusInt()+"°";
+                        max_text_width = paint_minmax.measureText(temperature_max);
+                    }
+                    if (weatherInfos.get(position).hasMinTemperature()){
+                        temperature_min = weatherInfos.get(position).getMinTemperatureInCelsiusInt()+"°";
+                        float width_mintemp = paint_minmax.measureText(temperature_min);
+                        if (width_mintemp>max_text_width){
+                            max_text_width = width_mintemp;
+                        }
+                    }
+                    // float minmax_width = paint_minmax.measureText()
+                    // float x_minmax = x_offset + paint.measureText(temperature_text)+iconsize+2;
+                    float y_max    = (bitmapHeight - (paint_minmax.getTextSize()*2)-2)/2 + paint_minmax.getTextSize();
+                    float y_min    = (bitmapHeight - (paint_minmax.getTextSize()*2)-2)/2 + paint_minmax.getTextSize()*2+1;
+                    if (weatherInfos.get(position).hasMaxTemperature()){
+                        float x_max = x_offset + x_within_item_offset + (max_text_width-paint_minmax.measureText(temperature_max))/2;
+                        canvas.drawText(temperature_max,x_max,y_max,paint_minmax);
+                    }
+                    if (weatherInfos.get(position).hasMinTemperature()){
+                        float x_min = x_offset + x_within_item_offset + (max_text_width-paint_minmax.measureText(temperature_min))/2;
+                        canvas.drawText(temperature_min,x_min,y_min,paint_minmax);
+                    }
+                    x_within_item_offset = x_within_item_offset + max_text_width + 1;
+                }
+            }
+            if (itemWidth - x_within_item_offset>=iconsize*(float) 0.8 + 1){
+                Log.v("TWFG","Yes, we have even more further space.");
+                if (weatherInfos.get(position).hasWindSpeed()||weatherInfos.get(position).hasWindDirection()){
+                    WeatherSettings weatherSettings = new WeatherSettings(context);
+                    Bitmap windsymbol = weatherInfos.get(position).getWindSymbol(context);
+                    windsymbol = Bitmap.createScaledBitmap(windsymbol,Math.round(iconsize*(float) 0.8),Math.round(iconsize*(float) 0.8),false);
+                    float y_offset_wind = (bitmapHeight - windsymbol.getHeight())/2;
+                    canvas.drawBitmap(windsymbol,x_offset + x_within_item_offset,y_offset_wind,null);
+                    x_within_item_offset = x_within_item_offset + iconsize*(float) 0.8 + 1;
+                }
+            }
+            if (itemWidth - x_within_item_offset>=fontSize_small*3){
+                Log.v("TWFG","Yes, we have even more further, further ++ space.");
+                if (weatherInfos.get(position).hasWindSpeed()){
+                    String windspeedstring = weatherInfos.get(position).getWindSpeedString(context,true);
+                    Paint windspeed_paint = new Paint();
+                    windspeed_paint.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
+                    windspeed_paint.setTextSize(fontSize_small);
+                    float y_offset = (bitmapHeight - fontSize_small)/2+fontSize_small;
+                    canvas.drawText(windspeedstring,x_offset+x_within_item_offset,y_offset,windspeed_paint);
+                    x_within_item_offset = x_within_item_offset + fontSize_small*3;
+                }
+            }
             x_offset = x_offset - itemWidth;
             position--;
         }
+        Log.v("TWFG","final size: "+bitmap.getWidth()+"/"+bitmap.getHeight());
         return bitmap;
     }
 

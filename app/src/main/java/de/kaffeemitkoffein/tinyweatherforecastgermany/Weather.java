@@ -22,9 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+import android.graphics.*;
 import org.astronomie.info.Astronomy;
 
 import java.text.SimpleDateFormat;
@@ -398,6 +396,62 @@ public final class Weather {
                 return context.getResources().getString(R.string.direction_northwest);
             }
           return "?";
+        }
+
+
+        public Bitmap getWindSymbol(Context context){
+            float width_bitmap = 256;
+            float height_bitmap = 256;
+            WeatherSettings weatherSettings = new WeatherSettings(context);
+            if (weatherSettings.getWindDisplayType()==WindDisplayType.BEAUFORT){
+                return getBeaufortBitmap(context);
+            }
+            if (weatherSettings.getWindDisplayType()==WindDisplayType.TEXT){
+                Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bitmap),Math.round(height_bitmap), Bitmap.Config.ARGB_8888);
+                bitmap.eraseColor(Color.TRANSPARENT);
+                String windsting = getWindDirectionString(context);
+                float max_fontsize = LargeWidget.getMaxPossibleFontsize(windsting,width_bitmap,height_bitmap);
+                Paint paint = new Paint();
+                paint.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
+                paint.setTextSize(max_fontsize);
+                // center text vertically & horizontally
+                float x_offset     = (width_bitmap-paint.measureText(windsting))/2;
+                float y_offset     = (height_bitmap - paint.getTextSize())/2 + paint.getTextSize();
+                Canvas canvas = new Canvas(bitmap);
+                canvas.drawText(windsting,x_offset,y_offset,paint);
+                return bitmap;
+            }
+            return getArrowBitmap(context);
+        }
+
+        public String getWindSpeedString(Context context, boolean unit){
+            WeatherSettings weatherSettings = new WeatherSettings(context);
+            if (weatherSettings.getWindDisplayUnit()==WindDisplayUnit.KNOTS){
+                String windspeedstring = String.valueOf(getWindSpeedInKnotsInt());
+                if (unit){
+                    windspeedstring = windspeedstring + "kn";
+                }
+                return windspeedstring;
+            }
+            if (weatherSettings.getWindDisplayUnit()==WindDisplayUnit.BEAUFORT){
+                String windspeedstring = String.valueOf(getWindSpeedInBeaufortInt());
+                if (unit){
+                    windspeedstring = windspeedstring + "bf";
+                }
+                return windspeedstring;
+            }
+            if (weatherSettings.getWindDisplayUnit()==WindDisplayUnit.METERS_PER_SECOND){
+                String windspeedstring = String.valueOf(getWindSpeedInMsInt());
+                if (unit){
+                    windspeedstring = windspeedstring + "m/s";
+                }
+                return windspeedstring;
+            }
+            String windspeedstring = String.valueOf(getWindSpeedInKmhInt());
+            if (unit){
+                windspeedstring = windspeedstring + "km/h";
+            }
+            return windspeedstring;
         }
 
         public double getWindDirection(){
@@ -1018,5 +1072,6 @@ public final class Weather {
         public final static int NAUTIC = 1;
         public final static int IMPERIAL = 2;
     }
+
 }
 

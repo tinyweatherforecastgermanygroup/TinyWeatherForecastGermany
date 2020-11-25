@@ -1,6 +1,7 @@
 
-- fixed max. temperature too high in 1st 6-hourly entry in main app
+- app now receives geo-coordinates from other apps
 - latitude is displayed above longitude now
 - improved layout in search dialog
+- improved layout of the large widget, especially fixing some information being cut-off on older devices
+- fixed max. temperature too high in 1st 6-hourly entry in main app
 - fixed commas not accepted in geo-coordinates
-- app now receives geo-coordinates from other apps

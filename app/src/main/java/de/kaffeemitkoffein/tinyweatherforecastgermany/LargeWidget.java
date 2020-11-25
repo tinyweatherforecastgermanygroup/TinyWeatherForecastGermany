@@ -46,10 +46,10 @@ public class LargeWidget extends ClassicWidget{
         }
     }
 
-   private final static float OFFSET_FONTSIZE = 60;
+    private final static float OFFSET_FONTSIZE = 60;
     private final static float FONTSIZESTEP = 1;
 
-    private float getMaxPossibleFontsize(String string, float max_width, float max_height){
+    public static float getMaxPossibleFontsize(String string, float max_width, float max_height){
         float textsize = OFFSET_FONTSIZE;
         Paint paint = new Paint();
         paint.setTextSize(textsize);

@@ -46,7 +46,6 @@
             android:textSize="@dimen/fcmain_textsize_medium"
             android:textColor="@color/widget_textcolor"
             android:layout_gravity="right"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sunrise: 6:55"/>
@@ -78,7 +77,7 @@
 
     <ImageView android:id="@+id/fcitem_forecastbar"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 
     <LinearLayout
