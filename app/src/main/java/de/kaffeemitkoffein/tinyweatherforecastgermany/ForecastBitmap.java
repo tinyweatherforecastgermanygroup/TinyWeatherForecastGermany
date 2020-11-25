@@ -215,14 +215,13 @@ public class ForecastBitmap{
                 iconsize = bitmapHeight-fontSize_small-1;
             }
             Log.v("TWFG","Icon size: "+iconsize);
-            canvas.drawBitmap(getIconBitmap(context, wi,Math.round(iconsize),Math.round(iconsize)),x_offset, fontSize_small+1,paint);
+            canvas.drawBitmap(getIconBitmap(context, wi,Math.round(iconsize),Math.round(iconsize)),x_offset, fontSize_small+1,TEXT_PAINT);
             // place temperature
             String temperature_text = weatherInfos.get(position).getTemperatureInCelsiusInt()+"°";
-            paint.setTextSize(fontSize_medium);
-            // canvas.drawText(temperature_text,x_offset+itemWidth*iconRatio,(float) (bitmapHeight/2)+fontSize_medium/2,paint);
-            canvas.drawText(temperature_text,x_offset+iconsize+1,(float) (bitmapHeight/2)+fontSize_medium/2,paint);
+            TEXT_PAINT.setTextSize(fontSize_medium);
+            canvas.drawText(temperature_text,x_offset+iconsize+1,(float) (bitmapHeight/2)+fontSize_medium/2, TEXT_PAINT);
             // place further temperature information if space is available
-            float x_within_item_offset = paint.measureText(temperature_text)+iconsize+2;
+            float x_within_item_offset = TEXT_PAINT.measureText(temperature_text)+iconsize+2;
             if ((itemWidth-x_within_item_offset)>=fontSize_small*3){
                 Log.v("TWFG","Yes, we have further space.");
                 if (weatherInfos.get(position).hasMaxTemperature() || weatherInfos.get(position).hasMinTemperature()){

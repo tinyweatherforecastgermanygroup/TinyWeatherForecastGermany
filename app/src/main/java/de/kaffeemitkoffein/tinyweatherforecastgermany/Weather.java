@@ -340,12 +340,18 @@ public final class Weather {
         }
 
         public Bitmap getBeaufortBitmap(Context context){
+            // fall back to arrow if wind speed is unknown
+            if (wind_speed==null){
+                return getArrowBitmap(context);
+            }
             if (wind_direction!=null) {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getBeaufortIconResourceID(getWindSpeedInBeaufortInt()));
                 if (bitmap != null) {
                     Matrix m = new Matrix();
                     m.postRotate(wind_direction.floatValue());
                     return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, false);
+                } else {
+                    return null;
                 }
             }
             return null;

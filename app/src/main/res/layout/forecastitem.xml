@@ -259,8 +259,7 @@
             <ImageView android:id="@+id/fcitem_weatherconditionicon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:src="@mipmap/ic_launcher" />
+                android:layout_gravity="center"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/fcitem_rightcontainer"
