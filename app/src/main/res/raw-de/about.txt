@@ -24,7 +24,12 @@ PAT maps by Ian Macky <http://ian.macky.net/pat>.
 
 App-Icon von Janis Bitta.
 
-Folgende Personen haben zum Projekt beigetragen: Andreas Shimokawa (bugfixes for the Gadgetbridge API), Izzy (Metadata-Verbesserungen), Jonas Lochmann (.gitignore)
+Folgende Personen haben zum Projekt beigetragen:
+ - Andreas Shimokawa (bugfixes & support for the Gadgetbridge API)
+ - Izzy (metadata improvements)
+ - Janis Bitta (app icon)
+ - Jonas Lochmann (.gitignore)
+ - Marc Nause (code improvements, bitmap caching)
 
 Lizenz:
 --------
