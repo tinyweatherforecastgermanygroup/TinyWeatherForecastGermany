@@ -96,7 +96,9 @@
     <string name="preference_display_layout_title">Layout</string>
     <string name="preference_display_layout_summary">Wie das Wetter dargestellt werden soll.</string>
     <string name="preference_displayforecastbar_title">stündliche Vorhersage</string>
-    <string name="preference_displayforecastbar_summary">Zeigte Balken mit stündlichen Daten in der 6-stündlichen Vorhersage.</string>
+    <string name="preference_displayforecastbar_summary">Zeige Balken mit stündlichen Daten in der 6-stündlichen Vorhersage.</string>
+    <string name="preference_displaysimplebar_title">einfacher Balken</string>
+    <string name="preference_displaysimplebar_summary">Nur Wetter-Icon und Temperatur im Balken anzeigen.</string>
     <string name="preference_displaypressure_title">Luftdruck</string>
     <string name="preference_displaypressure_summary">Zeige bodennahen Luftdruck in der Vorhersage.</string>
     <string name="preference_displayvisibility_title">Sichtweite</string>

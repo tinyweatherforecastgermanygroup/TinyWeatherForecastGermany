@@ -405,14 +405,13 @@ public final class Weather {
         }
 
 
-        public Bitmap getWindSymbol(Context context){
+        public Bitmap getWindSymbol(Context context, int windDisplayType){
             float width_bitmap = 256;
             float height_bitmap = 256;
-            WeatherSettings weatherSettings = new WeatherSettings(context);
-            if (weatherSettings.getWindDisplayType()==WindDisplayType.BEAUFORT){
+            if (windDisplayType==WindDisplayType.BEAUFORT){
                 return getBeaufortBitmap(context);
             }
-            if (weatherSettings.getWindDisplayType()==WindDisplayType.TEXT){
+            if (windDisplayType==WindDisplayType.TEXT){
                 Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bitmap),Math.round(height_bitmap), Bitmap.Config.ARGB_8888);
                 bitmap.eraseColor(Color.TRANSPARENT);
                 String windsting = getWindDirectionString(context);

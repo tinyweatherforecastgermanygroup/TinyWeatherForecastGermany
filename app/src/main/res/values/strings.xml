@@ -97,6 +97,8 @@
     <string name="preference_display_layout_summary">How to display the weather data.</string>
     <string name="preference_displayforecastbar_title">Hourly forecast</string>
     <string name="preference_displayforecastbar_summary">Display a bar with hourly data in 6-hourly forecasts.</string>
+    <string name="preference_displaysimplebar_title">Simple Bar</string>
+    <string name="preference_displaysimplebar_summary">Show weather icon and temperature only in the bar.</string>
     <string name="preference_displaypressure_title">Pressure</string>
     <string name="preference_displaypressure_summary">Display surface air pressure in forecasts.</string>
     <string name="preference_displayvisibility_title">Visiblity</string>

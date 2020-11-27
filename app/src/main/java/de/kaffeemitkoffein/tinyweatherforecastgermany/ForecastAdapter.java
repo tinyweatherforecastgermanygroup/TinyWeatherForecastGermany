@@ -69,6 +69,7 @@
             this.display_wind_unit = weatherSettings.getWindDisplayUnit();
             this.display_distance_unit = weatherSettings.getDistanceDisplayUnit();
             this.display_layout = weatherSettings.getDisplayLayout();
+            this.displaySimpleBar = weatherSettings.display_simple_bar;
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -418,6 +419,8 @@
                         .setWetherInfos(baritems)
                         .setAnticipatedWidth(6)
                         .setWeatherLocation(weatherLocation)
+                        .displaySimpleBar(displaySimpleBar)
+                        .setWindDisplayType(display_wind_type)
                         .create(context);
                 imageView_forecastBar.setImageBitmap(forecastBitmap.getForecastBitmap());
             } else {

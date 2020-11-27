@@ -52,6 +52,14 @@
                 android:defaultValue="true"/>
 
             <CheckBoxPreference
+                android:key="PREF_display_simple_bar"
+                android:title="@string/preference_displaysimplebar_title"
+                android:summary="@string/preference_displaysimplebar_summary"
+                android:defaultValue="false"/>
+
+
+
+            <CheckBoxPreference
                 android:key="PREF_display_pressure"
                 android:title="@string/preference_displaypressure_title"
                 android:summary="@string/preference_displaypressure_summary"
