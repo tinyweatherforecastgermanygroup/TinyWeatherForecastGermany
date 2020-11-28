@@ -236,7 +236,7 @@ public class ForecastBitmap{
             // place further temperature information if space is available
             if (!displaySimpleBar){
                 float x_within_item_offset = TEXT_PAINT.measureText(temperature_text)+iconsize+2;
-                if ((itemWidth-x_within_item_offset)>=fontSize_small*3){
+                if ((itemWidth-x_within_item_offset)>=fontSize_small*2){
                     if (weatherInfos.get(position).hasMaxTemperature() || weatherInfos.get(position).hasMinTemperature()){
                         Paint paint_minmax = new Paint();
                         paint_minmax.setColor(getColorFromResource(R.color.textColor));
@@ -287,6 +287,7 @@ public class ForecastBitmap{
                             String windtext=weatherInfos.get(position).getWindDirectionString(context);
                             float x_offset_wind = x_offset + x_within_item_offset;
                             float y_offset_wind = bitmapHeight-(bitmapHeight - TEXT_PAINT.getTextSize())/2;
+                            winddirection_maxsize = TEXT_PAINT.measureText(windtext+" ");
                             canvas.drawText(windtext,x_offset_wind,y_offset_wind,TEXT_PAINT);
                         }
                         x_within_item_offset = x_within_item_offset + winddirection_maxsize + 1;
@@ -294,7 +295,7 @@ public class ForecastBitmap{
                 }
                 if (itemWidth - x_within_item_offset>=fontSize_small*3){
                     if (weatherInfos.get(position).hasWindSpeed()){
-                        String windspeedstring = weatherInfos.get(position).getWindSpeedString(context,true);
+                        String windspeedstring = weatherInfos.get(position).getWindSpeedString(context,false);
                         Paint windspeed_paint = new Paint();
                         windspeed_paint.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
                         windspeed_paint.setTextSize(fontSize_small);

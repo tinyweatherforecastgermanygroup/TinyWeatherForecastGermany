@@ -87,7 +87,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="top|left"
                     android:orientation="vertical">
 
                     <TextView android:id="@+id/classicwidget_locationtext"
@@ -107,6 +107,53 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="-"/>
+
+                    <RelativeLayout
+                        android:id="@+id/clockwidget_precipitation_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView android:id="@+id/clockwidget_precipitation_symbol"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:gravity="center_vertical|left"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:src="@mipmap/symbol_precipitation" />
+
+                        <TextView android:id="@+id/clockwidget_precipitation_text"
+                            android:textSize="@dimen/widget_textsize_medium"
+                            android:textColor="@color/widget_textcolor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|left"
+                            android:gravity="center_vertical|left"
+                            android:layout_toRightOf="@id/clockwidget_precipitation_symbol"
+                            android:text="-"/>
+
+                        <TextView android:id="@+id/clockwidget_precipitation_unit"
+                            android:textSize="@dimen/widget_textsize_small"
+                            android:textColor="@color/widget_textcolor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:gravity="center"
+                            android:layout_toRightOf="@id/clockwidget_precipitation_text"
+                            android:layout_alignBaseline="@id/clockwidget_precipitation_text"
+                            android:text=" kg/m²"/>
+
+
+                    </RelativeLayout>
+
+                    <TextView android:id="@+id/clockwidget_pressure"
+                        android:textSize="@dimen/widget_textsize_medium"
+                        android:textColor="@color/widget_textcolor"
+                        android:layout_marginLeft="2dp"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1024 hPa"/>
+
                 </LinearLayout>
 
                 <LinearLayout android:id="@+id/classicwidget_centercontainer"
@@ -127,7 +174,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="top|left"
                     android:orientation="vertical">
 
                     <TextView android:id="@+id/classicwidget_temperature"

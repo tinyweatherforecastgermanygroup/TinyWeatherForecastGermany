@@ -1,4 +1,3 @@
-Neu in dieser Version ([VERSION]):
 
 - Geokoordinaten können nun an diese App geteilt werden
 - signifikante Verbesserung der Leistung der Hauptapp durch neues Bitmap-Chaching (Danke an Marc Nause!)
@@ -10,7 +9,3 @@ Neu in dieser Version ([VERSION]):
 - behoben: Kommas wurden bei der Eingabe von Geo-Koordinaten nicht akzeptiert
 - behoben: Nebel mit Reifansatz wurde als Wetterzustand nicht korrekt angezeigt
 - zahlreiche, weitere Fehlerkorrekturen
-
-
-
-

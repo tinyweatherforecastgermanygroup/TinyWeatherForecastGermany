@@ -1,20 +1,16 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.os.Build;
-import android.provider.AlarmClock;
 import android.provider.Settings;
-import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.RemoteViews;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,9 +35,10 @@ public class ClockWidget extends ClassicWidget {
             PendingIntent pendingIntent_clock = PendingIntent.getActivity(c, 0, intent_clock, 0);
             remoteViews.setOnClickPendingIntent(R.id.clockwidget_clock, pendingIntent_clock);
             remoteViews.setOnClickPendingIntent(R.id.clockwidget_text, pendingIntent_clock);
-            setClassicWidgetItems(remoteViews, weatherSettings, weatherCard, c);
+            setClassicWidgetItems(remoteViews, weatherSettings, weatherCard, c,true);
             adjustClockFontSize(c, awm, i, remoteViews);
             updateClockText(c, awm, i, remoteViews);
+            fillClockWeatherItems(remoteViews, weatherCard);
             awm.updateAppWidget(widget_instances[i], remoteViews);
         }
     }
@@ -69,7 +66,6 @@ public class ClockWidget extends ClassicWidget {
                     long l = alarmClockInfo.getTriggerTime();
                     final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, HH:mm");
                     alarm_string = simpleDateFormat.format(new Date(l));
-                    Log.v("TWFG", "Alarm: " + alarm_string);
                 }
             }
         }
@@ -92,6 +88,32 @@ public class ClockWidget extends ClassicWidget {
         }
         remoteViews.setTextViewText(R.id.clockwidget_text, dateString);
     }
+
+    private void fillClockWeatherItems(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo) {
+        String preciptitation = "";
+        if (weatherInfo.currentWeather.hasProbPrecipitation()){
+            preciptitation = weatherInfo.currentWeather.getProbPrecipitation()+"%";
+        }
+        if (weatherInfo.currentWeather.hasProbPrecipitation() && weatherInfo.currentWeather.hasPrecipitation()){
+            preciptitation = preciptitation +", ";
+        }
+        if (weatherInfo.currentWeather.hasPrecipitation()){
+            preciptitation = preciptitation + weatherInfo.currentWeather.getPrecipitation();
+        }
+        if (preciptitation.equals("")){
+            remoteViews.setViewVisibility(R.id.clockwidget_precipitation_container, View.GONE);
+        } else {
+            remoteViews.setViewVisibility(R.id.clockwidget_precipitation_symbol, View.VISIBLE);
+            remoteViews.setTextViewText(R.id.clockwidget_precipitation_text,preciptitation);
+        }
+        if (!weatherInfo.currentWeather.hasPressure()){
+            remoteViews.setViewVisibility(R.id.clockwidget_pressure,View.GONE);
+        } else {
+            remoteViews.setViewVisibility(R.id.clockwidget_pressure,View.VISIBLE);
+            remoteViews.setTextViewText(R.id.clockwidget_pressure,weatherInfo.currentWeather.getPressure()/100+ " hPa");
+        }
+    }
+
 
 }
 

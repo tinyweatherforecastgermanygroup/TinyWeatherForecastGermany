@@ -97,12 +97,16 @@ public class ClassicWidget extends AppWidgetProvider {
      *
      */
 
-    public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c){
+    public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c, boolean shorten_text){
         if (weatherCard==null){
             weatherCard = new CurrentWeatherInfo();
             weatherCard.setToEmpty();
         }
-        remoteViews.setTextViewText(R.id.classicwidget_locationtext,weatherCard.getCity());
+        String location_text = weatherCard.getCity();
+        if ((location_text.length()>10) && (shorten_text)){
+            location_text = location_text.substring(0,10)+".";
+        }
+        remoteViews.setTextViewText(R.id.classicwidget_locationtext,location_text);
         if (weatherCard.currentWeather.hasCondition()){
             int weathercondition = weatherCard.currentWeather.getCondition();
             remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,WeatherCodeContract.getWeatherConditionText(c,weathercondition));
@@ -185,7 +189,11 @@ public class ClassicWidget extends AppWidgetProvider {
         }
     }
 
-    public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
+    public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c){
+        setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c,false);
+    }
+
+        public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         WeatherSettings weatherSettings = new WeatherSettings(c);
         for (int i=0; i<widget_instances.length; i++){

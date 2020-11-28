@@ -1,7 +1,12 @@
 What is new in this version ([VERSION]):
 
-- added feature to find closest weather sensors by geo-coordinates or location services on the device
-- added fallback to http without ssl, if an encrypted connection fails on very old devices (e.g. 4.x.x) due to missing cipher-suites
-- incomplete time intervals (6h, 24h) now discard past data in calculations where possible
-- fixed error in calculation of min. and max. temperatures (might have been too high & too low)
-- multiple minor bugfixes
+- other apps can now share geo-coordinates to this app
+- significant performance improvements of main app with new bitmap caching (thanks to Marc Nause!)
+- latitude is displayed above longitude now
+- new widget with clock & weather
+- improved layout in search dialog
+- improved layout of the large widget, especially fixing some information being cut-off on older devices
+- fixed max. temperature too high in 1st 6-hourly entry in main app
+- fixed commas not accepted in geo-coordinates
+- fixed ice fog condition not displayed correctly
+- many other minor bugfixes

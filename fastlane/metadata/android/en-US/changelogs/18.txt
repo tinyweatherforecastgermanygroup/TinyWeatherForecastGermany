@@ -1,10 +1,11 @@
 
-- app now receives geo-coordinates from other apps
+- other apps can now share geo-coordinates to this app
+- significant performance improvements of main app with new bitmap caching (thanks to Marc Nause!)
 - latitude is displayed above longitude now
+- new widget with clock & weather
 - improved layout in search dialog
 - improved layout of the large widget, especially fixing some information being cut-off on older devices
 - fixed max. temperature too high in 1st 6-hourly entry in main app
 - fixed commas not accepted in geo-coordinates
 - fixed ice fog condition not displayed correctly
-- significant performance improvements of main app with new bitmap caching (thanks to Marc Nause!)
-- other minor bugfixes
+- many other minor bugfixes
