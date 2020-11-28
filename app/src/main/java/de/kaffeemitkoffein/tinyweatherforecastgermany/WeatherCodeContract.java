@@ -46,7 +46,7 @@ public final class WeatherCodeContract {
     public final static int HEAVY_RAIN_NOT_FREEZING_CONTINUOUS = 65;
     public final static int MODERATE_RAIN_NOT_FREEZING_CONTINUOUS = 63;
     public final static int SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS = 61;
-    public final static int ICE_FOG_SKY_NOT_RECOGNIZABLE = 24;
+    public final static int ICE_FOG_SKY_NOT_RECOGNIZABLE = 49;
     public final static int FOG_SKY_NOT_RECOGNIZABLE = 45;
     public final static int EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8 = 03;
     public final static int EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8 = 02;

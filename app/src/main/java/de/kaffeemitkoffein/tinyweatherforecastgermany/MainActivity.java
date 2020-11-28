@@ -620,7 +620,7 @@ public class MainActivity extends Activity {
 
     public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
         displayUpdateTime(weatherCard);
-        PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.weatherLocation.name);
+        //PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.weatherLocation.name);
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
         weatherList.setAdapter(forecastAdapter);
@@ -629,6 +629,9 @@ public class MainActivity extends Activity {
 
     public void displayWeatherForecast(){
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(this);
+        if (weatherCard==null){
+            weatherCard = new CurrentWeatherInfo();
+        }
         if (weatherCard != null){
             displayWeatherForecast(weatherCard);
         }

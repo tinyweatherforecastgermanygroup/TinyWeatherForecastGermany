@@ -27,6 +27,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
 
     <application android:allowBackup="true" android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher" android:supportsRtl="false"
@@ -97,11 +98,26 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/boldwidget" />
         </receiver>
 
+        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClockWidget" android:icon="@mipmap/ic_launcher"
+            android:label="@string/clockwidget_description">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/clockwidget"/>
+        </receiver>
+
         <receiver android:name=".WeatherUpdateBroadcastReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="de.kaffeemitkoffein.broadcast.REQUEST_UPDATE" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".AlarmClockUpdatedReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.app.action.NEXT_ALARM_CLOCK_CHANGED" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".OnBootCompletedReceiver" android:enabled="true" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

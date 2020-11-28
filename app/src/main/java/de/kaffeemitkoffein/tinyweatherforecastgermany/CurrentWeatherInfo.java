@@ -31,7 +31,12 @@ public class CurrentWeatherInfo{
     ArrayList<Weather.WeatherInfo> forecast24hourly;
 
     public CurrentWeatherInfo(){
-
+        polling_time = 0;
+        weatherLocation = new Weather.WeatherLocation();
+        currentWeather = new Weather.WeatherInfo();
+        forecast1hourly = new ArrayList<Weather.WeatherInfo>();
+        forecast6hourly = new ArrayList<Weather.WeatherInfo>();
+        forecast24hourly = new ArrayList<Weather.WeatherInfo>();
     }
 
     public void setToEmpty(){

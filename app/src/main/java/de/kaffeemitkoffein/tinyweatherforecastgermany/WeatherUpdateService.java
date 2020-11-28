@@ -103,6 +103,10 @@ public class WeatherUpdateService extends Service {
                     ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
                     sendBroadcast(ssl_intent);
                 }
+                // need to update main app with old data
+                Intent intent = new Intent();
+                intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+                sendBroadcast(intent);
                 // need to update views with old data: GadgetBridge and widgets
                 UpdateAlarmManager.updateAppViews(context);
                 stopSelf();

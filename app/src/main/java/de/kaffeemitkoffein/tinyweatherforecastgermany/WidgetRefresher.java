@@ -37,5 +37,15 @@ public class WidgetRefresher {
         Intent intent3 = new Intent(context,BoldWidget.class);
         intent3.setAction(BoldWidget.WIDGET_CUSTOM_REFRESH_ACTION);
         context.sendBroadcast(intent3);
+        // update clock widget
+        refreshClockWidget(context);
     }
+
+    public static void refreshClockWidget(Context context){
+        // update clock widget
+        Intent intent4 = new Intent(context,ClockWidget.class);
+        intent4.setAction(ClockWidget.WIDGET_CUSTOM_REFRESH_ACTION);
+        context.sendBroadcast(intent4);
+    }
+
 }

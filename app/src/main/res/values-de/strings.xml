@@ -37,6 +37,7 @@
     <string name="boldwidget_description">Kräftig</string>
     <string name="classicwidget_description">Klassisch</string>
     <string name="largewidget_description">Groß</string>
+    <string name="clockwidget_description">Uhr</string>
     <string name="station_does_not_exist">Die eingegebene Wetterstation existiert nicht. Wähle eine aus den Vorschlägen aus.</string>
     <string name="favorites_cleared">Die Favoriten wurden zurückgesetzt.</string>
     <string name="actionbar_textinput_title">Ort hier eingeben:</string>

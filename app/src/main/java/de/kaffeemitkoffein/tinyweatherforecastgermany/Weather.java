@@ -44,6 +44,12 @@ public final class Weather {
         float distance;
 
         public WeatherLocation(){
+            description="";
+            name="";
+            latitude=0;
+            longitude=0;
+            altitude=0;
+            distance=0;
         }
 
         public WeatherLocation(String description, String name, long latitude, long longitude, long altitude){
