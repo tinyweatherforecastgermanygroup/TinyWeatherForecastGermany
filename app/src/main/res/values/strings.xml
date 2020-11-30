@@ -37,7 +37,7 @@
     <string name="boldwidget_description">Bold</string>
     <string name="classicwidget_description">Classic</string>
     <string name="largewidget_description">Large</string>
-    <string name="clockwidget_description">Clock</string>
+    <string name="clockwidget_description">Clock &amp; Weather</string>
     <string name="station_does_not_exist">The station you have entered does not exist. Please select from the suggested stations in the list.</string>
     <string name="favorites_cleared">Favorites are deleted.</string>
     <string name="actionbar_textinput_title">Enter place here:</string>
@@ -205,6 +205,7 @@
     <string name="welcome_s2_text7">drizzle</string>
     <string name="welcome_s2_text8">wind direction</string>
     <string name="welcome_s2_text9">visibility</string>
+    <string name="welcome_s2_text10">Temp. at ground</string>
     <string name="welcome_s3_text1">Click/Touch the icon in the upper left corner to collapse the map.</string>
     <string name="welcome_s3_text2">Click/Touch the list of cities/locations in the warning to expand it!</string>
     <string name="welcome_s3_text3">Add some widgets to your home screen:</string>

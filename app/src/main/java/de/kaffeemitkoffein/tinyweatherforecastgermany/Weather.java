@@ -199,6 +199,7 @@ public final class Weather {
         private Integer condition_code;
         private boolean condition_is_calculated = false;
         private Double temperature;
+        private Double temperature5cm;
         private Double temperature_high;
         private Double temperature_low;
         private Double wind_speed;
@@ -245,6 +246,10 @@ public final class Weather {
 
         public void setTemperature(Double temperature){
             this.temperature = temperature;
+        }
+
+        public void setTemperature5cm(Double temperature5cm){
+            this.temperature5cm = temperature5cm;
         }
 
         public void setLowTemperature(Double temperature_low){
@@ -503,6 +508,30 @@ public final class Weather {
         }
         public int getTemperatureInCelsiusInt(){
             Double d = (temperature - KelvinConstant);
+            int j = d.intValue();
+            return j;
+        }
+
+        public boolean hasTemperature5cm(){
+            if (temperature5cm!=null){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public int getTemperture5cmInt(){
+            int j = temperature5cm.intValue();
+            return j;
+        }
+
+        public double getTemperature5cmInCelsius(){
+            Double d = (temperature5cm-KelvinConstant);
+            return d;
+        }
+
+        public int getTemperature5cmInCelsiusInt(){
+            Double d = (temperature5cm-KelvinConstant);
             int j = d.intValue();
             return j;
         }

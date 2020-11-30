@@ -35,205 +35,331 @@
         android:gravity="center"
         android:text="@string/dwd_notice"/>
 
-    <LinearLayout
-        android:id="@+id/clockwidget_vertical_container"
+    <TextClock
+        android:id="@+id/clockwidget_clock"
         android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal|top"
+        android:gravity="center_horizontal|top"
+        android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
-        android:layout_above="@id/classicwidget_reference_text"
-        android:orientation="vertical"
-        android:weightSum="6">
+        android:textColor="@color/widget_textcolor"
+        android:fontFamily="sans-serif-thin"
+        android:format12Hour="hh:mm"
+        android:format24Hour="HH:mm"
+        android:textStyle="normal"
+        android:textSize="@dimen/widget_textsize_clock"/>
 
-        <TextClock
-            android:id="@+id/clockwidget_clock"
-            android:layout_weight="3"
-            android:layout_width="match_parent"
-            android:layout_gravity="center_horizontal|top"
-            android:gravity="center_horizontal|top"
-            android:layout_height="0dp"
+    <TextView android:id="@+id/widget_date"
+        android:textSize="@dimen/widget_textsize_large"
+        android:textColor="@color/widget_textcolor"
+        android:layout_below="@id/clockwidget_clock"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="left|top"
+        android:gravity="left|top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="-"/>
+
+    <TextView android:id="@+id/widget_nextalarm"
+        android:textSize="@dimen/widget_textsize_large"
+        android:textColor="@color/widget_textcolor"
+        android:layout_below="@id/clockwidget_clock"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right|top"
+        android:gravity="right|top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="-"/>
+
+    <RelativeLayout
+        android:id="@+id/clockwidget_weather_container"
+        android:layout_below="@id/widget_date"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal|top"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView android:id="@+id/classicwidget_weatherconditionicon"
+            android:layout_width="@dimen/widget_weathericon_size"
+            android:layout_height="@dimen/widget_weathericon_size"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="left"
+            android:src="@mipmap/partly_cloudy_day" />
+
+        <TextView android:id="@+id/classicwidget_temperature"
+            android:textSize="@dimen/widget_textsize_double"
             android:textColor="@color/widget_textcolor"
-            android:fontFamily="sans-serif-thin"
-            android:format12Hour="hh:mm"
-            android:format24Hour="HH:mm"
-            android:textStyle="normal"
-            android:textSize="@dimen/widget_textsize_clock"/>
+            android:gravity="left"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/classicwidget_weatherconditionicon"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="4dp"
+            android:text="-°"/>
 
-        <TextView android:id="@+id/clockwidget_text"
-            android:textSize="@dimen/widget_textsize_large"
+        <TextView android:id="@+id/classicwidget_temperature_highlow"
+            android:textSize="@dimen/widget_textsize_medium"
             android:textColor="@color/widget_textcolor"
-            android:layout_gravity="center_horizontal|top"
-            android:gravity="center_horizontal|top"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp"
-            android:text="-"/>
+            android:gravity="left"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/classicwidget_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-° | -°"/>
 
+        <TextView android:id="@+id/widget_pressure"
+            android:textSize="@dimen/widget_textsize_medium"
+            android:textColor="@color/widget_textcolor"
+            android:layout_gravity="right"
+            android:layout_toRightOf="@id/classicwidget_temperature"
+            android:layout_below="@id/classicwidget_temperature_highlow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- hPa"/>
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/weatherinclock_maincontainer"
-            android:layout_weight="2"
-            android:layout_height="0dp"
-            android:layout_width="match_parent">
+        <RelativeLayout
+            android:id="@+id/widget_precipitation_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true">
 
-            <LinearLayout
-                android:id="@+id/classicwidget_linearlayout"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:weightSum="3"
-                android:gravity="top"
+            <ImageView android:id="@+id/widget_precipitation_symbol"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:gravity="center_vertical|left"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_height="wrap_content">
+                android:src="@mipmap/symbol_precipitation" />
 
-                <LinearLayout android:id="@+id/classicwidget_leftcontainer"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="top|left"
-                    android:orientation="vertical">
+            <TextView android:id="@+id/widget_precipitation_text"
+                android:textSize="@dimen/widget_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|left"
+                android:gravity="center_vertical|left"
+                android:layout_toRightOf="@id/widget_precipitation_symbol"
+                android:text="-"/>
 
-                    <TextView android:id="@+id/classicwidget_locationtext"
-                        android:textSize="@dimen/widget_textsize_medium"
-                        android:textColor="@color/widget_textcolor"
-                        android:layout_marginLeft="2dp"
-                        android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="HAMBURG INNENSTADT"/>
+            <TextView android:id="@+id/clockwidget_precipitation_unit1"
+                android:textSize="@dimen/widget_textsize_small"
+                android:textColor="@color/widget_textcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:gravity="top"
+                android:layout_toRightOf="@id/widget_precipitation_text"
+                android:layout_alignTop="@id/widget_precipitation_text"
+                android:text=" kg/"/>
 
-                    <TextView android:id="@+id/classicwidget_weatherconditiontext"
-                        android:textSize="@dimen/widget_textsize_medium"
-                        android:textColor="@color/widget_textcolor"
-                        android:layout_marginLeft="2dp"
-                        android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="-"/>
+            <TextView android:id="@+id/clockwidget_precipitation_unit2"
+                android:textSize="@dimen/widget_textsize_small"
+                android:textColor="@color/widget_textcolor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:gravity="bottom"
+                android:layout_toRightOf="@id/widget_precipitation_text"
+                android:layout_alignBottom="@id/widget_precipitation_text"
+                android:text=" m²"/>
 
-                    <RelativeLayout
-                        android:id="@+id/clockwidget_precipitation_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView android:id="@+id/clockwidget_precipitation_symbol"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:gravity="center_vertical|left"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:src="@mipmap/symbol_precipitation" />
-
-                        <TextView android:id="@+id/clockwidget_precipitation_text"
-                            android:textSize="@dimen/widget_textsize_medium"
-                            android:textColor="@color/widget_textcolor"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|left"
-                            android:gravity="center_vertical|left"
-                            android:layout_toRightOf="@id/clockwidget_precipitation_symbol"
-                            android:text="-"/>
-
-                        <TextView android:id="@+id/clockwidget_precipitation_unit"
-                            android:textSize="@dimen/widget_textsize_small"
-                            android:textColor="@color/widget_textcolor"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="2dp"
-                            android:gravity="center"
-                            android:layout_toRightOf="@id/clockwidget_precipitation_text"
-                            android:layout_alignBaseline="@id/clockwidget_precipitation_text"
-                            android:text=" kg/m²"/>
-
-
-                    </RelativeLayout>
-
-                    <TextView android:id="@+id/clockwidget_pressure"
-                        android:textSize="@dimen/widget_textsize_medium"
-                        android:textColor="@color/widget_textcolor"
-                        android:layout_marginLeft="2dp"
-                        android:layout_gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="1024 hPa"/>
-
-                </LinearLayout>
-
-                <LinearLayout android:id="@+id/classicwidget_centercontainer"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView android:id="@+id/classicwidget_weatherconditionicon"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:src="@mipmap/not_available" />
-                </LinearLayout>
-
-                <LinearLayout android:id="@+id/classicwidget_rightcontainer"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="top|left"
-                    android:orientation="vertical">
-
-                    <TextView android:id="@+id/classicwidget_temperature"
-                        android:textSize="@dimen/widget_textsize_large"
-                        android:textColor="@color/widget_textcolor"
-                        android:gravity="center"
-                        android:textAlignment="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="-°"/>
-
-                    <TextView android:id="@+id/classicwidget_temperature_highlow"
-                        android:textSize="@dimen/widget_textsize_large"
-                        android:textColor="@color/widget_textcolor"
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="-° | -°"/>
-
-                    <LinearLayout
-                        android:id="@+id/classicwidget_wind_horizontal_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/classicwidget_windarrow"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/not_available">
-                        </ImageView>
-
-                        <TextView android:id="@+id/classicwidget_wind"
-                            android:textSize="@dimen/widget_textsize_medium"
-                            android:textColor="@color/widget_textcolor"
-                            android:gravity="center"
-                            android:layout_marginLeft="2dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="- (-)"/>
-
-                        <TextView android:id="@+id/classicwidget_wind_unit"
-                            android:textSize="@dimen/widget_textsize_small"
-                            android:textColor="@color/widget_textcolor"
-                            android:gravity="center"
-                            android:text="km/h"
-                            android:layout_marginLeft="2dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-            </LinearLayout>
 
         </RelativeLayout>
 
-    </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/clockwidget_wind_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/widget_precipitation_container"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:id="@+id/classicwidget_windarrow"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_gravity="left"
+                android:layout_alignParentLeft="true"
+                android:src="@mipmap/not_available">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/classicwidget_wind"
+                android:textSize="@dimen/widget_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:gravity="left"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/classicwidget_windarrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- (-)"/>
+
+            <TextView
+                android:id="@+id/classicwidget_wind_unit"
+                android:textSize="@dimen/widget_textsize_small"
+                android:textColor="@color/widget_textcolor"
+                android:gravity="left"
+                android:layout_toRightOf="@id/classicwidget_wind"
+                android:text="km/h"
+                android:layout_marginLeft="2dp"
+                android:layout_alignBottom="@id/classicwidget_wind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/widget_visibility_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/clockwidget_wind_container"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:id="@+id/widget_visibility_icon"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_gravity="left"
+                android:layout_alignParentLeft="true"
+                android:src="@mipmap/biocular">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/widget_visibility_text"
+                android:textSize="@dimen/widget_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:gravity="left"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/widget_visibility_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"/>
+
+            <TextView
+                android:id="@+id/widget_visibility_probvalue"
+                android:textSize="@dimen/widget_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:gravity="left"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/widget_visibility_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"/>
+
+
+            <TextView
+                android:id="@+id/widget_visibility_probunit1"
+                android:textSize="@dimen/widget_textsize_small"
+                android:textColor="@color/widget_textcolor"
+                android:gravity="left|top"
+                android:layout_alignTop="@id/widget_visibility_probvalue"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/widget_visibility_probvalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&lt;1"/>
+
+            <TextView
+                android:id="@+id/widget_visibility_probunit2"
+                android:textSize="@dimen/widget_textsize_small"
+                android:textColor="@color/widget_textcolor"
+                android:gravity="left|bottom"
+                android:layout_alignBottom="@id/widget_visibility_probvalue"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/widget_visibility_probvalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="km"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/widget_clouds_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/classicwidget_temperature"
+            android:layout_toRightOf="@id/classicwidget_weatherconditionicon">
+
+            <ImageView
+                android:id="@+id/widget_temperature5cm_icon"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_gravity="left"
+                android:layout_alignParentLeft="true"
+                android:src="@mipmap/symbol_temperature5cm">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/widget_temperature5cm_value"
+                android:textSize="@dimen/widget_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:gravity="left"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/widget_temperature5cm_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-°"/>
+
+            <ImageView
+                android:id="@+id/widget_clouds_icon"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/widget_temperature5cm_value"
+                android:src="@mipmap/symbol_cloud">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/widget_clouds_value"
+                android:textSize="@dimen/widget_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:gravity="left"
+                android:layout_marginLeft="2dp"
+                android:layout_toRightOf="@id/widget_clouds_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/clockwidget_bottom_text_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/classicwidget_weatherconditionicon"
+            android:weightSum="2">
+
+            <TextView android:id="@+id/classicwidget_weatherconditiontext"
+                android:textSize="@dimen/widget_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:textAlignment="textStart"
+                android:text="-"/>
+
+            <TextView android:id="@+id/classicwidget_locationtext"
+                android:textSize="@dimen/widget_textsize_medium"
+                android:textColor="@color/widget_textcolor"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:textAlignment="textEnd"
+                android:text="-"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

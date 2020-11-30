@@ -117,6 +117,7 @@ public class CurrentWeatherInfo{
         }
         currentWeather.setClouds(getIntItem(rawWeatherInfo.N[current_weather_position]));
         currentWeather.setTemperature(getDoubleItem(rawWeatherInfo.TTT[current_weather_position]));
+        currentWeather.setTemperature5cm(getDoubleItem(rawWeatherInfo.T5cm[current_weather_position]));
         currentWeather.setLowTemperature(rawWeatherInfo.getMinTemperature(current_weather_position,next_midnight_position));
         currentWeather.setHighTemperature(rawWeatherInfo.getMaxTemperature(current_weather_position,next_midnight_position));
         currentWeather.setWindSpeed(getDoubleItem(rawWeatherInfo.FF[current_weather_position]));
@@ -150,6 +151,7 @@ public class CurrentWeatherInfo{
             }
             wi.setClouds(getIntItem(rawWeatherInfo.N[index]));
             wi.setTemperature(getDoubleItem(rawWeatherInfo.TTT[index]));
+            wi.setTemperature5cm(getDoubleItem(rawWeatherInfo.TTT[index]));
             wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
             wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
             wi.setWindSpeed(getDoubleItem(rawWeatherInfo.FF[index]));
@@ -187,6 +189,7 @@ public class CurrentWeatherInfo{
             wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
             wi.setClouds(rawWeatherInfo.getAverageClouds(start, index));
             wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT,start, index));
+            wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start, index));
             if (start==startposition6h){
                 wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
                 wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
@@ -257,6 +260,7 @@ public class CurrentWeatherInfo{
             wi.setConditionCode(getIntItem(rawWeatherInfo.WPcd1[index]));
             wi.setClouds(rawWeatherInfo.getAverageClouds(start,index));
             wi.setTemperature(rawWeatherInfo.getAverageTemperature(start,index));
+            wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start,index));
             if (index==startposition24h){
                 wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
                 wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));

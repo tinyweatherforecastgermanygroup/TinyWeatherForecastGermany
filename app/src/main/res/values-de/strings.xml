@@ -37,7 +37,7 @@
     <string name="boldwidget_description">Kräftig</string>
     <string name="classicwidget_description">Klassisch</string>
     <string name="largewidget_description">Groß</string>
-    <string name="clockwidget_description">Uhr</string>
+    <string name="clockwidget_description">Uhr &amp; Wetter</string>
     <string name="station_does_not_exist">Die eingegebene Wetterstation existiert nicht. Wähle eine aus den Vorschlägen aus.</string>
     <string name="favorites_cleared">Die Favoriten wurden zurückgesetzt.</string>
     <string name="actionbar_textinput_title">Ort hier eingeben:</string>
@@ -205,6 +205,7 @@
     <string name="welcome_s2_text7">Sprühregen</string>
     <string name="welcome_s2_text8">Wind-Richtung</string>
     <string name="welcome_s2_text9">Sichtweite</string>
+    <string name="welcome_s2_text10">Temp. am Boden</string>
     <string name="welcome_s3_text1">Icon in der linken, oberen Ecke klappt die Karte zu.</string>
     <string name="welcome_s3_text2">Ein Klick/Berührung der Ortsliste in der Warnung klappt sie aus!</string>
     <string name="welcome_s3_text3">Plaziere Widgets auf dem Home Screen:</string>

@@ -580,47 +580,70 @@
             return r;
         }
 
-        public static String getVisibilityString(Weather.WeatherInfo weatherInfo, int display_distance_unit) {
+        public static CharSequence getVisibilityCharSequence(Weather.WeatherInfo weatherInfo, int display_distance_unit) {
             if (!weatherInfo.hasVisibility() && !weatherInfo.hasProbVisibilityBelow1km()) {
                 return null;
             } else {
-                String s = "";
+                StringBuilder s = new StringBuilder();
                 if (weatherInfo.hasVisibility()) {
-                    if (display_distance_unit==Weather.DistanceDisplayUnit.METRIC){
+                    if (display_distance_unit == Weather.DistanceDisplayUnit.METRIC) {
                         int v = weatherInfo.getVisibilityInMetres();
                         if (v >= 10000) {
-                            s = s + v / 1000 + " km";
+                            s.append((v / 1000)).append(" km");
                         } else {
-                            s = s + v + " m";
+                            s.append(v).append(" m");
                         }
-                    }
-                    if (display_distance_unit==Weather.DistanceDisplayUnit.NAUTIC){
+                    } else if (display_distance_unit == Weather.DistanceDisplayUnit.NAUTIC) {
                         Double v = weatherInfo.getVisibilityInNauticMiles();
-                        String result = String.valueOf(v.intValue());
-                        if (v<1) {
+                        final String result;
+                        if (v < 1) {
                             result = formatDistanceNumberToString(v);
+                        } else {
+                            result = String.valueOf(v.intValue());
                         }
-                        s = s + result + " nm";
-                    }
-                    if (display_distance_unit==Weather.DistanceDisplayUnit.IMPERIAL) {
+                        s.append(result).append(" nm");
+                    } else if (display_distance_unit == Weather.DistanceDisplayUnit.IMPERIAL) {
                         Double v = weatherInfo.getVisibilityInMiles();
-                        String result = String.valueOf(v.intValue() + " mi");
+                        final String result;
                         if (v < 1) {
                             Double yd = weatherInfo.getVisibilityInYards();
                             result = String.valueOf(yd.intValue()) + " yd";
+                        } else {
+                            result = String.valueOf(v.intValue() + " mi");
                         }
-                        s = s + result;
+                        s.append(result);
                     }
-
-                }
-                if (weatherInfo.hasVisibility() && weatherInfo.hasProbVisibilityBelow1km()) {
-                    s = s + ", ";
-                }
-                if (weatherInfo.hasProbVisibilityBelow1km()) {
-                    s = s + "<1km: " + weatherInfo.getProbVisibilityBelow1km() + "%";
                 }
                 return s;
             }
+        }
+
+        public static CharSequence getVisibilityBelow1kmCharSequence(Weather.WeatherInfo weatherInfo){
+            if (weatherInfo.hasProbVisibilityBelow1km()) {
+                StringBuilder s = new StringBuilder();
+                s.append("<1km: ");
+                s.append(weatherInfo.getProbVisibilityBelow1km()).append("%");
+                return s;
+            } else {
+                return null;
+            }
+        }
+
+
+        public static CharSequence getVisibilityString(Weather.WeatherInfo weatherInfo, int display_distance_unit) {
+            StringBuilder s = new StringBuilder();
+            CharSequence visibility = getVisibilityCharSequence(weatherInfo,display_distance_unit);
+            if (visibility!=null) {
+                s.append(visibility);
+            }
+            if (weatherInfo.hasVisibility() && weatherInfo.hasProbVisibilityBelow1km()) {
+                s.append(", ");
+            }
+            CharSequence visibilityProbBelow1km = getVisibilityBelow1kmCharSequence(weatherInfo);
+            if (visibilityProbBelow1km!=null){
+                s.append(visibilityProbBelow1km);
+            }
+            return s;
         }
 
         private boolean isEndOfDay(Weather.WeatherInfo weatherInfo){

@@ -17,8 +17,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<resources>
 
+<resources>
+    <dimen name="widget_textsize_double">24sp</dimen>
     <dimen name="widget_textsize_verylarge">18sp</dimen>
     <dimen name="widget_textsize_large">14sp</dimen>
     <dimen name="widget_textsize_medium">12sp</dimen>
@@ -27,6 +28,7 @@
     <dimen name="widget_textsize_fc_day">10sp</dimen>
     <dimen name="widget_textsize_fc_temperature">10sp</dimen>
     <dimen name="widget_textsize_clock">64sp</dimen>
+    <dimen name="widget_weathericon_size">64dp</dimen>
 
     <dimen name="fcmain_textsize_large">18sp</dimen>
     <dimen name="fcmain_textsize_medium">12sp</dimen>

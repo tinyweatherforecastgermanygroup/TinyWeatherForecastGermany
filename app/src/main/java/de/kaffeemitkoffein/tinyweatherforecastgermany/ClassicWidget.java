@@ -19,6 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -27,10 +28,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.RemoteViews;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ClassicWidget extends AppWidgetProvider {
 
@@ -96,6 +103,123 @@ public class ClassicWidget extends AppWidgetProvider {
      * Updates the display of the wigdgets.
      *
      */
+
+    public void setPressure(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
+        if (!weatherInfo.currentWeather.hasPressure()){
+            remoteViews.setViewVisibility(R.id.widget_pressure,View.INVISIBLE);
+        } else {
+            remoteViews.setViewVisibility(R.id.widget_pressure,View.VISIBLE);
+            remoteViews.setTextViewText(R.id.widget_pressure,weatherInfo.currentWeather.getPressure()/100+ " hPa");
+        }
+    }
+
+    public void setPrecipitation(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
+        String preciptitation = "";
+        if (weatherInfo.currentWeather.hasProbPrecipitation()){
+            preciptitation = weatherInfo.currentWeather.getProbPrecipitation()+"%";
+        }
+        if (weatherInfo.currentWeather.hasProbPrecipitation() && weatherInfo.currentWeather.hasPrecipitation()){
+            preciptitation = preciptitation +", ";
+        }
+        if (weatherInfo.currentWeather.hasPrecipitation()){
+            preciptitation = preciptitation + weatherInfo.currentWeather.getPrecipitation();
+        }
+        if (preciptitation.equals("")){
+            remoteViews.setViewVisibility(R.id.widget_precipitation_container, View.INVISIBLE);
+        } else {
+            remoteViews.setViewVisibility(R.id.widget_precipitation_symbol, View.VISIBLE);
+            remoteViews.setTextViewText(R.id.widget_precipitation_text,preciptitation);
+        }
+    }
+
+    public void setVisibility(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo, int display_distance_unit){
+        if (weatherInfo.currentWeather.hasVisibility() || weatherInfo.currentWeather.hasProbVisibilityBelow1km()){
+            remoteViews.setViewVisibility(R.id.widget_visibility_icon,View.VISIBLE);
+            if (weatherInfo.currentWeather.hasVisibility()){
+                CharSequence visibility = ForecastAdapter.getVisibilityCharSequence(weatherInfo.currentWeather,display_distance_unit);
+                remoteViews.setViewVisibility(R.id.widget_visibility_text,View.VISIBLE);
+                remoteViews.setTextViewText(R.id.widget_visibility_text,visibility);
+            } else {
+                remoteViews.setViewVisibility(R.id.widget_visibility_text,View.GONE);
+            }
+            if (weatherInfo.currentWeather.hasProbVisibilityBelow1km()){
+                remoteViews.setViewVisibility(R.id.widget_visibility_probvalue,View.VISIBLE);
+                remoteViews.setViewVisibility(R.id.widget_visibility_probunit1,View.VISIBLE);
+                remoteViews.setViewVisibility(R.id.widget_visibility_probunit2,View.VISIBLE);
+                remoteViews.setTextViewText(R.id.widget_visibility_probvalue,String.valueOf(weatherInfo.currentWeather.getProbVisibilityBelow1km())+"%");
+            } else {
+                remoteViews.setViewVisibility(R.id.widget_visibility_probvalue,View.GONE);
+                remoteViews.setViewVisibility(R.id.widget_visibility_probunit1,View.GONE);
+                remoteViews.setViewVisibility(R.id.widget_visibility_probunit2,View.GONE);
+            }
+        } else {
+            remoteViews.setViewVisibility(R.id.widget_visibility_icon,View.GONE);
+        }
+    }
+
+    public void setClouds(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
+        if (weatherInfo.currentWeather.hasClouds()){
+            remoteViews.setViewVisibility(R.id.widget_clouds_icon,View.VISIBLE);
+            remoteViews.setViewVisibility(R.id.widget_clouds_value,View.VISIBLE);
+            remoteViews.setTextViewText(R.id.widget_clouds_value,weatherInfo.currentWeather.getClouds()+"%");
+        } else {
+            remoteViews.setViewVisibility(R.id.widget_clouds_icon,View.GONE);
+            remoteViews.setViewVisibility(R.id.widget_clouds_value,View.GONE);
+        }
+    }
+
+    public void setTemperature5cm(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
+        if (weatherInfo.currentWeather.hasTemperature5cm()){
+            remoteViews.setViewVisibility(R.id.widget_temperature5cm_icon,View.VISIBLE);
+            remoteViews.setViewVisibility(R.id.widget_temperature5cm_value,View.VISIBLE);
+            remoteViews.setTextViewText(R.id.widget_temperature5cm_value,weatherInfo.currentWeather.getTemperature5cmInCelsiusInt()+"°");
+        } else {
+            remoteViews.setViewVisibility(R.id.widget_temperature5cm_icon,View.GONE);
+            remoteViews.setViewVisibility(R.id.widget_temperature5cm_value,View.GONE);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private String getNextAlarm(Context context) {
+        String alarm_string = null;
+        if (Build.VERSION.SDK_INT >= 21) {
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                AlarmManager.AlarmClockInfo alarmClockInfo = alarmManager.getNextAlarmClock();
+                if (alarmClockInfo != null) {
+                    long l = alarmClockInfo.getTriggerTime();
+                    final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, HH:mm");
+                    alarm_string = simpleDateFormat.format(new Date(l));
+                }
+            }
+        }
+        if (alarm_string == null) {
+            alarm_string = android.provider.Settings.System.getString(context.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
+        }
+        if (alarm_string == null) {
+            return "";
+        } else {
+            return alarm_string;
+        }
+    }
+
+    public void setDateText(RemoteViews remoteViews) {
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E dd.MM.");
+        String dateString = simpleDateFormat.format(new Date(Calendar.getInstance().getTimeInMillis()));
+        remoteViews.setViewVisibility(R.id.widget_date, View.VISIBLE);
+        remoteViews.setTextViewText(R.id.widget_date, dateString);
+    }
+
+    public void setAlarmText(Context context, RemoteViews remoteViews) {
+        String alarmString = getNextAlarm(context);
+        if (!alarmString.equals("")) {
+            alarmString = "\u23F0 " + alarmString;
+            remoteViews.setViewVisibility(R.id.widget_nextalarm,View.VISIBLE);
+            remoteViews.setTextViewText(R.id.widget_nextalarm,alarmString);
+        } else {
+            remoteViews.setViewVisibility(R.id.widget_nextalarm, View.GONE);
+        }
+    }
 
     public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c, boolean shorten_text){
         if (weatherCard==null){
@@ -201,7 +325,7 @@ public class ClassicWidget extends AppWidgetProvider {
             Intent intent = new Intent(c,MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
             RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.classicwidget_layout);
-            remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer,pendingIntent);
+            remoteViews.setOnClickPendingIntent(R.id.widget_maincontainer,pendingIntent);
             setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
             awm.updateAppWidget(widget_instances[i],remoteViews);
         }
