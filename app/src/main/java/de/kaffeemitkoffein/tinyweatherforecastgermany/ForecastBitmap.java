@@ -1,8 +1,11 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -11,6 +14,7 @@ import android.util.SparseArray;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class ForecastBitmap{
 
@@ -28,6 +32,20 @@ public class ForecastBitmap{
     private boolean displayWind = false;
     private boolean displaySimpleBar = false;
     private int windDisplayType = Weather.WindDisplayType.ARROW;
+
+    private static final Paint POLY_PAINT = new Paint();
+    static {
+        POLY_PAINT.setStyle(Paint.Style.FILL_AND_STROKE);
+    }
+
+    private static final Paint TEXT_PAINT = new Paint();
+    static {
+        TEXT_PAINT.setAlpha(255);
+    }
+
+    // some code more
+
+    private static final SparseArray<Bitmap> BITMAP_CACHE = new SparseArray<>();
 
     static class Builder{
         private ArrayList<Weather.WeatherInfo> weatherInfos;
@@ -121,6 +139,8 @@ public class ForecastBitmap{
                 }
             }
         }
+
+        TEXT_PAINT.setColor(getColorFromResource(R.color.textColor));
     }
 
     private Bitmap getIconBitmap(Context context, Weather.WeatherInfo weatherInfo, int bitmapWidth, int bitmapHeight){
@@ -134,24 +154,34 @@ public class ForecastBitmap{
                 resource = WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(), weatherInfo.isDaytime(this.weatherLocation));
             }
         }
-        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(),resource),
-                bitmapWidth,
-                bitmapHeight,
-                true);
+
+        final int key = Objects.hash(resource, bitmapHeight, bitmapWidth);
+        Bitmap bitmap = BITMAP_CACHE.get(key);
+
+        if (bitmap == null) {
+            bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(),resource),
+                    bitmapWidth,
+                    bitmapHeight,
+                    true);
+            BITMAP_CACHE.put(key, bitmap);
+        }
+
         return bitmap;
     }
 
+    public static void clearBitmapCache() {
+        BITMAP_CACHE.clear();
+    }
+
     private void drawPolygon(Canvas canvas, float[] poly_x, float[] poly_y, int color, int alpha){
-        Paint poly_paint = new Paint();
-        poly_paint.setColor(color);
-        poly_paint.setAlpha(alpha);
-        poly_paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        POLY_PAINT.setColor(color);
+        POLY_PAINT.setAlpha(alpha);
         Path path = new Path();
         path.moveTo(0,poly_y[0]);
         for (int i=0; i<poly_x.length; i++){
             path.lineTo(poly_x[i],poly_y[i]);
         }
-        canvas.drawPath(path,poly_paint);
+        canvas.drawPath(path, POLY_PAINT);
     }
 
     public Bitmap getForecastBitmap(){
@@ -169,9 +199,7 @@ public class ForecastBitmap{
         itemWidth = (float) (bitmapWidth / anticipatedWidth);
         fontSize_medium  = (float) (bitmapHeight/2.2);
         fontSize_small   = (float) (bitmapHeight/3.3);
-        Paint paint = new Paint();
-        paint.setColor(getColorFromResource(R.color.textColor));
-        paint.setTextSize(fontSize_medium);
+        TEXT_PAINT.setTextSize(fontSize_medium);
         float x_offset = (bitmapWidth - itemWidth);
         // draw polygons for rain and clouds
         float[] x_polygon = new float[weatherInfos.size()+4];
@@ -219,9 +247,8 @@ public class ForecastBitmap{
             Date date = new Date();
             date.setTime(weatherInfos.get(position).getTimestamp());
             String timetext = format.format(date);
-            paint.setTextSize(fontSize_small);
-            paint.setAlpha(255);
-            canvas.drawText(timetext,x_offset,fontSize_small,paint);
+            TEXT_PAINT.setTextSize(fontSize_small);
+            canvas.drawText(timetext,x_offset,fontSize_small,TEXT_PAINT);
             // draw icon
             Weather.WeatherInfo wi = weatherInfos.get(position);
             float iconsize = itemWidth*iconRatio;
