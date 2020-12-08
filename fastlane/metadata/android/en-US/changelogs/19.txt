@@ -1,7 +1,3 @@
-What is new in this version ([VERSION]):
-
-- fixed overlays in search dialog
-- fixed opacity and dwd notice not behaving like expected in some widgets
 
 Version 0.54.0:
 - other apps can now share geo-coordinates to this app
@@ -14,5 +10,9 @@ Version 0.54.0:
 - fixed commas not accepted in geo-coordinates
 - fixed ice fog condition not displayed correctly
 - many other minor bugfixes
+
+Version 0.54.1:
+- fixed overlays in search dialog
+- fixed opacity and dwd notice not behaving like expected in some widgets
 
 Notice: version 0.54.0 did not build at fdroid due to errors in the app repository.

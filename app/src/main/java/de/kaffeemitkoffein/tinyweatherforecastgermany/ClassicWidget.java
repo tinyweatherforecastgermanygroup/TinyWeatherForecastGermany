@@ -305,11 +305,11 @@ public class ClassicWidget extends AppWidgetProvider {
             remoteViews.setViewVisibility(R.id.classicwidget_wind,View.INVISIBLE);
         }
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
-        remoteViews.setInt(R.id.classicwidget_maincontainer,"setBackgroundColor",getBackgroundInt(opacity));
+        remoteViews.setInt(R.id.widget_maincontainer,"setBackgroundColor",getBackgroundInt(opacity));
         if (weatherSettings.widget_showdwdnote) {
-            remoteViews.setViewVisibility(R.id.classicwidget_reference_text, View.VISIBLE);
+            remoteViews.setViewVisibility(R.id.widget_reference_text, View.VISIBLE);
         } else {
-            remoteViews.setViewVisibility(R.id.classicwidget_reference_text, View.GONE);
+            remoteViews.setViewVisibility(R.id.widget_reference_text, View.GONE);
         }
     }
 
