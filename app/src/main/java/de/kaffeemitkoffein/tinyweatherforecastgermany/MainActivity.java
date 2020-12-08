@@ -57,6 +57,8 @@ public class MainActivity extends Activity {
     public final static boolean API_TESTING_ENABLED = false;
     private int test_position = 0; //last: 1916
 
+    private ForecastAdapter forecastAdapter;
+
     StationsManager stationsManager;
 
     ArrayList<String> spinnerItems;
@@ -622,7 +624,7 @@ public class MainActivity extends Activity {
         displayUpdateTime(weatherCard);
         //PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.weatherLocation.name);
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
-        ForecastAdapter forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
+        forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
         weatherList.setAdapter(forecastAdapter);
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
    }
@@ -1053,6 +1055,23 @@ public class MainActivity extends Activity {
                     showLocationPermissionsRationale();
                 }
             }
+        }
+    }
+
+    @Override
+    public void onTrimMemory(final int level) {
+
+        switch (level) {
+            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE:
+            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_LOW:
+            case ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL:
+            case ComponentCallbacks2.TRIM_MEMORY_BACKGROUND:
+            case ComponentCallbacks2.TRIM_MEMORY_MODERATE:
+            case ComponentCallbacks2.TRIM_MEMORY_COMPLETE:
+                if (forecastAdapter != null) {
+                    forecastAdapter.clearBitmapCache();
+                }
+                break;
         }
     }
 
