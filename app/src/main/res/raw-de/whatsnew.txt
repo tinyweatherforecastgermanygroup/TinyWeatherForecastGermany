@@ -2,6 +2,7 @@ Neu in dieser Version ([VERSION]):
 
 - behoben: Überlagerungen im Such-Dialog
 - behoben: mehrere Widget-Fehler
+- behoben: Intro startete manchmal mehr als einmal
 
 Version 0.54.0:
 - Geokoordinaten können nun an diese App geteilt werden

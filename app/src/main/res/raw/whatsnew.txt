@@ -2,6 +2,7 @@ What is new in this version ([VERSION]):
 
 - fixed overlays in search dialog
 - fixed multiple widget bugs
+- fixed intro starting more than once
 
 Version 0.54.0:
 - other apps can now share geo-coordinates to this app

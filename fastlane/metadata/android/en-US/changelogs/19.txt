@@ -14,5 +14,6 @@ Version 0.54.0:
 Version 0.54.1:
 - fixed overlays in search dialog
 - fixed multiple widget bugs
+- fixed intro starting more than once
 
 Notice: version 0.54.0 did not build at fdroid due to errors in the app repository.

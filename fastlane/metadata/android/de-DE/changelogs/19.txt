@@ -14,5 +14,6 @@ Version 0.54.0:
 Version 0.54.1:
 - behoben: Überlagerungen im Such-Dialog
 - behoben: mehrere Widget-Fehler
+- behoben: Intro startete manchmal mehr als einmal
 
 Hinweis: Version 0.54.0 konnte aufgrund von Fehlern im App-Repository nicht von F-Droid gebaut werden.
