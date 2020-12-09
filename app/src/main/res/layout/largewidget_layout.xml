@@ -20,7 +20,7 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/classicwidget_maincontainer"
+    android:id="@+id/widget_maincontainer"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 

@@ -39,7 +39,7 @@ public class LargeWidget extends ClassicWidget{
             Intent intent = new Intent(c, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
             RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.largewidget_layout);
-            remoteViews.setOnClickPendingIntent(R.id.classicwidget_maincontainer, pendingIntent);
+            remoteViews.setOnClickPendingIntent(R.id.widget_maincontainer, pendingIntent);
             setClassicWidgetItems(remoteViews, weatherSettings, weatherCard, c);
             remoteViews.setImageViewBitmap(R.id.largewidget_10daysbitmap, get10DaysForecastBar(c,awm,widget_instances[i],weatherCard));
             awm.updateAppWidget(widget_instances[i], remoteViews);

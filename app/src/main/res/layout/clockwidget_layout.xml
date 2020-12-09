@@ -19,7 +19,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/classicwidget_maincontainer"
+    android:id="@+id/widget_maincontainer"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
@@ -88,7 +88,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="left"
-            android:src="@mipmap/partly_cloudy_day" />
+            android:src="@mipmap/not_available" />
 
         <TextView android:id="@+id/classicwidget_temperature"
             android:textSize="@dimen/widget_textsize_double"

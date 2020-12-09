@@ -25,7 +25,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <TextView android:id="@+id/classicwidget_reference_text"
+    <TextView android:id="@+id/widget_reference_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -40,7 +40,7 @@
 
     <LinearLayout
         android:id="@+id/boldwidget_maincontainer"
-        android:layout_above="@id/classicwidget_reference_text"
+        android:layout_above="@id/widget_reference_text"
         android:gravity="center"
         android:layout_gravity="center"
         android:orientation="horizontal"

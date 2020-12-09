@@ -179,6 +179,7 @@ public class WelcomeActivity extends Activity {
     private void startMainActivityAndShowCircle(){
         setPage(4);
         startMainActivity();
+        finish();
     }
 
 

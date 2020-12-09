@@ -13,6 +13,6 @@ Version 0.54.0:
 
 Version 0.54.1:
 - behoben: Überlagerungen im Such-Dialog
-- behoben: Widget-Deckkraft & DWD-Hinweis in Widgets teilweise defekt
+- behoben: mehrere Widget-Fehler
 
-Hinweis: Version 0.54.0 ist aufgrund von Fehlern im Repository nicht von F-Droid gebaut worden.
+Hinweis: Version 0.54.0 konnte aufgrund von Fehlern im App-Repository nicht von F-Droid gebaut werden.

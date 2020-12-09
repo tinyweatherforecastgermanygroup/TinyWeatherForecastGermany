@@ -51,9 +51,9 @@ public class BoldWidget extends ClassicWidget{
             currentWeatherInfo.setToEmpty();
         }
         if (weatherSettings.widget_showdwdnote) {
-            remoteViews.setViewVisibility(R.id.classicwidget_reference_text, View.VISIBLE);
+            remoteViews.setViewVisibility(R.id.widget_reference_text, View.VISIBLE);
         } else {
-            remoteViews.setViewVisibility(R.id.classicwidget_reference_text, View.GONE);
+            remoteViews.setViewVisibility(R.id.widget_reference_text, View.GONE);
         }
         if (currentWeatherInfo.currentWeather.hasTemperature()){
             remoteViews.setTextViewText(R.id.boldwidget_current_temperature, currentWeatherInfo.currentWeather.getTemperatureInCelsiusInt()+"°");

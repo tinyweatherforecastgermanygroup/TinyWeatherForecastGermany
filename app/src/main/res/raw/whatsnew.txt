@@ -1,7 +1,7 @@
 What is new in this version ([VERSION]):
 
 - fixed overlays in search dialog
-- fixed opacity and dwd notice not behaving like expected in some widgets
+- fixed multiple widget bugs
 
 Version 0.54.0:
 - other apps can now share geo-coordinates to this app

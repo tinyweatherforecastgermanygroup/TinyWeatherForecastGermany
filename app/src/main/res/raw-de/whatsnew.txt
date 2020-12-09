@@ -1,7 +1,7 @@
 Neu in dieser Version ([VERSION]):
 
 - behoben: Überlagerungen im Such-Dialog
-- behoben: Widget-Deckkraft & DWD-Hinweis in Widgets teilweise defekt
+- behoben: mehrere Widget-Fehler
 
 Version 0.54.0:
 - Geokoordinaten können nun an diese App geteilt werden
@@ -15,7 +15,7 @@ Version 0.54.0:
 - behoben: Nebel mit Reifansatz wurde als Wetterzustand nicht korrekt angezeigt
 - zahlreiche, weitere Fehlerkorrekturen
 
-Hinweis: Version 0.54.0 ist aufgrund von Fehlern im Repository nicht von F-Droid gebaut worden.
+Hinweis: Version 0.54.0 konnte aufgrund von Fehlern im App-Repository nicht von F-Droid gebaut werden.
 
 
 
