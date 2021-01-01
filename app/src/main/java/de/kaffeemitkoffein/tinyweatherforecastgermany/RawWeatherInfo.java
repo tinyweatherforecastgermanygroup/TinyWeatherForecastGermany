@@ -220,7 +220,7 @@ public class RawWeatherInfo{
         long[] result = new long[Weather.DATA_SIZE];
         for (int i=0; i<elements; i++){
             try {
-            result[i] = Long.parseLong(valuearray[i]);
+                result[i] = Long.parseLong(valuearray[i]);
             } catch (NumberFormatException e){
                 return null;
             }

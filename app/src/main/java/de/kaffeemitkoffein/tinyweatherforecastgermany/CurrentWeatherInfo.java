@@ -152,8 +152,12 @@ public class CurrentWeatherInfo{
             wi.setClouds(getIntItem(rawWeatherInfo.N[index]));
             wi.setTemperature(getDoubleItem(rawWeatherInfo.TTT[index]));
             wi.setTemperature5cm(getDoubleItem(rawWeatherInfo.TTT[index]));
-            wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
-            wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
+            if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
+                wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
+            }
+            if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
+                wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
+            }
             wi.setWindSpeed(getDoubleItem(rawWeatherInfo.FF[index]));
             wi.setWindDirection(getDoubleItem(rawWeatherInfo.DD[index]));
             wi.setFlurries(getDoubleItem(rawWeatherInfo.FX1[index]));
@@ -191,8 +195,12 @@ public class CurrentWeatherInfo{
             wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT,start, index));
             wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start, index));
             if (start==startposition6h){
-                wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
-                wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
+                if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
+                    wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
+                }
+                if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
+                    wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
+                }
             } else {
                 wi.setLowTemperature(rawWeatherInfo.getMinTemperature(start, index));
                 wi.setHighTemperature(rawWeatherInfo.getMaxTemperature(start, index));
@@ -262,8 +270,12 @@ public class CurrentWeatherInfo{
             wi.setTemperature(rawWeatherInfo.getAverageTemperature(start,index));
             wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start,index));
             if (index==startposition24h){
-                wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
-                wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
+                if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
+                    wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
+                }
+                if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
+                    wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
+                }
             } else {
                 wi.setLowTemperature(rawWeatherInfo.getMinTemperature(start,index));
                 wi.setHighTemperature(rawWeatherInfo.getMaxTemperature(start,index));

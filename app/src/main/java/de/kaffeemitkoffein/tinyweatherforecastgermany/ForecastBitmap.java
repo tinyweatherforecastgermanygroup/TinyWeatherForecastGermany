@@ -276,9 +276,12 @@ public class ForecastBitmap{
             }
             canvas.drawBitmap(getIconBitmap(context, wi,Math.round(iconsize),Math.round(iconsize)),x_offset, fontSize_small+1,TEXT_PAINT);
             // place temperature
-            String temperature_text = weatherInfos.get(position).getTemperatureInCelsiusInt()+"°";
-            TEXT_PAINT.setTextSize(fontSize_medium);
-            canvas.drawText(temperature_text,x_offset+iconsize+1,(float) (bitmapHeight/2)+fontSize_medium/2, TEXT_PAINT);
+            String temperature_text = "";
+            if (weatherInfos.get(position).hasTemperature()){
+                temperature_text = weatherInfos.get(position).getTemperatureInCelsiusInt()+"°";
+                TEXT_PAINT.setTextSize(fontSize_medium);
+                canvas.drawText(temperature_text,x_offset+iconsize+1,(float) (bitmapHeight/2)+fontSize_medium/2, TEXT_PAINT);
+            }
             // place further temperature information if space is available
             if (!displaySimpleBar){
                 float x_within_item_offset = TEXT_PAINT.measureText(temperature_text)+iconsize+2;

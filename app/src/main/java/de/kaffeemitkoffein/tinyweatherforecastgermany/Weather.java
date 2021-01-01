@@ -859,7 +859,7 @@ public final class Weather {
         String station_name = weatherSettings.station_name;
         Cursor cursor;
         String[] selectionArg={station_name};
-        try {
+        //try {
             cursor = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,
                     null,WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name+" = ?",selectionArg,null);
             // read only fist element. Database should not hold more than one data set for one station.
@@ -874,9 +874,9 @@ public final class Weather {
                     return null;
                 }
             }
-        } catch (Exception e) {
-            PrivateLog.log(context,Tag.DATABASE,"database error when getting weather data: "+e.getMessage());
-        }
+        //} catch (Exception e) {
+        //    PrivateLog.log(context,Tag.DATABASE,"database error when getting weather data: "+e.getMessage());
+        //}
         // return null if no correspondig data set found in local database.
         return null;
     }

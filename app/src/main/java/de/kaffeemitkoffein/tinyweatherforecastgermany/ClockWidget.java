@@ -51,7 +51,9 @@ public class ClockWidget extends ClassicWidget {
             remoteViews.setOnClickPendingIntent(R.id.widget_nextalarm, pendingIntent_clock);
             setClassicWidgetItems(remoteViews, weatherSettings, weatherCard, c,false);
             adjustClockFontSize(c, awm, i, remoteViews);
-            fillClockWeatherItems(c,remoteViews, weatherCard,weatherSettings);
+            if (weatherCard!=null){
+                fillClockWeatherItems(c,remoteViews, weatherCard,weatherSettings);
+            }
             awm.updateAppWidget(widget_instances[i], remoteViews);
         }
     }

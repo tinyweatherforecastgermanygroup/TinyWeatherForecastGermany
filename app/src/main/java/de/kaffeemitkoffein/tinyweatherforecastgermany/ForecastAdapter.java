@@ -23,6 +23,7 @@
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
     import android.graphics.Color;
+    import android.util.Log;
     import android.util.SparseArray;
     import android.view.LayoutInflater;
     import android.view.View;
@@ -233,6 +234,7 @@
                 endofday_bar = viewHolder.endofday_bar;
             }
             // now fill the item with content
+            Log.v("adapter","aDAPTER ENTERED.");
             if (main_container==null) {
                 main_container = (RelativeLayout) view.findViewById(R.id.fcitem_maincontainer);
                 viewHolder.main_container = main_container;
