@@ -23,7 +23,6 @@ import android.graphics.Color;
 import java.util.ArrayList;
 
 public class WeatherWarning implements Comparable<WeatherWarning> {
-    // <alert>
     long polling_time;
     String identifier;      // id of the warning
     String sender;          // sender, usually "opendata@dwd.de"
