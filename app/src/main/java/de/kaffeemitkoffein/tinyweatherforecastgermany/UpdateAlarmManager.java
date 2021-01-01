@@ -1,7 +1,7 @@
 /*
  * This file is part of TinyWeatherForecastGermany.
  *
- * Copyright (c) 2020 Pawel Dube
+ * Copyright (c) 2020, 2021 Pawel Dube
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,6 +83,7 @@ public class UpdateAlarmManager {
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.
             PrivateLog.log(context,Tag.ALARMMANAGER,"triggering weather update from API...");
+            /*
             Intent intent = new Intent(context,WeatherUpdateService.class);
             intent.putExtra(WeatherUpdateService.SERVICE_FORCEUPDATE,true);
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
@@ -92,6 +93,9 @@ public class UpdateAlarmManager {
                 } else {
                     context.startForegroundService(intent);
                 }
+                 */
+            try {
+                startDataUpdateService(context,true,false,false);
             } catch (SecurityException e){
                 PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService not started because of a SecurityException: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!
@@ -189,6 +193,19 @@ public class UpdateAlarmManager {
                     .build();
             jobScheduler.enqueue(jobInfo,jobWorkItem);
             PrivateLog.log(context,Tag.ALARMMANAGER,"early job enqueued in "+EARLY_ALARM_TIME/1000+"when network available.");
+        }
+    }
+
+    public static void startDataUpdateService(final Context context, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts){
+        Intent intent = new Intent(context,DataUpdateService.class);
+        intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER,updateWeather);
+        intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS,updateWarnings);
+        intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS,updateTextForecasts);
+        intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        if (Build.VERSION.SDK_INT<26){
+            context.startService(intent);
+        } else {
+            context.startForegroundService(intent);
         }
     }
 }

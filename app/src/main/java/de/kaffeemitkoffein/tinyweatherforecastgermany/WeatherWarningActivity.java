@@ -1,7 +1,7 @@
 /*
  * This file is part of TinyWeatherForecastGermany.
  *
- * Copyright (c) 2020 Pawel Dube
+ * Copyright (c) 2020, 2021 Pawel Dube
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,10 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.*;
 import android.os.Bundle;
 import android.view.*;
@@ -53,10 +56,39 @@ public class WeatherWarningActivity extends Activity {
     static float MAP_WIDTH;
     static float MAP_HEIGHT;
 
+    public final static String WEATHER_WARNINGS_UPDATE="WEATHER_WARNINGS_UPDATE";
+    public final static String WEATHER_WARNINGS_UPDATE_RESULT="WEATHER_WARNINGS_UPDATE_RESULT";
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent!=null){
+                // update warning display if warnings have been updated
+                if (intent.getAction().equals(WEATHER_WARNINGS_UPDATE)) {
+                    weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext());
+                    displayWarnings();
+                    updateActionBarLabels();
+                    hideProgressBar();
+                }
+                if (intent.hasExtra(WEATHER_WARNINGS_UPDATE_RESULT)){
+                    // gets result if update was successful, currently not used
+                    boolean updateResult = intent.getBooleanExtra(WEATHER_WARNINGS_UPDATE_RESULT,false);
+                }
+            }
+        }
+    };
+
     @Override
     protected void onResume() {
+        registerForBroadcast();
         updateWarningsIfNeeded();
         super.onResume();
+    }
+
+    @Override
+    protected void onPause(){
+        unregisterReceiver(receiver);
+        super.onPause();
     }
 
     @Override
@@ -123,27 +155,8 @@ public class WeatherWarningActivity extends Activity {
 
     public void updateWarnings(){
         final Context this_context = getApplicationContext();
-        final WeatherWarningReader weatherWarningReader = new WeatherWarningReader(getApplicationContext()){
-            @Override
-            public void onPositiveResult(ArrayList<WeatherWarning> warnings){
-                super.onPositiveResult(warnings);
-                // Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.warnings_update),Toast.LENGTH_LONG).show();
-                weatherWarnings = warnings;
-                PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings updated successfully.");
-                hideProgressBar();
-                displayWarnings();
-            }
-            public void onNegativeResult(){
-                PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
-                hideProgressBar();
-                Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.warnings_update_fail),Toast.LENGTH_LONG).show();
-                if (weatherWarnings!=null){
-                    updateActionBarLabels();
-                }
-            }
-        };
         showProgressBar();
-        weatherWarningReader.execute();
+        UpdateAlarmManager.startDataUpdateService(getApplicationContext(),false,true,false);
     }
 
     private void displayWarnings(){
@@ -411,5 +424,13 @@ public class WeatherWarningActivity extends Activity {
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
+
+    private void registerForBroadcast(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WEATHER_WARNINGS_UPDATE);
+        registerReceiver(receiver,filter);
+    }
+
+
 
 }

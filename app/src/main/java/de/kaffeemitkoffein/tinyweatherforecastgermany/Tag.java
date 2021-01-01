@@ -1,7 +1,7 @@
 /*
  * This file is part of TinyWeatherForecastGermany.
  *
- * Copyright (c) 2020 Pawel Dube
+ * Copyright (c) 2020, 2021 Pawel Dube
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 public class Tag {
     public static final String MAIN = "main activity";
-    public static final String SERVICE = "service";
+
+    public static final String SERVICE2 = "UpdateService";
     public static final String ALARMMANAGER = "alarm manager";
     public static final String ONBOOT = "OnBootCompleted-receiver";
     public static final String GB = "gadgetbridge-api";
