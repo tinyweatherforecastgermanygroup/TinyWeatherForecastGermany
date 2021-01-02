@@ -18,7 +18,6 @@
  */
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -240,6 +239,18 @@ public class RawWeatherInfo{
         return result;
     }
 
+    public double[] toDoubleArray(String[] valuearray, int start, int end){
+        double[] result = new double[Weather.DATA_SIZE];
+         for (int i=start; i<=end; i++){
+            try {
+                result[i] = Double.parseDouble(valuearray[i]);
+            } catch (NumberFormatException e){
+                return null;
+            }
+        }
+        return result;
+    }
+
     public int[] toIntArray(String[] valuearray){
         int[] result = new int[Weather.DATA_SIZE];
         for (int i=0; i<elements; i++){
@@ -352,7 +363,7 @@ public class RawWeatherInfo{
         if (last>elements){
             last = elements;
         }
-        double[] itemlist = toDoubleArray(item);
+        double[] itemlist = toDoubleArray(item, first, last);
         if (itemlist!=null){
             double d = 0;
             for (int i=first; i<=last; i++){
@@ -409,11 +420,31 @@ public class RawWeatherInfo{
         if (last>elements){
             last = elements;
         }
-        double[] itemlist = toDoubleArray(item);
+        double[] itemlist = toDoubleArray(item,first,last);
         if (itemlist != null){
             double d = itemlist[first];
             for (int i=first; i<=last; i++){
                 if (itemlist[i]>d){
+                    d = itemlist[i];
+                }
+            }
+            return d;
+        }
+        return null;
+    }
+
+    private Double getMinDoubleValue(String[] item, int first, int last){
+        if (first<0){
+            first = 0;
+        }
+        if (last>elements){
+            last = elements;
+        }
+        double[] itemlist = toDoubleArray(item,first,last);
+        if (itemlist != null){
+            double d = itemlist[first];
+            for (int i=first; i<=last; i++){
+                if (itemlist[i]<d){
                     d = itemlist[i];
                 }
             }
@@ -427,23 +458,7 @@ public class RawWeatherInfo{
     }
 
     public Double getMinTemperature(int first, int last){
-        if (first<0){
-            first = 0;
-        }
-        if (last>elements){
-            last = elements;
-        }
-        double[] temperature = toDoubleArray(TTT);
-        if (temperature!=null){
-            double d = temperature[first];
-            for (int i=first; i<=last; i++){
-                if (temperature[i]<d){
-                    d = temperature[i];
-                }
-            }
-            return d;
-        }
-        return null;
+        return getMinDoubleValue(TTT,first,last);
     }
 
     public Double getMaxTemperature(int first, int last){

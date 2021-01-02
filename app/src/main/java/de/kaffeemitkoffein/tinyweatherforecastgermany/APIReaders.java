@@ -406,7 +406,7 @@ public class APIReaders {
         private InputStream getWeatherInputStream() throws IOException {
             String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
             String weather_url_legacy = "http://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
-            PrivateLog.log(context,Tag.SERVICE2,"URL: "+weather_url);
+            // PrivateLog.log(context,Tag.SERVICE2,"URL: "+weather_url);
             URL url;
             URL url_legacy;
             try {

@@ -23,7 +23,6 @@
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
     import android.graphics.Color;
-    import android.util.Log;
     import android.util.SparseArray;
     import android.view.LayoutInflater;
     import android.view.View;
@@ -33,9 +32,7 @@
     import android.widget.LinearLayout;
     import android.widget.RelativeLayout;
     import android.widget.TextView;
-
     import org.astronomie.info.Astronomy;
-
     import java.text.DecimalFormat;
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
@@ -234,7 +231,6 @@
                 endofday_bar = viewHolder.endofday_bar;
             }
             // now fill the item with content
-            Log.v("adapter","aDAPTER ENTERED.");
             if (main_container==null) {
                 main_container = (RelativeLayout) view.findViewById(R.id.fcitem_maincontainer);
                 viewHolder.main_container = main_container;
