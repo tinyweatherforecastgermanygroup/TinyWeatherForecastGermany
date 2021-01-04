@@ -30,10 +30,8 @@ import android.graphics.*;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class WeatherWarningActivity extends Activity {
 
@@ -169,7 +167,7 @@ public class WeatherWarningActivity extends Activity {
                 noWarnings.setVisibility(View.GONE);
             }
             TextView warningsDeprecated = (TextView) findViewById(R.id.warningactivity_warnings_deprecated);
-            if (areWarningsOutdated()){
+            if (WeatherSettings.areWarningsOutdated(getApplicationContext())){
                 warningsDeprecated.setVisibility(View.VISIBLE);
             } else {
                 warningsDeprecated.setVisibility(View.GONE);
@@ -183,14 +181,8 @@ public class WeatherWarningActivity extends Activity {
         }
     }
 
-
-    private boolean areWarningsOutdated(){
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-        return weatherSettings.getWarningsLastUpdateTime() + weatherSettings.getWarningsCacheTimeInMillis() <= Calendar.getInstance().getTimeInMillis();
-    }
-
     private void updateWarningsIfNeeded(){
-        if (areWarningsOutdated()){
+        if (WeatherSettings.areWarningsOutdated(getApplicationContext())){
             PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings outdated, getting new ones.");
             updateWarnings();
         } else {

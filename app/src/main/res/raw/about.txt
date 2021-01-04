@@ -47,7 +47,9 @@ Privacy policy:
 
 Tiny Weather Forecast Germany polls weather data and weather warnings from the open-data portal of the Deutscher Wetterdienst <https://www.dwd.de/DE/Home/home_node.html>.
 
-Do do so, it is technically required to send your IP-address to the Deutscher Wetterdienst in the context of the internet connection and also the place/sensor, for which the data has to be polled. How this data is handled and stored by the Deutscher Wetterdienst is explained in the privacy policy of the Deutscher Wetterdienst <https://www.dwd.de/EN/service/dataprotection/dataprotection_node.html>.
+Do do so, it is technically required to send your IP-address to the Deutscher Wetterdienst in the context of the internet connection and also the place/sensor, for which the data has to be polled.
+
+Bei den Warnungen wird auch übermittelt, ob diese (abhängig von der Spracheinstellung des Gerätes) auf Französisch, Spanisch, Deutsch oder Englisch abgerufen werden sollen. In case of the warnings it is also transmitted if they should be polled in French, Spanish, German or English, depending on the language setting of the device. How this data is handled and stored by the Deutscher Wetterdienst is explained in the privacy policy of the Deutscher Wetterdienst <https://www.dwd.de/EN/service/dataprotection/dataprotection_node.html>.
 
 The weather forecasts and weather warnings are saved locally on the device, also the set-up places/sensors. The settings and some internal variables like the last time of a weather warnings poll are also saved locally on the device.
 

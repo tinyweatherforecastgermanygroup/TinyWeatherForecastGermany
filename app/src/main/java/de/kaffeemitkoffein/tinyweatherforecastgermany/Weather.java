@@ -868,7 +868,7 @@ public final class Weather {
                 RawWeatherInfo rawWeatherInfo = weatherForecastContentProvider.getWeatherCardFromCursor(cursor);
                 CurrentWeatherInfo currentWeatherInfo = new CurrentWeatherInfo(rawWeatherInfo);
                 // check if local weather data is outdated
-                if (currentWeatherInfo.polling_time<Calendar.getInstance().getTimeInMillis()+weatherSettings.getUpdateIntervalInMillis()){
+                if (currentWeatherInfo.polling_time<Calendar.getInstance().getTimeInMillis()+weatherSettings.getForecastUpdateIntervalInMillis()){
                     return currentWeatherInfo;
                 } else {
                     return null;
@@ -922,7 +922,7 @@ public final class Weather {
         int size = data.size();
         int deleted_count = 0;
         for (int i=0; i<size; i++) {
-            if (data.get(i).timestamp + weatherSettings.getUpdateIntervalInMillis() < Calendar.getInstance().getTimeInMillis()){
+            if (data.get(i).timestamp + weatherSettings.getForecastUpdateIntervalInMillis() < Calendar.getInstance().getTimeInMillis()){
                 // never remove the current location from the database, even if data is old
                 if (!data.get(i).weatherLocation.name.toUpperCase().equals(weatherSettings.station_name.toUpperCase()))
                     deleted_count = deleted_count + deleteWeatherDataSet(context,i);

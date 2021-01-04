@@ -62,11 +62,12 @@ public class UpdateAlarmManager {
          * update_period: this is the update interval from the settings. It means how often
          * data should be polled from the DWD API.
          */
-        long update_period = weatherSettings.getUpdateIntervalInMillis();
+        long update_period = weatherSettings.getForecastUpdateIntervalInMillis();
         // set time for timer to equal next interval as set up by user
         // weatherCard can be null on first app launch or after clearing memory
         // update_time_utc is used to calculate if an update from the DWD API is due.
-        long update_time_utc = Calendar.getInstance().getTimeInMillis() + update_period;
+        // long update_time_utc = Calendar.getInstance().getTimeInMillis() + update_period;
+        long update_time_utc = 0; // set default to 1970 to force update if last update time is unknown
         if (weatherCard != null){
             update_time_utc = weatherCard.polling_time + update_period;
         }

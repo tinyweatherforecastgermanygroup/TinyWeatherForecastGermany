@@ -47,7 +47,7 @@ Datenschutz:
 
 Tiny Weather Forecast Germany ruft Wetterdaten und Wetter-Warnungen aus dem Open-Data-Portal des Deutschen Wetterdienstes <https://www.dwd.de/DE/Home/home_node.html> ab.
 
-Dazu ist es technisch notwendig, im Rahmen der Internetverbindung die IP-Adresse an den Deutschen Wetterdienst zu übermitteln und den Ort/Sensor, dessen Daten abgerufen werden sollen. Wie der Deutsche Wetterdienst mit diesen Daten umgeht und wie er sie speichert kann in der Datenschutzerklärung des Deutschen Wetterdienstes <https://www.dwd.de/DE/service/datenschutz/datenschutz_node.html> nachgelesen werden.
+Dazu ist es technisch notwendig, im Rahmen der Internetverbindung die IP-Adresse an den Deutschen Wetterdienst zu übermitteln und den Ort/Sensor, dessen Daten abgerufen werden sollen. Bei den Warnungen wird auch übermittelt, ob diese (abhängig von der Spracheinstellung des Gerätes) auf Französisch, Spanisch, Deutsch oder Englisch abgerufen werden sollen. Wie der Deutsche Wetterdienst mit diesen Daten umgeht und wie er sie speichert kann in der Datenschutzerklärung des Deutschen Wetterdienstes <https://www.dwd.de/DE/service/datenschutz/datenschutz_node.html> nachgelesen werden.
 
 Die abgerufenen Wettervorhersagen und Warnungen werden lokal auf dem Gerät gespeichert, ebenso die eingestellten Orte/Sensoren. Die Einstellungen und wenige interne Variablen wie z.B. wann zuletzt eine Wetterwarnung abgerufen wurde werden ebenfalls auf dem Gerät lokal gespeichert.
 

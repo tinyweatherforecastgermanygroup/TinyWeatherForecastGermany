@@ -70,6 +70,7 @@ public class WeatherSettings {
     public static final String PREF_IS_FIRST_APP_LAUNCH = "PREF_is_first_app_launch";
     public static final String PREF_USEGPS = "PREF_usegps";
     public static final String PREF_DISABLE_TLS = "PREF_disable_tls";
+    public static final String PREF_TEXTFORECAST_LAST_UPDATE_TIME = "PREF_textforecast_last_update_time";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -108,6 +109,7 @@ public class WeatherSettings {
     public static final boolean PREF_IS_FIRST_APP_LAUNCH_DEFAULT = true;
     public static final boolean PREF_USEGPS_DEFAULT = false;
     public static final boolean PREF_DISABLE_TLS_DEFAULT = false;
+    public static final long PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT = 0;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -146,6 +148,7 @@ public class WeatherSettings {
     public boolean is_first_app_launch = true;
     public boolean usegps = PREF_USEGPS_DEFAULT;
     public boolean disable_tls = PREF_DISABLE_TLS_DEFAULT;
+    public long textforecast_last_update_time = PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -193,6 +196,7 @@ public class WeatherSettings {
         this.is_first_app_launch = readPreference(PREF_IS_FIRST_APP_LAUNCH, PREF_IS_FIRST_APP_LAUNCH_DEFAULT);
         this.usegps = readPreference(PREF_USEGPS,PREF_USEGPS_DEFAULT);
         this.disable_tls = readPreference(PREF_DISABLE_TLS,PREF_DISABLE_TLS_DEFAULT);
+        this.textforecast_last_update_time = readPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
     }
 
     public void savePreferences() {
@@ -231,6 +235,7 @@ public class WeatherSettings {
         applyPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
         applyPreference(PREF_USEGPS,this.usegps);
         applyPreference(PREF_DISABLE_TLS,this.disable_tls);
+        applyPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,this.textforecast_last_update_time);
     }
 
     public void commitPreferences() {
@@ -269,6 +274,7 @@ public class WeatherSettings {
         commitPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
         commitPreference(PREF_USEGPS,this.usegps);
         commitPreference(PREF_DISABLE_TLS,this.disable_tls);
+        commitPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,this.textforecast_last_update_time);
     }
 
     public String readPreference(String p, String d) {
@@ -367,15 +373,6 @@ public class WeatherSettings {
         pref_editor.commit();
     }
 
-    public int getUpdateInterval() {
-        int i = Integer.parseInt(this.updateinterval);
-        return i;
-    }
-
-    public long getUpdateIntervalInMillis() {
-        return getUpdateInterval() * 60 * 60 * 1000;
-    }
-
     public Weather.WeatherLocation getSetStationLocation() {
         Weather.WeatherLocation weatherLocation = new Weather.WeatherLocation();
         weatherLocation.description = this.station_description;
@@ -422,7 +419,16 @@ public class WeatherSettings {
         }
     }
 
-    public long getWarningsCacheTimeInMillis() {
+    public int getForecastUpdateInterval() {
+        int i = Integer.parseInt(this.updateinterval);
+        return i;
+    }
+
+    public long getForecastUpdateIntervalInMillis() {
+        return (long) getForecastUpdateInterval() * 60 * 60 * 1000;
+    }
+
+    public long getWarningsUpdateIntervalInMillis() {
         long l = Long.parseLong(this.warnings_cache_time);
         l = l * 60 * 1000;
         return l;
@@ -432,12 +438,37 @@ public class WeatherSettings {
         return warnings_last_update_time;
     }
 
+    public static boolean areWarningsOutdated(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        long getWarningsLastUpdateTime = sharedPreferences.getLong(PREF_WARNINGS_LAST_UPDATE_TIME,PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
+        long getWarningsUpdateIntervalInMillis = sharedPreferences.getLong(PREF_WARNINGS_CACHETIME,Long.getLong(PREF_WARNINGS_CACHETIME_DEFAULT));
+        return getWarningsLastUpdateTime + getWarningsUpdateIntervalInMillis <= Calendar.getInstance().getTimeInMillis();
+    }
+
     public void setWarningsLastUpdateTime(long time) {
         applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME, time);
     }
 
     public void setWarningsLastUpdateTime() {
         setWarningsLastUpdateTime(Calendar.getInstance().getTimeInMillis());
+    }
+
+    public static long getTextForecastLastUpdateTimeInMillis(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getLong(PREF_TEXTFORECAST_LAST_UPDATE_TIME,PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
+    }
+
+    public static void setTextForecastLastUpdateTime(Context context, long timeInMillis){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_TEXTFORECAST_LAST_UPDATE_TIME, timeInMillis);
+        pref_editor.apply();
+    }
+
+    public static final long TEXTFORECASTS_UPDATE_INTERVAL = 12*60*60*1000;
+
+    public static boolean areTextForecastsOutdated(Context context){
+        return getTextForecastLastUpdateTimeInMillis(context) + TEXTFORECASTS_UPDATE_INTERVAL <= Calendar.getInstance().getTimeInMillis();
     }
 
     public static boolean isFirstAppLaunch(Context c) {
