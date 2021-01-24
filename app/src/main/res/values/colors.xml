@@ -42,4 +42,8 @@
     <color name="fcitem_rain">#2222aa</color>
     <color name="fcitem_clouds">#aaaaaa</color>
 
+    <color name="textforecast_heading">@color/colorAccent</color>
+    <color name="textforecast_date">@color/textColor</color>
+    <color name="textforecast_subtitle">@color/textColor</color>
+
 </resources>

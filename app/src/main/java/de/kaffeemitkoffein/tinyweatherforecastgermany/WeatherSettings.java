@@ -441,7 +441,12 @@ public class WeatherSettings {
     public static boolean areWarningsOutdated(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         long getWarningsLastUpdateTime = sharedPreferences.getLong(PREF_WARNINGS_LAST_UPDATE_TIME,PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
-        long getWarningsUpdateIntervalInMillis = sharedPreferences.getLong(PREF_WARNINGS_CACHETIME,Long.getLong(PREF_WARNINGS_CACHETIME_DEFAULT));
+        long getWarningsUpdateIntervalInMillis = 30 * 60 * 1000;
+        try {
+            getWarningsUpdateIntervalInMillis = Long.getLong(sharedPreferences.getString(PREF_WARNINGS_CACHETIME, PREF_WARNINGS_CACHETIME_DEFAULT)) * 60 * 1000;
+        } catch (NullPointerException e){
+            // do nothing & ignore, default value will be set automatically to 30 min. on next preference call by user
+        }
         return getWarningsLastUpdateTime + getWarningsUpdateIntervalInMillis <= Calendar.getInstance().getTimeInMillis();
     }
 

@@ -30,38 +30,44 @@
     <item android:id="@+id/menu_warnings"
         android:title="@string/warnings_button"
         android:icon="@mipmap/warning_icon"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:orderInCategory="2">
+    </item>
+    <item android:id="@+id/menu_texts"
+        android:title="@string/texts_button"
+        android:icon="@mipmap/ic_short_text_white_24dp"
+        android:showAsAction="ifRoom"
+        android:orderInCategory="3">
     </item>
     <item android:id="@+id/menu_settings"
         android:title="@string/settings_button"
         android:icon="@mipmap/ic_settings_white_24dp"
         android:showAsAction="never"
-        android:orderInCategory="3">
+        android:orderInCategory="4">
     </item>
     <item android:id="@+id/menu_geoinput"
         android:title="@string/geoinput_button"
         android:icon="@mipmap/ic_gps_fixed_white_24dp"
         android:showAsAction="never"
-        android:orderInCategory="4">
+        android:orderInCategory="5">
     </item>
     <item android:id="@+id/menu_about"
         android:title="@string/about_button"
         android:icon="@mipmap/ic_info_outline_white_24dp"
         android:showAsAction="never"
-        android:orderInCategory="5">
+        android:orderInCategory="6">
     </item>
     <item android:id="@+id/menu_license"
         android:title="@string/license_button"
         android:icon="@mipmap/ic_copyright_white_24dp"
         android:showAsAction="never"
-        android:orderInCategory="6">
+        android:orderInCategory="7">
     </item>
     <item android:id="@+id/menu_whatsnew"
         android:title="@string/whatsnew_button"
         android:icon="@mipmap/ic_announcement_white_24dp"
         android:showAsAction="never"
-        android:orderInCategory="7">
+        android:orderInCategory="8">
     </item>
 
 </menu>

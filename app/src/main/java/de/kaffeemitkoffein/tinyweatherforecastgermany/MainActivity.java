@@ -43,6 +43,8 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends Activity {
 
@@ -271,6 +273,7 @@ public class MainActivity extends Activity {
                 UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
             }
         }
+
         // test API
         if (API_TESTING_ENABLED){
             testAPI_Init();
@@ -745,6 +748,10 @@ public class MainActivity extends Activity {
         if (item_id == R.id.menu_whatsnew) {
             showWhatsNewDialog();
             return true;
+        }
+        if (item_id == R.id.menu_texts) {
+            Intent i = new Intent(this, TextForecastListActivity.class);
+            startActivity(i);
         }
         return super.onOptionsItemSelected(mi);
     }

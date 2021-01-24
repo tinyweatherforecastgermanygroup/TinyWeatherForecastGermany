@@ -71,6 +71,7 @@ public class WeatherWarningActivity extends Activity {
                 if (intent.hasExtra(WEATHER_WARNINGS_UPDATE_RESULT)){
                     // gets result if update was successful, currently not used
                     boolean updateResult = intent.getBooleanExtra(WEATHER_WARNINGS_UPDATE_RESULT,false);
+
                 }
             }
         }

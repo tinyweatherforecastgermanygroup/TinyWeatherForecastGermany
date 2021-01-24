@@ -49,7 +49,7 @@ public class WeatherWarningContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         sqLiteDatabase = weatherWarningDatabaseHelper.getReadableDatabase();
-        Cursor c = sqLiteDatabase.query(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
+        Cursor c = sqLiteDatabase.query(WeatherWarningContentProvider.WeatherWarningDatabaseHelper.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
         return c;
     }
 
@@ -62,7 +62,7 @@ public class WeatherWarningContentProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues contentValues) {
         sqLiteDatabase = weatherWarningDatabaseHelper.getWritableDatabase();
         sqLiteDatabase.enableWriteAheadLogging();
-        sqLiteDatabase.insert(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME,null,contentValues);
+        sqLiteDatabase.insert(WeatherWarningContentProvider.WeatherWarningDatabaseHelper.TABLE_NAME,null,contentValues);
         return uri;
     }
 
@@ -71,21 +71,20 @@ public class WeatherWarningContentProvider extends ContentProvider {
         int i = 0;
         sqLiteDatabase = weatherWarningDatabaseHelper.getWritableDatabase();
         sqLiteDatabase.enableWriteAheadLogging();
-        i = sqLiteDatabase.delete(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME,selection,selectionArgs);
+        i = sqLiteDatabase.delete(WeatherWarningContentProvider.WeatherWarningDatabaseHelper.TABLE_NAME,selection,selectionArgs);
         return i;
-
     }
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         sqLiteDatabase = weatherWarningDatabaseHelper.getWritableDatabase();
         sqLiteDatabase.enableWriteAheadLogging();
-        return sqLiteDatabase.update(WeatherForecastContentProvider.WeatherForecastDatabaseHelper.TABLE_NAME,contentValues,selection,selectionArgs);
+        return sqLiteDatabase.update(WeatherWarningContentProvider.WeatherWarningDatabaseHelper.TABLE_NAME,contentValues,selection,selectionArgs);
     }
 
     public static class WeatherWarningDatabaseHelper extends SQLiteOpenHelper {
 
-        public static final int DATABASE_VERSION = 1;
+        public static final int DATABASE_VERSION = 2;
         public static final String DATABASE_NAME = "weatherwarnings";
         public static final String TABLE_NAME = "tables";
         public static final String KEY_id = "id";

@@ -21,7 +21,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 public class Tag {
     public static final String MAIN = "main activity";
-
     public static final String SERVICE2 = "UpdateService";
     public static final String ALARMMANAGER = "alarm manager";
     public static final String ONBOOT = "OnBootCompleted-receiver";
@@ -31,7 +30,6 @@ public class Tag {
     public static final String DATABASE = "Database";
     public static final String WARNINGS = "Weather Alerts";
     public static final String WIDGET = "widget";
-
-
+    public static final String TEXTS = "texts";
 
 }

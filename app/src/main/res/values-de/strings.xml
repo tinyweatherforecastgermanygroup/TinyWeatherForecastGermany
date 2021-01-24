@@ -32,6 +32,7 @@
     <string name="geoinput_button">Finde mit Standort</string>
     <string name="whatsnew_button">Was ist neu?</string>
     <string name="warnings_button">Wetterwarnungen</string>
+    <string name="texts_button">Texte</string>
     <string name="today">Heute</string>
     <string name="station">Station</string>
     <string name="boldwidget_description">Kräftig</string>

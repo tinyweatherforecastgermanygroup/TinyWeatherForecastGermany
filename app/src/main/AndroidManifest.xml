@@ -62,6 +62,14 @@
                   android:label="@string/app_name"
                   android:parentActivityName=".MainActivity">
         </activity>
+        <activity android:name=".TextForecastListActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity android:name=".TextForecastViewActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".TextForecastListActivity">
+        </activity>
 
         <provider android:name=".WeatherForecastContentProvider"
             android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany.weather" android:enabled="true"
@@ -70,6 +78,11 @@
 
         <provider android:name=".WeatherWarningContentProvider"
             android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany.warnings" android:enabled="true"
+            android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
+            android:syncable="false" />
+
+        <provider android:name=".TextForecastContentProvider"
+            android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany.texts" android:enabled="true"
             android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
             android:syncable="false" />
 

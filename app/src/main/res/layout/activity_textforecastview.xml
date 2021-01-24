@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020, 2021 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textforecastview_scrollcontainer"
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/textforecastview_maincontainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp">
+
+        <TextView
+            android:id="@+id/textforecastview_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:ellipsize="none"
+            android:maxLines="3000"
+            android:textSize="@dimen/reader_textsize_title"
+            android:textColor="@color/textforecast_heading"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"/>
+
+        <TextView
+            android:id="@+id/textforecastview_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textforecastview_title"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:ellipsize="none"
+            android:maxLines="3000"
+            android:textSize="@dimen/reader_textsize_date"
+            android:textColor="@color/textforecast_date"
+            android:textStyle="italic"
+            android:gravity="top"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"/>
+
+        <TextView
+            android:id="@+id/textforecastview_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textforecastview_date"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:ellipsize="none"
+            android:maxLines="3000"
+            android:textSize="@dimen/reader_textsize_subtitle"
+            android:textStyle="bold"
+            android:textColor="@color/textforecast_subtitle"
+            android:gravity="top"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"/>
+
+        <TextView
+            android:id="@+id/textforecastview_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textforecastview_subtitle"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:ellipsize="none"
+            android:maxLines="3000"
+            android:textSize="@dimen/reader_textsize_body"
+            android:textColor="@color/textColor"
+            android:gravity="top"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+        />
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -2,6 +2,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -13,13 +14,12 @@ import javax.net.ssl.SSLException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -352,7 +352,6 @@ public class APIReaders {
 
        private void onPostExecute(ArrayList<WeatherWarning> warnings) {
            if (warnings!=null){
-               WeatherWarningContentProvider weatherWarningContentProvider = new WeatherWarningContentProvider();
                WeatherWarnings.cleanWeatherWarningsDatabase(context);
                WeatherWarnings.writeWarningsToDatabase(context,warnings);
                onPositiveResult(warnings);
@@ -649,6 +648,120 @@ public class APIReaders {
         public void run() {
             RawWeatherInfo rawWeatherInfo = doInBackground();
             onPostExecute(rawWeatherInfo);
+        }
+    }
+
+    public static class TextForecastRunnable implements Runnable {
+
+        private Context context;
+
+        private ArrayList<String> getTextFromUrl(String url_string){
+            try {
+                URL url = new URL(url_string);
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.ISO_8859_1));
+                ArrayList<String> resultList = new ArrayList<String>();
+                String line = null;
+                while ((line = bufferedReader.readLine()) != null) {
+                    resultList.add(line);
+                }
+                bufferedReader.close();
+                return resultList;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        private String getStringFromUrl(String url_string){
+            StringBuilder stringBuilder = new StringBuilder();
+            ArrayList<String> resultList = getTextFromUrl(url_string);
+            for (int i=0; i<resultList.size(); i++){
+                stringBuilder.append(resultList.get(i));
+            }
+            return stringBuilder.toString();
+        }
+
+        private ArrayList<TextForecast> getTextForecastMetadata(){
+            ArrayList<String> index = getTextFromUrl(TextForecast.TEXT_WEBPATH);
+            ArrayList<TextForecast> texts = new ArrayList<TextForecast>();
+            if (index!=null){
+                Log.v("TEXTF","Sources not null");
+                for (int i=0; i<index.size(); i++){
+                    String s = index.get(i);
+                    if (s.contains("FPDL")) {
+                        TextForecast textForecast = new TextForecast();
+                        textForecast.setIssued(s,84);
+                        textForecast.identifier = s.substring(s.indexOf("FPDL"),s.indexOf("FPDL")+18);
+                        textForecast.type = TextForecast.Type.FEATURE;
+                        //Log.v("TEXTF",textForecast.web_url);
+                        texts.add(textForecast);
+                    }
+                    if (s.contains("SXDL")) {
+                        TextForecast textForecast = new TextForecast();
+                        textForecast.setIssued(s,84);
+                        textForecast.identifier = s.substring(s.indexOf("SXDL"),s.indexOf("SXDL")+18);
+                        //Log.v("TEXTF",textForecast.web_url);
+                        if (s.contains("SXDL31")){
+                            textForecast.type = TextForecast.Type.KURZFRIST;
+                        }
+                        if (s.contains("SXDL33")){
+                            textForecast.type = TextForecast.Type.MITTELFRIST;
+                        }
+                        texts.add(textForecast);
+                    }
+                }
+            } else {
+                Log.v("TEXTF","Sources are null");
+            }
+            return texts;
+        }
+
+        public TextForecastRunnable(Context context) {
+            this.context = context;
+            // HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+            // InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+        }
+
+        public void onNegativeResult(){
+            // do nothing at the moment.
+        }
+
+        /*
+         * Override this routine to define what to do if obtaining data succeeded.
+         * Remember: at this point, the new data is already written to the database and can be
+         * accessed via the CardHandler class.
+         */
+
+        public void onPositiveResult(){
+            // do nothing at the moment.
+        }
+
+        @Override
+        public void run() {
+            Log.v("TEXTF","Running");
+            ArrayList<TextForecast> textForecasts = getTextForecastMetadata();
+            for (int i=0; i<textForecasts.size(); i++){
+                Log.v("TEXTF","id: "+textForecasts.get(i).identifier+" type: "+textForecasts.get(i).type+ " url: "+textForecasts.get(i).getUrlString()+" @"+textForecasts.get(i).issued+" is "+textForecasts.get(i).getIssued());
+            }
+            // determine which texts are new
+            ArrayList<TextForecast> newTextForecasts = TextForecasts.getNewTextForecasts(context,textForecasts);
+            PrivateLog.log(context,Tag.TEXTS,newTextForecasts.size()+ " new texts found in "+textForecasts.size()+ " available online.");
+            for (int i=0;i<newTextForecasts.size(); i++){
+                // read text data from web and parse
+               newTextForecasts.get(i).parse(getTextFromUrl(newTextForecasts.get(i).getUrlString()));
+                Log.v("TEXTF","-----------------");
+                Log.v("TEXTF","Type     : "+newTextForecasts.get(i).type);
+                Log.v("TEXTF","Title    : "+newTextForecasts.get(i).title);
+                Log.v("TEXTF","Sub-Title: "+newTextForecasts.get(i).subtitle);
+                //.v("TEXTF","Sub-Title: "+newTextForecasts.get(i).content);
+               // set timestamp
+               newTextForecasts.get(i).polled = Calendar.getInstance().getTimeInMillis();
+            }
+            // save new texts to database
+            TextForecasts.writeTextForecastsToDatabaseUnconditionally(context,newTextForecasts);
+            // call
+            onPositiveResult();
         }
     }
 
