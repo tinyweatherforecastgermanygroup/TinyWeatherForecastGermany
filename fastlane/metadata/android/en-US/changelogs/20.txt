@@ -1,1 +1,2 @@
 - fixed app crash when calling weather warnings for the first time under certain conditions
+- fixed wind direction remaining always the same in the 6-hourly forecasts, displaying the current wind direction

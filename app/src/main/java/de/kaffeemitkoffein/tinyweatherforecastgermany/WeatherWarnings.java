@@ -67,7 +67,7 @@ public class WeatherWarnings {
         } catch (Exception e) {
             PrivateLog.log(context,Tag.DATABASE,"database error when getting weather warnings: "+e.getMessage());
         }
-        // return null if no correspondig data set found in local database.
+        // return null if no corresponding data set found in local database.
         return null;
     }
 

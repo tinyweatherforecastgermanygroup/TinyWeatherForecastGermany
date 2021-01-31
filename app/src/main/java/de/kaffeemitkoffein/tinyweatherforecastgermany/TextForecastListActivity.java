@@ -20,8 +20,10 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,9 +36,21 @@ import java.util.concurrent.Executors;
 
 public class TextForecastListActivity extends Activity {
 
+    final static public String ACTION_UPDATE_TEXTS = "ACTION_UPDATE_TEXTS";
+    final static public String UPDATE_TEXTS_RESULT = "UPDATE_TEXTS_RESULT";
+
     TextForecastAdapter textForecastAdapter;
     ListView textforecasts_listview;
     Context context;
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(ACTION_UPDATE_TEXTS)){
+                showList();
+            }
+        }
+    };
 
     AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -48,6 +62,19 @@ public class TextForecastListActivity extends Activity {
             startActivity(intent);
         }
     };
+
+    @Override
+    protected void onResume() {
+        registerForBroadcast();
+        showList();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause(){
+        unregisterReceiver(broadcastReceiver);
+        super.onPause();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +108,12 @@ public class TextForecastListActivity extends Activity {
                 textforecasts_listview.setOnItemClickListener(clickListener);
             }
         });
+    }
+
+    private void registerForBroadcast(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_UPDATE_TEXTS);
+        registerReceiver(broadcastReceiver,filter);
     }
 
 }

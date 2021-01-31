@@ -57,8 +57,6 @@
                 android:summary="@string/preference_displaysimplebar_summary"
                 android:defaultValue="false"/>
 
-
-
             <CheckBoxPreference
                 android:key="PREF_display_pressure"
                 android:title="@string/preference_displaypressure_title"
@@ -89,6 +87,11 @@
                 android:summary="@string/preference_display_gradient_summary"
                 android:defaultValue="false"/>
 
+        <PreferenceScreen
+            android:key="PREF_screen_display_wind"
+            android:title="@string/preference_screen_wind_title"
+            android:summary="@string/preference_screen_wind_summeary">
+
             <ListPreference
                 android:key="PREF_display_wind_type"
                 android:title="@string/preference_display_wind_type_title"
@@ -104,6 +107,22 @@
                 android:entries="@array/display_wind_unit_text"
                 android:entryValues="@array/display_wind_unit_values"
                 android:defaultValue="0"/>
+
+            <CheckBoxPreference
+                android:key="PREF_display_wind_arc"
+                android:title="@string/preference_display_wind_arc_title"
+                android:summary="@string/preference_display_wind_arc_summary"
+                android:defaultValue="false"/>
+
+            <ListPreference
+                android:key="PREF_display_wind_arc_period"
+                android:title="@string/preference_display_wind_arc_title"
+                android:summary="@string/preference_display_wind_arc_summary"
+                android:entries="@array/display_wind_arc_period_text"
+                android:entryValues="@array/display_wind_arc_period_values"
+                android:defaultValue="6"/>
+
+        </PreferenceScreen>
 
             <ListPreference
                 android:key="PREF_display_distance_unit"

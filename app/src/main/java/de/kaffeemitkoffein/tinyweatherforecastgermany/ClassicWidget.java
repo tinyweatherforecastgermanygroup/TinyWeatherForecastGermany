@@ -260,11 +260,19 @@ public class ClassicWidget extends AppWidgetProvider {
         if (weatherCard.currentWeather.hasWindDirection()){
             if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.ARROW){
                 remoteViews.setViewVisibility(R.id.classicwidget_windarrow,View.VISIBLE);
-                remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getArrowBitmap(c));
+                if (weatherSettings.display_wind_arc) {
+                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow, Weather.WeatherInfo.getWindForecastTint(weatherCard.currentWeather.getArrowBitmap(c),weatherCard.getWindForecast(weatherSettings.getWindArcPeriod())));
+                } else {
+                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getArrowBitmap(c));
+                }
             }
             if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.BEAUFORT){
                 remoteViews.setViewVisibility(R.id.classicwidget_windarrow,View.VISIBLE);
-                remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getBeaufortBitmap(c));
+                if (weatherSettings.display_wind_arc){
+                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow, Weather.WeatherInfo.getWindForecastTint(weatherCard.currentWeather.getBeaufortBitmap(c),weatherCard.getWindForecast(weatherSettings.getWindArcPeriod())));
+                } else {
+                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getBeaufortBitmap(c));
+                }
             }
             if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.TEXT){
                 remoteViews.setViewVisibility(R.id.classicwidget_windarrow,View.GONE);

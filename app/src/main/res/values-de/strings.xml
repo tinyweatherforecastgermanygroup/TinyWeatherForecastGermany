@@ -46,7 +46,7 @@
     <string name="weathercode_UNKNOWN">unbekannt</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">Gewitter</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">gefrierender Sprühregen</string>
-    <string name="weathercode_DRIZZLE_FREEZING_SLIGHT">gefierender, leichter Sprühregen</string>
+    <string name="weathercode_DRIZZLE_FREEZING_SLIGHT">gefrierender, leichter Sprühregen</string>
     <string name="weathercode_RAIN_FREEZING_MODERATE_OR_HEAVY">grfierender Regen</string>
     <string name="weathercode_RAIN_FREEZING_SLIGHT">gefrierender, leichter Regen</string>
     <string name="weathercode_SNOW_SHOWERS_MODERATE_OR_HEAVY">Schneeschauer</string>
@@ -111,8 +111,14 @@
     <string name="preference_displayendofdaybar_summary">Zeige Balken, um Tage zu trennen.</string>
     <string name="preference_display_gradient_title">Zeit-Gradient</string>
     <string name="preference_display_gradient_summary">Zeige einen Farbgradienten, um die Zeit der Vorhersage anzudeuten.</string>
+    <string name="preference_screen_wind_title">Wind display</string>
+    <string name="preference_screen_wind_summeary">Customize how to display wind</string>
     <string name="preference_display_wind_type_title">Windrichtung</string>
     <string name="preference_display_wind_type_summary">Wie die Windrichtung dargestellt werden soll.</string>
+    <string name="preference_display_wind_arc_title">Wind-Vorhersage im Icon</string>
+    <string name="preference_display_wind_arc_summary">Ein schmaler Bogen zeigt Änderungen an.</string>
+    <string name="preference_display_wind_arc_hours_title">Angezeigte Zeitspanne</string>
+    <string name="preference_display_wind_arc_hours_summary">Welche Zeit als Bogen angezeigt werden soll.</string>
     <string name="preference_display_wind_unit_title">Windgeschwindigkeit</string>
     <string name="preference_display_wind_unit_summary">Wähle die Einheit für die Windgeschwindigkeit.</string>
     <string name="preference_display_distance_unit_title">Entfernungen</string>

@@ -90,4 +90,15 @@
         <item>imperial (Meilen, Yards)</item>
     </string-array>
 
+    <string-array name="display_wind_arc_period_text">
+        <item>nächste 6 Stunden</item>
+        <item>nächste 12 Stunden</item>
+        <item>nächste 24 Stunden</item>
+    </string-array>
+
+    <string-array name="display_wind_arc_period_values">
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+    </string-array>
 </resources>

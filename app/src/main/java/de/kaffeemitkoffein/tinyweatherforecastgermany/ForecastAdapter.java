@@ -57,6 +57,8 @@
         private int display_wind_unit;
         private int display_distance_unit;
         private boolean displaySimpleBar;
+        private boolean display_wind_arc;
+        private int display_wind_arc_perdiod;
         private LayoutInflater layoutInflater;
 
         private final String labelSunrise;
@@ -82,6 +84,8 @@
             this.display_distance_unit = weatherSettings.getDistanceDisplayUnit();
             this.display_layout = weatherSettings.getDisplayLayout();
             this.displaySimpleBar = weatherSettings.display_simple_bar;
+            this.display_wind_arc = weatherSettings.display_wind_arc;
+            this.display_wind_arc_perdiod = weatherSettings.getWindArcPeriod();
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             this.labelSunrise = context.getResources().getString(R.string.sunrise);
@@ -380,11 +384,19 @@
                 switch (display_wind_type) {
                     case Weather.WindDisplayType.ARROW:
                         setVisibility(imageView_windarrow, View.VISIBLE);
-                        imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context));
+                        if (display_wind_arc){
+                            imageView_windarrow.setImageBitmap(Weather.WeatherInfo.getWindForecastTint(weatherInfo.getArrowBitmap(context),getWindForecast(weatherInfo)));
+                        } else {
+                            imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context));
+                        }
                         break;
                     case Weather.WindDisplayType.BEAUFORT:
                         setVisibility(imageView_windarrow, View.VISIBLE);
-                        imageView_windarrow.setImageBitmap(weatherInfo.getBeaufortBitmap(context));
+                        if (display_wind_arc){
+                            imageView_windarrow.setImageBitmap(Weather.WeatherInfo.getWindForecastTint(weatherInfo.getBeaufortBitmap(context),getWindForecast(weatherInfo)));
+                        } else {
+                            imageView_windarrow.setImageBitmap(weatherInfo.getBeaufortBitmap(context));
+                        }
                         break;
                     case Weather.WindDisplayType.TEXT:
                         setVisibility(imageView_windarrow, View.GONE);
@@ -763,6 +775,21 @@
                 return result.getTimeInMillis();
             }
             return calendar.getTimeInMillis();
+        }
+
+        private ArrayList<Weather.WindData> getWindForecast(Weather.WeatherInfo currentWeatherInfo){
+            int number = display_wind_arc_perdiod;
+            int currentpos = 0;
+            while (currentpos<weatherForecasts_hourly.size() && weatherForecasts_hourly.get(currentpos).getTimestamp()<currentWeatherInfo.getTimestamp()){
+                currentpos++;
+            }
+            ArrayList<Weather.WindData> windData = new ArrayList<Weather.WindData>();
+            while (currentpos<weatherForecasts_hourly.size() && number>0){
+                windData.add(new Weather.WindData(weatherForecasts_hourly.get(currentpos)));
+                number--;
+                currentpos++;
+            }
+            return windData;
         }
 
     }

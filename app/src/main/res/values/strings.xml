@@ -78,7 +78,7 @@
     <string name="clouds">Clouds:</string>
     <string name="rain">Rain:</string>
     <string name="preference_category_general">Weather data</string>
-    <string name="preference_category_widget">Widget settigs</string>
+    <string name="preference_category_widget">Widget settings</string>
     <string name="preference_category_warnings">Weather warnings</string>
     <string name="preference_category_other">Other</string>
     <string name="preference_updateinterval_title">Update interval</string>
@@ -111,6 +111,12 @@
     <string name="preference_displayendofdaybar_summary">Display a bar to separate days.</string>
     <string name="preference_display_gradient_title">Time gradient</string>
     <string name="preference_display_gradient_summary">Display color gradient to indicate the time of the forecast.</string>
+    <string name="preference_screen_wind_title">Wind display</string>
+    <string name="preference_screen_wind_summeary">Customize how to display wind</string>
+    <string name="preference_display_wind_arc_title">Wind forecast in icon</string>
+    <string name="preference_display_wind_arc_summary">A small arc displays wind changes.</string>
+    <string name="preference_display_wind_arc_hours_title">Wind forecast period</string>
+    <string name="preference_display_wind_arc_hours_summary">What time to show in the arc.</string>
     <string name="preference_display_wind_type_title">Wind direction</string>
     <string name="preference_display_wind_type_summary">How to display wind direction.</string>
     <string name="preference_display_wind_unit_title">Wind speed</string>

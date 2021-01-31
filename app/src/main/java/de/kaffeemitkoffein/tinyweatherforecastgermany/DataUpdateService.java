@@ -119,7 +119,20 @@ public class DataUpdateService extends Service {
                     }
                 };
                 executor.execute(weatherWarningsRunnable);
-            };
+            }
+            if (updateTextForecasts){
+                APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
+                    @Override
+                    public void onPositiveResult(){
+                        Intent intent = new Intent();
+                        intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
+                        intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT,true);
+                        sendBroadcast(intent);
+                    }
+                };
+                executor.execute(textForecastRunnable);
+            }
+
             // executor.execute(r3);
             executor.execute(serviceTerminationRunnable);
         } else {

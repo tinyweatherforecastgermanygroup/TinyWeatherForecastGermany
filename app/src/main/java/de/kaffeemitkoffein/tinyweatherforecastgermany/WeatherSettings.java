@@ -48,6 +48,8 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_SUNRISE = "PREF_display_sunrise";
     public static final String PREF_DISPLAY_ENDOFDAY_BAR = "PREF_display_end_of_day_bar";
     public static final String PREF_DISPLAY_GRADIENT = "PREF_display_gradient";
+    public static final String PREF_DISPLAY_WIND_ARC="PREF_display_wind_arc";
+    public static final String PREF_DISPLAY_WIND_ARC_PERIOD="PREF_display_wind_arc_period";
     public static final String PREF_DISPLAY_WIND_TYPE = "PREF_display_wind_type";
     public static final String PREF_DISPLAY_WIND_UNIT = "PREF_display_wind_unit";
     public static final String PREF_DISPLAY_DISTANCE_UNIT = "PREF_display_distance_unit";
@@ -87,6 +89,8 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_SUNRISE_DEFAULT = true;
     public static final boolean PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT = true;
     public static final boolean PREF_DISPLAY_GRADIENT_DEFAULT = false;
+    public static final boolean PREF_DISPLAY_WIND_ARC_DEFAULT=false;
+    public static final String PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT="6";
     public static final String PREF_DISPLAY_WIND_TYPE_DEFAULT = "0";
     public static final String PREF_DISPLAY_WIND_UNIT_DEFAULT = "0";
     public static final String PREF_DISPLAY_DISTANCE_UNIT_DEFAULT = "0";
@@ -126,6 +130,8 @@ public class WeatherSettings {
     public boolean display_sunrise = PREF_DISPLAY_SUNRISE_DEFAULT;
     public boolean display_endofday_bar = PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT;
     public boolean display_gradient = PREF_DISPLAY_GRADIENT_DEFAULT;
+    public boolean display_wind_arc = PREF_DISPLAY_WIND_ARC_DEFAULT;
+    public String display_wind_arc_period = PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT;
     public String display_wind_type = PREF_DISPLAY_WIND_TYPE_DEFAULT;
     public String display_wind_unit = PREF_DISPLAY_WIND_UNIT_DEFAULT;
     public String display_distance_unit = PREF_DISPLAY_DISTANCE_UNIT_DEFAULT;
@@ -176,6 +182,8 @@ public class WeatherSettings {
         this.display_sunrise = readPreference(PREF_DISPLAY_SUNRISE, PREF_DISPLAY_SUNRISE_DEFAULT);
         this.display_endofday_bar = readPreference(PREF_DISPLAY_ENDOFDAY_BAR, PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT);
         this.display_gradient = readPreference(PREF_DISPLAY_GRADIENT, PREF_DISPLAY_GRADIENT_DEFAULT);
+        this.display_wind_arc = readPreference(PREF_DISPLAY_WIND_ARC,PREF_DISPLAY_WIND_ARC_DEFAULT);
+        this.display_wind_arc_period = readPreference(PREF_DISPLAY_WIND_ARC_PERIOD,PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT);
         this.display_wind_type = readPreference(PREF_DISPLAY_WIND_TYPE,PREF_DISPLAY_WIND_TYPE_DEFAULT);
         this.display_wind_unit = readPreference(PREF_DISPLAY_WIND_UNIT,PREF_DISPLAY_WIND_TYPE_DEFAULT);
         this.display_distance_unit = readPreference(PREF_DISPLAY_DISTANCE_UNIT,PREF_DISPLAY_DISTANCE_UNIT_DEFAULT);
@@ -215,6 +223,8 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_SUNRISE, this.display_sunrise);
         applyPreference(PREF_DISPLAY_ENDOFDAY_BAR, this.display_endofday_bar);
         applyPreference(PREF_DISPLAY_GRADIENT, this.display_gradient);
+        applyPreference(PREF_DISPLAY_WIND_ARC,this.display_wind_arc);
+        applyPreference(PREF_DISPLAY_WIND_ARC_PERIOD,this.display_wind_arc_period);
         applyPreference(PREF_DISPLAY_WIND_TYPE,this.display_wind_type);
         applyPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
         applyPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
@@ -254,6 +264,8 @@ public class WeatherSettings {
         commitPreference(PREF_DISPLAY_SUNRISE, this.display_sunrise);
         commitPreference(PREF_DISPLAY_ENDOFDAY_BAR, this.display_endofday_bar);
         commitPreference(PREF_DISPLAY_GRADIENT, this.display_gradient);
+        commitPreference(PREF_DISPLAY_WIND_ARC,this.display_wind_arc);
+        commitPreference(PREF_DISPLAY_WIND_ARC_PERIOD,this.display_wind_arc_period);
         commitPreference(PREF_DISPLAY_WIND_TYPE,this.display_wind_type);
         commitPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
         commitPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
@@ -559,6 +571,23 @@ public class WeatherSettings {
             applyPreference(PREF_DISPLAY_DISTANCE_UNIT, display_distance_unit);
             // return default
             return Weather.DistanceDisplayUnit.METRIC;
+        }
+    }
+
+    public boolean displayWindArc(){
+        return display_wind_arc;
+    }
+
+    public int getWindArcPeriod(){
+        try {
+            int i = Integer.parseInt(this.display_wind_arc_period);
+            return i;
+        } catch (NumberFormatException e) {
+            // return to default if entry is corrupted (not a number)
+            this.display_wind_arc_period= PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT;
+            applyPreference(PREF_DISPLAY_WIND_ARC_PERIOD,PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT);
+            // return default, is 6
+            return 6;
         }
     }
 

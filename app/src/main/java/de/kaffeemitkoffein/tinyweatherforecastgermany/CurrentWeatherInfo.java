@@ -206,7 +206,7 @@ public class CurrentWeatherInfo{
                 wi.setHighTemperature(rawWeatherInfo.getMaxTemperature(start, index));
             }
             wi.setWindSpeed(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.FF, start, index));
-            wi.setWindDirection(getDoubleItem(rawWeatherInfo.DD[current_weather_position]));
+            wi.setWindDirection(getDoubleItem(rawWeatherInfo.DD[index]));
             wi.setFlurries(rawWeatherInfo.getMaxDoubleValue(rawWeatherInfo.FX1, start, index));
             wi.setPrecipitation(getDoubleItem(rawWeatherInfo.RR6c[index]));
             if (!wi.hasPrecipitation()){
@@ -320,6 +320,17 @@ public class CurrentWeatherInfo{
 
     public String getCity(){
         return weatherLocation.description;
+    }
+
+    public ArrayList<Weather.WindData> getWindForecast(int number){
+        int currentpos = 0;
+        ArrayList<Weather.WindData> windData = new ArrayList<Weather.WindData>();
+        while (currentpos<forecast1hourly.size() && number>0){
+            windData.add(new Weather.WindData(forecast1hourly.get(currentpos)));
+            number--;
+            currentpos++;
+        }
+        return windData;
     }
 
 }

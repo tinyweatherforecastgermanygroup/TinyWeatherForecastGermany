@@ -23,6 +23,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
+import android.util.Log;
 import org.astronomie.info.Astronomy;
 
 import java.text.SimpleDateFormat;
@@ -335,6 +336,71 @@ public final class Weather {
             return false;
         }
 
+        private static float getSweepAngleFromAbsoluteDegrees(float source, float target) {
+            float v1 = (360 + (target-source)) % 360;
+            float v2 = -((360 + source - target) % 360);
+            // the abs lower of both wins
+            if (Math.abs(v1)<Math.abs(v2)){
+                return v1;
+            } else {
+                return v2;
+            }
+        }
+
+        private static int getTintColor(int wind_speed){
+            Color color = new Color();
+            int value = wind_speed*11;
+            if (value>255){
+                value = 255;
+            }
+            return Color.rgb(255-value,255-value,255);
+        }
+
+        public static Bitmap getWindForecastTint(Bitmap arrowBitmap, ArrayList<WindData> windForecastList){
+            float bitmapSize = arrowBitmap.getHeight();
+            float lineWidth = bitmapSize / 5f;
+            if (arrowBitmap.getWidth()>bitmapSize){
+                bitmapSize = arrowBitmap.getWidth();
+            }
+            int alphaDecay = 180/windForecastList.size();
+            int alpha = 255;
+            RectF rectF = new RectF(0,0,bitmapSize,bitmapSize);
+            RectF rectF2 = new RectF(lineWidth/2,lineWidth/2,bitmapSize-lineWidth/2,bitmapSize-lineWidth/2);
+            Bitmap windForecastBitmap = Bitmap.createBitmap(Math.round(rectF.right),Math.round(rectF.bottom),Bitmap.Config.ARGB_8888);
+            Canvas windForecastCanvas = new Canvas();
+            windForecastCanvas.setBitmap(windForecastBitmap);
+            Paint arcPaint = new Paint();
+            for (int i=0; i<windForecastList.size()-1; i++){
+                arcPaint.setColor(getTintColor((int) (windForecastList.get(i).speed)));
+                arcPaint.setAlpha(alpha);
+                alpha = alpha - alphaDecay;
+                float startAngle = (float) windForecastList.get(i).getDirection();
+                float sweepAngle = getSweepAngleFromAbsoluteDegrees(startAngle,(float) windForecastList.get(i+1).getDirection());
+                windForecastCanvas.drawArc(rectF,startAngle-90-180,sweepAngle,true,arcPaint);
+                Paint blackPaint = new Paint();
+                blackPaint.setColor(Color.TRANSPARENT);
+                blackPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+                windForecastCanvas.drawArc(rectF2,startAngle-90-180,sweepAngle,true,blackPaint);
+            }
+            Paint xferPaint = new Paint();
+            xferPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+            windForecastCanvas.drawBitmap(arrowBitmap,(bitmapSize-arrowBitmap.getWidth())/2f,(bitmapSize-arrowBitmap.getHeight())/2f,xferPaint);
+            return windForecastBitmap;
+        }
+
+        public Bitmap getWindIcon(Context context, int iconType, boolean applyWindForecastTint, ArrayList<WindData> windForecastList){
+            Bitmap bitmap;
+            if (iconType==WindDisplayType.ARROW){
+                bitmap = getArrowBitmap(context);
+            } else {
+                bitmap = getBeaufortBitmap(context);
+            }
+            if ((applyWindForecastTint) && (windForecastList != null)){
+                bitmap = getWindForecastTint(bitmap,windForecastList);
+            }
+            return bitmap;
+        }
+
         public Bitmap getArrowBitmap(Context context){
             // wind direction is in ° and is the direction where the wind comes from.
             // new arrow icon neutral position is 0°.
@@ -343,7 +409,9 @@ public final class Weather {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.arrow);
                 if (bitmap != null){
                     Matrix m = new Matrix();
+                    Log.v("WFG","Wind: "+wind_direction.floatValue());
                     m.postRotate(wind_direction.floatValue());
+                    // draw the wind forecast
                     return Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
                 }
             }
@@ -1111,6 +1179,37 @@ public final class Weather {
         public final static int METRIC = 0;
         public final static int NAUTIC = 1;
         public final static int IMPERIAL = 2;
+    }
+
+    public static class WindData{
+        public long timestamp;
+        private double speed;
+        private double direction;
+
+        public WindData(){
+        }
+
+        public WindData(WeatherInfo weatherInfo){
+            this.timestamp = weatherInfo.timestamp;
+            if (weatherInfo.hasWindSpeed()){
+                this.speed = weatherInfo.wind_speed;
+            }
+            if (weatherInfo.hasWindDirection()){
+                this.direction = weatherInfo.wind_direction;
+            }
+        }
+
+        public double getSpeed(){
+            return speed;
+        }
+
+        public double getDirection(){
+            return direction;
+        }
+
+        public long getTimestamp(){
+            return timestamp;
+        }
     }
 
 }
