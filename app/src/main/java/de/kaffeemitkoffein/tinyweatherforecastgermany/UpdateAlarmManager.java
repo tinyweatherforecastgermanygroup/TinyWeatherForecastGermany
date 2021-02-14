@@ -54,8 +54,6 @@ public class UpdateAlarmManager {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static boolean updateAndSetAlarmsIfAppropriate(Context context, int update_mode){
-        // remove old entries from the data base
-        new Weather().cleanDataBase(context);
         WeatherSettings weatherSettings = new WeatherSettings(context);
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         /*
@@ -84,19 +82,9 @@ public class UpdateAlarmManager {
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.
             PrivateLog.log(context,Tag.ALARMMANAGER,"triggering weather update from API...");
-            /*
-            Intent intent = new Intent(context,WeatherUpdateService.class);
-            intent.putExtra(WeatherUpdateService.SERVICE_FORCEUPDATE,true);
-            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+
             try {
-                if (Build.VERSION.SDK_INT<26){
-                    context.startService(intent);
-                } else {
-                    context.startForegroundService(intent);
-                }
-                 */
-            try {
-                startDataUpdateService(context,true,false,false);
+                startDataUpdateService(context,true,WeatherSettings.updateWarnings(context),WeatherSettings.updateTextForecasts(context));
             } catch (SecurityException e){
                 PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService not started because of a SecurityException: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!

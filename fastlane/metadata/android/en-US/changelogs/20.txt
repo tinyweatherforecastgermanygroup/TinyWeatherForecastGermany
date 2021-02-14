@@ -1,2 +1,5 @@
 - fixed app crash when calling weather warnings for the first time under certain conditions
 - fixed wind direction remaining always the same in the 6-hourly forecasts, displaying the current wind direction
+- new arc in wind icon forecasts wind direction changes & wind speed
+- removed (meanwhile useless) aggressive update option
+- more detailed update notification, now showing a progress bar

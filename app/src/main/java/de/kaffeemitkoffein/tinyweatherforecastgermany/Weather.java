@@ -23,7 +23,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
-import android.util.Log;
 import org.astronomie.info.Astronomy;
 
 import java.text.SimpleDateFormat;
@@ -409,7 +408,6 @@ public final class Weather {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.arrow);
                 if (bitmap != null){
                     Matrix m = new Matrix();
-                    Log.v("WFG","Wind: "+wind_direction.floatValue());
                     m.postRotate(wind_direction.floatValue());
                     // draw the wind forecast
                     return Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
@@ -949,7 +947,7 @@ public final class Weather {
         return null;
     }
 
-    private int deleteWeatherDataSet(Context context, int i){
+    private static int deleteWeatherDataSet(Context context, int i){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         int rows = 0;
         try {
@@ -964,7 +962,7 @@ public final class Weather {
     public static final String[] SQL_COMMAND_QUERYTIMECOLUMN = {WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_timestamp,
                                                                 WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name};
 
-    private ArrayList<RawWeatherInfo> getTimestampArrayList(Context context) {
+    private static ArrayList<RawWeatherInfo> getTimestampArrayList(Context context) {
         WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         ArrayList<RawWeatherInfo> dataArrayList = new ArrayList<RawWeatherInfo>();
@@ -985,7 +983,7 @@ public final class Weather {
         return dataArrayList;
     }
 
-    private void cleanDataBase(Context context, ArrayList<RawWeatherInfo> data){
+    private static void cleanDataBase(Context context, ArrayList<RawWeatherInfo> data){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         int size = data.size();
         int deleted_count = 0;
@@ -999,7 +997,7 @@ public final class Weather {
         PrivateLog.log(context,Tag.DATABASE,"Garbage collected "+deleted_count+" data sets.");
     }
 
-    public void cleanDataBase(Context context){
+    public static void cleanDataBase(Context context){
         ArrayList<RawWeatherInfo> dataArrayList = getTimestampArrayList(context);
         if (dataArrayList != null){
             cleanDataBase(context,dataArrayList);

@@ -23,6 +23,35 @@ import android.graphics.Color;
 import java.util.ArrayList;
 
 public class WeatherWarning implements Comparable<WeatherWarning> {
+
+    public static class Severity{
+        final static String MINOR = "Minor";
+        final static String MODERATE = "Moderate";
+        final static String SEVERE = "Severe";
+        final static String EXTREME = "Extreme";
+
+        final static int MINOR_INT = 1;
+        final static int MODERATE_INT = 2;
+        final static int SEVERE_INT = 3;
+        final static int EXTREME_INT = 4;
+
+        public static int toInt(String value){
+            if (value.equals(MINOR)){
+                return MINOR_INT;
+            }
+            if (value.equals(MODERATE)){
+                return MODERATE_INT;
+            }
+            if (value.equals(SEVERE)){
+                return SEVERE_INT;
+            }
+            if (value.equals(EXTREME)){
+                return EXTREME_INT;
+            }
+            return 0;
+        }
+    }
+
     long polling_time;
     String identifier;      // id of the warning
     String sender;          // sender, usually "opendata@dwd.de"
@@ -156,16 +185,26 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
 
      */
 
+    /*
+     * Warnings are sorted by severity and timestamp.
+     */
+
     @Override
     public int compareTo(WeatherWarning w) {
-        if ((this.effective==0)||(w.effective==0)){
-            // when one of the objects has no effective time stamp, they are regarded "equal"
-            return 0;
-        }
-        if (this.effective<w.effective){
+        if ((Severity.toInt(this.severity) == Severity.toInt(w.severity))){
+            if ((this.effective==0)||(w.effective==0)){
+                // when one of the objects has no effective time stamp, they are regarded "equal"
+                return 0;
+            }
+            if (this.effective<w.effective){
+                return -1;
+            }
+            if (this.effective> w.effective){
+                return 1;
+            }
+        } else if (Severity.toInt(this.severity) > Severity.toInt(w.severity)){
             return -1;
-        }
-        if (this.effective> w.effective){
+        } else if (Severity.toInt(this.severity) < Severity.toInt(w.severity)){
             return 1;
         }
         return 0;

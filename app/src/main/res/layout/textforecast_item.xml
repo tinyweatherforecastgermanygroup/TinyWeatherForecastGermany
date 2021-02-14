@@ -31,11 +31,12 @@
 
     <ImageView
         android:id="@+id/textforecast_item_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
         android:layout_gravity="center"
+        android:layout_marginRight="10dp"
         android:src="@mipmap/ic_highlight_off_white_24dp"/>
 
     <TextView

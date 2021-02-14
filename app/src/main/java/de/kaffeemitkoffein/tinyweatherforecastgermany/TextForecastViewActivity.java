@@ -1,10 +1,14 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,12 +19,16 @@ public class TextForecastViewActivity extends Activity {
     public final static String TEXTFORECAST_ITEM = "DATA_TEXTFORECAST_ITEM";
     private final static String EMPTY_VALUE = "";
 
+    ActionBar actionBar;
+
     TextView title;
     TextView date;
     TextView subtitle;
     TextView body;
     ArrayList<TextForecast> textForecasts;
     int itemIndex;
+
+    private final static String SIS_ITEMINDEX = "SIS_ITEMINDEX";
 
     public class ForecastVisibility{
         public boolean titleVisible;
@@ -37,7 +45,7 @@ public class TextForecastViewActivity extends Activity {
 
         public ForecastVisibility(TextForecast textForecast){
             this.titleVisible = true; this.dateVisible = true; this.subtitleVisible=true; this.bodyVisible=true;
-            if (textForecast.type == TextForecast.Type.FEATURE){
+            if (textForecast.type == TextForecasts.Type.FEATURE){
                 this.subtitleVisible = false;
                 this.dateVisible = false;
             }
@@ -89,23 +97,79 @@ public class TextForecastViewActivity extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putInt(SIS_ITEMINDEX,itemIndex);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle restoreInstanceState){
+        super.onRestoreInstanceState(restoreInstanceState);
+        itemIndex = restoreInstanceState.getInt(SIS_ITEMINDEX,0);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textforecastview);
+        actionBar = getActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
+
         title = (TextView) findViewById(R.id.textforecastview_title);
         date = (TextView) findViewById(R.id.textforecastview_date);
         subtitle = (TextView) findViewById(R.id.textforecastview_subtitle);
         body = (TextView) findViewById(R.id.textforecastview_body);
         Intent intent = getIntent();
-        textForecasts = TextForecasts.getTextForecasts(this);
+        if (WeatherSettings.isTextForecastFilterEnabled(this)){
+            textForecasts = TextForecasts.getLatestTextForecastsOnly(this);
+        } else {
+            textForecasts = TextForecasts.getTextForecasts(this);
+        }
         itemIndex = 0;
+        if (savedInstanceState!=null){
+            itemIndex = savedInstanceState.getInt(SIS_ITEMINDEX,itemIndex);
+        } else
         if (intent.hasExtra(TEXTFORECAST_ITEM)){
             itemIndex = intent.getExtras().getInt(TEXTFORECAST_ITEM,0);
         }
-        if (savedInstanceState!=null){
-            itemIndex = savedInstanceState.getInt(TEXTFORECAST_ITEM,0);
-        }
         displayTextForecast(itemIndex);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.testforecastview_activity,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        int item_id = mi.getItemId();
+        if (item_id == R.id.textforecastview_back) {
+            if (itemIndex>0){
+                itemIndex--;
+                displayTextForecast(itemIndex);
+            }
+            return true;
+        }
+        if (item_id == R.id.textforecastview_next) {
+            if (itemIndex<textForecasts.size()-1){
+                itemIndex++;
+                displayTextForecast(itemIndex);
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(mi);
     }
 
     private void displayTextForecast(int position){

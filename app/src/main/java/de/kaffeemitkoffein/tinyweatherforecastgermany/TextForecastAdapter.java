@@ -88,11 +88,18 @@ public class TextForecastAdapter extends BaseAdapter {
         TextForecast textForecast = textForecasts.get(i);
         viewHolder.date.setText(textForecast.getIssued());
         viewHolder.number.setText(String.valueOf(i));
+        viewHolder.image.setImageDrawable(TextForecasts.getTextForecastDrawable(context,textForecast.type));
         if (textForecast.title!=null){
+            viewHolder.title.setVisibility(View.VISIBLE);
             viewHolder.title.setText(textForecast.title);
+        } else {
+            viewHolder.title.setVisibility(View.INVISIBLE);
         }
         if (textForecast.subtitle!=null){
+            viewHolder.subtitle.setVisibility(View.VISIBLE);
             viewHolder.subtitle.setText(textForecast.subtitle);
+        } else {
+            viewHolder.subtitle.setVisibility(View.INVISIBLE);
         }
         return view;
     }

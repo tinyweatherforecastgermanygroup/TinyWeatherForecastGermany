@@ -19,18 +19,12 @@
 
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
-
-import android.util.Log;
-
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class TextForecast implements Comparable<TextForecast>{
-
-    public static final String TEXT_WEBPATH = "https://opendata.dwd.de/weather/text_forecasts/txt/";
-    public static final String TEXT_WEBPATH_LEGACY = "http://opendata.dwd.de/weather/text_forecasts/txt/";
 
     public static final String TIMESTAMP_PATTERN="dd-MMM-yyyy HH:mm";
 
@@ -47,6 +41,7 @@ public class TextForecast implements Comparable<TextForecast>{
     */
 
     public String identifier;
+    public String webUrl;
     public String content;
     public String title;
     public String subtitle;
@@ -55,12 +50,6 @@ public class TextForecast implements Comparable<TextForecast>{
     public long issued;
     public long polled;
     public boolean outdated;
-
-    public static class Type{
-        public final static int FEATURE = 0;
-        public final static int KURZFRIST = 1;
-        public final static int MITTELFRIST = 2;
-    }
 
     public TextForecast(){
     }
@@ -124,8 +113,7 @@ public class TextForecast implements Comparable<TextForecast>{
     }
 
     public void parse(ArrayList<String> source){
-        Log.v("TEXTF","type "+this.type);
-        if (type==Type.FEATURE){
+        if (type==TextForecasts.Type.FEATURE){
             this.title = source.get(1);
             int textStartPosition=2;
             while (source.get(textStartPosition).equals("") && textStartPosition<source.size()){
@@ -133,14 +121,13 @@ public class TextForecast implements Comparable<TextForecast>{
             }
             this.subtitle = source.get(textStartPosition)+"…";
             getBody(source,textStartPosition);
-        } else if (type==Type.MITTELFRIST){
+        } else if (type==TextForecasts.Type.MITTELFRIST){
             // parse title
             this.title = fromSpaceFont(source.get(1));
             // pare issued text
             this.issued_text=source.get(3);
             // find first separator with "_"
             int subtitleEndPos=findFirstSeparator(source,"___");
-            Log.v("TEXTF","titleEndPos "+subtitleEndPos);
             StringBuilder stringBuilder = new StringBuilder();
             // hardcoded subtitle starts at line 6
             for (int i=6; i<subtitleEndPos; i++){
@@ -148,8 +135,7 @@ public class TextForecast implements Comparable<TextForecast>{
             }
             this.subtitle = stringBuilder.toString();
             getBody(source,subtitleEndPos+1);
-
-        } else if (type==Type.KURZFRIST){
+        } else if (type==TextForecasts.Type.KURZFRIST){
             // parse title
             this.title = fromSpaceFont(source.get(2));
             // pare issued text
@@ -167,25 +153,61 @@ public class TextForecast implements Comparable<TextForecast>{
             }
             this.subtitle = stringBuilder.toString();
             getBody(source,6);
+        } else if ((type == TextForecasts.Type.MARITIME_NORD_UND_OSTSEE) ||
+                   (type == TextForecasts.Type.MARITIME_DEUTSCHE_NORD_UND_OSTSEE)){
+            this.title = source.get(4);
+            this.subtitle = source.get(6);
+            this.issued_text = source.get(8);
+            getBody(source,10);
+        } else if (type == TextForecasts.Type.MARITIME_MITTELMEER){
+            this.title = source.get(4);
+            getBody(source,8);
+        } else if (type == TextForecasts.Type.MARITIME_NORD_UND_OSTSEE_MITTELFRIST){
+            this.title = source.get(6);
+            this.subtitle = source.get(8) + source.get(10);
+            this.issued_text = source.get(12);
+            getBody(source,13);
+        } else if (type == TextForecasts.Type.MARITIME_WARNING){
+            this.title = source.get(6);
+            this.subtitle = source.get(8);
+            getBody(source,10);
         }
         // todo: other formats + legacy fallback
     }
 
     private void getBody(ArrayList<String> source, int startPos){
         StringBuilder stringBuilder = new StringBuilder();
+        int emptyLineCounter=0;
         for (int i=startPos; i<source.size(); i++){
             String s = source.get(i);
             String target = s;
+            target = target.replace("\n","");
+            target = target.replace("\r","");
             // change empty lines to space
             if (target.length()<1){
                 target = target + " ";
-            } else
-            // sometimes lines end with a space and sometimes not
+                emptyLineCounter ++;
+            } else {
+                emptyLineCounter = 0;
+            }
+            // sometimes lines end with a space and sometimes not;
+            // always add a space at the end of the string before joining.
             if (!target.substring(target.length()-1).equals(" ")){
                 target = target + " ";
             }
             // detect new paragraphs
-            if (target.length()<42){
+            // maritime forecasts have far smaller columns
+            if ((type>=100) && (type<=104)){
+                if ((target.length()<3) && (emptyLineCounter>1)){
+                    target = target + System.getProperty("line.separator");
+                    // Log.v("TWFL","Maritime line seperator "+emptyLineCounter);
+                    emptyLineCounter =0;
+                }
+                if (target.contains(":")){
+                    target = System.getProperty("line.separator") + target;
+                }
+            // non-maritime texts have wider columns
+            } else if (target.length()<42){
                 target = target + System.getProperty("line.separator");
             }
             // ignore (inconsistent) md-like underlines
@@ -193,7 +215,8 @@ public class TextForecast implements Comparable<TextForecast>{
                 stringBuilder.append(target);
             }
         }
-        this.content = stringBuilder.toString();
+        this.content = removeDoubleSpaces(stringBuilder.toString());
+        //Log.v("TWFL",content);
     }
 
     public boolean setIssued(String timestring, int parsePosition){
@@ -214,14 +237,14 @@ public class TextForecast implements Comparable<TextForecast>{
 
     public String getUrlString(){
         if (this.identifier != null){
-            return TEXT_WEBPATH + this.identifier;
+            return webUrl + this.identifier;
         }
         return null;
     }
 
     public String getLegacyUrlString(){
         if (this.identifier != null){
-            return TEXT_WEBPATH_LEGACY + this.identifier;
+            return webUrl + this.identifier;
         }
         return null;
     }

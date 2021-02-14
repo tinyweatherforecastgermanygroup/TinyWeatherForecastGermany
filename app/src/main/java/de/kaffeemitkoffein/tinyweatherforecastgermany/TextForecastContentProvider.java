@@ -69,6 +69,7 @@ public class TextForecastContentProvider extends ContentProvider {
         public static final String TABLE_NAME = "tables";
         public static final String KEY_id = "id";
         public static final String KEY_identifier = "identifier";
+        public static final String KEY_weburl = "weburl";
         public static final String KEY_content = "content";
         public static final String KEY_title = "title";
         public static final String KEY_subtitle = "subtitle";
@@ -81,6 +82,7 @@ public class TextForecastContentProvider extends ContentProvider {
         public static final String SQL_COMMAND_CREATE = "CREATE TABLE " + TABLE_NAME + "("
                 + KEY_id + " INTEGER PRIMARY KEY ASC,"
                 + KEY_identifier + " TEXT,"
+                + KEY_weburl + " TEXT,"
                 + KEY_content + " TEXT,"
                 + KEY_title + " TEXT,"
                 + KEY_subtitle + " TEXT,"
@@ -126,6 +128,7 @@ public class TextForecastContentProvider extends ContentProvider {
     public ContentValues getContentValuesFromTextForecast(TextForecast textForecast) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TextForecastDatabaseHelper.KEY_identifier,textForecast.identifier);
+        contentValues.put(TextForecastDatabaseHelper.KEY_weburl,textForecast.webUrl);
         contentValues.put(TextForecastDatabaseHelper.KEY_content,textForecast.content);
         contentValues.put(TextForecastDatabaseHelper.KEY_title,textForecast.title);
         contentValues.put(TextForecastDatabaseHelper.KEY_subtitle,textForecast.subtitle);
@@ -143,6 +146,7 @@ public class TextForecastContentProvider extends ContentProvider {
         } else {
             TextForecast textForecast = new TextForecast();
             textForecast.identifier = c.getString(c.getColumnIndex(TextForecastDatabaseHelper.KEY_identifier));
+            textForecast.webUrl = c.getString(c.getColumnIndex(TextForecastDatabaseHelper.KEY_weburl));
             textForecast.content = c.getString(c.getColumnIndex(TextForecastDatabaseHelper.KEY_content));
             textForecast.title = c.getString(c.getColumnIndex(TextForecastDatabaseHelper.KEY_title));
             textForecast.subtitle = c.getString(c.getColumnIndex(TextForecastDatabaseHelper.KEY_subtitle));

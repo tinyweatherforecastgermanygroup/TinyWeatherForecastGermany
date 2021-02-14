@@ -36,4 +36,31 @@
         android:scrollbarSize="6dp"
         android:footerDividersEnabled="true"/>
 
+    <FrameLayout
+        android:id="@+id/textforecasts_floatcontainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:id="@+id/textforecasts_circlefloat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/circle"/>
+
+        <ImageView
+            android:id="@+id/textforecasts_filterfloat"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_filter_list_white_24dp"/>
+
+    </FrameLayout>
+
+
 </RelativeLayout>

@@ -2,7 +2,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,7 +17,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -338,6 +336,12 @@ public class APIReaders {
            return warnings;
        }
 
+       //* Override to do something before getting data starts
+
+       public void onStart(){
+           // do something
+       }
+
        public void onNegativeResult(){
            // do nothing at the moment.
        }
@@ -363,6 +367,7 @@ public class APIReaders {
 
        @Override
        public void run() {
+           onStart();
            ArrayList<WeatherWarning> weatherWarnings = doInBackground();
            onPostExecute(weatherWarnings);
        }
@@ -610,6 +615,12 @@ public class APIReaders {
             return null;
         }
 
+        //* Override to do something before getting data starts
+
+        public void onStart(){
+          // do something
+        }
+
         public void onNegativeResult(){
             // do nothing at the moment.
             PrivateLog.log(context,Tag.SERVICE2,"Failed getting data!");
@@ -646,6 +657,7 @@ public class APIReaders {
 
         @Override
         public void run() {
+            onStart();
             RawWeatherInfo rawWeatherInfo = doInBackground();
             onPostExecute(rawWeatherInfo);
         }
@@ -683,44 +695,41 @@ public class APIReaders {
         }
 
         private ArrayList<TextForecast> getTextForecastMetadata(){
-            ArrayList<String> index = getTextFromUrl(TextForecast.TEXT_WEBPATH);
-            ArrayList<TextForecast> texts = new ArrayList<TextForecast>();
-            if (index!=null){
-                Log.v("TEXTF","Sources not null");
-                for (int i=0; i<index.size(); i++){
-                    String s = index.get(i);
-                    if (s.contains("FPDL")) {
-                        TextForecast textForecast = new TextForecast();
-                        textForecast.setIssued(s,84);
-                        textForecast.identifier = s.substring(s.indexOf("FPDL"),s.indexOf("FPDL")+18);
-                        textForecast.type = TextForecast.Type.FEATURE;
-                        //Log.v("TEXTF",textForecast.web_url);
-                        texts.add(textForecast);
-                    }
-                    if (s.contains("SXDL")) {
-                        TextForecast textForecast = new TextForecast();
-                        textForecast.setIssued(s,84);
-                        textForecast.identifier = s.substring(s.indexOf("SXDL"),s.indexOf("SXDL")+18);
-                        //Log.v("TEXTF",textForecast.web_url);
-                        if (s.contains("SXDL31")){
-                            textForecast.type = TextForecast.Type.KURZFRIST;
+            ArrayList<TextForecast> textForecasts = new ArrayList<TextForecast>();
+            ArrayList<TextForecasts.TextForecastSource> fileSources = TextForecasts.getTextForecastSources(context);
+            for (int sourcePosition=0; sourcePosition<fileSources.size(); sourcePosition++){
+                ArrayList<String> index = getTextFromUrl(fileSources.get(sourcePosition).getWebPath(context));
+                if (index!=null) {
+                    for (int i = 0; i < index.size(); i++) {
+                        String s = index.get(i);
+                        TextForecasts.TextForecastFile forecastFile = fileSources.get(sourcePosition).getValidFile(s);
+                        if (forecastFile != null) {
+                            TextForecast textForecast = new TextForecast();
+                            textForecast.setIssued(s, 84);
+                            textForecast.identifier = s.substring(s.indexOf(forecastFile.filename), s.indexOf(forecastFile.filename)+22);
+                            if (textForecast.identifier.contains(">")){
+                                textForecast.identifier = textForecast.identifier.substring(0,18);
+                            }
+                            textForecast.webUrl = fileSources.get(sourcePosition).getWebPath(context);
+                            textForecast.type = forecastFile.type;
+                            textForecasts.add(textForecast);
                         }
-                        if (s.contains("SXDL33")){
-                            textForecast.type = TextForecast.Type.MITTELFRIST;
-                        }
-                        texts.add(textForecast);
                     }
                 }
-            } else {
-                Log.v("TEXTF","Sources are null");
             }
-            return texts;
+            return textForecasts;
         }
 
         public TextForecastRunnable(Context context) {
             this.context = context;
             // HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
             // InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+        }
+
+        //* Override to do something before getting data starts
+
+        public void onStart(){
+            // do something
         }
 
         public void onNegativeResult(){
@@ -739,23 +748,14 @@ public class APIReaders {
 
         @Override
         public void run() {
-            Log.v("TEXTF","Running");
+            onStart();
             ArrayList<TextForecast> textForecasts = getTextForecastMetadata();
-            for (int i=0; i<textForecasts.size(); i++){
-                Log.v("TEXTF","id: "+textForecasts.get(i).identifier+" type: "+textForecasts.get(i).type+ " url: "+textForecasts.get(i).getUrlString()+" @"+textForecasts.get(i).issued+" is "+textForecasts.get(i).getIssued());
-            }
             // determine which texts are new
             ArrayList<TextForecast> newTextForecasts = TextForecasts.getNewTextForecasts(context,textForecasts);
             PrivateLog.log(context,Tag.TEXTS,newTextForecasts.size()+ " new texts found in "+textForecasts.size()+ " available online.");
             for (int i=0;i<newTextForecasts.size(); i++){
                 // read text data from web and parse
                newTextForecasts.get(i).parse(getTextFromUrl(newTextForecasts.get(i).getUrlString()));
-                Log.v("TEXTF","-----------------");
-                Log.v("TEXTF","Type     : "+newTextForecasts.get(i).type);
-                Log.v("TEXTF","Title    : "+newTextForecasts.get(i).title);
-                Log.v("TEXTF","Sub-Title: "+newTextForecasts.get(i).subtitle);
-                //.v("TEXTF","Sub-Title: "+newTextForecasts.get(i).content);
-               // set timestamp
                newTextForecasts.get(i).polled = Calendar.getInstance().getTimeInMillis();
             }
             // save new texts to database

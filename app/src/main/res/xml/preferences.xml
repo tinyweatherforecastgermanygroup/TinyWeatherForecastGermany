@@ -122,6 +122,7 @@
                 android:entryValues="@array/display_wind_arc_period_values"
                 android:defaultValue="6"/>
 
+
         </PreferenceScreen>
 
             <ListPreference
@@ -131,6 +132,12 @@
                 android:entries="@array/display_distance_unit_text"
                 android:entryValues="@array/display_distance_unit_values"
                 android:defaultValue="0"/>
+
+            <CheckBoxPreference
+                android:key="PREF_display_station_geo"
+                android:title="@string/preference_display_station_geo_title"
+                android:summary="@string/preference_display_station_geo_summary"
+                android:defaultValue="true"/>
 
         </PreferenceScreen>
 
@@ -147,18 +154,6 @@
             android:entries="@array/updateinterval_text"
             android:entryValues="@array/updateinterval_values"
             android:defaultValue="24"/>
-
-        <CheckBoxPreference
-            android:key="PREF_aggressive_update"
-            android:title="@string/preference_set_aggresive_alarm_title"
-            android:summary="@string/preference_set_aggresive_alarm_summary"
-            android:defaultValue="false"/>
-
-        <CheckBoxPreference
-            android:key="PREF_display_station_geo"
-            android:title="@string/preference_display_station_geo_title"
-            android:summary="@string/preference_display_station_geo_summary"
-            android:defaultValue="true"/>
 
     </PreferenceCategory>
 

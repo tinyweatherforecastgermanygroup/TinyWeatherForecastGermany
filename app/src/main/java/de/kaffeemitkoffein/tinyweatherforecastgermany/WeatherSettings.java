@@ -55,7 +55,8 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_DISTANCE_UNIT = "PREF_display_distance_unit";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
-    public static final String PREF_AGGRESSIVE_UPDATE = "PREF_aggressive_update";
+    public static final String PREF_UPDATE_WARNINGS = "PREF_update_warnings";
+    public static final String PREF_UPDATE_TEXTFORECASTS = "PREF_update_textforecasts";
     public static final String PREF_WIDGET_OPACITY = "PREF_widget_opacity";
     public static final String PREF_WIDGET_SHOWDWDNOTE = "PREF_widget_showdwdnote";
     public static final String PREF_LAST_VERSION_CODE = "PREF_last_version_code";
@@ -73,6 +74,7 @@ public class WeatherSettings {
     public static final String PREF_USEGPS = "PREF_usegps";
     public static final String PREF_DISABLE_TLS = "PREF_disable_tls";
     public static final String PREF_TEXTFORECAST_LAST_UPDATE_TIME = "PREF_textforecast_last_update_time";
+    public static final String PREF_TEXTFORECAST_FILTER = "PREF_textforecast_filter";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -95,7 +97,8 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_WIND_UNIT_DEFAULT = "0";
     public static final String PREF_DISPLAY_DISTANCE_UNIT_DEFAULT = "0";
     public static final boolean PREF_SETALARM_DEFAULT = true;
-    public static final boolean PREF_AGGRESSIVE_UPDATE_DEFAULT = false;
+    public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
+    public static final boolean PREF_UPDATE_TEXTFORECASTS_DEFAULT = true;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
@@ -114,6 +117,7 @@ public class WeatherSettings {
     public static final boolean PREF_USEGPS_DEFAULT = false;
     public static final boolean PREF_DISABLE_TLS_DEFAULT = false;
     public static final long PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT = 0;
+    public static final boolean PREF_TEXTFORECAST_FILTER_DEFAULT = false;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -136,8 +140,9 @@ public class WeatherSettings {
     public String display_wind_unit = PREF_DISPLAY_WIND_UNIT_DEFAULT;
     public String display_distance_unit = PREF_DISPLAY_DISTANCE_UNIT_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
-    public boolean aggressive_update = PREF_AGGRESSIVE_UPDATE_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
+    public boolean update_warnings = PREF_UPDATE_WARNINGS_DEFAULT;
+    public boolean update_textforecasts = PREF_UPDATE_TEXTFORECASTS_DEFAULT;
     public String widget_opacity = PREF_WIDGET_OPACITY_DEFAULT;
     public boolean widget_showdwdnote = PREF_WIDGET_SHOWDWDNOTE_DEFAULT;
     public int last_version_code = PREF_LAST_VERSION_CODE_DEFAULT;
@@ -155,6 +160,7 @@ public class WeatherSettings {
     public boolean usegps = PREF_USEGPS_DEFAULT;
     public boolean disable_tls = PREF_DISABLE_TLS_DEFAULT;
     public long textforecast_last_update_time = PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT;
+    public boolean textforecast_filter = PREF_TEXTFORECAST_FILTER_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -187,8 +193,9 @@ public class WeatherSettings {
         this.display_wind_type = readPreference(PREF_DISPLAY_WIND_TYPE,PREF_DISPLAY_WIND_TYPE_DEFAULT);
         this.display_wind_unit = readPreference(PREF_DISPLAY_WIND_UNIT,PREF_DISPLAY_WIND_TYPE_DEFAULT);
         this.display_distance_unit = readPreference(PREF_DISPLAY_DISTANCE_UNIT,PREF_DISPLAY_DISTANCE_UNIT_DEFAULT);
-        this.aggressive_update = readPreference(PREF_AGGRESSIVE_UPDATE, PREF_AGGRESSIVE_UPDATE_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT);
+        this.update_warnings = readPreference(PREF_UPDATE_WARNINGS,PREF_UPDATE_WARNINGS_DEFAULT);
+        this.update_textforecasts = readPreference(PREF_UPDATE_TEXTFORECASTS,PREF_UPDATE_TEXTFORECASTS_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY, PREF_WIDGET_OPACITY_DEFAULT);
         this.widget_showdwdnote = readPreference(PREF_WIDGET_SHOWDWDNOTE, PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
         this.last_version_code = readPreference(PREF_LAST_VERSION_CODE, PREF_LAST_VERSION_CODE_DEFAULT);
@@ -205,6 +212,7 @@ public class WeatherSettings {
         this.usegps = readPreference(PREF_USEGPS,PREF_USEGPS_DEFAULT);
         this.disable_tls = readPreference(PREF_DISABLE_TLS,PREF_DISABLE_TLS_DEFAULT);
         this.textforecast_last_update_time = readPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
+        this.textforecast_filter = readPreference(PREF_TEXTFORECAST_FILTER,PREF_TEXTFORECAST_FILTER_DEFAULT);
     }
 
     public void savePreferences() {
@@ -229,8 +237,9 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
         applyPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
         applyPreference(PREF_SETALARM, this.setalarm);
-        applyPreference(PREF_AGGRESSIVE_UPDATE, this.aggressive_update);
         applyPreference(PREF_UPDATEINTERVAL, this.updateinterval);
+        applyPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
+        applyPreference(PREF_UPDATE_TEXTFORECASTS, this.update_textforecasts);
         applyPreference(PREF_WIDGET_OPACITY, this.widget_opacity);
         applyPreference(PREF_WIDGET_SHOWDWDNOTE, this.widget_showdwdnote);
         applyPreference(PREF_LAST_VERSION_CODE, this.last_version_code);
@@ -246,6 +255,7 @@ public class WeatherSettings {
         applyPreference(PREF_USEGPS,this.usegps);
         applyPreference(PREF_DISABLE_TLS,this.disable_tls);
         applyPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,this.textforecast_last_update_time);
+        applyPreference(PREF_TEXTFORECAST_FILTER,this.textforecast_filter);
     }
 
     public void commitPreferences() {
@@ -270,8 +280,9 @@ public class WeatherSettings {
         commitPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
         commitPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
         commitPreference(PREF_SETALARM, this.setalarm);
-        commitPreference(PREF_AGGRESSIVE_UPDATE, this.aggressive_update);
         commitPreference(PREF_UPDATEINTERVAL, this.updateinterval);
+        commitPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
+        commitPreference(PREF_UPDATE_TEXTFORECASTS, this.update_textforecasts);
         commitPreference(PREF_WIDGET_OPACITY, this.widget_opacity);
         commitPreference(PREF_WIDGET_SHOWDWDNOTE, this.widget_showdwdnote);
         commitPreference(PREF_LAST_VERSION_CODE, this.last_version_code);
@@ -287,6 +298,7 @@ public class WeatherSettings {
         commitPreference(PREF_USEGPS,this.usegps);
         commitPreference(PREF_DISABLE_TLS,this.disable_tls);
         commitPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,this.textforecast_last_update_time);
+        commitPreference(PREF_TEXTFORECAST_FILTER,this.textforecast_filter);
     }
 
     public String readPreference(String p, String d) {
@@ -589,6 +601,28 @@ public class WeatherSettings {
             // return default, is 6
             return 6;
         }
+    }
+
+    public static boolean isTextForecastFilterEnabled(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_TEXTFORECAST_FILTER, PREF_TEXTFORECAST_FILTER_DEFAULT);
+    }
+
+    public static void setTextForecastFilterEnabled(Context context, boolean b){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_TEXTFORECAST_FILTER, b);
+        pref_editor.apply();
+    }
+
+    public static boolean updateWarnings(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_UPDATE_WARNINGS, PREF_UPDATE_WARNINGS_DEFAULT);
+    }
+
+    public static boolean updateTextForecasts(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_UPDATE_TEXTFORECASTS, PREF_UPDATE_TEXTFORECASTS_DEFAULT);
     }
 
 }

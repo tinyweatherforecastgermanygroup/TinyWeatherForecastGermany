@@ -32,6 +32,7 @@ import android.view.*;
 import android.widget.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class WeatherWarningActivity extends Activity {
 
@@ -217,8 +218,11 @@ public class WeatherWarningActivity extends Activity {
         polygoncache = new ArrayList<Polygon>();
         excluded_polygoncache = new ArrayList<Polygon>();
         Canvas canvas = new Canvas(bitmap);
-        for (int warning_counter=0; warning_counter<weatherWarnings.size(); warning_counter++){
-            WeatherWarning warning = weatherWarnings.get(warning_counter);
+        ArrayList<WeatherWarning> drawWarnings = (ArrayList<WeatherWarning>) weatherWarnings.clone();
+        Collections.sort(drawWarnings);
+        Collections.reverse(drawWarnings);
+        for (int warning_counter=0; warning_counter<drawWarnings.size(); warning_counter++){
+            WeatherWarning warning = drawWarnings.get(warning_counter);
             warning.initPolygons();
             for (int polygon_counter=0; polygon_counter<warning.polygonlist.size(); polygon_counter++){
                 float[] polygonX = warning.polygonlist.get(polygon_counter).polygonX;
@@ -233,6 +237,7 @@ public class WeatherWarningActivity extends Activity {
                     }
                     Paint polypaint = new Paint();
                     polypaint.setColor(warning.getWarningColor());
+                    polypaint.setAlpha(128);
                     polypaint.setStyle(Paint.Style.FILL_AND_STROKE);
                     canvas.drawPath(path,polypaint);
                 }

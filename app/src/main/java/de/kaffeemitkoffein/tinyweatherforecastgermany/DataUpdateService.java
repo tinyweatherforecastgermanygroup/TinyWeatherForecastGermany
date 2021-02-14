@@ -19,6 +19,8 @@ public class DataUpdateService extends Service {
 
     private NotificationManager notificationManager;
     int notification_id;
+    Notification notification;
+    Notification.Builder notificationBuilder;
 
     public static String IC_ID = "WEATHER_NOTIFICATION";
     public static String IC_NAME = "Updating weather data";
@@ -33,6 +35,18 @@ public class DataUpdateService extends Service {
         public void run() {
             stopThisService();
         }
+    };
+
+    private Runnable cleanUpRunnable = new Runnable() {
+        @Override
+        public void run() {
+            updateNotification(3);
+            // remove old weather entries from the data base
+            Weather.cleanDataBase(getApplicationContext());
+            // remove old text forecasts
+            TextForecasts.cleanTextForecastDatabase(getApplicationContext());
+        }
+
     };
 
     private void stopThisService(){
@@ -50,7 +64,8 @@ public class DataUpdateService extends Service {
         PrivateLog.log(this,Tag.SERVICE2,"DataUpdateService started: onCreate");
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         notification_id = (int) Calendar.getInstance().getTimeInMillis();
-        startForeground(notification_id,getNotification());
+        notification = getNotification();
+        startForeground(notification_id,notification);
         PrivateLog.log(this,Tag.SERVICE2,"DataUpdateService is foreground now");
     }
 
@@ -68,6 +83,10 @@ public class DataUpdateService extends Service {
             Executor executor = Executors.newSingleThreadExecutor();
             if (updateWeather) {
                 APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(this){
+                    @Override
+                    public void onStart(){
+                        updateNotification(0);
+                    }
                     @Override
                     public void onPositiveResult(){
                         // update GadgetBridge and widgets
@@ -100,6 +119,10 @@ public class DataUpdateService extends Service {
             if (updateWarnings) {
                 APIReaders.WeatherWarningsRunnable weatherWarningsRunnable = new APIReaders.WeatherWarningsRunnable(this){
                     @Override
+                    public void onStart(){
+                        updateNotification(1);
+                    }
+                    @Override
                     public void onPositiveResult(ArrayList<WeatherWarning> warnings){
                         super.onPositiveResult(warnings);
                         PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings updated successfully.");
@@ -123,6 +146,10 @@ public class DataUpdateService extends Service {
             if (updateTextForecasts){
                 APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
                     @Override
+                    public void onStart(){
+                        updateNotification(3);
+                    }
+                    @Override
                     public void onPositiveResult(){
                         Intent intent = new Intent();
                         intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
@@ -132,8 +159,7 @@ public class DataUpdateService extends Service {
                 };
                 executor.execute(textForecastRunnable);
             }
-
-            // executor.execute(r3);
+            executor.execute(cleanUpRunnable);
             executor.execute(serviceTerminationRunnable);
         } else {
             // terminate immediately, because no intent with tasks delivered and/or no internet connection.
@@ -162,24 +188,40 @@ public class DataUpdateService extends Service {
         }
         // Generate a unique ID for the notification, derived from the current time. The tag ist static.
         Notification n;
+        notificationBuilder = new Notification.Builder(getApplicationContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            n = new Notification.Builder(getApplicationContext())
+            n = notificationBuilder
                     .setContentTitle(getResources().getString(R.string.service_notification_title))
-                    .setContentText(getResources().getString(R.string.service_notification_text))
+                    .setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text0)))
+                    //.setContentText(getResources().getString(R.string.service_notification_text0))
                     .setSmallIcon(R.mipmap.schirm_weiss)
                     .setAutoCancel(true)
                     .setOngoing(false)
+                    .setProgress(4,0,true)
                     .setChannelId(IC_ID)
                     .build();
         } else {
-            n = new Notification.Builder(getApplicationContext())
+            n = notificationBuilder
                     .setContentTitle(getResources().getString(R.string.service_notification_title))
-                    .setContentText(getResources().getString(R.string.service_notification_text))
+                    .setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text0)))
+                    // .setContentText(getResources().getString(R.string.service_notification_text0))
                     .setSmallIcon(R.mipmap.schirm_weiss)
+                    .setProgress(4,0,true)
                     .setAutoCancel(true)
                     .build();
         }
         return n;
+    }
+
+    private void updateNotification(int state){
+        notificationBuilder.setProgress(4,state,false);
+        switch (state){
+            case 0: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text0))); break;
+            case 1: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text1))); break;
+            case 2: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text2))); break;
+            case 3: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text3)));
+        }
+        notificationManager.notify(notification_id,notificationBuilder.build());
     }
 
     private boolean isConnectedToInternet(){

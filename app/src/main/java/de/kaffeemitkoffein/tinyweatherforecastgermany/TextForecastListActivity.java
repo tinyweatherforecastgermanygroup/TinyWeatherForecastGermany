@@ -24,9 +24,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +46,7 @@ public class TextForecastListActivity extends Activity {
 
     TextForecastAdapter textForecastAdapter;
     ListView textforecasts_listview;
+    ImageView floatButton;
     Context context;
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -63,6 +69,15 @@ public class TextForecastListActivity extends Activity {
         }
     };
 
+    View.OnClickListener floatClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            WeatherSettings.setTextForecastFilterEnabled(context,!WeatherSettings.isTextForecastFilterEnabled(context));
+            displayFloatButton();
+            showList();
+        }
+    };
+
     @Override
     protected void onResume() {
         registerForBroadcast();
@@ -81,6 +96,8 @@ public class TextForecastListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textforecastlist);
         context = getApplicationContext();
+        displayFloatButton();
+        floatButton.setOnClickListener(floatClickListener);
         // TESTING
         PrivateLog.log(this,"TWF","Testing");
         Executor executor = Executors.newSingleThreadExecutor();
@@ -101,13 +118,30 @@ public class TextForecastListActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<TextForecast> textForecasts = TextForecasts.getTextForecasts(context);
+                ArrayList<TextForecast> textForecasts;
+                if (WeatherSettings.isTextForecastFilterEnabled(context)) {
+                    textForecasts = TextForecasts.getLatestTextForecastsOnly(context);
+                } else {
+                    textForecasts = TextForecasts.getTextForecasts(context);
+                }
                 textForecastAdapter = new TextForecastAdapter(context,textForecasts);
                 textforecasts_listview = (ListView) findViewById(R.id.textforecasts_listview);
                 textforecasts_listview.setAdapter(textForecastAdapter);
                 textforecasts_listview.setOnItemClickListener(clickListener);
             }
         });
+    }
+
+    private void displayFloatButton(){
+        if (floatButton==null){
+            floatButton = (ImageView) findViewById(R.id.textforecasts_circlefloat);
+        }
+        GradientDrawable gradientDrawable = (GradientDrawable) floatButton.getDrawable();
+        if (WeatherSettings.isTextForecastFilterEnabled(context)){
+            gradientDrawable.setColorFilter(MainActivity.getColorFromResource(context,R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+        } else {
+            gradientDrawable.setColorFilter(MainActivity.getColorFromResource(context,R.color.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP);
+        }
     }
 
     private void registerForBroadcast(){
