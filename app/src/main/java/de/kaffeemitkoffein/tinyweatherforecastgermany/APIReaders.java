@@ -34,8 +34,7 @@ public class APIReaders {
 
        public WeatherWarningsRunnable(Context context) {
            this.context = context;
-           WeatherSettings weatherSettings = new WeatherSettings(context);
-           weatherLocation = weatherSettings.getSetStationLocation();
+           weatherLocation = WeatherSettings.getSetStationLocation(context);
        }
 
        public long getTimeStampFromString(String source){
@@ -403,8 +402,7 @@ public class APIReaders {
 
         public WeatherForecastRunnable(Context context){
             this.context = context;
-            WeatherSettings weatherSettings = new WeatherSettings(context);
-            this.weatherLocation = weatherSettings.getSetStationLocation();
+            this.weatherLocation = WeatherSettings.getSetStationLocation(context);
         }
 
         private InputStream getWeatherInputStream() throws IOException {

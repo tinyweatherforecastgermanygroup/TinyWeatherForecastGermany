@@ -24,6 +24,7 @@
     <string name="main_wait_for_gps_fix">Location is being determinded...</string>
     <string name="dwd_notice">Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual values.</string>
     <string name="dwd_warnings_notice">Data basis: Deutscher Wetterdienst, displaying condensed warnings. </string>
+    <string name="dwd_textforecast_notice">Data basis: Deutscher Wetterdienst, own elements added, layout changed.</string>
     <string name="new_station">Region changed to</string>
     <string name="license_button">License</string>
     <string name="update_button">Update</string>

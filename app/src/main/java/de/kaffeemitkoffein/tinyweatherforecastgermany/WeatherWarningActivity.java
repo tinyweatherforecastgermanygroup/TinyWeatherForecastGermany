@@ -72,7 +72,6 @@ public class WeatherWarningActivity extends Activity {
                 if (intent.hasExtra(WEATHER_WARNINGS_UPDATE_RESULT)){
                     // gets result if update was successful, currently not used
                     boolean updateResult = intent.getBooleanExtra(WEATHER_WARNINGS_UPDATE_RESULT,false);
-
                 }
             }
         }
@@ -136,7 +135,10 @@ public class WeatherWarningActivity extends Activity {
         int item_id = mi.getItemId();
         if (item_id == R.id.menu_refresh) {
             PrivateLog.log(this, Tag.MAIN, "starting update of weather warnings");
-            updateWarnings();
+            if (UpdateAlarmManager.updateWarnings(getApplicationContext(),true)){
+                // returns true if update service was launched sucessfully
+               showProgressBar();
+            }
             return true;
         }
         return super.onOptionsItemSelected(mi);
@@ -151,12 +153,6 @@ public class WeatherWarningActivity extends Activity {
         } else {
             actionBar.setSubtitle(getApplicationContext().getResources().getString(R.string.warnings_update_fail));
         }
-    }
-
-    public void updateWarnings(){
-        final Context this_context = getApplicationContext();
-        showProgressBar();
-        UpdateAlarmManager.startDataUpdateService(getApplicationContext(),false,true,false);
     }
 
     private void displayWarnings(){
@@ -186,7 +182,7 @@ public class WeatherWarningActivity extends Activity {
     private void updateWarningsIfNeeded(){
         if (WeatherSettings.areWarningsOutdated(getApplicationContext())){
             PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings outdated, getting new ones.");
-            updateWarnings();
+            UpdateAlarmManager.updateWarnings(getApplicationContext(),false);
         } else {
             PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings not outdated, recycling.");
             displayWarnings();

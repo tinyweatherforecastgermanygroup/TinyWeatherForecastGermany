@@ -61,8 +61,8 @@ public class MainActivity extends Activity {
 
     private ForecastAdapter forecastAdapter;
 
+    Context context;
     StationsManager stationsManager;
-
     ArrayList<String> spinnerItems;
     Spinner spinner;
 
@@ -78,6 +78,10 @@ public class MainActivity extends Activity {
 
     private Dialog whatsNewDialog;
     private boolean whatsNewDialogVisible=false;
+
+    Executor executor;
+
+    ArrayList<WeatherWarning> localWarnings;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -127,6 +131,59 @@ public class MainActivity extends Activity {
                 if (progressBar!=null){
                     progressBar.setVisibility(View.INVISIBLE);
                 }
+            }
+            if (intent.getAction().equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE)){
+                checkIfWarningsApply();
+            }
+        }
+    };
+
+    final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+            // weather settings must be read at the time of selection!
+            WeatherSettings weatherSettings = new WeatherSettings(context);
+            /*
+             * We found a bug; compare to https://developer.android.com/reference/android/widget/AdapterView.OnItemClickListener.
+             * pos is the same as id, returning the position of the clicked item from top like shown on the screen, but
+             * NOT the position in the adapter. We therefore have to get it manually from our own StationsManager class.
+             */
+            TextView tv = (TextView) view.findViewById(R.id.dropdown_textitem);
+            String station_description = tv.getText().toString();
+            Integer station_pos = stationsManager.getPositionFromDescription(station_description);
+            if (station_pos != null) {
+                if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall + 3000 < Calendar.getInstance().getTimeInMillis())) {
+                    newWeatherRegionSelected(weatherSettings,station_description);
+                    AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+                    if (autoCompleteTextView != null) {
+                        autoCompleteTextView.setText("");
+                        autoCompleteTextView.clearListSelection();
+                    }
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(autoCompleteTextView.getWindowToken(),0);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getText(R.string.station_does_not_exist), Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    final View.OnClickListener searchListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            // weather settings must be read at the time of selection!
+            WeatherSettings weatherSettings = new WeatherSettings(context);
+            AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+            String station_description = autoCompleteTextView.getText().toString();
+            Integer station_pos = stationsManager.getPositionFromDescription(station_description);
+            if (station_pos!=null){
+                // if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall+3000<Calendar.getInstance().getTimeInMillis())){
+                if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
+                    newWeatherRegionSelected(weatherSettings,station_description);
+                }
+            } else {
+                Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -181,6 +238,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
         setContentView(R.layout.activity_main);
         // disable log to logcat if release is not a userdebug
         disableLogToLogcatIfNotUserDebug();
@@ -190,7 +248,7 @@ public class MainActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
-
+        executor = Executors.newSingleThreadExecutor();
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             // remove shared preferences on app update if installed app is lower than build 6
@@ -201,20 +259,19 @@ public class MainActivity extends Activity {
         }
         final Context context = getApplicationContext();
 
-        final AdapterView.OnItemSelectedListener changeListener = new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        };
-
         stationsManager = new StationsManager(context);
         loadStationsSpinner();
         loadStationsData();
-
+        if (WeatherSettings.areWarningsOutdated(context) && WeatherSettings.updateWarnings(context)){
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    UpdateAlarmManager.updateWarnings(context,false);
+                }
+            });
+        } else {
+            checkIfWarningsApply();
+        }
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -440,79 +497,35 @@ public class MainActivity extends Activity {
     }
 
     public void loadStationsData(){
-        final Context context = this.getApplicationContext();
-        // for the textview
-        final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                // weather settings must be read at the time of selection!
-                WeatherSettings weatherSettings = new WeatherSettings(context);
-                /*
-                 * We found a bug; compare to https://developer.android.com/reference/android/widget/AdapterView.OnItemClickListener.
-                 * pos is the same as id, returning the position of the clicked item from top like shown on the screen, but
-                 * NOT the position in the adapter. We therefore have to get it manually from our own StationsManager class.
-                 */
-                TextView tv = (TextView) view.findViewById(R.id.dropdown_textitem);
-                String station_description = tv.getText().toString();
-                Integer station_pos = stationsManager.getPositionFromDescription(station_description);
-                if (station_pos != null) {
-                    if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall + 3000 < Calendar.getInstance().getTimeInMillis())) {
-                            newWeatherRegionSelected(weatherSettings,station_description);
-                            AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
-                            if (autoCompleteTextView != null) {
-                                autoCompleteTextView.setText("");
-                                autoCompleteTextView.clearListSelection();
-                            }
-                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(autoCompleteTextView.getWindowToken(),0);
-                            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getText(R.string.station_does_not_exist), Toast.LENGTH_LONG).show();
-                }
-            }
-        };
-        // for the search icon
-        final View.OnClickListener searchListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // weather settings must be read at the time of selection!
-                WeatherSettings weatherSettings = new WeatherSettings(context);
-                AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
-                String station_description = autoCompleteTextView.getText().toString();
-                Integer station_pos = stationsManager.getPositionFromDescription(station_description);
-                if (station_pos!=null){
-                    // if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall+3000<Calendar.getInstance().getTimeInMillis())){
-                    if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
-                        newWeatherRegionSelected(weatherSettings,station_description);
-                        }
-                } else {
-                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
-                }
-            }
-        };
-        stationsManager.new AsyncStationsReader(){
+        StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(context) {
             @Override
             public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
                 super.onLoadingListFinished(stations);
+                stationsManager.stations = stations;
                 station_descriptions_onlytext = new ArrayList<String>();
-                for (int j=0;j<stations.size(); j++){
+                for (int j = 0; j < stations.size(); j++) {
                     String stat_description = stations.get(j).description;
                     station_descriptions_onlytext.add(stat_description);
                 }
                 // text searcher
-                ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context,R.layout.custom_dropdown_item,station_descriptions_onlytext);
-                AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
-                autoCompleteTextView.setAdapter(stringArrayAdapter);
-                autoCompleteTextView.setCompletionHint(context.getResources().getString(R.string.actionbar_textinput_hint));
-                autoCompleteTextView.setDropDownWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-                autoCompleteTextView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-                autoCompleteTextView.setOnItemClickListener(clickListener);
-                // anchor search icon to search
-                ImageView search_icon = (ImageView) findViewById(R.id.actionbar_search_icon);
-                search_icon.setOnClickListener(searchListener);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.custom_dropdown_item, station_descriptions_onlytext);
+                        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+                        autoCompleteTextView.setAdapter(stringArrayAdapter);
+                        autoCompleteTextView.setCompletionHint(context.getResources().getString(R.string.actionbar_textinput_hint));
+                        autoCompleteTextView.setDropDownWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+                        autoCompleteTextView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                        autoCompleteTextView.setOnItemClickListener(clickListener);
+                        // anchor search icon to search
+                        ImageView search_icon = (ImageView) findViewById(R.id.actionbar_search_icon);
+                        search_icon.setOnClickListener(searchListener);
+                    }
+                });
             }
-        }.execute();
+        };
+        executor.execute(stationsReader);
     }
 
     private void testAPI_Worker(){
@@ -544,13 +557,14 @@ public class MainActivity extends Activity {
         final Context context = this;
         registerForBroadcast();
         if (stationsManager.getStationCount()==0){
-            stationsManager.new AsyncStationsReader(){
+            StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(context) {
                 @Override
                 public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
                     super.onLoadingListFinished(stations);
                     testAPI_Worker();
                 }
-            }.execute();
+            };
+            executor.execute(stationsReader);
         } else {
             testAPI_Worker();
         }
@@ -628,6 +642,9 @@ public class MainActivity extends Activity {
         //PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.weatherLocation.name);
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
+        if (localWarnings!=null){
+            forecastAdapter.setWarnings(localWarnings);
+        }
         weatherList.setAdapter(forecastAdapter);
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
    }
@@ -653,6 +670,26 @@ public class MainActivity extends Activity {
 
     public void forcedWeatherUpdate(){
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE);
+    }
+
+    private void checkIfWarningsApply(){
+        WeatherWarnings.getWarningsForLocationRunnable getWarningsForLocationRunnable = new WeatherWarnings.getWarningsForLocationRunnable(context,null,null){
+            @Override
+            public void onPositiveResult(ArrayList<WeatherWarning> result){
+                displayWarningsForLocation(result);
+            }
+
+            @Override
+            public void onNegativeResult(){
+                // nothing to do
+            }
+        };
+        executor.execute(getWarningsForLocationRunnable);
+    }
+
+    public void displayWarningsForLocation(ArrayList<WeatherWarning> result){
+        localWarnings = result;
+        displayWeatherForecast();
     }
 
     @SuppressWarnings("deprecation")
@@ -934,15 +971,15 @@ public class MainActivity extends Activity {
         final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
         if (stations.size()>0){
             calcualateClosestStations(stations,own_location);
-        } else
-        {
-            stationsManager. new AsyncStationsReader(){
+        } else {
+            StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(context) {
                 @Override
                 public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> new_stations) {
                     super.onLoadingListFinished(new_stations);
-                    calcualateClosestStations(stations,own_location);
+                    calcualateClosestStations(stations, own_location);
                 }
-            }.execute();
+            };
+            executor.execute(stationsReader);
         }
     }
 

@@ -31,7 +31,28 @@
         android:layout_gravity="center_horizontal"
         android:textAlignment="center"
         android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/fcitem_warningsymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_toRightOf="@id/fcitem_heading"
+        android:visibility="invisible"
+        android:src="@mipmap/warning_icon"/>
+
+    <TextView android:id="@+id/fcitem_warningtext"
+        android:textSize="@dimen/fcmain_textsize_medium"
+        android:textColor="@color/widget_textcolor"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:layout_below="@id/fcitem_heading"
+        android:text="WARNING \n\r WARNING"
+        android:singleLine="false"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
@@ -47,16 +68,14 @@
             android:textColor="@color/widget_textcolor"
             android:layout_gravity="right"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sunrise: 6:55"/>
+            android:layout_height="wrap_content"/>
 
         <TextView android:id="@+id/fcitem_rise2"
             android:textSize="@dimen/fcmain_textsize_medium"
             android:textColor="@color/widget_textcolor"
             android:layout_gravity="right"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Twilight: 5:30"/>
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <ImageView android:id="@+id/fcitem_sunet1"
@@ -86,7 +105,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:layout_below="@id/fcitem_heading"
+        android:layout_below="@id/fcitem_warningtext"
         android:layout_above="@id/fcitem_forecastbar"
         android:weightSum="3"
         android:gravity="center">
@@ -390,4 +409,12 @@
         android:layout_alignParentBottom="true"
         android:visibility="gone"
         android:background="@color/colorAccent"/>
+
+    <RelativeLayout
+        android:id="@+id/fcitem_popup_hook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fcitem_warningsymbol"
+        android:gravity="center"/>
+
 </RelativeLayout>

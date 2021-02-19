@@ -77,4 +77,57 @@ public class WeatherWarnings {
         PrivateLog.log(context,Tag.WARNINGS,i+" warnings removed from database.");
     }
 
+    public static ArrayList<WeatherWarning> getWarningsForLocation(ArrayList<WeatherWarning> warnings, Weather.WeatherLocation location){
+        ArrayList<WeatherWarning> result = new ArrayList<WeatherWarning>();
+        if (warnings!=null) {
+            for (int i=0; i<warnings.size(); i++){
+                if ((warnings.get(i).polygonlist==null) || (warnings.get(i).excluded_polygonlist==null)){
+                    warnings.get(i).initPolygons();
+                }
+                if (warnings.get(i).isInPolygonGeo((float) location.longitude,(float) location.latitude)){
+                    result.add(warnings.get(i));
+                }
+            }
+        }
+        return result;
+    }
+
+    public static class getWarningsForLocationRunnable implements Runnable{
+
+        private Context context;
+        private ArrayList<WeatherWarning> warnings;
+        private Weather.WeatherLocation location;
+
+        public getWarningsForLocationRunnable(Context context,ArrayList<WeatherWarning> warnings, Weather.WeatherLocation location){
+            this.context = context;
+            this.warnings = warnings;
+            this.location = location;
+            if (warnings==null){
+                this.warnings = WeatherWarnings.getCurrentWarnings(context);
+            }
+            if (location==null){
+                this.location = WeatherSettings.getSetStationLocation(context);
+            }
+        }
+
+        public void onPositiveResult(ArrayList<WeatherWarning> result){
+            // override this
+        }
+
+        public void onNegativeResult(){
+            // override this
+        }
+
+        @Override
+        public void run() {
+            ArrayList<WeatherWarning> result = getWarningsForLocation(warnings,location);
+            if (result.size()>0){
+                onPositiveResult(result);
+            } else {
+                onNegativeResult();
+            }
+        }
+    }
+
 }
+

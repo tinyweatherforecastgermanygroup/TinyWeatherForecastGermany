@@ -20,18 +20,18 @@
     package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
     import android.content.Context;
-    import android.graphics.Bitmap;
-    import android.graphics.BitmapFactory;
-    import android.graphics.Color;
+    import android.graphics.*;
+    import android.graphics.drawable.Drawable;
+    import android.text.SpannableString;
+    import android.text.SpannableStringBuilder;
+    import android.text.Spanned;
+    import android.text.style.ForegroundColorSpan;
+    import android.util.Log;
     import android.util.SparseArray;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
-    import android.widget.BaseAdapter;
-    import android.widget.ImageView;
-    import android.widget.LinearLayout;
-    import android.widget.RelativeLayout;
-    import android.widget.TextView;
+    import android.widget.*;
     import org.astronomie.info.Astronomy;
     import java.text.DecimalFormat;
     import java.text.SimpleDateFormat;
@@ -61,6 +61,8 @@
         private int display_wind_arc_perdiod;
         private LayoutInflater layoutInflater;
 
+        private ArrayList<WeatherWarning> warnings;
+
         private final String labelSunrise;
         private final String labelSunset;
         private final String labelTwilight;
@@ -87,10 +89,13 @@
             this.display_wind_arc = weatherSettings.display_wind_arc;
             this.display_wind_arc_perdiod = weatherSettings.getWindArcPeriod();
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
             this.labelSunrise = context.getResources().getString(R.string.sunrise);
             this.labelSunset = context.getResources().getString(R.string.sunset);
             this.labelTwilight = context.getResources().getString(R.string.twilight);
+        }
+
+        public void setWarnings(ArrayList<WeatherWarning> warnings){
+            this.warnings = warnings;
         }
 
         private final static int SCALE_CONDITION_ICON = 2;
@@ -133,6 +138,15 @@
             }
         }
 
+        private static void switchVisibility(final View view) {
+            if (view.getVisibility() != View.VISIBLE) {
+                view.setVisibility(View.VISIBLE);
+            } else {
+                view.setVisibility(View.GONE);
+            }
+        }
+
+
         static class ViewHolder {
             RelativeLayout main_container;
             TextView textView_heading;
@@ -155,6 +169,8 @@
             TextView rise2;
             ImageView sunset1;
             ImageView sunset2;
+            ImageView warningSymbol;
+            TextView warningText;
             View endofday_bar;
 
             public ViewHolder() {
@@ -204,6 +220,8 @@
             ImageView sunset1 = null;
             ImageView sunset2 = null;
             View endofday_bar = null;
+            ImageView warningSymbol = null;
+            TextView warningText = null;
             if (view == null) {
                 // view is not available from cache
                 newView = true;
@@ -233,6 +251,8 @@
                 sunset1 = viewHolder.sunset1;
                 sunset2 = viewHolder.sunset2;
                 endofday_bar = viewHolder.endofday_bar;
+                warningSymbol = viewHolder.warningSymbol;
+                warningText = viewHolder.warningText;
             }
             // now fill the item with content
             if (main_container==null) {
@@ -248,6 +268,7 @@
             // heading with time of day
             if (textView_heading==null){
                 textView_heading = (TextView) view.findViewById(R.id.fcitem_heading);
+                viewHolder.textView_heading = textView_heading;
             }
             long six_hours_ago = neededHoursAgo(weatherInfo);
             SimpleDateFormat format1 = new SimpleDateFormat("EE, dd.MM., HH:mm");
@@ -255,6 +276,31 @@
             SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
             String timetext2 = format2.format(new Date(weatherInfo.getTimestamp()));
             textView_heading.setText(timetext1+" - "+timetext2);
+            if (warningSymbol==null){
+                warningSymbol = (ImageView) view.findViewById(R.id.fcitem_warningsymbol);
+                viewHolder.warningSymbol = warningSymbol;
+            }
+            if (warningText==null){
+                warningText = (TextView) view.findViewById(R.id.fcitem_warningtext);
+                viewHolder.warningText = warningText;
+            }
+            ArrayList<WeatherWarning> applicableWarnings = getApplicableWarnings(weatherInfo);
+            if (applicableWarnings.size()>0){
+                Drawable drawable = warningSymbol.getDrawable();
+                drawable.mutate();
+                drawable.setColorFilter(applicableWarnings.get(0).getWarningColor(), PorterDuff.Mode.MULTIPLY);
+                warningSymbol.setVisibility(View.VISIBLE);
+                setMiniWarningsString(warningText,weatherInfo,applicableWarnings);
+            } else {
+                warningSymbol.setVisibility(View.INVISIBLE);
+            }
+            final View finalWarningText = warningText;
+            warningSymbol.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switchVisibility(finalWarningText);
+                }
+            });
             // left column
             if (textView_weathercondition==null){
                 textView_weathercondition = (TextView) view.findViewById(R.id.fcitem_weatherconditiontext);
@@ -727,7 +773,6 @@
             }
         }
 
-
         public static CharSequence getVisibilityString(Weather.WeatherInfo weatherInfo, int display_distance_unit) {
             StringBuilder s = new StringBuilder();
             CharSequence visibility = getVisibilityCharSequence(weatherInfo,display_distance_unit);
@@ -790,6 +835,38 @@
                 currentpos++;
             }
             return windData;
+        }
+
+        private ArrayList<WeatherWarning> getApplicableWarnings(Weather.WeatherInfo weatherInfo){
+            ArrayList<WeatherWarning> applicableWarnings = new ArrayList<WeatherWarning>();
+            if (warnings!=null){
+                long itemStartTime = neededHoursAgo(weatherInfo);
+                long itemStopTime = weatherInfo.getTimestamp();
+                for (int i=0; i<warnings.size(); i++){
+                    if ((itemStartTime>=warnings.get(i).onset) && (itemStopTime<=warnings.get(i).expires)){
+                        applicableWarnings.add(warnings.get(i));
+                    }
+                }
+            }
+            return applicableWarnings;
+        }
+
+        private void setMiniWarningsString(TextView textView, Weather.WeatherInfo weatherInfo, ArrayList<WeatherWarning> applicableWarnings){
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+            int textPosition = 0;
+            for (int i=0; i<applicableWarnings.size(); i++){
+                spannableStringBuilder.append(applicableWarnings.get(i).headline);
+                spannableStringBuilder.setSpan(new ForegroundColorSpan(applicableWarnings.get(i).getWarningColor()),textPosition,textPosition+applicableWarnings.get(i).headline.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                textPosition = textPosition + applicableWarnings.get(i).headline.length();
+                String s = System.getProperty("line.separator");
+                if ((s!=null) && (i<applicableWarnings.size()-1)){
+                    if (s.length()>0){
+                        spannableStringBuilder.append(s);
+                        textPosition = textPosition + s.length();
+                    }
+                }
+            }
+            textView.setText(spannableStringBuilder);
         }
 
     }

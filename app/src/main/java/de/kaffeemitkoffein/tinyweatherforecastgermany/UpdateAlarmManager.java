@@ -82,16 +82,15 @@ public class UpdateAlarmManager {
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.
             PrivateLog.log(context,Tag.ALARMMANAGER,"triggering weather update from API...");
-
             try {
                 startDataUpdateService(context,true,WeatherSettings.updateWarnings(context),WeatherSettings.updateTextForecasts(context));
             } catch (SecurityException e){
-                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService not started because of a SecurityException: "+e.getMessage());
+                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (weather forecasts) not started because of a SecurityException: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!
                 updateAppViews(context);
             }
             catch (IllegalStateException e){
-                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
+                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (weather forecasts) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!
                 updateAppViews(context);
             }
@@ -141,6 +140,27 @@ public class UpdateAlarmManager {
         return result;
     }
 
+    public static boolean updateWarnings(Context context, boolean forceUpdate){
+        if (WeatherSettings.areWarningsOutdated(context) || forceUpdate) {
+            try {
+                startDataUpdateService(context,false,true,false);
+                return true;
+            } catch (SecurityException e){
+                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
+                // views need to be updated from here, because starting service failed!
+                updateAppViews(context);
+                return false;
+            }
+            catch (IllegalStateException e){
+                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (warnings) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
+                // views need to be updated from here, because starting service failed!
+                updateAppViews(context);
+                return false;
+            }
+        }
+        return false;
+    }
+
     public static void updateAppViews(Context context){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         // update GadgetBridge
@@ -156,35 +176,6 @@ public class UpdateAlarmManager {
         weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,weatherSettings.views_last_update_time);
     }
 
-    public static boolean updateAndSetAlarmsIfAppropriate(Context context){
-        return updateAndSetAlarmsIfAppropriate(context,CHECK_FOR_UPDATE);
-    }
-
-    public static void setEarlyAlarm(Context context){
-        if (Build.VERSION.SDK_INT < 26) {
-            PrivateLog.log(context,Tag.ALARMMANAGER,"setting early alarm in "+EARLY_ALARM_TIME/1000+" seconds.");
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(context,WeatherUpdateBroadcastReceiver.class);
-            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-            intent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,PRIVATE_ALARM_IDENTIFIER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-            alarmManager.setExact(AlarmManager.ELAPSED_REALTIME,SystemClock.elapsedRealtime() + EARLY_ALARM_TIME,pendingIntent);
-        } else {
-            final JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-            Intent jobintent = new Intent(context,UpdateJobService.class);
-            jobintent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-            jobintent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
-            final JobWorkItem jobWorkItem = new JobWorkItem(jobintent);
-            final JobInfo jobInfo = new JobInfo.Builder(PRIVATE_JOBINFO_IDENTIFIER,new ComponentName(context,UpdateJobService.class))
-                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                    .setMinimumLatency(EARLY_ALARM_TIME)
-                    .build();
-            jobScheduler.enqueue(jobInfo,jobWorkItem);
-            PrivateLog.log(context,Tag.ALARMMANAGER,"early job enqueued in "+EARLY_ALARM_TIME/1000+"when network available.");
-        }
-    }
-
     public static void startDataUpdateService(final Context context, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts){
         Intent intent = new Intent(context,DataUpdateService.class);
         intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER,updateWeather);
@@ -192,6 +183,7 @@ public class UpdateAlarmManager {
         intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS,updateTextForecasts);
         intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         if (Build.VERSION.SDK_INT<26){
+
             context.startService(intent);
         } else {
             context.startForegroundService(intent);

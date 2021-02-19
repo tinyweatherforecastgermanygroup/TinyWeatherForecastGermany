@@ -32,14 +32,14 @@ import java.util.Collections;
 public class StationsManager {
 
     private Context context;
-    private ArrayList<Weather.WeatherLocation> stations = new ArrayList<Weather.WeatherLocation>();
+    public ArrayList<Weather.WeatherLocation> stations = new ArrayList<Weather.WeatherLocation>();
 
     public StationsManager(Context context){
         this.context = context;
         //readStations();
     }
 
-    private String getStationsStringFromResource(){
+    private static String getStationsStringFromResource(Context context){
         InputStream inputStream = context.getResources().openRawResource(R.raw.stations2);
         try {
             int size = inputStream.available();
@@ -53,8 +53,9 @@ public class StationsManager {
         }
     }
 
-    public ArrayList<Weather.WeatherLocation> readStations() {
-        String stationString = getStationsStringFromResource();
+    public static ArrayList<Weather.WeatherLocation> readStations(Context context) {
+        ArrayList<Weather.WeatherLocation> stations = new ArrayList<Weather.WeatherLocation>();
+        String stationString = getStationsStringFromResource(context);
         String[] station_items = stationString.split("\\|");
         int count = 0;
         for (int i = 0; i < station_items.length; i++) {
@@ -89,29 +90,27 @@ public class StationsManager {
      * 3. Höhe (altititude)
      */
 
-
-    public class AsyncStationsReader extends AsyncTask<Void, Void, ArrayList<Weather.WeatherLocation>> {
+    public static class StationsReader implements Runnable {
 
         private Context context;
         private WeatherSettings weatherSettings;
 
-        @Override
-        protected ArrayList<Weather.WeatherLocation> doInBackground(Void... voids) {
-            ArrayList<Weather.WeatherLocation> stations = readStations();
-            return stations;
+        public StationsReader(Context context){
+            this.context = context;
+            weatherSettings = new WeatherSettings(context);
         }
 
         public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> new_stations){
             // override as needed
-            stations = new_stations;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Weather.WeatherLocation> stations) {
-            super.onPostExecute(stations);
+        public void run() {
+            ArrayList<Weather.WeatherLocation> stations = readStations(context);
             onLoadingListFinished(stations);
         }
     }
+
 
     public ArrayList<Weather.WeatherLocation> getStations(){
         return stations;

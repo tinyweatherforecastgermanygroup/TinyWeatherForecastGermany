@@ -397,13 +397,14 @@ public class WeatherSettings {
         pref_editor.commit();
     }
 
-    public Weather.WeatherLocation getSetStationLocation() {
+    public static Weather.WeatherLocation getSetStationLocation(Context context) {
         Weather.WeatherLocation weatherLocation = new Weather.WeatherLocation();
-        weatherLocation.description = this.station_description;
-        weatherLocation.name = this.station_name;
-        weatherLocation.longitude = this.station_longitude;
-        weatherLocation.latitude = this.station_latitude;
-        weatherLocation.altitude = this.station_altitude;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        weatherLocation.description = sharedPreferences.getString(PREF_STATION_DESCRIPTION,PREF_STATION_DESCRIPTION_DEFAULT);
+        weatherLocation.name = sharedPreferences.getString(PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT);
+        weatherLocation.longitude = sharedPreferences.getFloat(PREF_STATION_LONGITUDE,(float) PREF_STATION_LONGITUDE_DEFAULT);
+        weatherLocation.latitude = sharedPreferences.getFloat(PREF_STATION_LATIDTUDE,(float) PREF_STATION_LATIDTUDE_DEFAULT);
+        weatherLocation.altitude = sharedPreferences.getFloat(PREF_STATION_ALTITUDE,(float) PREF_STATION_ALTITUDE_DEFAULT);
         return weatherLocation;
     }
 

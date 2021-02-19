@@ -24,6 +24,7 @@
     <string name="main_wait_for_gps_fix">Der Standort wird gerade ermittelt...</string>
     <string name="dwd_notice">Quelle: Deutscher Wetterdienst, eigene Elemente ergänzt, einige Einzelwerte gemittelt.</string>
     <string name="dwd_warnings_notice">Quelle: Deutscher Wetterdienst, Warnungen gekürzt dargestellt.</string>
+    <string name="dwd_textforecast_notice">Quelle: Deutscher Wetterdienst, eigene Elemente ergänzt, Layout geändert.</string>
     <string name="new_station">Region geändert zu </string>
     <string name="license_button">Lizenz</string>
     <string name="about_button">Datenschutz/Über...</string>

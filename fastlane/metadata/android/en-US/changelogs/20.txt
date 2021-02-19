@@ -3,3 +3,4 @@
 - new arc in wind icon forecasts wind direction changes & wind speed
 - removed (meanwhile useless) aggressive update option
 - more detailed update notification, now showing a progress bar
+- enhanced display of weather warnings
