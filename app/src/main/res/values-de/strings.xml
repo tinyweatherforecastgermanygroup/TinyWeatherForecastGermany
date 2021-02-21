@@ -77,6 +77,7 @@
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8">heiter</string>
     <string name="title_activity_warnings">Wetterwarnungen</string>
     <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_activity_textlist">Texte</string>
     <string name="clouds">Bewölkung: </string>
     <string name="rain">Niederschlag: </string>
     <string name="preference_category_general">Wetter-Daten</string>
@@ -241,4 +242,15 @@
     <string name="georeceive_error">Fehler: Geo-Koordinaten konnten nicht gelesen werden.</string>
     <string name="connerror_title">TLS-Probleme</string>
     <string name="connerror_message">Die App konnte keine verschlüsselte https Verbindung zum Open Data Server des DWD aufbauen. Verschlüsselung deaktivieren?</string>
+    <string name="textforecasttype_maritime_german_north_and_baltic">Maritim deutsche Nord- &amp; Ostsee</string>
+    <string name="textforecasttype_maritime_north_and_baltic">Maritim Nord- &amp; Ostsee</string>
+    <string name="textforecasttype_maritime_mediterranian">Maritim Mittelmeer</string>
+    <string name="textforecasttype_maritime_warning">Maritime Warnung</string>
+    <string name="textforecasttype_maritime_north_and_baltic_medium_term">Maritim Nord- &amp; Ostsee Mittelfrist</string>
+    <string name="textforecasttype_short_term">Wetter Kurzfrist</string>
+    <string name="textforecasttype_medium_term">Wetter Mittelfrist</string>
+    <string name="textforecasttype_medium_feature">Feature</string>
+    <string name="textforecasttype_medium_other">Sonstiges</string>
+
+
 </resources>

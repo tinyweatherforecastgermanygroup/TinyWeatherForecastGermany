@@ -19,6 +19,8 @@
 
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
+import android.content.Context;
+
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

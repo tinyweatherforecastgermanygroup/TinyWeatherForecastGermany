@@ -224,6 +224,39 @@ public class TextForecasts {
         return context.getResources().getDrawable(resource);
     }
 
+    public static String getTypeString(Context context, TextForecast textForecast) {
+        String result;
+        switch (textForecast.type) {
+            case TextForecasts.Type.MARITIME_DEUTSCHE_NORD_UND_OSTSEE:
+                result = context.getResources().getString(R.string.textforecasttype_maritime_german_north_and_baltic);
+                break;
+            case TextForecasts.Type.MARITIME_NORD_UND_OSTSEE:
+                result = context.getResources().getString(R.string.textforecasttype_maritime_north_and_baltic);
+                break;
+            case TextForecasts.Type.MARITIME_MITTELMEER:
+                result = context.getResources().getString(R.string.textforecasttype_maritime_mediterranian);
+                break;
+            case TextForecasts.Type.MARITIME_NORD_UND_OSTSEE_MITTELFRIST:
+                result = context.getResources().getString(R.string.textforecasttype_maritime_north_and_baltic_medium_term);
+                break;
+            case TextForecasts.Type.MARITIME_WARNING:
+                result = context.getResources().getString(R.string.textforecasttype_maritime_warning);
+                break;
+            case TextForecasts.Type.KURZFRIST:
+                result = context.getResources().getString(R.string.textforecasttype_short_term);
+                break;
+            case TextForecasts.Type.MITTELFRIST:
+                result = context.getResources().getString(R.string.textforecasttype_medium_term);
+                break;
+            case TextForecasts.Type.FEATURE:
+                result = context.getResources().getString(R.string.textforecasttype_medium_feature);
+                break;
+            default:
+                result = context.getResources().getString(R.string.textforecasttype_medium_other);
+        }
+        return result;
+    }
+
     public static ArrayList<TextForecastSource> getTextForecastSources(Context context){
         ArrayList<TextForecastSource> resultList = new ArrayList<TextForecastSource>();
         // construct the features and common forecasts

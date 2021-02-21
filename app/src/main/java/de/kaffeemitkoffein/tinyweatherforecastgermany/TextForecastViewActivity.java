@@ -2,25 +2,32 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TextForecastViewActivity extends Activity {
 
     public final static String TEXTFORECAST_ITEM = "DATA_TEXTFORECAST_ITEM";
     private final static String EMPTY_VALUE = "";
 
+    Context context;
     ActionBar actionBar;
-
+    RelativeLayout mainContainer;
     TextView title;
     TextView date;
     TextView subtitle;
@@ -122,13 +129,21 @@ public class TextForecastViewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textforecastview);
+        context = getApplicationContext();
         actionBar = getActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
-
+        actionBar.setCustomView(R.layout.actionbar_textforecastview);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_HOME_AS_UP);
         title = (TextView) findViewById(R.id.textforecastview_title);
         date = (TextView) findViewById(R.id.textforecastview_date);
         subtitle = (TextView) findViewById(R.id.textforecastview_subtitle);
         body = (TextView) findViewById(R.id.textforecastview_body);
+        mainContainer = (RelativeLayout) findViewById(R.id.actionbar_textforecastview_maincontainer);
+        mainContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         Intent intent = getIntent();
         if (WeatherSettings.isTextForecastFilterEnabled(this)){
             textForecasts = TextForecasts.getLatestTextForecastsOnly(this);
@@ -172,9 +187,26 @@ public class TextForecastViewActivity extends Activity {
         return super.onOptionsItemSelected(mi);
     }
 
+    public void updateActionBarLabels(TextForecast textForecast){
+        ImageView iconView = (ImageView) findViewById(R.id.actionbar_textforecastview_icon);
+        TextView typeView = (TextView) findViewById(R.id.actionbar_textforecastview_type);
+        TextView issuedView = (TextView) findViewById(R.id.actionbar_textforecastview_issued);
+        if (iconView!=null){
+            iconView.setImageDrawable(TextForecasts.getTextForecastDrawable(context,textForecast.type));
+        }
+        if (typeView!=null){
+            typeView.setText(TextForecasts.getTypeString(context,textForecast));
+        }
+        if (issuedView!=null){
+            final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+            issuedView.setText(simpleDateFormat.format(new Date(textForecast.issued)));
+        }
+    }
+
     private void displayTextForecast(int position){
         if (position<textForecasts.size()){
             TextForecast textForecast = textForecasts.get(position);
+            updateActionBarLabels(textForecast);
             ForecastVisibility forecastVisibility = new ForecastVisibility(textForecast);
             if (forecastVisibility.isTitleVisible()){
                 title.setVisibility(View.VISIBLE);

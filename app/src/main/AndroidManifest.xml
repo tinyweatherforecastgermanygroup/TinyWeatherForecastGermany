@@ -63,7 +63,7 @@
                   android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name=".TextForecastListActivity"
-            android:label="@string/app_name"
+            android:label="@string/title_activity_textlist"
             android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name=".TextForecastViewActivity"

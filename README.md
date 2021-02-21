@@ -19,8 +19,11 @@ Tiny Weather Forecast Germany is available from the F-Droid main repository. You
     alt="Get it on F-Droid"
     height="80">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
+**Alternative sources:**
+
 You can get the binary builds here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/qqao88LzSQ4rTeg>
 
+Or from the developer's own fdroid repo: https://kaffeemitkoffein.de/fdroid
 
 You get  userdebug builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/4SXHaLxLSmFd8Ri>
 

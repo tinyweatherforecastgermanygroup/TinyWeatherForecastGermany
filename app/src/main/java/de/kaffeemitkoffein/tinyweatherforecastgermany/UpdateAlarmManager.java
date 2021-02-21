@@ -161,6 +161,24 @@ public class UpdateAlarmManager {
         return false;
     }
 
+    public static boolean updateTexts(Context context){
+        try {
+            startDataUpdateService(context,false,false,true);
+            return true;
+        } catch (SecurityException e){
+            PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
+            // views need to be updated from here, because starting service failed!
+            updateAppViews(context);
+            return false;
+        }
+        catch (IllegalStateException e){
+            PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (warnings) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
+            // views need to be updated from here, because starting service failed!
+            updateAppViews(context);
+            return false;
+        }
+    }
+
     public static void updateAppViews(Context context){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         // update GadgetBridge

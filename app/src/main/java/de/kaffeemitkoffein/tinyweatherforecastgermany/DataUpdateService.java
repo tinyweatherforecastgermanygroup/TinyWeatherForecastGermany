@@ -147,7 +147,7 @@ public class DataUpdateService extends Service {
                 APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
                     @Override
                     public void onStart(){
-                        updateNotification(3);
+                        updateNotification(2);
                     }
                     @Override
                     public void onPositiveResult(){
@@ -155,6 +155,7 @@ public class DataUpdateService extends Service {
                         intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
                         intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT,true);
                         sendBroadcast(intent);
+                        WeatherSettings.setLastTextForecastsUpdateTime(getApplicationContext(),Calendar.getInstance().getTimeInMillis());
                     }
                 };
                 executor.execute(textForecastRunnable);

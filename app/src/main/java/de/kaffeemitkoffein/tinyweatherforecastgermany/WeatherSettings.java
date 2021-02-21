@@ -604,6 +604,18 @@ public class WeatherSettings {
         }
     }
 
+    public static void setLastTextForecastsUpdateTime(Context context, long time){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_TEXTFORECAST_LAST_UPDATE_TIME, time);
+        pref_editor.apply();
+    }
+
+    public static long getLastTextForecastsUpdateTime(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getLong(PREF_TEXTFORECAST_LAST_UPDATE_TIME, PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
+    }
+
     public static boolean isTextForecastFilterEnabled(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_TEXTFORECAST_FILTER, PREF_TEXTFORECAST_FILTER_DEFAULT);

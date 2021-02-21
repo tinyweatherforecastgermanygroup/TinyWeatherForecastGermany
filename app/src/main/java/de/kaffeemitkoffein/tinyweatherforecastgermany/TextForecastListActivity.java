@@ -19,23 +19,27 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -44,10 +48,12 @@ public class TextForecastListActivity extends Activity {
     final static public String ACTION_UPDATE_TEXTS = "ACTION_UPDATE_TEXTS";
     final static public String UPDATE_TEXTS_RESULT = "UPDATE_TEXTS_RESULT";
 
+    ArrayList<TextForecast> textForecasts;
     TextForecastAdapter textForecastAdapter;
     ListView textforecasts_listview;
     ImageView floatButton;
     Context context;
+    ActionBar actionBar;
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -96,6 +102,8 @@ public class TextForecastListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textforecastlist);
         context = getApplicationContext();
+        actionBar = getActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         displayFloatButton();
         floatButton.setOnClickListener(floatClickListener);
         // TESTING
@@ -114,16 +122,41 @@ public class TextForecastListActivity extends Activity {
         executor.execute(textForecastRunnable);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.textforecastlist,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem mi) {
+        int item_id = mi.getItemId();
+        if (item_id == R.id.menu_refresh) {
+            if (UpdateAlarmManager.updateTexts(context)){
+                // returns true if update service was launched sucessfully
+                // nothing to do
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(mi);
+    }
+
+
     private void showList(){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<TextForecast> textForecasts;
+                textForecasts = new ArrayList<TextForecast>();
                 if (WeatherSettings.isTextForecastFilterEnabled(context)) {
                     textForecasts = TextForecasts.getLatestTextForecastsOnly(context);
                 } else {
                     textForecasts = TextForecasts.getTextForecasts(context);
                 }
+                // update action bar
+                final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+                actionBar.setSubtitle(simpleDateFormat.format(new Date(WeatherSettings.getLastTextForecastsUpdateTime(context)))+" ("+textForecasts.size()+")");
+                // set adapter
                 textForecastAdapter = new TextForecastAdapter(context,textForecasts);
                 textforecasts_listview = (ListView) findViewById(R.id.textforecasts_listview);
                 textforecasts_listview.setAdapter(textForecastAdapter);
