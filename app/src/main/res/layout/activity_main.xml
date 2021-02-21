@@ -113,7 +113,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dwd_notice"
+            android:text="@string/dwd_notice_app"
             android:layout_alignParentBottom="true"
             android:textColor="@color/textColorGrey"
             android:background="@color/colorPrimary"

@@ -28,15 +28,21 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class WeatherWarningActivity extends Activity {
 
     ArrayList<WeatherWarning> weatherWarnings;
+    ArrayList<WeatherWarning> localWarnings;
+    Weather.WeatherLocation localStation;
+
     ArrayList<Polygon> polygoncache;
     ArrayList<Polygon> excluded_polygoncache;
     ImageView germany;
@@ -44,8 +50,11 @@ public class WeatherWarningActivity extends Activity {
     private GestureDetector gestureDetector;
     private View.OnTouchListener mapTouchListener;
     ListView weatherList;
+    WeatherWarningAdapter weatherWarningAdapter;
 
     ActionBar actionBar;
+
+    Executor executor;
 
     static float X_FACTOR;
     static float Y_FACTOR;
@@ -94,6 +103,8 @@ public class WeatherWarningActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weatherwarning);
+        executor = Executors.newSingleThreadExecutor();
+        localStation = WeatherSettings.getSetStationLocation(getApplicationContext());
         // action bar layout
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
@@ -171,9 +182,22 @@ public class WeatherWarningActivity extends Activity {
                 warningsDeprecated.setVisibility(View.GONE);
             }
         }
-        weatherList = (ListView) findViewById(R.id.warningactivity_listview);
-        WeatherWarningAdapter weatherWarningAdapter = new WeatherWarningAdapter(getApplicationContext(),weatherWarnings);
-        weatherList.setAdapter(weatherWarningAdapter);
+        WeatherWarnings.getWarningsForLocationRunnable getWarningsForLocationRunnable = new WeatherWarnings.getWarningsForLocationRunnable(getApplicationContext(),null,null) {
+            @Override
+            public void onResult(ArrayList<WeatherWarning> result) {
+                localWarnings = result;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        weatherList = (ListView) findViewById(R.id.warningactivity_listview);
+                        weatherWarningAdapter = new WeatherWarningAdapter(getApplicationContext(),weatherWarnings);
+                        weatherWarningAdapter.setLocalWarnings(localWarnings);
+                        weatherList.setAdapter(weatherWarningAdapter);
+                    }
+                });
+            }
+        };
+        executor.execute(getWarningsForLocationRunnable);
         if (weatherWarnings!=null){
             displayMap();
         }
@@ -198,6 +222,7 @@ public class WeatherWarningActivity extends Activity {
         return MAP_HEIGHT - ((y_coordinate-Y_GEO_MAPOFFSET) * Y_FACTOR);
     }
 
+    @SuppressWarnings("unchecked")
     private void displayMap(){
         Bitmap resource_bitmap;
         if (isDeviceLandscape()){
@@ -230,6 +255,8 @@ public class WeatherWarningActivity extends Activity {
                     path.moveTo(getX(polygonX[0]),getY(polygonY[0]));
                     for (int vertex_count=1; vertex_count<polygonX.length; vertex_count++){
                         path.lineTo(getX(polygonX[vertex_count]),getY(polygonY[vertex_count]));
+                        Log.v("TWFG","VERTEX LAT= "+polygonX[vertex_count]+" LONG="+polygonY[vertex_count]);
+                        Log.v("TWFG","VERTEX X= "+getX(polygonX[vertex_count])+" Y="+getY(polygonY[vertex_count]));
                     }
                     Paint polypaint = new Paint();
                     polypaint.setColor(warning.getWarningColor());
@@ -258,9 +285,24 @@ public class WeatherWarningActivity extends Activity {
                 }
             }
         }
+        // draw pin
+        Paint pinpaint = new Paint();
+        pinpaint.setColor(Color.BLUE);
+        pinpaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        pinpaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
+        float pinX = getX((float) localStation.latitude);
+        float pinY = getY((float) localStation.longitude);
+        Log.v("TWFG","LAT= "+localStation.latitude+" LONG="+localStation.longitude);
+        Log.v("TWFG","X= "+pinX+" Y="+pinY);
+        Bitmap pinBitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.pin);
+        canvas.drawBitmap(pinBitmap,pinX,pinY-pinBitmap.getHeight(),pinpaint);
+        //canvas.drawCircle(pinX,pinY,500,pinpaint);
+        //canvas.drawCircle(300,300,500,pinpaint);
+
         Paint cp = new Paint();
         cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
         canvas.drawBitmap(resource_bitmap, 0,0,cp);
+        // set listener
         germany = (ImageView) findViewById(R.id.warningactivity_map);
         germany.setImageBitmap(bitmap);
         gestureDetector = new GestureDetector(this,new MapGestureListener());

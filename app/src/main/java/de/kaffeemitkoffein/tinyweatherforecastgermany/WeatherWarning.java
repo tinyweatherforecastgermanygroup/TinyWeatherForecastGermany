@@ -20,6 +20,8 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.graphics.Color;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class WeatherWarning implements Comparable<WeatherWarning> {
@@ -124,6 +126,7 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         for (int j=0; j<excluded_polygons.size(); j++){
             Polygon polygon = new Polygon(excluded_polygons.get(j));
             if (polygon.isInPolygon(testx,testy)){
+                Log.v("TWFG","excloded polygon");
                 return false;
             }
         }
@@ -135,7 +138,12 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
             }
         }
         // otherwise false
+        Log.v("TWFG","not found");
         return false;
+    }
+
+    public boolean isInPolygonGeo(Weather.WeatherLocation weatherLocation){
+        return isInPolygonGeo((float) weatherLocation.latitude,(float) weatherLocation.longitude);
     }
 
     public int getWarningColor(){

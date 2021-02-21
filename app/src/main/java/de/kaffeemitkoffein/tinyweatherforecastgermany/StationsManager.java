@@ -64,8 +64,8 @@ public class StationsManager {
             weatherLocation.description = station_values[0];
             weatherLocation.name = station_values[1];
             String[] station_coordinates = station_values[2].split(",");
-            weatherLocation.longitude = Location.convert(station_coordinates[0]);
-            weatherLocation.latitude = Location.convert(station_coordinates[1]);
+            weatherLocation.latitude = Location.convert(station_coordinates[0]);
+            weatherLocation.longitude = Location.convert(station_coordinates[1]);
             weatherLocation.altitude = Location.convert(station_coordinates[2]);
             stations.add(weatherLocation);
             count++;
@@ -85,8 +85,8 @@ public class StationsManager {
      * Angaben in den DWD-Daten:
      * z.B.: HAMBURG INNENSTADT;P0489;9.98,53.55,8.0
      *  Angabe in +/- Graden
-     * 1. Längengrad (longitude)
-     * 2. Breitengrad (latitude)
+     * 1. Breitengrad (latitude)
+     * 2. Längengrad (longitude)
      * 3. Höhe (altititude)
      */
 

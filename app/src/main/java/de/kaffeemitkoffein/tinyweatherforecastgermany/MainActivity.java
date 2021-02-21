@@ -282,7 +282,8 @@ public class MainActivity extends Activity {
                 if (key.equals(WeatherSettings.PREF_STATION_NAME)){
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
                     getWeatherForecast();
-                    AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+                    // update warnings async
+                    checkIfWarningsApply();
                     // notify GadgetBridge
                     GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
                     gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
@@ -404,10 +405,8 @@ public class MainActivity extends Activity {
         PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
         last_updateweathercall = Calendar.getInstance().getTimeInMillis();
         addToSpinner(station_description);
-        addToSpinner(station_description);
         // we do not get the forecast data here since this triggers the preference-changed-listener. This
         // listener takes care of the weather data update and updates widgets and gadgetbridge.
-        // getWeatherForecast();
         AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
         if (autoCompleteTextView!=null){
             autoCompleteTextView.setText("");
@@ -673,23 +672,28 @@ public class MainActivity extends Activity {
     }
 
     private void checkIfWarningsApply(){
+        // invalidate current warnings
+        localWarnings = null;
+        if (forecastAdapter!=null){
+            forecastAdapter.setWarnings(null);
+        }
+        // determine new warnings async
         WeatherWarnings.getWarningsForLocationRunnable getWarningsForLocationRunnable = new WeatherWarnings.getWarningsForLocationRunnable(context,null,null){
             @Override
-            public void onPositiveResult(ArrayList<WeatherWarning> result){
-                displayWarningsForLocation(result);
-            }
-
-            @Override
-            public void onNegativeResult(){
-                // nothing to do
+            public void onResult(ArrayList<WeatherWarning> result){
+                localWarnings = result;
+                if (forecastAdapter!=null){
+                    forecastAdapter.setWarnings(localWarnings);
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayWeatherForecast(weatherCard);
+                    }
+                });
             }
         };
         executor.execute(getWarningsForLocationRunnable);
-    }
-
-    public void displayWarningsForLocation(ArrayList<WeatherWarning> result){
-        localWarnings = result;
-        displayWeatherForecast();
     }
 
     @SuppressWarnings("deprecation")

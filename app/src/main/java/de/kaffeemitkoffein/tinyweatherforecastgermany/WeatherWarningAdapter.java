@@ -20,6 +20,8 @@
     package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
     import android.content.Context;
+    import android.graphics.Color;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -38,11 +40,29 @@
         LayoutInflater layoutInflater;
         Context context;
         ArrayList<WeatherWarning> weatherWarnings;
+        ArrayList<WeatherWarning> localWarnings;
+        Weather.WeatherLocation stationLocation;
 
         public WeatherWarningAdapter(Context context, ArrayList<WeatherWarning> weatherWarnings){
             this.context = context;
             this.weatherWarnings = weatherWarnings;
+            this.stationLocation = WeatherSettings.getSetStationLocation(context);
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        public void setLocalWarnings(ArrayList<WeatherWarning> localWarnings){
+            this.localWarnings = localWarnings;
+        }
+
+        private boolean isInLocalWarnings(WeatherWarning warning){
+            if (localWarnings!=null){
+                for (int i=0; i<localWarnings.size(); i++){
+                    if (localWarnings.get(i).identifier.equals(warning.identifier)){
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         static class ViewHolder{
@@ -122,6 +142,15 @@
                 view.setTag(viewHolder);
             }
             WeatherWarning warning = weatherWarnings.get(i);
+            warning.initPolygons();
+            if (isInLocalWarnings(warning)){
+                int color = warning.getWarningColor();
+                color = Color.rgb(Math.round(Color.red(color)/3.5f),Math.round(Color.green(color)/3.5f),Math.round(Color.blue(color)/3.5f));
+                //viewHolder.warning_item_maincontainer.setBackgroundColor(MainActivity.getColorFromResource(context,R.color.colorPrimaryLight));
+                viewHolder.warning_item_maincontainer.setBackgroundColor(color);
+            } else {
+                viewHolder.warning_item_maincontainer.setBackgroundColor(MainActivity.getColorFromResource(context,R.color.colorPrimary));
+            }
             String line1 = new String();
             if (warning.effective!=0){
                 viewHolder.warning_item_effective.setText(formatTime(warning.effective));
@@ -157,7 +186,6 @@
                 viewHolder.warning_item_certainty.setText(warning.certainty);
                 viewHolder.warning_item_certainty.setTextColor(warning.getWarningColor());
             }
-
             String line3 = new String();
             if (warning.area_names!=null){
                 for (int j=0; j<warning.area_names.size(); j++){

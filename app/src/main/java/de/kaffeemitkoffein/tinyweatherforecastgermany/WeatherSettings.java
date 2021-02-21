@@ -78,8 +78,8 @@ public class WeatherSettings {
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
-    public static final double PREF_STATION_LONGITUDE_DEFAULT = 9.98;
-    public static final double PREF_STATION_LATIDTUDE_DEFAULT = 53.55;
+    public static final double PREF_STATION_LONGITUDE_DEFAULT = 53.55;
+    public static final double PREF_STATION_LATITUDE_DEFAULT = 9.98;
     public static final double PREF_STATION_ALTITUDE_DEFAULT = 8.0;
     public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
     public static final String PREF_DISPLAY_TYPE_DEFAULT = "3";
@@ -122,8 +122,8 @@ public class WeatherSettings {
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
     public double station_longitude = PREF_STATION_LONGITUDE_DEFAULT;
-    public double station_latitude = PREF_STATION_LATIDTUDE_DEFAULT;
-    public double station_altitude = PREF_STATION_LATIDTUDE_DEFAULT;
+    public double station_latitude = PREF_STATION_LATITUDE_DEFAULT;
+    public double station_altitude = PREF_STATION_ALTITUDE_DEFAULT;
     public boolean display_station_geo = PREF_DISPLAY_STATION_GEO_DEFAULT;
     public String display_type = PREF_DISPLAY_TYPE_DEFAULT;
     public String display_layout = PREF_DISPLAY_LAYOUT_DEFAULT;
@@ -175,7 +175,7 @@ public class WeatherSettings {
         this.station_description = readPreference(PREF_STATION_DESCRIPTION, PREF_STATION_DESCRIPTION_DEFAULT);
         this.station_name = readPreference(PREF_STATION_NAME, PREF_STATION_NAME_DEFAULT);
         this.station_longitude = readPreference(PREF_STATION_LONGITUDE, PREF_STATION_LONGITUDE_DEFAULT);
-        this.station_latitude = readPreference(PREF_STATION_LATIDTUDE, PREF_STATION_LATIDTUDE_DEFAULT);
+        this.station_latitude = readPreference(PREF_STATION_LATIDTUDE, PREF_STATION_LATITUDE_DEFAULT);
         this.station_altitude = readPreference(PREF_STATION_ALTITUDE, PREF_STATION_ALTITUDE_DEFAULT);
         this.setalarm = readPreference(PREF_SETALARM, PREF_SETALARM_DEFAULT);
         this.display_station_geo = readPreference(PREF_DISPLAY_STATION_GEO, PREF_DISPLAY_STATION_GEO_DEFAULT);
@@ -403,7 +403,7 @@ public class WeatherSettings {
         weatherLocation.description = sharedPreferences.getString(PREF_STATION_DESCRIPTION,PREF_STATION_DESCRIPTION_DEFAULT);
         weatherLocation.name = sharedPreferences.getString(PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT);
         weatherLocation.longitude = sharedPreferences.getFloat(PREF_STATION_LONGITUDE,(float) PREF_STATION_LONGITUDE_DEFAULT);
-        weatherLocation.latitude = sharedPreferences.getFloat(PREF_STATION_LATIDTUDE,(float) PREF_STATION_LATIDTUDE_DEFAULT);
+        weatherLocation.latitude = sharedPreferences.getFloat(PREF_STATION_LATIDTUDE,(float) PREF_STATION_LATITUDE_DEFAULT);
         weatherLocation.altitude = sharedPreferences.getFloat(PREF_STATION_ALTITUDE,(float) PREF_STATION_ALTITUDE_DEFAULT);
         return weatherLocation;
     }

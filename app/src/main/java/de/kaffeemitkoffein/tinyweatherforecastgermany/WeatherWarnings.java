@@ -84,7 +84,7 @@ public class WeatherWarnings {
                 if ((warnings.get(i).polygonlist==null) || (warnings.get(i).excluded_polygonlist==null)){
                     warnings.get(i).initPolygons();
                 }
-                if (warnings.get(i).isInPolygonGeo((float) location.longitude,(float) location.latitude)){
+                if (warnings.get(i).isInPolygonGeo((float) location.latitude,(float) location.longitude)){
                     result.add(warnings.get(i));
                 }
             }
@@ -110,22 +110,14 @@ public class WeatherWarnings {
             }
         }
 
-        public void onPositiveResult(ArrayList<WeatherWarning> result){
-            // override this
-        }
-
-        public void onNegativeResult(){
+        public void onResult(ArrayList<WeatherWarning> result){
             // override this
         }
 
         @Override
         public void run() {
             ArrayList<WeatherWarning> result = getWarningsForLocation(warnings,location);
-            if (result.size()>0){
-                onPositiveResult(result);
-            } else {
-                onNegativeResult();
-            }
+            onResult(result);
         }
     }
 

@@ -276,6 +276,7 @@
             SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
             String timetext2 = format2.format(new Date(weatherInfo.getTimestamp()));
             textView_heading.setText(timetext1+" - "+timetext2);
+            // handle warnings
             if (warningSymbol==null){
                 warningSymbol = (ImageView) view.findViewById(R.id.fcitem_warningsymbol);
                 viewHolder.warningSymbol = warningSymbol;
@@ -283,6 +284,7 @@
             if (warningText==null){
                 warningText = (TextView) view.findViewById(R.id.fcitem_warningtext);
                 viewHolder.warningText = warningText;
+                warningText.setVisibility(View.GONE);
             }
             ArrayList<WeatherWarning> applicableWarnings = getApplicableWarnings(weatherInfo);
             if (applicableWarnings.size()>0){
@@ -292,13 +294,21 @@
                 warningSymbol.setVisibility(View.VISIBLE);
                 setMiniWarningsString(warningText,weatherInfo,applicableWarnings);
             } else {
-                warningSymbol.setVisibility(View.INVISIBLE);
+                warningSymbol.setVisibility(View.GONE);
+                warningText.setText("");
             }
             final View finalWarningText = warningText;
             warningSymbol.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    switchVisibility(finalWarningText);
+                    //switchVisibility(finalWarningText);
+                    setVisibility(finalWarningText,View.VISIBLE);
+                    finalWarningText.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finalWarningText.setVisibility(View.GONE);
+                        };
+                    },(long) 6000);
                 }
             });
             // left column
@@ -843,7 +853,8 @@
                 long itemStartTime = neededHoursAgo(weatherInfo);
                 long itemStopTime = weatherInfo.getTimestamp();
                 for (int i=0; i<warnings.size(); i++){
-                    if ((itemStartTime>=warnings.get(i).onset) && (itemStopTime<=warnings.get(i).expires)){
+                    if ((warnings.get(i).onset<=itemStopTime) && (warnings.get(i).expires>=itemStartTime)){
+                        Log.v("TWFG","WARNING: "+warnings.get(i).headline);
                         applicableWarnings.add(warnings.get(i));
                     }
                 }
