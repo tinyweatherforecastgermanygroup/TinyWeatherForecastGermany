@@ -21,7 +21,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class RawWeatherInfo{
     long polling_time;       // polling time from API in millis UTC
@@ -305,7 +304,8 @@ public class RawWeatherInfo{
 
     public int getNextMidnightAfterCurrentForecastPosition(){
         // construct calendar with next midnight from the current position.
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        // Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(getTime(getCurrentForecastPosition()));
         calendar.add(Calendar.DAY_OF_MONTH,1);
         calendar.set(Calendar.HOUR_OF_DAY,0);

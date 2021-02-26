@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.*;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.text.SimpleDateFormat;
@@ -82,6 +81,9 @@ public class WeatherWarningActivity extends Activity {
                     // gets result if update was successful, currently not used
                     boolean updateResult = intent.getBooleanExtra(WEATHER_WARNINGS_UPDATE_RESULT,false);
                 }
+                if (intent.getAction().equals(DataUpdateService.HIDE_PROGRESS)){
+                    hideProgressBar();
+                }
             }
         }
     };
@@ -103,6 +105,7 @@ public class WeatherWarningActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weatherwarning);
+        registerForBroadcast();
         executor = Executors.newSingleThreadExecutor();
         localStation = WeatherSettings.getSetStationLocation(getApplicationContext());
         // action bar layout
@@ -255,8 +258,6 @@ public class WeatherWarningActivity extends Activity {
                     path.moveTo(getX(polygonX[0]),getY(polygonY[0]));
                     for (int vertex_count=1; vertex_count<polygonX.length; vertex_count++){
                         path.lineTo(getX(polygonX[vertex_count]),getY(polygonY[vertex_count]));
-                        Log.v("TWFG","VERTEX LAT= "+polygonX[vertex_count]+" LONG="+polygonY[vertex_count]);
-                        Log.v("TWFG","VERTEX X= "+getX(polygonX[vertex_count])+" Y="+getY(polygonY[vertex_count]));
                     }
                     Paint polypaint = new Paint();
                     polypaint.setColor(warning.getWarningColor());
@@ -290,15 +291,10 @@ public class WeatherWarningActivity extends Activity {
         pinpaint.setColor(Color.BLUE);
         pinpaint.setStyle(Paint.Style.FILL_AND_STROKE);
         pinpaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
-        float pinX = getX((float) localStation.latitude);
-        float pinY = getY((float) localStation.longitude);
-        Log.v("TWFG","LAT= "+localStation.latitude+" LONG="+localStation.longitude);
-        Log.v("TWFG","X= "+pinX+" Y="+pinY);
+        float pinY = getY((float) localStation.latitude);
+        float pinX = getX((float) localStation.longitude);
         Bitmap pinBitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.pin);
         canvas.drawBitmap(pinBitmap,pinX,pinY-pinBitmap.getHeight(),pinpaint);
-        //canvas.drawCircle(pinX,pinY,500,pinpaint);
-        //canvas.drawCircle(300,300,500,pinpaint);
-
         Paint cp = new Paint();
         cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
         canvas.drawBitmap(resource_bitmap, 0,0,cp);
@@ -464,6 +460,7 @@ public class WeatherWarningActivity extends Activity {
     private void registerForBroadcast(){
         IntentFilter filter = new IntentFilter();
         filter.addAction(WEATHER_WARNINGS_UPDATE);
+        filter.addAction(DataUpdateService.HIDE_PROGRESS);
         registerReceiver(receiver,filter);
     }
 

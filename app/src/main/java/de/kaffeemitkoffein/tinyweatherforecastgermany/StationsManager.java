@@ -64,8 +64,8 @@ public class StationsManager {
             weatherLocation.description = station_values[0];
             weatherLocation.name = station_values[1];
             String[] station_coordinates = station_values[2].split(",");
-            weatherLocation.latitude = Location.convert(station_coordinates[0]);
-            weatherLocation.longitude = Location.convert(station_coordinates[1]);
+            weatherLocation.longitude = Location.convert(station_coordinates[0]);
+            weatherLocation.latitude = Location.convert(station_coordinates[1]);
             weatherLocation.altitude = Location.convert(station_coordinates[2]);
             stations.add(weatherLocation);
             count++;
@@ -85,8 +85,8 @@ public class StationsManager {
      * Angaben in den DWD-Daten:
      * z.B.: HAMBURG INNENSTADT;P0489;9.98,53.55,8.0
      *  Angabe in +/- Graden
-     * 1. Breitengrad (latitude)
-     * 2. Längengrad (longitude)
+     * 1. Längengrad (longitude)
+     * 2. Breitengrad (latitude)
      * 3. Höhe (altititude)
      */
 
@@ -134,6 +134,19 @@ public class StationsManager {
         if (stations != null){
             for (int i=0; i<stations.size();i++){
                 if (stations.get(i).description.equals(description)){
+                    return i;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public static int getSetPosition(Context context, ArrayList<Weather.WeatherLocation> locationArrayList, Weather.WeatherLocation location){
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        String description = weatherSettings.station_description;
+        if (locationArrayList != null){
+            for (int i=0; i<locationArrayList.size();i++){
+                if (locationArrayList.get(i).description.equals(description)){
                     return i;
                 }
             }
@@ -209,8 +222,8 @@ public class StationsManager {
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString(WeatherSettings.PREF_STATION_NAME,stations.get(position).name);
                 editor.putString(WeatherSettings.PREF_STATION_DESCRIPTION,stations.get(position).description);
-                editor.putFloat(WeatherSettings.PREF_STATION_LONGITUDE,(float) stations.get(position).longitude);
                 editor.putFloat(WeatherSettings.PREF_STATION_LATIDTUDE,(float) stations.get(position).latitude);
+                editor.putFloat(WeatherSettings.PREF_STATION_LONGITUDE,(float) stations.get(position).longitude);
                 editor.putFloat(WeatherSettings.PREF_STATION_ALTITUDE,(float) stations.get(position).altitude);
                 editor.commit();
                 return true;

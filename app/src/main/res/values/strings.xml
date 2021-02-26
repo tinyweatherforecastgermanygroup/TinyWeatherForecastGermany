@@ -199,6 +199,8 @@
     <string name="warnings_outdated">The weather warnings are outdated.</string>
     <string name="warnings_update_fail">Updating weather warnings failed!</string>
     <string name="warnings_none">Currently, there are no weather warnings for Germany.</string>
+    <string name="from">from</string>
+    <string name="ends">ends</string>
     <string name="welcome_skip">SKIP</string>
     <string name="welcome_next">NEXT</string>
     <string name="welcome_ready">READY!</string>

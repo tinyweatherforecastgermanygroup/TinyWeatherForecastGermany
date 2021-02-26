@@ -78,8 +78,8 @@ public class WeatherSettings {
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
-    public static final double PREF_STATION_LONGITUDE_DEFAULT = 53.55;
-    public static final double PREF_STATION_LATITUDE_DEFAULT = 9.98;
+    public static final double PREF_STATION_LATITUDE_DEFAULT = 53.55;
+    public static final double PREF_STATION_LONGITUDE_DEFAULT = 9.98;
     public static final double PREF_STATION_ALTITUDE_DEFAULT = 8.0;
     public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
     public static final String PREF_DISPLAY_TYPE_DEFAULT = "3";
@@ -402,10 +402,21 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         weatherLocation.description = sharedPreferences.getString(PREF_STATION_DESCRIPTION,PREF_STATION_DESCRIPTION_DEFAULT);
         weatherLocation.name = sharedPreferences.getString(PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT);
-        weatherLocation.longitude = sharedPreferences.getFloat(PREF_STATION_LONGITUDE,(float) PREF_STATION_LONGITUDE_DEFAULT);
         weatherLocation.latitude = sharedPreferences.getFloat(PREF_STATION_LATIDTUDE,(float) PREF_STATION_LATITUDE_DEFAULT);
+        weatherLocation.longitude = sharedPreferences.getFloat(PREF_STATION_LONGITUDE,(float) PREF_STATION_LONGITUDE_DEFAULT);
         weatherLocation.altitude = sharedPreferences.getFloat(PREF_STATION_ALTITUDE,(float) PREF_STATION_ALTITUDE_DEFAULT);
         return weatherLocation;
+    }
+
+    public static void setStation(Context context, Weather.WeatherLocation weatherLocation) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putString(PREF_STATION_DESCRIPTION, PREF_STATION_DESCRIPTION_DEFAULT);
+        pref_editor.putString(PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT);
+        pref_editor.putFloat(PREF_STATION_LATIDTUDE,(float) weatherLocation.latitude);
+        pref_editor.putFloat(PREF_STATION_LONGITUDE,(float) weatherLocation.longitude);
+        pref_editor.putFloat(PREF_STATION_ALTITUDE,(float) weatherLocation.altitude);
+        pref_editor.apply();
     }
 
     public void updateFavorites(ArrayList<String> favorites) {
@@ -486,13 +497,6 @@ public class WeatherSettings {
     public static long getTextForecastLastUpdateTimeInMillis(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(PREF_TEXTFORECAST_LAST_UPDATE_TIME,PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
-    }
-
-    public static void setTextForecastLastUpdateTime(Context context, long timeInMillis){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putLong(PREF_TEXTFORECAST_LAST_UPDATE_TIME, timeInMillis);
-        pref_editor.apply();
     }
 
     public static final long TEXTFORECASTS_UPDATE_INTERVAL = 12*60*60*1000;

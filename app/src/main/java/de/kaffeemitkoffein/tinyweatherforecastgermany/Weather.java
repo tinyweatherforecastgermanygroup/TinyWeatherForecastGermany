@@ -947,12 +947,11 @@ public final class Weather {
         return null;
     }
 
-    private static int deleteWeatherDataSet(Context context, int i){
+    private static int deleteWeatherDataSet(Context context, RawWeatherInfo rawWeatherInfo){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         int rows = 0;
         try {
-            rows = contentResolver.delete(WeatherForecastContentProvider.URI_SENSORDATA,WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_id+"=?",new String[] {String.valueOf(i)});
-            //rows = sql_db.delete(TABLE_NAME, KEY_id+"=?", new String[] {String.valueOf(i)});
+            rows = contentResolver.delete(WeatherForecastContentProvider.URI_SENSORDATA,WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name+"=?",new String[] {rawWeatherInfo.weatherLocation.name});
         } catch (Exception e) {
             // do nothing here
         }
@@ -984,6 +983,7 @@ public final class Weather {
     }
 
     private static void cleanDataBase(Context context, ArrayList<RawWeatherInfo> data){
+        /*
         WeatherSettings weatherSettings = new WeatherSettings(context);
         int size = data.size();
         int deleted_count = 0;
@@ -994,7 +994,20 @@ public final class Weather {
                     deleted_count = deleted_count + deleteWeatherDataSet(context,i);
             }
         }
-        PrivateLog.log(context,Tag.DATABASE,"Garbage collected "+deleted_count+" data sets.");
+        PrivateLog.log(context,Tag.DATABASE,"Garbage collected "+deleted_count+" weather forecast sets.");
+         */
+        if (data!=null){
+            if (data.size()>0){
+                for (int i=0; i<data.size(); i++){
+                    // get time of newest entry
+                    long lastTimeInData = data.get(i).getTimeSteps()[data.get(i).elements-1];
+                    if (lastTimeInData<Calendar.getInstance().getTimeInMillis()){
+                        // delete outdated entry when no valid forecast data exists
+                        deleteWeatherDataSet(context,data.get(i));
+                    }
+                }
+            }
+        }
     }
 
     public static void cleanDataBase(Context context){

@@ -199,6 +199,8 @@
     <string name="warnings_outdated">Die Wetter-Warnungen sind veraltet.</string>
     <string name="warnings_update_fail">Aktualisierung der Warnungen fehlgeschlagen!</string>
     <string name="warnings_none">Aktuell gibt es keine Wetterwarnungen für Deutschland.</string>
+    <string name="from">ab</string>
+    <string name="ends">bis</string>
     <string name="welcome_skip">START</string>
     <string name="welcome_next">WEITER</string>
     <string name="welcome_ready">FERTIG!</string>

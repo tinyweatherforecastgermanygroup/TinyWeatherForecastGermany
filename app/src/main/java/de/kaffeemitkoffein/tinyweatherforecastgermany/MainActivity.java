@@ -53,8 +53,8 @@ public class MainActivity extends Activity {
 
     public final static String MAINAPP_CUSTOM_REFRESH_ACTION = "MAINAPP_CUSTOM_ACTION_REFRESH";
     public final static String MAINAPP_SSL_ERROR = "MAINAPP_SSL_ERROR";
-    public final static String MAINAPP_SHOW_PROGRESS = "MAINAPP_SHOW_PROGRESS";
-    public final static String MAINAPP_HIDE_PROGRESS = "MAINAPP_HIDE_PROGRESS";
+    public final static String MAINAPP_SHOW_PROGRESS = "SHOW_PROGRESS";
+    public final static String MAINAPP_HIDE_PROGRESS = "HIDE_PROGRESS";
 
     public final static boolean API_TESTING_ENABLED = false;
     private int test_position = 0; //last: 1916
@@ -120,13 +120,13 @@ public class MainActivity extends Activity {
                     alertDialog.show();
                 }
             }
-            if (intent.getAction().equals(MAINAPP_SHOW_PROGRESS)){
+            if (intent.getAction().equals(DataUpdateService.SHOW_PROGRESS)){
                 ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
                 if (progressBar!=null){
                     progressBar.setVisibility(View.VISIBLE);
                 }
             }
-            if (intent.getAction().equals(MAINAPP_HIDE_PROGRESS)){
+            if (intent.getAction().equals(DataUpdateService.HIDE_PROGRESS)){
                 ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
                 if (progressBar!=null){
                     progressBar.setVisibility(View.INVISIBLE);
@@ -251,14 +251,22 @@ public class MainActivity extends Activity {
         executor = Executors.newSingleThreadExecutor();
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
-            // remove shared preferences on app update if installed app is lower than build 6
-            if (weatherSettings.last_version_code<6){
-                PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
+            // remove shared preferences on app update if installed app is lower than build 20
+            if (weatherSettings.last_version_code<20){
+                // PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
+                StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(getApplicationContext()){
+                    public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations){
+                        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(getApplicationContext());
+                        // correct wrong geo data by polling it again from the hardcoded list
+                        weatherLocation = stations.get(StationsManager.getSetPosition(getApplicationContext(), stations, weatherLocation));
+                        WeatherSettings.setStation(getApplicationContext(),weatherLocation);
+                    }
+                };
+                executor.execute(stationsReader);
             }
             showWhatsNewDialog();
         }
         final Context context = getApplicationContext();
-
         stationsManager = new StationsManager(context);
         loadStationsSpinner();
         loadStationsData();
@@ -688,7 +696,7 @@ public class MainActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        displayWeatherForecast(weatherCard);
+                        displayWeatherForecast();
                     }
                 });
             }
@@ -904,8 +912,8 @@ public class MainActivity extends Activity {
         LayoutInflater layoutInflater = this.getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.geoinput,null,false);
         final CheckBox useGPS = view.findViewById(R.id.geoinput_check_gps);
-        final EditText text_longitude = view.findViewById(R.id.geoinput_edit_longitude);
         final EditText text_latitude = view.findViewById(R.id.geoinput_edit_latitude);
+        final EditText text_longitude = view.findViewById(R.id.geoinput_edit_longitude);
         useGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -935,10 +943,10 @@ public class MainActivity extends Activity {
                     Location own_location = new Location("manual");
                     own_location.setTime(Calendar.getInstance().getTimeInMillis());
                     try {
-                        double longitude = Location.convert(standardizeGeo(text_longitude.getText().toString()));
                         double latitude = Location.convert(standardizeGeo(text_latitude.getText().toString()));
-                        own_location.setLongitude(longitude);
+                        double longitude = Location.convert(standardizeGeo(text_longitude.getText().toString()));
                         own_location.setLatitude(latitude);
+                        own_location.setLongitude(longitude);
                         if ((latitude>=-90) && (latitude<=90) && (longitude>=-180) && (longitude<=180)) {
                             launchStationSearchByLocation(own_location);
                         } else {

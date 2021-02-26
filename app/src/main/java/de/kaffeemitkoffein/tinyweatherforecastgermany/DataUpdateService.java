@@ -17,6 +17,9 @@ import java.util.concurrent.Executors;
 
 public class DataUpdateService extends Service {
 
+    public final static String SHOW_PROGRESS = "SHOW_PROGRESS";
+    public final static String HIDE_PROGRESS = "HIDE_PROGRESS";
+
     private NotificationManager notificationManager;
     int notification_id;
     Notification notification;
@@ -28,7 +31,6 @@ public class DataUpdateService extends Service {
     public static String SERVICEEXTRAS_UPDATE_WEATHER="SERVICEEXTRAS_UPDATE_WEATHER";
     public static String SERVICEEXTRAS_UPDATE_WARNINGS="SERVICEEXTRAS_UPDATE_WARNINGS";
     public static String SERVICEEXTRAS_UPDATE_TEXTFORECASTS="SERVICEEXTRAS_UPDATE_TEXTFORECASTS";
-    private Context serviceContext;
 
     private Runnable serviceTerminationRunnable = new Runnable() {
         @Override
@@ -51,6 +53,10 @@ public class DataUpdateService extends Service {
 
     private void stopThisService(){
         PrivateLog.log(this,Tag.SERVICE2,"Shutting down service...");
+        Intent intent = new Intent();
+        intent.setAction(HIDE_PROGRESS);
+        sendBroadcast(intent);
+        notificationManager.cancel(notification_id);
         stopSelf();
     }
 
@@ -164,7 +170,7 @@ public class DataUpdateService extends Service {
             executor.execute(serviceTerminationRunnable);
         } else {
             // terminate immediately, because no intent with tasks delivered and/or no internet connection.
-            stopSelf();
+            stopThisService();
         }
         return START_STICKY;
     }

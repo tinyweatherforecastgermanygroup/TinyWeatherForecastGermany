@@ -22,11 +22,9 @@
     import android.content.Context;
     import android.graphics.*;
     import android.graphics.drawable.Drawable;
-    import android.text.SpannableString;
     import android.text.SpannableStringBuilder;
     import android.text.Spanned;
     import android.text.style.ForegroundColorSpan;
-    import android.util.Log;
     import android.util.SparseArray;
     import android.view.LayoutInflater;
     import android.view.View;
@@ -854,7 +852,6 @@
                 long itemStopTime = weatherInfo.getTimestamp();
                 for (int i=0; i<warnings.size(); i++){
                     if ((warnings.get(i).onset<=itemStopTime) && (warnings.get(i).expires>=itemStartTime)){
-                        Log.v("TWFG","WARNING: "+warnings.get(i).headline);
                         applicableWarnings.add(warnings.get(i));
                     }
                 }
@@ -863,12 +860,22 @@
         }
 
         private void setMiniWarningsString(TextView textView, Weather.WeatherInfo weatherInfo, ArrayList<WeatherWarning> applicableWarnings){
+            final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
             SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+            long itemStartTime = neededHoursAgo(weatherInfo);
+            long itemStopTime = weatherInfo.getTimestamp();
             int textPosition = 0;
             for (int i=0; i<applicableWarnings.size(); i++){
-                spannableStringBuilder.append(applicableWarnings.get(i).headline);
-                spannableStringBuilder.setSpan(new ForegroundColorSpan(applicableWarnings.get(i).getWarningColor()),textPosition,textPosition+applicableWarnings.get(i).headline.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                textPosition = textPosition + applicableWarnings.get(i).headline.length();
+                String text = applicableWarnings.get(i).headline;
+                if (applicableWarnings.get(i).onset>itemStartTime){
+                    text = context.getResources().getString(R.string.from)+" "+simpleDateFormat.format(new Date(applicableWarnings.get(i).onset))+": " + text;
+                }
+                if (applicableWarnings.get(i).expires<itemStopTime){
+                    text = text + " ("+context.getResources().getString(R.string.ends)+" "+simpleDateFormat.format(new Date(applicableWarnings.get(i).expires))+")";
+                }
+                spannableStringBuilder.append(text);
+                spannableStringBuilder.setSpan(new ForegroundColorSpan(applicableWarnings.get(i).getWarningColor()),textPosition,textPosition+text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                textPosition = textPosition + text.length();
                 String s = System.getProperty("line.separator");
                 if ((s!=null) && (i<applicableWarnings.size()-1)){
                     if (s.length()>0){
