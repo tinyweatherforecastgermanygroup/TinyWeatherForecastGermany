@@ -323,7 +323,7 @@
                 precipitation_string = weatherInfo.getProbPrecipitation()+"% ";
             }
             if (weatherInfo.hasPrecipitation()){
-                precipitation_string = precipitation_string + weatherInfo.getPrecipitation()+" kg/m²";
+                precipitation_string = precipitation_string +weatherInfo.getPrecipitationString();
             }
             if (precipitation_string.equals("")){
                 if (iconbar1_view == null){

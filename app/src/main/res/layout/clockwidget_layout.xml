@@ -168,7 +168,7 @@
                 android:gravity="bottom"
                 android:layout_toRightOf="@id/widget_precipitation_text"
                 android:layout_alignBottom="@id/widget_precipitation_text"
-                android:text=" m²"/>
+                android:text=" m²/h"/>
 
 
         </RelativeLayout>

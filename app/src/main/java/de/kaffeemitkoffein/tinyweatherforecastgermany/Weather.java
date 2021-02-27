@@ -232,6 +232,10 @@ public final class Weather {
 
         }
 
+        public WeatherInfo(int forecast_type){
+            this.forecast_type = forecast_type;
+        }
+
         public void setTimestamp(long timestamp){
             this.timestamp = timestamp;
         }
@@ -657,9 +661,28 @@ public final class Weather {
             return precipitation;
         }
 
+        public String getPrecipitationIntervalString(){
+            if ((forecast_type==ForecastType.CURRENT) || (forecast_type==ForecastType.ONE_HOUR)){
+                return "h";
+            }
+            if (forecast_type==ForecastType.HOURS_3){
+                return "3h";
+            }
+            if (forecast_type==ForecastType.HOURS_6){
+                return "6h";
+            }
+            if (forecast_type==ForecastType.HOURS_12){
+                return "12h";
+            }
+            if (forecast_type==ForecastType.HOURS_24){
+                return "24h";
+            }
+            return "";
+        }
+
         public String getPrecipitationString(){
             if (precipitation!=null){
-                return String.valueOf(precipitation)+" kg/m²";
+                return String.valueOf(precipitation)+" kg/m²/"+getPrecipitationIntervalString();
             } else {
                 return "-";
             }
