@@ -10,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.Executor;
@@ -24,6 +26,8 @@ public class DataUpdateService extends Service {
     int notification_id;
     Notification notification;
     Notification.Builder notificationBuilder;
+
+    private static boolean serviceStarted = false;
 
     public static String IC_ID = "WEATHER_NOTIFICATION";
     public static String IC_NAME = "Updating weather data";
@@ -73,106 +77,114 @@ public class DataUpdateService extends Service {
         notification = getNotification();
         startForeground(notification_id,notification);
         PrivateLog.log(this,Tag.SERVICE2,"DataUpdateService is foreground now");
+        Log.v("TWFG","SERVICE CREATED.");
+        serviceStarted = false;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
-        // perform service task only if:
-        // 1) intent supplied telling what do do, AND
-        // 2) internet connection is present
-        if ((intent!=null) && (isConnectedToInternet())){
-            Boolean updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
-            Boolean updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
-            Boolean updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
-            PrivateLog.log(this,Tag.SERVICE2,"update Warnings: "+updateWarnings);
-            // create single thread
-            Executor executor = Executors.newSingleThreadExecutor();
-            if (updateWeather) {
-                APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(this){
-                    @Override
-                    public void onStart(){
-                        updateNotification(0);
-                    }
-                    @Override
-                    public void onPositiveResult(){
-                        // update GadgetBridge and widgets
-                        UpdateAlarmManager.updateAppViews(context);
-                        // notify main class
-                        Intent intent = new Intent();
-                        intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
-                        sendBroadcast(intent);
-                        PrivateLog.log(context,Tag.SERVICE2,"Weather update: success");
-                    }
-                    @Override
-                    public void onNegativeResult(){
-                        PrivateLog.log(context,Tag.SERVICE2,"Weather update: failed, error.");
-                        if (ssl_exception){
-                            PrivateLog.log(context,Tag.SERVICE2,"SSL exception detected by service.");
-                            Intent ssl_intent = new Intent();
-                            ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
-                            sendBroadcast(ssl_intent);
+        if (!serviceStarted){
+            serviceStarted = true;
+            Log.v("TWFG","SERVICE DOING JOB.");
+            // perform service task only if:
+            // 1) intent supplied telling what do do, AND
+            // 2) internet connection is present
+            if ((intent!=null) && (isConnectedToInternet())){
+                Boolean updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
+                Boolean updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
+                Boolean updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
+                PrivateLog.log(this,Tag.SERVICE2,"update Warnings: "+updateWarnings);
+                // create single thread
+                Executor executor = Executors.newSingleThreadExecutor();
+                if (updateWeather) {
+                    APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(this){
+                        @Override
+                        public void onStart(){
+                            updateNotification(0);
                         }
-                        // need to update main app with old data
-                        Intent intent = new Intent();
-                        intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
-                        sendBroadcast(intent);
-                        // need to update views with old data: GadgetBridge and widgets
-                        UpdateAlarmManager.updateAppViews(context);
-                    }
-                };
-                executor.execute(weatherForecastRunnable);
+                        @Override
+                        public void onPositiveResult(){
+                            // update GadgetBridge and widgets
+                            UpdateAlarmManager.updateAppViews(context);
+                            // notify main class
+                            Intent intent = new Intent();
+                            intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+                            sendBroadcast(intent);
+                            PrivateLog.log(context,Tag.SERVICE2,"Weather update: success");
+                        }
+                        @Override
+                        public void onNegativeResult(){
+                            PrivateLog.log(context,Tag.SERVICE2,"Weather update: failed, error.");
+                            if (ssl_exception){
+                                PrivateLog.log(context,Tag.SERVICE2,"SSL exception detected by service.");
+                                Intent ssl_intent = new Intent();
+                                ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
+                                sendBroadcast(ssl_intent);
+                            }
+                            // need to update main app with old data
+                            Intent intent = new Intent();
+                            intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+                            sendBroadcast(intent);
+                            // need to update views with old data: GadgetBridge and widgets
+                            UpdateAlarmManager.updateAppViews(context);
+                        }
+                    };
+                    executor.execute(weatherForecastRunnable);
+                }
+                if (updateWarnings) {
+                    APIReaders.WeatherWarningsRunnable weatherWarningsRunnable = new APIReaders.WeatherWarningsRunnable(this){
+                        @Override
+                        public void onStart(){
+                            updateNotification(1);
+                        }
+                        @Override
+                        public void onPositiveResult(ArrayList<WeatherWarning> warnings){
+                            super.onPositiveResult(warnings);
+                            PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings updated successfully.");
+                            // trigger update of views in activity
+                            Intent intent = new Intent();
+                            intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
+                            intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,true);
+                            sendBroadcast(intent);
+                        }
+                        public void onNegativeResult(){
+                            // trigger update of views in activity
+                            PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
+                            Intent intent = new Intent();
+                            intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
+                            intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
+                            sendBroadcast(intent);
+                        }
+                    };
+                    executor.execute(weatherWarningsRunnable);
+                }
+                if (updateTextForecasts){
+                    APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
+                        @Override
+                        public void onStart(){
+                            updateNotification(2);
+                        }
+                        @Override
+                        public void onPositiveResult(){
+                            Intent intent = new Intent();
+                            intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
+                            intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT,true);
+                            sendBroadcast(intent);
+                            WeatherSettings.setLastTextForecastsUpdateTime(getApplicationContext(),Calendar.getInstance().getTimeInMillis());
+                        }
+                    };
+                    executor.execute(textForecastRunnable);
+                }
+                executor.execute(cleanUpRunnable);
+                executor.execute(serviceTerminationRunnable);
+            } else {
+                // terminate immediately, because no intent with tasks delivered and/or no internet connection.
+                stopThisService();
             }
-            if (updateWarnings) {
-                APIReaders.WeatherWarningsRunnable weatherWarningsRunnable = new APIReaders.WeatherWarningsRunnable(this){
-                    @Override
-                    public void onStart(){
-                        updateNotification(1);
-                    }
-                    @Override
-                    public void onPositiveResult(ArrayList<WeatherWarning> warnings){
-                        super.onPositiveResult(warnings);
-                        PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings updated successfully.");
-                        // trigger update of views in activity
-                        Intent intent = new Intent();
-                        intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
-                        intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,true);
-                        sendBroadcast(intent);
-                    }
-                    public void onNegativeResult(){
-                        // trigger update of views in activity
-                        PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
-                        Intent intent = new Intent();
-                        intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
-                        intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
-                        sendBroadcast(intent);
-                    }
-                };
-                executor.execute(weatherWarningsRunnable);
-            }
-            if (updateTextForecasts){
-                APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
-                    @Override
-                    public void onStart(){
-                        updateNotification(2);
-                    }
-                    @Override
-                    public void onPositiveResult(){
-                        Intent intent = new Intent();
-                        intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
-                        intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT,true);
-                        sendBroadcast(intent);
-                        WeatherSettings.setLastTextForecastsUpdateTime(getApplicationContext(),Calendar.getInstance().getTimeInMillis());
-                    }
-                };
-                executor.execute(textForecastRunnable);
-            }
-            executor.execute(cleanUpRunnable);
-            executor.execute(serviceTerminationRunnable);
         } else {
-            // terminate immediately, because no intent with tasks delivered and/or no internet connection.
-            stopThisService();
+            Log.v("TWFG","SERVICE PREVENTED FROM PARALLEL LAUNCH");
         }
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override

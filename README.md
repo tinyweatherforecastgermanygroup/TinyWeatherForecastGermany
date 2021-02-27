@@ -139,8 +139,13 @@ Credits
   *Why does the app not display sunrise und sunset?*
   
   Sunrise and sunset cannot be reliably calculated with the formulas used for latitudes < -65° and > 65°. When this is the case, this feature is disabled.
-  
-  
+
+*Why does the app show a particular weather icon (and not an other)?*
+
+Icons refer to *significant weather conditions*. The idea is to show you the most important (significant) weather condition that you can expect to occur within the given time period. For example, thunderstorms have a higher priority than rain and rain/fog have a higher priority than clouds. If such a significant weather condition is likely to occur, it will be preferred over others. 
+
+For most stations, the weather conditions are calculated by the DWD. If a weather condition is not available in the forecast data, the app tries to calculate it  from other items.
+
  Contributing
  ------------
 

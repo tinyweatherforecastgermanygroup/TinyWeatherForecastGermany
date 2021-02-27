@@ -20,6 +20,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,6 +102,10 @@ public class TextForecastAdapter extends BaseAdapter {
         } else {
             viewHolder.subtitle.setVisibility(View.INVISIBLE);
         }
+        Log.v("TWFG","Identifier: "+textForecast.identifier+"<");
+        Log.v("TWFG","Title     : "+textForecast.title);
+        Log.v("TWFG","Issued    : "+textForecast.issued);
+        Log.v("TWFG","-----------------------------------------");
         return view;
     }
 }
