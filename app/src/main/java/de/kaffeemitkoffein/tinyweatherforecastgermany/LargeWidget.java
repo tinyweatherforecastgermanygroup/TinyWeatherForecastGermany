@@ -46,6 +46,23 @@ public class LargeWidget extends ClassicWidget{
         }
     }
 
+    private int getDailyItemCount(Weather.WeatherInfo weatherInfo){
+        if (weatherInfo == null) {
+            return 0;
+        }
+        int item_count = 0;
+        if (weatherInfo.hasCondition()){
+            item_count ++;
+        }
+        if (weatherInfo.hasMinTemperature()){
+            item_count ++;
+        }
+        if (weatherInfo.hasMaxTemperature()){
+            item_count ++;
+        }
+        return item_count;
+    }
+
     private final static float OFFSET_FONTSIZE = 60;
     private final static float FONTSIZESTEP = 1;
 
@@ -68,7 +85,11 @@ public class LargeWidget extends ClassicWidget{
     private float fontsize_dayofweek = OFFSET_FONTSIZE;
 
     private void determineMaxFontSizes(CurrentWeatherInfo currentWeatherInfo, float max_width, float max_height){
+        int item_count=0;
         for (int i=0; i<currentWeatherInfo.forecast24hourly.size(); i++){
+            if (getDailyItemCount(currentWeatherInfo.forecast24hourly.get(i))>item_count){
+                item_count = getDailyItemCount(currentWeatherInfo.forecast24hourly.get(i));
+            }
             String min_temp = currentWeatherInfo.forecast24hourly.get(i).getMinTemperatureInCelsiusInt()+"°";
             String max_temp = currentWeatherInfo.forecast24hourly.get(i).getMaxTemperatureInCelsiusInt()+"°";
             Paint p_temp = new Paint();
@@ -77,7 +98,7 @@ public class LargeWidget extends ClassicWidget{
             if (mf1<fontsize_temperature){
                 fontsize_temperature = mf1;
             }
-            float mf2 = getMaxPossibleFontsize(max_temp,max_width,max_height);
+            float mf2 = getMaxPossibleFontsize(max_temp,max_width,(max_height/item_count)*0.95f);
             if (mf2<fontsize_temperature){
                 fontsize_temperature = mf2;
             }
@@ -105,16 +126,7 @@ public class LargeWidget extends ClassicWidget{
         if (weatherInfo == null) {
             return bitmap;
         }
-        int item_count = 0;
-        if (weatherInfo.hasCondition()){
-            item_count ++;
-        }
-        if (weatherInfo.hasMinTemperature()){
-            item_count ++;
-        }
-        if (weatherInfo.hasMaxTemperature()){
-            item_count ++;
-        }
+        int item_count = getDailyItemCount(weatherInfo);
         // return empty, transparent bitmap if no suitable weather data present
         if (item_count==0){
             return bitmap;
