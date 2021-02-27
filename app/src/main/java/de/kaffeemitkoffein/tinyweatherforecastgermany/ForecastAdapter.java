@@ -57,6 +57,7 @@
         private boolean displaySimpleBar;
         private boolean display_wind_arc;
         private int display_wind_arc_perdiod;
+        private boolean warnings_disabled;
         private LayoutInflater layoutInflater;
 
         private ArrayList<WeatherWarning> warnings;
@@ -86,6 +87,7 @@
             this.displaySimpleBar = weatherSettings.display_simple_bar;
             this.display_wind_arc = weatherSettings.display_wind_arc;
             this.display_wind_arc_perdiod = weatherSettings.getWindArcPeriod();
+            this.warnings_disabled = weatherSettings.warnings_disabled;
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             this.labelSunrise = context.getResources().getString(R.string.sunrise);
             this.labelSunset = context.getResources().getString(R.string.sunset);
@@ -151,6 +153,7 @@
             TextView condition_text;
             View iconbar1_view;
             TextView precipitation_textview;
+            TextView precipitation_unit_lower;
             ImageView weather_icon;
             TextView textView_temp;
             TextView textView_temphigh;
@@ -201,6 +204,7 @@
             TextView textView_heading = null;
             View iconbar1_view = null;
             TextView precipitation_textview = null;
+            TextView precipitation_unit_lower = null;
             ImageView weather_icon = null;
             TextView textView_temp = null;
             TextView textView_temphigh = null;
@@ -232,6 +236,7 @@
                 textView_heading = viewHolder.textView_heading;
                 iconbar1_view = viewHolder.iconbar1_view;
                 precipitation_textview = viewHolder.precipitation_textview;
+                precipitation_unit_lower = viewHolder.precipitation_unit_lower;
                 weather_icon = viewHolder.weather_icon;
                 textView_temp = viewHolder.textView_temp;
                 textView_temphigh = viewHolder.textView_temphigh;
@@ -284,31 +289,36 @@
                 viewHolder.warningText = warningText;
                 warningText.setVisibility(View.GONE);
             }
-            ArrayList<WeatherWarning> applicableWarnings = getApplicableWarnings(weatherInfo);
-            if (applicableWarnings.size()>0){
-                Drawable drawable = warningSymbol.getDrawable();
-                drawable.mutate();
-                drawable.setColorFilter(applicableWarnings.get(0).getWarningColor(), PorterDuff.Mode.MULTIPLY);
-                warningSymbol.setVisibility(View.VISIBLE);
-                setMiniWarningsString(warningText,weatherInfo,applicableWarnings);
+            if (!warnings_disabled){
+                ArrayList<WeatherWarning> applicableWarnings = getApplicableWarnings(weatherInfo);
+                if (applicableWarnings.size()>0){
+                    Drawable drawable = warningSymbol.getDrawable();
+                    drawable.mutate();
+                    drawable.setColorFilter(applicableWarnings.get(0).getWarningColor(), PorterDuff.Mode.MULTIPLY);
+                    warningSymbol.setVisibility(View.VISIBLE);
+                    setMiniWarningsString(warningText,weatherInfo,applicableWarnings);
+                    final View finalWarningText = warningText;
+                    warningSymbol.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //switchVisibility(finalWarningText);
+                            setVisibility(finalWarningText,View.VISIBLE);
+                            finalWarningText.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    finalWarningText.setVisibility(View.GONE);
+                                };
+                            },(long) 6000);
+                        }
+                    });
+                } else {
+                    warningSymbol.setVisibility(View.GONE);
+                    warningText.setText("");
+                }
             } else {
                 warningSymbol.setVisibility(View.GONE);
                 warningText.setText("");
             }
-            final View finalWarningText = warningText;
-            warningSymbol.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //switchVisibility(finalWarningText);
-                    setVisibility(finalWarningText,View.VISIBLE);
-                    finalWarningText.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            finalWarningText.setVisibility(View.GONE);
-                        };
-                    },(long) 6000);
-                }
-            });
             // left column
             if (textView_weathercondition==null){
                 textView_weathercondition = (TextView) view.findViewById(R.id.fcitem_weatherconditiontext);
@@ -323,7 +333,7 @@
                 precipitation_string = weatherInfo.getProbPrecipitation()+"% ";
             }
             if (weatherInfo.hasPrecipitation()){
-                precipitation_string = precipitation_string +weatherInfo.getPrecipitationString();
+                precipitation_string = precipitation_string +weatherInfo.getPrecipitation();
             }
             if (precipitation_string.equals("")){
                 if (iconbar1_view == null){
@@ -338,6 +348,11 @@
                 }
                 precipitation_textview.setText(precipitation_string);
             }
+            if (precipitation_unit_lower==null){
+                precipitation_unit_lower = (TextView) view.findViewById(R.id.fcitem_precipitation_unit_lower);
+                viewHolder.precipitation_unit_lower = precipitation_unit_lower;
+            }
+            precipitation_unit_lower.setText(weatherInfo.getPrecipitationUnitLower());
             // weather probablities icons, sorted by priority
             // clouds
             int index = 0;
@@ -865,6 +880,7 @@
             long itemStartTime = neededHoursAgo(weatherInfo);
             long itemStopTime = weatherInfo.getTimestamp();
             int textPosition = 0;
+            ArrayList<String> alreadyAddedWarnings = new ArrayList<String>();
             for (int i=0; i<applicableWarnings.size(); i++){
                 String text = applicableWarnings.get(i).headline;
                 if (applicableWarnings.get(i).onset>itemStartTime){
@@ -873,18 +889,20 @@
                 if (applicableWarnings.get(i).expires<itemStopTime){
                     text = text + " ("+context.getResources().getString(R.string.ends)+" "+simpleDateFormat.format(new Date(applicableWarnings.get(i).expires))+")";
                 }
-                spannableStringBuilder.append(text);
-                spannableStringBuilder.setSpan(new ForegroundColorSpan(applicableWarnings.get(i).getWarningColor()),textPosition,textPosition+text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                textPosition = textPosition + text.length();
-                String s = System.getProperty("line.separator");
-                if ((s!=null) && (i<applicableWarnings.size()-1)){
-                    if (s.length()>0){
-                        spannableStringBuilder.append(s);
-                        textPosition = textPosition + s.length();
+                if (!alreadyAddedWarnings.contains(text)){
+                    alreadyAddedWarnings.add(text);
+                    spannableStringBuilder.append(text);
+                    spannableStringBuilder.setSpan(new ForegroundColorSpan(applicableWarnings.get(i).getWarningColor()),textPosition,textPosition+text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                    textPosition = textPosition + text.length();
+                    String s = System.getProperty("line.separator");
+                    if ((s!=null) && (i<applicableWarnings.size()-1)){
+                        if (s.length()>0){
+                            spannableStringBuilder.append(s);
+                            textPosition = textPosition + s.length();
+                        }
                     }
                 }
             }
             textView.setText(spannableStringBuilder);
         }
-
     }

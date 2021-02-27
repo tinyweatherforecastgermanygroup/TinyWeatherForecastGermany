@@ -229,6 +229,7 @@ public class MainActivity extends Activity {
         registerForBroadcast();
         // this is necessary if the update of weather data occurs while the app is in the background
         weatherCard = new Weather().getCurrentWeatherInfo(this);
+        checkIfWarningsAreOutdated();
         if (weatherCard!=null){
             displayWeatherForecast(weatherCard);
         }
@@ -270,16 +271,7 @@ public class MainActivity extends Activity {
         stationsManager = new StationsManager(context);
         loadStationsSpinner();
         loadStationsData();
-        if (WeatherSettings.areWarningsOutdated(context) && WeatherSettings.updateWarnings(context)){
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    UpdateAlarmManager.updateWarnings(context,false);
-                }
-            });
-        } else {
-            checkIfWarningsApply();
-        }
+        checkIfWarningsAreOutdated();
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -704,6 +696,19 @@ public class MainActivity extends Activity {
         executor.execute(getWarningsForLocationRunnable);
     }
 
+    private void checkIfWarningsAreOutdated(){
+        if (WeatherSettings.areWarningsOutdated(context) && WeatherSettings.updateWarnings(context)){
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    UpdateAlarmManager.updateWarnings(context,false);
+                }
+            });
+        } else {
+            checkIfWarningsApply();
+        }
+    }
+
     @SuppressWarnings("deprecation")
     public static int getColorFromResource(Context context, int id){
         if (Build.VERSION.SDK_INT>=23){
@@ -751,6 +756,7 @@ public class MainActivity extends Activity {
         }
         setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.color.textColor);
         setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.color.textColor);
+        setOverflowMenuItemColor(menu,R.id.menu_texts,R.string.texts_button, R.color.textColor);
         setOverflowMenuItemColor(menu,R.id.menu_settings,R.string.settings_button, R.color.textColor);
         setOverflowMenuItemColor(menu,R.id.menu_geoinput,R.string.geoinput_button, R.color.textColor);
         setOverflowMenuItemColor(menu,R.id.menu_about,R.string.about_button, R.color.textColor);

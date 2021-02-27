@@ -688,6 +688,10 @@ public final class Weather {
             }
         }
 
+        public String getPrecipitationUnitLower(){
+            return "m²/"+getPrecipitationIntervalString();
+        }
+
         public boolean hasProbPrecipitation(){
             if (prob_precipitation!=null){
                 return true;

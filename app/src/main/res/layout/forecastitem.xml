@@ -124,10 +124,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/fcitem_iconbar1"
-                android:orientation="horizontal"
-                android:weightSum="10"
                 android:layout_gravity="left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -135,7 +133,7 @@
                 <ImageView android:id="@+id/fcitem_precipitation_symbol"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
-                    android:layout_weight="2"
+                    android:layout_alignParentLeft="true"
                     android:layout_gravity="left|center_vertical"
                     android:src="@mipmap/symbol_precipitation" />
 
@@ -143,12 +141,33 @@
                     android:textSize="@dimen/fcmain_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left"
-                    android:layout_weight="8"
-                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@id/fcitem_precipitation_symbol"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12%, 0.0 kg/m²"/>
+                    android:layout_marginRight="2dp"
+                    android:text="-"/>
 
-            </LinearLayout>
+                <TextView android:id="@+id/fcitem_precipitation_unit_upper"
+                    android:textSize="@dimen/fcmain_textsize_small"
+                    android:textColor="@color/widget_textcolor"
+                    android:layout_gravity="left"
+                    android:layout_toRightOf="@id/fcitem_precipitation_text"
+                    android:layout_alignTop="@id/fcitem_precipitation_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kg/"/>
+
+                <TextView android:id="@+id/fcitem_precipitation_unit_lower"
+                    android:textSize="@dimen/fcmain_textsize_small"
+                    android:textColor="@color/widget_textcolor"
+                    android:layout_gravity="left"
+                    android:layout_toRightOf="@id/fcitem_precipitation_text"
+                    android:layout_alignBottom="@id/fcitem_precipitation_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="m²"/>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/fcitem_iconbar2"
