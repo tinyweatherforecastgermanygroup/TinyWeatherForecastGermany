@@ -201,7 +201,7 @@ public class DataUpdateService extends Service {
                     .setContentTitle(getResources().getString(R.string.service_notification_title))
                     .setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text0)))
                     //.setContentText(getResources().getString(R.string.service_notification_text0))
-                    .setSmallIcon(R.mipmap.schirm_weiss)
+                    .setSmallIcon(R.mipmap.ic_launcher_bw)
                     .setAutoCancel(true)
                     .setOngoing(false)
                     .setProgress(4,0,true)
@@ -212,7 +212,7 @@ public class DataUpdateService extends Service {
                     .setContentTitle(getResources().getString(R.string.service_notification_title))
                     .setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text0)))
                     // .setContentText(getResources().getString(R.string.service_notification_text0))
-                    .setSmallIcon(R.mipmap.schirm_weiss)
+                    .setSmallIcon(R.mipmap.ic_launcher_bw)
                     .setProgress(4,0,true)
                     .setAutoCancel(true)
                     .build();
