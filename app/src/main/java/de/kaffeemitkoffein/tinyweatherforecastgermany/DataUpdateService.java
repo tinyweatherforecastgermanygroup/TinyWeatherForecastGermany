@@ -77,7 +77,6 @@ public class DataUpdateService extends Service {
         notification = getNotification();
         startForeground(notification_id,notification);
         PrivateLog.log(this,Tag.SERVICE2,"DataUpdateService is foreground now");
-        Log.v("TWFG","SERVICE CREATED.");
         serviceStarted = false;
     }
 
@@ -85,7 +84,6 @@ public class DataUpdateService extends Service {
     public int onStartCommand(Intent intent, int flags, int startID){
         if (!serviceStarted){
             serviceStarted = true;
-            Log.v("TWFG","SERVICE DOING JOB.");
             // perform service task only if:
             // 1) intent supplied telling what do do, AND
             // 2) internet connection is present
@@ -182,7 +180,7 @@ public class DataUpdateService extends Service {
                 stopThisService();
             }
         } else {
-            Log.v("TWFG","SERVICE PREVENTED FROM PARALLEL LAUNCH");
+            // just leave onStartCommand doing nothing, as the task is already running
         }
         return START_NOT_STICKY;
     }

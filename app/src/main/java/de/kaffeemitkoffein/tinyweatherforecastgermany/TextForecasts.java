@@ -48,8 +48,6 @@ public class TextForecasts {
         ArrayList<TextForecast> newTextForecasts = new ArrayList<TextForecast>();
         if (currentTextForecasts != null){
             ArrayList<TextForecast> savedTextForecasts = getTextForecasts(context);
-            Log.v("TWFG","existing entries: "+savedTextForecasts.size());
-            Log.v("TWFG","red      entries: "+currentTextForecasts.size());
             // debug
             // ArrayList<TextForecast> savedTextForecasts = new ArrayList<TextForecast>();
             for (int i=0; i<currentTextForecasts.size(); i++){
@@ -68,16 +66,10 @@ public class TextForecasts {
                 }
                 // remember if new
                 if (isNew){
-                    Log.v("TWFG","ADDING:");
-                    Log.v("TWFG","Identifier: "+currentTextForecast.identifier+"<");
-                    Log.v("TWFG","Title     : "+currentTextForecast.title);
-                    Log.v("TWFG","Issued    : "+currentTextForecast.issued);
-                    Log.v("TWFG","-----------------------------------------");
                     newTextForecasts.add(currentTextForecast);
                 }
             }
         }
-        Log.v("TWFG","added entries: "+newTextForecasts.size());
         return newTextForecasts;
     }
 
