@@ -735,15 +735,26 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater mi = getMenuInflater();
         mi.inflate(R.menu.main_activity,menu);
-        // try to show incons in drop-down menu
-        if (menu.getClass().getSimpleName().equals("MenuBuilder")){
-            try {
-                Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible",Boolean.TYPE);
-                method.setAccessible(true);
-                method.invoke(menu,true);
-            } catch (Exception e){
-                // todo
+
+        if (Build.VERSION.SDK_INT>17){
+            // try to show incons in drop-down menu
+            if (menu.getClass().getSimpleName().equals("MenuBuilder")){
+                try {
+                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible",Boolean.TYPE);
+                    method.setAccessible(true);
+                    method.invoke(menu,true);
+                } catch (Exception e){
+                    // todo
+                }
             }
+            setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.color.textColor);
+            setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.color.textColor);
+            setOverflowMenuItemColor(menu,R.id.menu_texts,R.string.texts_button, R.color.textColor);
+            setOverflowMenuItemColor(menu,R.id.menu_settings,R.string.settings_button, R.color.textColor);
+            setOverflowMenuItemColor(menu,R.id.menu_geoinput,R.string.geoinput_button, R.color.textColor);
+            setOverflowMenuItemColor(menu,R.id.menu_about,R.string.about_button, R.color.textColor);
+            setOverflowMenuItemColor(menu,R.id.menu_license,R.string.license_button, R.color.textColor);
+            setOverflowMenuItemColor(menu,R.id.menu_whatsnew,R.string.whatsnew_button, R.color.textColor);
         }
         // disable weather warnings if desired by user
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
@@ -754,14 +765,6 @@ public class MainActivity extends Activity {
                 }
             }
         }
-        setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.color.textColor);
-        setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.color.textColor);
-        setOverflowMenuItemColor(menu,R.id.menu_texts,R.string.texts_button, R.color.textColor);
-        setOverflowMenuItemColor(menu,R.id.menu_settings,R.string.settings_button, R.color.textColor);
-        setOverflowMenuItemColor(menu,R.id.menu_geoinput,R.string.geoinput_button, R.color.textColor);
-        setOverflowMenuItemColor(menu,R.id.menu_about,R.string.about_button, R.color.textColor);
-        setOverflowMenuItemColor(menu,R.id.menu_license,R.string.license_button, R.color.textColor);
-        setOverflowMenuItemColor(menu,R.id.menu_whatsnew,R.string.whatsnew_button, R.color.textColor);
         return super.onCreateOptionsMenu(menu);
     }
 
