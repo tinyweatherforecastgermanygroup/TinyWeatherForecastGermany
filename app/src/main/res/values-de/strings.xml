@@ -115,7 +115,7 @@
     <string name="preference_display_gradient_title">Zeit-Gradient</string>
     <string name="preference_display_gradient_summary">Zeige einen Farbgradienten, um die Zeit der Vorhersage anzudeuten.</string>
     <string name="preference_screen_wind_title">Wind display</string>
-    <string name="preference_screen_wind_summeary">Customize how to display wind</string>
+    <string name="preference_screen_wind_summeary">Customize how to display wind.</string>
     <string name="preference_display_wind_type_title">Windrichtung</string>
     <string name="preference_display_wind_type_summary">Wie die Windrichtung dargestellt werden soll.</string>
     <string name="preference_display_wind_arc_title">Wind-Vorhersage im Icon</string>
@@ -140,7 +140,7 @@
     <string name="preference_gadgetbridge_faketimestamp_title">Aktuelle Zeit senden</string>
     <string name="preference_gadgetbridge_faketimestamp_summary">Einige Wearables akzeptieren keine Vorschau als aktuelles Wetter, statt dessen immer aktuelle Zeit übermitteln.</string>
     <string name="preference_gadgetbridge_notice_title">Wichtiger Hinweis</string>
-    <string name="preference_gadgetbridge_notice_summary">Benötigt wird Gadgetbridge version 0.48.0 oder höher, mit niedrigeren Versionen funktioniert die Übertragung der Wetterdaten nicht.</string>
+    <string name="preference_gadgetbridge_notice_summary">Benötigt wird Gadgetbridge Version 0.48.0 oder höher, mit niedrigeren Versionen funktioniert die Übertragung der Wetterdaten nicht.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge-Paketname wurde zurückgesetzt!</string>
     <string name="preference_loggingscreen_title">Fehler finden</string>
     <string name="preference_loggingscreen_summary">Protokoll aufzeichnen und verwalten.</string>

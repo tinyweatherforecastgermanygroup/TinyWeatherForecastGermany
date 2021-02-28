@@ -116,8 +116,8 @@
 
             <ListPreference
                 android:key="PREF_display_wind_arc_period"
-                android:title="@string/preference_display_wind_arc_title"
-                android:summary="@string/preference_display_wind_arc_summary"
+                android:title="@string/preference_display_wind_arc_hours_title"
+                android:summary="@string/preference_display_wind_arc_hours_summary"
                 android:entries="@array/display_wind_arc_period_text"
                 android:entryValues="@array/display_wind_arc_period_values"
                 android:defaultValue="6"/>
