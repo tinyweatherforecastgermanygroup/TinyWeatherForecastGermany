@@ -2,4 +2,4 @@
 - improved weather warnings
 - wind icon can show a wind forecast
 - revised and updated bold widget
-- various bugfixes
+- various bug-fixes
