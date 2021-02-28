@@ -221,24 +221,39 @@ public class ClassicWidget extends AppWidgetProvider {
         }
     }
 
+    public void setConditionText(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo) {
+        if (weatherInfo.currentWeather.hasCondition()){
+            remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,WeatherCodeContract.getWeatherConditionText(context,weatherInfo.currentWeather.getCondition()));
+        } else {
+            remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,NOT_AVAILABLE);
+        }
+    }
+
+    public void setConditionIcon(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo) {
+        if (weatherInfo.currentWeather.hasCondition()){
+            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.currentWeather.getCondition(),weatherInfo.currentWeather.isDaytime(weatherInfo.weatherLocation)));
+        } else {
+            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,R.mipmap.not_available);
+
+        }
+    }
+
+    public void setLocationText(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo, boolean shorten_text){
+        String location_text = weatherInfo.getCity();
+        if ((location_text.length()>10) && (shorten_text)){
+            location_text = location_text.substring(0,10)+".";
+        }
+        remoteViews.setTextViewText(R.id.classicwidget_locationtext,location_text);
+    }
+
     public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c, boolean shorten_text){
         if (weatherCard==null){
             weatherCard = new CurrentWeatherInfo();
             weatherCard.setToEmpty();
         }
-        String location_text = weatherCard.getCity();
-        if ((location_text.length()>10) && (shorten_text)){
-            location_text = location_text.substring(0,10)+".";
-        }
-        remoteViews.setTextViewText(R.id.classicwidget_locationtext,location_text);
-        if (weatherCard.currentWeather.hasCondition()){
-            int weathercondition = weatherCard.currentWeather.getCondition();
-            remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,WeatherCodeContract.getWeatherConditionText(c,weathercondition));
-            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,WeatherCodeContract.getWeatherConditionDrawableResource(weathercondition,weatherCard.currentWeather.isDaytime(weatherCard.weatherLocation)));
-        } else {
-            remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,NOT_AVAILABLE);
-            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,R.mipmap.not_available);
-        }
+        setLocationText(remoteViews,weatherCard,shorten_text);
+        setConditionText(c,remoteViews,weatherCard);
+        setConditionIcon(c,remoteViews,weatherCard);
         if (weatherCard.currentWeather.hasTemperature()){
             remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.currentWeather.getTemperatureInCelsiusInt()+"°"));
         } else {
