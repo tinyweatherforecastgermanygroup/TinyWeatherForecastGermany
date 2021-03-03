@@ -888,6 +888,7 @@ public class MainActivity extends Activity {
         filter.addAction(MAINAPP_SHOW_PROGRESS);
         filter.addAction(MAINAPP_HIDE_PROGRESS);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
+        filter.addAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
         registerReceiver(receiver,filter);
     }
 
