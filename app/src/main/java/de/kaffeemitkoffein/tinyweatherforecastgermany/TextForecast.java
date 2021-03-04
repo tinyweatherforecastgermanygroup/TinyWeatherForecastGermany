@@ -20,11 +20,14 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
+import android.util.Log;
 
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class TextForecast implements Comparable<TextForecast>{
 
@@ -222,14 +225,24 @@ public class TextForecast implements Comparable<TextForecast>{
     }
 
     public boolean setIssued(String timestring, int parsePosition){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIMESTAMP_PATTERN);
-        Date date = simpleDateFormat.parse(timestring,new ParsePosition(parsePosition));
-        if (date==null){
-            this.issued = 0;
-            return false;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TIMESTAMP_PATTERN, Locale.US);
+        int pos = timestring.indexOf("</a>");
+        String s = timestring.substring(pos+4);
+        while (s.substring(0,1).equals(" ") && s.length()>0){
+            s = s.substring(1);
         }
-        this.issued = date.getTime();
-        return true;
+        if (s.length()>0){
+            s = s.substring(0,17);
+            try {
+                Date date = simpleDateFormat.parse(s);
+                this.issued = date.getTime();
+                return true;
+            } catch (Exception e){
+                this.issued = 0;
+                return false;
+            }
+        }
+        return false;
     }
 
     public String getIssued(){
