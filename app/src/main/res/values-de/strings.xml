@@ -114,8 +114,8 @@
     <string name="preference_displayendofdaybar_summary">Zeige Balken, um Tage zu trennen.</string>
     <string name="preference_display_gradient_title">Zeit-Gradient</string>
     <string name="preference_display_gradient_summary">Zeige einen Farbgradienten, um die Zeit der Vorhersage anzudeuten.</string>
-    <string name="preference_screen_wind_title">Wind display</string>
-    <string name="preference_screen_wind_summeary">Customize how to display wind.</string>
+    <string name="preference_screen_wind_title">Wind</string>
+    <string name="preference_screen_wind_summary">Anzeige von Wind anpassen.</string>
     <string name="preference_display_wind_type_title">Windrichtung</string>
     <string name="preference_display_wind_type_summary">Wie die Windrichtung dargestellt werden soll.</string>
     <string name="preference_display_wind_arc_title">Wind-Vorhersage im Icon</string>

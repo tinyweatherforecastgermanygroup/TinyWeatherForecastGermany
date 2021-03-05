@@ -1,1 +1,3 @@
 - fixed missing update of warnings in main app
+- fixed date parsing errors if locale was not US
+- fixed date parsing errors in maritime warnings
