@@ -19,13 +19,9 @@
 
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
-import android.content.Context;
-import android.util.Log;
-
-import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -221,7 +217,6 @@ public class TextForecast implements Comparable<TextForecast>{
             }
         }
         this.content = removeDoubleSpaces(stringBuilder.toString());
-        //Log.v("TWFL",content);
     }
 
     public boolean setIssued(String timestring, int parsePosition){
@@ -236,13 +231,61 @@ public class TextForecast implements Comparable<TextForecast>{
             try {
                 Date date = simpleDateFormat.parse(s);
                 this.issued = date.getTime();
-                return true;
             } catch (Exception e){
                 this.issued = 0;
-                return false;
             }
         }
-        return false;
+        if (this.issued==0){
+            setFallBackIssued();
+        }
+        if (this.issued==0){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void setFallBackIssued(){
+        if (this.issued_text!=null){
+            String s = new String(this.issued_text);
+            int pos = s.indexOf(".");
+            pos = pos-2;
+            if (pos>0){
+                try {
+                    String dateString = s.substring(pos,pos+13);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                    try {
+                        this.issued = simpleDateFormat.parse(dateString).getTime();
+                    } catch (java.text.ParseException e){
+                        this.issued = 0;
+                    }
+                } catch (IndexOutOfBoundsException e){
+                    this.issued = 0;
+                }
+            } else {
+                this.issued = 0;
+            }
+            if (this.issued!=0){
+                int utcPos = s.indexOf("UTC") - 3;
+                if (utcPos>0){
+                    try {
+                        String timeString = s.substring(utcPos,utcPos+2);
+                        int hour = 0;
+                        try {
+                            hour = Integer.parseInt(timeString);
+                        } catch (NumberFormatException e){
+                            // nothing to do
+                        }
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(new Date(this.issued));
+                        calendar.set(Calendar.HOUR_OF_DAY, hour);
+                        this.issued = calendar.getTimeInMillis();
+                    } catch (IndexOutOfBoundsException e){
+                        this.issued = 0;
+                    }
+                }
+            }
+        }
     }
 
     public String getIssued(){
