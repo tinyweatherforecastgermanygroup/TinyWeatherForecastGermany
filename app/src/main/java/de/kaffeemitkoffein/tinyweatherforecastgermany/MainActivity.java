@@ -274,6 +274,7 @@ public class MainActivity extends Activity {
             if ((weatherSettings.last_version_code>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT) && (weatherSettings.last_version_code<20)){
                 // PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
                 WeatherSettings.resetStationToDefault(getApplicationContext());
+                WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
                 showWarning(R.mipmap.ic_warning_white_24dp,getResources().getString(R.string.warning_stationreset_title),getResources().getString(R.string.warning_stationreset_text));
             } else {
                 showWhatsNewDialog();

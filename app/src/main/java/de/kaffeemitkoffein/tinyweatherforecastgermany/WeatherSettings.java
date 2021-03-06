@@ -528,6 +528,13 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    public static void setCurrentAppVersionFlag(Context c){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putInt(PREF_LAST_VERSION_CODE, BuildConfig.VERSION_CODE);
+        pref_editor.apply();
+    }
+
     public static boolean getUseGPSFlag(Context c){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
         return sharedPreferences.getBoolean(PREF_USEGPS, PREF_USEGPS_DEFAULT);

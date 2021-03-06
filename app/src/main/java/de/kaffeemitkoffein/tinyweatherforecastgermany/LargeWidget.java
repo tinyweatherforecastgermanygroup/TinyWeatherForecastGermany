@@ -94,11 +94,11 @@ public class LargeWidget extends ClassicWidget{
             String max_temp = currentWeatherInfo.forecast24hourly.get(i).getMaxTemperatureInCelsiusInt()+"°";
             Paint p_temp = new Paint();
             p_temp.setTextSize(fontsize_temperature);
-            float mf1 = getMaxPossibleFontsize(min_temp,max_width,max_height);
+            float mf1 = getMaxPossibleFontsize(min_temp,max_width,(max_height/(item_count+1))*0.95f);
             if (mf1<fontsize_temperature){
                 fontsize_temperature = mf1;
             }
-            float mf2 = getMaxPossibleFontsize(max_temp,max_width,(max_height/item_count)*0.95f);
+            float mf2 = getMaxPossibleFontsize(max_temp,max_width,(max_height/(item_count+1))*0.95f);
             if (mf2<fontsize_temperature){
                 fontsize_temperature = mf2;
             }
