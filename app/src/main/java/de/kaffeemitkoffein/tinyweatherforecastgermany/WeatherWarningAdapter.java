@@ -140,7 +140,7 @@
                 viewHolder.warning_item_elements = (TextView) view.findViewById(R.id.warning_item_elements);
                 view.setTag(viewHolder);
             }
-            WeatherWarning warning = weatherWarnings.get(i);
+            final WeatherWarning warning = weatherWarnings.get(i);
             warning.initPolygons();
             if (isInLocalWarnings(warning)){
                 int color = warning.getWarningColor();
@@ -185,16 +185,22 @@
                 viewHolder.warning_item_certainty.setText(warning.certainty);
                 viewHolder.warning_item_certainty.setTextColor(warning.getWarningColor());
             }
-            String line3 = new String();
-            if (warning.area_names!=null){
-                for (int j=0; j<warning.area_names.size(); j++){
-                    line3 = line3 + warning.area_names.get(j);
-                    if (j<warning.area_names.size()-1){
-                        line3 = line3 + ", ";
+            final ViewHolder viewHolder2 = viewHolder;
+            new Runnable() {
+                @Override
+                public void run() {
+                    String line3 = new String();
+                    if (warning.area_names!=null){
+                        for (int j=0; j<warning.area_names.size(); j++){
+                            line3 = line3 + warning.area_names.get(j);
+                            if (j<warning.area_names.size()-1){
+                                line3 = line3 + ", ";
+                            }
+                        }
                     }
+                    viewHolder2.warning_item_areas.setText(">"+line3);
                 }
-            }
-            viewHolder.warning_item_areas.setText(">"+line3);
+            }.run();
             final ViewHolder finalViewHolder = viewHolder;
             viewHolder.warning_item_areas.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,3 +1,5 @@
 - fixed missing update of warnings in main app
-- fixed date parsing errors if locale was not US
+- fixed date parsing errors in text forecasts if locale was not US
 - fixed date parsing errors in maritime warnings
+- fixed too large temperature display in large widget
+- bold widget now again stretches icons to maximum width available
