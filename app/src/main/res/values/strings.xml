@@ -253,4 +253,6 @@
     <string name="textforecasttype_medium_term">Weather Medium Term</string>
     <string name="textforecasttype_medium_feature">Feature</string>
     <string name="textforecasttype_medium_other">Other</string>
+    <string name="warning_stationreset_title">Station Reset</string>
+    <string name="warning_stationreset_text">To fix a bug your station and your favorite stations have been reset to the default.</string>
 </resources>

@@ -253,6 +253,8 @@
     <string name="textforecasttype_medium_term">Wetter Mittelfrist</string>
     <string name="textforecasttype_medium_feature">Feature</string>
     <string name="textforecasttype_medium_other">Sonstiges</string>
+    <string name="warning_stationreset_title">Wetter-Station zurückgesetzt</string>
+    <string name="warning_stationreset_text">Um einen Fehler zu beheben, wurde die Wetter-Station auf den Standardwert zurück gesetzt.</string>
 
 
 </resources>

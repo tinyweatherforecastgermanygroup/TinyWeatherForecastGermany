@@ -228,10 +228,24 @@ public class MainActivity extends Activity {
     protected void onResume(){
         registerForBroadcast();
         // this is necessary if the update of weather data occurs while the app is in the background
-        weatherCard = new Weather().getCurrentWeatherInfo(this);
-        checkIfWarningsAreOutdated();
+        try {
+            if (weatherCard==null){
+                weatherCard = new Weather().getCurrentWeatherInfo(this);
+            }
+        } catch (Exception e){
+            PrivateLog.log(getApplicationContext(),Tag.MAIN,"Error in onResume when getting weather: "+e.getMessage());
+        }
+        try {
+            checkIfWarningsAreOutdated();
+        } catch (Exception e){
+            PrivateLog.log(getApplicationContext(),Tag.MAIN,"Error in onResume when checking for warnings: "+e.getMessage());
+        }
         if (weatherCard!=null){
-            displayWeatherForecast(weatherCard);
+            try {
+                displayWeatherForecast(weatherCard);
+            } catch (Exception e){
+                PrivateLog.log(getApplicationContext(),Tag.MAIN,"Error in onResume when displaying weather: "+e.getMessage());
+            }
         }
         super.onResume();
     }
@@ -244,7 +258,11 @@ public class MainActivity extends Activity {
         // disable log to logcat if release is not a userdebug
         disableLogToLogcatIfNotUserDebug();
         // force a database access at the beginning to check for a needed database upgrade
-        WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
+        try {
+            WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
+        } catch (Exception e){
+            PrivateLog.log(context,Tag.MAIN,"Error checking/upgrading database!");
+        }
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);
@@ -253,25 +271,18 @@ public class MainActivity extends Activity {
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             // remove shared preferences on app update if installed app is lower than build 20
-            if (weatherSettings.last_version_code<20){
+            if ((weatherSettings.last_version_code>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT) && (weatherSettings.last_version_code<20)){
                 // PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
-                StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(getApplicationContext()){
-                    public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations){
-                        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(getApplicationContext());
-                        // correct wrong geo data by polling it again from the hardcoded list
-                        weatherLocation = stations.get(StationsManager.getSetPosition(getApplicationContext(), stations, weatherLocation));
-                        WeatherSettings.setStation(getApplicationContext(),weatherLocation);
-                    }
-                };
-                executor.execute(stationsReader);
+                WeatherSettings.resetStationToDefault(getApplicationContext());
+                showWarning(R.mipmap.ic_warning_white_24dp,getResources().getString(R.string.warning_stationreset_title),getResources().getString(R.string.warning_stationreset_text));
+            } else {
+                showWhatsNewDialog();
             }
-            showWhatsNewDialog();
         }
         final Context context = getApplicationContext();
         stationsManager = new StationsManager(context);
         loadStationsSpinner();
         loadStationsData();
-        checkIfWarningsAreOutdated();
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -322,7 +333,11 @@ public class MainActivity extends Activity {
         if (!API_TESTING_ENABLED){
             weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         }
-        weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
+        try {
+            weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
+        } catch (Exception e){
+            PrivateLog.log(context,Tag.MAIN,"Error loading present weather data: "+e.getMessage());
+        }
         // get new data from api or display present data.
         if (!API_TESTING_ENABLED){
             if (weatherCard!=null){
@@ -878,7 +893,21 @@ public class MainActivity extends Activity {
         } catch (IOException e) {
             textView.setText("Error.");
         }
+    }
 
+    private void showWarning(int icon, String title, String text){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(icon);
+        builder.setTitle(title);
+        builder.setMessage(text);
+        builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void registerForBroadcast(){

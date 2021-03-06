@@ -102,7 +102,7 @@ public class WeatherSettings {
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
-    public final int PREF_LAST_VERSION_CODE_DEFAULT = 0;
+    public static final int PREF_LAST_VERSION_CODE_DEFAULT = 0;
     public static final boolean PREF_SERVE_GADGETBRIDGE_DEFAULT = false;
     public static final long PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
@@ -411,11 +411,22 @@ public class WeatherSettings {
     public static void setStation(Context context, Weather.WeatherLocation weatherLocation) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putString(PREF_STATION_DESCRIPTION, PREF_STATION_DESCRIPTION_DEFAULT);
-        pref_editor.putString(PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT);
+        pref_editor.putString(PREF_STATION_DESCRIPTION, weatherLocation.description);
+        pref_editor.putString(PREF_STATION_NAME,weatherLocation.name);
         pref_editor.putFloat(PREF_STATION_LATIDTUDE,(float) weatherLocation.latitude);
         pref_editor.putFloat(PREF_STATION_LONGITUDE,(float) weatherLocation.longitude);
         pref_editor.putFloat(PREF_STATION_ALTITUDE,(float) weatherLocation.altitude);
+        pref_editor.apply();
+    }
+
+    public static void resetStationToDefault(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putString(PREF_STATION_NAME, PREF_STATION_NAME_DEFAULT);
+        pref_editor.putFloat(PREF_STATION_LATIDTUDE, (float) PREF_STATION_LATITUDE_DEFAULT);
+        pref_editor.putFloat(PREF_STATION_LONGITUDE, (float) PREF_STATION_LONGITUDE_DEFAULT);
+        pref_editor.putFloat(PREF_STATION_ALTITUDE, (float) PREF_STATION_ALTITUDE_DEFAULT);
+        pref_editor.putString(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
         pref_editor.apply();
     }
 
