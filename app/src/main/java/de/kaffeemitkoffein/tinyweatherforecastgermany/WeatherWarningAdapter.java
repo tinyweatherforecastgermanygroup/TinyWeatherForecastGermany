@@ -185,7 +185,7 @@
                 viewHolder.warning_item_certainty.setText(warning.certainty);
                 viewHolder.warning_item_certainty.setTextColor(warning.getWarningColor());
             }
-            final ViewHolder viewHolder2 = viewHolder;
+            final TextView multiLineTextview = viewHolder.warning_item_areas;
             new Runnable() {
                 @Override
                 public void run() {
@@ -198,7 +198,7 @@
                             }
                         }
                     }
-                    viewHolder2.warning_item_areas.setText(">"+line3);
+                    multiLineTextview.setText(">"+line3);
                 }
             }.run();
             final ViewHolder finalViewHolder = viewHolder;

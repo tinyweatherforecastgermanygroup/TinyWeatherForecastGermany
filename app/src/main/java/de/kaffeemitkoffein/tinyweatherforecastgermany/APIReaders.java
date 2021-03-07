@@ -667,9 +667,19 @@ public class APIReaders {
 
         private ArrayList<String> getTextFromUrl(String url_string){
             try {
-                URL url = new URL(url_string);
-                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-                InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+                InputStream inputStream;
+                try {
+                    // https standard
+                    URL url = new URL(url_string);
+                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                    inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+                } catch (SSLException e){
+                    // http fallback
+                    String url_string_legacy = url_string.replace("https","http");
+                    URL url_legacy = new URL(url_string_legacy);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
+                    inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
+                }
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.ISO_8859_1));
                 ArrayList<String> resultList = new ArrayList<String>();
                 String line = null;
