@@ -1,12 +1,6 @@
-Neu in dieser Version ([VERSION]):
 
 - fehlende Aktualisierung der Warnungen in der Haupt-App behoben
 - falsche Datums-Umwandlung in den Text-Vorhersagen behoben
 - zu große Schrift im großen Widget korrigiert
 - Angaben im kräftigen Widget dehnen sich nun wieder auf die maximal verfügbare Breite aus
 - Wetter-Warnungen scrollen nun schneller
-
-
-
-
-

@@ -1,7 +1,7 @@
 What is new in this version ([VERSION]):
 
-- new text forecasts
-- improved weather warnings
-- wind icon can show a wind forecast
-- revised and updated bold widget
-- various bug-fixes
+- fixed missing update of warnings in main app
+- fixed date parsing errors in text forecasts
+- fixed font too big in large widget
+- bold widget now again stretches information to maximum width available
+- weather warnings scroll faster now
