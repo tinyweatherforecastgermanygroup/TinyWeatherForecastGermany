@@ -369,8 +369,10 @@ public class RawWeatherInfo{
             for (int i=first; i<=last; i++){
                 d = d + itemlist[i];
             }
-            Double result = (d / (last-first+1));
-            return result;
+            if ((last-first+1) != 0){
+                Double result = (d / (last-first+1));
+                return result;
+            }
         }
         return null;
     }
@@ -388,7 +390,9 @@ public class RawWeatherInfo{
             for (int i=first; i<=last; i++){
                 v = v + itemlist[i];
             }
-            return v / (last-first+1);
+            if ((last-first+1) != 0){
+                return v / (last-first+1);
+            }
         }
         return null;
     }
