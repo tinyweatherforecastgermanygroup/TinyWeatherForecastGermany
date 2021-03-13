@@ -35,6 +35,10 @@
     <dimen name="fcmain_textsize_medium">12sp</dimen>
     <dimen name="fcmain_textsize_small">7sp</dimen>
 
+    <dimen name="fcmain_narrowdevice_textsize_large">16sp</dimen>
+    <dimen name="fcmain_narrowdevice_textsize_medium">10sp</dimen>
+    <dimen name="fcmain_narrowdevice_textsize_small">6sp</dimen>
+
     <dimen name="licence_textsize">10sp</dimen>
     <dimen name="about_textsize">12sp</dimen>
     <dimen name="whatsnew_textsize">14sp</dimen>

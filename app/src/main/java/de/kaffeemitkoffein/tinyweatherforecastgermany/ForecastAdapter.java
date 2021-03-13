@@ -228,6 +228,21 @@
                 // view is not available from cache
                 newView = true;
                 view = this.layoutInflater.inflate(R.layout.forecastitem, viewGroup, false);
+                /*
+                final View view1 = view;
+                view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        int height = view1.getHeight();
+                        ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
+                        layoutParams.height = height;
+                        Log.v("TWFG","Height=");
+                        view1.setMinimumHeight(height);
+                        view1.setLayoutParams(layoutParams);
+                    }
+                });
+
+                 */
             } else {
                 // recycle view information
                 viewHolder = (ViewHolder) view.getTag();
@@ -557,8 +572,8 @@
                         .displaySimpleBar(displaySimpleBar)
                         .setWindDisplayType(display_wind_type)
                         .create(context);
-
                 final ImageView v = imageView_forecastBar;
+                final View view1 = view;
                 final Long timestamp = System.currentTimeMillis();
                 v.setTag(timestamp);
                 v.post(new Runnable() {
@@ -566,10 +581,20 @@
                     public void run() {
                         if (timestamp.equals((Long) v.getTag())) {
                             v.setImageBitmap(forecastBitmap.getForecastBitmap());
+                            // when the forecastbar image was set, re-calculate real size of the listview item and set it
+                            v.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    int height = view1.getHeight();
+                                    ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
+                                    layoutParams.height = height;
+                                    view1.setMinimumHeight(height);
+                                    view1.setLayoutParams(layoutParams);
+                                }
+                            });
                         }
                     }
                 });
-
             } else {
                 // hide forecast bar when not needed
                 setVisibility(imageView_forecastBar, View.GONE);

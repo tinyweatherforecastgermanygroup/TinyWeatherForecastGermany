@@ -108,7 +108,7 @@ public class LargeWidget extends ClassicWidget{
             String day      = simpleDateFormat.format(new Date(currentWeatherInfo.forecast24hourly.get(i).getTimestamp()));
             Paint p_day = new Paint();
             p_day.setTextSize(fontsize_dayofweek);
-            float mf3 = getMaxPossibleFontsize(day,max_width,max_height);
+            float mf3 = getMaxPossibleFontsize(day,max_width,(max_height/(item_count+1))*0.95f);
             if (mf3<fontsize_dayofweek){
                 fontsize_dayofweek = mf3;
             }
