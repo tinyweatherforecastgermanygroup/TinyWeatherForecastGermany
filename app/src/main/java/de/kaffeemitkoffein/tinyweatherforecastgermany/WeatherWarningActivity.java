@@ -46,6 +46,7 @@ public class WeatherWarningActivity extends Activity {
     ArrayList<Polygon> excluded_polygoncache;
     ImageView germany;
     ImageView map_collapsed;
+    boolean deviceIsLandscape;
     private GestureDetector gestureDetector;
     private View.OnTouchListener mapTouchListener;
     ListView weatherList;
@@ -117,6 +118,7 @@ public class WeatherWarningActivity extends Activity {
         // in layout w6600dp-land this element does not exist. This is the safest way to
         // limit collapse-function to portrait mode.
         if (map_collapsed!=null){
+            deviceIsLandscape = false;
             map_collapsed.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -134,6 +136,8 @@ public class WeatherWarningActivity extends Activity {
                     return true;
                 }
             });
+        } else {
+            deviceIsLandscape = true;
         }
     }
 
@@ -228,7 +232,7 @@ public class WeatherWarningActivity extends Activity {
     @SuppressWarnings("unchecked")
     private void displayMap(){
         Bitmap resource_bitmap;
-        if (isDeviceLandscape()){
+        if (deviceIsLandscape){
             resource_bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.germany_nc);
         } else {
             resource_bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.germany);
@@ -347,19 +351,22 @@ public class WeatherWarningActivity extends Activity {
         {
             //Log.v("MOTIONEVENT","down");
             // catch collapse-button-press prior to map-selection
-            float button_border_right  = (float) (germany.getMeasuredWidth() * 0.127427184);
-            float button_border_bottom = (float) (germany.getMeasuredHeight() * 0.10041841);
-            if ((e.getX()<button_border_right) && (e.getY()<button_border_bottom)){
-                germany.setVisibility(View.GONE);
-                germany.invalidate();
-                map_collapsed.setVisibility(View.VISIBLE);
-                map_collapsed.invalidate();
-                LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
-                lop.height=0;
-                lop.weight=19;
-                weatherList.setLayoutParams(lop);
-                weatherList.invalidate();
-                return true;
+            // perform this only if NOT in landscape layout
+            if ((!deviceIsLandscape) && (map_collapsed!=null) && (germany!=null) && (weatherList!=null)){
+                float button_border_right  = (float) (germany.getMeasuredWidth() * 0.127427184);
+                float button_border_bottom = (float) (germany.getMeasuredHeight() * 0.10041841);
+                if ((e.getX()<button_border_right) && (e.getY()<button_border_bottom)){
+                    germany.setVisibility(View.GONE);
+                    germany.invalidate();
+                    map_collapsed.setVisibility(View.VISIBLE);
+                    map_collapsed.invalidate();
+                    LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
+                    lop.height=0;
+                    lop.weight=19;
+                    weatherList.setLayoutParams(lop);
+                    weatherList.invalidate();
+                    return true;
+                }
             }
             return checkForTapInPolygonWarning(e);
         }
@@ -414,6 +421,7 @@ public class WeatherWarningActivity extends Activity {
             while (position<polygoncache.size()){
                 if (polygoncache.get(position).isInPolygon(x_geo,y_geo)){
                     jumpListViewToSelection(polygoncache.get(position));
+                    return true;
                 }
                 position++;
             }
