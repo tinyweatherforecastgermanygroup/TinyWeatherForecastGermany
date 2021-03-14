@@ -25,6 +25,7 @@
     import android.text.SpannableStringBuilder;
     import android.text.Spanned;
     import android.text.style.ForegroundColorSpan;
+    import android.util.Log;
     import android.util.SparseArray;
     import android.view.LayoutInflater;
     import android.view.View;
@@ -585,10 +586,12 @@
                             v.post(new Runnable() {
                                 @Override
                                 public void run() {
+                                    //int height = view1.getHeight()+v.getHeight();
+                                    Log.v("TWFG","Bar height="+v.getHeight());
                                     int height = view1.getHeight();
                                     ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
                                     layoutParams.height = height;
-                                    view1.setMinimumHeight(height);
+                                    // view1.setMinimumHeight(height);
                                     view1.setLayoutParams(layoutParams);
                                 }
                             });

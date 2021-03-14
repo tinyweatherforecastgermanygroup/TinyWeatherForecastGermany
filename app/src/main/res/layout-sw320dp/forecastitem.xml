@@ -26,7 +26,7 @@
     android:padding="3dp">
 
     <TextView android:id="@+id/fcitem_heading"
-        android:textSize="@dimen/fcmain_textsize_large"
+        android:textSize="@dimen/fcmain_mediumdevice_textsize_large"
         android:textColor="@color/widget_textcolor"
         android:layout_gravity="center_horizontal"
         android:textAlignment="center"
@@ -44,7 +44,7 @@
         android:src="@mipmap/warning_icon"/>
 
     <TextView android:id="@+id/fcitem_warningtext"
-        android:textSize="@dimen/fcmain_textsize_medium"
+        android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
         android:textColor="@color/widget_textcolor"
         android:layout_gravity="center_horizontal"
         android:textAlignment="center"
@@ -63,14 +63,14 @@
         android:orientation="vertical">
 
         <TextView android:id="@+id/fcitem_rise1"
-            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
             android:textColor="@color/widget_textcolor"
             android:layout_gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView android:id="@+id/fcitem_rise2"
-            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
             android:textColor="@color/widget_textcolor"
             android:layout_gravity="right"
             android:layout_width="wrap_content"
@@ -92,20 +92,18 @@
         android:layout_below="@id/fcitem_sunet1"
         android:src="@mipmap/arrow_down"/>
 
-
     <ImageView android:id="@+id/fcitem_forecastbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"/>
 
     <LinearLayout
-
         android:id="@+id/fcitem_linearlayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fcitem_warningtext"
         android:layout_above="@id/fcitem_forecastbar"
+        android:layout_below="@id/fcitem_warningtext"
         android:weightSum="3"
         android:gravity="center">
 
@@ -117,7 +115,7 @@
             android:orientation="vertical">
 
             <TextView android:id="@+id/fcitem_weatherconditiontext"
-                android:textSize="@dimen/fcmain_textsize_medium"
+                android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                 android:textColor="@color/widget_textcolor"
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
@@ -137,7 +135,7 @@
                     android:src="@mipmap/symbol_precipitation" />
 
                 <TextView android:id="@+id/fcitem_precipitation_text"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left"
                     android:layout_toRightOf="@id/fcitem_precipitation_symbol"
@@ -147,7 +145,7 @@
                     android:text="-"/>
 
                 <TextView android:id="@+id/fcitem_precipitation_unit_upper"
-                    android:textSize="@dimen/fcmain_textsize_small"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_small"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left"
                     android:layout_toRightOf="@id/fcitem_precipitation_text"
@@ -157,7 +155,7 @@
                     android:text="kg/"/>
 
                 <TextView android:id="@+id/fcitem_precipitation_unit_lower"
-                    android:textSize="@dimen/fcmain_textsize_small"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_small"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left"
                     android:layout_toRightOf="@id/fcitem_precipitation_text"
@@ -184,7 +182,7 @@
                     android:src="@mipmap/symbol_cloud" />
 
                 <TextView android:id="@+id/fcitem_var1_text"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left"
                     android:layout_weight="3"
@@ -201,7 +199,7 @@
                     android:src="@mipmap/symbol_lightning" />
 
                 <TextView android:id="@+id/fcitem_var2_text"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left"
                     android:layout_weight="3"
@@ -218,7 +216,7 @@
                     android:src="@mipmap/symbol_hail" />
 
                 <TextView android:id="@+id/fcitem_var3_text"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left"
                     android:layout_weight="3"
@@ -245,7 +243,7 @@
                     android:src="@mipmap/symbol_freezing_rain" />
 
                 <TextView android:id="@+id/fcitem_var4_text"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left"
                     android:layout_weight="3"
@@ -262,7 +260,7 @@
                     android:src="@mipmap/symbol_fog" />
 
                 <TextView android:id="@+id/fcitem_var5_text"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left"
                     android:layout_weight="3"
@@ -279,7 +277,7 @@
                     android:src="@mipmap/symbol_drizzle" />
 
                 <TextView android:id="@+id/fcitem_var6_text"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left"
                     android:layout_weight="3"
@@ -320,7 +318,7 @@
                 android:orientation="horizontal">
 
                 <TextView android:id="@+id/fcitem_temperature"
-                    android:textSize="@dimen/fcmain_textsize_large"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_large"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left|center_vertical"
                     android:gravity="left|center_vertical"
@@ -330,7 +328,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView android:id="@+id/fcitem_temperature_high"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="top"
                     android:gravity="top"
@@ -352,7 +350,7 @@
                     android:src="@mipmap/white_bar"/>
 
                 <TextView android:id="@+id/fcitem_temperature_low"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="bottom"
                     android:gravity="bottom"
@@ -363,7 +361,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView android:id="@+id/fcitem_pressure"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="left|center_vertical"
                     android:gravity="left|center_vertical"
@@ -390,7 +388,7 @@
                 </ImageView>
 
                 <TextView android:id="@+id/fcitem_wind"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:textColor="@color/widget_textcolor"
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
@@ -417,7 +415,7 @@
                     android:id="@+id/fcitem_visibility"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:layout_gravity="center"
                     android:textColor="@color/widget_textcolor"/>
             </LinearLayout>

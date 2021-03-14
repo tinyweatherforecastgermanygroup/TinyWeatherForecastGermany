@@ -856,6 +856,9 @@ public class MainActivity extends Activity {
             inputStream.close();
             String text = new String(textdata);
             text = text.replace("[VERSION]",versioning);
+            if (WeatherSettings.appReleaseIsUserdebug()){
+                text = text + PrivateLog.getDisplayInfoString(getApplicationContext());
+            }
             textView.setText(text);
         } catch (IOException e) {
             textView.setText("Error.");

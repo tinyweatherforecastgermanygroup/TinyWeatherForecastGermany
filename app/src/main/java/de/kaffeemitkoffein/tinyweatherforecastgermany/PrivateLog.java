@@ -24,11 +24,16 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -87,6 +92,8 @@ public class PrivateLog {
                         PrivateLog.log(context,"Manufacturer: "+ Build.MANUFACTURER);
                         PrivateLog.log(context,"App build: "+ BuildConfig.VERSION_CODE);
                         PrivateLog.log(context,"App build name: "+ BuildConfig.VERSION_NAME);
+                        PrivateLog.log(context,"------------------------------------------------------");
+                        PrivateLog.log(context,getDisplayInfoString(context));
                         PrivateLog.log(context,"------------------------------------------------------");
                     }
                 } catch (Exception e) {
@@ -161,5 +168,46 @@ public class PrivateLog {
             }
         }
     }
+
+    public static String getDisplayInfoString(Context context) {
+        final String lineBreak = System.getProperty("line.separator");
+        DecimalFormat df = new DecimalFormat("#.##");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(lineBreak);
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        display.getMetrics(displayMetrics);
+        stringBuilder.append("Available display:");
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Logical density: "+displayMetrics.density);
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Scaled density: "+displayMetrics.scaledDensity);
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Width  (pixels): "+displayMetrics.widthPixels);
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Height (pixels): "+displayMetrics.heightPixels);
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("x-dpi: "+displayMetrics.xdpi);
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("y-dpi: "+displayMetrics.ydpi);
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("calculated physical metrics:");
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Width  (x): "+df.format(displayMetrics.widthPixels/displayMetrics.xdpi) +" inch");
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Height (y): "+df.format(displayMetrics.heightPixels/displayMetrics.ydpi) +" inch");
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Pixel-independent metrics:");
+        stringBuilder.append(lineBreak);
+        // px = dp * (dpi/160)
+        // px/(dpi/160) = dp
+        stringBuilder.append("Width (x) in dp: "+Math.round(displayMetrics.widthPixels/(displayMetrics.xdpi/160)));
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Height (y) in dp: "+Math.round(displayMetrics.heightPixels/(displayMetrics.ydpi/160)));
+        stringBuilder.append(lineBreak);
+        return stringBuilder.toString();
+    }
+
 
 }
