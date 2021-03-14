@@ -1,5 +1,3 @@
-What is new in this version ([VERSION]):
-
 - new language: Dutch (thanks to Mondstern!)
 - fixed occasional app crash when some weather data was missing
 - fixed too large font size of the weekday in the large widget

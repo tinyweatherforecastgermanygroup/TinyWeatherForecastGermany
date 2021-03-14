@@ -30,6 +30,7 @@ The following persons contributed to this project:
  - Janis Bitta (app icon)
  - Jonas Lochmann (.gitignore)
  - Marc Nause (code improvements, bitmap caching)
+ - Mondstern (Dutch translation)
 
 License:
 --------

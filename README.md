@@ -76,6 +76,7 @@ Credits
  - Janis Bitta (new app icon)
  - Jonas Lochmann (.gitignore)
  - Marc Nause (code improvements, bitmap caching)
+ - Mondstern (Dutch translation)
  
  Privacy
  -------
