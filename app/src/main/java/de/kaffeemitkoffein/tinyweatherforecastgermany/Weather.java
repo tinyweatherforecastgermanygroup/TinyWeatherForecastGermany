@@ -458,29 +458,31 @@ public final class Weather {
         }
 
         public String getWindDirectionString(Context context){
-            if ((wind_direction>337.5) || (wind_direction<=22.5)){
-                return context.getResources().getString(R.string.direction_north);
-            }
-            if ((wind_direction>22.5) && (wind_direction<=67.5)){
-                return context.getResources().getString(R.string.direction_northeast);
-            }
-            if ((wind_direction>67.5) && (wind_direction<=112.5)){
-                return context.getResources().getString(R.string.direction_east);
-            }
-            if ((wind_direction>112.5) && (wind_direction<=157.5)){
-                return context.getResources().getString(R.string.direction_southeast);
-            }
-            if ((wind_direction>157.5) && (wind_direction<=202.5)){
-                return context.getResources().getString(R.string.direction_south);
-            }
-            if ((wind_direction>202.5) && (wind_direction<=247.5)){
-                return context.getResources().getString(R.string.direction_southwest);
-            }
-            if ((wind_direction>247.5) && (wind_direction<=292.5)){
-                return context.getResources().getString(R.string.direction_west);
-            }
-            if ((wind_direction>292.5) && (wind_direction<=337.5)) {
-                return context.getResources().getString(R.string.direction_northwest);
+            if (wind_direction!=null){
+                if ((wind_direction>337.5) || (wind_direction<=22.5)){
+                    return context.getResources().getString(R.string.direction_north);
+                }
+                if ((wind_direction>22.5) && (wind_direction<=67.5)){
+                    return context.getResources().getString(R.string.direction_northeast);
+                }
+                if ((wind_direction>67.5) && (wind_direction<=112.5)){
+                    return context.getResources().getString(R.string.direction_east);
+                }
+                if ((wind_direction>112.5) && (wind_direction<=157.5)){
+                    return context.getResources().getString(R.string.direction_southeast);
+                }
+                if ((wind_direction>157.5) && (wind_direction<=202.5)){
+                    return context.getResources().getString(R.string.direction_south);
+                }
+                if ((wind_direction>202.5) && (wind_direction<=247.5)){
+                    return context.getResources().getString(R.string.direction_southwest);
+                }
+                if ((wind_direction>247.5) && (wind_direction<=292.5)){
+                    return context.getResources().getString(R.string.direction_west);
+                }
+                if ((wind_direction>292.5) && (wind_direction<=337.5)) {
+                    return context.getResources().getString(R.string.direction_northwest);
+                }
             }
           return "?";
         }

@@ -586,8 +586,6 @@
                             v.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    //int height = view1.getHeight()+v.getHeight();
-                                    Log.v("TWFG","Bar height="+v.getHeight());
                                     int height = view1.getHeight();
                                     ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
                                     layoutParams.height = height;

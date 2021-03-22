@@ -363,18 +363,22 @@ public class ForecastBitmap{
                     if (weatherInfos.get(position).hasWindSpeed()||weatherInfos.get(position).hasWindDirection()){
                         if (windDisplayType!=Weather.WindDisplayType.TEXT){
                             Bitmap windsymbol = weatherInfos.get(position).getWindSymbol(context,windDisplayType);
-                            windsymbol = Bitmap.createScaledBitmap(windsymbol,Math.round(winddirection_maxsize),Math.round(winddirection_maxsize),false);
-                            float y_offset_wind = (bitmapHeight - windsymbol.getHeight())/2;
-                            canvas.drawBitmap(windsymbol,x_offset + x_within_item_offset,y_offset_wind,null);
+                            if (windsymbol!=null){
+                                windsymbol = Bitmap.createScaledBitmap(windsymbol,Math.round(winddirection_maxsize),Math.round(winddirection_maxsize),false);
+                                float y_offset_wind = (bitmapHeight - windsymbol.getHeight())/2f;
+                                canvas.drawBitmap(windsymbol,x_offset + x_within_item_offset,y_offset_wind,null);
+                            }
                         } else {
                             TEXT_PAINT.setTextSize(fontSize_small);
                             TEXT_PAINT.setColor(getColorFromResource(R.color.textColor));
                             TEXT_PAINT.setTextSize(fontSize_small);
                             String windtext=weatherInfos.get(position).getWindDirectionString(context);
-                            float x_offset_wind = x_offset + x_within_item_offset;
-                            float y_offset_wind = bitmapHeight-(bitmapHeight - TEXT_PAINT.getTextSize())/2;
-                            winddirection_maxsize = TEXT_PAINT.measureText(windtext+" ");
-                            canvas.drawText(windtext,x_offset_wind,y_offset_wind,TEXT_PAINT);
+                            if (windtext!=null){
+                                float x_offset_wind = x_offset + x_within_item_offset;
+                                float y_offset_wind = bitmapHeight-(bitmapHeight - TEXT_PAINT.getTextSize())/2;
+                                winddirection_maxsize = TEXT_PAINT.measureText(windtext+" ");
+                                canvas.drawText(windtext,x_offset_wind,y_offset_wind,TEXT_PAINT);
+                            }
                         }
                         x_within_item_offset = x_within_item_offset + winddirection_maxsize + 1;
                     }
