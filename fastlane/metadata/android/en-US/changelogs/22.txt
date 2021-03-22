@@ -2,3 +2,4 @@
 - fixed occasional app crash when some weather data was missing
 - fixed too large font size of the weekday in the large widget
 - fixed forecast items overlapping in the main app on some devices
+- fixed crash in warnings related to device orientation

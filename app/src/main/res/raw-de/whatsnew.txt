@@ -4,6 +4,7 @@ Neu in dieser Version ([VERSION]):
 - behoben: gelegentliche App-Abstürze beim Start, wenn bestimmte Wetterdaten nicht vorhanden waren
 - behoben: zu große Schrift des Wochentages im großen Widget
 - behoben: Vorhersage-Werte überdeckten sich in der App auf einigen Geräten
+- behoben: Absturz in den Warnungen, der mit der Geräte-Ausrichtung zu tun hatte
 
 
 
