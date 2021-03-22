@@ -144,7 +144,10 @@ public class ForecastBitmap{
             if (screenWidth>screenHeight){
                 // landscape mode
                 layoutParams.width  = (int) screenWidth;
-                //bitmapHeight = (int) ((((bitmapWidth/displayMetrics.xdpi) * (displayMetrics.ydpi)) / 20) * screenAspectRatio);
+                // catch a division by 0 possibility
+                if (displayMetrics.xdpi==0){
+                    displayMetrics.xdpi = 60;
+                }
                 layoutParams.height = (int) (((layoutParams.width/displayMetrics.xdpi) * (displayMetrics.ydpi)) / 20);
             } else {
                 // portrait mode
@@ -177,7 +180,10 @@ public class ForecastBitmap{
                 if (screenWidth>screenHeight){
                     // landscape mode
                     bitmapWidth  = (int) screenWidth;
-                    //bitmapHeight = (int) ((((bitmapWidth/displayMetrics.xdpi) * (displayMetrics.ydpi)) / 20) * screenAspectRatio);
+                    // catch a division by 0 possibility
+                    if (displayMetrics.xdpi==0){
+                        displayMetrics.xdpi = 60;
+                    }
                     bitmapHeight = (int) (((bitmapWidth/displayMetrics.xdpi) * (displayMetrics.ydpi)) / 20);
                 } else {
                     // portrait mode
@@ -242,6 +248,10 @@ public class ForecastBitmap{
         }
         Bitmap bitmap = Bitmap.createBitmap(bitmapWidth,bitmapHeight,Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
+        // set width to default if zero
+        if (anticipatedWidth==0){
+            anticipatedWidth = 6;
+        }
         itemWidth = (float) (bitmapWidth / anticipatedWidth);
         fontSize_medium  = (float) (bitmapHeight/2.2);
         fontSize_small   = (float) (bitmapHeight/3.3);
