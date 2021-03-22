@@ -24,6 +24,8 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -61,13 +63,21 @@ public class StationsManager {
         for (int i = 0; i < station_items.length; i++) {
             Weather.WeatherLocation weatherLocation = new Weather.WeatherLocation();
             String[] station_values = station_items[i].split(";");
-            weatherLocation.description = station_values[0];
-            weatherLocation.name = station_values[1];
-            String[] station_coordinates = station_values[2].split(",");
-            weatherLocation.longitude = Location.convert(station_coordinates[0]);
-            weatherLocation.latitude = Location.convert(station_coordinates[1]);
-            weatherLocation.altitude = Location.convert(station_coordinates[2]);
-            stations.add(weatherLocation);
+            if (station_values.length>2){
+                weatherLocation.description = station_values[0];
+                weatherLocation.name = station_values[1];
+                String[] station_coordinates = station_values[2].split(",");
+                if (station_coordinates.length>2){
+                    weatherLocation.longitude = Location.convert(station_coordinates[0]);
+                    weatherLocation.latitude = Location.convert(station_coordinates[1]);
+                    weatherLocation.altitude = Location.convert(station_coordinates[2]);
+                    stations.add(weatherLocation);
+                } else {
+                    PrivateLog.log(context,Tag.STATIONS,"Error parsing station geo-data (ignoring): "+station_values[2]+" => "+station_items[i]);
+                }
+            } else {
+                PrivateLog.log(context,Tag.STATIONS,"Error parsing station (ignoring): "+station_items[i] +" (items found: "+station_values.length+")");
+            }
             count++;
         }
         Collections.sort(stations, new Weather.WeatherLocation());
