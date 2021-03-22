@@ -34,7 +34,6 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -57,8 +56,8 @@ public class MainActivity extends Activity {
     public final static String MAINAPP_SHOW_PROGRESS = "SHOW_PROGRESS";
     public final static String MAINAPP_HIDE_PROGRESS = "HIDE_PROGRESS";
 
-    public final static boolean API_TESTING_ENABLED = true;
-    private int test_position = 3215; //last: 3215
+    public final static boolean API_TESTING_ENABLED = false;
+    private int test_position = 0; //last: 3215
 
     private ForecastAdapter forecastAdapter;
 
@@ -556,14 +555,14 @@ public class MainActivity extends Activity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                   Log.v(Tag.MAIN,"------------------------------------------");
-                   Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
-                   Log.v(Tag.MAIN,"-------------------------------------------");
+                   //Log.v(Tag.MAIN,"------------------------------------------");
+                   //Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
+                   //Log.v(Tag.MAIN,"-------------------------------------------");
                     getWeatherForecast();
                 }
             },4000);
         } else {
-             Log.v(Tag.MAIN,"Testing finished.");
+             //Log.v(Tag.MAIN,"Testing finished.");
         }
     }
 
