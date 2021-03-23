@@ -137,7 +137,7 @@ public class LargeWidget extends ClassicWidget{
         // *** draw the weekday ***
         // get the day of week string
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
-        // the timestamp will always me midnight. When we derive the day of week from it, it will be misleading, since
+        // the timestamp will always be midnight. When we derive the day of week from it, it will be misleading, since
         // we want to show the day *before* this midnight position.
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(weatherInfo.getTimestamp());

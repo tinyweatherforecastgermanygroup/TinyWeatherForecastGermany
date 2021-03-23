@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class BoldWidget extends ClassicWidget {
@@ -77,22 +78,27 @@ public class BoldWidget extends ClassicWidget {
             remoteViews.setTextViewText(R.id.boldwidget_today_min, NOT_AVAILABLE);
         }
         // FORECAST 1st DAY
-        if (currentWeatherInfo.forecast24hourly.size() >= 1) {
+        if (currentWeatherInfo.forecast24hourly.size() >= 2) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE");
-            String weekday = simpleDateFormat.format(new Date(currentWeatherInfo.forecast24hourly.get(0).getTimestamp()));
+            // the timestamp will always be midnight. When we derive the day of week from it, it will be misleading, since
+            // we want to show the day *before* this midnight position.
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(currentWeatherInfo.forecast24hourly.get(1).getTimestamp());
+            calendar.add(Calendar.DAY_OF_WEEK,-1);
+            String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
             remoteViews.setTextViewText(R.id.boldwidget_dayofweek_fc1, weekday);
-            if (currentWeatherInfo.forecast24hourly.get(0).hasCondition()) {
-                remoteViews.setImageViewResource(R.id.boldwidget_fc1_weatherconditionicon, WeatherCodeContract.getWeatherConditionDrawableResource(currentWeatherInfo.forecast24hourly.get(0).getCondition(), true));
+            if (currentWeatherInfo.forecast24hourly.get(1).hasCondition()) {
+                remoteViews.setImageViewResource(R.id.boldwidget_fc1_weatherconditionicon, WeatherCodeContract.getWeatherConditionDrawableResource(currentWeatherInfo.forecast24hourly.get(1).getCondition(), true));
             } else {
                 remoteViews.setImageViewResource(R.id.boldwidget_fc1_weatherconditionicon, R.mipmap.not_available);
             }
-            if (currentWeatherInfo.forecast24hourly.get(0).hasMaxTemperature()) {
-                remoteViews.setTextViewText(R.id.boldwidget_fc1_max, currentWeatherInfo.forecast24hourly.get(0).getMaxTemperatureInCelsiusInt() + "°");
+            if (currentWeatherInfo.forecast24hourly.get(1).hasMaxTemperature()) {
+                remoteViews.setTextViewText(R.id.boldwidget_fc1_max, currentWeatherInfo.forecast24hourly.get(1).getMaxTemperatureInCelsiusInt() + "°");
             } else {
                 remoteViews.setTextViewText(R.id.boldwidget_fc1_max, NOT_AVAILABLE);
             }
-            if (currentWeatherInfo.forecast24hourly.get(0).hasMinTemperature()) {
-                remoteViews.setTextViewText(R.id.boldwidget_fc1_min, currentWeatherInfo.forecast24hourly.get(0).getMinTemperatureInCelsiusInt() + "°");
+            if (currentWeatherInfo.forecast24hourly.get(1).hasMinTemperature()) {
+                remoteViews.setTextViewText(R.id.boldwidget_fc1_min, currentWeatherInfo.forecast24hourly.get(1).getMinTemperatureInCelsiusInt() + "°");
             } else {
                 remoteViews.setTextViewText(R.id.boldwidget_fc1_min, NOT_AVAILABLE);
             }
@@ -103,22 +109,27 @@ public class BoldWidget extends ClassicWidget {
             remoteViews.setTextViewText(R.id.boldwidget_fc1_min, NOT_AVAILABLE);
         }
         // FORECAST 2nd DAY
-        if (currentWeatherInfo.forecast24hourly.size() >= 2) {
+        if (currentWeatherInfo.forecast24hourly.size() >= 3) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE");
-            String weekday = simpleDateFormat.format(new Date(currentWeatherInfo.forecast24hourly.get(1).getTimestamp()));
+            // the timestamp will always be midnight. When we derive the day of week from it, it will be misleading, since
+            // we want to show the day *before* this midnight position.
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(currentWeatherInfo.forecast24hourly.get(2).getTimestamp());
+            calendar.add(Calendar.DAY_OF_WEEK,-1);
+            String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
             remoteViews.setTextViewText(R.id.boldwidget_dayofweek_fc2, weekday);
-            if (currentWeatherInfo.forecast24hourly.get(1).hasCondition()) {
-                remoteViews.setImageViewResource(R.id.boldwidget_fc2_weatherconditionicon, WeatherCodeContract.getWeatherConditionDrawableResource(currentWeatherInfo.forecast24hourly.get(1).getCondition(), true));
+            if (currentWeatherInfo.forecast24hourly.get(2).hasCondition()) {
+                remoteViews.setImageViewResource(R.id.boldwidget_fc2_weatherconditionicon, WeatherCodeContract.getWeatherConditionDrawableResource(currentWeatherInfo.forecast24hourly.get(2).getCondition(), true));
             } else {
                 remoteViews.setImageViewResource(R.id.boldwidget_fc2_weatherconditionicon, R.mipmap.not_available);
             }
-            if (currentWeatherInfo.forecast24hourly.get(1).hasMaxTemperature()) {
-                remoteViews.setTextViewText(R.id.boldwidget_fc2_max, currentWeatherInfo.forecast24hourly.get(1).getMaxTemperatureInCelsiusInt() + "°");
+            if (currentWeatherInfo.forecast24hourly.get(2).hasMaxTemperature()) {
+                remoteViews.setTextViewText(R.id.boldwidget_fc2_max, currentWeatherInfo.forecast24hourly.get(2).getMaxTemperatureInCelsiusInt() + "°");
             } else {
                 remoteViews.setTextViewText(R.id.boldwidget_fc2_max, NOT_AVAILABLE);
             }
-            if (currentWeatherInfo.forecast24hourly.get(1).hasMinTemperature()) {
-                remoteViews.setTextViewText(R.id.boldwidget_fc2_min, currentWeatherInfo.forecast24hourly.get(1).getMinTemperatureInCelsiusInt() + "°");
+            if (currentWeatherInfo.forecast24hourly.get(2).hasMinTemperature()) {
+                remoteViews.setTextViewText(R.id.boldwidget_fc2_min, currentWeatherInfo.forecast24hourly.get(2).getMinTemperatureInCelsiusInt() + "°");
             } else {
                 remoteViews.setTextViewText(R.id.boldwidget_fc2_min, NOT_AVAILABLE);
             }
