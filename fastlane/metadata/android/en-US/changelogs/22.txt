@@ -3,3 +3,4 @@
 - fixed too large font size of the weekday in the large widget
 - fixed forecast items overlapping in the main app on some devices
 - fixed crash in warnings related to device orientation
+- fix displayed days in large widget & bold widget

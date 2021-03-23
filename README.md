@@ -25,14 +25,14 @@ You can get the binary builds here: <https://kaffeemitkoffein.de/nextcloud/index
 
 Or from the developer's own fdroid repo: https://kaffeemitkoffein.de/fdroid
 
-You get  userdebug builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/4SXHaLxLSmFd8Ri>
+You get userdebug builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/4SXHaLxLSmFd8Ri>
 
 Please note that the builds linked here are not signed by the fdroid key, so you basically need to uninstall the fdroid versions before installing them and vice versa.
 
 License
 -------
 
- Copyright (c) 2020 Pawel Dube
+ Copyright (c) 2020, 2021 Pawel Dube
 
  This program is free software: you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by the
@@ -106,6 +106,8 @@ Credits
  *How to read the widget?*
  
  The widget icon, the weather description and the current temperature refer to the weather forecast that can be expected until the next full hour. The low and high temperatures refer to the values that can be expected to occur from now to midnight.
+
+ When showing more days (bold widget, large widget), the min and max values and the weather symbol refer to the whole day.  
  
  *What do the symbols in the main app mean?*
  
@@ -146,6 +148,8 @@ Credits
 Icons refer to *significant weather conditions*. The idea is to show you the most important (significant) weather condition that you can expect to occur within the given time period. For example, thunderstorms have a higher priority than rain and rain/fog have a higher priority than clouds. If such a significant weather condition is likely to occur, it will be preferred over others.
 
 Usually, the weather conditions are calculated by the DWD. If a weather condition is not available in the forecast data, the app tries to calculate it from other items. If you are interested how this app calculates icons in this case, see [here](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/app/src/main/java/de/kaffeemitkoffein/tinyweatherforecastgermany/WeatherCodeContract.java) in the source code.
+
+Thresholds for significant weather conditions are subjective and perhaps debatable, but weather conditions calculated by the DWD have priority and always remain unmodified, if available. If you are interested in the priorities, see [this DWD document](https://www.dwd.de/DE/leistungen/opendata/help/schluessel_datenformate/kml/mosmix_element_weather_xls.xlsx?__blob=publicationFile&v=6).
 
  Contributing
  ------------
