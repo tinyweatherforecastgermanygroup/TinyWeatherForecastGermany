@@ -169,6 +169,19 @@ public class PrivateLog {
         }
     }
 
+    public static String getDebugInfoString(Context context) {
+        final String lineBreak = System.getProperty("line.separator");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(lineBreak);
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Debug information");
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("=================");
+        stringBuilder.append(lineBreak);
+        return stringBuilder.toString();
+    }
+
+
     public static String getDisplayInfoString(Context context) {
         final String lineBreak = System.getProperty("line.separator");
         DecimalFormat df = new DecimalFormat("#.##");
@@ -179,6 +192,8 @@ public class PrivateLog {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         display.getMetrics(displayMetrics);
         stringBuilder.append("Available display:");
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("----------------------------------");
         stringBuilder.append(lineBreak);
         stringBuilder.append("Logical density: "+displayMetrics.density);
         stringBuilder.append(lineBreak);
@@ -205,6 +220,22 @@ public class PrivateLog {
         stringBuilder.append("Width (x) in dp: "+Math.round(displayMetrics.widthPixels/(displayMetrics.xdpi/160)));
         stringBuilder.append(lineBreak);
         stringBuilder.append("Height (y) in dp: "+Math.round(displayMetrics.heightPixels/(displayMetrics.ydpi/160)));
+        stringBuilder.append(lineBreak);
+        return stringBuilder.toString();
+    }
+
+    public static String getCurrentStationInfoString(Context context){
+        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+        final String lineBreak = System.getProperty("line.separator");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Currently set station in settings:");
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("----------------------------------");
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Station name: "+weatherLocation.name);
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Station description: "+weatherLocation.description);
         stringBuilder.append(lineBreak);
         return stringBuilder.toString();
     }

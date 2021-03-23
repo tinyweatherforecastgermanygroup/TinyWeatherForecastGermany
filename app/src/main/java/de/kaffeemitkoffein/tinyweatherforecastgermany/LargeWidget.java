@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.graphics.*;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class LargeWidget extends ClassicWidget{
@@ -136,7 +137,13 @@ public class LargeWidget extends ClassicWidget{
         // *** draw the weekday ***
         // get the day of week string
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
-        String weekday = simpleDateFormat.format(new Date(weatherInfo.getTimestamp()));
+        // the timestamp will always me midnight. When we derive the day of week from it, it will be misleading, since
+        // we want to show the day *before* this midnight position.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(weatherInfo.getTimestamp());
+        calendar.add(Calendar.DAY_OF_WEEK,-1);
+        //String weekday = simpleDateFormat.format(new Date(weatherInfo.getTimestamp()));
+        String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
         // determine max. possible fontsize
         Paint paint_weekday = new Paint();
         paint_weekday.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
@@ -224,12 +231,12 @@ public class LargeWidget extends ClassicWidget{
         if (number_of_forecast_days==0){
             return bitmap;
         }
-        float width_oneday = width_bitmap / number_of_forecast_days;
+        float width_oneday = width_bitmap / (number_of_forecast_days-1);
         float height_oneday = height_bitmap;
         determineMaxFontSizes(currentWeatherInfo,width_oneday,height_oneday);
-        for (int i=0; i<number_of_forecast_days; i++){
+        for (int i=1; i<number_of_forecast_days; i++){
             Bitmap item = getDailyBar(context,width_oneday,height_oneday,currentWeatherInfo.forecast24hourly.get(i));
-            canvas.drawBitmap(item,i*width_oneday,0,null);
+            canvas.drawBitmap(item,(i-1)*width_oneday,0,null);
         }
         return bitmap;
     }

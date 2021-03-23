@@ -414,7 +414,6 @@ public class MainActivity extends Activity {
         Context context = this.getApplicationContext();
         Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+station_description,Toast.LENGTH_LONG).show();
         int station_pos = stationsManager.getPositionFromDescription(station_description);
-        String name = stationsManager.getName(station_pos);
         stationsManager.setStation(station_pos);
         PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
         PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
@@ -857,7 +856,9 @@ public class MainActivity extends Activity {
             String text = new String(textdata);
             text = text.replace("[VERSION]",versioning);
             if (WeatherSettings.appReleaseIsUserdebug()){
+                text = text + PrivateLog.getDebugInfoString(getApplicationContext());
                 text = text + PrivateLog.getDisplayInfoString(getApplicationContext());
+                text = text + PrivateLog.getCurrentStationInfoString(getApplicationContext());
             }
             textView.setText(text);
         } catch (IOException e) {
