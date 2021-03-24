@@ -69,6 +69,7 @@
             android:layout_width="0dp"
             android:layout_weight="12"
             android:layout_height="match_parent"
+            android:layout_marginLeft="6dp"
             android:orientation="vertical">
 
             <TextView
