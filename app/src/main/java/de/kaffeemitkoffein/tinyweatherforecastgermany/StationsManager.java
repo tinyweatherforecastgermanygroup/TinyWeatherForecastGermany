@@ -22,10 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;

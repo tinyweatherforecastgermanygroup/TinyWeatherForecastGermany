@@ -22,8 +22,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -57,6 +55,7 @@ public class WeatherWarnings {
             if (cursor.moveToFirst()){
                 do {
                     WeatherWarning weatherWarning = weatherWarningContentProvider.getWeatherWarningFromCursor(cursor);
+                    i++;
                     if (weatherWarning!=null){
                         warnings.add(weatherWarning);
                     }
