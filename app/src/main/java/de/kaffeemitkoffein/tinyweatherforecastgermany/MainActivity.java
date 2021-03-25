@@ -159,12 +159,20 @@ public class MainActivity extends Activity {
                         autoCompleteTextView.setText("");
                         autoCompleteTextView.clearListSelection();
                     }
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(autoCompleteTextView.getWindowToken(),0);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+                    try{
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(autoCompleteTextView.getWindowToken(),0);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+                    } catch (Exception e){
+                        PrivateLog.log(context,Tag.MAIN,"Warning: hiding soft keyboard failed.");
+                    }
                 }
             } else {
-                Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getText(R.string.station_does_not_exist), Toast.LENGTH_LONG).show();
+                try {
+                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getText(R.string.station_does_not_exist), Toast.LENGTH_LONG).show();
+                } catch (Exception e){
+                    PrivateLog.log(context,Tag.MAIN,"Error: station does not exist.");
+                }
             }
         }
     };
@@ -183,7 +191,11 @@ public class MainActivity extends Activity {
                     newWeatherRegionSelected(weatherSettings,station_description);
                 }
             } else {
-                Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
+                try {
+                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
+                } catch (Exception e){
+                    PrivateLog.log(context,Tag.MAIN,"Error: station does not exist.");
+                }
             }
         }
     };
@@ -410,23 +422,42 @@ public class MainActivity extends Activity {
     }
 
     private void newWeatherRegionSelected(WeatherSettings weatherSettings, String station_description){
-        station_description = station_description.toUpperCase();
-        Context context = this.getApplicationContext();
-        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+station_description,Toast.LENGTH_LONG).show();
-        int station_pos = stationsManager.getPositionFromDescription(station_description);
-        stationsManager.setStation(station_pos);
-        PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
-        PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
-        PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
-        last_updateweathercall = Calendar.getInstance().getTimeInMillis();
-        addToSpinner(station_description);
+        station_description= station_description.toUpperCase();
+        final String station_description2 = station_description;
+        final Context context = this.getApplicationContext();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+station_description2,Toast.LENGTH_LONG).show();
+                } catch (Exception e){
+                    PrivateLog.log(context,Tag.MAIN,"Warning: new station message failed.");
+                }
+            }
+        });
+        try {
+            int station_pos = stationsManager.getPositionFromDescription(station_description);
+            stationsManager.setStation(station_pos);
+            PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+            PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
+            PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+            last_updateweathercall = Calendar.getInstance().getTimeInMillis();
+            addToSpinner(station_description);
+        } catch (Exception e){
+            PrivateLog.log(context,Tag.MAIN,"Error: Setting new station failed: "+e.getMessage());
+        }
         // we do not get the forecast data here since this triggers the preference-changed-listener. This
         // listener takes care of the weather data update and updates widgets and gadgetbridge.
-        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
-        if (autoCompleteTextView!=null){
-            autoCompleteTextView.setText("");
-            autoCompleteTextView.clearListSelection();
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+                if (autoCompleteTextView!=null){
+                    autoCompleteTextView.setText("");
+                    autoCompleteTextView.clearListSelection();
+                }
+            }
+        });
     }
 
     private class SpinnerListener implements View.OnTouchListener, AdapterView.OnItemSelectedListener{
@@ -620,15 +651,17 @@ public class MainActivity extends Activity {
     }
 
     private int get24passedPosition(CurrentWeatherInfo currentWeatherInfo,int lasthourlypostion){
-        long last1hourtime = currentWeatherInfo.forecast1hourly.get(lasthourlypostion).getTimestamp();
-        if (currentWeatherInfo.forecast6hourly.size()>0){
-            int position = 0;
-            long time = currentWeatherInfo.forecast6hourly.get(position).getTimestamp();
-            while (position<currentWeatherInfo.forecast6hourly.size() && time<last1hourtime){
-                position++;
-                time = currentWeatherInfo.forecast6hourly.get(position).getTimestamp();
+        if ((currentWeatherInfo.forecast1hourly.size()>lasthourlypostion) && (lasthourlypostion>0)){
+            long last1hourtime = currentWeatherInfo.forecast1hourly.get(lasthourlypostion).getTimestamp();
+            if (currentWeatherInfo.forecast6hourly.size()>0){
+                int position = 0;
+                long time = currentWeatherInfo.forecast6hourly.get(position).getTimestamp();
+                while (position<currentWeatherInfo.forecast6hourly.size() && time<last1hourtime){
+                    position++;
+                    time = currentWeatherInfo.forecast6hourly.get(position).getTimestamp();
+                }
+                return position;
             }
-            return position;
         }
         return 0;
     }
@@ -668,9 +701,7 @@ public class MainActivity extends Activity {
         if (weatherCard==null){
             weatherCard = new CurrentWeatherInfo();
         }
-        if (weatherCard != null){
-            displayWeatherForecast(weatherCard);
-        }
+        displayWeatherForecast(weatherCard);
     }
 
     public void getWeatherForecast(){

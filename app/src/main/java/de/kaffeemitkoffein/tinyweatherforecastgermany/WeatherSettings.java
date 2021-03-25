@@ -22,6 +22,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -475,10 +477,14 @@ public class WeatherSettings {
         return (long) getForecastUpdateInterval() * 60 * 60 * 1000;
     }
 
-    public long getWarningsUpdateIntervalInMillis() {
-        long l = Long.parseLong(this.warnings_cache_time);
-        l = l * 60 * 1000;
-        return l;
+    public static long getWarningsUpdateIntervalInMillis(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        try {
+            long l = Long.parseLong(sharedPreferences.getString(PREF_WARNINGS_CACHETIME, PREF_WARNINGS_CACHETIME_DEFAULT));
+            return l * 60 * 1000;
+        } catch (Exception e){
+            return 30 * 60 * 1000;
+        }
     }
 
     public long getWarningsLastUpdateTime() {
@@ -488,13 +494,11 @@ public class WeatherSettings {
     public static boolean areWarningsOutdated(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         long getWarningsLastUpdateTime = sharedPreferences.getLong(PREF_WARNINGS_LAST_UPDATE_TIME,PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
-        long getWarningsUpdateIntervalInMillis = 30 * 60 * 1000;
-        try {
-            getWarningsUpdateIntervalInMillis = Long.getLong(sharedPreferences.getString(PREF_WARNINGS_CACHETIME, PREF_WARNINGS_CACHETIME_DEFAULT)) * 60 * 1000;
-        } catch (NullPointerException e){
-            // do nothing & ignore, default value will be set automatically to 30 min. on next preference call by user
-        }
-        return getWarningsLastUpdateTime + getWarningsUpdateIntervalInMillis <= Calendar.getInstance().getTimeInMillis();
+        long getWarningsUpdateIntervalInMillis = getWarningsUpdateIntervalInMillis(context);
+        boolean result = getWarningsLastUpdateTime + getWarningsUpdateIntervalInMillis <= Calendar.getInstance().getTimeInMillis();
+        Log.v("TWFG","Time interval :"+getWarningsUpdateIntervalInMillis/1000/60);
+        Log.v("TWFG","ARE WARMINGS OUTDATED?"+Boolean.toString(result));
+        return  result;
     }
 
     public void setWarningsLastUpdateTime(long time) {

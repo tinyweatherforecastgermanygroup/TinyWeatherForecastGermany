@@ -113,7 +113,7 @@ public class WeatherWarningActivity extends Activity {
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext());
-        // updateWarningsIfNeeded();
+        //updateWarningsIfNeeded();
         map_collapsed = (ImageView) findViewById(R.id.warningactivity_map_collapsed);
         // in layout w6600dp-land this element does not exist. This is the safest way to
         // limit collapse-function to portrait mode.

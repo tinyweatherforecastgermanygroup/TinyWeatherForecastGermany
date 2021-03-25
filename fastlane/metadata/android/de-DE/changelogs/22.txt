@@ -1,5 +1,8 @@
 - neue Sprache: Niederländisch (Danke an Mondstern!)
-- behoben: gelegentliche App-Abstürze beim Start, wenn bestimmte Wetterdaten nicht vorhanden waren
+- aktualisierte Liste der Wetterstationen
+- diverse Fehler-Korrekturen, einige davon führten zu App-Abstürzen
 - behoben: zu große Schrift des Wochentages im großen Widget
+- behoben: falsche Tages-Beschriftung im großen und kräftigen Widget
 - behoben: Vorhersage-Werte überdeckten sich in der App auf einigen Geräten
-- behoben: Absturz in den Warnungen, der mit der Geräte-Ausrichtung zu tun hatte
+
+

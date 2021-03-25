@@ -1,7 +1,9 @@
 What is new in this version ([VERSION]):
 
 - new language: Dutch (thanks to Mondstern!)
-- fixed occasional app crash when some weather data was missing
+- updated list of weather stations / locations
+- several bug-fixes, some of them potentially leading to an app crash
 - fixed too large font size of the weekday in the large widget
+- fixed wrong day labeling in large widget & bold widget
 - fixed forecast items overlapping in the main app on some devices
-- fixed crash in warnings related to device orientation
+
