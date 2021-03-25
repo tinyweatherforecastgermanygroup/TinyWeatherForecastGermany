@@ -91,8 +91,14 @@ public class LargeWidget extends ClassicWidget{
             if (getDailyItemCount(currentWeatherInfo.forecast24hourly.get(i))>item_count){
                 item_count = getDailyItemCount(currentWeatherInfo.forecast24hourly.get(i));
             }
-            String min_temp = currentWeatherInfo.forecast24hourly.get(i).getMinTemperatureInCelsiusInt()+"°";
-            String max_temp = currentWeatherInfo.forecast24hourly.get(i).getMaxTemperatureInCelsiusInt()+"°";
+            String min_temp = "-°";
+            if (currentWeatherInfo.forecast24hourly.get(i).hasMinTemperature()){
+                min_temp = currentWeatherInfo.forecast24hourly.get(i).getMinTemperatureInCelsiusInt()+"°";
+            }
+            String max_temp = "-°";
+            if (currentWeatherInfo.forecast24hourly.get(i).hasMaxTemperature()){
+                max_temp = currentWeatherInfo.forecast24hourly.get(i).getMaxTemperatureInCelsiusInt()+"°";
+            }
             Paint p_temp = new Paint();
             p_temp.setTextSize(fontsize_temperature);
             float mf1 = getMaxPossibleFontsize(min_temp,max_width,(max_height/(item_count+1))*0.95f);

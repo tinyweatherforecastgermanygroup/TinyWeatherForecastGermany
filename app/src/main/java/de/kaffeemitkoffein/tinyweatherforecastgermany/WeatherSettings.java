@@ -22,8 +22,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -496,8 +494,6 @@ public class WeatherSettings {
         long getWarningsLastUpdateTime = sharedPreferences.getLong(PREF_WARNINGS_LAST_UPDATE_TIME,PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
         long getWarningsUpdateIntervalInMillis = getWarningsUpdateIntervalInMillis(context);
         boolean result = getWarningsLastUpdateTime + getWarningsUpdateIntervalInMillis <= Calendar.getInstance().getTimeInMillis();
-        Log.v("TWFG","Time interval :"+getWarningsUpdateIntervalInMillis/1000/60);
-        Log.v("TWFG","ARE WARMINGS OUTDATED?"+Boolean.toString(result));
         return  result;
     }
 
