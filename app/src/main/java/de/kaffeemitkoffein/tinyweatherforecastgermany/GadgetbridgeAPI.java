@@ -88,7 +88,7 @@ public class GadgetbridgeAPI {
                         WeatherCodeContract.translateToOpenWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),0);
                 weatherSpec.forecasts.add(forecast);
             }
-
+            /*
             PrivateLog.log(context,Tag.GB,"Timestamp          : "+weatherSpec.timestamp);
             PrivateLog.log(context,Tag.GB,"Condition Code     : "+weatherSpec.currentConditionCode);
             PrivateLog.log(context,Tag.GB,"Condition          : "+weatherSpec.currentCondition);
@@ -101,7 +101,7 @@ public class GadgetbridgeAPI {
             PrivateLog.log(context,Tag.GB,"# of day forecasts : "+weatherSpec.forecasts.size());
             PrivateLog.log(context,Tag.GB,"Windspeed          : "+weatherSpec.windSpeed);
             PrivateLog.log(context,Tag.GB,"Windspeed direct.  : "+weatherSpec.windDirection);
-
+            */
         }
     }
 
