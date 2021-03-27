@@ -1064,6 +1064,7 @@ public final class Weather {
 
     public static Astronomy.Riseset getRiseset(Weather.WeatherLocation weatherLocation, long time){
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTimeInMillis(time);
         int zone = ((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) /(1000*60*60));
         return Astronomy.sunRise(getJulianDay(time),
                 DELTA_T,
