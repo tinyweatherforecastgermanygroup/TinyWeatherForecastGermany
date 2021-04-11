@@ -1,5 +1,2 @@
-What is new in this version ([VERSION]):
-
 - new rain radar
 - for calculation of sunset and sunrise, the daylight saving time offset of the displayed time is used instead of the current time
-

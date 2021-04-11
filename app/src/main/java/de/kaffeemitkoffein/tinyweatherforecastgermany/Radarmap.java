@@ -114,13 +114,20 @@ public class Radarmap {
     public static byte CLUTTER = (byte) 249;
     public static byte ERROR = (byte) 250;
 
-    public static int getRadarMapColor(byte b){
+    public float highestDBZ=0;
+    public float highestByte=0;
+
+    public int getRadarMapColor(byte b){
         if ((b == CLUTTER) || (b == ERROR)) {
             return Color.TRANSPARENT;
         }
         float dbZ = (b / 2f) - 32.5f;
+        if (dbZ>highestDBZ){
+            highestDBZ = dbZ;
+            highestByte = b;
+        }
         int color = RAINCOLORS[RAINCOLORS.length-1];
-        for (int i=DBZVALUES.length-2; i>=0; i--){
+        for (int i=RAINCOLORS.length-2; i>=0; i--){
             if (dbZ < DBZVALUES[i]){
                 color = RAINCOLORS[i];
             }

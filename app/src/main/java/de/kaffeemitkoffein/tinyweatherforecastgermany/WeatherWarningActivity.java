@@ -234,16 +234,6 @@ public class WeatherWarningActivity extends Activity {
         }
     }
 
-    /*
-    private float getX(float x_coordinate){
-        return (x_coordinate-X_GEO_MAPOFFSET) * X_FACTOR;
-    }
-
-    private float getY(float y_coordinate){
-        return MAP_HEIGHT - ((y_coordinate-Y_GEO_MAPOFFSET) * Y_FACTOR);
-    }
-     */
-
     public class PlotPoint{
         float x;
         float y;
@@ -261,8 +251,8 @@ public class WeatherWarningActivity extends Activity {
         float b = (x - xOffsetGeo) * (MAP_WIDTH/11.0f) * (1f/xFactor);
         float yCorrection = (float) Math.sqrt(l*l - b*b) ;
         PlotPoint plotPoint = new PlotPoint();
-        plotPoint.x = xPixel;
-        plotPoint.y = MAP_HEIGHT - yPixel + yCorrection;
+        plotPoint.x = xPixel + MAP_WIDTH*0.006134969f;;
+        plotPoint.y = MAP_HEIGHT - yPixel + yCorrection - MAP_HEIGHT*0.00732899f;
         return plotPoint;
     }
 
@@ -364,12 +354,13 @@ public class WeatherWarningActivity extends Activity {
                         for (int x=0; x<radarmap.width; x++){
                             float xGeo = xoffset + x * widthLine/radarmap.width;
                             PlotPoint plotPoint = getPlotPoint(xGeo,yGeo);
-                            int color = Radarmap.getRadarMapColor(radarmap.map[x][y]);
+                            int color = radarmap.getRadarMapColor(radarmap.map[x][y]);
                             if (color!=0){
                                 rpaint.setColor(color);
                                 canvas.drawRect(plotPoint.x-xPS,plotPoint.y-yPS,plotPoint.x+xPS,plotPoint.y+yPS,rpaint);
                             }
                         }
+                        PrivateLog.log(getApplicationContext(),Tag.RADAR,"Max dbZ: "+radarmap.highestDBZ+" Max byte: "+radarmap.highestByte);
                     }
                     Bitmap radarinfobarResourceBitmap;
                     radarinfobarResourceBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.radarinfobar);

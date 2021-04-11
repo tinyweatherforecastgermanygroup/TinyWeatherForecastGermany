@@ -175,10 +175,15 @@ public class DataUpdateService extends Service {
                 executor.execute(serviceTerminationRunnable);
             } else {
                 // terminate immediately, because no intent with tasks delivered and/or no internet connection.
+                PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
+                Intent i = new Intent();
+                i.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
+                i.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
+                sendBroadcast(i);
                 stopThisService();
             }
         } else {
-            // just leave onStartCommand doing nothing, as the task is already running
+            // terminate, because service is already running
         }
         return START_NOT_STICKY;
     }

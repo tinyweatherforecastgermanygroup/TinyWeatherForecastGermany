@@ -32,5 +32,6 @@ public class Tag {
     public static final String WIDGET = "widget";
     public static final String TEXTS = "texts";
     public static final String STATIONS = "stations";
+    public static final String RADAR  = "radar";
 
 }
