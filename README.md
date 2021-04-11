@@ -121,6 +121,10 @@ Credits
  <img src="app/src/main/res/mipmap-mdpi/symbol_drizzle.png" height="16" width="16"/> drizzle
  <img src="app/src/main/res/mipmap-mdpi/arrow.png" height="16" width="16"/> wind direction
  
+ *My widgets don't get updated (unless I open the app).*
+
+The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://https://dontkillmyapp.com/) to ckeck if you own such a device and what you can do. 
+
  *Does the app display the actual, current weather?*
    
  No. This app is about weather forecasts. You see the weather you can expect to occur until the displayed time. For the widgets, see above.  
