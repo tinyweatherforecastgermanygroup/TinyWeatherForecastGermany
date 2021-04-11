@@ -123,7 +123,7 @@ Credits
  
  *My widgets don't get updated (unless I open the app).*
 
-The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://https://dontkillmyapp.com/) to ckeck if you own such a device and what you can do. 
+The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to ckeck if you own such a device and what you can do. 
 
  *Does the app display the actual, current weather?*
    
