@@ -126,6 +126,8 @@
     <string name="preference_display_wind_unit_summary">Wähle die Einheit für die Windgeschwindigkeit.</string>
     <string name="preference_display_distance_unit_title">Entfernungen</string>
     <string name="preference_display_distance_unit_summary">Wähle die Einheit für Entfernungen.</string>
+    <string name="preference_display_show_radar_by_default_title">Regenradar</string>
+    <string name="preference_display_show_radar_by_default_summary">Immer automatisch anzeigen.</string>
     <string name="preference_setalarm_title">Immer aktualisieren</string>
     <string name="preference_setalarm_summary">Immer Wetterdaten regelmäßig aktualisieren.</string>
     <string name="preference_setalarm_notice">HINWEIS: aktuell nicht verfügbar, da aktivierter Gadgetbridge-Support ohnehin automatische Aktualisierungen erfordert.</string>
@@ -255,6 +257,9 @@
     <string name="textforecasttype_medium_other">Sonstiges</string>
     <string name="warning_stationreset_title">Wetter-Station zurückgesetzt</string>
     <string name="warning_stationreset_text">Um einen Fehler zu beheben, wurde die Wetter-Station auf den Standardwert zurück gesetzt.</string>
-
-
+    <string name="radar_rain1">gering</string>
+    <string name="radar_rain2">leicht</string>
+    <string name="radar_rain3">stark</string>
+    <string name="radar_rain4">extrem</string>
+    <string name="hide_rain">Regen verbergen</string>
 </resources>

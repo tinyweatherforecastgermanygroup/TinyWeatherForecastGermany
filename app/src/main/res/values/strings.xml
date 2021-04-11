@@ -126,6 +126,8 @@
     <string name="preference_display_wind_unit_summary">Select the unit for wind speed.</string>
     <string name="preference_display_distance_unit_title">Distance</string>
     <string name="preference_display_distance_unit_summary">Select the unit for distances.</string>
+    <string name="preference_display_show_radar_by_default_title">Rain radar</string>
+    <string name="preference_display_show_radar_by_default_summary">Always display automatically.</string>
     <string name="preference_setalarm_title">Always update</string>
     <string name="preference_setalarm_summary">Always update weather data regularly.</string>
     <string name="preference_setalarm_notice">NOTICE: this is currently not available, since enabled Gadgetbridge support forces automatic updates anyway.</string>
@@ -255,4 +257,10 @@
     <string name="textforecasttype_medium_other">Other</string>
     <string name="warning_stationreset_title">Station Reset</string>
     <string name="warning_stationreset_text">To fix a bug your station and your favorite stations have been reset to the default.</string>
+    <string name="radar_rain1">slight</string>
+    <string name="radar_rain2">light</string>
+    <string name="radar_rain3">strong</string>
+    <string name="radar_rain4">extreme</string>
+    <string name="hide_rain">hide rain</string>
+
 </resources>

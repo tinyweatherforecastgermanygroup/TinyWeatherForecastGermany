@@ -104,6 +104,8 @@
     <string name="preference_display_distance_unit_summary">Selecteer de eenheid voor afstanden.</string>
     <string name="preference_display_station_geo_title">Geografische coördinaten</string>
     <string name="preference_display_station_geo_summary">Geografische coördinaten weergeven van station</string>
+    <string name="preference_display_show_radar_by_default_title">Buienradar</string>
+    <string name="preference_display_show_radar_by_default_summary">Wordt altijd automatisch getoond.</string>
     <string name="preference_screen_gadgetbridge_title">Gadgetbridge steun</string>
     <string name="preference_screen_gadgetbridge_summary">Opties voor het integreren van de weergegevens van deze app in Gadgetbridge.</string>
     <string name="preference_gadgetbridge_serve_title">Activeer</string>
@@ -210,4 +212,9 @@
     <string name="warnings_until">tot</string>
     <string name="welcome_skip">SPRINGEN</string>
     <string name="connerror_message">De app was niet in staat om een versleutelde verbinding met de DWD open data server over https tot stand te brengen. Versleuteling uitschakelen\?</string>
+    <string name="radar_rain1">laag</string>
+    <string name="radar_rain2">luchtig</string>
+    <string name="radar_rain3">sterk</string>
+    <string name="radar_rain4">extreen</string>
+    <string name="hide_rain">Verberg regen</string>
 </resources>

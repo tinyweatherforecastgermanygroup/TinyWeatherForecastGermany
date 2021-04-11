@@ -75,6 +75,8 @@ public class WeatherSettings {
     public static final String PREF_DISABLE_TLS = "PREF_disable_tls";
     public static final String PREF_TEXTFORECAST_LAST_UPDATE_TIME = "PREF_textforecast_last_update_time";
     public static final String PREF_TEXTFORECAST_FILTER = "PREF_textforecast_filter";
+    public static final String PREF_RADAR_LASTDATAPOLL = "PREF_radar_lastdatapoll";
+    public static final String PREF_RADAR_SHOW = "PREF_radar_show";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -118,6 +120,9 @@ public class WeatherSettings {
     public static final boolean PREF_DISABLE_TLS_DEFAULT = false;
     public static final long PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final boolean PREF_TEXTFORECAST_FILTER_DEFAULT = false;
+    public static final long PREF_RADAR_LASTDATAPOLL_DEFAULT = 0;
+    public static final boolean PREF_RADAR_SHOW_DEFAULT = true;
+
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -161,6 +166,8 @@ public class WeatherSettings {
     public boolean disable_tls = PREF_DISABLE_TLS_DEFAULT;
     public long textforecast_last_update_time = PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT;
     public boolean textforecast_filter = PREF_TEXTFORECAST_FILTER_DEFAULT;
+    public long radar_lastdatapoll = PREF_RADAR_LASTDATAPOLL_DEFAULT;
+    public boolean radar_show = PREF_RADAR_SHOW_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -213,6 +220,8 @@ public class WeatherSettings {
         this.disable_tls = readPreference(PREF_DISABLE_TLS,PREF_DISABLE_TLS_DEFAULT);
         this.textforecast_last_update_time = readPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
         this.textforecast_filter = readPreference(PREF_TEXTFORECAST_FILTER,PREF_TEXTFORECAST_FILTER_DEFAULT);
+        this.radar_lastdatapoll = readPreference(PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
+        this.radar_show = readPreference(PREF_RADAR_SHOW,PREF_RADAR_SHOW_DEFAULT);
     }
 
     public void savePreferences() {
@@ -256,6 +265,8 @@ public class WeatherSettings {
         applyPreference(PREF_DISABLE_TLS,this.disable_tls);
         applyPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,this.textforecast_last_update_time);
         applyPreference(PREF_TEXTFORECAST_FILTER,this.textforecast_filter);
+        applyPreference(PREF_RADAR_LASTDATAPOLL,this.radar_lastdatapoll);
+        applyPreference(PREF_RADAR_SHOW,this.radar_show);
     }
 
     public void commitPreferences() {
@@ -299,6 +310,8 @@ public class WeatherSettings {
         commitPreference(PREF_DISABLE_TLS,this.disable_tls);
         commitPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,this.textforecast_last_update_time);
         commitPreference(PREF_TEXTFORECAST_FILTER,this.textforecast_filter);
+        commitPreference(PREF_RADAR_LASTDATAPOLL,this.radar_lastdatapoll);
+        commitPreference(PREF_RADAR_SHOW,this.radar_show);
     }
 
     public String readPreference(String p, String d) {
@@ -661,6 +674,24 @@ public class WeatherSettings {
     public static boolean updateTextForecasts(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_UPDATE_TEXTFORECASTS, PREF_UPDATE_TEXTFORECASTS_DEFAULT);
+    }
+
+    public static void setPrefRadarLastdatapoll(Context context, long l){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_RADAR_LASTDATAPOLL,l);
+        pref_editor.apply();
+    }
+
+    public static boolean isRadarDataOutdated(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        long l = sharedPreferences.getLong(PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
+        return Calendar.getInstance().getTimeInMillis() > l + Radarmap.RADAR_DATAINTERVAL;
+    }
+
+    public static boolean showRadarByDefault(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_RADAR_SHOW,PREF_RADAR_SHOW_DEFAULT);
     }
 
 }

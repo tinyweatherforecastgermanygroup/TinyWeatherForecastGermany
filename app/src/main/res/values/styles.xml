@@ -42,5 +42,8 @@
         <item name="android:color">@color/textColor</item>
     </style>
 
+    <!-- Custom Light Theme -->
+
+
 
 </resources>

@@ -773,4 +773,134 @@ public class APIReaders {
         }
     }
 
+    public static class RadarmapRunnable implements Runnable{
+        private static final String WX_RADAR_URL="//opendata.dwd.de/weather/radar/composit/wx/raa01-wx_10000-latest-dwd---bin";
+        private Context context;
+        public boolean ssl_exception = false;
+
+        public RadarmapRunnable(Context context){
+            this.context = context;
+        }
+
+        private InputStream getRadarInputStream() throws IOException {
+            String radar_url        = "https:"+WX_RADAR_URL;
+            String radar_url_legacy = "http:"+WX_RADAR_URL;
+            URL url;
+            URL url_legacy;
+            try {
+                url = new URL(radar_url);
+                url_legacy = new URL(radar_url_legacy);
+            } catch (MalformedURLException e){
+                throw e;
+            }
+            try {
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+                return inputStream;
+            } catch (SSLException e){
+                ssl_exception = true;
+                if (WeatherSettings.isTLSdisabled(context)){
+                    // try fallback to http
+                    try {
+                        HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
+                        InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
+                        PrivateLog.log(context,Tag.SERVICE2,"Warning: weather data is polled over http without encryption.");
+                        return inputStream;
+                    } catch (IOException e2){
+                        throw e2;
+                    }
+                } else {
+                    PrivateLog.log(context,Tag.SERVICE2,"Error: ssl connection could not be established, but http is not allowed.");
+                    throw e;
+                }
+            } catch (Exception e){
+                throw e;
+            }
+        }
+
+        private byte[] putRadarMapToCache(InputStream inputStream){
+            byte[] radararray = new byte[1500*1400+1024];
+            int radarMapsize = radararray.length;
+            File cacheDir = context.getCacheDir();
+            File cacheFile = new File(cacheDir,"radardata.bin");
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(cacheFile);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(radarMapsize);
+                int i;
+                byte[] cache = new byte[1024];
+                while ((i=inputStream.read(cache))!=-1){
+                    fileOutputStream.write(cache,0,i);
+                    byteArrayOutputStream.write(cache,0,i);
+                }
+                fileOutputStream.close();
+                byteArrayOutputStream.close();
+                return byteArrayOutputStream.toByteArray();
+            } catch (Exception e){
+                return null;
+            }
+        }
+
+        private byte[] getRadarMapFromCache(){
+            byte[] radararray = new byte[1500*1400+1024];
+            int radarMapsize = radararray.length;
+            File cacheDir = context.getCacheDir();
+            File cacheFile = new File(cacheDir,"radardata.bin");
+            try {
+                FileInputStream fileInputStream = new FileInputStream(cacheFile);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(radarMapsize);
+                int i;
+                byte[] cache = new byte[1024];
+                while ((i=fileInputStream.read(cache))!=-1){
+                    byteArrayOutputStream.write(cache,0,i);
+                }
+                fileInputStream.close();
+                return byteArrayOutputStream.toByteArray();
+
+            } catch (Exception e){
+                return null;
+            }
+        }
+
+        private boolean radarCacheFileExists(){
+            File cacheDir = context.getCacheDir();
+            File cacheFile = new File(cacheDir,"radardata.bin");
+            return cacheFile.exists();
+        }
+
+        private RawRadarmap readRadarData(){
+            byte[] radararray = null;
+            if (radarCacheFileExists() && !WeatherSettings.isRadarDataOutdated(context)) {
+                radararray = getRadarMapFromCache();
+            } else
+            {
+                try {
+                    InputStream inputStream = new BufferedInputStream(getRadarInputStream());
+                    radararray = putRadarMapToCache(inputStream);
+                    WeatherSettings.setPrefRadarLastdatapoll(context,Calendar.getInstance().getTimeInMillis());
+                } catch (Exception e){
+                    // do nothing
+                }
+            }
+            if ((radararray==null) && (radarCacheFileExists())){
+                radararray = getRadarMapFromCache();
+            }
+            if (radararray!=null){
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(radararray);
+                RawRadarmap rawRadarmap = new RawRadarmap(byteArrayInputStream);
+                return rawRadarmap;
+            }
+            return null;
+        }
+
+        public void onFinished(Radarmap radarmap){
+            // override to do something with the map
+        }
+
+        @Override
+        public void run() {
+            Radarmap radarmap = new Radarmap(readRadarData());
+            onFinished(radarmap);
+        }
+    }
+
 }
