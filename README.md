@@ -124,11 +124,7 @@ Credits
  *My widgets don't get updated (unless I open the app).*
 
 The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to ckeck if you own such a device and what you can do. 
-
- *Does the app display the actual, current weather?*
-   
- No. This app is about weather forecasts. You see the weather you can expect to occur until the displayed time. For the widgets, see above.  
-        
+ 
  *How often does the app update the weather forecast?*
  
  The Deutscher Wetterdienst updates the forecast data that is used every 6 hours. Therefore, it does not make sense to pull weather data more frequently than this from the DWD API. However, a manual data update triggered by the user's selection in the main app always forces an update of forecast data. The forecast data covers the next ten days. So it is pretty feasible to present a weather forecast for some time without polling new data.
