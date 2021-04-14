@@ -83,6 +83,8 @@ public class MainActivity extends Activity {
 
     ArrayList<WeatherWarning> localWarnings;
 
+    boolean forceNoIcons = false;
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -781,8 +783,7 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater mi = getMenuInflater();
         mi.inflate(R.menu.main_activity,menu);
-
-        if (Build.VERSION.SDK_INT>17){
+        if (!WeatherSettings.forceNoMenuIcons(getApplicationContext())){
             // try to show incons in drop-down menu
             if (menu.getClass().getSimpleName().equals("MenuBuilder")){
                 try {
@@ -790,7 +791,13 @@ public class MainActivity extends Activity {
                     method.setAccessible(true);
                     method.invoke(menu,true);
                 } catch (Exception e){
-                    // todo
+                    // this is a hack to disable the icon-in-menu-feature permanently if it fails on some devices.
+                    // A flag is set in the settings and the app is force-restarted with an intent.
+                    // this should only happen once at the first app launch, if ever.
+                    WeatherSettings.setForceNoMenuIconsFlag(getApplicationContext(),true);
+                    Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(i);
+                    finish();
                 }
             }
             setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.color.textColor);
