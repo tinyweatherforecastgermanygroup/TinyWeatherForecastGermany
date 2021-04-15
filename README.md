@@ -77,6 +77,7 @@ Credits
  - Jonas Lochmann (.gitignore)
  - Marc Nause (code improvements, bitmap caching)
  - Mondstern (Dutch translation)
+ - wUgEntOptlc44 (French translation)
  
  Privacy
  -------
