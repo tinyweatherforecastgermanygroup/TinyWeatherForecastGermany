@@ -31,7 +31,7 @@ Les personnes suivantes ont contribué à ce projet :
  - Jonas Lochmann (.gitignore)
  - Marc Nause (améliorations du code, mise en cache des bitmaps)
  - Mondstern (traduction en néerlandais)
- - wUgEntOptlc44 (traduction en français)
+ - Jean-Luc (traduction en français)
 
 Licence :
 --------

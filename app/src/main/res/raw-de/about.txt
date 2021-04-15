@@ -30,7 +30,8 @@ Folgende Personen haben zum Projekt beigetragen:
  - Janis Bitta (app icon)
  - Jonas Lochmann (.gitignore)
  - Marc Nause (code improvements, bitmap caching)
-  - Mondstern (Niederländische Übersetzung)
+ - Mondstern (Niederländische Übersetzung)
+ - Jean-Luc (Französische Übersetzung)
 
 Lizenz:
 --------
