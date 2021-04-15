@@ -1,0 +1,65 @@
+Tiny Weather Forecast Germany
+=================================
+
+Copyright © 2020, 2021 Pawel Dube
+
+Version : [VERSION]
+
+Crédits :
+--------
+
+Icônes de conception matérielle Copyright © Google Inc. sous licence Apache 2.0.
+
+Cette application utilise gradle et le wrapper gradle, Copyright © Gradle Inc, sous licence Apache 2.0.
+
+Base de données : Deutscher Wetterdienst, éléments propres ajoutés, certaines données sont des moyennes de valeurs individuelles. Les alertes météo sont abrégées.
+
+Ce programme utilise la classe WeatherSpec de Gadgetbridge, Copyright © 2016-2020 Andreas Shimokawa, Carsten Pfeiffer, Daniele Gobbetti, sous licence GNU AFFRERO GENERAL PUBLIC LICENSE, Version 3, 19 novembre 2007.
+
+Ce programme utilise PNPOLY - Point Inclusion in Polygon Test de W. Randolph Franklin (WRF), Copyright © 1970-2003, Wm. Randolph Franklin.
+
+Ce programme utilise la classe Astronomy, Copyright (C) 2010-2012, Helmut Lehmeyer <helmut.lehmeyer@gmail.com>, sous licence GNU General Public License version 3.
+
+Cartes PAT par Ian Macky <http://ian.macky.net/pat>.
+
+Icône de l'application par Janis Bitta.
+
+Les personnes suivantes ont contribué à ce projet :
+ - Andreas Shimokawa (corrections de bogues et prise en charge de l'API Gadgetbridge).
+ - Izzy (amélioration des métadonnées)
+ - Janis Bitta (icône de l'application)
+ - Jonas Lochmann (.gitignore)
+ - Marc Nause (améliorations du code, mise en cache des bitmaps)
+ - Mondstern (traduction en néerlandais)
+
+Licence :
+--------
+
+Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le modifier selon les termes de la Licence Publique Générale GNU telle que publiée par la Free Software Foundation, soit la version 3 de la Licence, soit (à votre choix) toute version ultérieure.
+
+Ce programme est distribué dans l'espoir qu'il sera utile, mais SANS AUCUNE GARANTIE ; sans même la garantie implicite de COMMERCIALISATION ou d'ADÉQUATION À UN USAGE PARTICULIER. Voir la licence publique générale GNU pour plus de détails.
+
+Vous devriez avoir reçu une copie de la licence publique générale GNU avec ce programme. Si ce n'est pas le cas, consultez <http://www.gnu.org/licenses/>.
+
+Auteur : Pawel Dube (pdube@gmx.de)
+
+Politique de confidentialité :
+---------------
+
+Tiny Weather Forecast Germany interroge les données et les avertissements météorologiques du portail de données ouvertes du Deutscher Wetterdienst <https://www.dwd.de/DE/Home/home_node.html>.
+
+Pour ce faire, il est techniquement nécessaire d'envoyer votre adresse IP au Deutscher Wetterdienst dans le contexte de la connexion Internet et également le lieu/capteur, pour lequel les données doivent être interrogées.
+
+Dans le cas des avertissements, il est également indiqué que ceux-ci (en fonction de la langue du produit) doivent être affichés en français, en espagnol, en allemand ou en anglais. Dans le cas des avertissements, il est également transmis si ceux-ci doivent être interrogés en français, en espagnol, en allemand ou en anglais, selon le réglage de la langue de l'appareil. La manière dont ces données sont traitées et stockées par le Deutscher Wetterdienst est expliquée dans la politique de confidentialité du Deutscher Wetterdienst <https://www.dwd.de/EN/service/dataprotection/dataprotection_node.html>.
+
+Les prévisions et les avertissements météorologiques sont enregistrés localement sur l'appareil, ainsi que les lieux/capteurs configurés. Les paramètres et certaines variables internes, comme la dernière heure d'un sondage sur les alertes météo, sont également enregistrés localement sur l'appareil.
+
+Si l'utilisateur l'active, Tiny Weather Forecast Germany transmet les données météorologiques localement sur l'appareil à l'application Gadgetbridge <https://codeberg.org/Freeyourgadget/Gadgetbridge>, afin que les données météorologiques puissent être affichées sur les wearables.
+
+En dehors de cela, Tiny Weather Forecast Germany ne sauvegarde, n'envoie et/ou ne partage aucune donnée.
+
+Contribuer :
+-------------
+
+Ce projet est hébergé sur codeberg.org. Veuillez visiter la page d'accueil du projet à l'adresse <https://codeberg.org/Starfish/TinyWeatherForecastGermany>.
+

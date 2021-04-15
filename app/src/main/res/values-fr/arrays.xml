@@ -1,0 +1,138 @@
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020, 2021 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string-array name="updateinterval_text">
+        <item>6 heures</item>
+        <item>12 heures</item>
+        <item>18 heures</item>
+        <item>24 heures</item>
+    </string-array>
+    <string-array name="updateinterval_values">
+        <item>3</item>
+        <item>6</item>
+        <item>9</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="widget_opacity_text">
+        <item>0 (transparent)</item>
+        <item>10 %</item>
+        <item>20 %</item>
+        <item>30 %</item>
+        <item>40 %</item>
+        <item>50 %</item>
+        <item>60 %</item>
+        <item>70 %</item>
+        <item>80 %</item>
+        <item>90 %</item>
+        <item>100 (solide)</item>
+    </string-array>
+    <string-array name="widget_opacity_values">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+    <string-array name="cache_warnings_time_text">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 heure</item>
+        <item>2 heures</item>
+        <item>3 heures</item>
+        <item>6 heures</item>
+    </string-array>
+    <string-array name="cache_warnings_time_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+        <item>360</item>
+    </string-array>
+
+    <string-array name="display_type_text">
+        <item>prévision horaire</item>
+        <item>prévision à 6 heures</item>
+        <item>mixte</item>
+    </string-array>
+
+    <string-array name="display_type_values">
+        <item>1</item>
+        <item>3</item>
+        <item>265</item>
+    </string-array>
+
+    <string-array name="display_wind_type_text">
+        <item>Flèche</item>
+        <item>Beaufort</item>
+        <item>Texte</item>
+    </string-array>
+
+    <string-array name="display_wind_type_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="display_wind_unit_text">
+        <item>m/s</item>
+        <item>km/h</item>
+        <item>beaufort (bf)</item>
+        <item>knots (kn)</item>
+    </string-array>
+
+    <string-array name="display_wind_unit_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="display_distance_unit_text">
+        <item>métrique (km, m)</item>
+        <item>nautique (miles nautiques)</item>
+        <item>imperial (miles, yards)</item>
+    </string-array>
+
+    <string-array name="display_distance_unit_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="display_wind_arc_period_text">
+        <item>les 6 prochaines heures</item>
+        <item>prochaines 12 heures</item>
+        <item>les 24 prochaines heures</item>
+    </string-array>
+
+    <string-array name="display_wind_arc_period_values">
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+    </string-array>
+
+</resources>
