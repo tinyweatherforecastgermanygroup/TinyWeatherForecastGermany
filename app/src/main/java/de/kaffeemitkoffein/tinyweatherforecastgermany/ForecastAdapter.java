@@ -59,6 +59,7 @@
         private int display_wind_arc_perdiod;
         private boolean warnings_disabled;
         private LayoutInflater layoutInflater;
+        private int regularCellHeight=0;
 
         private ArrayList<WeatherWarning> warnings;
 
@@ -586,6 +587,20 @@
                                 @Override
                                 public void run() {
                                     int height = view1.getHeight();
+                                    // this is a hack to prevent a zero value of the height on some devices:
+                                    // the height is always the maximum determinded up to now
+                                    if (height>regularCellHeight){
+                                        regularCellHeight = height;
+                                    }
+                                    if (height<regularCellHeight){
+                                        height = regularCellHeight;
+                                    }
+                                    // if height is unknown, it remains hardcoded to 150 dp; this may cause some
+                                    // overlaps, but is better than an invisible item.
+                                    if (height==0){
+                                        height = 150;
+                                    }
+                                    // end
                                     ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
                                     layoutParams.height = height;
                                     // view1.setMinimumHeight(height);
