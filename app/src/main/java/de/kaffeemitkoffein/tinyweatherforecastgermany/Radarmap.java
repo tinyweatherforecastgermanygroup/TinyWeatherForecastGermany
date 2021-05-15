@@ -124,6 +124,8 @@ public class Radarmap {
         float dbZ = (b / 2f) - 32.5f;
         if (dbZ>highestDBZ){
             highestDBZ = dbZ;
+        }
+        if (b>highestByte){
             highestByte = b;
         }
         int color = RAINCOLORS[RAINCOLORS.length-1];
@@ -164,10 +166,13 @@ public class Radarmap {
             this.formatVersion = 0;
         }
         this.radolanVersion = new String(rawRadarmap.radolanVersion);
-        try {
-            this.accuracy = Double.parseDouble(new String(rawRadarmap.accuracy));
-        } catch (NumberFormatException e){
-            accuracy = 0.1;
+        String sAcc = new String(rawRadarmap.accuracy);
+        this.accuracy=1;
+        if (sAcc.equals("E-01")){
+            accuracy=0.1;
+        }
+        if (sAcc.equals("E-02")){
+            accuracy=0.01;
         }
         try {
             this.interval = Integer.parseInt(new String(rawRadarmap.interval));

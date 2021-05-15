@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.text.SimpleDateFormat;
@@ -42,30 +43,27 @@ public class WeatherWarningActivity extends Activity {
     ArrayList<WeatherWarning> weatherWarnings;
     ArrayList<WeatherWarning> localWarnings;
     Weather.WeatherLocation localStation;
-
+    View.OnTouchListener mapTouchListener;
     ArrayList<Polygon> polygoncache;
     ArrayList<Polygon> excluded_polygoncache;
     ImageView germany;
     Bitmap mapBitmap;
+    Bitmap resource_bitmap;
+    Bitmap radarBitmap;
+    Bitmap visibleBitmap;
+    ZoomableImageView mapZoomable;
     ImageView map_collapsed;
     boolean deviceIsLandscape;
     private GestureDetector gestureDetector;
-    private View.OnTouchListener mapTouchListener;
     ListView weatherList;
     WeatherWarningAdapter weatherWarningAdapter;
     ActionBar actionBar;
     Executor executor;
     Boolean hide_rain = null;
+    Radarmap radarmap;
 
-    static float X_FACTOR;
-    static float Y_FACTOR;
-    final static float X_GEO_MAPOFFSET = 4.03f;
-    final static float Y_GEO_MAPOFFSET = 46.98f;
-    final static float GEO_MAPWIDTH = 12.130930434f;
-    final static float GEO_MAPHEIGHT = 8.804865172f;
-
-    static float MAP_WIDTH;
-    static float MAP_HEIGHT;
+    static float MAP_PIXEL_WIDTH;
+    static float MAP_PIXEL_HEIGHT;
 
     public final static String WEATHER_WARNINGS_UPDATE="WEATHER_WARNINGS_UPDATE";
     public final static String WEATHER_WARNINGS_UPDATE_RESULT="WEATHER_WARNINGS_UPDATE_RESULT";
@@ -168,7 +166,7 @@ public class WeatherWarningActivity extends Activity {
         }
         if (item_id==R.id.hide_rain) {
             hide_rain = !hide_rain;
-            displayMap();
+            drawMapBitmap(radarmap);
             return true;
         }
         return super.onOptionsItemSelected(mi);
@@ -239,47 +237,177 @@ public class WeatherWarningActivity extends Activity {
         float y;
     }
 
-    private PlotPoint getPlotPoint(float x, float y){
-        float xDeltaGeo = ((4.8f - 4f)/(52f - 46.8f) * (y - 46.8f));
-        float xOffsetGeo = 4.8f - xDeltaGeo;
-        float xWidthGeo = 2f*xDeltaGeo + 11f;
-        float xFactor = xWidthGeo/11f;
-        float xPixel = (x - xOffsetGeo) * (MAP_WIDTH/11.0f) * (1f/xFactor);
-        float yPixel = (y - 46.8f) * (MAP_HEIGHT/(55f - 46.8f))*0.93f;
-        float r = (float) (MAP_WIDTH / (2f * Math.sin((xWidthGeo*(Math.PI/180f))/2)));
-        float l = (float) (2*r * Math.sin(((x-xOffsetGeo)*(Math.PI/180f))/2));
-        float b = (x - xOffsetGeo) * (MAP_WIDTH/11.0f) * (1f/xFactor);
-        float yCorrection = (float) Math.sqrt(l*l - b*b) ;
+    private static final int MAP_PIXEL_FIXEDWIDTH  = 824;
+    private static final int MAP_PIXEL_FIXEDHEIGHT = 956;
+
+    private static final float MAP_GEO_TOP = 55.80f;
+    private static final float MAP_GEO_BOTTOM = 46.96f;
+    private static final float MAP_GEO_HEIGHT= MAP_GEO_TOP - MAP_GEO_BOTTOM;
+    private static final float MAP_GEO_OFFSETX_TOP = 3.45f;
+    private static final float MAP_GEO_ENDX_TOP = 16.9f;
+    private static final float MAP_GEO_OFFSETX_BOTTOM = 4.65f;
+    private static final float MAP_GEO_ENDX_BOTTOM = 15.85f;
+
+    private static final float MAP_GEO_WIDTH_TOP=MAP_GEO_ENDX_TOP - MAP_GEO_OFFSETX_TOP;
+    private static final float MAP_GEO_WIDTH_BOTTOM= MAP_GEO_ENDX_BOTTOM - MAP_GEO_OFFSETX_BOTTOM;
+    private static final float MAP_GEO_WIDTH_DELTA = MAP_GEO_WIDTH_TOP - MAP_GEO_WIDTH_BOTTOM;
+
+    private static final float[] MAP_THRESHOLD ={0,0.16f,0.20f,0.23f,0.30f,0.38f,0.45f,0.62f,0.70f,0.77f,0.80f,0.84f};
+    private static final float[] MAP_CORRECTION={7,6    ,5    ,4    ,3    ,1    ,0    ,1    ,2    ,3    ,6    ,7    };
+
+    private static float yCorrectionPixels(float lon, float lat){
+        float p = (lon - getXOffsetGeo(lat))/getGeoWidth(lat);
+        float c=MAP_CORRECTION[0];
+        for (int i=1; i< MAP_THRESHOLD.length;i++){
+            if (p>MAP_THRESHOLD[i]){
+                c=MAP_CORRECTION[i];
+            }
+        }
+        return (c/956)*MAP_PIXEL_HEIGHT;
+    }
+
+    private static float getGeoWidth(float geo_height){
+        float geowidth = (MAP_GEO_WIDTH_DELTA/MAP_GEO_HEIGHT) * (geo_height-MAP_GEO_BOTTOM) + MAP_GEO_WIDTH_BOTTOM;
+        return geowidth;
+    }
+
+    private static float getXOffsetGeo(float geo_height){
+        float xDeltaGeo = ((MAP_GEO_OFFSETX_BOTTOM - MAP_GEO_OFFSETX_TOP)/(MAP_GEO_TOP - MAP_GEO_BOTTOM) * (geo_height - MAP_GEO_BOTTOM));
+        float xOffsetGeo = MAP_GEO_OFFSETX_BOTTOM - xDeltaGeo;
+        return xOffsetGeo;
+    }
+
+    private PlotPoint getPlotPoint(float lon, float lat){
+        float x = (lon - getXOffsetGeo(lat)) * (MAP_PIXEL_WIDTH/getGeoWidth(lat));
+        float y = (lat - MAP_GEO_BOTTOM)*(MAP_PIXEL_HEIGHT/MAP_GEO_HEIGHT) + yCorrectionPixels(lon,lat);
         PlotPoint plotPoint = new PlotPoint();
-        plotPoint.x = xPixel + MAP_WIDTH*0.006134969f;;
-        plotPoint.y = MAP_HEIGHT - yPixel + yCorrection - MAP_HEIGHT*0.00732899f;
+        plotPoint.y = MAP_PIXEL_HEIGHT - y;
+        plotPoint.x = x;
         return plotPoint;
     }
 
+    private float getXGeo(PlotPoint plotPoint){
+        float p = (plotPoint.x/MAP_PIXEL_WIDTH);
+        float c = MAP_CORRECTION[0];
+        for (int i=1; i<MAP_THRESHOLD.length; i++ ){
+            if (p>MAP_THRESHOLD[i]){
+                c = MAP_CORRECTION[i];
+            }
+        }
+        float yPixCorr = (c/956)*(MAP_GEO_TOP-MAP_GEO_BOTTOM);
+        float geoy = ((MAP_GEO_TOP-MAP_GEO_BOTTOM)/(MAP_PIXEL_HEIGHT)) * (MAP_PIXEL_HEIGHT-plotPoint.y) + MAP_GEO_BOTTOM - yPixCorr;
+        float geox = getXOffsetGeo(geoy) + (getGeoWidth(geoy)/MAP_PIXEL_WIDTH) * plotPoint.x;
+        return geox;
+    }
+
+    private float getYGeo(PlotPoint plotPoint){
+        float p = (plotPoint.x/MAP_PIXEL_WIDTH);
+        float c = MAP_CORRECTION[0];
+        for (int i=1; i<MAP_THRESHOLD.length; i++ ){
+            if (p>MAP_THRESHOLD[i]){
+                c = MAP_CORRECTION[i];
+            }
+        }
+        float yPixCorr = (c/956)*(MAP_GEO_TOP-MAP_GEO_BOTTOM);
+        float geoy = ((MAP_GEO_TOP-MAP_GEO_BOTTOM)/(MAP_PIXEL_HEIGHT)) * (MAP_PIXEL_HEIGHT-plotPoint.y) + MAP_GEO_BOTTOM - yPixCorr;
+        float geox = getXOffsetGeo(geoy) + (getGeoWidth(geoy)/MAP_PIXEL_WIDTH) * plotPoint.x;
+        return geoy;
+    }
+
     private void drawPin(Canvas canvas){
+        int pinsize = 42;
         Paint pinpaint = new Paint();
         pinpaint.setColor(Color.BLUE);
         pinpaint.setStyle(Paint.Style.FILL_AND_STROKE);
         pinpaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
         PlotPoint pinPoint = getPlotPoint((float) localStation.longitude, (float) localStation.latitude);
-        Bitmap pinBitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.pin);
+        Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinsize,pinsize,false);
         canvas.drawBitmap(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),pinpaint);
+    }
+
+    private void showRainDescription(Radarmap radarmap){
+        Bitmap infoBitmap=Bitmap.createBitmap(Math.round(MAP_PIXEL_WIDTH),Math.round(MAP_PIXEL_HEIGHT*0.12f), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(infoBitmap);
+        Bitmap radarinfobarResourceBitmap;
+        radarinfobarResourceBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.radarinfobar),Math.round(MAP_PIXEL_WIDTH),34,false);
+        Paint rpaint = new Paint();
+        rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        int infobarStart = Math.round((germany.getWidth()-radarinfobarResourceBitmap.getWidth())/2f);
+        if (infobarStart<0){
+            infobarStart = 0;
+        }
+        canvas.drawBitmap(radarinfobarResourceBitmap,infobarStart,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),rpaint);
+        Paint radarTextPaint = new Paint();
+        radarTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        radarTextPaint.setFakeBoldText(true);
+        radarTextPaint.setTextSize(radarinfobarResourceBitmap.getHeight());
+        radarTextPaint.setColor(Color.WHITE);
+        if (WeatherSettings.isRadarDataOutdated(getApplicationContext())){
+            radarTextPaint.setColor(Color.RED);
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        String radartime = simpleDateFormat.format(new Date(radarmap.timestamp));
+        float ff=1.1f;
+        canvas.drawText(radartime,MAP_PIXEL_WIDTH/100,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff*2,radarTextPaint);
+        radarTextPaint.setColor(Radarmap.RAINCOLORS[2]);
+        canvas.drawText(getResources().getString(R.string.radar_rain1),MAP_PIXEL_WIDTH*0.1f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff,radarTextPaint);
+        radarTextPaint.setColor(Radarmap.RAINCOLORS[7]);
+        canvas.drawText(getResources().getString(R.string.radar_rain2),MAP_PIXEL_WIDTH*0.3f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
+        radarTextPaint.setColor(Radarmap.RAINCOLORS[11]);
+        canvas.drawText(getResources().getString(R.string.radar_rain3),MAP_PIXEL_WIDTH*0.6f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
+        radarTextPaint.setColor(Radarmap.RAINCOLORS[16]);
+        canvas.drawText(getResources().getString(R.string.radar_rain4),MAP_PIXEL_WIDTH*0.8f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
+        ImageView rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
+        if (rainDescription!=null){
+            rainDescription.setImageBitmap(infoBitmap);
+        }
+    }
+
+    private void clearRainDescription(){
+        ImageView rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
+        if (rainDescription!=null){
+            rainDescription.setImageDrawable(null);
+        }
+    }
+
+    private Bitmap loadBitmapMap(int res_id){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),res_id),MAP_PIXEL_FIXEDWIDTH,MAP_PIXEL_FIXEDHEIGHT,false);
+        return bitmap;
+    }
+
+    private void drawMapBitmap(Radarmap radarmap){
+        visibleBitmap = mapBitmap.copy(Bitmap.Config.ARGB_8888,true);
+        Canvas canvas = new Canvas(visibleBitmap);
+        if ((!hide_rain) && (radarBitmap!=null)){
+            final Paint cp = new Paint();
+            cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+            canvas.drawBitmap(radarBitmap, 0,0,cp);
+            showRainDescription(radarmap);
+        } else {
+            clearRainDescription();
+        }
+        drawPin(canvas);
+        mapZoomable.updateBitmap(visibleBitmap);
+        visibleBitmap.recycle();
     }
 
     @SuppressWarnings("unchecked")
     private void displayMap(){
-        Bitmap resource_bitmap;
         if (deviceIsLandscape){
-            resource_bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.germany_nc);
+            resource_bitmap = loadBitmapMap(R.drawable.germany_nc);
         } else {
-            resource_bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.germany);
+            resource_bitmap = loadBitmapMap(R.drawable.germany);
         }
         mapBitmap = Bitmap.createBitmap(resource_bitmap.getWidth(),resource_bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         mapBitmap.eraseColor(Color.TRANSPARENT);
-        MAP_HEIGHT = resource_bitmap.getHeight();
-        MAP_WIDTH  = resource_bitmap.getWidth();
-        X_FACTOR = (float) (MAP_WIDTH / GEO_MAPWIDTH);
-        Y_FACTOR = (float) (MAP_HEIGHT / GEO_MAPHEIGHT);
+        radarBitmap = Bitmap.createBitmap(resource_bitmap.getWidth(),resource_bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        radarBitmap.eraseColor(Color.TRANSPARENT);
+        MAP_PIXEL_HEIGHT = mapBitmap.getHeight();
+        MAP_PIXEL_WIDTH  = mapBitmap.getWidth();
+        // X_FACTOR = (float) (MAP_WIDTH / GEO_MAPWIDTH);
+        // Y_FACTOR = (float) (MAP_HEIGHT / GEO_MAPHEIGHT);
         polygoncache = new ArrayList<Polygon>();
         excluded_polygoncache = new ArrayList<Polygon>();
         final Canvas canvas = new Canvas(mapBitmap);
@@ -337,13 +465,12 @@ public class WeatherWarningActivity extends Activity {
         // rain radar
         APIReaders.RadarmapRunnable radarmapRunnable = new APIReaders.RadarmapRunnable(getApplicationContext()){
             @Override
-            public void onFinished(Radarmap radarmap){
-                if (radarmap!=null){
-                    Paint paint = new Paint();
-                    paint.setStyle(Paint.Style.FILL_AND_STROKE);
-                    cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
-                    float yPS = (MAP_HEIGHT/radarmap.height)/2f;
-                    float xPS = (MAP_WIDTH/radarmap.width)/2f;
+            public void onFinished(final Radarmap rm){
+                if (rm!=null){
+                    radarmap = rm;
+                    Canvas radarCanvas = new Canvas(radarBitmap);
+                    float yPS = (MAP_PIXEL_HEIGHT/radarmap.height)/2f;
+                    float xPS = (MAP_PIXEL_WIDTH/radarmap.width)/2f;
                     Paint rpaint = new Paint();
                     rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
                     for (int y=0; y<radarmap.height; y++){
@@ -357,39 +484,18 @@ public class WeatherWarningActivity extends Activity {
                             int color = radarmap.getRadarMapColor(radarmap.map[x][y]);
                             if (color!=0){
                                 rpaint.setColor(color);
-                                canvas.drawRect(plotPoint.x-xPS,plotPoint.y-yPS,plotPoint.x+xPS,plotPoint.y+yPS,rpaint);
+                                radarCanvas.drawRect(plotPoint.x-xPS,plotPoint.y-yPS,plotPoint.x+xPS,plotPoint.y+yPS,rpaint);
                             }
                         }
-                        PrivateLog.log(getApplicationContext(),Tag.RADAR,"Max dbZ: "+radarmap.highestDBZ+" Max byte: "+radarmap.highestByte);
                     }
-                    Bitmap radarinfobarResourceBitmap;
-                    radarinfobarResourceBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.radarinfobar);
-                    canvas.drawBitmap(radarinfobarResourceBitmap,0,MAP_HEIGHT-radarinfobarResourceBitmap.getHeight(),rpaint);
-                    Paint radarTextPaint = new Paint();
-                    radarTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-                    radarTextPaint.setFakeBoldText(true);
-                    radarTextPaint.setTextSize(radarinfobarResourceBitmap.getHeight());
-                    radarTextPaint.setColor(Color.WHITE);
-                    if (WeatherSettings.isRadarDataOutdated(getApplicationContext())){
-                        radarTextPaint.setColor(Color.RED);
-                    }
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-                    String radartime = simpleDateFormat.format(new Date(radarmap.timestamp));
-                    float ff=1.1f;
-                    canvas.drawText(radartime,MAP_WIDTH/100,MAP_HEIGHT-radarinfobarResourceBitmap.getHeight()*ff*2,radarTextPaint);
-                    radarTextPaint.setColor(Radarmap.RAINCOLORS[2]);
-                    canvas.drawText(getResources().getString(R.string.radar_rain1),MAP_WIDTH*0.1f,MAP_HEIGHT-radarinfobarResourceBitmap.getHeight()*ff,radarTextPaint);
-                    radarTextPaint.setColor(Radarmap.RAINCOLORS[7]);
-                    canvas.drawText(getResources().getString(R.string.radar_rain2),MAP_WIDTH*0.3f,MAP_HEIGHT-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
-                    radarTextPaint.setColor(Radarmap.RAINCOLORS[11]);
-                    canvas.drawText(getResources().getString(R.string.radar_rain3),MAP_WIDTH*0.6f,MAP_HEIGHT-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
-                    radarTextPaint.setColor(Radarmap.RAINCOLORS[16]);
-                    canvas.drawText(getResources().getString(R.string.radar_rain4),MAP_WIDTH*0.8f,MAP_HEIGHT-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
-                    drawPin(canvas);
+                    Log.v(Tag.RADAR,"Max dbZ: "+radarmap.highestDBZ+" Max byte: "+radarmap.highestByte);
+                    //
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            germany.setImageBitmap(mapBitmap);
+                            //mapZoomable.updateBitmap(mapBitmap);
+                            Log.v(Tag.RADAR,"Updating bitmap after rain available.");
+                            drawMapBitmap(radarmap);
                         }
                     });
                 }
@@ -398,18 +504,29 @@ public class WeatherWarningActivity extends Activity {
         if (!hide_rain){
             executor.execute(radarmapRunnable);
         }
-        drawPin(canvas);
         // set listener
         germany = (ImageView) findViewById(R.id.warningactivity_map);
-        germany.setImageBitmap(mapBitmap);
         gestureDetector = new GestureDetector(this,new MapGestureListener());
+        mapZoomable = new ZoomableImageView(getApplicationContext(),germany,mapBitmap){
+            @Override
+            public void onGestureFinished(float scaleFactor, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
+                Log.v("ZT","-------------------------------------");
+                Log.v("ZT","The scale factor is "+scaleFactor);
+                Log.v("ZT","Focus: abs: "+yFocus+"/"+xFocus+"  rel: "+xFocusRelative+"/"+yFocusRelative);
+                Log.v("ZT","Visible rectangle: "+Math.round(currentlyVisibleArea.left)+"/"+Math.round(currentlyVisibleArea.top)+" "+Math.round(currentlyVisibleArea.right)+"/"+Math.round(currentlyVisibleArea.bottom));
+            }
+        };
         mapTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                return gestureDetector.onTouchEvent(motionEvent);
-            }
+                Log.v("TWFG","Touched this!");
+                mapZoomable.onTouchEvent(motionEvent);
+                // mapTouchListener.onTouch(view,motionEvent);
+                return true;
+            };
         };
         germany.setOnTouchListener(mapTouchListener);
+
     }
 
     class MapGestureListener extends GestureDetector.SimpleOnGestureListener{
@@ -500,8 +617,11 @@ public class WeatherWarningActivity extends Activity {
         float view_height = germany.getMeasuredHeight();
         float x_laengengrade_pro_pixel = (float) (12.130930434 / view_width);
         float y_breitengrade_pro_pixel = (float) (8.804865172 / view_height);
-        float x_geo = x_laengengrade_pro_pixel*x + X_GEO_MAPOFFSET;
-        float y_geo = y_breitengrade_pro_pixel*(view_height-y) + Y_GEO_MAPOFFSET;
+        // float x_geo = x_laengengrade_pro_pixel*x + X_GEO_MAPOFFSET;
+        // float y_geo = y_breitengrade_pro_pixel*(view_height-y) + Y_GEO_MAPOFFSET;
+        // wrong, todo
+        float x_geo = x_laengengrade_pro_pixel*x;
+        float y_geo = y_breitengrade_pro_pixel*(view_height-y);
         if (polygoncache!=null){
             int position = 0;
             // first check if pointer is in excluded polygon; it is more efficient to do this first.

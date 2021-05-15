@@ -41,13 +41,23 @@
             android:src="@drawable/map_collapsed">
         </ImageView>
 
-        <ImageView
-            android:id="@+id/warningactivity_map"
-            android:layout_width="match_parent"
-            android:layout_weight="14"
-            android:layout_height="0dp"
-            android:src="@drawable/germany">
-        </ImageView>
+        <FrameLayout android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="14">
+            <ImageView
+                    android:id="@+id/warningactivity_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/germany">
+            </ImageView>
+            <ImageView
+                    android:id="@+id/warningactivity_mapinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom">
+            </ImageView>
+        </FrameLayout>
+
 
         <ListView android:id="@+id/warningactivity_listview"
             android:layout_width="match_parent"
