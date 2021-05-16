@@ -20,6 +20,8 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.graphics.*;
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -121,11 +123,13 @@ public class Radarmap {
         if ((b == CLUTTER) || (b == ERROR)) {
             return Color.TRANSPARENT;
         }
-        float dbZ = (b / 2f) - 32.5f;
-        if (dbZ>highestDBZ){
+        // convert signed byte to unsigned int by simply getting the last 8 bytes of the int
+        int ub = b & 0xff;
+        float dbZ = (ub / 2f) - 32.5f;
+        if (dbZ<highestDBZ){
             highestDBZ = dbZ;
         }
-        if (b>highestByte){
+        if (b<highestByte){
             highestByte = b;
         }
         int color = RAINCOLORS[RAINCOLORS.length-1];
@@ -167,6 +171,7 @@ public class Radarmap {
         }
         this.radolanVersion = new String(rawRadarmap.radolanVersion);
         String sAcc = new String(rawRadarmap.accuracy);
+        Log.v("RARAR","Acc: "+sAcc);
         this.accuracy=1;
         if (sAcc.equals("E-01")){
             accuracy=0.1;

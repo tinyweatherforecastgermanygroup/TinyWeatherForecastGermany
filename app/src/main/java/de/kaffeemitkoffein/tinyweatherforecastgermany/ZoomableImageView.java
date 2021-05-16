@@ -107,6 +107,9 @@ public class ZoomableImageView {
      */
     public RectF temporaryVisibleArea;
 
+    public float lastPressX;
+    public float lastPressY;
+
     private Bitmap bitmap;
     private ImageView imageView;
     public ZoomGestureListener zoomGestureListener;
@@ -164,6 +167,8 @@ public class ZoomableImageView {
      * The focus is the visible center coordinate.
      *
      * @param scaleFactor the current cale factor
+     * @param lastPressX the absolute x of last pointer/touch, reference is the whole bitmap
+     * @param lastPressY the absolute y of last pointer/touch, reference is the whole bitmap
      * @param xFocus the absolute x focus in pixels, reference is the whole bitmap
      * @param yFocus the absolute y focus in pixels, reference is the whole bitmap
      * @param xFocusRelative the relative x focus (0 <= xFocusRelative <= 1), reference is the whole bitmap
@@ -171,7 +176,7 @@ public class ZoomableImageView {
      * @param currentlyVisibleArea rectangle holding the coordinates of the visible area in pixels
      */
 
-    public void onGestureFinished(float scaleFactor, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
+    public void onGestureFinished(float scaleFactor, float lastPressX, float lastPressY, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
         // things to do after gesture finished.
     }
 
@@ -234,6 +239,10 @@ public class ZoomableImageView {
      */
 
     public boolean onTouchEvent(MotionEvent motionEvent){
+        int widthVisible  = Math.round(bitmap.getWidth()*scaleFactor);
+        int heightVisible = Math.round(bitmap.getHeight()*scaleFactor);
+        lastPressX = motionEvent.getX()/imageView.getWidth()*widthVisible+(xFocus-widthVisible/2);
+        lastPressY = motionEvent.getY()/imageView.getHeight()*heightVisible+(yFocus-heightVisible/2);
         scaleGestureDetector.onTouchEvent(motionEvent);
         if (motionEvent.getPointerCount()==1){
             if (motionEvent.getAction()==MotionEvent.ACTION_DOWN){
@@ -247,7 +256,7 @@ public class ZoomableImageView {
             }
         }
         if (motionEvent.getAction() == MotionEvent.ACTION_UP){
-            onGestureFinished(scaleFactor,getXFocus(),getYFocus(),getRelativeXFocus(),getRelativeYFocus(),temporaryVisibleArea);
+            onGestureFinished(scaleFactor,lastPressX,lastPressY,getXFocus(),getYFocus(),getRelativeXFocus(),getRelativeYFocus(),temporaryVisibleArea);
         }
 
         return true;

@@ -378,6 +378,7 @@ public class WeatherWarningActivity extends Activity {
     }
 
     private void drawMapBitmap(Radarmap radarmap){
+        //visibleBitmap = Bitmap.createBitmap(mapBitmap.getHeight(),mapBitmap.getWidth(), Bitmap.Config.ARGB_8888);
         visibleBitmap = mapBitmap.copy(Bitmap.Config.ARGB_8888,true);
         Canvas canvas = new Canvas(visibleBitmap);
         if ((!hide_rain) && (radarBitmap!=null)){
@@ -406,8 +407,6 @@ public class WeatherWarningActivity extends Activity {
         radarBitmap.eraseColor(Color.TRANSPARENT);
         MAP_PIXEL_HEIGHT = mapBitmap.getHeight();
         MAP_PIXEL_WIDTH  = mapBitmap.getWidth();
-        // X_FACTOR = (float) (MAP_WIDTH / GEO_MAPWIDTH);
-        // Y_FACTOR = (float) (MAP_HEIGHT / GEO_MAPHEIGHT);
         polygoncache = new ArrayList<Polygon>();
         excluded_polygoncache = new ArrayList<Polygon>();
         final Canvas canvas = new Canvas(mapBitmap);
@@ -509,11 +508,16 @@ public class WeatherWarningActivity extends Activity {
         gestureDetector = new GestureDetector(this,new MapGestureListener());
         mapZoomable = new ZoomableImageView(getApplicationContext(),germany,mapBitmap){
             @Override
-            public void onGestureFinished(float scaleFactor, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
+            public void onGestureFinished(float scaleFactor, float lastXtouch, float lastYtouch, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
                 Log.v("ZT","-------------------------------------");
                 Log.v("ZT","The scale factor is "+scaleFactor);
+                Log.v("ZT","Last pointer/touch at: "+lastXtouch+"/"+lastYtouch);
                 Log.v("ZT","Focus: abs: "+yFocus+"/"+xFocus+"  rel: "+xFocusRelative+"/"+yFocusRelative);
                 Log.v("ZT","Visible rectangle: "+Math.round(currentlyVisibleArea.left)+"/"+Math.round(currentlyVisibleArea.top)+" "+Math.round(currentlyVisibleArea.right)+"/"+Math.round(currentlyVisibleArea.bottom));
+                PlotPoint plotPoint = new PlotPoint();
+                plotPoint.x = lastXtouch;
+                plotPoint.y = lastYtouch;
+                checkForTapInPolygonWarning(getXGeo(plotPoint),getYGeo(plotPoint));
             }
         };
         mapTouchListener = new View.OnTouchListener() {
@@ -582,7 +586,7 @@ public class WeatherWarningActivity extends Activity {
                     return true;
                 }
             }
-            return checkForTapInPolygonWarning(e);
+            return false;
         }
 
         @Override
@@ -610,18 +614,8 @@ public class WeatherWarningActivity extends Activity {
         }
     }
 
-    private boolean checkForTapInPolygonWarning(MotionEvent motionEvent){
-        float x = motionEvent.getX();
-        float y = motionEvent.getY();
-        float view_width = germany.getMeasuredWidth();
-        float view_height = germany.getMeasuredHeight();
-        float x_laengengrade_pro_pixel = (float) (12.130930434 / view_width);
-        float y_breitengrade_pro_pixel = (float) (8.804865172 / view_height);
-        // float x_geo = x_laengengrade_pro_pixel*x + X_GEO_MAPOFFSET;
-        // float y_geo = y_breitengrade_pro_pixel*(view_height-y) + Y_GEO_MAPOFFSET;
-        // wrong, todo
-        float x_geo = x_laengengrade_pro_pixel*x;
-        float y_geo = y_breitengrade_pro_pixel*(view_height-y);
+    private void checkForTapInPolygonWarning(float x_geo, float y_geo){
+
         if (polygoncache!=null){
             int position = 0;
             // first check if pointer is in excluded polygon; it is more efficient to do this first.
@@ -629,7 +623,7 @@ public class WeatherWarningActivity extends Activity {
                 while (position<excluded_polygoncache.size()){
                     if (excluded_polygoncache.get(position).isInPolygon(x_geo,y_geo)){
                         // break (& do nothing) if pointer is in excluded polygon.
-                        return true;
+                        return;
                     }
                     position++;
                 }
@@ -638,12 +632,11 @@ public class WeatherWarningActivity extends Activity {
             while (position<polygoncache.size()){
                 if (polygoncache.get(position).isInPolygon(x_geo,y_geo)){
                     jumpListViewToSelection(polygoncache.get(position));
-                    return true;
+                    return;
                 }
                 position++;
             }
         }
-        return true;
     }
 
     private void jumpListViewToSelection(Polygon polygon){
