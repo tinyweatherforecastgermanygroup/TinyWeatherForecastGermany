@@ -53,7 +53,7 @@ public class WeatherWarningActivity extends Activity {
     Bitmap radarBitmap;
     Bitmap visibleBitmap;
     ZoomableImageView mapZoomable;
-    ImageView map_collapsed;
+    RelativeLayout map_collapsed_container;
     boolean deviceIsLandscape;
     private GestureDetector gestureDetector;
     ListView weatherList;
@@ -121,19 +121,19 @@ public class WeatherWarningActivity extends Activity {
         hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
         //updateWarningsIfNeeded();
         mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
-        map_collapsed = (ImageView) findViewById(R.id.warningactivity_map_collapsed);
+        map_collapsed_container = (RelativeLayout) findViewById(R.id.warningactivity_map_collapsed_container);
         // in layout w6600dp-land this element does not exist. This is the safest way to
         // limit collapse-function to portrait mode.
-        if (map_collapsed!=null){
+        if (map_collapsed_container!=null){
             deviceIsLandscape = false;
-            map_collapsed.setOnTouchListener(new View.OnTouchListener() {
+            map_collapsed_container.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if (germany!=null){
                         mapcontainer.setVisibility(View.VISIBLE);
                         mapcontainer.invalidate();
-                        map_collapsed.setVisibility(View.GONE);
-                        map_collapsed.invalidate();
+                        map_collapsed_container.setVisibility(View.GONE);
+                        map_collapsed_container.invalidate();
                         LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
                         lop.height=0;
                         lop.weight=6;
@@ -526,8 +526,8 @@ public class WeatherWarningActivity extends Activity {
                     Log.v("TWFG","CLOSE MAP PRESSED");
                     mapcontainer.setVisibility(View.GONE);
                     mapcontainer.invalidate();
-                    map_collapsed.setVisibility(View.VISIBLE);
-                    map_collapsed.invalidate();
+                    map_collapsed_container.setVisibility(View.VISIBLE);
+                    map_collapsed_container.invalidate();
                     LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
                     lop.height=0;
                     lop.weight=19;
@@ -615,14 +615,14 @@ public class WeatherWarningActivity extends Activity {
             //Log.v("MOTIONEVENT","down");
             // catch collapse-button-press prior to map-selection
             // perform this only if NOT in landscape layout
-            if ((!deviceIsLandscape) && (map_collapsed!=null) && (germany!=null) && (weatherList!=null)){
+            if ((!deviceIsLandscape) && (map_collapsed_container!=null) && (germany!=null) && (weatherList!=null)){
                 float button_border_right  = (float) (germany.getMeasuredWidth() * 0.127427184);
                 float button_border_bottom = (float) (germany.getMeasuredHeight() * 0.10041841);
                 if ((e.getX()<button_border_right) && (e.getY()<button_border_bottom)){
                     germany.setVisibility(View.GONE);
                     germany.invalidate();
-                    map_collapsed.setVisibility(View.VISIBLE);
-                    map_collapsed.invalidate();
+                    map_collapsed_container.setVisibility(View.VISIBLE);
+                    map_collapsed_container.invalidate();
                     LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
                     lop.height=0;
                     lop.weight=19;

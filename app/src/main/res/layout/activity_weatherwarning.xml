@@ -32,14 +32,25 @@
         android:weightSum="20"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/warningactivity_map_collapsed"
+        <RelativeLayout
+            android:id="@+id/warningactivity_map_collapsed_container"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="0dp"
-            android:visibility="gone"
-            android:src="@drawable/map_collapsed">
-        </ImageView>
+            android:visibility="gone">
+            <ImageView
+                    android:id="@+id/warningactivity_map_collapsed"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/map_collapsed"/>
+            <ImageView
+                    android:id="@+id/warningactivity_map_collapsed_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@mipmap/arrow_down"/>
+        </RelativeLayout>
 
         <RelativeLayout
                      android:id="@+id/warningactivity_mapcontainer"
@@ -67,9 +78,9 @@
                     android:layout_height="48dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:src="@mipmap/ic_close_white_24dp">
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="2dp"
+                    android:src="@mipmap/arrow_up">
             </ImageView>
             <ImageView
                     android:id="@+id/warningactivity_mapinfo"
