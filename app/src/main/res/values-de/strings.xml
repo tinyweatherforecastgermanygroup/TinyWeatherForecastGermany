@@ -124,6 +124,8 @@
     <string name="preference_display_wind_arc_hours_summary">Welche Zeit als Bogen angezeigt werden soll.</string>
     <string name="preference_display_wind_unit_title">Windgeschwindigkeit</string>
     <string name="preference_display_wind_unit_summary">Wähle die Einheit für die Windgeschwindigkeit.</string>
+    <string name="preference_display_wind_in_radar_title">Im Regenradar zeigen</string>
+    <string name="preference_display_wind_in_radar_summary">Windrichtung im Regenradar zeigen.</string>
     <string name="preference_display_distance_unit_title">Entfernungen</string>
     <string name="preference_display_distance_unit_summary">Wähle die Einheit für Entfernungen.</string>
     <string name="preference_display_show_radar_by_default_title">Regenradar</string>

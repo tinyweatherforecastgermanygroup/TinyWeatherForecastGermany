@@ -41,7 +41,9 @@
             android:src="@drawable/map_collapsed">
         </ImageView>
 
-        <FrameLayout android:layout_width="match_parent"
+        <RelativeLayout
+                     android:id="@+id/warningactivity_mapcontainer"
+                     android:layout_width="match_parent"
                      android:layout_height="0dp"
                      android:layout_weight="14">
             <ImageView
@@ -51,12 +53,32 @@
                     android:src="@drawable/germany">
             </ImageView>
             <ImageView
+                    android:id="@+id/warningactivity_windicon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginRight="24dp">
+            </ImageView>
+            <ImageView
+                    android:id="@+id/closeicon_map"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:src="@mipmap/ic_close_white_24dp">
+            </ImageView>
+            <ImageView
                     android:id="@+id/warningactivity_mapinfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:layout_gravity="bottom">
             </ImageView>
-        </FrameLayout>
+        </RelativeLayout>
 
 
         <ListView android:id="@+id/warningactivity_listview"

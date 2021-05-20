@@ -1,11 +1,12 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.graphics.*;
 import android.view.ScaleGestureDetector;
-import android.graphics.Bitmap;
-import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.widget.ImageView;
+
+import java.util.ArrayList;
 
 /**
  * ZoomableImageView is a simple class that enhances an ImageView with the capability to zoom in and out.
@@ -115,6 +116,13 @@ public class ZoomableImageView {
     public ZoomGestureListener zoomGestureListener;
     public ScaleGestureDetector scaleGestureDetector;
     private Context context;
+    private float imageViewWidth;
+    private float imageViewHeight;
+
+    private ArrayList<Float> spriteX;
+    private ArrayList<Float> spriteY;
+    private ArrayList<Bitmap> spriteBitmap;
+    private ArrayList<Integer> spriteFixPoint;
 
     /**
      * Initializes this class. Values must not be null.
@@ -127,6 +135,8 @@ public class ZoomableImageView {
     public ZoomableImageView(Context context,ImageView imageView, Bitmap bitmap){
         this.context = context;
         this.imageView = imageView;
+        this.imageViewWidth  = imageView.getWidth();
+        this.imageViewHeight = imageView.getHeight();
         this.bitmap = bitmap.copy(Bitmap.Config.ARGB_8888,true);
         initDefaults();
     }
@@ -157,6 +167,28 @@ public class ZoomableImageView {
         }
         this.bitmap = newbitmap.copy(Bitmap.Config.ARGB_8888,true);
         redrawBitmap();
+    }
+
+    public class SPRITEFIXPOINT {
+        public static final int TOP_LEFT     = 0;
+        public static final int TOP_RIGHT    = 1;
+        public static final int BOTTOM_LEFT  = 2;
+        public static final int BOTTOM_RIGHT = 3;
+        public static final int SPRITECENTER = 4;
+    }
+
+    public int addSpite(Bitmap bitmap, float x, float y, int fixpoint){
+        if ((spriteX == null) || (spriteY == null) || (spriteBitmap == null)){
+            spriteX = new ArrayList<Float>();
+            spriteY = new ArrayList<Float>();
+            spriteBitmap = new ArrayList<Bitmap>();
+            spriteFixPoint = new ArrayList<Integer>();
+        }
+        spriteX.add(x);
+        spriteY.add(y);
+        spriteBitmap.add(bitmap);
+        spriteFixPoint.add(fixpoint);
+        return spriteBitmap.size();
     }
 
     /**
@@ -272,7 +304,16 @@ public class ZoomableImageView {
         scaleFactor = 1.0f;
         zoomGestureListener = new ZoomGestureListener();
         scaleGestureDetector = new ScaleGestureDetector(context,zoomGestureListener);
-        redrawBitmap();
+        if ((imageViewHeight==0) || (imageViewWidth==0)){
+            imageView.post(new Runnable() {
+                @Override
+                public void run() {
+                    imageViewWidth  = imageView.getWidth();
+                    imageViewHeight = imageView.getHeight();
+                    redrawBitmap();
+                }
+            });
+        }
     }
 
     /**
@@ -281,37 +322,68 @@ public class ZoomableImageView {
      * @param scaleFactor the scale factor to use.
      */
 
-    private void redrawBitmap(float scaleFactor){
-        int widthVisible  = Math.round(bitmap.getWidth()*scaleFactor);
-        int heightVisible = Math.round(bitmap.getHeight()*scaleFactor);
-        int left = Math.round((xFocus - widthVisible/2f));
-        int top = Math.round((yFocus - heightVisible/2f));
+    private void redrawBitmap(float scaleFactor) {
+        int widthVisible = Math.round(bitmap.getWidth() * scaleFactor);
+        int heightVisible = Math.round(bitmap.getHeight() * scaleFactor);
+        int left = Math.round((xFocus - widthVisible / 2f));
+        int top = Math.round((yFocus - heightVisible / 2f));
         // fail-safe boundaries
-        while (left<0){
+        while (left < 0) {
             left++;
             xFocus++;
         }
-        while (top<0){
+        while (top < 0) {
             top++;
             yFocus++;
         }
-        while (left+widthVisible>bitmap.getWidth()){
+        while (left + widthVisible > bitmap.getWidth()) {
             left--;
             xFocus--;
         }
-        while (top+heightVisible>bitmap.getHeight()){
+        while (top + heightVisible > bitmap.getHeight()) {
             top--;
             yFocus--;
         }
-        if (left<0){
-            left=0;
+        if (left < 0) {
+            left = 0;
         }
-        if (top<0){
-            top=0;
+        if (top < 0) {
+            top = 0;
         }
-        temporaryVisibleArea = new RectF(left,top,left+widthVisible,top+heightVisible);
-        Bitmap bitmap = Bitmap.createBitmap(this.bitmap,left,top,widthVisible,heightVisible);
-        imageView.setImageBitmap(bitmap);
+        temporaryVisibleArea = new RectF(left, top, left + widthVisible, top + heightVisible);
+        Bitmap bitmap = Bitmap.createBitmap(this.bitmap, left, top, widthVisible, heightVisible);
+        Bitmap newbitmap = Bitmap.createScaledBitmap(bitmap, Math.round(imageViewWidth), Math.round(imageViewHeight), false);
+        if ((spriteY != null) && (spriteX != null) && (spriteBitmap != null)) {
+            for (int i = 0; i < spriteBitmap.size(); i++) {
+                if ((spriteX.get(i) > left) && (spriteX.get(i) < left + widthVisible + spriteBitmap.get(i).getWidth()) && (spriteY.get(i) > top - spriteBitmap.get(i).getHeight()) && (spriteY.get(i) < top + heightVisible)) {
+                    Paint paint = new Paint();
+                    paint.setStyle(Paint.Style.FILL_AND_STROKE);
+                    paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+                    Canvas canvas = new Canvas(newbitmap);
+                    if (spriteFixPoint.get(i) == SPRITEFIXPOINT.TOP_LEFT) {
+                        // this keeps alignment top-left correct
+                        canvas.drawBitmap(spriteBitmap.get(i), Math.round((spriteX.get(i) - left) * (imageViewWidth / widthVisible)), Math.round(spriteY.get(i) - top) * (imageViewHeight / heightVisible), paint);
+                    }
+                    if (spriteFixPoint.get(i) == SPRITEFIXPOINT.BOTTOM_LEFT) {
+                        // this keeps alignment bottom-left
+                        canvas.drawBitmap(spriteBitmap.get(i), Math.round((spriteX.get(i) - left) * (imageViewWidth / widthVisible)), Math.round(spriteY.get(i) - top + spriteBitmap.get(i).getHeight()) * (imageViewHeight / heightVisible) - spriteBitmap.get(i).getHeight(), paint);
+                    }
+                    if (spriteFixPoint.get(i) == SPRITEFIXPOINT.BOTTOM_RIGHT) {
+                        // this keeps alignment bottom-right
+                        canvas.drawBitmap(spriteBitmap.get(i), Math.round((spriteX.get(i) - left + spriteBitmap.get(i).getWidth()) * (imageViewWidth / widthVisible)) - spriteBitmap.get(i).getWidth(), Math.round(spriteY.get(i) - top + spriteBitmap.get(i).getHeight()) * (imageViewHeight / heightVisible) - spriteBitmap.get(i).getHeight(), paint);
+                    }
+                    if (spriteFixPoint.get(i) == SPRITEFIXPOINT.TOP_RIGHT) {
+                        // this keeps alignment top-right
+                        canvas.drawBitmap(spriteBitmap.get(i), Math.round((spriteX.get(i) - left + spriteBitmap.get(i).getWidth()) * (imageViewWidth / widthVisible)) - spriteBitmap.get(i).getWidth(), Math.round(spriteY.get(i) - top) * (imageViewHeight / heightVisible), paint);
+                    }
+                    if (spriteFixPoint.get(i) == SPRITEFIXPOINT.SPRITECENTER) {
+                        // this keeps alignment sprite-center
+                        canvas.drawBitmap(spriteBitmap.get(i), Math.round((spriteX.get(i) - left + spriteBitmap.get(i).getWidth() / 2f) * (imageViewWidth / widthVisible)) - spriteBitmap.get(i).getWidth() / 2f, Math.round(spriteY.get(i) - top + spriteBitmap.get(i).getHeight() / 2f) * (imageViewHeight / heightVisible) - spriteBitmap.get(i).getHeight() / 2f, paint);
+                    }
+                }
+            }
+        }
+        imageView.setImageBitmap(newbitmap);
     }
 
     /**

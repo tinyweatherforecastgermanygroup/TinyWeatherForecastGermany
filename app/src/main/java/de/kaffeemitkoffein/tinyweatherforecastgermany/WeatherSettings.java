@@ -78,6 +78,7 @@ public class WeatherSettings {
     public static final String PREF_RADAR_LASTDATAPOLL = "PREF_radar_lastdatapoll";
     public static final String PREF_RADAR_SHOW = "PREF_radar_show";
     public static final String PREF_FORCE_NO_MENU_ICONS = "PREF_force_nomenuicons";
+    public static final String PREF_DISPLAY_WIND_IN_RADAR = "PREF_display_wind_in_radar";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -124,7 +125,7 @@ public class WeatherSettings {
     public static final long PREF_RADAR_LASTDATAPOLL_DEFAULT = 0;
     public static final boolean PREF_RADAR_SHOW_DEFAULT = true;
     public static final boolean PREF_FORCE_NO_MENU_ICONS_DEFAULT = false;
-
+    public static final boolean PREF_DISPLAY_WIND_IN_RADAR_DEFAULT = true;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -171,6 +172,7 @@ public class WeatherSettings {
     public long radar_lastdatapoll = PREF_RADAR_LASTDATAPOLL_DEFAULT;
     public boolean radar_show = PREF_RADAR_SHOW_DEFAULT;
     public boolean forceNoMenuIcons = PREF_FORCE_NO_MENU_ICONS_DEFAULT;
+    public boolean display_wind_in_radar = PREF_DISPLAY_WIND_IN_RADAR_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -226,6 +228,7 @@ public class WeatherSettings {
         this.radar_lastdatapoll = readPreference(PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
         this.radar_show = readPreference(PREF_RADAR_SHOW,PREF_RADAR_SHOW_DEFAULT);
         this.forceNoMenuIcons = readPreference(PREF_FORCE_NO_MENU_ICONS,PREF_FORCE_NO_MENU_ICONS_DEFAULT);
+        this.display_wind_in_radar = readPreference(PREF_DISPLAY_WIND_IN_RADAR,PREF_DISPLAY_WIND_IN_RADAR_DEFAULT);
     }
 
     public void savePreferences() {
@@ -272,6 +275,7 @@ public class WeatherSettings {
         applyPreference(PREF_RADAR_LASTDATAPOLL,this.radar_lastdatapoll);
         applyPreference(PREF_RADAR_SHOW,this.radar_show);
         applyPreference(PREF_FORCE_NO_MENU_ICONS,this.forceNoMenuIcons);
+        applyPreference(PREF_DISPLAY_WIND_IN_RADAR,this.display_wind_in_radar);
     }
 
     public void commitPreferences() {
@@ -318,6 +322,7 @@ public class WeatherSettings {
         commitPreference(PREF_RADAR_LASTDATAPOLL,this.radar_lastdatapoll);
         commitPreference(PREF_RADAR_SHOW,this.radar_show);
         commitPreference(PREF_FORCE_NO_MENU_ICONS,this.forceNoMenuIcons);
+        commitPreference(PREF_DISPLAY_WIND_IN_RADAR,this.display_wind_in_radar);
     }
 
     public String readPreference(String p, String d) {
@@ -589,6 +594,15 @@ public class WeatherSettings {
         return Weather.DisplayLayout.DEFAULT;
     }
 
+    public static int getWindDisplayType(String s){
+        try {
+            int i = Integer.parseInt(s);
+            return i;
+        } catch (NumberFormatException e) {
+            return Weather.WindDisplayType.ARROW;
+        }
+    }
+
     public int getWindDisplayType(){
         try {
             int i = Integer.parseInt(this.display_wind_type);
@@ -711,6 +725,17 @@ public class WeatherSettings {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_FORCE_NO_MENU_ICONS,b);
         pref_editor.apply();
+    }
+
+    public static int getWindDisplayType(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String s = sharedPreferences.getString(PREF_DISPLAY_WIND_TYPE,PREF_DISPLAY_WIND_TYPE_DEFAULT);
+        return getWindDisplayType(s);
+    }
+
+    public static boolean displayWindInRadar(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_WIND_IN_RADAR,PREF_DISPLAY_WIND_IN_RADAR_DEFAULT);
     }
 
 }

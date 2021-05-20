@@ -100,6 +100,8 @@
     <string name="preference_display_wind_type_summary">Hoe de windrichting te tonen.</string>
     <string name="preference_display_wind_unit_title">Windsnelheid</string>
     <string name="preference_display_wind_unit_summary">Selecteer de eenheid voor windsnelheid.</string>
+    <string name="preference_display_wind_in_radar_title">Toon in buienradar</string>
+    <string name="preference_display_wind_in_radar_summary">Toon windrichting op buienradar.</string>
     <string name="preference_display_distance_unit_title">Afstand</string>
     <string name="preference_display_distance_unit_summary">Selecteer de eenheid voor afstanden.</string>
     <string name="preference_display_station_geo_title">Geografische coördinaten</string>

@@ -47,8 +47,9 @@ public class WeatherWarningActivity extends Activity {
     ArrayList<Polygon> polygoncache;
     ArrayList<Polygon> excluded_polygoncache;
     ImageView germany;
-    Bitmap mapBitmap;
-    Bitmap resource_bitmap;
+    RelativeLayout mapcontainer;
+    Bitmap germanyBitmap;
+    Bitmap warningsBitmap;
     Bitmap radarBitmap;
     Bitmap visibleBitmap;
     ZoomableImageView mapZoomable;
@@ -119,6 +120,7 @@ public class WeatherWarningActivity extends Activity {
         weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext());
         hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
         //updateWarningsIfNeeded();
+        mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
         map_collapsed = (ImageView) findViewById(R.id.warningactivity_map_collapsed);
         // in layout w6600dp-land this element does not exist. This is the safest way to
         // limit collapse-function to portrait mode.
@@ -128,8 +130,8 @@ public class WeatherWarningActivity extends Activity {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if (germany!=null){
-                        germany.setVisibility(View.VISIBLE);
-                        germany.invalidate();
+                        mapcontainer.setVisibility(View.VISIBLE);
+                        mapcontainer.invalidate();
                         map_collapsed.setVisibility(View.GONE);
                         map_collapsed.invalidate();
                         LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
@@ -332,11 +334,7 @@ public class WeatherWarningActivity extends Activity {
         radarinfobarResourceBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.radarinfobar),Math.round(MAP_PIXEL_WIDTH),34,false);
         Paint rpaint = new Paint();
         rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        int infobarStart = Math.round((germany.getWidth()-radarinfobarResourceBitmap.getWidth())/2f);
-        if (infobarStart<0){
-            infobarStart = 0;
-        }
-        canvas.drawBitmap(radarinfobarResourceBitmap,infobarStart,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),rpaint);
+        canvas.drawBitmap(radarinfobarResourceBitmap,0,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),rpaint);
         Paint radarTextPaint = new Paint();
         radarTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         radarTextPaint.setFakeBoldText(true);
@@ -379,7 +377,7 @@ public class WeatherWarningActivity extends Activity {
 
     private void drawMapBitmap(Radarmap radarmap){
         //visibleBitmap = Bitmap.createBitmap(mapBitmap.getHeight(),mapBitmap.getWidth(), Bitmap.Config.ARGB_8888);
-        visibleBitmap = mapBitmap.copy(Bitmap.Config.ARGB_8888,true);
+        visibleBitmap = warningsBitmap.copy(Bitmap.Config.ARGB_8888,true);
         Canvas canvas = new Canvas(visibleBitmap);
         if ((!hide_rain) && (radarBitmap!=null)){
             final Paint cp = new Paint();
@@ -389,27 +387,44 @@ public class WeatherWarningActivity extends Activity {
         } else {
             clearRainDescription();
         }
-        drawPin(canvas);
+        //drawPin(canvas);
         mapZoomable.updateBitmap(visibleBitmap);
         visibleBitmap.recycle();
+    }
+
+    private void drawWindIcon(){
+        ImageView windicon = (ImageView) findViewById(R.id.warningactivity_windicon);
+        if (windicon!=null){
+            if (WeatherSettings.displayWindInRadar(getApplicationContext())){
+                windicon.setVisibility(View.VISIBLE);
+                Log.v("TWFG","Drawing wind icon.");
+                CurrentWeatherInfo currentWeatherInfo = new Weather().getCurrentWeatherInfo(this);
+                if (currentWeatherInfo!=null){
+                    Bitmap windiconBitmap = currentWeatherInfo.currentWeather.getWindSymbol(getApplicationContext(),WeatherSettings.getWindDisplayType(getApplicationContext()));
+                    windicon.setImageBitmap(windiconBitmap);
+                }
+            } else {
+                windicon.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
     private void displayMap(){
         if (deviceIsLandscape){
-            resource_bitmap = loadBitmapMap(R.drawable.germany_nc);
+            germanyBitmap = loadBitmapMap(R.drawable.germany_nc);
         } else {
-            resource_bitmap = loadBitmapMap(R.drawable.germany);
+            germanyBitmap = loadBitmapMap(R.drawable.germany);
         }
-        mapBitmap = Bitmap.createBitmap(resource_bitmap.getWidth(),resource_bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        mapBitmap.eraseColor(Color.TRANSPARENT);
-        radarBitmap = Bitmap.createBitmap(resource_bitmap.getWidth(),resource_bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        warningsBitmap = Bitmap.createBitmap(germanyBitmap.getWidth(),germanyBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        warningsBitmap.eraseColor(Color.TRANSPARENT);
+        radarBitmap = Bitmap.createBitmap(germanyBitmap.getWidth(),germanyBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         radarBitmap.eraseColor(Color.TRANSPARENT);
-        MAP_PIXEL_HEIGHT = mapBitmap.getHeight();
-        MAP_PIXEL_WIDTH  = mapBitmap.getWidth();
+        MAP_PIXEL_HEIGHT = warningsBitmap.getHeight();
+        MAP_PIXEL_WIDTH  = warningsBitmap.getWidth();
         polygoncache = new ArrayList<Polygon>();
         excluded_polygoncache = new ArrayList<Polygon>();
-        final Canvas canvas = new Canvas(mapBitmap);
+        final Canvas canvas = new Canvas(warningsBitmap);
         ArrayList<WeatherWarning> drawWarnings = (ArrayList<WeatherWarning>) weatherWarnings.clone();
         Collections.sort(drawWarnings);
         Collections.reverse(drawWarnings);
@@ -458,9 +473,11 @@ public class WeatherWarningActivity extends Activity {
                 }
             }
         }
+
         final Paint cp = new Paint();
         cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
-        canvas.drawBitmap(resource_bitmap, 0,0,cp);
+        canvas.drawBitmap(germanyBitmap, 0,0,cp);
+
         // rain radar
         APIReaders.RadarmapRunnable radarmapRunnable = new APIReaders.RadarmapRunnable(getApplicationContext()){
             @Override
@@ -468,8 +485,8 @@ public class WeatherWarningActivity extends Activity {
                 if (rm!=null){
                     radarmap = rm;
                     Canvas radarCanvas = new Canvas(radarBitmap);
-                    float yPS = (MAP_PIXEL_HEIGHT/radarmap.height)/2f;
-                    float xPS = (MAP_PIXEL_WIDTH/radarmap.width)/2f;
+                    float yPS = (MAP_PIXEL_HEIGHT/radarmap.height)/2f+1;
+                    float xPS = (MAP_PIXEL_WIDTH/radarmap.width)/2f+1;
                     Paint rpaint = new Paint();
                     rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
                     for (int y=0; y<radarmap.height; y++){
@@ -487,13 +504,10 @@ public class WeatherWarningActivity extends Activity {
                             }
                         }
                     }
-                    Log.v(Tag.RADAR,"Max dbZ: "+radarmap.highestDBZ+" Max byte: "+radarmap.highestByte);
-                    //
+                    // Log.v(Tag.RADAR,"Max dbZ: "+radarmap.highestDBZ+" Max byte: "+radarmap.highestByte);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //mapZoomable.updateBitmap(mapBitmap);
-                            Log.v(Tag.RADAR,"Updating bitmap after rain available.");
                             drawMapBitmap(radarmap);
                         }
                     });
@@ -503,10 +517,30 @@ public class WeatherWarningActivity extends Activity {
         if (!hide_rain){
             executor.execute(radarmapRunnable);
         }
+        // set close listener
+        ImageView closeImageview = (ImageView) findViewById(R.id.closeicon_map);
+        if (closeImageview != null){
+            closeImageview.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    Log.v("TWFG","CLOSE MAP PRESSED");
+                    mapcontainer.setVisibility(View.GONE);
+                    mapcontainer.invalidate();
+                    map_collapsed.setVisibility(View.VISIBLE);
+                    map_collapsed.invalidate();
+                    LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
+                    lop.height=0;
+                    lop.weight=19;
+                    weatherList.setLayoutParams(lop);
+                    weatherList.invalidate();
+                    return true;
+                }
+            });
+        }
         // set listener
         germany = (ImageView) findViewById(R.id.warningactivity_map);
         gestureDetector = new GestureDetector(this,new MapGestureListener());
-        mapZoomable = new ZoomableImageView(getApplicationContext(),germany,mapBitmap){
+        mapZoomable = new ZoomableImageView(getApplicationContext(),germany,germanyBitmap){
             @Override
             public void onGestureFinished(float scaleFactor, float lastXtouch, float lastYtouch, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
                 Log.v("ZT","-------------------------------------");
@@ -520,6 +554,16 @@ public class WeatherWarningActivity extends Activity {
                 checkForTapInPolygonWarning(getXGeo(plotPoint),getYGeo(plotPoint));
             }
         };
+        Paint pdijon = new Paint();
+        pdijon.setStyle(Paint.Style.FILL_AND_STROKE);
+        pdijon.setColor(Color.BLUE);
+        // add the pin sprite
+        int pinsize = Math.round(0.05f*germanyBitmap.getHeight());
+        PlotPoint pinPoint = getPlotPoint((float) localStation.longitude, (float) localStation.latitude);
+        Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinsize,pinsize,false);
+        Log.v("TWFG","Size "+pinBitmap.getHeight());
+        mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT);
+        //drawPin(canvas);
         mapTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -529,6 +573,7 @@ public class WeatherWarningActivity extends Activity {
                 return true;
             };
         };
+        drawWindIcon();
         germany.setOnTouchListener(mapTouchListener);
 
     }

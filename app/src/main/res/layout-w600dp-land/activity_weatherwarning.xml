@@ -52,7 +52,7 @@
                 android:textSize="@dimen/fcmain_textsize_medium"
                 android:id="@+id/warningactivity_notice_text"/>
 
-            <FrameLayout
+            <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -65,12 +65,22 @@
                         android:src="@drawable/germany_nc">
                 </ImageView>
                 <ImageView
+                        android:id="@+id/warningactivity_windicon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginRight="24dp">
+                </ImageView>
+                <ImageView
                         android:id="@+id/warningactivity_mapinfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
                         android:layout_gravity="bottom">
                 </ImageView>
-            </FrameLayout>
+            </RelativeLayout>
 
         </RelativeLayout>
 

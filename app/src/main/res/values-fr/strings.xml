@@ -120,6 +120,8 @@
     <string name="preference_display_wind_type_summary">Comment afficher la direction du vent.</string>
     <string name="preference_display_wind_unit_title">Vitesse du vent</string>.
     <string name="preference_display_wind_unit_summary">Sélectionnez l\'unité de la vitesse du vent.</string>
+    <string name="preference_display_wind_in_radar_title">Montrer dans le radar de pluie</string>
+    <string name="preference_display_wind_in_radar_summary">Windrichtung im Regenradar zeigen.</string>
     <string name="preference_display_distance_unit_title">Distance</string>
     <string name="preference_display_distance_unit_summary">Sélectionnez l\'unité pour les distances.</string>
     <string name="preference_display_show_radar_by_default_title">Radar des pluies</string>
