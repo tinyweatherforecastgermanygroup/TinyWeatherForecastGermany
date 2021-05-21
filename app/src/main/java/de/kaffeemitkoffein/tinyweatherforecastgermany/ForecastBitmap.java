@@ -211,8 +211,12 @@ public class ForecastBitmap{
         Bitmap bitmap = BITMAP_CACHE.get(key);
 
         if (bitmap == null) {
-            bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(),resource),
-                    bitmapWidth,
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeResource(context.getResources(), resource, options);
+            options.inSampleSize = ForecastAdapter.calculateInSampleSize(options,bitmapWidth,bitmapHeight);
+            options.inJustDecodeBounds = false;
+            bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), resource, options),bitmapWidth,
                     bitmapHeight,
                     true);
             BITMAP_CACHE.put(key, bitmap);

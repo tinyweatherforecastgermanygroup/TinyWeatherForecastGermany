@@ -934,13 +934,11 @@
             textView.setText(spannableStringBuilder);
         }
 
-        public static int calculateInSampleSize(BitmapFactory.Options options, ImageView imageView){
-            if ((imageView==null) || (options==null)){
+        public static int calculateInSampleSize(final BitmapFactory.Options options, final int widthRequired, final int heightRequired){
+            if (options==null){
                 return 1;
             } else {
                 // required sizes, doubled
-                int widthRequired = imageView.getWidth()*2;
-                int heightRequired = imageView.getHeight()*2;
                 int inSampleSize = 1;
                 while ((widthRequired<options.outWidth/inSampleSize) && (heightRequired<options.outHeight/inSampleSize)){
                     inSampleSize = inSampleSize * 2;
@@ -948,4 +946,12 @@
                 return inSampleSize;
             }
         }
+        public static int calculateInSampleSize(final BitmapFactory.Options options, final ImageView imageView) {
+            if ((imageView == null) || (options == null)) {
+                return 1;
+            } else {
+                return calculateInSampleSize(options,imageView.getWidth()*2,imageView.getHeight()*2);
+            }
+        }
+
     }
