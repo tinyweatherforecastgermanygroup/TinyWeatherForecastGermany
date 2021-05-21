@@ -40,25 +40,25 @@
 
     public class ForecastAdapter extends BaseAdapter {
 
-        private ArrayList<Weather.WeatherInfo> weatherForecasts;
-        private ArrayList<Weather.WeatherInfo> weatherForecasts_hourly;
-        private Weather.WeatherLocation weatherLocation;
-        private Context context;
-        private boolean display_bar;
-        private boolean display_visibility;
-        private boolean display_pressure;
-        private boolean display_sunrise;
-        private boolean display_endofday_bar;
-        private boolean display_gradient;
-        private int display_layout;
-        private int display_wind_type;
-        private int display_wind_unit;
-        private int display_distance_unit;
-        private boolean displaySimpleBar;
-        private boolean display_wind_arc;
-        private int display_wind_arc_perdiod;
-        private boolean warnings_disabled;
-        private LayoutInflater layoutInflater;
+        private final ArrayList<Weather.WeatherInfo> weatherForecasts;
+        private final ArrayList<Weather.WeatherInfo> weatherForecasts_hourly;
+        private final Weather.WeatherLocation weatherLocation;
+        private final Context context;
+        private final boolean display_bar;
+        private final boolean display_visibility;
+        private final boolean display_pressure;
+        private final boolean display_sunrise;
+        private final boolean display_endofday_bar;
+        private final boolean display_gradient;
+        private final int display_layout;
+        private final int display_wind_type;
+        private final int display_wind_unit;
+        private final int display_distance_unit;
+        private final boolean displaySimpleBar;
+        private final boolean display_wind_arc;
+        private final int display_wind_arc_perdiod;
+        private final boolean warnings_disabled;
+        private final LayoutInflater layoutInflater;
         private int regularCellHeight=0;
 
         private ArrayList<WeatherWarning> warnings;
@@ -112,13 +112,18 @@
                 imageView.post(new Runnable() {
                     @Override
                     public void run() {
-
                         // only set new image if image has not been changed until Runnable is executed
                         if (key.equals((Integer) imageView.getTag())) {
                             imageView.setTag(key);
                             Bitmap bitmap = bitmapCache.get(key);
                             if (bitmap == null) {
-                                bitmap = BitmapFactory.decodeResource(context.getResources(), id, null);
+                                // decode bitmap only as large as necessary
+                                BitmapFactory.Options options = new BitmapFactory.Options();
+                                options.inJustDecodeBounds = true;
+                                BitmapFactory.decodeResource(context.getResources(), id, options);
+                                options.inSampleSize = calculateInSampleSize(options,imageView);
+                                options.inJustDecodeBounds = false;
+                                bitmap = BitmapFactory.decodeResource(context.getResources(), id, options);
                                 bitmapCache.put(key, bitmap);
                             }
                             imageView.setImageBitmap(bitmap);
@@ -229,21 +234,6 @@
                 // view is not available from cache
                 newView = true;
                 view = this.layoutInflater.inflate(R.layout.forecastitem, viewGroup, false);
-                /*
-                final View view1 = view;
-                view.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        int height = view1.getHeight();
-                        ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
-                        layoutParams.height = height;
-                        Log.v("TWFG","Height=");
-                        view1.setMinimumHeight(height);
-                        view1.setLayoutParams(layoutParams);
-                    }
-                });
-
-                 */
             } else {
                 // recycle view information
                 viewHolder = (ViewHolder) view.getTag();
@@ -823,8 +813,6 @@
             }
         }
 
-
-
         public static CharSequence getVisibilityBelow1kmCharSequence(Weather.WeatherInfo weatherInfo){
             if (weatherInfo.hasProbVisibilityBelow1km()) {
                 StringBuilder s = new StringBuilder();
@@ -944,5 +932,20 @@
                 }
             }
             textView.setText(spannableStringBuilder);
+        }
+
+        public static int calculateInSampleSize(BitmapFactory.Options options, ImageView imageView){
+            if ((imageView==null) || (options==null)){
+                return 1;
+            } else {
+                // required sizes, doubled
+                int widthRequired = imageView.getWidth()*2;
+                int heightRequired = imageView.getHeight()*2;
+                int inSampleSize = 1;
+                while ((widthRequired<options.outWidth/inSampleSize) && (heightRequired<options.outHeight/inSampleSize)){
+                    inSampleSize = inSampleSize * 2;
+                }
+                return inSampleSize;
+            }
         }
     }
