@@ -210,7 +210,7 @@ public class WeatherWarningActivity extends Activity {
                     @Override
                     public void run() {
                         weatherList = (ListView) findViewById(R.id.warningactivity_listview);
-                        weatherWarningAdapter = new WeatherWarningAdapter(getApplicationContext(),weatherWarnings);
+                        weatherWarningAdapter = new WeatherWarningAdapter(getApplicationContext(),weatherWarnings,executor);
                         weatherWarningAdapter.setLocalWarnings(localWarnings);
                         weatherList.setAdapter(weatherWarningAdapter);
                     }
@@ -393,20 +393,39 @@ public class WeatherWarningActivity extends Activity {
     }
 
     private void drawWindIcon(){
-        ImageView windicon = (ImageView) findViewById(R.id.warningactivity_windicon);
-        if (windicon!=null){
-            if (WeatherSettings.displayWindInRadar(getApplicationContext())){
-                windicon.setVisibility(View.VISIBLE);
-                Log.v("TWFG","Drawing wind icon.");
-                CurrentWeatherInfo currentWeatherInfo = new Weather().getCurrentWeatherInfo(this);
-                if (currentWeatherInfo!=null){
-                    Bitmap windiconBitmap = currentWeatherInfo.currentWeather.getWindSymbol(getApplicationContext(),WeatherSettings.getWindDisplayType(getApplicationContext()));
-                    windicon.setImageBitmap(windiconBitmap);
+        final Context context = getApplicationContext();
+        final ImageView windicon = (ImageView) findViewById(R.id.warningactivity_windicon);
+        Runnable windRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (windicon!=null){
+                    if (WeatherSettings.displayWindInRadar(getApplicationContext())){
+                        windicon.setVisibility(View.VISIBLE);
+                        Log.v("TWFG","Drawing wind icon.");
+                        CurrentWeatherInfo currentWeatherInfo = new Weather().getCurrentWeatherInfo(context);
+                        if (currentWeatherInfo!=null){
+                            final Bitmap windiconBitmap = currentWeatherInfo.currentWeather.getWindSymbol(getApplicationContext(),WeatherSettings.getWindDisplayType(getApplicationContext()));
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    windicon.setImageBitmap(windiconBitmap);
+                                }
+                            });
+
+                        }
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                windicon.setVisibility(View.INVISIBLE);
+                            }
+                        });
+
+                    }
                 }
-            } else {
-                windicon.setVisibility(View.INVISIBLE);
             }
-        }
+        };
+        executor.execute(windRunnable);
     }
 
     @SuppressWarnings("unchecked")
@@ -473,11 +492,9 @@ public class WeatherWarningActivity extends Activity {
                 }
             }
         }
-
         final Paint cp = new Paint();
         cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
         canvas.drawBitmap(germanyBitmap, 0,0,cp);
-
         // rain radar
         APIReaders.RadarmapRunnable radarmapRunnable = new APIReaders.RadarmapRunnable(getApplicationContext()){
             @Override
@@ -548,10 +565,16 @@ public class WeatherWarningActivity extends Activity {
                 Log.v("ZT","Last pointer/touch at: "+lastXtouch+"/"+lastYtouch);
                 Log.v("ZT","Focus: abs: "+yFocus+"/"+xFocus+"  rel: "+xFocusRelative+"/"+yFocusRelative);
                 Log.v("ZT","Visible rectangle: "+Math.round(currentlyVisibleArea.left)+"/"+Math.round(currentlyVisibleArea.top)+" "+Math.round(currentlyVisibleArea.right)+"/"+Math.round(currentlyVisibleArea.bottom));
-                PlotPoint plotPoint = new PlotPoint();
+                final PlotPoint plotPoint = new PlotPoint();
                 plotPoint.x = lastXtouch;
                 plotPoint.y = lastYtouch;
-                checkForTapInPolygonWarning(getXGeo(plotPoint),getYGeo(plotPoint));
+                Runnable tapRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        checkForTapInPolygonWarning(getXGeo(plotPoint),getYGeo(plotPoint));
+                    }
+                };
+                executor.execute(tapRunnable);
             }
         };
         Paint pdijon = new Paint();
@@ -688,12 +711,18 @@ public class WeatherWarningActivity extends Activity {
         int position=0;
         while (position<weatherWarnings.size()){
             if (weatherWarnings.get(position).identifier.equals(polygon.identifier_link)){
-                if (weatherList != null){
-                    weatherList.setSelection(position);
-                    break;
-                }
+                break;
             }
             position++;
+        }
+        if (weatherList != null){
+            final int jumpPosition = position;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    weatherList.setSelection(jumpPosition);
+                }
+            });
         }
     }
 

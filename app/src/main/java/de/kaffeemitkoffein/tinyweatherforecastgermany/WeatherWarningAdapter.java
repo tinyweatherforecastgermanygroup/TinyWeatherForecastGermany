@@ -19,8 +19,11 @@
 
     package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+    import android.app.Activity;
     import android.content.Context;
     import android.graphics.Color;
+    import android.os.Handler;
+    import android.os.Looper;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -30,6 +33,7 @@
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
     import java.util.Date;
+    import java.util.concurrent.Executor;
 
     public class WeatherWarningAdapter extends BaseAdapter {
 
@@ -38,15 +42,19 @@
 
         LayoutInflater layoutInflater;
         Context context;
+        Executor executor;
+        final Handler mainHandler;
         ArrayList<WeatherWarning> weatherWarnings;
         ArrayList<WeatherWarning> localWarnings;
         Weather.WeatherLocation stationLocation;
 
-        public WeatherWarningAdapter(Context context, ArrayList<WeatherWarning> weatherWarnings){
+        public WeatherWarningAdapter(Context context, ArrayList<WeatherWarning> weatherWarnings, Executor executor){
             this.context = context;
             this.weatherWarnings = weatherWarnings;
+            this.executor = executor;
             this.stationLocation = WeatherSettings.getSetStationLocation(context);
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            mainHandler = new Handler(Looper.getMainLooper());
         }
 
         public void setLocalWarnings(ArrayList<WeatherWarning> localWarnings){
@@ -186,7 +194,7 @@
                 viewHolder.warning_item_certainty.setTextColor(warning.getWarningColor());
             }
             final TextView multiLineTextview = viewHolder.warning_item_areas;
-            new Runnable() {
+            Runnable longLineRunnable = new Runnable() {
                 @Override
                 public void run() {
                     String line3 = new String();
@@ -198,9 +206,16 @@
                             }
                         }
                     }
-                    multiLineTextview.setText(">"+line3);
+                    final String line3_s = line3;
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            multiLineTextview.setText(">"+line3_s);
+                        }
+                    });
                 }
-            }.run();
+            };
+            executor.execute(longLineRunnable);
             final ViewHolder finalViewHolder = viewHolder;
             viewHolder.warning_item_areas.setOnClickListener(new View.OnClickListener() {
                 @Override
