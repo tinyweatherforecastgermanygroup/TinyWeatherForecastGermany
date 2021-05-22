@@ -274,14 +274,17 @@ public class MainActivity extends Activity {
         // force a database access at the beginning to check for a needed database upgrade
         try {
             WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
+            AreaContentProvider.checkForDatabaseUpgrade(getApplicationContext());
         } catch (Exception e){
             PrivateLog.log(context,Tag.MAIN,"Error checking/upgrading database!");
         }
+
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
         executor = Executors.newSingleThreadExecutor();
+        Areas areas = new Areas(context,executor);
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             // remove shared preferences on app update if installed app is lower than build 20

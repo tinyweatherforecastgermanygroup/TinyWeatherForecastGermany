@@ -76,12 +76,12 @@ public class WeatherWarnings {
         PrivateLog.log(context,Tag.WARNINGS,i+" warnings removed from database.");
     }
 
-    public static ArrayList<WeatherWarning> getWarningsForLocation(ArrayList<WeatherWarning> warnings, Weather.WeatherLocation location){
+    public static ArrayList<WeatherWarning> getWarningsForLocation(Context context, ArrayList<WeatherWarning> warnings, Weather.WeatherLocation location){
         ArrayList<WeatherWarning> result = new ArrayList<WeatherWarning>();
         if (warnings!=null) {
             for (int i=0; i<warnings.size(); i++){
                 if ((warnings.get(i).polygonlist==null) || (warnings.get(i).excluded_polygonlist==null)){
-                    warnings.get(i).initPolygons();
+                    warnings.get(i).initPolygons(context);
                 }
                 if (warnings.get(i).isInPolygonGeo((float) location.latitude,(float) location.longitude)){
                     result.add(warnings.get(i));
@@ -115,7 +115,7 @@ public class WeatherWarnings {
 
         @Override
         public void run() {
-            ArrayList<WeatherWarning> result = getWarningsForLocation(warnings,location);
+            ArrayList<WeatherWarning> result = getWarningsForLocation(context,warnings,location);
             onResult(result);
         }
     }

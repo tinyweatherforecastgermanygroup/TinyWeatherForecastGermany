@@ -19,7 +19,10 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class WeatherWarning implements Comparable<WeatherWarning> {
@@ -93,9 +96,10 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
     ArrayList<Polygon> polygonlist;
     ArrayList<Polygon> excluded_polygonlist;
 
-    public void initPolygons(){
+    public void initPolygons(Context context){
         polygonlist = new ArrayList<Polygon>();
         excluded_polygonlist = new ArrayList<Polygon>();
+
         if (polygons!=null){
             for (int j=0; j<polygons.size(); j++){
                 Polygon polygon = new Polygon(polygons.get(j));
@@ -108,12 +112,21 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
                 }
             }
         }
+        if (polygonlist.size()==0){
+            //Log.v("TWFG","USING WARNZELL # "+area_warncellIDs.size());
+            for (int i=0; i<area_warncellIDs.size(); i++){
+                Areas.Area area = Areas.getArea(context,area_warncellIDs.get(i));
+                //Log.v("TWFG","Polygon-Data: "+area.name);
+                //Log.v("TWFG","Polygon-Data: "+area.polygonString);
+                if (area.polygon!=null){
+                    polygonlist.add(area.polygon);
+                }
+            }
+
+        }
     }
 
     public boolean isInPolygonGeo(float testy, float testx){
-        if (polygonlist==null){
-            initPolygons();
-        }
         if (polygons==null){
             return false;
         }

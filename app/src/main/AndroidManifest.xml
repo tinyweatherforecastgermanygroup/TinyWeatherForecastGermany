@@ -86,6 +86,11 @@
             android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
             android:syncable="false" />
 
+        <provider android:name=".AreaContentProvider"
+                  android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany.areas" android:enabled="true"
+                  android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
+                  android:syncable="false" />
+
         <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClassicWidget" android:icon="@mipmap/widget_preview"
             android:label="@string/classicwidget_description">
             <intent-filter>

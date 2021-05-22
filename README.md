@@ -57,7 +57,7 @@ Credits
  licensed under the Apache 2.0 license.
  
  Data source: Deutscher Wetterdienst, own elements added, some data 
- averaged over individual values.
+ averaged over individual values. Weather warnings are abbreviated. Source for geo-data: Deutscher Wetterdienst.
  
  This program uses the WeatherSpec class of Gadgetbridge,
  Copyright (C) 2016-2020 Andreas Shimokawa, Carsten Pfeiffer,

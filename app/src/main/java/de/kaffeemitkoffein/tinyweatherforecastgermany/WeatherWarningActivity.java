@@ -327,18 +327,35 @@ public class WeatherWarningActivity extends Activity {
         canvas.drawBitmap(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),pinpaint);
     }
 
+    private void drawStrokedText(Canvas canvas, String text, float x, float y, Paint paint){
+        Paint strokePaint = new Paint();
+        strokePaint.setColor(Color.BLACK);
+        strokePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        strokePaint.setTypeface(Typeface.DEFAULT);
+        strokePaint.setTextSize(paint.getTextSize());
+        int shiftX = Math.max(2,germany.getWidth()/MAP_PIXEL_FIXEDWIDTH);
+        int shiftY = Math.max(2,germany.getHeight()/MAP_PIXEL_FIXEDHEIGHT);
+        canvas.drawText(text,x-shiftX,y,strokePaint);
+        canvas.drawText(text,x+shiftX,y,strokePaint);
+        canvas.drawText(text,x,y-shiftY,strokePaint);
+        canvas.drawText(text,x,y+shiftY,strokePaint);
+        canvas.drawText(text,x,y,paint);
+    }
+
     private void showRainDescription(Radarmap radarmap){
         Bitmap infoBitmap=Bitmap.createBitmap(Math.round(MAP_PIXEL_WIDTH),Math.round(MAP_PIXEL_HEIGHT*0.12f), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(infoBitmap);
         Bitmap radarinfobarResourceBitmap;
         radarinfobarResourceBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.radarinfobar),Math.round(MAP_PIXEL_WIDTH),34,false);
         Paint rpaint = new Paint();
-        rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        rpaint.setStyle(Paint.Style.FILL);
         canvas.drawBitmap(radarinfobarResourceBitmap,0,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),rpaint);
         Paint radarTextPaint = new Paint();
+        radarTextPaint.setTypeface(Typeface.DEFAULT);
         radarTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         radarTextPaint.setFakeBoldText(true);
-        radarTextPaint.setTextSize(radarinfobarResourceBitmap.getHeight());
+        int textsize = radarinfobarResourceBitmap.getHeight();
+        radarTextPaint.setTextSize(textsize);
         radarTextPaint.setColor(Color.WHITE);
         if (WeatherSettings.isRadarDataOutdated(getApplicationContext())){
             radarTextPaint.setColor(Color.RED);
@@ -346,15 +363,15 @@ public class WeatherWarningActivity extends Activity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         String radartime = simpleDateFormat.format(new Date(radarmap.timestamp));
         float ff=1.1f;
-        canvas.drawText(radartime,MAP_PIXEL_WIDTH/100,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff*2,radarTextPaint);
+        drawStrokedText(canvas,radartime,MAP_PIXEL_WIDTH/100,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff*2,radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[2]);
-        canvas.drawText(getResources().getString(R.string.radar_rain1),MAP_PIXEL_WIDTH*0.1f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff,radarTextPaint);
+        drawStrokedText(canvas,getResources().getString(R.string.radar_rain1),MAP_PIXEL_WIDTH*0.1f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff,radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[7]);
-        canvas.drawText(getResources().getString(R.string.radar_rain2),MAP_PIXEL_WIDTH*0.3f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
+        drawStrokedText(canvas,getResources().getString(R.string.radar_rain2),MAP_PIXEL_WIDTH*0.3f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[11]);
-        canvas.drawText(getResources().getString(R.string.radar_rain3),MAP_PIXEL_WIDTH*0.6f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
+        drawStrokedText(canvas,getResources().getString(R.string.radar_rain3),MAP_PIXEL_WIDTH*0.6f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[16]);
-        canvas.drawText(getResources().getString(R.string.radar_rain4),MAP_PIXEL_WIDTH*0.8f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
+        drawStrokedText(canvas,getResources().getString(R.string.radar_rain4),MAP_PIXEL_WIDTH*0.8f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
         ImageView rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
         if (rainDescription!=null){
             rainDescription.setImageBitmap(infoBitmap);
@@ -449,7 +466,7 @@ public class WeatherWarningActivity extends Activity {
         Collections.reverse(drawWarnings);
         for (int warning_counter=0; warning_counter<drawWarnings.size(); warning_counter++){
             WeatherWarning warning = drawWarnings.get(warning_counter);
-            warning.initPolygons();
+            warning.initPolygons(getApplicationContext());
             for (int polygon_counter=0; polygon_counter<warning.polygonlist.size(); polygon_counter++){
                 float[] polygonX = warning.polygonlist.get(polygon_counter).polygonX;
                 float[] polygonY = warning.polygonlist.get(polygon_counter).polygonY;

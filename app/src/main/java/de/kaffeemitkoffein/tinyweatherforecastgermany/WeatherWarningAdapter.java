@@ -149,7 +149,7 @@
                 view.setTag(viewHolder);
             }
             final WeatherWarning warning = weatherWarnings.get(i);
-            warning.initPolygons();
+            warning.initPolygons(context);
             if (isInLocalWarnings(warning)){
                 int color = warning.getWarningColor();
                 color = Color.rgb(Math.round(Color.red(color)/3.5f),Math.round(Color.green(color)/3.5f),Math.round(Color.blue(color)/3.5f));
