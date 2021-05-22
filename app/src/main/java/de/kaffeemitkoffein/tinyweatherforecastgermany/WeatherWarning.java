@@ -21,8 +21,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class WeatherWarning implements Comparable<WeatherWarning> {
@@ -114,13 +112,18 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         }
         if (polygonlist.size()==0){
             //Log.v("TWFG","USING WARNZELL # "+area_warncellIDs.size());
+            /*
             for (int i=0; i<area_warncellIDs.size(); i++){
                 Areas.Area area = Areas.getArea(context,area_warncellIDs.get(i));
-                //Log.v("TWFG","Polygon-Data: "+area.name);
-                //Log.v("TWFG","Polygon-Data: "+area.polygonString);
+                Log.v("TWFG","Warncell-Data: "+area.warncellID+ " "+area.name+" "+area.type+" "+area.warncenter);
                 if (area.polygon!=null){
                     polygonlist.add(area.polygon);
                 }
+            }
+             */
+            ArrayList<Areas.Area> areas = Areas.getAreas(context,area_warncellIDs);
+            for (int i=0; i<areas.size(); i++){
+                polygonlist.add(areas.get(i).polygon);
             }
 
         }

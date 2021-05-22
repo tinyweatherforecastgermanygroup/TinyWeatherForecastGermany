@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.*;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.text.SimpleDateFormat;
@@ -75,7 +74,7 @@ public class WeatherWarningActivity extends Activity {
             if (intent!=null){
                 // update warning display if warnings have been updated
                 if (intent.getAction().equals(WEATHER_WARNINGS_UPDATE)) {
-                    weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext());
+                    weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext(),true);
                     displayWarnings();
                     updateActionBarLabels();
                     hideProgressBar();
@@ -117,9 +116,8 @@ public class WeatherWarningActivity extends Activity {
         // action bar layout
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
-        weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext());
+        weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext(),true);
         hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
-        //updateWarningsIfNeeded();
         mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
         map_collapsed_container = (RelativeLayout) findViewById(R.id.warningactivity_map_collapsed_container);
         // in layout w6600dp-land this element does not exist. This is the safest way to
@@ -418,7 +416,6 @@ public class WeatherWarningActivity extends Activity {
                 if (windicon!=null){
                     if (WeatherSettings.displayWindInRadar(getApplicationContext())){
                         windicon.setVisibility(View.VISIBLE);
-                        Log.v("TWFG","Drawing wind icon.");
                         CurrentWeatherInfo currentWeatherInfo = new Weather().getCurrentWeatherInfo(context);
                         if (currentWeatherInfo!=null){
                             final Bitmap windiconBitmap = currentWeatherInfo.currentWeather.getWindSymbol(getApplicationContext(),WeatherSettings.getWindDisplayType(getApplicationContext()));
@@ -466,7 +463,6 @@ public class WeatherWarningActivity extends Activity {
         Collections.reverse(drawWarnings);
         for (int warning_counter=0; warning_counter<drawWarnings.size(); warning_counter++){
             WeatherWarning warning = drawWarnings.get(warning_counter);
-            warning.initPolygons(getApplicationContext());
             for (int polygon_counter=0; polygon_counter<warning.polygonlist.size(); polygon_counter++){
                 float[] polygonX = warning.polygonlist.get(polygon_counter).polygonX;
                 float[] polygonY = warning.polygonlist.get(polygon_counter).polygonY;
@@ -557,7 +553,6 @@ public class WeatherWarningActivity extends Activity {
             closeImageview.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    Log.v("TWFG","CLOSE MAP PRESSED");
                     mapcontainer.setVisibility(View.GONE);
                     mapcontainer.invalidate();
                     map_collapsed_container.setVisibility(View.VISIBLE);
@@ -577,11 +572,11 @@ public class WeatherWarningActivity extends Activity {
         mapZoomable = new ZoomableImageView(getApplicationContext(),germany,germanyBitmap){
             @Override
             public void onGestureFinished(float scaleFactor, float lastXtouch, float lastYtouch, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
-                Log.v("ZT","-------------------------------------");
-                Log.v("ZT","The scale factor is "+scaleFactor);
-                Log.v("ZT","Last pointer/touch at: "+lastXtouch+"/"+lastYtouch);
-                Log.v("ZT","Focus: abs: "+yFocus+"/"+xFocus+"  rel: "+xFocusRelative+"/"+yFocusRelative);
-                Log.v("ZT","Visible rectangle: "+Math.round(currentlyVisibleArea.left)+"/"+Math.round(currentlyVisibleArea.top)+" "+Math.round(currentlyVisibleArea.right)+"/"+Math.round(currentlyVisibleArea.bottom));
+                //Log.v("ZT","-------------------------------------");
+                //Log.v("ZT","The scale factor is "+scaleFactor);
+                //Log.v("ZT","Last pointer/touch at: "+lastXtouch+"/"+lastYtouch);
+                //Log.v("ZT","Focus: abs: "+yFocus+"/"+xFocus+"  rel: "+xFocusRelative+"/"+yFocusRelative);
+                //Log.v("ZT","Visible rectangle: "+Math.round(currentlyVisibleArea.left)+"/"+Math.round(currentlyVisibleArea.top)+" "+Math.round(currentlyVisibleArea.right)+"/"+Math.round(currentlyVisibleArea.bottom));
                 final PlotPoint plotPoint = new PlotPoint();
                 plotPoint.x = lastXtouch;
                 plotPoint.y = lastYtouch;
@@ -601,15 +596,11 @@ public class WeatherWarningActivity extends Activity {
         int pinsize = Math.round(0.05f*germanyBitmap.getHeight());
         PlotPoint pinPoint = getPlotPoint((float) localStation.longitude, (float) localStation.latitude);
         Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinsize,pinsize,false);
-        Log.v("TWFG","Size "+pinBitmap.getHeight());
         mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT);
-        //drawPin(canvas);
         mapTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.v("TWFG","Touched this!");
                 mapZoomable.onTouchEvent(motionEvent);
-                // mapTouchListener.onTouch(view,motionEvent);
                 return true;
             };
         };

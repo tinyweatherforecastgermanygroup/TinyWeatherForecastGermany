@@ -2,10 +2,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -23,23 +20,6 @@ public class Areas {
         public String name;
         public Polygon polygon;
         public String polygonString;
-    }
-
-
-    ArrayList<Area> areas;
-
-    private static String getAreasStringFromResource(Context context){
-        InputStream inputStream = context.getResources().openRawResource(R.raw.areas);
-        try {
-            int size = inputStream.available();
-            byte[] textdata = new byte[size];
-            inputStream.read(textdata);
-            inputStream.close();
-            String text = new String(textdata);
-            return text;
-        } catch (IOException e) {
-            return null;
-        }
     }
 
     private String removeQuotes(String s){
@@ -74,10 +54,9 @@ public class Areas {
                 //Log.v("TWFG","Database entry: "+i+ " "+ area.warncellID + " " + area.name); i++;
             }
            WeatherSettings.setPrefMunicipalitesDatabaseReady(context);
-           Log.v("TWFG","Database created sucessfully, entries # "+i);
            test(context);
             } catch (Exception e){
-                Log.v("TWFG","Error: "+e.getMessage());
+                // do nothing
             }
         }
     };
@@ -104,20 +83,25 @@ public class Areas {
     public Areas(final Context context, Executor executor){
         this.context = context;
         if (doesAreaDatabaseExist(context)){
+            /*
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
                     test(context);
                 }
             });
+             */
+            // do nothing here
         } else {
             executor.execute(readAreasRunnable);
+            /*
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
                     test(context);
                 }
             });
+             */
         }
     }
 
@@ -138,6 +122,36 @@ public class Areas {
         return null;
     }
 
+    public static ArrayList<Area> getAreas(Context context, ArrayList<String> warincellIDs){
+        AreaContentProvider areaContentProvider = new AreaContentProvider();
+        areaContentProvider.setContext(context);
+        String s = "";
+        for (int i=0; i<warincellIDs.size(); i++){
+            s=s+"?";
+            if (i<warincellIDs.size()-1){
+                s=s+",";
+            }
+        }
+        String selection = AreaContentProvider.KEY_warncellid + " IN("+s+")";
+        String[] selectionArg = warincellIDs.toArray(new String[warincellIDs.size()]);
+        //Log.v("TWFG","selection   : "+selection);
+        //Log.v("TWFG","selectionArg: "+s);
+        Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null, selection, selectionArg, null);
+        ArrayList<Area> areas = new ArrayList<Area>();
+        int i = 0;
+        if (cursor!=null){
+            if (cursor.moveToFirst()){
+                do {
+                    Area area = areaContentProvider.getAreaFromCursor(cursor);
+                    area.polygon = new Polygon(area.polygonString);
+                    areas.add(area); i++;
+                } while (cursor.moveToNext());
+            }
+        }
+        return areas;
+    }
+
+
     public int test(Context context){
         AreaContentProvider areaContentProvider = new AreaContentProvider();
         areaContentProvider.setContext(context);
@@ -152,9 +166,7 @@ public class Areas {
             }
             cursor.close();
         } catch (Exception e){
-            Log.v("TWFG","Data error: "+e.getMessage());
         }
-        Log.v("TWFG","Database entries: "+i);
         return i;
     }
 

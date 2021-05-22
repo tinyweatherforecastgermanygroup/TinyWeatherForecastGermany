@@ -44,7 +44,7 @@ public class WeatherWarnings {
         weatherSettings.setWarningsLastUpdateTime();
     }
 
-    public static ArrayList<WeatherWarning> getCurrentWarnings(Context context){
+    public static ArrayList<WeatherWarning> getCurrentWarnings(Context context, boolean initPolygons){
         WeatherWarningContentProvider weatherWarningContentProvider = new WeatherWarningContentProvider();
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         Cursor cursor  = null;
@@ -57,6 +57,9 @@ public class WeatherWarnings {
                     WeatherWarning weatherWarning = weatherWarningContentProvider.getWeatherWarningFromCursor(cursor);
                     i++;
                     if (weatherWarning!=null){
+                        if (initPolygons){
+                            weatherWarning.initPolygons(context);
+                        }
                         warnings.add(weatherWarning);
                     }
                 } while (cursor.moveToNext());
@@ -102,7 +105,7 @@ public class WeatherWarnings {
             this.warnings = warnings;
             this.location = location;
             if (warnings==null){
-                this.warnings = WeatherWarnings.getCurrentWarnings(context);
+                this.warnings = WeatherWarnings.getCurrentWarnings(context,true);
             }
             if (location==null){
                 this.location = WeatherSettings.getSetStationLocation(context);

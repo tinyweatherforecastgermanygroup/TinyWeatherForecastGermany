@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
     StationsManager stationsManager;
     ArrayList<String> spinnerItems;
     Spinner spinner;
-
+    AutoCompleteTextView searchTextView;
     ArrayList<String> station_descriptions_onlytext;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -82,8 +82,6 @@ public class MainActivity extends Activity {
     Executor executor;
 
     ArrayList<WeatherWarning> localWarnings;
-
-    boolean forceNoIcons = false;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -179,10 +177,8 @@ public class MainActivity extends Activity {
         }
     };
 
-    final View.OnClickListener searchListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            // weather settings must be read at the time of selection!
+    private void performTextSearch(){
+    // weather settings must be read at the time of selection!
             WeatherSettings weatherSettings = new WeatherSettings(context);
             AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
             String station_description = autoCompleteTextView.getText().toString();
@@ -198,6 +194,25 @@ public class MainActivity extends Activity {
                 } catch (Exception e){
                     PrivateLog.log(context,Tag.MAIN,"Error: station does not exist.");
                 }
+            }
+        }
+
+
+    final View.OnClickListener searchListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            performTextSearch();
+        }
+    };
+
+    final View.OnKeyListener searchOnEnterListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+            if ((keyEvent.getAction()==KeyEvent.ACTION_DOWN) && (keyCode==KeyEvent.KEYCODE_ENTER)){
+                performTextSearch();
+                return true;
+            } else {
+                return false;
             }
         }
     };
@@ -283,6 +298,9 @@ public class MainActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
+        // set listener to search field
+        searchTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+        searchTextView.setOnKeyListener(searchOnEnterListener);
         executor = Executors.newSingleThreadExecutor();
         Areas areas = new Areas(context,executor);
         final WeatherSettings weatherSettings = new WeatherSettings(this);
