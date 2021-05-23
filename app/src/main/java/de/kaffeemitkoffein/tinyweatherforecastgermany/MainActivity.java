@@ -1002,6 +1002,8 @@ public class MainActivity extends Activity {
                         @Override
                         public void run() {
                             alertDialog.dismiss();
+                            // after new database is available, warnings need to be rebuilt and checked again
+                            checkIfWarningsApply();
                         }
                     });
                 }

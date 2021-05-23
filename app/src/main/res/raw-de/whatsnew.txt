@@ -1,9 +1,13 @@
 Neu in dieser Version ([VERSION]):
 
-- neues Regenradar
-- für die Berechnung von Sonnenaufgang und Untergang wird nun die Zeitumstellung zur angezeigten Zeit berücksichtigt anstelle der aktuellen Zeit
-
-
-
-
-
+- neue Sprache: Französisch (Danke an Jean-Luc!)
+- die Karte mit den Warnungen kann nun vergrößert und verkleinert werden
+- Orte und Warnungen werden auf der Karte nun präziser dargestellt
+- verbesserte Icons in der Karte
+- das Scrolling in den Warnungen ist nun deutlich verbessert
+- Grafiken laden in der Haupt-Ansicht nun schneller
+- Warncell-IDs werden in den Warnungen nun unterstützt
+- Drücken von Enter in der Haupt-Ansicht löst nun eine Suche aus
+- behoben: das Regenradar zeigte keine dBZ-Werte über 31
+- behoben: fehlende Menü-Einträge bei einigen Geräten/ROMs
+- behoben: einige Vorhersagen waren bei einigen Geräten/ROMs nicht sichtbar

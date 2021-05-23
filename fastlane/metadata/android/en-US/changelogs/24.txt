@@ -1,0 +1,4 @@
+- new language: French (thanks to Jean-Luc!)
+- the warnings map can be zoomed now
+- various enhancements, e.g. regarding performance
+- multiple bugfixes

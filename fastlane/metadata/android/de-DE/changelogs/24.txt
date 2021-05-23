@@ -1,0 +1,4 @@
+- neue Sprache: Französisch (Danke an Jean-Luc!)
+- die Karte mit den Warnungen kann nun vergrößert und verkleinert werden
+- zahlreiche Verbesserungen, u.a. Performance
+- diverse Fehlerkorrekturen

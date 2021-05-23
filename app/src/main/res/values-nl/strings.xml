@@ -219,4 +219,6 @@
     <string name="radar_rain3">sterk</string>
     <string name="radar_rain4">extreen</string>
     <string name="hide_rain">Verberg regen</string>
+    <string name="areadatabasecreator_title">Gegevens voorbereiden</string>
+    <string name="areadatabasecreator_text">Even geduld, dit hoeft maar één keer.</string>
 </resources>

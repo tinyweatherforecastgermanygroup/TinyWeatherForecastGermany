@@ -260,4 +260,6 @@
     <string name="radar_rain3">strong></string>
     <string name="radar_rain4">extrême</string>
     <string name="hide_rain">cacher la pluie</string>
+    <string name="areadatabasecreator_title">Préparation des données</string>
+    <string name="areadatabasecreator_text">Soyez patient un instant, cela ne doit être fait qu\'une fois.</string>
 </resources>

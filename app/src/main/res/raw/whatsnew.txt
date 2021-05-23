@@ -1,5 +1,14 @@
 What is new in this version ([VERSION]):
 
-- new rain radar
-- for calculation of sunset and sunrise, the daylight saving time offset of the displayed time is used instead of the current time
+- new french locale (thanks to Jean-Luc!)
+- the map in the warnings is zoomable now
+- locations and warnings are displayed more precisely on the map
+- improved map icons
+- improved scrolling performance in warnings
+- images now load faster in the main app
+- added warncellID support in warnings
+- pressing enter triggers a search in the main app
+- fixed rain radar not showing dBZ values above 31
+- fixed missing menu items on some devices/roms
+- fixed some forecasts invisible on some devices/roms
 
