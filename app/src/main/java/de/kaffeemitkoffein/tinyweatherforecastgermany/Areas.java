@@ -2,6 +2,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,44 +24,76 @@ public class Areas {
         public String polygonString;
     }
 
-    private String removeQuotes(String s){
-        return s.replace("\"","");
+    public static class AreaDatabaseCreator{
+
+        public final static int DATABASE_SIZE = 11638;
+
+        private final Context context;
+        private final Executor executor;
+
+        public AreaDatabaseCreator(Context context, Executor executor){
+            this.context = context;
+            this.executor = executor;
+        }
+
+        public void create() {
+            executor.execute(readAreasRunnable);
+        }
+
+        public void showProgress(final int progress, final String text){
+            Log.v("TWFG","p: "+progress);
+        }
+
+        public void onFinished(){
+            WeatherSettings.setAreaDatabaseReady(context);
+        }
+
+        private String removeQuotes(String s){
+            return s.replace("\"","");
+        }
+
+        private Runnable readAreasRunnable = new Runnable() {
+            @Override
+            public void run() {
+                AreaContentProvider areaContentProvider = new AreaContentProvider();
+                areaContentProvider.setContext(context);
+                try {
+                    InputStream inputStream = context.getApplicationContext().getResources().openRawResource(R.raw.areas);
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                    String line;
+                    int i = 0;
+                    while ((line = bufferedReader.readLine()) != null){
+                        String[] items = line.split(",");
+                        Area area = new Area();
+                        area.warncellID = items[0];
+                        area.warncenter = items[1];
+                        area.type = Integer.parseInt(items[2]);
+                        area.name = removeQuotes(items[3]);
+                        area.polygonString = new String();
+                        for (int q=4; q<items.length; q=q+2){
+                            // switch lat long to correspond to warnings data
+                            String s = items[q+1]+","+items[q];
+                            area.polygonString = area.polygonString + s + " ";
+                        }
+                        area.polygonString = area.polygonString.trim();
+                        areaContentProvider.writeArea(context,area);
+                        i++;
+                        if ((i % 100) == 0){
+                            showProgress((i*100)/DATABASE_SIZE, area.name);
+                        }
+                        //Log.v("TWFG","Database entry: "+i+ " "+ area.warncellID + " " + area.name);
+                    }
+                    showProgress(100,context.getResources().getString(R.string.welcome_ready));
+                    //Log.v("TWFG","Database entries: "+i);
+                    onFinished();
+                } catch (Exception e){
+                    // do nothing
+                }
+            }
+        };
+
     }
 
-    private Runnable readAreasRunnable = new Runnable() {
-        @Override
-        public void run() {
-            AreaContentProvider areaContentProvider = new AreaContentProvider();
-            areaContentProvider.setContext(context);
-            try {
-            InputStream inputStream = context.getApplicationContext().getResources().openRawResource(R.raw.areas);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            int i = 0;
-            while ((line = bufferedReader.readLine()) != null){
-                String[] items = line.split(",");
-                Area area = new Area();
-                area.warncellID = items[0];
-                area.warncenter = items[1];
-                area.type = Integer.parseInt(items[2]);
-                area.name = removeQuotes(items[3]);
-                area.polygonString = new String();
-                for (int q=4; q<items.length; q=q+2){
-                    // switch lat long to correspond to warnings data
-                    String s = items[q+1]+","+items[q];
-                    area.polygonString = area.polygonString + s + " ";
-                }
-                area.polygonString = area.polygonString.trim();
-                areaContentProvider.writeArea(context,area);
-                //Log.v("TWFG","Database entry: "+i+ " "+ area.warncellID + " " + area.name); i++;
-            }
-           WeatherSettings.setPrefMunicipalitesDatabaseReady(context);
-           test(context);
-            } catch (Exception e){
-                // do nothing
-            }
-        }
-    };
 
     public static boolean doesAreaDatabaseExist(Context context){
         AreaContentProvider areaContentProvider = new AreaContentProvider();
@@ -72,37 +106,17 @@ public class Areas {
                 i++;
             } while (cursor.moveToNext());
         }
-        if (i>10000){
+        if (i==AreaDatabaseCreator.DATABASE_SIZE){
             return true;
-        } else {
-            context.deleteDatabase(AreaContentProvider.AreaDatabaseHelper.DATABASE_NAME);
-            return false;
         }
+        return false;
     }
 
     public Areas(final Context context, Executor executor){
         this.context = context;
-        if (doesAreaDatabaseExist(context)){
-            /*
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    test(context);
-                }
-            });
-             */
-            // do nothing here
-        } else {
-            executor.execute(readAreasRunnable);
-            /*
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    test(context);
-                }
-            });
-             */
-        }
+        this.executor = executor;
+        //AreaDatabaseCreator areaDatabaseCreator = new AreaDatabaseCreator(context,executor);
+        //areaDatabaseCreator.create();
     }
 
     public static Area getArea(Context context, String warincellID){

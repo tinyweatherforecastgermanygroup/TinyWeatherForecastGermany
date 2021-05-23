@@ -20,6 +20,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.*;
 import android.content.pm.PackageManager;
@@ -34,6 +35,7 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -65,7 +67,7 @@ public class MainActivity extends Activity {
     StationsManager stationsManager;
     ArrayList<String> spinnerItems;
     Spinner spinner;
-    AutoCompleteTextView searchTextView;
+    AutoCompleteTextView autoCompleteTextView;
     ArrayList<String> station_descriptions_onlytext;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -154,7 +156,6 @@ public class MainActivity extends Activity {
             if (station_pos != null) {
                 if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall + 3000 < Calendar.getInstance().getTimeInMillis())) {
                     newWeatherRegionSelected(weatherSettings,station_description);
-                    AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
                     if (autoCompleteTextView != null) {
                         autoCompleteTextView.setText("");
                         autoCompleteTextView.clearListSelection();
@@ -180,7 +181,6 @@ public class MainActivity extends Activity {
     private void performTextSearch(){
     // weather settings must be read at the time of selection!
             WeatherSettings weatherSettings = new WeatherSettings(context);
-            AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
             String station_description = autoCompleteTextView.getText().toString();
             Integer station_pos = stationsManager.getPositionFromDescription(station_description);
             if (station_pos!=null){
@@ -284,6 +284,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
         setContentView(R.layout.activity_main);
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
         // disable log to logcat if release is not a userdebug
         disableLogToLogcatIfNotUserDebug();
         // force a database access at the beginning to check for a needed database upgrade
@@ -293,16 +294,12 @@ public class MainActivity extends Activity {
         } catch (Exception e){
             PrivateLog.log(context,Tag.MAIN,"Error checking/upgrading database!");
         }
-
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
-        // set listener to search field
-        searchTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
-        searchTextView.setOnKeyListener(searchOnEnterListener);
         executor = Executors.newSingleThreadExecutor();
-        Areas areas = new Areas(context,executor);
+        prepareAraDatabase();
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             // remove shared preferences on app update if installed app is lower than build 20
@@ -474,7 +471,6 @@ public class MainActivity extends Activity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
                 if (autoCompleteTextView!=null){
                     autoCompleteTextView.setText("");
                     autoCompleteTextView.clearListSelection();
@@ -580,7 +576,9 @@ public class MainActivity extends Activity {
                     @Override
                     public void run() {
                         ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.custom_dropdown_item, station_descriptions_onlytext);
-                        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+                        if (autoCompleteTextView==null){
+                            autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+                        }
                         autoCompleteTextView.setAdapter(stringArrayAdapter);
                         autoCompleteTextView.setCompletionHint(context.getResources().getString(R.string.actionbar_textinput_hint));
                         autoCompleteTextView.setDropDownWidth(ViewGroup.LayoutParams.MATCH_PARENT);
@@ -589,6 +587,8 @@ public class MainActivity extends Activity {
                         // anchor search icon to search
                         ImageView search_icon = (ImageView) findViewById(R.id.actionbar_search_icon);
                         search_icon.setOnClickListener(searchListener);
+                        // set listener to search field
+                        autoCompleteTextView.setOnKeyListener(searchOnEnterListener);
                     }
                 });
             }
@@ -959,6 +959,58 @@ public class MainActivity extends Activity {
         }
     }
 
+    public static boolean deleteAreaDatabase(Context context){
+        boolean result = context.deleteDatabase(AreaContentProvider.AreaDatabaseHelper.DATABASE_NAME);
+        if (result){
+            Log.v("twfg","Database deleted.");
+        }
+        return result;
+    }
+
+
+    private void prepareAraDatabase(){
+        if (WeatherSettings.areWarningsDisabled(this)){
+            deleteAreaDatabase(this);
+            return;
+        }
+        if (!Areas.doesAreaDatabaseExist(this)){
+            deleteAreaDatabase(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setMessage(getApplicationContext().getResources().getString(R.string.areadatabasecreator_title));
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            final View view = layoutInflater.inflate(R.layout.areadatabasecreator_message,null,false);
+            builder.setView(view);
+            final AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.areadatabasecreator_progressbar);
+            final TextView progressText = (TextView) view.findViewById(R.id.areadatabasecreator_textinfo);
+            Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(context,executor){
+                @Override
+                public void showProgress(final int progress, final String text){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(progress);
+                            progressText.setText(text);
+                        }
+                    });
+                }
+
+                @Override
+                public void onFinished(){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            alertDialog.dismiss();
+                        }
+                    });
+                }
+            };
+            areasDataBaseCreator.create();
+        }
+    }
+
     private void showWarning(int icon, String title, String text){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(icon);
@@ -1193,6 +1245,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    @SuppressLint("NewApi")
     private void requestLocationPermission(){
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CALLBACK_LOCATION);
     }
@@ -1286,6 +1339,7 @@ public class MainActivity extends Activity {
         gps_spinner_layout.setVisibility(View.GONE);
     }
 
+    @SuppressLint("MissingPermission")
     private void startGPSLocationSearch(){
         RelativeLayout gps_spinner_layout = (RelativeLayout) findViewById(R.id.main_gps_progress_holder);
         gps_spinner_layout.setVisibility(View.VISIBLE);
@@ -1303,6 +1357,7 @@ public class MainActivity extends Activity {
             }
     }
 
+    @SuppressLint("MissingPermission")
     private Location getLastKnownLocation(){
         Location location = null;
         if (hasLocationPermission()) {

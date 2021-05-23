@@ -31,10 +31,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 public class WelcomeActivity extends Activity {
 
     RelativeLayout pager;
     LayoutInflater layoutInflater;
+    Executor executor;
 
     int page = 1;
     ImageView dot1;
@@ -46,25 +50,29 @@ public class WelcomeActivity extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Boolean force_replay = false;
+        executor = Executors.newSingleThreadExecutor();
+        // when the area database does not exist or is corrupted, rebuild it silently.
+        // When the user moves on too quickly, this will be done again in the main app.
+        prepareAraDatabase();
+        boolean force_replay = false;
         Intent intent = getIntent();
-        if (intent!=null){
+        if (intent != null) {
             Bundle bundle = intent.getExtras();
-            if (bundle!=null){
+            if (bundle != null) {
                 String action = bundle.getString("mode");
-                if (action!=null){
-                    if (action.equals("replay")){
+                if (action != null) {
+                    if (action.equals("replay")) {
                         force_replay = true;
                     }
                 }
             }
         }
-        if ((WeatherSettings.isFirstAppLaunch(getApplicationContext())) || (force_replay)){
+        if ((WeatherSettings.isFirstAppLaunch(getApplicationContext())) || (force_replay)) {
             WeatherSettings.setAppLaunchedFlag(getApplicationContext());
             setContentView(R.layout.activity_welcome);
             // action bar layout
             ActionBar actionBar = getActionBar();
-            if (actionBar!=null){
+            if (actionBar != null) {
                 actionBar.hide();
             }
             pager = (RelativeLayout) findViewById(R.id.welcome_pager);
@@ -97,7 +105,7 @@ public class WelcomeActivity extends Activity {
             pager.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (page<3) {
+                    if (page < 3) {
                         page++;
                         setPage(page);
                     } else {
@@ -110,7 +118,7 @@ public class WelcomeActivity extends Activity {
             arrow_right.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (page<3) {
+                    if (page < 3) {
                         page++;
                         setPage(page);
                     }
@@ -120,7 +128,7 @@ public class WelcomeActivity extends Activity {
             arrow_left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (page>1){
+                    if (page > 1) {
                         page--;
                         setPage(page);
                     }
@@ -138,28 +146,28 @@ public class WelcomeActivity extends Activity {
         }
     }
 
-    private View setPage(int page){
+    private View setPage(int page) {
         View result_view = null;
-        if (page==1){
-            result_view = layoutInflater.inflate(R.layout.welcome_screen1,pager,true);
+        if (page == 1) {
+            result_view = layoutInflater.inflate(R.layout.welcome_screen1, pager, true);
             dot1.setImageResource(R.mipmap.ic_radio_button_checked_white_24dp);
             dot2.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
             dot3.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
         }
-        if (page==2){
-            result_view = layoutInflater.inflate(R.layout.welcome_screen2,pager,true);
+        if (page == 2) {
+            result_view = layoutInflater.inflate(R.layout.welcome_screen2, pager, true);
             dot1.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
             dot2.setImageResource(R.mipmap.ic_radio_button_checked_white_24dp);
             dot3.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
         }
-        if (page==3){
-            result_view = layoutInflater.inflate(R.layout.welcome_screen3,pager,true);
+        if (page == 3) {
+            result_view = layoutInflater.inflate(R.layout.welcome_screen3, pager, true);
             dot1.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
             dot2.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
             dot3.setImageResource(R.mipmap.ic_radio_button_checked_white_24dp);
         }
-        if (page==4){
-            result_view = layoutInflater.inflate(R.layout.welcome_spinner,pager,true);
+        if (page == 4) {
+            result_view = layoutInflater.inflate(R.layout.welcome_spinner, pager, true);
             dot1.setVisibility(View.GONE);
             dot2.setVisibility(View.GONE);
             dot3.setVisibility(View.GONE);
@@ -170,17 +178,23 @@ public class WelcomeActivity extends Activity {
         return result_view;
     }
 
-    private void startMainActivity(){
+    private void startMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
-    private void startMainActivityAndShowCircle(){
+    private void startMainActivityAndShowCircle() {
         setPage(4);
         startMainActivity();
         finish();
     }
 
-
+    private void prepareAraDatabase() {
+        if (!Areas.doesAreaDatabaseExist(this)) {
+            MainActivity.deleteAreaDatabase(this);
+            Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(this,executor);
+            areasDataBaseCreator.create();
+        }
+    }
 }

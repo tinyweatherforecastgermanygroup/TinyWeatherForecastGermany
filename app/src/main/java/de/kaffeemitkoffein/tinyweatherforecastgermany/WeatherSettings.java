@@ -79,7 +79,7 @@ public class WeatherSettings {
     public static final String PREF_RADAR_SHOW = "PREF_radar_show";
     public static final String PREF_FORCE_NO_MENU_ICONS = "PREF_force_nomenuicons";
     public static final String PREF_DISPLAY_WIND_IN_RADAR = "PREF_display_wind_in_radar";
-    public static final String PREF_MUNICIPALITES_DATABASE_READY = "PREF_municipalities_database_ready";
+    public static final String PREF_AREA_DATABASE_READY = "PREF_area_database_ready";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -127,7 +127,7 @@ public class WeatherSettings {
     public static final boolean PREF_RADAR_SHOW_DEFAULT = true;
     public static final boolean PREF_FORCE_NO_MENU_ICONS_DEFAULT = false;
     public static final boolean PREF_DISPLAY_WIND_IN_RADAR_DEFAULT = true;
-    public static final boolean PREF_MUNICIPALITES_DATABASE_READY_DEFAULT = false;
+    public static final boolean PREF_AREA_DATABASE_READY_DEFAULT = false;
 
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
@@ -176,7 +176,7 @@ public class WeatherSettings {
     public boolean radar_show = PREF_RADAR_SHOW_DEFAULT;
     public boolean forceNoMenuIcons = PREF_FORCE_NO_MENU_ICONS_DEFAULT;
     public boolean display_wind_in_radar = PREF_DISPLAY_WIND_IN_RADAR_DEFAULT;
-    public boolean municipalities_database_ready = PREF_MUNICIPALITES_DATABASE_READY_DEFAULT;
+    public boolean area_database_ready = PREF_AREA_DATABASE_READY_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -233,7 +233,7 @@ public class WeatherSettings {
         this.radar_show = readPreference(PREF_RADAR_SHOW,PREF_RADAR_SHOW_DEFAULT);
         this.forceNoMenuIcons = readPreference(PREF_FORCE_NO_MENU_ICONS,PREF_FORCE_NO_MENU_ICONS_DEFAULT);
         this.display_wind_in_radar = readPreference(PREF_DISPLAY_WIND_IN_RADAR,PREF_DISPLAY_WIND_IN_RADAR_DEFAULT);
-        this.municipalities_database_ready = readPreference(PREF_MUNICIPALITES_DATABASE_READY,PREF_MUNICIPALITES_DATABASE_READY_DEFAULT);
+        this.area_database_ready = readPreference(PREF_AREA_DATABASE_READY,PREF_AREA_DATABASE_READY_DEFAULT);
     }
 
     public void savePreferences() {
@@ -281,7 +281,7 @@ public class WeatherSettings {
         applyPreference(PREF_RADAR_SHOW,this.radar_show);
         applyPreference(PREF_FORCE_NO_MENU_ICONS,this.forceNoMenuIcons);
         applyPreference(PREF_DISPLAY_WIND_IN_RADAR,this.display_wind_in_radar);
-        applyPreference(PREF_MUNICIPALITES_DATABASE_READY,this.municipalities_database_ready);
+        applyPreference(PREF_AREA_DATABASE_READY,this.area_database_ready);
     }
 
     public void commitPreferences() {
@@ -329,7 +329,7 @@ public class WeatherSettings {
         commitPreference(PREF_RADAR_SHOW,this.radar_show);
         commitPreference(PREF_FORCE_NO_MENU_ICONS,this.forceNoMenuIcons);
         commitPreference(PREF_DISPLAY_WIND_IN_RADAR,this.display_wind_in_radar);
-        commitPreference(PREF_MUNICIPALITES_DATABASE_READY,this.municipalities_database_ready);
+        commitPreference(PREF_AREA_DATABASE_READY,this.area_database_ready);
     }
 
     public String readPreference(String p, String d) {
@@ -527,6 +527,12 @@ public class WeatherSettings {
         boolean result = getWarningsLastUpdateTime + getWarningsUpdateIntervalInMillis <= Calendar.getInstance().getTimeInMillis();
         return  result;
     }
+
+    public static boolean areWarningsDisabled(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_WARNINGS_DISABLE,PREF_WARNINGS_DISABLE_DEFAULT);
+    }
+
 
     public void setWarningsLastUpdateTime(long time) {
         applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME, time);
@@ -745,15 +751,15 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_DISPLAY_WIND_IN_RADAR,PREF_DISPLAY_WIND_IN_RADAR_DEFAULT);
     }
 
-    public static boolean isPrefMunicipalitesDatabaseReady(Context context){
+    public static boolean isAreaDatabaseReady(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getBoolean(PREF_MUNICIPALITES_DATABASE_READY,PREF_MUNICIPALITES_DATABASE_READY_DEFAULT);
+        return sharedPreferences.getBoolean(PREF_AREA_DATABASE_READY,PREF_AREA_DATABASE_READY_DEFAULT);
     }
 
-    public static void setPrefMunicipalitesDatabaseReady(Context context){
+    public static void setAreaDatabaseReady(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putBoolean(PREF_MUNICIPALITES_DATABASE_READY,true);
+        pref_editor.putBoolean(PREF_AREA_DATABASE_READY,true);
         pref_editor.apply();
 
     }
