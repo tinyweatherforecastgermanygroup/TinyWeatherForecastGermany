@@ -51,9 +51,6 @@ public class WelcomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         executor = Executors.newSingleThreadExecutor();
-        // when the area database does not exist or is corrupted, rebuild it silently.
-        // When the user moves on too quickly, this will be done again in the main app.
-        prepareAraDatabase();
         boolean force_replay = false;
         Intent intent = getIntent();
         if (intent != null) {
@@ -188,13 +185,5 @@ public class WelcomeActivity extends Activity {
         setPage(4);
         startMainActivity();
         finish();
-    }
-
-    private void prepareAraDatabase() {
-        if (!Areas.doesAreaDatabaseExist(this)) {
-            MainActivity.deleteAreaDatabase(this);
-            Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(this,executor);
-            areasDataBaseCreator.create();
-        }
     }
 }

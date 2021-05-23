@@ -195,5 +195,4 @@ public class AreaContentProvider extends ContentProvider {
         return i;
         // this should have triggered the update.
     }
-
 }

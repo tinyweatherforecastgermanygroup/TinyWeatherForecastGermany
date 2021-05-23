@@ -35,7 +35,6 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -962,7 +961,7 @@ public class MainActivity extends Activity {
     public static boolean deleteAreaDatabase(Context context){
         boolean result = context.deleteDatabase(AreaContentProvider.AreaDatabaseHelper.DATABASE_NAME);
         if (result){
-            Log.v("twfg","Database deleted.");
+            PrivateLog.log(context,Tag.DATABASE,"Areas database deleted.");
         }
         return result;
     }

@@ -2,8 +2,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,7 +39,9 @@ public class Areas {
         }
 
         public void showProgress(final int progress, final String text){
-            Log.v("TWFG","p: "+progress);
+            /*
+             * Override this in the main app to show the progress
+             */
         }
 
         public void onFinished(){
@@ -100,12 +100,7 @@ public class Areas {
         areaContentProvider.setContext(context);
         String[] columns = {AreaContentProvider.AreaDatabaseHelper.KEY_warncellid};
         Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,columns, null, null, null);
-        int i=0;
-        if (cursor.moveToFirst()){
-            do {
-                i++;
-            } while (cursor.moveToNext());
-        }
+        int i=cursor.getCount();
         if (i==AreaDatabaseCreator.DATABASE_SIZE){
             return true;
         }
@@ -115,8 +110,7 @@ public class Areas {
     public Areas(final Context context, Executor executor){
         this.context = context;
         this.executor = executor;
-        //AreaDatabaseCreator areaDatabaseCreator = new AreaDatabaseCreator(context,executor);
-        //areaDatabaseCreator.create();
+
     }
 
     public static Area getArea(Context context, String warincellID){
