@@ -351,6 +351,7 @@ public class WeatherWarningActivity extends Activity {
         Paint radarTextPaint = new Paint();
         radarTextPaint.setTypeface(Typeface.DEFAULT);
         radarTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        radarTextPaint.setAntiAlias(true);
         radarTextPaint.setFakeBoldText(true);
         int textsize = radarinfobarResourceBitmap.getHeight();
         radarTextPaint.setTextSize(textsize);
