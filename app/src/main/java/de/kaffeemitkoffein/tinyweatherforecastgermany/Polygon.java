@@ -59,6 +59,24 @@ public class Polygon{
         return polygonY[pos];
     }
 
+    public float getPolygonXCentroid(){
+        float result = 0;
+        for (int i=0; i<polygonX.length; i++){
+            result = result + getPolygonX(i);
+        }
+        result = result / polygonX.length;
+        return result;
+    }
+
+    public float getPolygonYCentroid(){
+        float result = 0;
+        for (int i=0; i<polygonY.length; i++){
+            result = result + getPolygonY(i);
+        }
+        result = result / polygonY.length;
+        return result;
+    }
+
     /**
      * determines if point is inside a polygon.
      *

@@ -182,6 +182,14 @@ public class AreaContentProvider extends ContentProvider {
         }
     }
 
+    public String getAreaNameFromCursor(Cursor c) {
+        if (c == null) {
+            return null;
+        } else {
+            return c.getString(c.getColumnIndex(AreaDatabaseHelper.KEY_name));
+        }
+    }
+
     public void writeArea(Context c, Areas.Area area) {
         ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
         contentResolver.insert(AreaContentProvider.URI_AREADATA, getContentValuesFromArea(area));

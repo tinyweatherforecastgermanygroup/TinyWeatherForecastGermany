@@ -38,6 +38,12 @@ public class StationsManager {
         //readStations();
     }
 
+    public StationsManager(Context context, ArrayList<Weather.WeatherLocation> stations){
+        this.context = context;
+        this.stations = stations;
+        //readStations();
+    }
+
     private static String getStationsStringFromResource(Context context){
         InputStream inputStream = context.getResources().openRawResource(R.raw.stations3);
         try {
@@ -257,6 +263,23 @@ public class StationsManager {
             }
         }
         return null;
+    }
+
+    public ArrayList<Weather.WeatherLocation> getStationsInPolygon(final Polygon polygon){
+        if (stations==null){
+            return null;
+        }
+        if (stations.size()==0){
+            return null;
+        }
+        ArrayList<Weather.WeatherLocation> resultList = new ArrayList<Weather.WeatherLocation>();
+        for (int i=0; i<stations.size();i++){
+            Weather.WeatherLocation station = stations.get(i);
+            if (polygon.isInPolygon((float) station.latitude,(float) station.longitude)){
+                resultList.add(station);
+            }
+        }
+        return resultList;
     }
 
 }

@@ -36,6 +36,10 @@ public final class Weather {
     public final static int DELTA_T = 69;
 
     public static class WeatherLocation implements Comparator<WeatherLocation> {
+
+        public static final String EXTRAS_NAME="NAME";
+        public static final String EXTRAS_ITEMS_TO_SHOW="ITEMS_TO_SHOW";
+
         public String description;
         public String name;
         double latitude;

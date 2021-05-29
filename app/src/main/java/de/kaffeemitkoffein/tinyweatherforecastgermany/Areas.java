@@ -81,10 +81,8 @@ public class Areas {
                         if ((i % 100) == 0){
                             showProgress((i*100)/DATABASE_SIZE, area.name);
                         }
-                        //Log.v("TWFG","Database entry: "+i+ " "+ area.warncellID + " " + area.name);
                     }
                     showProgress(100,context.getResources().getString(R.string.welcome_ready));
-                    //Log.v("TWFG","Database entries: "+i);
                     onFinished();
                 } catch (Exception e){
                     // do nothing
@@ -142,8 +140,6 @@ public class Areas {
         }
         String selection = AreaContentProvider.KEY_warncellid + " IN("+s+")";
         String[] selectionArg = warincellIDs.toArray(new String[warincellIDs.size()]);
-        //Log.v("TWFG","selection   : "+selection);
-        //Log.v("TWFG","selectionArg: "+s);
         Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null, selection, selectionArg, null);
         ArrayList<Area> areas = new ArrayList<Area>();
         int i = 0;
@@ -159,6 +155,60 @@ public class Areas {
         return areas;
     }
 
+    public static Area getAreaByName(Context context, String areaname){
+        AreaContentProvider areaContentProvider = new AreaContentProvider();
+        areaContentProvider.setContext(context);
+        String selection = AreaContentProvider.KEY_name + " =?";
+        String[] selectionArg = {areaname};
+        Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null, selection, selectionArg, null);
+        if (cursor!=null){
+            if (cursor.moveToFirst()){
+                Area area = areaContentProvider.getAreaFromCursor(cursor);
+                area.polygon = new Polygon(area.polygonString);
+                cursor.close();
+                return area;
+            }
+        }
+        return null;
+    }
+
+    public static ArrayList<String> getAllAreaNames(Context context){
+        AreaContentProvider areaContentProvider = new AreaContentProvider();
+        areaContentProvider.setContext(context);
+        ArrayList<String> result = new ArrayList<String>();
+        final String[] collumns = {AreaContentProvider.KEY_name};
+        Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,collumns, null, null, null);
+        if (cursor!=null){
+            if (cursor.moveToFirst()){
+                do {
+                    String s = areaContentProvider.getAreaNameFromCursor(cursor);
+                    if (s!=null){
+                        result.add(s);
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        return result;
+    }
+
+    public static class AreaNameReader implements Runnable{
+
+        private Context context;
+
+        public AreaNameReader(Context context){
+            this.context = context;
+        }
+
+        public void onFinished(ArrayList<String> areanames){
+
+        }
+
+        @Override
+        public void run() {
+            ArrayList<String> areanames = Areas.getAllAreaNames(context);
+            onFinished(areanames);
+        }
+    }
 
     public int test(Context context){
         AreaContentProvider areaContentProvider = new AreaContentProvider();

@@ -67,7 +67,8 @@ public class MainActivity extends Activity {
     ArrayList<String> spinnerItems;
     Spinner spinner;
     AutoCompleteTextView autoCompleteTextView;
-    ArrayList<String> station_descriptions_onlytext;
+    //ArrayList<String> station_descriptions_onlytext;
+    StationSearchEngine stationSearchEngine;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
     CurrentWeatherInfo weatherCard;
@@ -168,10 +169,16 @@ public class MainActivity extends Activity {
                     }
                 }
             } else {
-                try {
-                    Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getText(R.string.station_does_not_exist), Toast.LENGTH_LONG).show();
-                } catch (Exception e){
-                    PrivateLog.log(context,Tag.MAIN,"Error: station does not exist.");
+                final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
+                Location startLocation = stationSearchEngine.getCentroidLocationFromArea(station_description);
+                if (startLocation!=null){
+                    calcualateClosestStations(stations,startLocation);
+                } else {
+                    try {
+                        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
+                    } catch (Exception e){
+                        PrivateLog.log(context,Tag.MAIN,"Error: station does not exist.");
+                    }
                 }
             }
         }
@@ -188,10 +195,16 @@ public class MainActivity extends Activity {
                     newWeatherRegionSelected(weatherSettings,station_description);
                 }
             } else {
-                try {
-                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
-                } catch (Exception e){
-                    PrivateLog.log(context,Tag.MAIN,"Error: station does not exist.");
+                final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
+                Location startLocation = stationSearchEngine.getCentroidLocationFromArea(station_description);
+                if (startLocation!=null){
+                    calcualateClosestStations(stations,startLocation);
+                } else {
+                    try {
+                      Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
+                    } catch (Exception e){
+                      PrivateLog.log(context,Tag.MAIN,"Error: station does not exist.");
+                    }
                 }
             }
         }
@@ -565,31 +578,36 @@ public class MainActivity extends Activity {
             public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
                 super.onLoadingListFinished(stations);
                 stationsManager.stations = stations;
-                station_descriptions_onlytext = new ArrayList<String>();
+                //station_descriptions_onlytext = new ArrayList<String>();
                 for (int j = 0; j < stations.size(); j++) {
                     String stat_description = stations.get(j).description;
-                    station_descriptions_onlytext.add(stat_description);
+                    //station_descriptions_onlytext.add(stat_description);
                 }
-                // text searcher
-                runOnUiThread(new Runnable() {
+                stationSearchEngine = new StationSearchEngine(context,executor,null,stationsManager){
                     @Override
-                    public void run() {
-                        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.custom_dropdown_item, station_descriptions_onlytext);
-                        if (autoCompleteTextView==null){
-                            autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
-                        }
-                        autoCompleteTextView.setAdapter(stringArrayAdapter);
-                        autoCompleteTextView.setCompletionHint(context.getResources().getString(R.string.actionbar_textinput_hint));
-                        autoCompleteTextView.setDropDownWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-                        autoCompleteTextView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-                        autoCompleteTextView.setOnItemClickListener(clickListener);
-                        // anchor search icon to search
-                        ImageView search_icon = (ImageView) findViewById(R.id.actionbar_search_icon);
-                        search_icon.setOnClickListener(searchListener);
-                        // set listener to search field
-                        autoCompleteTextView.setOnKeyListener(searchOnEnterListener);
+                    public void newEntries(ArrayList<String> newEntries){
+                        super.newEntries(newEntries);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.custom_dropdown_item, stationSearchEngine.entries);
+                                if (autoCompleteTextView==null){
+                                    autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+                                }
+                                autoCompleteTextView.setAdapter(stringArrayAdapter);
+                                autoCompleteTextView.setCompletionHint(context.getResources().getString(R.string.actionbar_textinput_hint));
+                                autoCompleteTextView.setDropDownWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+                                autoCompleteTextView.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+                                autoCompleteTextView.setOnItemClickListener(clickListener);
+                                // anchor search icon to search
+                                ImageView search_icon = (ImageView) findViewById(R.id.actionbar_search_icon);
+                                search_icon.setOnClickListener(searchListener);
+                                // set listener to search field
+                                autoCompleteTextView.setOnKeyListener(searchOnEnterListener);
+                            }
+                        });
                     }
-                });
+                };
             }
         };
         executor.execute(stationsReader);
@@ -1171,9 +1189,9 @@ public class MainActivity extends Activity {
                 return 1;
             }
         });
+        int items_count = own_location.getExtras().getInt(Weather.WeatherLocation.EXTRAS_ITEMS_TO_SHOW,20);
         ArrayList<String> stationDistanceList = new ArrayList<String>();
-        for (int i=0; (i<stations.size()) && (i<20); i++) {
-            // Log.v("TWFG", "pos " + i + " => " + stations.get(i).distance/1000 + " km " + stations.get(i).description);
+        for (int i=0; (i<stations.size()) && (i<items_count); i++) {
             stationDistanceList.add(stations.get(i).description+" ["+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]");
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -1187,7 +1205,14 @@ public class MainActivity extends Activity {
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
         textView_long.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_longitude)+" "+new DecimalFormat("000.00000").format(own_location.getLongitude()));
         textView_lat.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_latitude)+" "+new DecimalFormat("00.00000").format(own_location.getLatitude()));
-        textView_time.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_time)+" "+simpleDateFormat.format(new Date(own_location.getTime())));
+        long time = own_location.getTime();
+        if (time!=0){
+        textView_time.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_time)+" "+simpleDateFormat.format(new Date(time)));
+        } else {
+            // do not display time if time is unknown in Location data
+            String s = own_location.getExtras().getString(Weather.WeatherLocation.EXTRAS_NAME,"");
+            textView_time.setText(s);
+        }
         builder.setView(view);
         builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
             @Override
