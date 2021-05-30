@@ -265,6 +265,25 @@ public class StationsManager {
         return null;
     }
 
+    public Integer getPositionFromDescription(String description, boolean lenient){
+        if (stations!=null){
+            // try exact search always first
+            Integer i = getPositionFromDescription(description);
+            // second, try lenient umlaut variants
+            if ((i==null) & (lenient)) {
+                int index = 0;
+                while (index < stations.size()){
+                    if ((stations.get(index).description.toUpperCase().equals(StationSearchEngine.toUmlaut(description))) ||
+                        (stations.get(index).description.toUpperCase().equals(StationSearchEngine.toInternationalUmlaut(description)))){
+                        return index;
+                    }
+                    index ++;
+                }
+            }
+        }
+        return null;
+    }
+
     public ArrayList<Weather.WeatherLocation> getStationsInPolygon(final Polygon polygon){
         if (stations==null){
             return null;

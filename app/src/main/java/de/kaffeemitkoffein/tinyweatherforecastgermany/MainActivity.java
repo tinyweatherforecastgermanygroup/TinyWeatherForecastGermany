@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
     public final static String MAINAPP_HIDE_PROGRESS = "HIDE_PROGRESS";
 
     public final static boolean API_TESTING_ENABLED = false;
-    private int test_position = 0; //last: 3215
+    private int test_position = 0;
 
     private ForecastAdapter forecastAdapter;
 
@@ -67,7 +67,6 @@ public class MainActivity extends Activity {
     ArrayList<String> spinnerItems;
     Spinner spinner;
     AutoCompleteTextView autoCompleteTextView;
-    //ArrayList<String> station_descriptions_onlytext;
     StationSearchEngine stationSearchEngine;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -152,7 +151,7 @@ public class MainActivity extends Activity {
              */
             TextView tv = (TextView) view.findViewById(R.id.dropdown_textitem);
             String station_description = tv.getText().toString();
-            Integer station_pos = stationsManager.getPositionFromDescription(station_description);
+            Integer station_pos = stationsManager.getPositionFromDescription(station_description,true);
             if (station_pos != null) {
                 if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall + 3000 < Calendar.getInstance().getTimeInMillis())) {
                     newWeatherRegionSelected(weatherSettings,station_description);
@@ -188,9 +187,8 @@ public class MainActivity extends Activity {
     // weather settings must be read at the time of selection!
             WeatherSettings weatherSettings = new WeatherSettings(context);
             String station_description = autoCompleteTextView.getText().toString();
-            Integer station_pos = stationsManager.getPositionFromDescription(station_description);
+            Integer station_pos = stationsManager.getPositionFromDescription(station_description,true);
             if (station_pos!=null){
-                // if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall+3000<Calendar.getInstance().getTimeInMillis())){
                 if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
                     newWeatherRegionSelected(weatherSettings,station_description);
                 }

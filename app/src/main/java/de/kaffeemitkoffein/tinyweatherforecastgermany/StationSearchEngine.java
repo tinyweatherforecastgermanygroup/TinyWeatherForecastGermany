@@ -20,6 +20,8 @@ public class StationSearchEngine {
     private StationsManager.StationsReader stationsReader;
     private Areas.AreaNameReader areaNameReader;
 
+    public boolean includeInternational = true;
+
     public StationSearchEngine(Context context, Executor executor, WeatherSettings weatherSettings, StationsManager stationsManager){
         this.context = context;
         this.executor = executor;
@@ -43,6 +45,10 @@ public class StationSearchEngine {
     public StationSearchEngine(Context context){
         this.context = context;
         initValues();
+    }
+
+    public void setIncludeInternational(boolean b){
+        this.includeInternational = b;
     }
 
     private void initValues(){
@@ -78,6 +84,46 @@ public class StationSearchEngine {
         executor.execute(areaNameReader);
     }
 
+    public static String toUmlaut(final String s){
+        // üöäß ÄÜÖ
+        String result = s;
+        result = result.replace("UE","Ü");
+        result = result.replace("OE","Ö");
+        result = result.replace("AE","Ä");
+        result = result.replace("SS","ß");
+        result = result.replace("Ue","Ü");
+        result = result.replace("Oe","Ö");
+        result = result.replace("Ae","Ä");
+        result = result.replace("ue","ü");
+        result = result.replace("oe","ö");
+        result = result.replace("ae","ä");
+        result = result.replace("ss","ß");
+        return result;
+    }
+
+    public static String toInternationalUmlaut(final String s){
+        String result = s;
+        result = result.replace("Ü","Ue");
+        result = result.replace("Ö","Oe");
+        result = result.replace("Ä","Ae");
+        result = result.replace("ß","Ss");
+        result = result.replace("ü","ue");
+        result = result.replace("ö","oe");
+        result = result.replace("ä","ae");
+        return result;
+    }
+
+    public static ArrayList<String> toInternationalUmlaut(final ArrayList<String> s){
+        if (s==null){
+            return null;
+        }
+        ArrayList<String> result = new ArrayList<String>();
+        for (int i=0; i<s.size(); i++){
+            result.add(toInternationalUmlaut(s.get(i)));
+        }
+        return result;
+    }
+
     private void readStations(){
         stationsReader = new StationsManager.StationsReader(context){
             @Override
@@ -100,10 +146,16 @@ public class StationSearchEngine {
 
     public void newEntries(ArrayList<String> newEntries){
         entries.addAll(newEntries);
+        if (includeInternational){
+            entries.addAll(toInternationalUmlaut(newEntries));
+        }
     }
 
     public Location getCentroidLocationFromArea(String areaname){
         Areas.Area area = Areas.getAreaByName(context,areaname);
+        if (area==null){
+            area = Areas.getAreaByName(context,toUmlaut(areaname));
+        }
         if (area==null){
             return null;
         } else {
