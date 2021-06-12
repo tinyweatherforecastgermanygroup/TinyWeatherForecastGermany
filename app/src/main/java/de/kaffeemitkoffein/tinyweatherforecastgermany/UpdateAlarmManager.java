@@ -195,16 +195,17 @@ public class UpdateAlarmManager {
     }
 
     public static void startDataUpdateService(final Context context, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts){
-        Intent intent = new Intent(context,DataUpdateService.class);
-        intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER,updateWeather);
-        intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS,updateWarnings);
-        intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS,updateTextForecasts);
-        intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        if (Build.VERSION.SDK_INT<26){
-
-            context.startService(intent);
-        } else {
-            context.startForegroundService(intent);
+        if (DataUpdateService.isConnectedToInternet(context)){
+            Intent intent = new Intent(context,DataUpdateService.class);
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER,updateWeather);
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS,updateWarnings);
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS,updateTextForecasts);
+            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            if (Build.VERSION.SDK_INT<26){
+                context.startService(intent);
+            } else {
+                context.startForegroundService(intent);
+            }
         }
     }
 }

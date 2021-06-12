@@ -244,8 +244,8 @@ public class DataUpdateService extends Service {
         notificationManager.notify(notification_id,notificationBuilder.build());
     }
 
-    private boolean isConnectedToInternet(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean isConnectedToInternet(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager!=null) {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             if (networkInfo != null) {
@@ -256,5 +256,8 @@ public class DataUpdateService extends Service {
         return false;
     }
 
+    private boolean isConnectedToInternet(){
+        return isConnectedToInternet(this);
+    }
 
 }
