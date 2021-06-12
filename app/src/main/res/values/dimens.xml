@@ -72,4 +72,7 @@
     <dimen name="reader_textsize_date">14dp</dimen>
     <dimen name="reader_textsize_subtitle">16dp</dimen>
     <dimen name="reader_textsize_body">14dp</dimen>
+
+    <dimen name="widget_padding">2dp</dimen>
+
 </resources>
