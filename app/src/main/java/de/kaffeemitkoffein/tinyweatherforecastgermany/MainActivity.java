@@ -988,7 +988,10 @@ public class MainActivity extends Activity {
             deleteAreaDatabase(this);
             return;
         }
-        if (!Areas.doesAreaDatabaseExist(this)){
+        // update area database if:
+        // a) database does not exist
+        // b) if sql database is outdated
+        if ((!Areas.doesAreaDatabaseExist(this)) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(this))){
             deleteAreaDatabase(this);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(false);
@@ -1014,6 +1017,7 @@ public class MainActivity extends Activity {
 
                 @Override
                 public void onFinished(){
+                    super.onFinished();
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

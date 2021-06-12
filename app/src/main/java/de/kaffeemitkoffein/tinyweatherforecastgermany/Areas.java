@@ -18,7 +18,7 @@ public class Areas {
         public String warncenter;
         public int type;
         public String name;
-        public Polygon polygon;
+        public ArrayList<Polygon> polygons;
         public String polygonString;
     }
 
@@ -28,6 +28,42 @@ public class Areas {
 
         private final Context context;
         private final Executor executor;
+        private String versionLine;
+
+
+        public static int getAreaDataVersion(String versionLine){
+            try {
+                String versionString = versionLine.substring(versionLine.indexOf(":")+2,versionLine.indexOf(",")).trim();
+                String dateString = versionLine.substring(versionLine.indexOf(",")+2);
+                int version = Integer.parseInt(versionString);
+                return version;
+            } catch (Exception e){
+                return 0;
+            }
+        }
+
+        public static int getAreaDataVersion(Context context){
+            try {
+                InputStream inputStream = context.getApplicationContext().getResources().openRawResource(R.raw.areas);
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String versionLine = bufferedReader.readLine();
+                return getAreaDataVersion(versionLine);
+            } catch (Exception e){
+                return 0;
+            }
+        }
+
+        public static boolean areAreasUpToDate(Context context){
+            int sqlVersion = WeatherSettings.getAreaDatabaseVersion(context);
+            int rawVersion = Areas.AreaDatabaseCreator.getAreaDataVersion(context);
+            if (rawVersion==0){
+                return false;
+            }
+            if (sqlVersion<rawVersion){
+                return false;
+            }
+            return true;
+        }
 
         public AreaDatabaseCreator(Context context, Executor executor){
             this.context = context;
@@ -46,6 +82,7 @@ public class Areas {
 
         public void onFinished(){
             WeatherSettings.setAreaDatabaseReady(context);
+            WeatherSettings.setAreaDatabaseVersion(context,getAreaDataVersion(versionLine));
         }
 
         private String removeQuotes(String s){
@@ -60,22 +97,17 @@ public class Areas {
                 try {
                     InputStream inputStream = context.getApplicationContext().getResources().openRawResource(R.raw.areas);
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                    versionLine = bufferedReader.readLine();
                     String line;
                     int i = 0;
                     while ((line = bufferedReader.readLine()) != null){
-                        String[] items = line.split(",");
+                        String[] items = line.split("@");
                         Area area = new Area();
                         area.warncellID = items[0];
                         area.warncenter = items[1];
                         area.type = Integer.parseInt(items[2]);
                         area.name = removeQuotes(items[3]);
-                        area.polygonString = new String();
-                        for (int q=4; q<items.length; q=q+2){
-                            // switch lat long to correspond to warnings data
-                            String s = items[q+1]+","+items[q];
-                            area.polygonString = area.polygonString + s + " ";
-                        }
-                        area.polygonString = area.polygonString.trim();
+                        area.polygonString = items[4];
                         areaContentProvider.writeArea(context,area);
                         i++;
                         if ((i % 100) == 0){
@@ -120,7 +152,7 @@ public class Areas {
         if (cursor!=null){
             if (cursor.moveToFirst()){
                 Area area = areaContentProvider.getAreaFromCursor(cursor);
-                area.polygon = new Polygon(area.polygonString);
+                area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
                 cursor.close();
                 return area;
             }
@@ -147,7 +179,7 @@ public class Areas {
             if (cursor.moveToFirst()){
                 do {
                     Area area = areaContentProvider.getAreaFromCursor(cursor);
-                    area.polygon = new Polygon(area.polygonString);
+                    area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
                     areas.add(area); i++;
                 } while (cursor.moveToNext());
             }
@@ -164,7 +196,7 @@ public class Areas {
         if (cursor!=null){
             if (cursor.moveToFirst()){
                 Area area = areaContentProvider.getAreaFromCursor(cursor);
-                area.polygon = new Polygon(area.polygonString);
+                area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
                 cursor.close();
                 return area;
             }

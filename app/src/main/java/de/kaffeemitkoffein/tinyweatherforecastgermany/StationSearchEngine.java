@@ -158,10 +158,19 @@ public class StationSearchEngine {
         }
         if (area==null){
             return null;
-        } else {
+        }
+        if (area.polygons.size()==0) {
+            return null;
+        }else {
+            float xSum = 0;
+            float ySum = 0;
+            for (int i=0; i<area.polygons.size(); i++) {
+                xSum = xSum + area.polygons.get(i).getPolygonXCentroid();
+                ySum = ySum + area.polygons.get(i).getPolygonYCentroid();
+            }
             Location location = new Location("weather");
-            location.setLatitude(area.polygon.getPolygonYCentroid());
-            location.setLongitude(area.polygon.getPolygonXCentroid());
+            location.setLatitude(xSum/area.polygons.size());
+            location.setLongitude(ySum/area.polygons.size());
             Bundle bundle = new Bundle();
             bundle.putString(Weather.WeatherLocation.EXTRAS_NAME,area.name);
             bundle.putInt(Weather.WeatherLocation.EXTRAS_ITEMS_TO_SHOW,300);

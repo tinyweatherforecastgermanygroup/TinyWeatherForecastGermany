@@ -19,6 +19,8 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import java.util.ArrayList;
+
 public class Polygon{
     public float[] polygonX;
     public float[] polygonY;
@@ -105,6 +107,18 @@ public class Polygon{
 
     public boolean isInPolygon(float testx, float testy){
         return isInPolygon(nvert,polygonX,polygonY,testx,testy);
+    }
+
+    public static ArrayList<Polygon> getPolygonArraylistFromString(String source){
+        ArrayList<String> polygonStrings = AreaContentProvider.deSerializeString(source);
+        ArrayList<Polygon> polygons = new ArrayList<Polygon>();
+        for (int i=0; i<polygonStrings.size(); i++){
+            Polygon polygon = new Polygon(polygonStrings.get(i));
+            //Log.v("TWFG","Polygon data: "+polygonStrings.get(i));
+            //Log.v("TWFG","Polygon size: "+polygon.nvert);
+            polygons.add(polygon);
+        }
+        return polygons;
     }
 
 }

@@ -142,7 +142,7 @@ public class AreaContentProvider extends ContentProvider {
         return TextUtils.join(serial_serparator, s);
     }
 
-    private ArrayList<String> deSerializeString(String s) {
+    public static ArrayList<String> deSerializeString(String s) {
         String[] results = TextUtils.split(s, serial_serparator);
         ArrayList<String> list = new ArrayList<String>();
         for (int i = 0; i < results.length; i++) {

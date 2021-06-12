@@ -244,6 +244,7 @@ public class APIReaders {
                case "DE": return C_FIRST+"DE"+C_LAST;
            }
            return C_FIRST+"EN"+C_LAST;
+           //return "https://kaffeemitkoffein.de/local/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_DE.zip";
        }
 
        @SuppressWarnings("deprecation")

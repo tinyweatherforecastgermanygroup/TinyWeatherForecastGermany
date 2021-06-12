@@ -80,6 +80,7 @@ public class WeatherSettings {
     public static final String PREF_FORCE_NO_MENU_ICONS = "PREF_force_nomenuicons";
     public static final String PREF_DISPLAY_WIND_IN_RADAR = "PREF_display_wind_in_radar";
     public static final String PREF_AREA_DATABASE_READY = "PREF_area_database_ready";
+    public static final String PREF_AREA_DATABASE_VERSION = "PREF_area_database_version";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -128,7 +129,7 @@ public class WeatherSettings {
     public static final boolean PREF_FORCE_NO_MENU_ICONS_DEFAULT = false;
     public static final boolean PREF_DISPLAY_WIND_IN_RADAR_DEFAULT = true;
     public static final boolean PREF_AREA_DATABASE_READY_DEFAULT = false;
-
+    public static final int PREF_AREA_DATABASE_VERSION_DEFAULT = 0;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -177,6 +178,7 @@ public class WeatherSettings {
     public boolean forceNoMenuIcons = PREF_FORCE_NO_MENU_ICONS_DEFAULT;
     public boolean display_wind_in_radar = PREF_DISPLAY_WIND_IN_RADAR_DEFAULT;
     public boolean area_database_ready = PREF_AREA_DATABASE_READY_DEFAULT;
+    public int area_database_version = PREF_AREA_DATABASE_VERSION_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -234,6 +236,7 @@ public class WeatherSettings {
         this.forceNoMenuIcons = readPreference(PREF_FORCE_NO_MENU_ICONS,PREF_FORCE_NO_MENU_ICONS_DEFAULT);
         this.display_wind_in_radar = readPreference(PREF_DISPLAY_WIND_IN_RADAR,PREF_DISPLAY_WIND_IN_RADAR_DEFAULT);
         this.area_database_ready = readPreference(PREF_AREA_DATABASE_READY,PREF_AREA_DATABASE_READY_DEFAULT);
+        this.area_database_version = readPreference(PREF_AREA_DATABASE_VERSION,PREF_AREA_DATABASE_VERSION_DEFAULT);
     }
 
     public void savePreferences() {
@@ -282,6 +285,7 @@ public class WeatherSettings {
         applyPreference(PREF_FORCE_NO_MENU_ICONS,this.forceNoMenuIcons);
         applyPreference(PREF_DISPLAY_WIND_IN_RADAR,this.display_wind_in_radar);
         applyPreference(PREF_AREA_DATABASE_READY,this.area_database_ready);
+        applyPreference(PREF_AREA_DATABASE_VERSION,this.area_database_version);
     }
 
     public void commitPreferences() {
@@ -330,6 +334,7 @@ public class WeatherSettings {
         commitPreference(PREF_FORCE_NO_MENU_ICONS,this.forceNoMenuIcons);
         commitPreference(PREF_DISPLAY_WIND_IN_RADAR,this.display_wind_in_radar);
         commitPreference(PREF_AREA_DATABASE_READY,this.area_database_ready);
+        commitPreference(PREF_AREA_DATABASE_VERSION,this.area_database_version);
     }
 
     public String readPreference(String p, String d) {
@@ -761,6 +766,19 @@ public class WeatherSettings {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_AREA_DATABASE_READY,true);
         pref_editor.apply();
+    }
+
+    public static int getAreaDatabaseVersion(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_AREA_DATABASE_VERSION,PREF_AREA_DATABASE_VERSION_DEFAULT);
+    }
+
+    public static void setAreaDatabaseVersion(Context context, int version){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putInt(PREF_AREA_DATABASE_VERSION,version);
+        pref_editor.apply();
 
     }
+
 }
