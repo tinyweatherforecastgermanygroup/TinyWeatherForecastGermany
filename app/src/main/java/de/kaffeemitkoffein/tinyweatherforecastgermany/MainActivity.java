@@ -806,13 +806,16 @@ public class MainActivity extends Activity {
     private void setOverflowMenuItemColor(Menu menu, int id, int string_id,int color_id){
         String s = getApplicationContext().getResources().getString(string_id);
         MenuItem menuItem = menu.findItem(id);
-        SpannableString spannableString = new SpannableString(s);
-        if (Build.VERSION.SDK_INT>=23){
-            spannableString.setSpan(new ForegroundColorSpan(getApplicationContext().getResources().getColor(color_id,getTheme())),0,s.length(),0);
-        } else {
-            spannableString.setSpan(new ForegroundColorSpan(getApplicationContext().getResources().getColor(color_id)),0,s.length(),0);
+        if (!menuItem.isVisible()){
+            SpannableString spannableString = new SpannableString(s);
+            if (Build.VERSION.SDK_INT>=23){
+                spannableString.setSpan(new ForegroundColorSpan(getApplicationContext().getResources().getColor(color_id,getTheme())),0,s.length(),0);
+            } else {
+                spannableString.setSpan(new ForegroundColorSpan(getApplicationContext().getResources().getColor(color_id)),0,s.length(),0);
+            }
+            menuItem.setTitle(spannableString);
         }
-        menuItem.setTitle(spannableString);
+
     }
 
     @Override

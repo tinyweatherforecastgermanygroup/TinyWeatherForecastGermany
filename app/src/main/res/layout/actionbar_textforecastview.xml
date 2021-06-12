@@ -47,7 +47,6 @@
             android:id="@+id/actionbar_textforecastview_type"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_alignParentTop="true"
             android:layout_gravity="left"
             android:textSize="@dimen/fcmain_textsize_medium"
             android:textColor="@color/textColor" />
@@ -57,7 +56,6 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_gravity="left"
-            android:layout_below="@id/actionbar_textforecastview_type"
             android:textSize="@dimen/fcmain_textsize_medium"
             android:textColor="@color/textColor" />
 
