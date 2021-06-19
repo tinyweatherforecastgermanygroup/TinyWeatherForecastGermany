@@ -1,3 +1,22 @@
+/*
+ * This file is part of TinyWeatherForecastGermany.
+ *
+ * Copyright (c) 2020, 2021 Pawel Dube
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
@@ -47,6 +66,9 @@ public class Areas {
                 InputStream inputStream = context.getApplicationContext().getResources().openRawResource(R.raw.areas);
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String versionLine = bufferedReader.readLine();
+                while ((versionLine.length()==0) || String.valueOf(versionLine.charAt(0)).equals("#")){
+                    versionLine = bufferedReader.readLine();
+                }
                 return getAreaDataVersion(versionLine);
             } catch (Exception e){
                 return 0;
@@ -98,6 +120,9 @@ public class Areas {
                     InputStream inputStream = context.getApplicationContext().getResources().openRawResource(R.raw.areas);
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                     versionLine = bufferedReader.readLine();
+                    while ((versionLine.length()==0) || String.valueOf(versionLine.charAt(0)).equals("#")){
+                        versionLine = bufferedReader.readLine();
+                    }
                     String line;
                     int i = 0;
                     while ((line = bufferedReader.readLine()) != null){
