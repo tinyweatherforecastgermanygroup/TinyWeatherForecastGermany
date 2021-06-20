@@ -233,6 +233,7 @@
             if (view == null) {
                 // view is not available from cache
                 newView = true;
+                context.setTheme(R.style.AppTheme);
                 view = this.layoutInflater.inflate(R.layout.forecastitem, viewGroup, false);
             } else {
                 // recycle view information

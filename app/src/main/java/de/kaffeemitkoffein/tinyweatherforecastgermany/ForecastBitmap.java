@@ -192,7 +192,7 @@ public class ForecastBitmap{
                 }
             }
         }
-        TEXT_PAINT.setColor(getColorFromResource(R.color.textColor));
+        TEXT_PAINT.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
     }
 
     private Bitmap getIconBitmap(Context context, Weather.WeatherInfo weatherInfo, int bitmapWidth, int bitmapHeight){
@@ -298,8 +298,8 @@ public class ForecastBitmap{
             y_polygon_rain[weatherInfos.size()+3] = y_polygon_rain[0];
 
         }
-        drawPolygon(canvas,x_polygon,y_polygon_clouds,getColorFromResource(R.color.fcitem_clouds),65);
-        drawPolygon(canvas,x_polygon,y_polygon_rain,getColorFromResource(R.color.fcitem_rain),85);
+        drawPolygon(canvas,x_polygon,y_polygon_clouds,MainActivity.getColorFromResource(context,R.color.fcitem_clouds),65);
+        drawPolygon(canvas,x_polygon,y_polygon_rain,MainActivity.getColorFromResource(context,R.color.fcitem_rain),85);
         int position = weatherInfos.size()-1;
         while (position>=0){
             // draw timestamp
@@ -329,7 +329,7 @@ public class ForecastBitmap{
                 if ((itemWidth-x_within_item_offset)>=fontSize_small*2){
                     if (weatherInfos.get(position).hasMaxTemperature() || weatherInfos.get(position).hasMinTemperature()){
                         Paint paint_minmax = new Paint();
-                        paint_minmax.setColor(getColorFromResource(R.color.textColor));
+                        paint_minmax.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
                         paint_minmax.setAlpha(255);
                         paint_minmax.setTextSize(fontSize_small);
                         String temperature_max ="";
@@ -374,7 +374,7 @@ public class ForecastBitmap{
                             }
                         } else {
                             TEXT_PAINT.setTextSize(fontSize_small);
-                            TEXT_PAINT.setColor(getColorFromResource(R.color.textColor));
+                            TEXT_PAINT.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
                             TEXT_PAINT.setTextSize(fontSize_small);
                             String windtext=weatherInfos.get(position).getWindDirectionString(context);
                             if (windtext!=null){
@@ -391,7 +391,7 @@ public class ForecastBitmap{
                     if (weatherInfos.get(position).hasWindSpeed()){
                         String windspeedstring = weatherInfos.get(position).getWindSpeedString(context,false);
                         Paint windspeed_paint = new Paint();
-                        windspeed_paint.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
+                        windspeed_paint.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
                         windspeed_paint.setTextSize(fontSize_small);
                         float y_offset = (bitmapHeight - fontSize_small)/2+fontSize_small;
                         canvas.drawText(windspeedstring,x_offset+x_within_item_offset,y_offset,windspeed_paint);
@@ -403,16 +403,6 @@ public class ForecastBitmap{
             position--;
         }
         return bitmap;
-    }
-
-    @SuppressWarnings("deprecation")
-    public int getColorFromResource(int id){
-        int color;
-        if (Build.VERSION.SDK_INT<23){
-            return context.getResources().getColor(id);
-        } else {
-            return context.getResources().getColor(id, context.getTheme());
-        }
     }
 
     /**

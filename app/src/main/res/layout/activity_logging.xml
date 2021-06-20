@@ -34,21 +34,21 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/fcmain_textsize_medium"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/colorText"
             android:text="@string/logging_button_back"/>
         <Button android:id="@+id/logging_button_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/fcmain_textsize_medium"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/colorText"
             android:text="@string/logging_button_clear"/>
         <Button android:id="@+id/logging_button_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/fcmain_textsize_medium"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/colorText"
             android:text="@string/logging_button_copy"/>
     </LinearLayout>
 
@@ -68,7 +68,7 @@
             android:ellipsize="none"
             android:maxLines="3000"
             android:textSize="@dimen/licence_textsize"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/colorText"
             android:gravity="top"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"

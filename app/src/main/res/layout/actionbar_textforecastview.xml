@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_gravity="left"
             android:textSize="@dimen/fcmain_textsize_medium"
-            android:textColor="@color/textColor" />
+            android:textColor="?attr/colorText" />
 
         <TextView
             android:id="@+id/actionbar_textforecastview_issued"
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_gravity="left"
             android:textSize="@dimen/fcmain_textsize_medium"
-            android:textColor="@color/textColor" />
+            android:textColor="?attr/colorText" />
 
     </LinearLayout>
 

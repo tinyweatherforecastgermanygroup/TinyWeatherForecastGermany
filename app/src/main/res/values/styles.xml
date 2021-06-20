@@ -21,8 +21,18 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo">
-        <item name="android:textColorPrimary">@color/textColor</item>
-        <item name="android:actionMenuTextColor">@color/textColor</item>
+        <item name="colorPrimary">@color/colorPrimary_DarkTheme</item>
+
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_DarkTheme</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight_DarkTheme</item>
+        <item name="colorAccent">@color/colorAccent_DarkTheme</item>
+        <item name="colorText">@color/colorText_DarkTheme</item>
+        <item name="colorTextDark">@color/colorTextDark_DarkTheme</item>
+        <item name="colorTextLight">@color/colorTextLight_DarkTheme</item>
+        <item name="colorWelcomeBackground">@color/colorWelcomeBackground_DarkTheme</item>
+
+        <item name="android:textColorPrimary">@color/colorText_DarkTheme</item>
+        <item name="android:actionMenuTextColor">@color/colorText_DarkTheme</item>
         <!-- modify the ActionBar overflow icon -->
         <item name="android:actionOverflowButtonStyle">@style/BurgerIcon</item>
         <!-- modify the ActionBar overflow menu -->
@@ -41,13 +51,13 @@
 
     <!-- Customize overflow menu -->
     <style name="OverflowMenu" parent="android:Theme.Holo">
-        <item name="android:popupBackground">@color/colorPrimaryLight</item>
-        <item name="android:color">@color/textColor</item>
+        <item name="android:popupBackground">@color/colorPrimaryLight_DarkTheme</item>
+        <item name="android:color">@color/colorText_DarkTheme</item>
     </style>
 
     <style name="MyActionBarStyle" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:color">@color/textColor</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:color">@color/colorText_DarkTheme</item>
+        <item name="android:background">@color/colorPrimary_DarkTheme</item>
     </style>
 
     <!-- Custom Light Theme -->

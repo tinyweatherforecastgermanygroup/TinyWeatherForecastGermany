@@ -2,10 +2,10 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.graphics.*;
+import android.os.Bundle;
 import android.view.ScaleGestureDetector;
 import android.view.MotionEvent;
 import android.widget.ImageView;
-
 import java.util.ArrayList;
 
 /**
@@ -132,14 +132,25 @@ public class ZoomableImageView {
      * @param bitmap the bitmap to be used in the imageview
      */
 
+
+    public ZoomableImageView(Context context,ImageView imageView, Bitmap bitmap, Bundle zoomViewState){
+        this.context = context;
+        this.imageView = imageView;
+        this.imageViewWidth  = imageView.getWidth();
+        this.imageViewHeight = imageView.getHeight();
+        this.bitmap = bitmap.copy(Bitmap.Config.ARGB_8888,true);
+        initDefaults(zoomViewState);
+    }
+
     public ZoomableImageView(Context context,ImageView imageView, Bitmap bitmap){
         this.context = context;
         this.imageView = imageView;
         this.imageViewWidth  = imageView.getWidth();
         this.imageViewHeight = imageView.getHeight();
         this.bitmap = bitmap.copy(Bitmap.Config.ARGB_8888,true);
-        initDefaults();
+        initDefaults(null);
     }
+
 
     /**
      * Optional method to set the min and max scale range. Example:
@@ -163,7 +174,7 @@ public class ZoomableImageView {
 
     public void updateBitmap(Bitmap newbitmap){
         if ((newbitmap.getHeight()!=bitmap.getHeight()) || (newbitmap.getWidth()!=bitmap.getWidth())){
-            initDefaults();
+            initDefaults(null);
         }
         this.bitmap = newbitmap.copy(Bitmap.Config.ARGB_8888,true);
         redrawBitmap();
@@ -298,10 +309,15 @@ public class ZoomableImageView {
      * Inits default values.
      */
 
-    private void initDefaults(){
+    private void initDefaults(Bundle zoomViewState){
         xFocus = bitmap.getWidth()/2f;
         yFocus = bitmap.getHeight()/2f;
         scaleFactor = 1.0f;
+        if (zoomViewState!=null){
+            scaleFactor = zoomViewState.getFloat(STATE_SCALEFACTOR,scaleFactor);
+            xFocus      = zoomViewState.getFloat(STATE_XFOCUS,xFocus);
+            yFocus      = zoomViewState.getFloat(STATE_YFOCUS,yFocus);
+        }
         zoomGestureListener = new ZoomGestureListener();
         scaleGestureDetector = new ScaleGestureDetector(context,zoomGestureListener);
         if ((imageViewHeight==0) || (imageViewWidth==0)){
@@ -322,63 +338,63 @@ public class ZoomableImageView {
      * @param scaleFactor the scale factor to use.
      */
 
-    private void redrawBitmap(float scaleFactor) {
-        int widthVisible = Math.round(bitmap.getWidth() * scaleFactor);
-        int heightVisible = Math.round(bitmap.getHeight() * scaleFactor);
-        int left = Math.round((xFocus - widthVisible / 2f));
-        int top = Math.round((yFocus - heightVisible / 2f));
+    private void redrawBitmap(float scaleFactor){
+        int widthVisible  = Math.round(bitmap.getWidth()*scaleFactor);
+        int heightVisible = Math.round(bitmap.getHeight()*scaleFactor);
+        int left = Math.round((xFocus - widthVisible/2f));
+        int top = Math.round((yFocus - heightVisible/2f));
         // fail-safe boundaries
-        while (left < 0) {
+        while (left<0){
             left++;
             xFocus++;
         }
-        while (top < 0) {
+        while (top<0){
             top++;
             yFocus++;
         }
-        while (left + widthVisible > bitmap.getWidth()) {
+        while (left+widthVisible>bitmap.getWidth()){
             left--;
             xFocus--;
         }
-        while (top + heightVisible > bitmap.getHeight()) {
+        while (top+heightVisible>bitmap.getHeight()){
             top--;
             yFocus--;
         }
-        if (left < 0) {
-            left = 0;
+        if (left<0){
+            left=0;
         }
-        if (top < 0) {
-            top = 0;
+        if (top<0){
+            top=0;
         }
-        temporaryVisibleArea = new RectF(left, top, left + widthVisible, top + heightVisible);
-        Bitmap bitmap = Bitmap.createBitmap(this.bitmap, left, top, widthVisible, heightVisible);
-        Bitmap newbitmap = Bitmap.createScaledBitmap(bitmap, Math.round(imageViewWidth), Math.round(imageViewHeight), false);
-        if ((spriteY != null) && (spriteX != null) && (spriteBitmap != null)) {
-            for (int i = 0; i < spriteBitmap.size(); i++) {
-                if ((spriteX.get(i) > left) && (spriteX.get(i) < left + widthVisible + spriteBitmap.get(i).getWidth()) && (spriteY.get(i) > top - spriteBitmap.get(i).getHeight()) && (spriteY.get(i) < top + heightVisible)) {
+        temporaryVisibleArea = new RectF(left,top,left+widthVisible,top+heightVisible);
+        Bitmap bitmap = Bitmap.createBitmap(this.bitmap,left,top,widthVisible,heightVisible);
+        Bitmap newbitmap = Bitmap.createScaledBitmap(bitmap,Math.round(imageViewWidth),Math.round(imageViewHeight),false);
+        if ((spriteY != null)  && (spriteX != null) && (spriteBitmap !=null)){
+            for (int i=0; i<spriteBitmap.size(); i++){
+                if ((spriteX.get(i)>left) && (spriteX.get(i)<left+widthVisible+spriteBitmap.get(i).getWidth()) && (spriteY.get(i)>top-spriteBitmap.get(i).getHeight()) && (spriteY.get(i)<top+heightVisible)){
                     Paint paint = new Paint();
                     paint.setStyle(Paint.Style.FILL_AND_STROKE);
                     paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
                     Canvas canvas = new Canvas(newbitmap);
-                    if (spriteFixPoint.get(i) == SPRITEFIXPOINT.TOP_LEFT) {
+                    if (spriteFixPoint.get(i)==SPRITEFIXPOINT.TOP_LEFT){
                         // this keeps alignment top-left correct
-                        canvas.drawBitmap(spriteBitmap.get(i), Math.round((spriteX.get(i) - left) * (imageViewWidth / widthVisible)), Math.round(spriteY.get(i) - top) * (imageViewHeight / heightVisible), paint);
+                        canvas.drawBitmap(spriteBitmap.get(i),Math.round((spriteX.get(i)-left)*(imageViewWidth/widthVisible)),Math.round(spriteY.get(i)-top)*(imageViewHeight/heightVisible),paint);
                     }
-                    if (spriteFixPoint.get(i) == SPRITEFIXPOINT.BOTTOM_LEFT) {
+                    if (spriteFixPoint.get(i)==SPRITEFIXPOINT.BOTTOM_LEFT){
                         // this keeps alignment bottom-left
-                        canvas.drawBitmap(spriteBitmap.get(i), Math.round((spriteX.get(i) - left) * (imageViewWidth / widthVisible)), Math.round(spriteY.get(i) - top + spriteBitmap.get(i).getHeight()) * (imageViewHeight / heightVisible) - spriteBitmap.get(i).getHeight(), paint);
+                        canvas.drawBitmap(spriteBitmap.get(i),Math.round((spriteX.get(i)-left)*(imageViewWidth/widthVisible)),Math.round(spriteY.get(i)-top+spriteBitmap.get(i).getHeight())*(imageViewHeight/heightVisible)-spriteBitmap.get(i).getHeight(),paint);
                     }
-                    if (spriteFixPoint.get(i) == SPRITEFIXPOINT.BOTTOM_RIGHT) {
+                    if (spriteFixPoint.get(i)==SPRITEFIXPOINT.BOTTOM_RIGHT){
                         // this keeps alignment bottom-right
-                        canvas.drawBitmap(spriteBitmap.get(i), Math.round((spriteX.get(i) - left + spriteBitmap.get(i).getWidth()) * (imageViewWidth / widthVisible)) - spriteBitmap.get(i).getWidth(), Math.round(spriteY.get(i) - top + spriteBitmap.get(i).getHeight()) * (imageViewHeight / heightVisible) - spriteBitmap.get(i).getHeight(), paint);
+                        canvas.drawBitmap(spriteBitmap.get(i),Math.round((spriteX.get(i)-left+spriteBitmap.get(i).getWidth())*(imageViewWidth/widthVisible))-spriteBitmap.get(i).getWidth(),Math.round(spriteY.get(i)-top+spriteBitmap.get(i).getHeight())*(imageViewHeight/heightVisible)-spriteBitmap.get(i).getHeight(),paint);
                     }
-                    if (spriteFixPoint.get(i) == SPRITEFIXPOINT.TOP_RIGHT) {
+                    if (spriteFixPoint.get(i)==SPRITEFIXPOINT.TOP_RIGHT){
                         // this keeps alignment top-right
-                        canvas.drawBitmap(spriteBitmap.get(i), Math.round((spriteX.get(i) - left + spriteBitmap.get(i).getWidth()) * (imageViewWidth / widthVisible)) - spriteBitmap.get(i).getWidth(), Math.round(spriteY.get(i) - top) * (imageViewHeight / heightVisible), paint);
+                        canvas.drawBitmap(spriteBitmap.get(i),Math.round((spriteX.get(i)-left+spriteBitmap.get(i).getWidth())*(imageViewWidth/widthVisible))-spriteBitmap.get(i).getWidth(),Math.round(spriteY.get(i)-top)*(imageViewHeight/heightVisible),paint);
                     }
-                    if (spriteFixPoint.get(i) == SPRITEFIXPOINT.SPRITECENTER) {
+                    if (spriteFixPoint.get(i)==SPRITEFIXPOINT.SPRITECENTER){
                         // this keeps alignment sprite-center
-                        canvas.drawBitmap(spriteBitmap.get(i), Math.round((spriteX.get(i) - left + spriteBitmap.get(i).getWidth() / 2f) * (imageViewWidth / widthVisible)) - spriteBitmap.get(i).getWidth() / 2f, Math.round(spriteY.get(i) - top + spriteBitmap.get(i).getHeight() / 2f) * (imageViewHeight / heightVisible) - spriteBitmap.get(i).getHeight() / 2f, paint);
+                        canvas.drawBitmap(spriteBitmap.get(i),Math.round((spriteX.get(i)-left+spriteBitmap.get(i).getWidth()/2f)*(imageViewWidth/widthVisible))-spriteBitmap.get(i).getWidth()/2f,Math.round(spriteY.get(i)-top+spriteBitmap.get(i).getHeight()/2f)*(imageViewHeight/heightVisible)-spriteBitmap.get(i).getHeight()/2f,paint);
                     }
                 }
             }
@@ -497,6 +513,18 @@ public class ZoomableImageView {
             }
             super.onScaleEnd(scaleGestureDetector);
         }
+    }
+
+    public final static String STATE_SCALEFACTOR="STATE_SCALEFACTOR";
+    public final static String STATE_XFOCUS="STATE_XFOCUS";
+    public final static String STATE_YFOCUS="STATE_YFOCUS";
+
+    public Bundle saveZoomViewState(){
+        Bundle bundle = new Bundle();
+        bundle.putFloat(STATE_SCALEFACTOR,scaleFactor);
+        bundle.putFloat(STATE_XFOCUS,xFocus);
+        bundle.putFloat(STATE_YFOCUS,yFocus);
+        return bundle;
     }
 
 }

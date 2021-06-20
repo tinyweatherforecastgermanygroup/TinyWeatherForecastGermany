@@ -25,7 +25,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
-    android:background="@color/welcome_background"
+    android:background="?attr/colorWelcomeBackground"
     android:orientation="vertical">
 
     <LinearLayout
@@ -58,7 +58,7 @@
                 android:id="@+id/welcome_screen1_text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="?attr/colorText"
                 android:text="@string/welcome_s1_text1"
                 android:textSize="@dimen/welcome_text_size"
                 android:paddingBottom="@dimen/welcome_text_padding"/>
@@ -67,7 +67,7 @@
                 android:id="@+id/welcome_screen1_text2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="?attr/colorText"
                 android:text="@string/welcome_s1_text2"
                 android:textSize="@dimen/welcome_text_size"
                 android:paddingBottom="@dimen/welcome_text_padding"/>
@@ -76,7 +76,7 @@
                 android:id="@+id/welcome_screen1_text3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="?attr/colorText"
                 android:text="@string/welcome_s1_text3"
                 android:textSize="@dimen/welcome_text_size"
                 android:paddingBottom="@dimen/welcome_text_padding"/>
@@ -85,7 +85,7 @@
                 android:id="@+id/welcome_screen1_text4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="?attr/colorText"
                 android:text="@string/welcome_s1_text4"
                 android:textSize="@dimen/welcome_text_size"
                 android:paddingBottom="@dimen/welcome_text_padding"/>
@@ -94,7 +94,7 @@
                 android:id="@+id/welcome_screen1_text5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="?attr/colorText"
                 android:text="@string/welcome_s1_text5"
                 android:textSize="@dimen/welcome_text_size"
                 android:paddingBottom="@dimen/welcome_text_padding"/>
@@ -110,7 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:textColor="@color/widget_textcolor"
+        android:textColor="?attr/colorText"
         android:text="@string/welcome_next"
         android:layout_gravity="center"
         android:gravity="center"

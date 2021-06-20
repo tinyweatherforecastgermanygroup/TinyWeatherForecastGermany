@@ -30,7 +30,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="2dp"
-        android:textColor="@color/widget_textcolor"
+        android:textColor="@color/colorTextWidget"
         android:textSize="@dimen/widget_textsize_small"
         android:visibility="visible"
         android:gravity="center"
@@ -43,7 +43,7 @@
         android:gravity="center_horizontal|top"
         android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
-        android:textColor="@color/widget_textcolor"
+        android:textColor="@color/colorTextWidget"
         android:fontFamily="sans-serif-thin"
         android:format12Hour="hh:mm"
         android:format24Hour="HH:mm"
@@ -52,7 +52,7 @@
 
     <TextView android:id="@+id/widget_date"
         android:textSize="@dimen/widget_textsize_large"
-        android:textColor="@color/widget_textcolor"
+        android:textColor="@color/colorTextWidget"
         android:layout_below="@id/clockwidget_clock"
         android:layout_alignParentLeft="true"
         android:layout_gravity="left|top"
@@ -64,7 +64,7 @@
 
     <TextView android:id="@+id/widget_nextalarm"
         android:textSize="@dimen/widget_textsize_large"
-        android:textColor="@color/widget_textcolor"
+        android:textColor="@color/colorTextWidget"
         android:layout_below="@id/clockwidget_clock"
         android:layout_alignParentRight="true"
         android:layout_gravity="right|top"
@@ -93,7 +93,7 @@
 
         <TextView android:id="@+id/classicwidget_temperature"
             android:textSize="@dimen/widget_textsize_double"
-            android:textColor="@color/widget_textcolor"
+            android:textColor="@color/colorTextWidget"
             android:gravity="left"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/classicwidget_weatherconditionicon"
@@ -106,7 +106,7 @@
 
         <TextView android:id="@+id/classicwidget_temperature_highlow"
             android:textSize="@dimen/widget_textsize_medium"
-            android:textColor="@color/widget_textcolor"
+            android:textColor="@color/colorTextWidget"
             android:gravity="left"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/classicwidget_temperature"
@@ -116,7 +116,7 @@
 
         <TextView android:id="@+id/widget_pressure"
             android:textSize="@dimen/widget_textsize_medium"
-            android:textColor="@color/widget_textcolor"
+            android:textColor="@color/colorTextWidget"
             android:layout_gravity="right"
             android:layout_toRightOf="@id/classicwidget_temperature"
             android:layout_below="@id/classicwidget_temperature_highlow"
@@ -141,7 +141,7 @@
 
             <TextView android:id="@+id/widget_precipitation_text"
                 android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|left"
@@ -151,7 +151,7 @@
 
             <TextView android:id="@+id/clockwidget_precipitation_unit1"
                 android:textSize="@dimen/widget_textsize_small"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
@@ -162,7 +162,7 @@
 
             <TextView android:id="@+id/clockwidget_precipitation_unit2"
                 android:textSize="@dimen/widget_textsize_small"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
@@ -193,7 +193,7 @@
             <TextView
                 android:id="@+id/classicwidget_wind"
                 android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:gravity="left"
                 android:layout_marginLeft="2dp"
                 android:layout_toRightOf="@id/classicwidget_windarrow"
@@ -204,7 +204,7 @@
             <TextView
                 android:id="@+id/classicwidget_wind_unit"
                 android:textSize="@dimen/widget_textsize_small"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:gravity="left"
                 android:layout_toRightOf="@id/classicwidget_wind"
                 android:text="km/h"
@@ -234,7 +234,7 @@
             <TextView
                 android:id="@+id/widget_visibility_text"
                 android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:gravity="left"
                 android:layout_marginLeft="2dp"
                 android:layout_toRightOf="@id/widget_visibility_icon"
@@ -245,7 +245,7 @@
             <TextView
                 android:id="@+id/widget_visibility_probvalue"
                 android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:gravity="left"
                 android:layout_marginLeft="2dp"
                 android:layout_toRightOf="@id/widget_visibility_text"
@@ -257,7 +257,7 @@
             <TextView
                 android:id="@+id/widget_visibility_probunit1"
                 android:textSize="@dimen/widget_textsize_small"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:gravity="left|top"
                 android:layout_alignTop="@id/widget_visibility_probvalue"
                 android:layout_marginLeft="2dp"
@@ -269,7 +269,7 @@
             <TextView
                 android:id="@+id/widget_visibility_probunit2"
                 android:textSize="@dimen/widget_textsize_small"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:gravity="left|bottom"
                 android:layout_alignBottom="@id/widget_visibility_probvalue"
                 android:layout_marginLeft="2dp"
@@ -299,7 +299,7 @@
             <TextView
                 android:id="@+id/widget_temperature5cm_value"
                 android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:gravity="left"
                 android:layout_marginLeft="2dp"
                 android:layout_toRightOf="@id/widget_temperature5cm_icon"
@@ -320,7 +320,7 @@
             <TextView
                 android:id="@+id/widget_clouds_value"
                 android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:gravity="left"
                 android:layout_marginLeft="2dp"
                 android:layout_toRightOf="@id/widget_clouds_icon"
@@ -341,7 +341,7 @@
 
             <TextView android:id="@+id/classicwidget_weatherconditiontext"
                 android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -351,7 +351,7 @@
 
             <TextView android:id="@+id/classicwidget_locationtext"
                 android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/widget_textcolor"
+                android:textColor="@color/colorTextWidget"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

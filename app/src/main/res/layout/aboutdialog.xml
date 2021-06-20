@@ -38,7 +38,7 @@
             android:id="@+id/about_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/colorText"
             android:text="@string/button_continue"/>
 
     </LinearLayout>
@@ -61,7 +61,7 @@
             android:ellipsize="none"
             android:maxLines="3000"
             android:textSize="@dimen/about_textsize"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/colorText"
             android:gravity="center_horizontal"
             android:layout_centerInParent="true"
             android:layout_marginTop="2dp"

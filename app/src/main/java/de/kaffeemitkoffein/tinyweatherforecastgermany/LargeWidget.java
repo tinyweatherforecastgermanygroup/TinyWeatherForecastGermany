@@ -152,7 +152,7 @@ public class LargeWidget extends ClassicWidget{
         String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
         // determine max. possible fontsize
         Paint paint_weekday = new Paint();
-        paint_weekday.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
+        paint_weekday.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
         // paint_weekday.setTextSize(getMaxPossibleFontsize(weekday,width_bar,height_item));
         paint_weekday.setTextSize(fontsize_dayofweek);
         float x_offset_day = (width_bar - paint_weekday.measureText(weekday))/2;
@@ -180,7 +180,7 @@ public class LargeWidget extends ClassicWidget{
         if (weatherInfo.hasMaxTemperature()){
             String max_temperature_string = String.valueOf(weatherInfo.getMaxTemperatureInCelsiusInt())+"°";
             Paint paint_maxtemp = new Paint();
-            paint_maxtemp.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
+            paint_maxtemp.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
             // paint_maxtemp.setTextSize(getMaxPossibleFontsize(max_temperature_string,width_bar,height_item));
             paint_maxtemp.setTextSize(fontsize_temperature);
             float x_offset_maxtemp = (width_bar - paint_weekday.measureText(max_temperature_string))/2;
@@ -193,7 +193,7 @@ public class LargeWidget extends ClassicWidget{
         if (weatherInfo.hasMaxTemperature()){
             String min_temperature_string = String.valueOf(weatherInfo.getMinTemperatureInCelsiusInt())+"°";
             Paint paint_mintemp = new Paint();
-            paint_mintemp.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
+            paint_mintemp.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
             //paint_mintemp.setTextSize(getMaxPossibleFontsize(min_temperature_string,width_bar,height_item));
             paint_mintemp.setTextSize(fontsize_temperature);
             float x_offset_mintemp = (width_bar - paint_weekday.measureText(min_temperature_string))/2;

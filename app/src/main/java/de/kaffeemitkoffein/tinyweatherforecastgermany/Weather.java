@@ -504,7 +504,7 @@ public final class Weather {
                 String windsting = getWindDirectionString(context);
                 float max_fontsize = LargeWidget.getMaxPossibleFontsize(windsting,width_bitmap,height_bitmap);
                 Paint paint = new Paint();
-                paint.setColor(MainActivity.getColorFromResource(context,R.color.widget_textcolor));
+                paint.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
                 paint.setTextSize(max_fontsize);
                 // center text vertically & horizontally
                 float x_offset     = (width_bitmap-paint.measureText(windsting))/2;

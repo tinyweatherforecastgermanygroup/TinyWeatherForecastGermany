@@ -23,6 +23,6 @@
     android:id="@+id/geochoiceitem_text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textColor="@color/textColor"
-    android:background="@color/colorPrimaryDark"
+    android:textColor="?attr/colorText"
+    android:background="?attr/colorPrimaryDark"
     android:textSize="@dimen/geo_textsize_large"/>

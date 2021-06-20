@@ -154,7 +154,7 @@
                 color = Color.rgb(Math.round(Color.red(color)/3.5f),Math.round(Color.green(color)/3.5f),Math.round(Color.blue(color)/3.5f));
                 viewHolder.warning_item_maincontainer.setBackgroundColor(color);
             } else {
-                viewHolder.warning_item_maincontainer.setBackgroundColor(MainActivity.getColorFromResource(context,R.color.colorPrimary));
+                viewHolder.warning_item_maincontainer.setBackgroundColor(MainActivity.getColorFromResource(context,R.attr.colorPrimary));
             }
             String line1 = new String();
             if (warning.effective!=0){

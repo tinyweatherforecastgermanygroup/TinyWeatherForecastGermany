@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/textforecast_item_image"
-        android:textColor="@color/textforecast_date"
+        android:textColor="?attr/colorText"
         android:textSize="@dimen/geo_textsize_large"
         android:gravity="left">
     </TextView>
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textforecast_item_date"
         android:layout_toRightOf="@id/textforecast_item_image"
-        android:textColor="@color/textforecast_heading"
+        android:textColor="?attr/colorText"
         android:textSize="@dimen/geo_textsize_large"
         android:text="Ultimate weather"
         android:gravity="left">
@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/textforecast_item_image"
         android:layout_below="@id/textforecast_item_title"
-        android:textColor="@color/textforecast_subtitle"
+        android:textColor="?attr/colorText"
         android:textSize="@dimen/warning_medium"
         android:text="subtitle"
         android:gravity="left">

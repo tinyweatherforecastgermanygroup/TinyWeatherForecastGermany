@@ -19,12 +19,13 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dropdown_textitem"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:textColor="?attr/colorText"
-    android:gravity="left"
-    android:padding="2dp">
-</TextView>
+<resources>
+    <attr name="colorPrimary" format="color"/>
+    <attr name="colorPrimaryDark" format="color"/>
+    <attr name="colorPrimaryLight" format="color"/>
+    <attr name="colorAccent" format="color"/>
+    <attr name="colorText" format="color"/>
+    <attr name="colorTextDark" format="color"/>
+    <attr name="colorTextLight" format="color"/>
+    <attr name="colorWelcomeBackground" format="color"/>
+</resources>

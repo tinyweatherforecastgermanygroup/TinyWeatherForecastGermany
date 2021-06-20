@@ -47,14 +47,14 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:textSize="@dimen/fcmain_textsize_medium"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/colorText"
             android:text="@string/actionbar_textinput_title" />
 
         <AutoCompleteTextView
             android:id="@+id/actionbar_textview"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:background="@color/colorPrimary"
+            android:background="?attr/colorPrimary"
             android:layout_marginBottom="2dp"
             android:inputType="text"
             android:singleLine="true"

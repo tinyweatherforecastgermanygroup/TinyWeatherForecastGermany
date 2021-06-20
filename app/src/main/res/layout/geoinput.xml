@@ -28,7 +28,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorPrimaryDark"
         android:padding="3dp">
 
         <LinearLayout
@@ -49,7 +49,7 @@
                     android:id="@+id/geoinput_known_note"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="?attr/colorAccent"
                     android:textSize="@dimen/geo_textsize_medium"
                     android:layout_alignParentTop="true"
                     android:layout_alignLeft="@id/geoinput_globe"
@@ -61,7 +61,7 @@
                     android:id="@+id/geoinput_text_latitude"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/textColor"
+                    android:textColor="?attr/colorText"
                     android:textSize="@dimen/geo_textsize_large"
                     android:layout_below="@id/geoinput_known_note"
                     android:text="@string/geoinput_latitude"/>
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/geoinput_text_latitude"
-                    android:textColor="@color/textColor"
+                    android:textColor="?attr/colorText"
                     android:textSize="@dimen/geo_textsize_large"
                     android:hint="@string/geoinput_hint_latitude"
                     android:inputType="text"/>
@@ -80,7 +80,7 @@
                     android:id="@+id/geoinput_text_longitude"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/textColor"
+                    android:textColor="?attr/colorText"
                     android:textSize="@dimen/geo_textsize_large"
                     android:layout_below="@id/geoinput_edit_latitude"
                     android:text="@string/geoinput_longitude"/>
@@ -90,7 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/geoinput_text_longitude"
-                    android:textColor="@color/textColor"
+                    android:textColor="?attr/colorText"
                     android:textSize="@dimen/geo_textsize_large"
                     android:hint="@string/geoinput_hint_longitude"
                     android:inputType="text"/>
@@ -116,7 +116,7 @@
             android:id="@+id/geoinput_text_into"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/colorText"
             android:textSize="@dimen/geo_textsize_large"
             android:layout_marginBottom="12dp"
             android:layout_below="@id/geoinput_globeholder"
@@ -128,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/geoinput_text_into"
             android:layout_alignParentLeft="true"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/colorText"
             android:textSize="@dimen/fcmain_textsize_large"
             android:checked="false"/>
 
@@ -136,7 +136,7 @@
             android:id="@+id/geoinput_text_gps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
+            android:textColor="?attr/colorText"
             android:textSize="@dimen/geo_textsize_large"
             android:layout_toRightOf="@id/geoinput_check_gps"
             android:layout_below="@id/geoinput_text_into"

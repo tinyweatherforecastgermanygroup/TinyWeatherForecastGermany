@@ -35,6 +35,8 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -294,6 +296,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
         setContentView(R.layout.activity_main);
+        setTheme(R.style.AppTheme);
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
         // disable log to logcat if release is not a userdebug
         disableLogToLogcatIfNotUserDebug();
@@ -793,13 +796,10 @@ public class MainActivity extends Activity {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public static int getColorFromResource(Context context, int id){
-        if (Build.VERSION.SDK_INT>=23){
-            return context.getApplicationContext().getResources().getColor(id, context.getTheme());
-        } else {
-            return context.getApplicationContext().getResources().getColor(id);
-        }
+        TypedValue typedValue = new TypedValue();
+        context.getApplicationContext().getTheme().resolveAttribute(id,typedValue,true);
+        return typedValue.data;
     }
 
     @SuppressWarnings("deprecation")
@@ -808,14 +808,10 @@ public class MainActivity extends Activity {
         MenuItem menuItem = menu.findItem(id);
         if (!menuItem.isVisible()){
             SpannableString spannableString = new SpannableString(s);
-            if (Build.VERSION.SDK_INT>=23){
-                spannableString.setSpan(new ForegroundColorSpan(getApplicationContext().getResources().getColor(color_id,getTheme())),0,s.length(),0);
-            } else {
-                spannableString.setSpan(new ForegroundColorSpan(getApplicationContext().getResources().getColor(color_id)),0,s.length(),0);
-            }
+            int color = getColorFromResource(getApplicationContext(),color_id);
+            spannableString.setSpan(color,0,s.length(),0);
             menuItem.setTitle(spannableString);
         }
-
     }
 
     @Override
@@ -839,14 +835,14 @@ public class MainActivity extends Activity {
                     finish();
                 }
             }
-            setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.color.textColor);
-            setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.color.textColor);
-            setOverflowMenuItemColor(menu,R.id.menu_texts,R.string.texts_button, R.color.textColor);
-            setOverflowMenuItemColor(menu,R.id.menu_settings,R.string.settings_button, R.color.textColor);
-            setOverflowMenuItemColor(menu,R.id.menu_geoinput,R.string.geoinput_button, R.color.textColor);
-            setOverflowMenuItemColor(menu,R.id.menu_about,R.string.about_button, R.color.textColor);
-            setOverflowMenuItemColor(menu,R.id.menu_license,R.string.license_button, R.color.textColor);
-            setOverflowMenuItemColor(menu,R.id.menu_whatsnew,R.string.whatsnew_button, R.color.textColor);
+            setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.attr.colorText);
+            setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.attr.colorText);
+            setOverflowMenuItemColor(menu,R.id.menu_texts,R.string.texts_button, R.attr.colorText);
+            setOverflowMenuItemColor(menu,R.id.menu_settings,R.string.settings_button, R.attr.colorText);
+            setOverflowMenuItemColor(menu,R.id.menu_geoinput,R.string.geoinput_button, R.attr.colorText);
+            setOverflowMenuItemColor(menu,R.id.menu_about,R.string.about_button, R.attr.colorText);
+            setOverflowMenuItemColor(menu,R.id.menu_license,R.string.license_button, R.attr.colorText);
+            setOverflowMenuItemColor(menu,R.id.menu_whatsnew,R.string.whatsnew_button, R.attr.colorText);
         }
         // disable weather warnings if desired by user
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());

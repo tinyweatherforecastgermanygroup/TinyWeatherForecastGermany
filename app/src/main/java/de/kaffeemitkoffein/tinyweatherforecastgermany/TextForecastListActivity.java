@@ -173,9 +173,9 @@ public class TextForecastListActivity extends Activity {
         }
         GradientDrawable gradientDrawable = (GradientDrawable) floatButton.getDrawable();
         if (WeatherSettings.isTextForecastFilterEnabled(context)){
-            gradientDrawable.setColorFilter(MainActivity.getColorFromResource(context,R.color.colorAccent), PorterDuff.Mode.SRC_ATOP);
+            gradientDrawable.setColorFilter(MainActivity.getColorFromResource(context,R.attr.colorAccent), PorterDuff.Mode.SRC_ATOP);
         } else {
-            gradientDrawable.setColorFilter(MainActivity.getColorFromResource(context,R.color.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP);
+            gradientDrawable.setColorFilter(MainActivity.getColorFromResource(context,R.attr.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP);
         }
     }
 

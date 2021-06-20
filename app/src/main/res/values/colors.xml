@@ -20,30 +20,23 @@
 -->
 
 <resources>
-    <color name="colorPrimary">#202020</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorPrimaryLight">#464646</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="widget_textcolor">#FFFFFF</color>
-    <color name="textColor">#eeeeee</color>
-    <color name="textColorGrey">#999999</color>
-    <color name="background_holo_dark">@color/colorPrimary</color>
+    <color name="colorPrimary_DarkTheme">#202020</color>
+    <color name="colorPrimaryDark_DarkTheme">#000000</color>
+    <color name="colorPrimaryLight_DarkTheme">#464646</color>
+    <color name="colorAccent_DarkTheme">#03DAC5</color>
+    <color name="colorText_DarkTheme">#eeeeee</color>
+    <color name="colorTextDark_DarkTheme">#999999</color>
+    <color name="colorTextLight_DarkTheme">#ffffff</color>
+    <color name="colorWelcomeBackground_DarkTheme">#2222ff</color>
 
-    <color name="warning_color">@color/textColor</color>
-    <color name="warning_accent">@color/colorAccent</color>
-    <color name="warning_action">@color/widget_textcolor</color>
-    <color name="warning_clear">#00cc00</color>
-    <color name="warning_minor">#eeee00</color>
-    <color name="warning_moderate">#ee6600</color>
-    <color name="warning_severe">#ee0000</color>
-
-    <color name="welcome_background">#2222ff</color>
+    <color name="colorWarning_clear">#00cc00</color>
+    <color name="colorWarning_minor">#eeee00</color>
+    <color name="colorWarning_moderate">#ee6600</color>
+    <color name="colorWarning_severe">#ee0000</color>
 
     <color name="fcitem_rain">#2222aa</color>
     <color name="fcitem_clouds">#aaaaaa</color>
 
-    <color name="textforecast_heading">@color/colorAccent</color>
-    <color name="textforecast_date">@color/textColor</color>
-    <color name="textforecast_subtitle">@color/textColor</color>
+    <color name="colorTextWidget">@color/colorText_DarkTheme</color>
 
 </resources>
