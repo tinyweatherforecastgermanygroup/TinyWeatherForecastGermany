@@ -62,6 +62,8 @@ public class WeatherWarningActivity extends Activity {
     Boolean hide_rain = null;
     Radarmap radarmap;
 
+    Bundle zoomMapState = null;
+
     static float MAP_PIXEL_WIDTH;
     static float MAP_PIXEL_HEIGHT;
 
@@ -157,6 +159,9 @@ public class WeatherWarningActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem mi) {
         int item_id = mi.getItemId();
         if (item_id == R.id.menu_refresh) {
+            if (mapZoomable!=null){
+                zoomMapState = mapZoomable.saveZoomViewState();
+            }
             PrivateLog.log(this, Tag.MAIN, "starting update of weather warnings");
             if (UpdateAlarmManager.updateWarnings(getApplicationContext(),true)){
                 // returns true if update service was launched sucessfully
@@ -590,6 +595,9 @@ public class WeatherWarningActivity extends Activity {
                 executor.execute(tapRunnable);
             }
         };
+        if (zoomMapState!=null){
+            mapZoomable.restoreZoomViewState(zoomMapState);
+        }
         Paint pdijon = new Paint();
         pdijon.setStyle(Paint.Style.FILL_AND_STROKE);
         pdijon.setColor(Color.BLUE);

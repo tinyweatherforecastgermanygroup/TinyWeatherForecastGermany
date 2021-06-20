@@ -133,22 +133,13 @@ public class ZoomableImageView {
      */
 
 
-    public ZoomableImageView(Context context,ImageView imageView, Bitmap bitmap, Bundle zoomViewState){
-        this.context = context;
-        this.imageView = imageView;
-        this.imageViewWidth  = imageView.getWidth();
-        this.imageViewHeight = imageView.getHeight();
-        this.bitmap = bitmap.copy(Bitmap.Config.ARGB_8888,true);
-        initDefaults(zoomViewState);
-    }
-
     public ZoomableImageView(Context context,ImageView imageView, Bitmap bitmap){
         this.context = context;
         this.imageView = imageView;
         this.imageViewWidth  = imageView.getWidth();
         this.imageViewHeight = imageView.getHeight();
         this.bitmap = bitmap.copy(Bitmap.Config.ARGB_8888,true);
-        initDefaults(null);
+        initDefaults();
     }
 
 
@@ -174,7 +165,7 @@ public class ZoomableImageView {
 
     public void updateBitmap(Bitmap newbitmap){
         if ((newbitmap.getHeight()!=bitmap.getHeight()) || (newbitmap.getWidth()!=bitmap.getWidth())){
-            initDefaults(null);
+            initDefaults();
         }
         this.bitmap = newbitmap.copy(Bitmap.Config.ARGB_8888,true);
         redrawBitmap();
@@ -309,15 +300,10 @@ public class ZoomableImageView {
      * Inits default values.
      */
 
-    private void initDefaults(Bundle zoomViewState){
+    private void initDefaults(){
         xFocus = bitmap.getWidth()/2f;
         yFocus = bitmap.getHeight()/2f;
         scaleFactor = 1.0f;
-        if (zoomViewState!=null){
-            scaleFactor = zoomViewState.getFloat(STATE_SCALEFACTOR,scaleFactor);
-            xFocus      = zoomViewState.getFloat(STATE_XFOCUS,xFocus);
-            yFocus      = zoomViewState.getFloat(STATE_YFOCUS,yFocus);
-        }
         zoomGestureListener = new ZoomGestureListener();
         scaleGestureDetector = new ScaleGestureDetector(context,zoomGestureListener);
         if ((imageViewHeight==0) || (imageViewWidth==0)){
@@ -527,4 +513,10 @@ public class ZoomableImageView {
         return bundle;
     }
 
+    public void restoreZoomViewState(Bundle zoomViewState){
+        scaleFactor = zoomViewState.getFloat(STATE_SCALEFACTOR,scaleFactor);
+        xFocus      = zoomViewState.getFloat(STATE_XFOCUS,xFocus);
+        yFocus      = zoomViewState.getFloat(STATE_YFOCUS,yFocus);
+        redrawBitmap();
+    }
 }

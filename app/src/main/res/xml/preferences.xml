@@ -23,7 +23,7 @@
         android:title="@string/preference_category_general">
 
         <PreferenceScreen
-            android:key="PREF_screen_display"
+            android:key="PREF_screen_display_extended"
             android:title="@string/preference_screen_display_title"
             android:summary="@string/preference_screen_display_summary">
 
