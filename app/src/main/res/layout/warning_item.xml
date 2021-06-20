@@ -46,16 +46,6 @@
         </TextView>
 
         <TextView
-            android:id="@+id/warning_item_event"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
-            android:gravity="left">
-        </TextView>
-
-        <TextView
             android:id="@+id/warning_item_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,6 +66,16 @@
         </TextView>
 
     </LinearLayout>
+
+    <TextView
+            android:id="@+id/warning_item_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorAccent"
+            android:textSize="@dimen/warning_medium"
+            android:paddingRight="@dimen/warning_ip"
+            android:gravity="left">
+    </TextView>
 
     <LinearLayout
         android:id="@+id/warning_item_line2container"
