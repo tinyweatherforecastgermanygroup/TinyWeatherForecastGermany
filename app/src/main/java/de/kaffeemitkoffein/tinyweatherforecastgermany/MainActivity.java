@@ -806,11 +806,13 @@ public class MainActivity extends Activity {
     private void setOverflowMenuItemColor(Menu menu, int id, int string_id,int color_id){
         String s = getApplicationContext().getResources().getString(string_id);
         MenuItem menuItem = menu.findItem(id);
-        if (!menuItem.isVisible()){
+        if (menuItem.isVisible()){
             SpannableString spannableString = new SpannableString(s);
             int color = getColorFromResource(getApplicationContext(),color_id);
             spannableString.setSpan(color,0,s.length(),0);
             menuItem.setTitle(spannableString);
+        } else {
+            // do nothing
         }
     }
 
@@ -819,7 +821,7 @@ public class MainActivity extends Activity {
         MenuInflater mi = getMenuInflater();
         mi.inflate(R.menu.main_activity,menu);
         if (!WeatherSettings.forceNoMenuIcons(getApplicationContext())){
-            // try to show incons in drop-down menu
+            // try to show icons in drop-down menu
             if (menu.getClass().getSimpleName().equals("MenuBuilder")){
                 try {
                     Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible",Boolean.TYPE);
@@ -835,8 +837,9 @@ public class MainActivity extends Activity {
                     finish();
                 }
             }
-            setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.attr.colorText);
-            setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.attr.colorText);
+            // omit the first two, as they are not in the menu
+            //setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.attr.colorText);
+            //setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.attr.colorText);
             setOverflowMenuItemColor(menu,R.id.menu_texts,R.string.texts_button, R.attr.colorText);
             setOverflowMenuItemColor(menu,R.id.menu_settings,R.string.settings_button, R.attr.colorText);
             setOverflowMenuItemColor(menu,R.id.menu_geoinput,R.string.geoinput_button, R.attr.colorText);
@@ -856,6 +859,16 @@ public class MainActivity extends Activity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onMenuOpened(int featureID, Menu menu){
+        return super.onMenuOpened(featureID,menu);
+    }
+
+
+    @Override
+    public void onOptionsMenuClosed(Menu menu){
+        super.onOptionsMenuClosed(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem mi){

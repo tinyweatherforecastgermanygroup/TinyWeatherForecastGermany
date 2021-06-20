@@ -24,13 +24,13 @@
     <item android:id="@+id/menu_refresh"
         android:title="@string/update_button"
         android:icon="@mipmap/ic_refresh_white_24dp"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:orderInCategory="1">
     </item>
     <item android:id="@+id/menu_warnings"
         android:title="@string/warnings_button"
         android:icon="@mipmap/warning_icon"
-        android:showAsAction="ifRoom"
+        android:showAsAction="always"
         android:orderInCategory="2">
     </item>
     <item android:id="@+id/menu_texts"

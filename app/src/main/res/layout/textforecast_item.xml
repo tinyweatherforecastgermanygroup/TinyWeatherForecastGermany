@@ -57,7 +57,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/textforecast_item_date"
         android:textSize="@dimen/fcmain_textsize_medium"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/textforecast_item_title"
