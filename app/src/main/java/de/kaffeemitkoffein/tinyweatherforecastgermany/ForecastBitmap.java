@@ -298,8 +298,8 @@ public class ForecastBitmap{
             y_polygon_rain[weatherInfos.size()+3] = y_polygon_rain[0];
 
         }
-        drawPolygon(canvas,x_polygon,y_polygon_clouds,MainActivity.getColorFromResource(context,R.color.fcitem_clouds),65);
-        drawPolygon(canvas,x_polygon,y_polygon_rain,MainActivity.getColorFromResource(context,R.color.fcitem_rain),85);
+        drawPolygon(canvas,x_polygon,y_polygon_clouds,0xaaaaaa,65);
+        drawPolygon(canvas,x_polygon,y_polygon_rain,0x2222aa,85);
         int position = weatherInfos.size()-1;
         while (position>=0){
             // draw timestamp

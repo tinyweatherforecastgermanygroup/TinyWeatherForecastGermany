@@ -34,8 +34,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -520,7 +518,7 @@ public class MainActivity extends Activity {
         // spinner code
         spinner = (Spinner) findViewById(R.id.stations_spinner);
         spinnerItems = weatherSettings.getFavorites();
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_spinner_item, spinnerItems);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, spinnerItems);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
         spinner.setAdapter(spinnerArrayAdapter);
         final Context context = this;

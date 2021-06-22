@@ -169,8 +169,10 @@ public class StationSearchEngine {
                 ySum = ySum + area.polygons.get(i).getPolygonYCentroid();
             }
             Location location = new Location("weather");
-            location.setLatitude(xSum/area.polygons.size());
-            location.setLongitude(ySum/area.polygons.size());
+            //location.setLatitude(xSum/area.polygons.size());
+            //location.setLongitude(ySum/area.polygons.size());
+            location.setLatitude(ySum/area.polygons.size());
+            location.setLongitude(xSum/area.polygons.size());
             Bundle bundle = new Bundle();
             bundle.putString(Weather.WeatherLocation.EXTRAS_NAME,area.name);
             bundle.putInt(Weather.WeatherLocation.EXTRAS_ITEMS_TO_SHOW,300);
