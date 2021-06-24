@@ -84,8 +84,11 @@
     <string name="preference_category_widget">Widget-Einstellungen</string>
     <string name="preference_category_warnings">Wetter-Warnungen</string>
     <string name="preference_category_other">Sonstiges</string>
+    <string name="preference_category_texts">Wettertexte</string>
     <string name="preference_updateinterval_title">Aktualisierungs-Intervall</string>
     <string name="preference_pdateinterval_summary">Wie oft sollen Wetterdaten aktualisiert werden</string>
+    <string name="preference_update_textforecasts_title">Texte aktualisieren</string>
+    <string name="preference_update_textforecasts_summary">Wettertexte aktuell halten.</string>
     <string name="preference_opacity_title">Deckkraft Widget</string>
     <string name="preference_opacity_summary">Bestimmt die Transparenz des Widgets auf dem Homescreen.</string>
     <string name="preference_displaynoteinwidget_title">DWD-Hinweis anzeigen</string>

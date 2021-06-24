@@ -79,9 +79,12 @@
     <string name="preference_pdateinterval_summary">Selecteer hoe vaak de weergegevens moeten worden bijgewerkt</string>
     <string name="preference_updateinterval_title">Bijwerkingsinterval</string>
     <string name="preference_category_other">Andere</string>
+    <string name="preference_category_texts">Weer teksten</string>
     <string name="preference_category_warnings">Weerwaarschuwingen</string>
     <string name="preference_category_widget">Widget instellingen</string>
     <string name="preference_category_general">Weersgegevens</string>
+    <string name="preference_update_textforecasts_title">Bijgewerkte teksten</string>
+    <string name="preference_update_textforecasts_summary">Hou de weerberichten bij.</string>
     <string name="rain">Regen:</string>
     <string name="clouds">Bewolking:</string>
     <string name="title_activity_settings">Instellingen</string>

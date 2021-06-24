@@ -392,7 +392,7 @@ public class ZoomableImageView {
      * Redraws the bitmap inside the imageview. Uses the currently set scale factor.
      */
 
-    private void redrawBitmap(){
+    public void redrawBitmap(){
         redrawBitmap(scaleFactor);
     }
 

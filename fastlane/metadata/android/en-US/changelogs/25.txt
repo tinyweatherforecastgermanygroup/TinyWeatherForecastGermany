@@ -1,0 +1,5 @@
+- search now includes cities, communities, federal states, lakes and sea areas
+- search is now lenient with umlauts
+- corrected area data, fixing gaps when displaying sea areas and coastal areas
+- updates do not start anymore when no internet connection is present
+- several minor bug fixes and display improvements

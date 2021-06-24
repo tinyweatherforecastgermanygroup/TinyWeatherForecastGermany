@@ -1,0 +1,5 @@
+- Suche beinhaltet nun Städte, Gemeinden, Bundesländer, Seen und Seegebiete
+- die Suche geht nun nachsichtig mit Umlauten um
+- korrigierte Gebietsdaten, behebt Lücken in der Darstellung von See- und Küstengebieten
+- Updates starten nicht mehr, wenn keine Internet-Verbindung da ist
+- diverse Fehlerkorrekturen und Verbesserungen der Anzeige

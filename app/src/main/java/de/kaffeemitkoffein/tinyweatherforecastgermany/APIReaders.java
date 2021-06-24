@@ -856,7 +856,6 @@ public class APIReaders {
                 }
                 fileInputStream.close();
                 return byteArrayOutputStream.toByteArray();
-
             } catch (Exception e){
                 return null;
             }

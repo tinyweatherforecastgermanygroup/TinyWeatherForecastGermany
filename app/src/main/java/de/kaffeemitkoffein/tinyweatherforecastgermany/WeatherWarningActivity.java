@@ -95,6 +95,9 @@ public class WeatherWarningActivity extends Activity {
     @Override
     protected void onResume() {
         registerForBroadcast();
+        if (germany==null){
+            germany = (ImageView) findViewById(R.id.warningactivity_map);
+        }
         updateWarningsIfNeeded();
         if (hide_rain==null){
             hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
@@ -232,7 +235,17 @@ public class WeatherWarningActivity extends Activity {
             UpdateAlarmManager.updateWarnings(getApplicationContext(),false);
         } else {
             PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings not outdated, recycling.");
-            displayWarnings();
+            germany.post(new Runnable() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayWarnings();
+                        }
+                    });
+                }
+            });
             updateActionBarLabels();
         }
     }
@@ -544,15 +557,15 @@ public class WeatherWarningActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            drawMapBitmap(radarmap);
+                            if (!hide_rain){
+                                drawMapBitmap(radarmap);
+                            }
                         }
                     });
                 }
             }
         };
-        if (!hide_rain){
-            executor.execute(radarmapRunnable);
-        }
+        executor.execute(radarmapRunnable);
         // set close listener
         ImageView closeImageview = (ImageView) findViewById(R.id.closeicon_map);
         if (closeImageview != null){
@@ -575,7 +588,9 @@ public class WeatherWarningActivity extends Activity {
         // set listener
         germany = (ImageView) findViewById(R.id.warningactivity_map);
         gestureDetector = new GestureDetector(this,new MapGestureListener());
-        mapZoomable = new ZoomableImageView(getApplicationContext(),germany,germanyBitmap){
+        //mapZoomable = new ZoomableImageView(getApplicationContext(),germany,germanyBitmap) {
+
+        mapZoomable = new ZoomableImageView(getApplicationContext(),germany,warningsBitmap){
             @Override
             public void onGestureFinished(float scaleFactor, float lastXtouch, float lastYtouch, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
                 //Log.v("ZT","-------------------------------------");
@@ -598,14 +613,15 @@ public class WeatherWarningActivity extends Activity {
         if (zoomMapState!=null){
             mapZoomable.restoreZoomViewState(zoomMapState);
         }
-        Paint pdijon = new Paint();
-        pdijon.setStyle(Paint.Style.FILL_AND_STROKE);
-        pdijon.setColor(Color.BLUE);
+        //Paint pdijon = new Paint();
+        //pdijon.setStyle(Paint.Style.FILL_AND_STROKE);
+        //pdijon.setColor(Color.BLUE);
         // add the pin sprite
         int pinsize = Math.round(0.05f*germanyBitmap.getHeight());
         PlotPoint pinPoint = getPlotPoint((float) localStation.longitude, (float) localStation.latitude);
         Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinsize,pinsize,false);
         mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT);
+        mapZoomable.redrawBitmap();
         mapTouchListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {

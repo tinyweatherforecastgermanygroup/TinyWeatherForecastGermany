@@ -80,8 +80,11 @@
     <string name="preference_category_widget">Paramètres du widget</string>
     <string name="preference_category_warnings">Avertissements météo</string>
     <string name="preference_category_other">Autre</string>
+    <string name="preference_category_texts">Textes sur la météo</string>
     <string name="preference_updateinterval_title">Intervalle de mise à jour</string>
     <string name="preference_pdateinterval_summary">Sélectionnez la fréquence à laquelle les données météorologiques doivent être mises à jour.</string>
+    <string name="preference_update_textforecasts_title">Textes de mise à jour</string>
+    <string name="preference_update_textforecasts_summary">Tenez à jour les textes météorologiques.</string>
     <string name="preference_opacity_title">Opacité du widget</string>
     <string name="preference_opacity_summary">Sélectionnez le degré de transparence du widget sur votre écran d\'accueil.</string>
     <string name="preference_displaynoteinwidget_title">Afficher la note DWD</string>

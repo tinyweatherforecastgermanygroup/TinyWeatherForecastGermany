@@ -88,6 +88,7 @@ public class TextForecastListActivity extends Activity {
     @Override
     protected void onResume() {
         registerForBroadcast();
+        updateTextsIfOutdated();
         showList();
         super.onResume();
     }
@@ -144,6 +145,11 @@ public class TextForecastListActivity extends Activity {
         return super.onOptionsItemSelected(mi);
     }
 
+    private void updateTextsIfOutdated(){
+        if (WeatherSettings.areTextForecastsOutdated(this)){
+            UpdateAlarmManager.updateTexts(this);
+        }
+    }
 
     private void showList(){
         runOnUiThread(new Runnable() {
