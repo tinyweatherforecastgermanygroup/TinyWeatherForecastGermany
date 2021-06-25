@@ -349,6 +349,7 @@ public class WeatherWarningActivity extends Activity {
         strokePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         strokePaint.setTypeface(Typeface.DEFAULT);
         strokePaint.setTextSize(paint.getTextSize());
+        strokePaint.setAntiAlias(true);
         int shiftX = Math.max(2,germany.getWidth()/MAP_PIXEL_FIXEDWIDTH);
         int shiftY = Math.max(2,germany.getHeight()/MAP_PIXEL_FIXEDHEIGHT);
         canvas.drawText(text,x-shiftX,y,strokePaint);
