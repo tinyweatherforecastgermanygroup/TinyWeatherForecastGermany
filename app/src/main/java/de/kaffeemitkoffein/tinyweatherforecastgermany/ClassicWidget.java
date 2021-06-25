@@ -502,9 +502,4 @@ public class ClassicWidget extends AppWidgetProvider {
         }
     }
 
-    public static void getColorIntFromColorValue() {
-
-    }
-
-
 }
