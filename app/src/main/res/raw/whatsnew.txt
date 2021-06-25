@@ -1,14 +1,9 @@
 What is new in this version ([VERSION]):
 
-- new french locale (thanks to Jean-Luc!)
-- the map in the warnings is zoomable now
-- locations and warnings are displayed more precisely on the map
-- improved map icons
-- improved scrolling performance in warnings
-- images now load faster in the main app
-- added warncellID support in warnings
-- pressing enter triggers a search in the main app
-- fixed rain radar not showing dBZ values above 31
-- fixed missing menu items on some devices/roms
-- fixed some forecasts invisible on some devices/roms
+- search now includes cities, communities, federal states, lakes and sea areas
+- search is now lenient with umlauts
+- corrected area data, fixing gaps when displaying sea areas and coastal areas
+- updates do not start anymore when no internet connection is present
+- automatic updates of weather texts can be disabled in the options
+- several minor bug fixes and display improvements
 
