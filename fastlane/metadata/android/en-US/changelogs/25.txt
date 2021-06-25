@@ -2,4 +2,5 @@
 - search is now lenient with umlauts
 - corrected area data, fixing gaps when displaying sea areas and coastal areas
 - updates do not start anymore when no internet connection is present
+- automatic updates of weather texts can be disabled in the options
 - several minor bug fixes and display improvements
