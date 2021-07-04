@@ -315,7 +315,6 @@ public class MainActivity extends Activity {
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             // remove shared preferences on app update if installed app is lower than build 20
             if ((weatherSettings.last_version_code>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT) && (weatherSettings.last_version_code<20)){
-                // PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
                 WeatherSettings.resetStationToDefault(getApplicationContext());
                 WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
                 showWarning(R.mipmap.ic_warning_white_24dp,getResources().getString(R.string.warning_stationreset_title),getResources().getString(R.string.warning_stationreset_text));
@@ -589,7 +588,7 @@ public class MainActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.custom_dropdown_item, stationSearchEngine.entries);
+                                ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.custom_dropdown_item, entries);
                                 if (autoCompleteTextView==null){
                                     autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
                                 }
