@@ -70,11 +70,9 @@
     </RelativeLayout>
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <TextView
             android:layout_width="wrap_content"
@@ -128,18 +126,19 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="20"
-            android:layout_below="@id/main_selectstation_text">
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_below="@id/main_station_geo">
 
             <Spinner android:id="@+id/stations_spinner"
                 android:layout_width="0dp"
-                android:layout_weight="19"
+                android:layout_weight="18"
                 android:layout_height="wrap_content"/>
 
             <ImageView android:id="@+id/main_reset_favorites"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:tint="?attr/colorText"
