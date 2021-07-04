@@ -930,21 +930,23 @@ public class MainActivity extends Activity {
     }
 
     public void showAboutDialog(){
-        aboutDialog = new Dialog(this);
-        aboutDialog.setContentView(R.layout.aboutdialog);
-        aboutDialog.setTitle(getResources().getString(R.string.app_name));
-        aboutDialog.setCancelable(true);
-        String versioning = BuildConfig.VERSION_NAME + " (build "+BuildConfig.VERSION_CODE+")";
-        Button contbutton = (Button) aboutDialog.findViewById(R.id.about_button);
-        contbutton.setOnClickListener(new View.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        LayoutInflater layoutInflater = this.getLayoutInflater();
+        final View view = layoutInflater.inflate(R.layout.aboutdialog,null,false);
+        builder.setView(view);
+        builder.setTitle(getResources().getString(R.string.app_name));
+        builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(DialogInterface dialogInterface, int i) {
                 aboutDiaglogVisible=false;
-                aboutDialog.dismiss();
+                dialogInterface.dismiss();
             }
         });
+        aboutDialog = builder.create();
         aboutDialog.show();
         aboutDiaglogVisible=true;
+        String versioning = BuildConfig.VERSION_NAME + " (build "+BuildConfig.VERSION_CODE+")";
         TextView textView = (TextView) aboutDialog.findViewById(R.id.about_textview);
         String textfile = "about";
         InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(textfile,"raw",getApplicationContext().getPackageName()));
