@@ -1051,10 +1051,10 @@ public class MainActivity extends Activity {
                         public void run() {
                             // Allow screen rotation within this app again
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                            // after new database is available, warnings need to be rebuilt and checked again
+                            checkIfWarningsApply();
                             try {
                                 prepareDatabaseDialog.dismiss();
-                                // after new database is available, warnings need to be rebuilt and checked again
-                                checkIfWarningsApply();
                             } catch (Exception e){
                                 // do nothing, as this only means view is not attached to activity any more.
                                 // This only happens if onDestroy was not called for some reason.
