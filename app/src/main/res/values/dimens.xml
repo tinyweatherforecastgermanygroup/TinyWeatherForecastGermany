@@ -45,7 +45,7 @@
 
     <dimen name="licence_textsize">10sp</dimen>
     <dimen name="about_textsize">12sp</dimen>
-    <dimen name="whatsnew_textsize">14sp</dimen>
+    <dimen name="whatsnew_textsize">16sp</dimen>
 
     <dimen name="warning_large">14sp</dimen>
     <dimen name="warning_medium">12sp</dimen>

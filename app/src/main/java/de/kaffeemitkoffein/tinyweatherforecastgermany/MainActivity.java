@@ -78,7 +78,7 @@ public class MainActivity extends Activity {
     private Dialog aboutDialog;
     private boolean aboutDiaglogVisible=false;
 
-    private Dialog whatsNewDialog;
+    private AlertDialog whatsNewDialog;
     private AlertDialog prepareDatabaseDialog;
     private boolean whatsNewDialogVisible=false;
 
@@ -967,21 +967,23 @@ public class MainActivity extends Activity {
     }
 
     public void showWhatsNewDialog(){
-        whatsNewDialog = new Dialog(this);
-        whatsNewDialog.setContentView(R.layout.whatsnewdialog);
-        whatsNewDialog.setTitle(getResources().getString(R.string.app_name));
-        whatsNewDialog.setCancelable(true);
-        Button contbutton = (Button) whatsNewDialog.findViewById(R.id.whatsnew_button);
-        contbutton.setOnClickListener(new View.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        LayoutInflater layoutInflater = this.getLayoutInflater();
+        final View view = layoutInflater.inflate(R.layout.whatsnewdialog,null,false);
+        builder.setView(view);
+        builder.setTitle(getResources().getString(R.string.app_name));
+        builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(DialogInterface dialogInterface, int i) {
                 whatsNewDialogVisible=false;
-                whatsNewDialog.dismiss();
                 // update version code in preferences so that this dialog is not shown anymore in this version
                 final WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
                 weatherSettings.applyPreference(WeatherSettings.PREF_LAST_VERSION_CODE,BuildConfig.VERSION_CODE);
+                dialogInterface.dismiss();
             }
         });
+        whatsNewDialog = builder.create();
         whatsNewDialog.show();
         whatsNewDialogVisible=true;
         TextView textView = (TextView) whatsNewDialog.findViewById(R.id.whatsnew_textview);
