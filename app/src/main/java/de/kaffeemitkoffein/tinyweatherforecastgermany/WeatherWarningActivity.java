@@ -70,6 +70,8 @@ public class WeatherWarningActivity extends Activity {
     public final static String WEATHER_WARNINGS_UPDATE="WEATHER_WARNINGS_UPDATE";
     public final static String WEATHER_WARNINGS_UPDATE_RESULT="WEATHER_WARNINGS_UPDATE_RESULT";
 
+    public final static String SIS_ZOOMMAPSTATEBUNDLE="ZOOMMAPSTATEBUNDLE";
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -91,6 +93,23 @@ public class WeatherWarningActivity extends Activity {
             }
         }
     };
+
+    @Override
+    public void onSaveInstanceState(Bundle state){
+        if (mapZoomable != null){
+            zoomMapState = mapZoomable.saveZoomViewState();
+        }
+        if (zoomMapState!=null){
+            state.putBundle(SIS_ZOOMMAPSTATEBUNDLE,zoomMapState);
+        }
+        super.onSaveInstanceState(state);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state){
+        super.onRestoreInstanceState(state);
+        // do nothing here for the moment
+    }
 
     @Override
     protected void onResume() {
@@ -116,6 +135,13 @@ public class WeatherWarningActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weatherwarning);
         registerForBroadcast();
+        // try to restore zoom factor if it is available from the savedInstanceState
+        if (savedInstanceState!=null){
+            Bundle bundle = savedInstanceState.getBundle(SIS_ZOOMMAPSTATEBUNDLE);
+            if (bundle!=null){
+                zoomMapState = bundle;
+            }
+        }
         executor = Executors.newSingleThreadExecutor();
         localStation = WeatherSettings.getSetStationLocation(getApplicationContext());
         // action bar layout
