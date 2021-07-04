@@ -3,7 +3,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -119,7 +118,11 @@ public class StationSearchEngine {
         }
         ArrayList<String> result = new ArrayList<String>();
         for (int i=0; i<s.size(); i++){
-            result.add(toInternationalUmlaut(s.get(i)));
+            String s1 = s.get(i);
+            String s2 = toInternationalUmlaut(s1);
+            if (!s1.equals(s2)){
+                result.add(s2);
+            }
         }
         return result;
     }
@@ -169,8 +172,6 @@ public class StationSearchEngine {
                 ySum = ySum + area.polygons.get(i).getPolygonYCentroid();
             }
             Location location = new Location("weather");
-            //location.setLatitude(xSum/area.polygons.size());
-            //location.setLongitude(ySum/area.polygons.size());
             location.setLatitude(ySum/area.polygons.size());
             location.setLongitude(xSum/area.polygons.size());
             Bundle bundle = new Bundle();

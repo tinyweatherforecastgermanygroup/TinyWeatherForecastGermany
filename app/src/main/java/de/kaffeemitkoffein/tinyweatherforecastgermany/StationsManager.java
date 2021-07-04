@@ -279,6 +279,8 @@ public class StationsManager {
                     }
                     index ++;
                 }
+            } else {
+                return i;
             }
         }
         return null;
