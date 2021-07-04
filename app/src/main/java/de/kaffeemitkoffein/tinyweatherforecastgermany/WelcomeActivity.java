@@ -48,8 +48,22 @@ public class WelcomeActivity extends Activity {
     ImageView arrow_left;
     TextView skip;
 
+    private final static String SIS_PAGENUMBER = "PAGENUMBER";
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putInt(SIS_PAGENUMBER,page);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null){
+            Integer i = savedInstanceState.getInt(SIS_PAGENUMBER);
+            if (i!=null){
+                page = i;
+            }
+        }
         executor = Executors.newSingleThreadExecutor();
         boolean force_replay = false;
         Intent intent = getIntent();
@@ -65,7 +79,6 @@ public class WelcomeActivity extends Activity {
             }
         }
         if ((WeatherSettings.isFirstAppLaunch(getApplicationContext())) || (force_replay)) {
-            WeatherSettings.setAppLaunchedFlag(getApplicationContext());
             setContentView(R.layout.activity_welcome);
             // action bar layout
             ActionBar actionBar = getActionBar();
@@ -177,6 +190,7 @@ public class WelcomeActivity extends Activity {
 
     private void startMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
+        WeatherSettings.setAppLaunchedFlag(getApplicationContext());
         startActivity(i);
         finish();
     }

@@ -1,0 +1,5 @@
+
+- bei Drehen des Gerätes wird der Zoom in der Karte beibehalten
+- behoben: einige Wetterstationen konnten nicht ausgewählt werden
+- behoben: einige Wetterstationen waren in der Vorschlagsliste doppelt
+- behoben: möglicher App-Absturz beim Start

@@ -23,6 +23,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.*;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -78,6 +79,7 @@ public class MainActivity extends Activity {
     private boolean aboutDiaglogVisible=false;
 
     private Dialog whatsNewDialog;
+    private AlertDialog prepareDatabaseDialog;
     private boolean whatsNewDialogVisible=false;
 
     Executor executor;
@@ -229,16 +231,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onPause(){
-        if (aboutDialog != null){
-            if (aboutDialog.isShowing()){
-                aboutDialog.dismiss();
-            }
-        }
-        if (whatsNewDialog != null){
-            if (whatsNewDialog.isShowing()){
-                whatsNewDialog.dismiss();
-            }
-        }
+        cancelAnyOpenDialogs();
         unregisterReceiver(receiver);
         stopGPSLocationSearch();
         super.onPause();
@@ -287,6 +280,30 @@ public class MainActivity extends Activity {
             }
         }
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cancelAnyOpenDialogs();
+    }
+
+    private void cancelAnyOpenDialogs(){
+        if (aboutDialog!=null){
+            if (aboutDialog.isShowing()){
+                aboutDialog.dismiss();
+            }
+        }
+        if (prepareDatabaseDialog!=null){
+            if (prepareDatabaseDialog.isShowing()){
+                prepareDatabaseDialog.dismiss();
+            }
+        }
+        if (whatsNewDialog != null){
+            if (whatsNewDialog.isShowing()){
+                whatsNewDialog.dismiss();
+            }
+        }
     }
 
     @Override
@@ -1001,6 +1018,8 @@ public class MainActivity extends Activity {
         // a) database does not exist
         // b) if sql database is outdated
         if ((!Areas.doesAreaDatabaseExist(this)) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(this))){
+            // Lock screen rotation during database processing to prevent activity being destroyed
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             deleteAreaDatabase(this);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(false);
@@ -1008,8 +1027,8 @@ public class MainActivity extends Activity {
             LayoutInflater layoutInflater = this.getLayoutInflater();
             final View view = layoutInflater.inflate(R.layout.areadatabasecreator_message,null,false);
             builder.setView(view);
-            final AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+            prepareDatabaseDialog = builder.create();
+            prepareDatabaseDialog.show();
             final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.areadatabasecreator_progressbar);
             final TextView progressText = (TextView) view.findViewById(R.id.areadatabasecreator_textinfo);
             Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(context,executor){
@@ -1030,9 +1049,16 @@ public class MainActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            alertDialog.dismiss();
-                            // after new database is available, warnings need to be rebuilt and checked again
-                            checkIfWarningsApply();
+                            // Allow screen rotation within this app again
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                            try {
+                                prepareDatabaseDialog.dismiss();
+                                // after new database is available, warnings need to be rebuilt and checked again
+                                checkIfWarningsApply();
+                            } catch (Exception e){
+                                // do nothing, as this only means view is not attached to activity any more.
+                                // This only happens if onDestroy was not called for some reason.
+                            }
                         }
                     });
                 }

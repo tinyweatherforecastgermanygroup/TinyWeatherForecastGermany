@@ -1,0 +1,4 @@
+- the zoom state of the map is retained when rotating the device
+- fixed: some weather stations could not be selected
+- fixed: some weather stations were doubled in the suggestions
+- fixed: possible app crash at start
