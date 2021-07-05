@@ -353,7 +353,7 @@ public class MainActivity extends Activity {
                 if (key.equals(WeatherSettings.PREF_STATION_NAME)){
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
                     getWeatherForecast();
-                    // update warnings async
+                    // update warnings async, but only if database of areas is ready
                     checkIfWarningsApply();
                     // notify GadgetBridge
                     GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
@@ -773,6 +773,10 @@ public class MainActivity extends Activity {
     }
 
     private void checkIfWarningsApply(){
+        // abort if warnings disabled or area database not ready
+        if (WeatherSettings.areWarningsDisabled(context) || !WeatherSettings.isAreaDatabaseReady(context)){
+            return;
+        }
         // invalidate current warnings
         localWarnings = null;
         if (forecastAdapter!=null){

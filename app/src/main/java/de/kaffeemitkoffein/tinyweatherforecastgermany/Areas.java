@@ -156,6 +156,7 @@ public class Areas {
         String[] columns = {AreaContentProvider.AreaDatabaseHelper.KEY_warncellid};
         Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,columns, null, null, null);
         int i=cursor.getCount();
+        cursor.close();
         if (i==AreaDatabaseCreator.DATABASE_SIZE){
             return true;
         }
@@ -186,6 +187,7 @@ public class Areas {
     }
 
     public static ArrayList<Area> getAreas(Context context, ArrayList<String> warincellIDs){
+        ArrayList<Area> areas = new ArrayList<Area>();
         AreaContentProvider areaContentProvider = new AreaContentProvider();
         areaContentProvider.setContext(context);
         String s = "";
@@ -198,7 +200,6 @@ public class Areas {
         String selection = AreaContentProvider.KEY_warncellid + " IN("+s+")";
         String[] selectionArg = warincellIDs.toArray(new String[warincellIDs.size()]);
         Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null, selection, selectionArg, null);
-        ArrayList<Area> areas = new ArrayList<Area>();
         int i = 0;
         if (cursor!=null){
             if (cursor.moveToFirst()){
