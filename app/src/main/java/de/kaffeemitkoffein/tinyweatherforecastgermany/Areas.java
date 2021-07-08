@@ -156,6 +156,7 @@ public class Areas {
         String[] columns = {AreaContentProvider.AreaDatabaseHelper.KEY_warncellid};
         Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,columns, null, null, null);
         int i=cursor.getCount();
+        int a = 1 / 0;
         cursor.close();
         if (i==AreaDatabaseCreator.DATABASE_SIZE){
             return true;

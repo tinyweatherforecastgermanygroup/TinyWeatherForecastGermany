@@ -7,9 +7,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.Executor;
@@ -245,15 +249,40 @@ public class DataUpdateService extends Service {
     }
 
     public static boolean isConnectedToInternet(Context context){
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager!=null) {
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if (networkInfo != null) {
-                // returns if the network can establish connections and pass data.
-                return networkInfo.isConnected();
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager!=null){
+                // use networkInfo for api below 23
+                if (Build.VERSION.SDK_INT < 23){
+                    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                    if (networkInfo != null) {
+                        // returns if the network can establish connections and pass data.
+                        return networkInfo.isConnected();
+                    }
+                    return false;
+                // use connectivityManager on api > 22
+                } else {
+                    // The internet check is disabled for API 29, because the only reasonable approach is a callback
+                    Network network = connectivityManager.getActiveNetwork();
+                    NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+                    if (networkCapabilities==null) {
+                        // no network
+                        return false;
+                    } else {
+                        if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))){
+                            // valid internet conn
+                            return true;
+                        } else {
+                            // conn is not proven
+                            return false;
+                        }
+                    }
+                }
             }
+        } catch (Exception e){
+            // connectivityManager not found, return true to be safe
         }
-        return false;
+        return true;
     }
 
     private boolean isConnectedToInternet(){
