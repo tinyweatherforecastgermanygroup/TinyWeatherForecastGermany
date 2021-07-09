@@ -1,7 +1,6 @@
+- verbessertes Verhalten bei Geräte-Drehung
+- behebt diverse Fehler:
+- mehrere potentielle App-Abstürze beim Start,
+- einige Wetterstationen konnten nicht ausgewählt werden und
+- einige Wetterstationen waren in der Vorschlagsliste doppelt
 
-- bei Drehen des Gerätes wird der Zoom in der Karte beibehalten
-- behoben: einige Wetterstationen konnten nicht ausgewählt werden
-- behoben: einige Wetterstationen waren in der Vorschlagsliste doppelt
-- behoben: möglicher App-Absturz beim Start
-- behoben: Dialoge blieben beim Drehen des Gerätes erhalten
-- behoben: der Willkommens-Bildschirm geht nun korrekt mit einer Gerätedrehung um

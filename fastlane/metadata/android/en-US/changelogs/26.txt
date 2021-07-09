@@ -1,6 +1,5 @@
-- the zoom state of the map is retained when rotating the device
-- fixed: some weather stations could not be selected
-- fixed: some weather stations were doubled in the suggestions
-- fixed: possible app crash at start
-- fixed: dialogs are now kept open properly after device rotation
-- fixed: the welcome screen now handles device rotation properly
+- improved performance when rotating device
+- fixes multiple bugs:
+- some potential app crashes during launch
+- some weather stations could not be selected
+- some weather stations were doubled in the suggestions

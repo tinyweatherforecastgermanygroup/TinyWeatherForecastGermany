@@ -1,5 +1,6 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,8 +13,6 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.Executor;
@@ -260,7 +259,7 @@ public class DataUpdateService extends Service {
                         return networkInfo.isConnected();
                     }
                     return false;
-                // use connectivityManager on api > 22
+                // use connectivityManager on api 23 and higher
                 } else {
                     // The internet check is disabled for API 29, because the only reasonable approach is a callback
                     Network network = connectivityManager.getActiveNetwork();

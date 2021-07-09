@@ -71,6 +71,7 @@ public class WeatherWarningActivity extends Activity {
     public final static String WEATHER_WARNINGS_UPDATE_RESULT="WEATHER_WARNINGS_UPDATE_RESULT";
 
     public final static String SIS_ZOOMMAPSTATEBUNDLE="ZOOMMAPSTATEBUNDLE";
+    public final static String SIS_HIDERAIN="HIDERAIN";
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -102,6 +103,7 @@ public class WeatherWarningActivity extends Activity {
         if (zoomMapState!=null){
             state.putBundle(SIS_ZOOMMAPSTATEBUNDLE,zoomMapState);
         }
+        state.putBoolean(SIS_HIDERAIN,hide_rain);
         super.onSaveInstanceState(state);
     }
 
@@ -118,9 +120,6 @@ public class WeatherWarningActivity extends Activity {
             germany = (ImageView) findViewById(R.id.warningactivity_map);
         }
         updateWarningsIfNeeded();
-        if (hide_rain==null){
-            hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
-        }
         super.onResume();
     }
 
@@ -141,6 +140,9 @@ public class WeatherWarningActivity extends Activity {
             if (bundle!=null){
                 zoomMapState = bundle;
             }
+            hide_rain = savedInstanceState.getBoolean(SIS_HIDERAIN,!WeatherSettings.showRadarByDefault(getApplicationContext()));
+        } else {
+            hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
         }
         executor = Executors.newSingleThreadExecutor();
         localStation = WeatherSettings.getSetStationLocation(getApplicationContext());
@@ -148,7 +150,6 @@ public class WeatherWarningActivity extends Activity {
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext(),true);
-        hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
         mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
         map_collapsed_container = (RelativeLayout) findViewById(R.id.warningactivity_map_collapsed_container);
         // in layout w6600dp-land this element does not exist. This is the safest way to

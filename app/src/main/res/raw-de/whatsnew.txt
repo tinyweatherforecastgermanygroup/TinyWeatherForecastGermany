@@ -1,8 +1,7 @@
 Neu in dieser Version ([VERSION]):
 
-- Suche beinhaltet nun Städte, Gemeinden, Bundesländer, Seen und Seegebiete
-- die Suche geht nun nachsichtig mit Umlauten um
-- korrigierte Gebietsdaten, behebt Lücken in der Darstellung von See- und Küstengebieten
-- Updates starten nicht mehr, wenn keine Internet-Verbindung da ist
-- automatische Updates der Wettertexte können in den Optionen ausgeschaltet werden
-- diverse Fehlerkorrekturen und Verbesserungen der Anzeige
+- verbessertes Verhalten bei Geräte-Drehung
+- behebt diverse Fehler:
+- mehrere potentielle App-Abstürze beim Start,
+- einige Wetterstationen konnten nicht ausgewählt werden und
+- einige Wetterstationen waren in der Vorschlagsliste doppelt

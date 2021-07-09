@@ -308,170 +308,195 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         context = getApplicationContext();
-        setContentView(R.layout.activity_main);
         try {
             setTheme(R.style.AppTheme);
-            autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
-            // disable log to logcat if release is not a userdebug
-            disableLogToLogcatIfNotUserDebug();
-            // force a database access at the beginning to check for a needed database upgrade
-            try {
-                WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
-                AreaContentProvider.checkForDatabaseUpgrade(getApplicationContext());
-            } catch (Exception e){
-                PrivateLog.log(context,Tag.MAIN,"Error checking/upgrading database!");
-            }
-            // action bar layout
-            ActionBar actionBar = getActionBar();
-            actionBar.setCustomView(R.layout.actionbar);
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
-            executor = Executors.newSingleThreadExecutor();
+        } catch (Exception e){
+            PrivateLog.log(context,"Error setting theme.");
+        }
+        super.onCreate(savedInstanceState);
+        try {
+            setContentView(R.layout.activity_main);
+        } catch (Exception e){
+            PrivateLog.log(context,"Error setting main view.");
+        }
+        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+        // disable log to logcat if release is not a userdebug
+        disableLogToLogcatIfNotUserDebug();
+        // force a database access at the beginning to check for a needed database upgrade
+        try {
+            WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
+            AreaContentProvider.checkForDatabaseUpgrade(getApplicationContext());
+        } catch (Exception e){
+            PrivateLog.log(context,Tag.MAIN,"Error checking/upgrading database!");
+        }
+        // action bar layout
+        ActionBar actionBar = getActionBar();
+        actionBar.setCustomView(R.layout.actionbar);
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
+        executor = Executors.newSingleThreadExecutor();
+        try {
             prepareAraDatabase();
-            final WeatherSettings weatherSettings = new WeatherSettings(this);
-            if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
-                // remove shared preferences on app update if installed app is lower than build 20
-                if ((weatherSettings.last_version_code>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT) && (weatherSettings.last_version_code<20)){
-                    WeatherSettings.resetStationToDefault(getApplicationContext());
-                    WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
-                    showWarning(R.mipmap.ic_warning_white_24dp,getResources().getString(R.string.warning_stationreset_title),getResources().getString(R.string.warning_stationreset_text));
-                } else {
-                    showWhatsNewDialog();
-                }
+        } catch (Exception e){
+            PrivateLog.log(context,Tag.MAIN,"Preparing database failed on main thread.");
+        }
+        final WeatherSettings weatherSettings = new WeatherSettings(this);
+        if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
+            // remove shared preferences on app update if installed app is lower than build 20
+            if ((weatherSettings.last_version_code>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT) && (weatherSettings.last_version_code<20)){
+                WeatherSettings.resetStationToDefault(getApplicationContext());
+                WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
+                showWarning(R.mipmap.ic_warning_white_24dp,getResources().getString(R.string.warning_stationreset_title),getResources().getString(R.string.warning_stationreset_text));
+            } else {
+                showWhatsNewDialog();
             }
-            final Context context = getApplicationContext();
+        }
+        try {
             stationsManager = new StationsManager(context);
+        } catch (Exception e){
+            PrivateLog.log(context,Tag.MAIN,"Error: StationsManager failed!");
+        }
+        try {
             loadStationsSpinner();
+        } catch (Exception e){
+            PrivateLog.log(context,Tag.MAIN,"Error loading StationSpinner!");
+        }
+        try {
             loadStationsData();
-            preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                    if (key.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (key.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
-                        WidgetRefresher.refresh(context.getApplicationContext());
+        } catch (Exception e){
+            PrivateLog.log(context,Tag.MAIN,"Error loading stations data!");
+        }
+        preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (key.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (key.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
+                    WidgetRefresher.refresh(context.getApplicationContext());
+                }
+                // reload weather data if necessary
+                if (key.equals(WeatherSettings.PREF_STATION_NAME)){
+                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
+                    getWeatherForecast();
+                    // update warnings async, but only if database of areas is ready
+                    checkIfWarningsApply();
+                    // notify GadgetBridge
+                    GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+                    gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+                    // update widgets unconditonally
+                    WidgetRefresher.refresh(getApplicationContext());
+                }
+                // show geo
+                if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
+                    if (weatherCard != null){
+                        displayUpdateTime(weatherCard);
                     }
-                    // reload weather data if necessary
-                    if (key.equals(WeatherSettings.PREF_STATION_NAME)){
-                        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
-                        getWeatherForecast();
-                        // update warnings async, but only if database of areas is ready
-                        checkIfWarningsApply();
-                        // notify GadgetBridge
-                        GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-                        gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-                        // update widgets unconditonally
+                }
+                // invalidate menu if warnings visibility has changed
+                if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
+                    invalidateOptionsMenu();
+                }
+                // invalidate weather display beacuse the display options have changed
+                if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
+                        (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT))){
+                    // on 1st app call, weatherCard can be still null
+                    if (weatherCard!=null){
+                        displayWeatherForecast(weatherCard);
+                    }
+                }
+                // invalidate weather display and widgets
+                if ((key.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (key.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
+                    // on 1st app call, weatherCard can be still null
+                    if (weatherCard!=null){
+                        displayWeatherForecast(weatherCard);
+                        // refreshing widgets only makes sense when there is weather data
                         WidgetRefresher.refresh(getApplicationContext());
                     }
-                    // show geo
-                    if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
-                        if (weatherCard != null){
-                            displayUpdateTime(weatherCard);
-                        }
-                    }
-                    // invalidate menu if warnings visibility has changed
-                    if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
-                        invalidateOptionsMenu();
-                    }
-                    // invalidate weather display beacuse the display options have changed
-                    if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
-                            (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT))){
-                        // on 1st app call, weatherCard can be still null
-                        if (weatherCard!=null){
-                            displayWeatherForecast(weatherCard);
-                        }
-                    }
-                    // invalidate weather display and widgets
-                    if ((key.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (key.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
-                        // on 1st app call, weatherCard can be still null
-                        if (weatherCard!=null){
-                            displayWeatherForecast(weatherCard);
-                            // refreshing widgets only makes sense when there is weather data
-                            WidgetRefresher.refresh(getApplicationContext());
-                        }
-                    }
-                }
-            };
-            if (!API_TESTING_ENABLED){
-                weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-            }
-            try {
-                weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
-            } catch (Exception e){
-                PrivateLog.log(context,Tag.MAIN,"Error loading present weather data: "+e.getMessage());
-            }
-            // get new data from api or display present data.
-            if (!API_TESTING_ENABLED){
-                if (weatherCard!=null){
-                    displayWeatherForecast(weatherCard);
-                } else {
-                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
                 }
             }
+        };
+        if (!API_TESTING_ENABLED){
+            weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+        }
+        try {
+            weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
+        } catch (Exception e){
+            PrivateLog.log(context,Tag.MAIN,"Error loading present weather data: "+e.getMessage());
+        }
+        // get new data from api or display present data.
+        if (!API_TESTING_ENABLED){
+            if (weatherCard!=null){
+                displayWeatherForecast(weatherCard);
+            } else {
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
+            }
+        }
 
-            // test API
-            if (API_TESTING_ENABLED){
-                testAPI_Init();
-            }
-            // register view to clear favorites
-            ImageView reset_favorites_imageview = (ImageView) findViewById(R.id.main_reset_favorites);
-            if (reset_favorites_imageview!=null){
-                reset_favorites_imageview.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        clearFavorites();
-                        Toast.makeText(context,getApplicationContext().getResources().getString(R.string.favorites_cleared),Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-            Button cancel_gps = (Button) findViewById(R.id.main_cancel_gps);
-            cancel_gps.setOnClickListener(new View.OnClickListener() {
+        // test API
+        if (API_TESTING_ENABLED){
+            testAPI_Init();
+        }
+        // register view to clear favorites
+        ImageView reset_favorites_imageview = (ImageView) findViewById(R.id.main_reset_favorites);
+        if (reset_favorites_imageview!=null){
+            reset_favorites_imageview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    stopGPSLocationSearch();
+                    clearFavorites();
+                    Toast.makeText(context,getApplicationContext().getResources().getString(R.string.favorites_cleared),Toast.LENGTH_LONG).show();
                 }
             });
-            // check if a geo intent was sent
-            Intent geo_intent = getIntent();
-            if (geo_intent!=null){
-                String intent_action = geo_intent.getAction();
-                if (intent_action!=null){
-                    if (intent_action.equals(Intent.ACTION_VIEW)){
-                        String intent_scheme = geo_intent.getScheme();
-                        if (intent_scheme!=null){
-                            if (intent_scheme.equals("geo")){
-                                String received_geolocation = geo_intent.getData().toString();
-                                if (received_geolocation!=null){
+        }
+        Button cancel_gps = (Button) findViewById(R.id.main_cancel_gps);
+        cancel_gps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopGPSLocationSearch();
+            }
+        });
+        // check if a geo intent was sent
+        Intent geo_intent = getIntent();
+        if (geo_intent!=null){
+            String intent_action = geo_intent.getAction();
+            if (intent_action!=null){
+                if (intent_action.equals(Intent.ACTION_VIEW)){
+                    String intent_scheme = geo_intent.getScheme();
+                    if (intent_scheme!=null){
+                        if (intent_scheme.equals("geo")){
+                            String received_geolocation = geo_intent.getData().toString();
+                            if (received_geolocation!=null){
+                                try {
+                                    String received_latitude = received_geolocation.substring(received_geolocation.indexOf(":")+1,received_geolocation.indexOf(","));
+                                    String received_longitude = received_geolocation.substring(received_geolocation.indexOf(",")+1,received_geolocation.indexOf("?"));
+                                    String received_zoom = received_geolocation.substring(received_geolocation.indexOf("z=")+2);
+                                    Location own_location = new Location("manual");
+                                    own_location.setTime(Calendar.getInstance().getTimeInMillis());
                                     try {
-                                        String received_latitude = received_geolocation.substring(received_geolocation.indexOf(":")+1,received_geolocation.indexOf(","));
-                                        String received_longitude = received_geolocation.substring(received_geolocation.indexOf(",")+1,received_geolocation.indexOf("?"));
-                                        String received_zoom = received_geolocation.substring(received_geolocation.indexOf("z=")+2);
-                                        Location own_location = new Location("manual");
-                                        own_location.setTime(Calendar.getInstance().getTimeInMillis());
-                                        try {
-                                            double latitude = Location.convert(standardizeGeo(received_latitude));
-                                            double longitude = Location.convert(standardizeGeo(received_longitude));
-                                            own_location.setLatitude(latitude);
-                                            own_location.setLongitude(longitude);
-                                            launchStationSearchByLocation(own_location);
-                                        } catch (Exception e){
-                                            // invalid geo coordinates
-                                            Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.georeceive_error),Toast.LENGTH_LONG).show();
-                                        }
-                                    } catch (IndexOutOfBoundsException e){
-                                        // invalid geo-string (uri)
+                                        double latitude = Location.convert(standardizeGeo(received_latitude));
+                                        double longitude = Location.convert(standardizeGeo(received_longitude));
+                                        own_location.setLatitude(latitude);
+                                        own_location.setLongitude(longitude);
+                                        launchStationSearchByLocation(own_location);
+                                    } catch (Exception e){
+                                        // invalid geo coordinates
                                         Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.georeceive_error),Toast.LENGTH_LONG).show();
                                     }
+                                } catch (IndexOutOfBoundsException e){
+                                    // invalid geo-string (uri)
+                                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.georeceive_error),Toast.LENGTH_LONG).show();
                                 }
                             }
                         }
                     }
                 }
             }
-        } catch (Exception e){
+        }
+    /*
+    } catch (Exception e){
             errorDialog(e);
             String s = e.getMessage()+"/n"+e.getCause()+ Arrays.toString(e.getStackTrace())+"/n";
             PrivateLog.log(this,"Error in Main App: "+s);
         }
+
+     */
     }
 
     private void errorDialog(Exception e){
