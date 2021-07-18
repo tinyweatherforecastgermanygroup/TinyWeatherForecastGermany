@@ -61,7 +61,6 @@ public class AreaContentProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        areaDatabaseHelper = new AreaDatabaseHelper(context);
         sqLiteDatabase = areaDatabaseHelper.getReadableDatabase();
         Cursor c = sqLiteDatabase.query(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
         return c;
