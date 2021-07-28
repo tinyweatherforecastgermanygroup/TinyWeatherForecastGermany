@@ -32,8 +32,9 @@
  */
 
 /**
- * Modifiea as follows:
- * javadoc corrected, references shortened by removing package name.
+ * Modified as follows:
+ * - javadoc corrected, references shortened by removing package name.
+ * - typos corrected
  */
 
 package org.astronomie.info;
