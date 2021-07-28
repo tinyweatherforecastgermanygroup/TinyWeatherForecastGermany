@@ -474,7 +474,7 @@ public class Astronomy
     }
 
     /**
-     * Rough refraction formula using standard atmosphere: 1015 mbar and 10Â°C
+     * Rough refraction formula using standard atmosphere: 1015 mbar and 10°C
      * Input true altitude in radians, Output: increase in altitude in degrees
      *
      * @param alt
