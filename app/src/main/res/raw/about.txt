@@ -12,6 +12,8 @@ Material design icons Copyright © Google Inc., licensed under the Apache 2.0 li
 
 This app uses gradle and the gradle wrapper, Copyright © Gradle Inc, licensed under the Apache 2.0 license.
 
+This app uses the Apache Commons Compress (http://commons.apache.org), available under the Apache 2.0 license.
+
 Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual values. Weather warnings are abbreviated. Source for geo-data: Deutscher Wetterdienst.
 
 This program uses the WeatherSpec class of Gadgetbridge, Copyright © 2016-2020 Andreas Shimokawa, Carsten Pfeiffer, Daniele Gobbetti, licensed under the GNU AFFRERO GENERAL PUBLIC LICENSE, Version 3, 19 November 2007.

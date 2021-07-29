@@ -19,6 +19,8 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import java.io.BufferedReader;
@@ -114,8 +116,7 @@ public class Areas {
         private Runnable readAreasRunnable = new Runnable() {
             @Override
             public void run() {
-                AreaContentProvider areaContentProvider = new AreaContentProvider();
-                areaContentProvider.setContext(context);
+                ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
                 try {
                     InputStream inputStream = context.getApplicationContext().getResources().openRawResource(R.raw.areas);
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -133,7 +134,8 @@ public class Areas {
                         area.type = Integer.parseInt(items[2]);
                         area.name = removeQuotes(items[3]);
                         area.polygonString = items[4];
-                        areaContentProvider.writeArea(context,area);
+                        ContentValues contentValues = AreaContentProvider.getContentValuesFromArea(area);
+                        contentResolver.insert(AreaContentProvider.URI_AREADATA,contentValues);
                         i++;
                         if ((i % 100) == 0){
                             showProgress((i*100)/DATABASE_SIZE, area.name);
@@ -151,10 +153,9 @@ public class Areas {
 
 
     public static boolean doesAreaDatabaseExist(Context context){
-        AreaContentProvider areaContentProvider = new AreaContentProvider();
-        areaContentProvider.setContext(context);
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         String[] columns = {AreaContentProvider.AreaDatabaseHelper.KEY_warncellid};
-        Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,columns, null, null, null);
+        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,columns,null,null,null);
         int i=cursor.getCount();
         cursor.close();
         if (i==AreaDatabaseCreator.DATABASE_SIZE){
@@ -171,10 +172,10 @@ public class Areas {
 
     public static Area getArea(Context context, String warincellID){
         AreaContentProvider areaContentProvider = new AreaContentProvider();
-        areaContentProvider.setContext(context);
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         String selection = AreaContentProvider.KEY_warncellid + " =?";
         String[] selectionArg = {warincellID};
-        Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null, selection, selectionArg, null);
+        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,null,selection,selectionArg,null);
         if (cursor!=null){
             if (cursor.moveToFirst()){
                 Area area = areaContentProvider.getAreaFromCursor(cursor);
@@ -188,8 +189,7 @@ public class Areas {
 
     public static ArrayList<Area> getAreas(Context context, ArrayList<String> warincellIDs){
         ArrayList<Area> areas = new ArrayList<Area>();
-        AreaContentProvider areaContentProvider = new AreaContentProvider();
-        areaContentProvider.setContext(context);
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         String s = "";
         for (int i=0; i<warincellIDs.size(); i++){
             s=s+"?";
@@ -199,12 +199,12 @@ public class Areas {
         }
         String selection = AreaContentProvider.KEY_warncellid + " IN("+s+")";
         String[] selectionArg = warincellIDs.toArray(new String[warincellIDs.size()]);
-        Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null, selection, selectionArg, null);
+        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,null,selection,selectionArg,null);
         int i = 0;
         if (cursor!=null){
             if (cursor.moveToFirst()){
                 do {
-                    Area area = areaContentProvider.getAreaFromCursor(cursor);
+                    Area area = AreaContentProvider.getAreaFromCursor(cursor);
                     area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
                     areas.add(area); i++;
                 } while (cursor.moveToNext());
@@ -214,14 +214,13 @@ public class Areas {
     }
 
     public static Area getAreaByName(Context context, String areaname){
-        AreaContentProvider areaContentProvider = new AreaContentProvider();
-        areaContentProvider.setContext(context);
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         String selection = AreaContentProvider.KEY_name + " =?";
         String[] selectionArg = {areaname};
-        Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null, selection, selectionArg, null);
+        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,null,selection,selectionArg,null);
         if (cursor!=null){
             if (cursor.moveToFirst()){
-                Area area = areaContentProvider.getAreaFromCursor(cursor);
+                Area area = AreaContentProvider.getAreaFromCursor(cursor);
                 area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
                 cursor.close();
                 return area;
@@ -231,15 +230,14 @@ public class Areas {
     }
 
     public static ArrayList<String> getAllAreaNames(Context context){
-        AreaContentProvider areaContentProvider = new AreaContentProvider();
-        areaContentProvider.setContext(context);
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         ArrayList<String> result = new ArrayList<String>();
-        final String[] collumns = {AreaContentProvider.KEY_name};
-        Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,collumns, null, null, null);
+        final String[] columns = {AreaContentProvider.KEY_name};
+        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,columns,null,null,null);
         if (cursor!=null){
             if (cursor.moveToFirst()){
                 do {
-                    String s = areaContentProvider.getAreaNameFromCursor(cursor);
+                    String s = AreaContentProvider.getAreaNameFromCursor(cursor);
                     if (s!=null){
                         result.add(s);
                     }
@@ -270,8 +268,10 @@ public class Areas {
 
     public int test(Context context){
         AreaContentProvider areaContentProvider = new AreaContentProvider();
-        areaContentProvider.setContext(context);
-        Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null, null, null, null);
+        //areaContentProvider.setContext(context);
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        // Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null, null, null, null);
+        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,null,null,null,null);
         int i = 0;
         try {
             if (cursor.moveToFirst()){

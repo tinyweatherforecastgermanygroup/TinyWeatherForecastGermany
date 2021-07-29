@@ -28,6 +28,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -41,27 +42,24 @@ public class AreaContentProvider extends ContentProvider {
     private AreaDatabaseHelper areaDatabaseHelper;
     private SQLiteDatabase sqLiteDatabase;
 
-    private Context context;
-
-    public void setContext(Context context){
-        this.context = context;
-    }
-
     @Override
     public boolean onCreate() {
-        if (context!=null){
-            areaDatabaseHelper = new AreaContentProvider.AreaDatabaseHelper(context);
-        } else {
-            if (getContext().getApplicationContext()==null){
-            }
-            areaDatabaseHelper = new AreaContentProvider.AreaDatabaseHelper(getContext().getApplicationContext());
-        }
+        areaDatabaseHelper = new AreaContentProvider.AreaDatabaseHelper(getContext().getApplicationContext());
+        sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
+        sqLiteDatabase.enableWriteAheadLogging();
+        Log.v("TWFG"," ===> ContentProvider called onCreate");
         return true;
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        sqLiteDatabase = areaDatabaseHelper.getReadableDatabase();
+        // areaDatabaseHelper = new AreaDatabaseHelper(context);
+        if (areaDatabaseHelper!=null){
+            Log.v("TWFG"," ===> areaDatabaseHelper is not null");
+        } else {
+            Log.v("TWFG"," ===> areaDatabaseHelper is NULL!");
+        }
+        //sqLiteDatabase = areaDatabaseHelper.getReadableDatabase();
         Cursor c = sqLiteDatabase.query(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
         return c;
     }
@@ -73,8 +71,8 @@ public class AreaContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
-        sqLiteDatabase.enableWriteAheadLogging();
+        //sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
+        //sqLiteDatabase.enableWriteAheadLogging();
         sqLiteDatabase.insert(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, null, contentValues);
         return uri;
     }
@@ -82,7 +80,7 @@ public class AreaContentProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int i = 0;
-        sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
+        // sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
         sqLiteDatabase.enableWriteAheadLogging();
         i = sqLiteDatabase.delete(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, selection, selectionArgs);
         return i;
@@ -90,8 +88,8 @@ public class AreaContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
-        sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
-        sqLiteDatabase.enableWriteAheadLogging();
+        // sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
+        // sqLiteDatabase.enableWriteAheadLogging();
         return sqLiteDatabase.update(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, contentValues, selection, selectionArgs);
     }
 
@@ -157,7 +155,7 @@ public class AreaContentProvider extends ContentProvider {
     public static final String KEY_polygonstring = "polygonstring";
 
 
-    public ContentValues getContentValuesFromArea(Areas.Area area) {
+    public static ContentValues getContentValuesFromArea(Areas.Area area) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(AreaDatabaseHelper.KEY_warncellid, area.warncellID);
         contentValues.put(AreaDatabaseHelper.KEY_warncenter, area.warncenter);
@@ -167,7 +165,7 @@ public class AreaContentProvider extends ContentProvider {
         return contentValues;
     }
 
-    public Areas.Area getAreaFromCursor(Cursor c) {
+    public static Areas.Area getAreaFromCursor(Cursor c) {
         if (c == null) {
             return null;
         } else {
@@ -181,7 +179,7 @@ public class AreaContentProvider extends ContentProvider {
         }
     }
 
-    public String getAreaNameFromCursor(Cursor c) {
+    public static String getAreaNameFromCursor(Cursor c) {
         if (c == null) {
             return null;
         } else {
@@ -189,7 +187,7 @@ public class AreaContentProvider extends ContentProvider {
         }
     }
 
-    public void writeArea(Context c, Areas.Area area) {
+    public static void writeArea(Context c, Areas.Area area) {
         ContentResolver contentResolver = c.getApplicationContext().getContentResolver();
         contentResolver.insert(AreaContentProvider.URI_AREADATA, getContentValuesFromArea(area));
     }
