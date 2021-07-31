@@ -24,6 +24,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AreaContentProvider extends ContentProvider {
 
@@ -46,21 +48,23 @@ public class AreaContentProvider extends ContentProvider {
     public boolean onCreate() {
         areaDatabaseHelper = new AreaContentProvider.AreaDatabaseHelper(getContext().getApplicationContext());
         sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
-        sqLiteDatabase.enableWriteAheadLogging();
+        // sqLiteDatabase.enableWriteAheadLogging();
         Log.v("TWFG"," ===> ContentProvider called onCreate");
         return true;
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(Uri uri, String[] columns, String selection, String[] selectionArgs, String sortOrder) {
         // areaDatabaseHelper = new AreaDatabaseHelper(context);
         if (areaDatabaseHelper!=null){
-            Log.v("TWFG"," ===> areaDatabaseHelper is not null");
+            // Log.v("TWFG"," ===> areaDatabaseHelper is not null");
         } else {
-            Log.v("TWFG"," ===> areaDatabaseHelper is NULL!");
+            // Log.v("TWFG"," ===> areaDatabaseHelper is NULL!");
         }
-        //sqLiteDatabase = areaDatabaseHelper.getReadableDatabase();
-        Cursor c = sqLiteDatabase.query(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder, null);
+        // SQLiteDatabase sqLiteDatabase = areaDatabaseHelper.getReadableDatabase();
+        Cursor c = sqLiteDatabase.query(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
+        // Log.v("TWFG","QUERY "+c.getCount());
+        // sqLiteDatabase.close();
         return c;
     }
 
@@ -71,9 +75,17 @@ public class AreaContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        //sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
-        //sqLiteDatabase.enableWriteAheadLogging();
-        sqLiteDatabase.insert(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, null, contentValues);
+        // SQLiteDatabase sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
+        // sqLiteDatabase.enableWriteAheadLogging();
+        try {
+            long l = sqLiteDatabase.insertOrThrow(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, null, contentValues);
+            String s = contentValues.getAsString(AreaDatabaseHelper.KEY_warncellid);
+            // sqLiteDatabase.close();
+            // Log.v("TWFG","inserting "+ l + " " + s);
+            getContext().getApplicationContext().getContentResolver().notifyChange(uri,null);
+        } catch (SQLException e){
+            Log.v("TWFG","error: "+ e.getMessage());
+        }
         return uri;
     }
 
@@ -81,7 +93,7 @@ public class AreaContentProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int i = 0;
         // sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
-        sqLiteDatabase.enableWriteAheadLogging();
+        // sqLiteDatabase.enableWriteAheadLogging();
         i = sqLiteDatabase.delete(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, selection, selectionArgs);
         return i;
     }
@@ -184,6 +196,14 @@ public class AreaContentProvider extends ContentProvider {
             return null;
         } else {
             return c.getString(c.getColumnIndex(AreaDatabaseHelper.KEY_name));
+        }
+    }
+
+    public static String getWarncellIDFromCursor(Cursor c) {
+        if (c == null) {
+            return null;
+        } else {
+            return c.getString(c.getColumnIndex(AreaDatabaseHelper.KEY_warncellid));
         }
     }
 

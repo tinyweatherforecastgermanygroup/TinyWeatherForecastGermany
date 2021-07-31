@@ -23,6 +23,9 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,9 +33,6 @@ import java.util.ArrayList;
 import java.util.concurrent.Executor;
 
 public class Areas {
-
-    private Context context;
-    private Executor executor;
 
     public static class Area{
         public String warncellID;
@@ -50,7 +50,6 @@ public class Areas {
         private final Context context;
         private final Executor executor;
         private String versionLine;
-
 
         public static int getAreaDataVersion(String versionLine){
             try {
@@ -81,11 +80,14 @@ public class Areas {
             int sqlVersion = WeatherSettings.getAreaDatabaseVersion(context);
             int rawVersion = Areas.AreaDatabaseCreator.getAreaDataVersion(context);
             if (rawVersion==0){
+                Log.v("TWFG","Database Version is 0");
                 return false;
             }
             if (sqlVersion<rawVersion){
+                Log.v("TWFG","Database Version is deprecated");
                 return false;
             }
+            Log.v("TWFG","Database Version is ok!");
             return true;
         }
 
@@ -102,6 +104,7 @@ public class Areas {
             /*
              * Override this in the main app to show the progress
              */
+            //Log.v("twfg","Progress is "+progress);
         }
 
         public void onFinished(){
@@ -117,6 +120,8 @@ public class Areas {
             @Override
             public void run() {
                 ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+                //contentResolver.delete(AreaContentProvider.URI_AREADATA,null,null);
+                ArrayList<String> knownWarncellIDs = Areas.getAllWarncellIDs(context.getApplicationContext());
                 try {
                     InputStream inputStream = context.getApplicationContext().getResources().openRawResource(R.raw.areas);
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -134,10 +139,18 @@ public class Areas {
                         area.type = Integer.parseInt(items[2]);
                         area.name = removeQuotes(items[3]);
                         area.polygonString = items[4];
-                        ContentValues contentValues = AreaContentProvider.getContentValuesFromArea(area);
-                        contentResolver.insert(AreaContentProvider.URI_AREADATA,contentValues);
+                        // check if entry exists
+                        /*
+                        if (getArea(context, area.warncellID)==null){
+                            contentResolver.insert(AreaContentProvider.URI_AREADATA,AreaContentProvider.getContentValuesFromArea(area));
+                        }
+
+                         */
+                        if (!knownWarncellIDs.contains(area.warncellID)){
+                            contentResolver.insert(AreaContentProvider.URI_AREADATA,AreaContentProvider.getContentValuesFromArea(area));
+                        }
                         i++;
-                        if ((i % 100) == 0){
+                        if ((i % 25) == 0) {
                             showProgress((i*100)/DATABASE_SIZE, area.name);
                         }
                     }
@@ -151,23 +164,25 @@ public class Areas {
 
     }
 
-
-    public static boolean doesAreaDatabaseExist(Context context){
+    public static int getAreaDatabaseSize(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         String[] columns = {AreaContentProvider.AreaDatabaseHelper.KEY_warncellid};
         Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,columns,null,null,null);
-        int i=cursor.getCount();
         cursor.close();
+        return cursor.getCount();
+    }
+
+    public static boolean doesAreaDatabaseExist(Context context){
+        long i = getAreaDatabaseSize(context);
         if (i==AreaDatabaseCreator.DATABASE_SIZE){
+            Log.v("TWFG","Database size ok & verified, database exists!");
             return true;
         }
+        Log.v("TWFG","Database invalid "+i+" !");
         return false;
     }
 
-    public Areas(final Context context, Executor executor){
-        this.context = context;
-        this.executor = executor;
-
+    private Areas(){
     }
 
     public static Area getArea(Context context, String warincellID){
@@ -178,10 +193,12 @@ public class Areas {
         Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,null,selection,selectionArg,null);
         if (cursor!=null){
             if (cursor.moveToFirst()){
-                Area area = areaContentProvider.getAreaFromCursor(cursor);
+                Area area = AreaContentProvider.getAreaFromCursor(cursor);
                 area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
                 cursor.close();
                 return area;
+            } else {
+                cursor.close();
             }
         }
         return null;
@@ -209,6 +226,7 @@ public class Areas {
                     areas.add(area); i++;
                 } while (cursor.moveToNext());
             }
+            cursor.close();
         }
         return areas;
     }
@@ -222,9 +240,9 @@ public class Areas {
             if (cursor.moveToFirst()){
                 Area area = AreaContentProvider.getAreaFromCursor(cursor);
                 area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
-                cursor.close();
                 return area;
             }
+            cursor.close();
         }
         return null;
     }
@@ -233,16 +251,44 @@ public class Areas {
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         ArrayList<String> result = new ArrayList<String>();
         final String[] columns = {AreaContentProvider.KEY_name};
-        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,columns,null,null,null);
-        if (cursor!=null){
-            if (cursor.moveToFirst()){
-                do {
-                    String s = AreaContentProvider.getAreaNameFromCursor(cursor);
-                    if (s!=null){
-                        result.add(s);
-                    }
-                } while (cursor.moveToNext());
+        try {
+            Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,columns,null,null,null);
+            if (cursor!=null){
+                if (cursor.moveToFirst()){
+                    do {
+                        String s = AreaContentProvider.getAreaNameFromCursor(cursor);
+                        if (s!=null){
+                            result.add(s);
+                        }
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
             }
+        } catch (SQLException e){
+            Log.v("TWFG","Error reading all Areas: "+e.getMessage());
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getAllWarncellIDs(Context context){
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        ArrayList<String> result = new ArrayList<String>();
+        final String[] columns = {AreaContentProvider.KEY_warncellid};
+        try {
+            Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,columns,null,null,null);
+            if (cursor!=null){
+                if (cursor.moveToFirst()){
+                    do {
+                        String s = AreaContentProvider.getWarncellIDFromCursor(cursor);
+                        if (s!=null){
+                            result.add(s);
+                        }
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        } catch (SQLException e){
+            Log.v("TWFG","Error reading all Areas: "+e.getMessage());
         }
         return result;
     }
@@ -266,17 +312,14 @@ public class Areas {
         }
     }
 
-    public int test(Context context){
-        AreaContentProvider areaContentProvider = new AreaContentProvider();
-        //areaContentProvider.setContext(context);
+    public static int test(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        // Cursor cursor = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null, null, null, null);
         Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,null,null,null,null);
         int i = 0;
         try {
             if (cursor.moveToFirst()){
                 do {
-                    Area area = areaContentProvider.getAreaFromCursor(cursor);
+                    Area area = AreaContentProvider.getAreaFromCursor(cursor);
                     i++;
                 } while (cursor.moveToNext());
             }

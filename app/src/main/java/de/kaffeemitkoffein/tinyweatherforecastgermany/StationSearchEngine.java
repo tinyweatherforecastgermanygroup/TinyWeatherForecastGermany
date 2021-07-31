@@ -3,6 +3,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -71,16 +73,19 @@ public class StationSearchEngine {
                 }
             }
         }
-        areaNameReader = new Areas.AreaNameReader(context){
-        @Override
-        public void onFinished(ArrayList<String> areanames){
-            if (areanames!=null){
-                newEntries(areanames);
-            } else {
-            }
+        // include areas only if database is already present
+        if (Areas.doesAreaDatabaseExist(context)){
+            areaNameReader = new Areas.AreaNameReader(context){
+                @Override
+                public void onFinished(ArrayList<String> areanames){
+                    if (areanames!=null){
+                        newEntries(areanames);
+                    } else {
+                    }
+                }
+            };
+            executor.execute(areaNameReader);
         }
-        };
-        executor.execute(areaNameReader);
     }
 
     public static String toUmlaut(final String s){
@@ -141,7 +146,6 @@ public class StationSearchEngine {
     private void addStationsToEntries(ArrayList<Weather.WeatherLocation> stations){
         ArrayList<String> newEntries = new ArrayList<String>();
         for (int i=0; i<stations.size(); i++){
-            //entries.add(stations.get(i).description);
             newEntries.add(stations.get(i).description);
         }
         newEntries(newEntries);

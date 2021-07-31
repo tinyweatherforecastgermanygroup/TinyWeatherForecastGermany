@@ -973,6 +973,7 @@ public final class Weather {
                     return null;
                 }
             }
+            cursor.close();
         //} catch (Exception e) {
         //    PrivateLog.log(context,Tag.DATABASE,"database error when getting weather data: "+e.getMessage());
         //}

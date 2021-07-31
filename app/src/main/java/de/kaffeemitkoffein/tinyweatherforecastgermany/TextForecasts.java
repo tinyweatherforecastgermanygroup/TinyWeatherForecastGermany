@@ -87,6 +87,7 @@ public class TextForecasts {
                     }
                 } while (cursor.moveToNext());
             }
+            cursor.close();
             Collections.sort(textForecasts);
             Collections.reverse(textForecasts);
         } catch (Exception e) {

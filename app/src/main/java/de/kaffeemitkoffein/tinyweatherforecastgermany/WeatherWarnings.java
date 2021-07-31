@@ -64,6 +64,7 @@ public class WeatherWarnings {
                     }
                 } while (cursor.moveToNext());
             }
+            cursor.close();
             Collections.sort(warnings);
             return warnings;
         } catch (Exception e) {

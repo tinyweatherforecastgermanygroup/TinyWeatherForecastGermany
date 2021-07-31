@@ -25,6 +25,7 @@ import android.annotation.TargetApi;
 import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -35,6 +36,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -336,6 +338,11 @@ public class MainActivity extends Activity {
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
         executor = Executors.newSingleThreadExecutor();
         try {
+            loadStationsData();
+        } catch (Exception e){
+            PrivateLog.log(context,Tag.MAIN,"Error loading stations data!");
+        }
+        try {
             prepareAraDatabase();
         } catch (Exception e){
             PrivateLog.log(context,Tag.MAIN,"Preparing database failed on main thread.");
@@ -360,11 +367,6 @@ public class MainActivity extends Activity {
             loadStationsSpinner();
         } catch (Exception e){
             PrivateLog.log(context,Tag.MAIN,"Error loading StationSpinner!");
-        }
-        try {
-            loadStationsData();
-        } catch (Exception e){
-            PrivateLog.log(context,Tag.MAIN,"Error loading stations data!");
         }
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
@@ -641,16 +643,11 @@ public class MainActivity extends Activity {
     }
 
     public void loadStationsData(){
-        StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(context) {
+        StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(getApplicationContext()) {
             @Override
             public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
                 super.onLoadingListFinished(stations);
                 stationsManager.stations = stations;
-                //station_descriptions_onlytext = new ArrayList<String>();
-                for (int j = 0; j < stations.size(); j++) {
-                    String stat_description = stations.get(j).description;
-                    //station_descriptions_onlytext.add(stat_description);
-                }
                 stationSearchEngine = new StationSearchEngine(context,executor,null,stationsManager){
                     @Override
                     public void newEntries(ArrayList<String> newEntries){
@@ -1061,14 +1058,10 @@ public class MainActivity extends Activity {
         }
     }
 
-    public static boolean deleteAreaDatabase(Context context){
-        boolean result = context.deleteDatabase(AreaContentProvider.AreaDatabaseHelper.DATABASE_NAME);
-        if (result){
-            PrivateLog.log(context,Tag.DATABASE,"Areas database deleted.");
-        }
-        return result;
+    public static void deleteAreaDatabase(Context context){
+        ContentResolver contentResolver = context.getContentResolver();
+        contentResolver.delete(AreaContentProvider.URI_AREADATA,null,null);
     }
-
 
     private void prepareAraDatabase(){
         if (WeatherSettings.areWarningsDisabled(this)){
@@ -1081,7 +1074,67 @@ public class MainActivity extends Activity {
         if ((!Areas.doesAreaDatabaseExist(this)) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(this))){
             // Lock screen rotation during database processing to prevent activity being destroyed
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+            final RelativeLayout main_area_progress_holder = (RelativeLayout) findViewById(R.id.main_area_progress_holder);
+            main_area_progress_holder.setVisibility(View.VISIBLE);
+            final ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_area_progress_bar);
+            final TextView progressText = (TextView) findViewById(R.id.main_area_progress_text);
+            final String dataText = getApplicationContext().getString(R.string.areadatabasecreator_title);
+            Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(context,executor){
+                @Override
+                public void showProgress(final int progress, final String text){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(progress);
+                            progressText.setText(dataText+": "+ text);
+                        }
+                    });
+                }
+
+                @Override
+                public void onFinished(){
+                    super.onFinished();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Allow screen rotation within this app again
+                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                            main_area_progress_holder.setVisibility(View.GONE);
+                            // after new database is available, warnings need to be rebuilt and checked again
+                            checkIfWarningsApply();
+                            // after new database is available, the text search has more options and needs to
+                            // be rebuilt
+                            loadStationsData();
+                        }
+                    });
+                }
+            };
+            areasDataBaseCreator.create();
+        }
+    }
+
+    private void prepareAraDatabase_old(){
+        // debug code
+        ContentResolver contentResolver = getApplicationContext().getContentResolver();
+        Cursor c = contentResolver.query(AreaContentProvider.URI_AREADATA,null,null,null,null);
+        if (c != null){
+            Log.v("TWFG","CURSOR NOT NULL ");
+        }
+        Log.v("TWFG","SIZE DATABASE AREA "+c.getCount());
+        //AreaContentProvider areaContentProvider = new AreaContentProvider();
+        //Cursor c2 = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null,null,null,null);
+        //Log.v("TWFG","SIZE DATABASE AREA DIRECT "+c2.getCount());
+        if (WeatherSettings.areWarningsDisabled(this)){
             deleteAreaDatabase(this);
+            return;
+        }
+        // update area database if:
+        // a) database does not exist
+        // b) if sql database is outdated
+        if ((!Areas.doesAreaDatabaseExist(this)) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(this))){
+            // Lock screen rotation during database processing to prevent activity being destroyed
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+            // deleteAreaDatabase(this);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(false);
             builder.setMessage(getApplicationContext().getResources().getString(R.string.areadatabasecreator_title));
