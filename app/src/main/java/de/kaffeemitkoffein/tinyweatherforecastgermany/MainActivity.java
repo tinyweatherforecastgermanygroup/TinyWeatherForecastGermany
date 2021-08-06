@@ -80,8 +80,9 @@ public class MainActivity extends Activity {
     private Dialog aboutDialog;
     private boolean aboutDiaglogVisible=false;
 
+    private boolean forceWeatherUpdateFlag = false;
+
     private AlertDialog whatsNewDialog;
-    private AlertDialog prepareDatabaseDialog;
     private boolean whatsNewDialogVisible=false;
 
     Executor executor;
@@ -93,6 +94,7 @@ public class MainActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
                 displayWeatherForecast();
+                forceWeatherUpdateFlag = false;
                 if (API_TESTING_ENABLED){
                     test_position ++;
                     testAPI_Call();
@@ -139,6 +141,10 @@ public class MainActivity extends Activity {
             }
             if (intent.getAction().equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE)){
                 checkIfWarningsApply();
+                if (forceWeatherUpdateFlag){
+                    UpdateAlarmManager.startDataUpdateService(getApplicationContext(),true,false,true);
+                    forceWeatherUpdateFlag = false;
+                }
             }
         }
     };
@@ -294,11 +300,6 @@ public class MainActivity extends Activity {
         if (aboutDialog!=null){
             if (aboutDialog.isShowing()){
                 aboutDialog.dismiss();
-            }
-        }
-        if (prepareDatabaseDialog!=null){
-            if (prepareDatabaseDialog.isShowing()){
-                prepareDatabaseDialog.dismiss();
             }
         }
         if (whatsNewDialog != null){
@@ -820,6 +821,7 @@ public class MainActivity extends Activity {
 
     public void forcedWeatherUpdate(){
         UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE);
+        forceWeatherUpdateFlag = true;
     }
 
     private void checkIfWarningsApply(){

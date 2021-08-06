@@ -13,8 +13,6 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Timer;
@@ -46,7 +44,6 @@ public class DataUpdateService extends Service {
     private Runnable serviceTerminationRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.v("twfg","Terminating...");
             stopThisService();
         }
     };
@@ -115,7 +112,6 @@ public class DataUpdateService extends Service {
             // 1) intent supplied telling what do do, AND
             // 2) internet connection is present
             if ((intent!=null) && (isConnectedToInternet())){
-                Log.v("twfg","connected, starting.");
                 boolean updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
                 boolean updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
                 boolean updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
@@ -136,7 +132,6 @@ public class DataUpdateService extends Service {
                     timer.schedule(timeOutTask,TIMEOUTTASK_DELAY);
                 }
                 if (updateWeather) {
-                    Log.v("twfg","connected, weather...");
                     APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(this){
                         @Override
                         public void onStart(){
@@ -172,7 +167,6 @@ public class DataUpdateService extends Service {
                     executor.execute(weatherForecastRunnable);
                 }
                 if (updateWarnings) {
-                    Log.v("twfg","connected, warnings...");
                     APIReaders.WeatherWarningsRunnable weatherWarningsRunnable = new APIReaders.WeatherWarningsRunnable(this){
                         @Override
                         public void onStart(){
@@ -200,7 +194,6 @@ public class DataUpdateService extends Service {
                     executor.execute(weatherWarningsRunnable);
                 }
                 if (updateTextForecasts){
-                    Log.v("twfg","connected, texts...");
                     APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
                         @Override
                         public void onStart(){
@@ -220,7 +213,6 @@ public class DataUpdateService extends Service {
                 executor.execute(cleanUpRunnable);
                 executor.execute(serviceTerminationRunnable);
             } else {
-                Log.v("twfg","no internet, sorry");
                 // terminate immediately, because no intent with tasks delivered and/or no internet connection.
                 PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
                 Intent i = new Intent();

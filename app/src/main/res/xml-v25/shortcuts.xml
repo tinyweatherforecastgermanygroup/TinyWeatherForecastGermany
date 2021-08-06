@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+            android:shortcutId="warning"
+            android:enabled="true"
+            android:icon="@drawable/warning"
+            android:shortcutShortLabel="@string/warnings"
+            android:shortcutLongLabel="@string/warnings">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="de.kaffeemitkoffein.tinyweatherforecastgermany"
+            android:targetClass="de.kaffeemitkoffein.tinyweatherforecastgermany.WeatherWarningActivity"/>
+
+        <categories android:name="android.shortcut.conversation"/>
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE"/>
+    </shortcut>
+
+    <shortcut
+            android:shortcutId="text"
+            android:enabled="true"
+            android:icon="@drawable/northsea"
+            android:shortcutShortLabel="@string/texts_button"
+            android:shortcutLongLabel="@string/texts_button">
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="de.kaffeemitkoffein.tinyweatherforecastgermany"
+                android:targetClass="de.kaffeemitkoffein.tinyweatherforecastgermany.TextForecastListActivity"/>
+
+        <categories android:name="android.shortcut.conversation"/>
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE"/>
+    </shortcut>
+</shortcuts>
