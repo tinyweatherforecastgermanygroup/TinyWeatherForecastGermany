@@ -60,7 +60,7 @@ public class WeatherWarningActivity extends Activity {
     ActionBar actionBar;
     Executor executor;
     Boolean hide_rain = null;
-    Radarmap radarmap;
+    // Radarmap radarmap;
 
     Bundle zoomMapState = null;
 
@@ -192,16 +192,31 @@ public class WeatherWarningActivity extends Activity {
             if (mapZoomable!=null){
                 zoomMapState = mapZoomable.saveZoomViewState();
             }
+            // force update or rain radar if shown
+            if (!hide_rain){
+                APIReaders.RadarMNGeoserverRunnable radarMNGeoserverRunnable = new APIReaders.RadarMNGeoserverRunnable(getApplicationContext(),true){
+                    public void onFinished(RadarMN radarMN){
+                        // refresh map display with new data
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                displayMap();
+                            }
+                        });
+                    }
+                };
+                executor.execute(radarMNGeoserverRunnable);
+            }
             PrivateLog.log(this, Tag.MAIN, "starting update of weather warnings");
             if (UpdateAlarmManager.updateWarnings(getApplicationContext(),true)){
-                // returns true if update service was launched sucessfully
+                // returns true if update service was launched successfully
                showProgressBar();
             }
             return true;
         }
         if (item_id==R.id.hide_rain) {
             hide_rain = !hide_rain;
-            drawMapBitmap(radarmap);
+            drawMapBitmap();
             return true;
         }
         return super.onOptionsItemSelected(mi);
@@ -386,7 +401,7 @@ public class WeatherWarningActivity extends Activity {
         canvas.drawText(text,x,y,paint);
     }
 
-    private void showRainDescription(Radarmap radarmap){
+    private void showRainDescription(){
         Bitmap infoBitmap=Bitmap.createBitmap(Math.round(MAP_PIXEL_WIDTH),Math.round(MAP_PIXEL_HEIGHT*0.12f), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(infoBitmap);
         Bitmap radarinfobarResourceBitmap;
@@ -406,7 +421,7 @@ public class WeatherWarningActivity extends Activity {
             radarTextPaint.setColor(Color.RED);
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        String radartime = simpleDateFormat.format(new Date(radarmap.timestamp));
+        String radartime = simpleDateFormat.format(new Date(WeatherSettings.getPrefRadarLastdatapoll(getApplicationContext())));
         float ff=1.1f;
         drawStrokedText(canvas,radartime,MAP_PIXEL_WIDTH/100,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff*2,radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[2]);
@@ -437,15 +452,14 @@ public class WeatherWarningActivity extends Activity {
         return bitmap;
     }
 
-    private void drawMapBitmap(Radarmap radarmap){
-        //visibleBitmap = Bitmap.createBitmap(mapBitmap.getHeight(),mapBitmap.getWidth(), Bitmap.Config.ARGB_8888);
+    private void drawMapBitmap(){
         visibleBitmap = warningsBitmap.copy(Bitmap.Config.ARGB_8888,true);
         Canvas canvas = new Canvas(visibleBitmap);
         if ((!hide_rain) && (radarBitmap!=null)){
             final Paint cp = new Paint();
             cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
             canvas.drawBitmap(radarBitmap, 0,0,cp);
-            showRainDescription(radarmap);
+            showRainDescription();
         } else {
             clearRainDescription();
         }
@@ -555,7 +569,8 @@ public class WeatherWarningActivity extends Activity {
         final Paint cp = new Paint();
         cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
         canvas.drawBitmap(germanyBitmap, 0,0,cp);
-        // rain radar
+        // old rain radar
+        /*
         APIReaders.RadarmapRunnable radarmapRunnable = new APIReaders.RadarmapRunnable(getApplicationContext()){
             @Override
             public void onFinished(final Radarmap rm){
@@ -594,6 +609,42 @@ public class WeatherWarningActivity extends Activity {
             }
         };
         executor.execute(radarmapRunnable);
+
+         */
+        // new rain radar
+        APIReaders.RadarMNGeoserverRunnable radarMNGeoserverRunnable = new APIReaders.RadarMNGeoserverRunnable(getApplicationContext()){
+            @Override
+            public void onFinished(final RadarMN radarMN){
+                // override to do something with the map
+                if (radarMN!=null){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            float yPS = (MAP_PIXEL_HEIGHT/RadarMN.RADARMAP_PIXEL_FIXEDHEIGHT)/2f+1;
+                            float xPS = (MAP_PIXEL_WIDTH/RadarMN.RADARMAP_PIXEL_FIXEDWIDTH)/2f+1;
+                            Canvas radarCanvas = new Canvas(radarBitmap);
+                            Paint rpaint = new Paint();
+                            rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
+                            for (int y=0; y<MAP_PIXEL_FIXEDHEIGHT; y++){
+                                for (int x=0; x<MAP_PIXEL_FIXEDWIDTH; x++){
+                                    rpaint.setColor(radarMN.color[x][y]);
+                                    PlotPoint plotPoint = getPlotPoint(radarMN.getGeoX(x,y),radarMN.getGeoY(x,y));
+                                    radarCanvas.drawRect(plotPoint.x-xPS,plotPoint.y-yPS,plotPoint.x+xPS,plotPoint.y+yPS,rpaint);
+                                    //radarCanvas.drawRect(x,y,x+xPS,y+yPS,rpaint);
+                                }
+                            }
+                            if (!hide_rain){
+                                drawMapBitmap();
+                                //mapZoomable.updateBitmap(radarMN.getBitmap());
+                            }
+                        }
+                    });
+
+                }
+            }
+
+        };
+        executor.execute(radarMNGeoserverRunnable);
         // set close listener
         ImageView closeImageview = (ImageView) findViewById(R.id.closeicon_map);
         if (closeImageview != null){

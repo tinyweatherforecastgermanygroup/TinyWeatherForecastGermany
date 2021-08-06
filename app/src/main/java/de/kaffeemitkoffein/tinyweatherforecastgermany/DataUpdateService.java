@@ -13,8 +13,12 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -37,9 +41,12 @@ public class DataUpdateService extends Service {
     public static String SERVICEEXTRAS_UPDATE_WARNINGS="SERVICEEXTRAS_UPDATE_WARNINGS";
     public static String SERVICEEXTRAS_UPDATE_TEXTFORECASTS="SERVICEEXTRAS_UPDATE_TEXTFORECASTS";
 
+    private ConnectivityManager connectivityManager;
+
     private Runnable serviceTerminationRunnable = new Runnable() {
         @Override
         public void run() {
+            Log.v("twfg","Terminating...");
             stopThisService();
         }
     };
@@ -56,12 +63,29 @@ public class DataUpdateService extends Service {
 
     };
 
+    private Object networkCallback;
+
+    private static final long TIMEOUTTASK_DELAY = 1000*60*60*3; // 3 minutes
+
+    private static Timer timer = new Timer();
+
+    TimerTask timeOutTask = new TimerTask() {
+        @Override
+        public void run() {
+            stopThisService();
+        }
+    };
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void stopThisService(){
         PrivateLog.log(this,Tag.SERVICE2,"Shutting down service...");
         Intent intent = new Intent();
         intent.setAction(HIDE_PROGRESS);
         sendBroadcast(intent);
         notificationManager.cancel(notification_id);
+        if ((connectivityManager!=null) && (networkCallback!=null) && (Build.VERSION.SDK_INT > 23)){
+            connectivityManager.unregisterNetworkCallback((ConnectivityManager.NetworkCallback) networkCallback);
+        }
         stopSelf();
     }
 
@@ -81,21 +105,38 @@ public class DataUpdateService extends Service {
         serviceStarted = false;
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
         if (!serviceStarted){
             serviceStarted = true;
+            connectivityManager = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             // perform service task only if:
             // 1) intent supplied telling what do do, AND
             // 2) internet connection is present
             if ((intent!=null) && (isConnectedToInternet())){
-                Boolean updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
-                Boolean updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
-                Boolean updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
+                Log.v("twfg","connected, starting.");
+                boolean updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
+                boolean updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
+                boolean updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
                 PrivateLog.log(this,Tag.SERVICE2,"update Warnings: "+updateWarnings);
                 // create single thread
-                Executor executor = Executors.newSingleThreadExecutor();
+                final Executor executor = Executors.newSingleThreadExecutor();
+                // put
+                if ((Build.VERSION.SDK_INT > 23) && (connectivityManager!=null)){
+                    Network network = connectivityManager.getActiveNetwork();
+                    networkCallback = new ConnectivityManager.NetworkCallback(){
+                        @Override
+                        public void onLost(Network network) {
+                            stopThisService();
+                        }
+                    };
+                    connectivityManager.registerDefaultNetworkCallback((ConnectivityManager.NetworkCallback) networkCallback);
+                } else {
+                    timer.schedule(timeOutTask,TIMEOUTTASK_DELAY);
+                }
                 if (updateWeather) {
+                    Log.v("twfg","connected, weather...");
                     APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(this){
                         @Override
                         public void onStart(){
@@ -131,6 +172,7 @@ public class DataUpdateService extends Service {
                     executor.execute(weatherForecastRunnable);
                 }
                 if (updateWarnings) {
+                    Log.v("twfg","connected, warnings...");
                     APIReaders.WeatherWarningsRunnable weatherWarningsRunnable = new APIReaders.WeatherWarningsRunnable(this){
                         @Override
                         public void onStart(){
@@ -158,6 +200,7 @@ public class DataUpdateService extends Service {
                     executor.execute(weatherWarningsRunnable);
                 }
                 if (updateTextForecasts){
+                    Log.v("twfg","connected, texts...");
                     APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
                         @Override
                         public void onStart(){
@@ -177,6 +220,7 @@ public class DataUpdateService extends Service {
                 executor.execute(cleanUpRunnable);
                 executor.execute(serviceTerminationRunnable);
             } else {
+                Log.v("twfg","no internet, sorry");
                 // terminate immediately, because no intent with tasks delivered and/or no internet connection.
                 PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
                 Intent i = new Intent();
@@ -261,7 +305,6 @@ public class DataUpdateService extends Service {
                     return false;
                 // use connectivityManager on api 23 and higher
                 } else {
-                    // The internet check is disabled for API 29, because the only reasonable approach is a callback
                     Network network = connectivityManager.getActiveNetwork();
                     NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
                     if (networkCapabilities==null) {

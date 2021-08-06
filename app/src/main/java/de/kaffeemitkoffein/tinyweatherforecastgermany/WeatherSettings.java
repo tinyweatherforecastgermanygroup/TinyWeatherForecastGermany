@@ -727,10 +727,16 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    public static long getPrefRadarLastdatapoll(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        long l = sharedPreferences.getLong(PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
+        return l;
+    }
+
     public static boolean isRadarDataOutdated(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         long l = sharedPreferences.getLong(PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
-        return Calendar.getInstance().getTimeInMillis() > l + Radarmap.RADAR_DATAINTERVAL;
+        return Calendar.getInstance().getTimeInMillis() > l + RadarMN.RADAR_DATAINTERVAL;
     }
 
     public static boolean showRadarByDefault(Context context){

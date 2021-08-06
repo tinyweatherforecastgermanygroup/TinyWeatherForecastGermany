@@ -1,5 +1,9 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+/**
+ * IMPORTANT NOTE: this class is work in progress and not used yet. It will unify all the single ContentProviders.
+ */
+
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;

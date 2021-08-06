@@ -903,4 +903,115 @@ public class APIReaders {
         }
     }
 
+    public static class RadarMNGeoserverRunnable implements Runnable{
+
+        private static final String WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AWN-Produkt&bbox=-543.462%2C-4808.645%2C556.538%2C-3608.645&width=1100&height=1200&srs=EPSG%3A1000001&styles=&format=image%2Fpng";
+        public static final String RADAR_CACHE_FILENAME = "radarMN.png";
+        private Context context;
+        private boolean forceUpdate = false;
+        public boolean ssl_exception = false;
+
+        public RadarMNGeoserverRunnable(Context context){
+            this.context = context;
+        }
+
+        public RadarMNGeoserverRunnable(Context context, boolean forceUpdate){
+            this.context = context;
+            this.forceUpdate = forceUpdate;
+        }
+
+        public void setForceUpdate(boolean forceUpdate){
+            this.forceUpdate = forceUpdate;
+        }
+
+        private InputStream getRadarInputStream() throws IOException {
+            String radar_url        = "https:"+WN_RADAR_URL;
+            String radar_url_legacy = "http:"+WN_RADAR_URL;
+            URL url;
+            URL url_legacy;
+            try {
+                url = new URL(radar_url);
+                url_legacy = new URL(radar_url_legacy);
+            } catch (MalformedURLException e){
+                throw e;
+            }
+            try {
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+                return inputStream;
+            } catch (SSLException e){
+                ssl_exception = true;
+                if (WeatherSettings.isTLSdisabled(context)){
+                    // try fallback to http
+                    try {
+                        HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
+                        InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
+                        PrivateLog.log(context,Tag.SERVICE2,"Warning: MN radar data is polled over http without encryption.");
+                        return inputStream;
+                    } catch (IOException e2){
+                        throw e2;
+                    }
+                } else {
+                    PrivateLog.log(context,Tag.SERVICE2,"Error: ssl connection could not be established, but http is not allowed.");
+                    throw e;
+                }
+            } catch (Exception e){
+                throw e;
+            }
+        }
+
+        public static File getRadarMNFile(Context context){
+            File cacheDir = context.getCacheDir();
+            return new File(cacheDir,RADAR_CACHE_FILENAME);
+
+        }
+
+        private boolean putRadarMapToCache(InputStream inputStream){
+            File cacheFile = getRadarMNFile(context);
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(cacheFile);
+
+                int i;
+                byte[] cache = new byte[1024];
+                while ((i=inputStream.read(cache))!=-1){
+                    fileOutputStream.write(cache,0,i);
+                }
+                fileOutputStream.close();
+                WeatherSettings.setPrefRadarLastdatapoll(context,Calendar.getInstance().getTimeInMillis());
+            } catch (Exception e){
+                return false;
+            }
+            return true;
+        }
+
+        public static boolean radarCacheFileExists(Context context){
+            File cacheFile = getRadarMNFile(context);
+            return cacheFile.exists();
+        }
+
+        public void onFinished(RadarMN radarMN){
+            // override to do something with the map
+        }
+
+        @Override
+        public void run() {
+            try {
+                // read new data from DWD geo server if present data does not exist or is outdated
+                if ((!radarCacheFileExists(context) || (WeatherSettings.isRadarDataOutdated(context)) || (forceUpdate))){
+                    putRadarMapToCache(getRadarInputStream());
+                }
+                // construct radar data from new or old data
+                RadarMN radarMN = new RadarMN(context);
+                if (radarMN.hasData()){
+                    onFinished(radarMN);
+                } else {
+                    onFinished(null);
+                }
+            } catch (IOException e) {
+                onFinished(null);
+            }
+        }
+    }
+
+
 }

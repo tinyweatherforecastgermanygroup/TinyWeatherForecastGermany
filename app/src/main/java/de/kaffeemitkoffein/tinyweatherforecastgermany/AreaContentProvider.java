@@ -29,10 +29,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class AreaContentProvider extends ContentProvider {
 
@@ -48,8 +45,7 @@ public class AreaContentProvider extends ContentProvider {
     public boolean onCreate() {
         areaDatabaseHelper = new AreaContentProvider.AreaDatabaseHelper(getContext().getApplicationContext());
         sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
-        // sqLiteDatabase.enableWriteAheadLogging();
-        Log.v("TWFG"," ===> ContentProvider called onCreate");
+        sqLiteDatabase.enableWriteAheadLogging();
         return true;
     }
 
@@ -75,16 +71,12 @@ public class AreaContentProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        // SQLiteDatabase sqLiteDatabase = areaDatabaseHelper.getWritableDatabase();
-        // sqLiteDatabase.enableWriteAheadLogging();
         try {
             long l = sqLiteDatabase.insertOrThrow(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, null, contentValues);
             String s = contentValues.getAsString(AreaDatabaseHelper.KEY_warncellid);
-            // sqLiteDatabase.close();
-            // Log.v("TWFG","inserting "+ l + " " + s);
             getContext().getApplicationContext().getContentResolver().notifyChange(uri,null);
         } catch (SQLException e){
-            Log.v("TWFG","error: "+ e.getMessage());
+            // do nothing
         }
         return uri;
     }

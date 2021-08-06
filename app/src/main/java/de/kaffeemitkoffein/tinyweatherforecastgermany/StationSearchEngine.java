@@ -3,8 +3,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

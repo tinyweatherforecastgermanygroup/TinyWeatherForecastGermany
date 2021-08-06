@@ -1,0 +1,99 @@
+package de.kaffeemitkoffein.tinyweatherforecastgermany;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+
+public class RadarMN {
+
+    final static int RADAR_DATAINTERVAL = 1000*60*10;
+
+    // represents the 1100x1200 grid in colors already populated correctly by the geoserver
+    int[][] color = null;
+    Bitmap bitmap;
+
+    // some data constants
+    public static final int RADARMAP_PIXEL_FIXEDWIDTH  = 1100;
+    public static final int RADARMAP_PIXEL_FIXEDHEIGHT = 1200;
+
+    private static final float GEO_X_NORTH_WEST = 1.435612143f;
+    private static final float GEO_Y_NORTH_WEST =  55.865842289f;
+
+    private static final float GEO_X_NORTH_EAST = 18.76728172f;
+    private static final float GEO_Y_NORTH_EAST = 55.84848692f;
+
+    private static final float GEO_X_SOUTH_WEST = 3.551921296f;
+    private static final float GEO_Y_SOUTH_WEST = 45.69587068f;
+
+    private static final float GEO_X_SOUTH_EAST = 16.60186543f;
+    private static final float GEO_Y_SOUTH_EAST = 45.68358331f;
+
+    public float getGeoWidth(int y){
+        float left = ((GEO_X_SOUTH_WEST - GEO_X_NORTH_WEST)/RADARMAP_PIXEL_FIXEDHEIGHT)*y;
+        float right = ((GEO_X_SOUTH_EAST - GEO_X_NORTH_EAST)/RADARMAP_PIXEL_FIXEDHEIGHT)*y;
+        float baseline = GEO_X_SOUTH_EAST - GEO_X_SOUTH_WEST;
+        float geoWidth = baseline + left - right;
+        return geoWidth;
+    }
+
+    public float getGeoHeight(int x){
+        float top =    ((GEO_Y_NORTH_WEST - GEO_Y_NORTH_EAST)/RADARMAP_PIXEL_FIXEDWIDTH)*x;
+        float bottom = ((GEO_Y_SOUTH_EAST - GEO_Y_SOUTH_WEST)/RADARMAP_PIXEL_FIXEDWIDTH)*x;
+        float baseline = GEO_Y_NORTH_WEST - GEO_Y_SOUTH_WEST;
+        float geoHeight = baseline + top + bottom;
+        return geoHeight;
+    }
+
+    public float getGeoXRowStart(int y){
+        float left = ((GEO_X_SOUTH_WEST - GEO_X_NORTH_WEST)/RADARMAP_PIXEL_FIXEDHEIGHT)*y;
+        float baseline = GEO_X_SOUTH_EAST - GEO_X_SOUTH_WEST;
+        float geoXRowStart = GEO_X_SOUTH_WEST - left;
+        return geoXRowStart;
+    }
+
+    public float getGeoX(int x, int y){
+        float a = getGeoXRowStart(y);
+        float b = (getGeoWidth(y)/RADARMAP_PIXEL_FIXEDWIDTH)*x;
+        float geoX = a+b;
+        return  geoX;
+    }
+
+    public float getGeoYStartTop(int x){
+        final float GEO_Y_TOP_DIFF = GEO_Y_NORTH_EAST - GEO_Y_NORTH_WEST;
+        float difference = (GEO_Y_TOP_DIFF/RADARMAP_PIXEL_FIXEDWIDTH) * x;
+        float offset = GEO_Y_NORTH_WEST + difference;
+        return offset;
+    }
+
+    public float getGeoY(int x, int y){
+        float a = getGeoYStartTop(x);
+        float height = getGeoHeight(x);
+        float geoY = a - (height/RADARMAP_PIXEL_FIXEDHEIGHT)*y;
+        return geoY;
+    }
+
+    public RadarMN(Context context){
+        if (APIReaders.RadarMNGeoserverRunnable.radarCacheFileExists(context)){
+            color = new int[RADARMAP_PIXEL_FIXEDWIDTH][RADARMAP_PIXEL_FIXEDHEIGHT];
+            bitmap = BitmapFactory.decodeFile(APIReaders.RadarMNGeoserverRunnable.getRadarMNFile(context).getAbsolutePath().toString());
+            for (int x=0; x<RADARMAP_PIXEL_FIXEDWIDTH; x++){
+                for (int y=0; y<RADARMAP_PIXEL_FIXEDHEIGHT; y++){
+                    int i = bitmap.getPixel(x,y);
+                    color[x][y] = i;
+                    if ((i==-4342339)||(i==-1)){
+                        color[x][y] = Color.TRANSPARENT;
+                    }
+                }
+            }
+        }
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public boolean hasData(){
+        return color != null;
+    }
+}

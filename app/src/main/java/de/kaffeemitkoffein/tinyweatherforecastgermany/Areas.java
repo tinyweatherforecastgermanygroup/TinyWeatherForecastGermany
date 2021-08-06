@@ -20,12 +20,9 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -80,14 +77,11 @@ public class Areas {
             int sqlVersion = WeatherSettings.getAreaDatabaseVersion(context);
             int rawVersion = Areas.AreaDatabaseCreator.getAreaDataVersion(context);
             if (rawVersion==0){
-                Log.v("TWFG","Database Version is 0");
                 return false;
             }
             if (sqlVersion<rawVersion){
-                Log.v("TWFG","Database Version is deprecated");
                 return false;
             }
-            Log.v("TWFG","Database Version is ok!");
             return true;
         }
 
@@ -175,10 +169,8 @@ public class Areas {
     public static boolean doesAreaDatabaseExist(Context context){
         long i = getAreaDatabaseSize(context);
         if (i==AreaDatabaseCreator.DATABASE_SIZE){
-            Log.v("TWFG","Database size ok & verified, database exists!");
             return true;
         }
-        Log.v("TWFG","Database invalid "+i+" !");
         return false;
     }
 
@@ -265,7 +257,7 @@ public class Areas {
                 cursor.close();
             }
         } catch (SQLException e){
-            Log.v("TWFG","Error reading all Areas: "+e.getMessage());
+            // do nothing
         }
         return result;
     }
@@ -288,7 +280,7 @@ public class Areas {
                 cursor.close();
             }
         } catch (SQLException e){
-            Log.v("TWFG","Error reading all Areas: "+e.getMessage());
+            // do nothing
         }
         return result;
     }

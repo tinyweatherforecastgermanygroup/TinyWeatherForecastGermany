@@ -36,7 +36,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -343,7 +342,7 @@ public class MainActivity extends Activity {
             PrivateLog.log(context,Tag.MAIN,"Error loading stations data!");
         }
         try {
-            prepareAraDatabase();
+            prepareAreaDatabase();
         } catch (Exception e){
             PrivateLog.log(context,Tag.MAIN,"Preparing database failed on main thread.");
         }
@@ -1063,10 +1062,15 @@ public class MainActivity extends Activity {
         contentResolver.delete(AreaContentProvider.URI_AREADATA,null,null);
     }
 
-    private void prepareAraDatabase(){
+    private void prepareAreaDatabase(){
         if (WeatherSettings.areWarningsDisabled(this)){
             deleteAreaDatabase(this);
             return;
+        }
+        // delete area database if it is too big due to some database errors. It will be
+        // recreated then.
+        if (Areas.getAreaDatabaseSize(getApplicationContext())>Areas.AreaDatabaseCreator.DATABASE_SIZE){
+            deleteAreaDatabase(this);
         }
         // update area database if:
         // a) database does not exist
@@ -1105,74 +1109,6 @@ public class MainActivity extends Activity {
                             // after new database is available, the text search has more options and needs to
                             // be rebuilt
                             loadStationsData();
-                        }
-                    });
-                }
-            };
-            areasDataBaseCreator.create();
-        }
-    }
-
-    private void prepareAraDatabase_old(){
-        // debug code
-        ContentResolver contentResolver = getApplicationContext().getContentResolver();
-        Cursor c = contentResolver.query(AreaContentProvider.URI_AREADATA,null,null,null,null);
-        if (c != null){
-            Log.v("TWFG","CURSOR NOT NULL ");
-        }
-        Log.v("TWFG","SIZE DATABASE AREA "+c.getCount());
-        //AreaContentProvider areaContentProvider = new AreaContentProvider();
-        //Cursor c2 = areaContentProvider.query(AreaContentProvider.URI_AREADATA,null,null,null,null);
-        //Log.v("TWFG","SIZE DATABASE AREA DIRECT "+c2.getCount());
-        if (WeatherSettings.areWarningsDisabled(this)){
-            deleteAreaDatabase(this);
-            return;
-        }
-        // update area database if:
-        // a) database does not exist
-        // b) if sql database is outdated
-        if ((!Areas.doesAreaDatabaseExist(this)) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(this))){
-            // Lock screen rotation during database processing to prevent activity being destroyed
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-            // deleteAreaDatabase(this);
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false);
-            builder.setMessage(getApplicationContext().getResources().getString(R.string.areadatabasecreator_title));
-            LayoutInflater layoutInflater = this.getLayoutInflater();
-            final View view = layoutInflater.inflate(R.layout.areadatabasecreator_message,null,false);
-            builder.setView(view);
-            prepareDatabaseDialog = builder.create();
-            prepareDatabaseDialog.show();
-            final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.areadatabasecreator_progressbar);
-            final TextView progressText = (TextView) view.findViewById(R.id.areadatabasecreator_textinfo);
-            Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(context,executor){
-                @Override
-                public void showProgress(final int progress, final String text){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setProgress(progress);
-                            progressText.setText(text);
-                        }
-                    });
-                }
-
-                @Override
-                public void onFinished(){
-                    super.onFinished();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Allow screen rotation within this app again
-                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-                            // after new database is available, warnings need to be rebuilt and checked again
-                            checkIfWarningsApply();
-                            try {
-                                prepareDatabaseDialog.dismiss();
-                            } catch (Exception e){
-                                // do nothing, as this only means view is not attached to activity any more.
-                                // This only happens if onDestroy was not called for some reason.
-                            }
                         }
                     });
                 }
