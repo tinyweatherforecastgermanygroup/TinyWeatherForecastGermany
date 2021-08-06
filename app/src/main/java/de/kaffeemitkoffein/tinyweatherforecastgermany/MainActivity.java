@@ -36,6 +36,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -986,7 +987,8 @@ public class MainActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         LayoutInflater layoutInflater = this.getLayoutInflater();
-        final View view = layoutInflater.inflate(R.layout.aboutdialog,null,false);
+        Log.v("twfg","got inflater");
+        View view = layoutInflater.inflate(R.layout.aboutdialog,null,false);
         builder.setView(view);
         builder.setTitle(getResources().getString(R.string.app_name));
         builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
@@ -1017,7 +1019,7 @@ public class MainActivity extends Activity {
             }
             textView.setText(text);
         } catch (IOException e) {
-            textView.setText("Error.");
+            textView.setText("Error: "+e.getMessage());
         }
     }
 
@@ -1208,6 +1210,8 @@ public class MainActivity extends Activity {
                         double longitude = Location.convert(standardizeGeo(text_longitude.getText().toString()));
                         own_location.setLatitude(latitude);
                         own_location.setLongitude(longitude);
+                        Log.v("twfg","LAT: "+latitude);
+                        Log.v("twfg","LON: "+longitude);
                         if ((latitude>=-90) && (latitude<=90) && (longitude>=-180) && (longitude<=180)) {
                             launchStationSearchByLocation(own_location);
                         } else {
@@ -1276,7 +1280,11 @@ public class MainActivity extends Activity {
                 return 1;
             }
         });
-        int items_count = own_location.getExtras().getInt(Weather.WeatherLocation.EXTRAS_ITEMS_TO_SHOW,20);
+        Bundle bundle = own_location.getExtras();
+        int items_count = 20;
+        if (bundle!=null) {
+            items_count = bundle.getInt(Weather.WeatherLocation.EXTRAS_ITEMS_TO_SHOW, 20);
+        }
         ArrayList<String> stationDistanceList = new ArrayList<String>();
         for (int i=0; (i<stations.size()) && (i<items_count); i++) {
             stationDistanceList.add(stations.get(i).description+" ["+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]");

@@ -53,5 +53,5 @@ dependencies {
     // library to handle tar.bz2 files
     // version 1.20 requires java 7, 1.21 requires java 8.
     // to be save, we take version 1.20, with 1.21 we need to set minSDK to 24
-    implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.20'
+    // implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.20'
 }
