@@ -625,8 +625,8 @@ public class WeatherWarningActivity extends Activity {
                             Canvas radarCanvas = new Canvas(radarBitmap);
                             Paint rpaint = new Paint();
                             rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
-                            for (int y=0; y<MAP_PIXEL_FIXEDHEIGHT; y++){
-                                for (int x=0; x<MAP_PIXEL_FIXEDWIDTH; x++){
+                            for (int y=0; y<RadarMN.RADARMAP_PIXEL_FIXEDHEIGHT; y++){
+                                for (int x=0; x<RadarMN.RADARMAP_PIXEL_FIXEDWIDTH; x++){
                                     rpaint.setColor(radarMN.color[x][y]);
                                     PlotPoint plotPoint = getPlotPoint(radarMN.getGeoX(x,y),radarMN.getGeoY(x,y));
                                     radarCanvas.drawRect(plotPoint.x-xPS,plotPoint.y-yPS,plotPoint.x+xPS,plotPoint.y+yPS,rpaint);
