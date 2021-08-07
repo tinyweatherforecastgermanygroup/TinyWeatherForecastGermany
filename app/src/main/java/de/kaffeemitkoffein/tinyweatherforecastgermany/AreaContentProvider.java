@@ -51,16 +51,7 @@ public class AreaContentProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] columns, String selection, String[] selectionArgs, String sortOrder) {
-        // areaDatabaseHelper = new AreaDatabaseHelper(context);
-        if (areaDatabaseHelper!=null){
-            // Log.v("TWFG"," ===> areaDatabaseHelper is not null");
-        } else {
-            // Log.v("TWFG"," ===> areaDatabaseHelper is NULL!");
-        }
-        // SQLiteDatabase sqLiteDatabase = areaDatabaseHelper.getReadableDatabase();
         Cursor c = sqLiteDatabase.query(AreaContentProvider.AreaDatabaseHelper.TABLE_NAME, columns, selection, selectionArgs, null, null, sortOrder);
-        // Log.v("TWFG","QUERY "+c.getCount());
-        // sqLiteDatabase.close();
         return c;
     }
 

@@ -1083,7 +1083,6 @@ public final class Weather {
         c1.set(Calendar.SECOND,0);
         c1.set(Calendar.MILLISECOND,0);
         double days_since_2020 = TimeUnit.DAYS.convert(time - c1.getTimeInMillis(),TimeUnit.MILLISECONDS);
-        //Log.v("TWF","Days since 01.01.2020: "+days_since_2020);
         double julian_days = 2458849 + days_since_2020; // 2458849.41667 = 01.01.2020 00:00:00
         return julian_days;
     }

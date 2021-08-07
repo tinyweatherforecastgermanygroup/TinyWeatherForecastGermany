@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.text.SimpleDateFormat;
@@ -374,17 +375,6 @@ public class WeatherWarningActivity extends Activity {
         return geoy;
     }
 
-    private void drawPin(Canvas canvas){
-        int pinsize = 42;
-        Paint pinpaint = new Paint();
-        pinpaint.setColor(Color.BLUE);
-        pinpaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        pinpaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
-        PlotPoint pinPoint = getPlotPoint((float) localStation.longitude, (float) localStation.latitude);
-        Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinsize,pinsize,false);
-        canvas.drawBitmap(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),pinpaint);
-    }
-
     private void drawStrokedText(Canvas canvas, String text, float x, float y, Paint paint){
         Paint strokePaint = new Paint();
         strokePaint.setColor(Color.BLACK);
@@ -463,7 +453,6 @@ public class WeatherWarningActivity extends Activity {
         } else {
             clearRainDescription();
         }
-        //drawPin(canvas);
         mapZoomable.updateBitmap(visibleBitmap);
         visibleBitmap.recycle();
     }
@@ -696,7 +685,9 @@ public class WeatherWarningActivity extends Activity {
         //pdijon.setStyle(Paint.Style.FILL_AND_STROKE);
         //pdijon.setColor(Color.BLUE);
         // add the pin sprite
-        int pinsize = Math.round(0.05f*germanyBitmap.getHeight());
+        int pinsize = Math.round(180/this.getApplicationContext().getResources().getDisplayMetrics().density);
+        Log.v("twfg","Pin Size in dp: "+pinsize);
+        Log.v("twfg","scale factor  : "+this.getApplicationContext().getResources().getDisplayMetrics().density);
         PlotPoint pinPoint = getPlotPoint((float) localStation.longitude, (float) localStation.latitude);
         Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinsize,pinsize,false);
         mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT);

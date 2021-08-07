@@ -36,7 +36,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -500,13 +499,7 @@ public class MainActivity extends Activity {
         }
 
      */
-        // debug code
-        if (weatherCard!=null){
-            Log.v("twfg","T  = "+weatherCard.currentWeather.getTemperature()+ " K");
-            Log.v("twfg","td = "+weatherCard.currentWeather.getTd()+ " K");
-            Log.v("twfg","RH = "+weatherCard.currentWeather.getRH()+ " %");
-            Log.v("twfg","RH = "+weatherCard.currentWeather.getRHInt()+ " %");
-        }
+
     }
 
     private void errorDialog(Exception e){
@@ -996,7 +989,6 @@ public class MainActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         LayoutInflater layoutInflater = this.getLayoutInflater();
-        Log.v("twfg","got inflater");
         View view = layoutInflater.inflate(R.layout.aboutdialog,null,false);
         builder.setView(view);
         builder.setTitle(getResources().getString(R.string.app_name));
@@ -1219,8 +1211,6 @@ public class MainActivity extends Activity {
                         double longitude = Location.convert(standardizeGeo(text_longitude.getText().toString()));
                         own_location.setLatitude(latitude);
                         own_location.setLongitude(longitude);
-                        Log.v("twfg","LAT: "+latitude);
-                        Log.v("twfg","LON: "+longitude);
                         if ((latitude>=-90) && (latitude<=90) && (longitude>=-180) && (longitude<=180)) {
                             launchStationSearchByLocation(own_location);
                         } else {

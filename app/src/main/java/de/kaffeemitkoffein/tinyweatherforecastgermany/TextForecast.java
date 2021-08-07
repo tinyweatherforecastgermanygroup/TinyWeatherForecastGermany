@@ -201,7 +201,6 @@ public class TextForecast implements Comparable<TextForecast>{
             if ((type>=100) && (type<=104)){
                 if ((target.length()<3) && (emptyLineCounter>1)){
                     target = target + System.getProperty("line.separator");
-                    // Log.v("TWFL","Maritime line seperator "+emptyLineCounter);
                     emptyLineCounter =0;
                 }
                 if (target.contains(":")){
