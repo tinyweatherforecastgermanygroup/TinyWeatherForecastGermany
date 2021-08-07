@@ -55,9 +55,6 @@ under the Apache License Version 2.0.
  
 This app uses gradle and the gradle wrapper, Copyright Gradle Inc,
 licensed under the Apache 2.0 license.
-
-This app uses the Apache Commons Compress (<http://commons.apache.org>), 
-available under the Apache 2.0 license.
  
 Data source: Deutscher Wetterdienst, own elements added, some data 
 averaged over individual values. Weather warnings are abbreviated. Source for geo-data: Deutscher Wetterdienst.

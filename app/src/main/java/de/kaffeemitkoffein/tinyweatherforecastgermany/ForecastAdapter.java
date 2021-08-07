@@ -165,6 +165,7 @@ static class ViewHolder {
     TextView textView_temphigh;
     TextView textView_templow;
     TextView textView_pressure;
+    TextView textView_rh;
     TextView textView_wind;
     LinearLayout linearLayout_visibility;
     TextView textview_visibility;
@@ -216,6 +217,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     TextView textView_temphigh = null;
     TextView textView_templow = null;
     TextView textView_pressure = null;
+    TextView textView_rh = null;
     TextView textView_wind = null;
     LinearLayout linearLayout_visibility = null;
     TextView textview_visibility = null;
@@ -249,6 +251,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         textView_temphigh = viewHolder.textView_temphigh;
         textView_templow = viewHolder.textView_templow;
         textView_pressure = viewHolder.textView_pressure;
+        textView_rh = viewHolder.textView_rh;
         textView_wind = viewHolder.textView_wind;
         linearLayout_visibility = viewHolder.linearLayout_visibility;
         textview_visibility = viewHolder.textview_visibility;
@@ -442,6 +445,10 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         textView_pressure = (TextView) view.findViewById(R.id.fcitem_pressure);
         viewHolder.textView_pressure = textView_pressure;
     }
+    if (textView_rh == null){
+        textView_rh = (TextView) view.findViewById(R.id.fcitem_rh);
+        viewHolder.textView_rh = textView_rh;
+    }
     if (weatherInfo.hasMaxTemperature()){
         textView_temphigh.setText(weatherInfo.getMaxTemperatureInCelsiusInt()+"°");
     }
@@ -450,6 +457,9 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     }
     if (weatherInfo.hasPressure()){
         textView_pressure.setText(weatherInfo.getPressure()/100+ " hPa");
+    }
+    if (weatherInfo.hasRH()){
+        textView_rh.setText(weatherInfo.getRHInt()+" %");
     }
     if (imageView_windarrow == null){
         imageView_windarrow = (ImageView) view.findViewById(R.id.fcitem_windarrow);
