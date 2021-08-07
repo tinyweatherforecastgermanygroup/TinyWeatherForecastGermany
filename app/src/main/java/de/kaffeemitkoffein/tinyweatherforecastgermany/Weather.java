@@ -578,6 +578,10 @@ public final class Weather {
             return false;
         }
 
+        public double getTemperature(){
+            return temperature;
+        }
+
         public int getTemperatureInt(){
             int j = temperature.intValue();
             return j;
