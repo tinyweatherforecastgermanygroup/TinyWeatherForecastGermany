@@ -24,6 +24,8 @@ This program uses the Astronomy class, Copyright (C) 2010-2012, Helmut Lehmeyer 
 
 PAT maps by Ian Macky <http://ian.macky.net/pat>.
 
+Calculation of relative humidity from temperature and dew point is done using a simplified formula of the DWD (Deutscher Wetterdienst), see <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
+
 App icon by Janis Bitta.
 
 The following persons contributed to this project:

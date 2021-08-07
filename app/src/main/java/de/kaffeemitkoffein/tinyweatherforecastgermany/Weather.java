@@ -221,6 +221,7 @@ public final class Weather {
         private Integer prob_visibility_below_1km;
         private Double pressure;
         private Double uv;
+        private Double td;
 
         final class ForecastType{
             public static final int CURRENT  = 0;
@@ -326,6 +327,10 @@ public final class Weather {
 
         public void setUV(Double uv){
             this.uv = uv;
+        }
+
+        public void setTd(Double td) {
+            this.td = td;
         }
 
         public long getTimestamp(){
@@ -929,6 +934,31 @@ public final class Weather {
             return j;
         }
 
+        public boolean hasTd(){
+            return td != null;
+        }
+
+        public double getTd(){
+            return td;
+        }
+
+        public boolean hasRH(){
+            if ((temperature==null) || (td==null)){
+                return false;
+            }
+            return true;
+        }
+
+        public double getRH(){
+            final double rh_c2 = 17.5043;
+            final double rh_c3 = 241.2;
+            double rh = 100*Math.exp((rh_c2*td/(rh_c3+td))-(rh_c2*temperature/(rh_c3+temperature)));
+            return rh;
+        }
+
+        public int getRHInt(){
+            return (int) Math.round(getRH());
+        }
 
         public boolean isDaytime(WeatherLocation weatherLocation){
             boolean result = Weather.isDaytime(weatherLocation,timestamp);
@@ -1017,19 +1047,6 @@ public final class Weather {
     }
 
     private static void cleanDataBase(Context context, ArrayList<RawWeatherInfo> data){
-        /*
-        WeatherSettings weatherSettings = new WeatherSettings(context);
-        int size = data.size();
-        int deleted_count = 0;
-        for (int i=0; i<size; i++) {
-            if (data.get(i).timestamp + weatherSettings.getForecastUpdateIntervalInMillis() < Calendar.getInstance().getTimeInMillis()){
-                // never remove the current location from the database, even if data is old
-                if (!data.get(i).weatherLocation.name.toUpperCase().equals(weatherSettings.station_name.toUpperCase()))
-                    deleted_count = deleted_count + deleteWeatherDataSet(context,i);
-            }
-        }
-        PrivateLog.log(context,Tag.DATABASE,"Garbage collected "+deleted_count+" weather forecast sets.");
-         */
         if (data!=null){
             if (data.size()>0){
                 for (int i=0; i<data.size(); i++){

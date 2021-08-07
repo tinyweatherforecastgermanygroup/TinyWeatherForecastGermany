@@ -970,13 +970,13 @@ public class APIReaders {
             File cacheFile = getRadarMNFile(context);
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(cacheFile);
-
                 int i;
                 byte[] cache = new byte[1024];
                 while ((i=inputStream.read(cache))!=-1){
                     fileOutputStream.write(cache,0,i);
                 }
                 fileOutputStream.close();
+                inputStream.close();
                 WeatherSettings.setPrefRadarLastdatapoll(context,Calendar.getInstance().getTimeInMillis());
             } catch (Exception e){
                 return false;

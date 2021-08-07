@@ -500,6 +500,13 @@ public class MainActivity extends Activity {
         }
 
      */
+        // debug code
+        if (weatherCard!=null){
+            Log.v("twfg","T  = "+weatherCard.currentWeather.getTemperatureInCelsius()+ " K");
+            Log.v("twfg","td = "+weatherCard.currentWeather.getTd()+ " K");
+            Log.v("twfg","RH = "+weatherCard.currentWeather.getRH()+ " %");
+            Log.v("twfg","RH = "+weatherCard.currentWeather.getRHInt()+ " %");
+        }
     }
 
     private void errorDialog(Exception e){

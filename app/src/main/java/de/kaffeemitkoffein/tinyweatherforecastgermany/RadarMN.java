@@ -1,9 +1,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
+import android.graphics.*;
 
 public class RadarMN {
 
@@ -76,15 +74,40 @@ public class RadarMN {
     public RadarMN(Context context){
         if (APIReaders.RadarMNGeoserverRunnable.radarCacheFileExists(context)){
             color = new int[RADARMAP_PIXEL_FIXEDWIDTH][RADARMAP_PIXEL_FIXEDHEIGHT];
-            bitmap = BitmapFactory.decodeFile(APIReaders.RadarMNGeoserverRunnable.getRadarMNFile(context).getAbsolutePath().toString());
+            BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+            bitmapOptions.inMutable = true;
+            bitmap = BitmapFactory.decodeFile(APIReaders.RadarMNGeoserverRunnable.getRadarMNFile(context).getAbsolutePath().toString(),bitmapOptions);
+            Canvas canvas = new Canvas(bitmap);
+            final Paint transparentPaint = new Paint();
+            transparentPaint.setColor(Color.TRANSPARENT);
+            transparentPaint.setAntiAlias(true);
             for (int x=0; x<RADARMAP_PIXEL_FIXEDWIDTH; x++){
                 for (int y=0; y<RADARMAP_PIXEL_FIXEDHEIGHT; y++){
                     int i = bitmap.getPixel(x,y);
                     color[x][y] = i;
                     if ((i==-4342339)||(i==-1)){
                         color[x][y] = Color.TRANSPARENT;
+                        canvas.drawPoint(x,y,transparentPaint);
                     }
                 }
+            }
+        }
+    }
+
+    public void drawDebugBorders(){
+        Canvas canvas = new Canvas(bitmap);
+        final Paint borderPaint = new Paint();
+        borderPaint.setColor(Color.RED);
+        for (int x=0; x<RADARMAP_PIXEL_FIXEDWIDTH; x++){
+            for (int y=0; y<RADARMAP_PIXEL_FIXEDHEIGHT; y++){
+                canvas.drawPoint(x,0,borderPaint);
+                canvas.drawPoint(0,y,borderPaint);
+                canvas.drawPoint(RADARMAP_PIXEL_FIXEDWIDTH-1,y,borderPaint);
+                canvas.drawPoint(x,RADARMAP_PIXEL_FIXEDHEIGHT-1,borderPaint);
+                color[x][0] = Color.RED;
+                color[0][y] = Color.RED;
+                color[RADARMAP_PIXEL_FIXEDWIDTH-1][y] = Color.RED;
+                color[x][RADARMAP_PIXEL_FIXEDHEIGHT-1] = Color.RED;
             }
         }
     }

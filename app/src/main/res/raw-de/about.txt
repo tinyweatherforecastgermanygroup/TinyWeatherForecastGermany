@@ -24,6 +24,8 @@ Dieses Programm benutzt die Astronomy Klasse, Copyright (C) 2010-2012, Helmut Le
 
 PAT maps by Ian Macky <http://ian.macky.net/pat>.
 
+Die Berechnung der relativen Luftfeuchtigkeit aus der Temperatur und dem Taupunkt erfolgt anhand einer vereinfachten Formel des DWD (Deutscher Wetterdienst), siehe <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
+
 App-Icon von Janis Bitta.
 
 Folgende Personen haben zum Projekt beigetragen:

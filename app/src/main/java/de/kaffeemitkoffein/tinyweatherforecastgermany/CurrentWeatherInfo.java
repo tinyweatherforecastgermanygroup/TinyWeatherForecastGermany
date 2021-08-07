@@ -134,6 +134,7 @@ public class CurrentWeatherInfo{
         currentWeather.setProbVisibilityBelow1km(getIntItem(rawWeatherInfo.VV10[current_weather_position]));
         currentWeather.setPressure(getDoubleItem(rawWeatherInfo.PPPP[current_weather_position]));
         currentWeather.setUV(getDoubleItem(rawWeatherInfo.RRad1[current_weather_position]));
+        currentWeather.setTd(getDoubleItem(rawWeatherInfo.Td[current_weather_position]));
         if (!currentWeather.hasCondition()){
             currentWeather.calculateMissingCondition();
         }
@@ -172,6 +173,8 @@ public class CurrentWeatherInfo{
             wi.setProbVisibilityBelow1km(getIntItem(rawWeatherInfo.VV10[index]));
             wi.setPressure(getDoubleItem(rawWeatherInfo.PPPP[index]));
             wi.setUV(getDoubleItem(rawWeatherInfo.RRad1[index]));
+            wi.setTd(getDoubleItem(rawWeatherInfo.Td[index]));
+
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
@@ -247,6 +250,7 @@ public class CurrentWeatherInfo{
             wi.setProbVisibilityBelow1km(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.VV10,start, index));
             wi.setPressure(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.PPPP, start, index));
             wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1, start, index));
+            wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td,start,index));
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
@@ -310,6 +314,7 @@ public class CurrentWeatherInfo{
             wi.setProbVisibilityBelow1km(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.VV10,start, index));
             wi.setPressure(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1,start,index));
             wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1,start,index));
+            wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td,start,index));
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
