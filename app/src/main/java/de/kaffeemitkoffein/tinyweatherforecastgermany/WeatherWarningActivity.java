@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.*;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.text.SimpleDateFormat;
