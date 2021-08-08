@@ -681,13 +681,8 @@ public class WeatherWarningActivity extends Activity {
         if (zoomMapState!=null){
             mapZoomable.restoreZoomViewState(zoomMapState);
         }
-        //Paint pdijon = new Paint();
-        //pdijon.setStyle(Paint.Style.FILL_AND_STROKE);
-        //pdijon.setColor(Color.BLUE);
         // add the pin sprite
         int pinsize = Math.round(180/this.getApplicationContext().getResources().getDisplayMetrics().density);
-        Log.v("twfg","Pin Size in dp: "+pinsize);
-        Log.v("twfg","scale factor  : "+this.getApplicationContext().getResources().getDisplayMetrics().density);
         PlotPoint pinPoint = getPlotPoint((float) localStation.longitude, (float) localStation.latitude);
         Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinsize,pinsize,false);
         mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT);

@@ -1,0 +1,2 @@
+- nyní lze nastavit intervaly předpovědi: hodinový, šestihodinový, smíšený (prvních 24 hodin hodinový, poté šestihodinový).
+- volitelný pruh, který zobrazuje podrobnosti hodinové předpovědi v 6hodinové předpovědi

@@ -1,0 +1,2 @@
+- nový dešťový radar
+- pro výpočet západu a východu slunce se místo aktuálního času používá posun zobrazeného času o letní čas

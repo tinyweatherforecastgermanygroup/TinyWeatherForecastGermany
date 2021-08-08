@@ -1,0 +1,3 @@
+Verze 0.32:
+- opravuje chybu převodu teploty (celsius na kelvin) v API Gadgetbridge.
+- drobná úprava rozložení widgetu (symbol počasí je nyní větší)

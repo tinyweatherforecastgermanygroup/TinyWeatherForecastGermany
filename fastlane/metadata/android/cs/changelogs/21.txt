@@ -1,0 +1,5 @@
+- opravena chybějící aktualizace varování v hlavní aplikaci
+- opraveny chyby při parsování data v textových předpovědích
+- opraveno příliš velké písmo ve velkém widgetu
+- tučný widget nyní opět roztahuje informace na maximální dostupnou šířku
+- varování před počasím se nyní posouvají rychleji

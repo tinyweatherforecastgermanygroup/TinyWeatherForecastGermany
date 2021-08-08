@@ -1,0 +1,9 @@
+Podrobná předpověď počasí až na 10 dní na základě otevřených dat Deutscher Wetterdienst (DWD). Zobrazují se také varování před počasím od DWD.
+
+Zobrazí se předpověď počasí požadované meteorologické stanice. Stanice lze vyhledávat podle názvu, zeměpisných souřadnic nebo vlastní polohy. Předpověď počasí je k dispozici pro více než 5000 meteorologických stanic v Německu a po celém světě.
+
+Aplikace má štíhlý design. Volitelně podporuje nositelná zařízení přes Gadgetbridge, takže údaje o počasí lze zobrazovat i na nositelných zařízeních.
+
+Kromě toho existují různé možnosti, jak si zobrazení údajů o počasí přizpůsobit vlastním potřebám. Pro vybrané místo lze zobrazit také čas východu, západu a soumraku slunce.
+
+Aplikace má také seznam oblíbených položek, který lze použít k rychlému přepínání mezi více meteorologickými stanicemi. Nabízí také několik různě velkých widgetů s předpovědí počasí, které lze umístit na domovskou obrazovku a které se automaticky aktualizují.

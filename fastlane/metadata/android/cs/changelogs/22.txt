@@ -1,0 +1,6 @@
+- nový jazyk: (díky Mondstern!)
+- aktualizovaný seznam meteorologických stanic / lokalit
+- několik oprav chyb, z nichž některé mohou vést k pádu aplikace.
+- opravena příliš velká velikost písma dne v týdnu ve velkém widgetu
+- opraveno špatné označení dne ve velkém widgetu a widgetu s tučným písmem
+- opraveno překrývání položek předpovědi v hlavní aplikaci na některých zařízeních

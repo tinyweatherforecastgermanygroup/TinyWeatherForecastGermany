@@ -1,0 +1,6 @@
+Verze 0.50.2:
+
+- upravena minimální výška widgetu pro lepší integraci do vlastních velikostí mřížky na domovské obrazovce
+- opraveno, že widgety se za určitých okolností okamžitě neaktualizují na nové umístění.
+- opravena nefunkční možnost gadgetbridge "odeslat aktuální čas".
+- opraveno nespuštění aktualizační služby, protože aktivita není v popředí na zařízeních s API>25

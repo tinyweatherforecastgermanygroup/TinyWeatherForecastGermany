@@ -1,0 +1,9 @@
+Previsioni meteo dettagliate per un massimo di 10 giorni, basate sui dati aperti del Deutscher Wetterdienst (DWD). Vengono visualizzati anche gli avvisi meteo del DWD.
+
+Vengono visualizzate le previsioni del tempo della stazione meteo desiderata. Le stazioni possono essere cercate per nome, per geo-coordinate o per la propria posizione. Le previsioni del tempo sono disponibili per oltre 5000 stazioni meteo in Germania e in tutto il mondo.
+
+L'app ha un design sottile. Supporta opzionalmente i wearable tramite Gadgetbridge, in modo che i dati meteo possano essere visualizzati anche sui wearable.
+
+Inoltre, esistono varie possibilità per adattare la visualizzazione dei dati meteo alle proprie esigenze. Anche l'ora dell'alba, del tramonto e del crepuscolo può essere mostrata per la località scelta.
+
+L'applicazione ha anche una lista di preferiti, che può essere utilizzata per passare velocemente da una stazione meteo all'altra. Offre anche widget multipli, di dimensioni diverse, con le previsioni del tempo che possono essere posizionati sulla schermata iniziale e che vengono aggiornati automaticamente.

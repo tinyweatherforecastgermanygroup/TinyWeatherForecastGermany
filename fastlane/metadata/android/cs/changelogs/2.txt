@@ -1,0 +1,4 @@
+- instalace aplikace je nyní vynucena na interní úložiště (opravuje widget, který není k dispozici při instalaci aplikace na SD kartu).
+- přidána obrazovka "co je nového"
+- přidána experimentální podpora pro Gadgetbridge (zatím není funkční!)
+- opraveny chyby při rozboru informací o větru

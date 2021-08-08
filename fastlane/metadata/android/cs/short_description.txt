@@ -1,0 +1,1 @@
+Předpověď počasí na základě otevřených dat z Deutscher Wetterdienst.

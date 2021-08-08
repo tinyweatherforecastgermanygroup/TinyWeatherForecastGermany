@@ -1,0 +1,6 @@
+- nová ikona aplikace (zásluhy patří Janis Bitta!)
+- opravena chyba v převodu z m/s na uzly (kn)
+- opraveno špatné zobrazení vloček při výběru km/h
+- opraveno několik chyb a problémů týkajících se zobrazování větru ve widgetech
+- opravena hodinová předpověď, která někdy překrývala podrobnosti o počasí v hlavní aplikaci
+- několik drobných vylepšení rozvržení a zobrazení

@@ -1,0 +1,5 @@
+- přidána funkce pro vyhledání nejbližších senzorů deep L podle zeměpisných souřadnic nebo polohových služeb v zařízení.
+- přidán fallback na http bez ssl, pokud šifrované připojení selže na velmi starých zařízeních (např. 4.x.x) kvůli chybějícím šifrovacím sadám.
+- neúplné časové intervaly (6h, 24h) nyní při výpočtech odhazují minulá data, kde je to možné
+- opravena chyba ve výpočtu min. a max. teplot (mohly být příliš vysoké a příliš nízké)
+- několik drobných oprav chyb

@@ -1,0 +1,5 @@
+- přidané jednotky větru: m/s, beaufort (bf), uzly (kn)
+- přidány jednotky vzdálenosti: námořní míle, míle a yardy
+- směr větru lze nyní zobrazit třemi způsoby: jednoduchou šipkou, šipkou s rychlostí větru (beaufort), textem.
+- opravena chyba v otáčení bitmapy šipky, která vedla k nesprávnému zobrazení směru větru.
+- drobná vylepšení rozvržení widgetů

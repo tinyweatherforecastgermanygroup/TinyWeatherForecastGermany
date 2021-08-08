@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
  This file is part of TinyWeatherForecastGermany.
 
@@ -15,32 +16,30 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<resources>
+--><resources>
     <string name="app_name">Kleine Wettervorschau Deutschland</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Letzte Aktualisierung:</string>
-    <string name="main_wait_for_gps_fix">Der Standort wird gerade ermittelt...</string>
+    <string name="main_wait_for_gps_fix">Standort wird bestimmt…</string>
     <string name="dwd_notice">Quelle: Deutscher Wetterdienst, eigene Elemente ergänzt, einige Einzelwerte gemittelt.</string>
     <string name="dwd_notice_app">Quelle: Deutscher Wetterdienst, eigene Elemente ergänzt, einige Einzelwerte gemittelt. Warnungen gekürzt.</string>
     <string name="dwd_warnings_notice">Quelle: Deutscher Wetterdienst, Warnungen gekürzt dargestellt.</string>
     <string name="dwd_textforecast_notice">Quelle: Deutscher Wetterdienst, eigene Elemente ergänzt, Layout geändert.</string>
     <string name="new_station">Region geändert zu </string>
     <string name="license_button">Lizenz</string>
-    <string name="about_button">Datenschutz/Über...</string>
+    <string name="about_button">Datenschutz/Über</string>
     <string name="update_button">Aktualisieren</string>
     <string name="settings_button">Einstellungen</string>
     <string name="geoinput_button">Finde mit Standort</string>
-    <string name="whatsnew_button">Was ist neu?</string>
+    <string name="whatsnew_button">Was ist neu</string>
     <string name="warnings_button">Wetterwarnungen</string>
     <string name="texts_button">Texte</string>
     <string name="today">Heute</string>
-    <string name="station">Station</string>
+    <string name="station">Ort</string>
     <string name="boldwidget_description">Kräftig</string>
     <string name="classicwidget_description">Klassisch</string>
     <string name="largewidget_description">Groß</string>
-    <string name="clockwidget_description">Uhr &amp; Wetter</string>
+    <string name="clockwidget_description">Uhr und Wetter</string>
     <string name="station_does_not_exist">Die eingegebene Wetterstation existiert nicht. Wähle eine aus den Vorschlägen aus.</string>
     <string name="favorites_cleared">Die Favoriten wurden zurückgesetzt.</string>
     <string name="actionbar_textinput_title">Ort hier eingeben:</string>
@@ -49,7 +48,7 @@
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">Gewitter</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">gefrierender Sprühregen</string>
     <string name="weathercode_DRIZZLE_FREEZING_SLIGHT">gefrierender, leichter Sprühregen</string>
-    <string name="weathercode_RAIN_FREEZING_MODERATE_OR_HEAVY">grfierender Regen</string>
+    <string name="weathercode_RAIN_FREEZING_MODERATE_OR_HEAVY">gefrierender Regen</string>
     <string name="weathercode_RAIN_FREEZING_SLIGHT">gefrierender, leichter Regen</string>
     <string name="weathercode_SNOW_SHOWERS_MODERATE_OR_HEAVY">Schneeschauer</string>
     <string name="weathercode_SNOW_SHOWERS_SLIGHT">leichte Schneeschauer</string>
@@ -84,11 +83,8 @@
     <string name="preference_category_widget">Widget-Einstellungen</string>
     <string name="preference_category_warnings">Wetter-Warnungen</string>
     <string name="preference_category_other">Sonstiges</string>
-    <string name="preference_category_texts">Wettertexte</string>
     <string name="preference_updateinterval_title">Aktualisierungs-Intervall</string>
-    <string name="preference_pdateinterval_summary">Wie oft sollen Wetterdaten aktualisiert werden</string>
-    <string name="preference_update_textforecasts_title">Texte aktualisieren</string>
-    <string name="preference_update_textforecasts_summary">Wettertexte aktuell halten.</string>
+    <string name="preference_pdateinterval_summary">Wie oft sollen Wetterdaten aktualisiert werden.</string>
     <string name="preference_opacity_title">Deckkraft Widget</string>
     <string name="preference_opacity_summary">Bestimmt die Transparenz des Widgets auf dem Homescreen.</string>
     <string name="preference_displaynoteinwidget_title">DWD-Hinweis anzeigen</string>
@@ -127,8 +123,6 @@
     <string name="preference_display_wind_arc_hours_summary">Welche Zeit als Bogen angezeigt werden soll.</string>
     <string name="preference_display_wind_unit_title">Windgeschwindigkeit</string>
     <string name="preference_display_wind_unit_summary">Wähle die Einheit für die Windgeschwindigkeit.</string>
-    <string name="preference_display_wind_in_radar_title">Im Regenradar zeigen</string>
-    <string name="preference_display_wind_in_radar_summary">Windrichtung im Regenradar zeigen.</string>
     <string name="preference_display_distance_unit_title">Entfernungen</string>
     <string name="preference_display_distance_unit_summary">Wähle die Einheit für Entfernungen.</string>
     <string name="preference_display_show_radar_by_default_title">Regenradar</string>
@@ -148,7 +142,7 @@
     <string name="preference_gadgetbridge_faketimestamp_summary">Einige Wearables akzeptieren keine Vorschau als aktuelles Wetter, statt dessen immer aktuelle Zeit übermitteln.</string>
     <string name="preference_gadgetbridge_notice_title">Wichtiger Hinweis</string>
     <string name="preference_gadgetbridge_notice_summary">Benötigt wird Gadgetbridge Version 0.48.0 oder höher, mit niedrigeren Versionen funktioniert die Übertragung der Wetterdaten nicht.</string>
-    <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge-Paketname wurde zurückgesetzt!</string>
+    <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge-Paketname wurde zurückgesetzt.</string>
     <string name="preference_loggingscreen_title">Fehler finden</string>
     <string name="preference_loggingscreen_summary">Protokoll aufzeichnen und verwalten.</string>
     <string name="preference_intro_title">Intro</string>
@@ -166,7 +160,7 @@
     <string name="alertdialog_ok">Ok</string>
     <string name="alertdialog_1_title">Warnung</string>
     <string name="alertdialog_1_text">Logging nach Logcat kann private Informationen anderen Apps zugänglich machen. Bist Du sicher und weißt Du, was Du tust?</string>
-    <string name="alertdialog_2_title">Logcat</string>
+    <string name="alertdialog_2_title">Protokoll</string>
     <string name="alertdialog_2_text">Diese App fügt aktuell Logs in Logcat ein. Dies wird abgeschaltet, da diese Funktion nicht für offizielle Versionen gedacht ist.</string>
     <string name="alertdialog_2_toast">Logging nach Logcat deaktiviert.</string>
     <string name="logging_button_back">Zurück</string>
@@ -179,10 +173,10 @@
     <string name="button_continue">Weiter</string>
     <string name="service_notification_channelname">Aktualisierungs-Hinweise</string>
     <string name="service_notification_title">Kleine Wettervorschau Deutschland</string>
-    <string name="service_notification_text0">Neue Wettervorhersage wird geholt...</string>
-    <string name="service_notification_text1">Wetter-Warnungen werden geholt...</string>
-    <string name="service_notification_text2">Text-Vorhersagen werden geholt...</string>
-    <string name="service_notification_text3">Aufräumen...</string>
+    <string name="service_notification_text0">Neue Wettervorhersage wird geholt…</string>
+    <string name="service_notification_text1">Wetter-Warnungen werden geholt…</string>
+    <string name="service_notification_text2">Text-Vorhersagen werden geholt…</string>
+    <string name="service_notification_text3">Aufräumen…</string>
     <string name="direction_north">N</string>
     <string name="direction_south">S</string>
     <string name="direction_west">W</string>
@@ -195,10 +189,10 @@
     <string name="sunset">Untergang</string>
     <string name="sunrise">Aufgang</string>
     <string name="twilight">Dämmerung</string>
-    <string name="preference_feedback_title">Feedback</string>
-    <string name="preference_feedback_summary">Dem Entwickler Feedback per Mail geben.</string>
-    <string name="feedback_mail_subject">Feedback: TinyWeatherForecastGermany</string>
-    <string name="feedback_mail_text">Wenn es sich um einen Fehler handelt, bitte auch ein Protokoll kopieren &amp; hier einfügen, falls möglich.</string>
+    <string name="preference_feedback_title">Rückmeldung</string>
+    <string name="preference_feedback_summary">Dem Entwickler Rückmeldung per E-Mail geben.</string>
+    <string name="feedback_mail_subject">Rückmeldung: TinyWeatherForecastGermany</string>
+    <string name="feedback_mail_text">Wenn es sich um einen Fehler handelt, bitte auch ein Protokoll kopieren und hier einfügen, falls möglich.</string>
     <string name="warnings_until">bis</string>
     <string name="warnings_update">Warnungen aktualisiert.</string>
     <string name="warnings">Warnungen</string>
@@ -212,7 +206,7 @@
     <string name="welcome_next">WEITER</string>
     <string name="welcome_ready">FERTIG!</string>
     <string name="welcome_s1_text1">frei und open source</string>
-    <string name="welcome_s1_text2">unterstützt > 5000 Orte</string>
+    <string name="welcome_s1_text2">unterstützt &gt; 5000 Orte</string>
     <string name="welcome_s1_text3">Vorhersage für bis zu 10 Tage</string>
     <string name="welcome_s1_text4">Wetter-Warnungen für Deutschland</string>
     <string name="welcome_s1_text5">Homescreen-Widgets</string>
@@ -258,7 +252,7 @@
     <string name="textforecasttype_maritime_north_and_baltic_medium_term">Maritim Nord- &amp; Ostsee Mittelfrist</string>
     <string name="textforecasttype_short_term">Wetter Kurzfrist</string>
     <string name="textforecasttype_medium_term">Wetter Mittelfrist</string>
-    <string name="textforecasttype_medium_feature">Feature</string>
+    <string name="textforecasttype_medium_feature">Funktion</string>
     <string name="textforecasttype_medium_other">Sonstiges</string>
     <string name="warning_stationreset_title">Wetter-Station zurückgesetzt</string>
     <string name="warning_stationreset_text">Um einen Fehler zu beheben, wurde die Wetter-Station auf den Standardwert zurück gesetzt.</string>
@@ -267,6 +261,4 @@
     <string name="radar_rain3">stark</string>
     <string name="radar_rain4">extrem</string>
     <string name="hide_rain">Regen verbergen</string>
-    <string name="areadatabasecreator_title">Daten werden vorbereitet</string>
-    <string name="areadatabasecreator_text">Bitte einen Moment Geduld, das braucht nur einmal gemacht werden.</string>
 </resources>

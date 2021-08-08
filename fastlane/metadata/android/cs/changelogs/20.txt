@@ -1,0 +1,5 @@
+- nové textové předpovědi
+- vylepšená varování před počasím
+- ikona větru může zobrazit předpověď větru
+- přepracovaný a aktualizovaný widget s tučným písmem
+- opravy různých chyb

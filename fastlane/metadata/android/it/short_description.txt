@@ -1,0 +1,1 @@
+Previsioni del tempo basate su dati aperti del Deutscher Wetterdienst.

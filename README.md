@@ -79,9 +79,55 @@ Contributors:
 * Janis Bitta (new app icon)
 * Jonas Lochmann (.gitignore)
 * Marc Nause (code improvements, bitmap caching)
-* Mondstern (Dutch translation)
 * Jean-Luc (French translation, bugfixes, javadoc improvements, translations of this README.md file)
  
+ Translations:
+
+* German
+
+    * eUgEntOptIc44
+    * mondstern
+    * J. Lavoie 
+
+
+* French
+
+    * eUgEntOptIc44
+    * mondstern
+    * J. Lavoie
+
+
+* Italian
+
+    * mondstern 
+    * eUgEntOptIc44 
+
+
+* English
+
+    * Allan Nordhøy 
+
+
+* Dutch
+
+    * mondstern 
+
+
+* Czech
+
+    * eUgEntOptIc44 
+    * mondstern 
+
+
+* Norwegian Bokmål
+
+    * mondstern
+    * Allan Nordhøy
+
+ Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://weblate.bubu1.eu/engage/tiny-weather-forecast-germany/).
+
+<img src="https://weblate.bubu1.eu/widgets/tiny-weather-forecast-germany/-/multi-blue.svg" alt="Translation status">
+
 Privacy
 -------
  
