@@ -1,5 +1,3 @@
-Neu in dieser Version ([VERSION]):
-
 - größere Fehlerbehebung(en), die den Absturz der App auf einigen Geräten/Roms beseitigt
 - die Quelle für Regenradar wechselt vom MX zum MN Komposit
 - neue App-Shortcuts

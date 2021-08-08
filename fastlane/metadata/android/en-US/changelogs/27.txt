@@ -1,5 +1,3 @@
-What is new in this version ([VERSION]):
-
 - major bugfix solving crashes after app launch on some devices/roms
 - changes rain radar source from MX composite to MN composite
 - new app shortcuts
@@ -9,4 +7,3 @@ New languages:
 * Italian (thanks to eUgEntOptIc44, mondstern!)
 * Czech (thanks to eUgEntOptIc44, mondstern!)
 * Norwegian Bokmål (thanks to Allan Nordhøy, mondstern!)
-
