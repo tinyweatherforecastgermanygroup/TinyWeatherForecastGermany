@@ -173,6 +173,10 @@ Symbols used:
 <img src="app/src/main/res/mipmap-mdpi/symbol_fog.png" height="16" width="16"/>  fog
 <img src="app/src/main/res/mipmap-mdpi/symbol_drizzle.png" height="16" width="16"/> drizzle
 <img src="app/src/main/res/mipmap-mdpi/arrow.png" height="16" width="16"/> wind direction
+
+### What do the icons show do?
+
+You may get a hint about their functionality if you just _long-press_ them.
  
 ### My widgets don't get updated (unless I open the app).
 
