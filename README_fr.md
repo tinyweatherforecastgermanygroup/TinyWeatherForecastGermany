@@ -75,6 +75,7 @@ Contributeurs :
 * Marc Nause (améliorations du code, mise en cache des bitmaps)
 * Mondstern (traduction néerlandaise)
 * Jean-Luc (traduction française, améliorations du code, utilisation du javadoc, traduction du fichier README.md)
+* arwanger (README.md)
 
 Vie privée
 -------

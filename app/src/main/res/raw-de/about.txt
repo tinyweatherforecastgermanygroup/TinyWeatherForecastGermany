@@ -34,6 +34,7 @@ Folgende Personen haben zum Projekt beigetragen:
  - Marc Nause (code improvements, bitmap caching)
  - Mondstern (Niederländische Übersetzung)
  - Jean-Luc (Französische Übersetzung)
+ - arwanger (README.md)
 
 Lizenz:
 --------

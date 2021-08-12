@@ -77,6 +77,7 @@ Přispěvatelé:
 * Marc Nause (vylepšení kódu, ukládání bitmap do mezipaměti)
 * Mondstern (překlad do nizozemštiny)
 * Jean-Luc (francouzský překlad, opravy chyb, javadoc, překlad souboru README.md)
+* arwanger (README.md)
 
 Ochrana osobních údajů
 ----------------------

@@ -77,6 +77,7 @@ Collaboratori:
 * Marc Nause (miglioramenti al codice, caching delle bitmap)
 * Mondstern (traduzione olandese)
 * Jean-Luc (traduzione francese, correzioni di bug, miglioramenti al javadoc, traduzioni di questo file README.md)
+* arwanger (README.md)
 
 Privacy
 -------

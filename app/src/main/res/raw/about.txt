@@ -34,6 +34,7 @@ The following persons contributed to this project:
  - Marc Nause (code improvements, bitmap caching)
  - Mondstern (Dutch translation)
  - Jean-Luc (French translation)
+ - arwanger (README.md)
 
 License:
 --------

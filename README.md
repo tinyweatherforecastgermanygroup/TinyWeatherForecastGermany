@@ -80,6 +80,7 @@ Contributors:
 * Jonas Lochmann (.gitignore)
 * Marc Nause (code improvements, bitmap caching)
 * Jean-Luc (French translation, bugfixes, javadoc improvements, translations of this README.md file)
+* arwanger (README.md)
  
  Translations:
 
