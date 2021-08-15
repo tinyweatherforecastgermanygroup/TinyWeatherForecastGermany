@@ -72,17 +72,16 @@ public class Settings extends PreferenceActivity{
             if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)){
                 setAlarmSettingAllowed();
             }
+            if (s.equals(WeatherSettings.PREF_THEME)){
+                recreate();
+            }
 
         }
     };
 
     public int getThemeResId(){
         try {
-            if (!ThemePicker.isDarkTheme(getApplicationContext())){
-                return  R.style.AppTheme_Light;
-            } else {
-                return R.style.AppTheme_Dark;
-            }
+            return ThemePicker.GetTheme(this);
         } catch (Exception e){
           return 0;
         }
@@ -91,11 +90,7 @@ public class Settings extends PreferenceActivity{
     @Override
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle bundle){
-        if (!ThemePicker.isDarkTheme(getApplicationContext())){
-            setTheme(R.style.AppTheme_Light);
-        } else {
-            setTheme(R.style.AppTheme_Dark);
-        }
+        setTheme(ThemePicker.GetTheme(this));
         super.onCreate(bundle);
         context = this;
         addPreferencesFromResource(R.xml.preferences);
@@ -105,7 +100,7 @@ public class Settings extends PreferenceActivity{
         if (!WeatherSettings.isTLSdisabled(context)){
             disableTLSOption();
         }
-        if (WeatherSettings.getViewModel(context)!= WeatherSettings.VIEWMODELTYPE.EXTENDED){
+        if (WeatherSettings.getViewModel(context).equals(WeatherSettings.ViewModel.EXTENDED)){
             // do something
         }
         // allow changing alarm state?

@@ -20,20 +20,28 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="@string/preference_category_general">
+            android:title="@string/preference_category_display">
+
+        <ListPreference
+                android:key="PREF_theme"
+                android:title="@string/preference_theme_title"
+                android:summary="@string/preference_theme_summary"
+                android:entries="@array/theme_text"
+                android:entryValues="@array/theme_values"
+                android:defaultValue="2"/>
 
         <PreferenceScreen
-            android:key="PREF_screen_display_extended"
-            android:title="@string/preference_screen_display_title"
-            android:summary="@string/preference_screen_display_summary">
+                android:key="PREF_screen_display_extended"
+                android:title="@string/preference_screen_display_title"
+                android:summary="@string/preference_screen_display_summary">
 
             <ListPreference
-                android:key="PREF_display_type"
-                android:title="@string/preference_displaytype_title"
-                android:summary="@string/preference_displaytype_summary"
-                android:entries="@array/display_type_text"
-                android:entryValues="@array/display_type_values"
-                android:defaultValue="3"/>
+                    android:key="PREF_display_type"
+                    android:title="@string/preference_displaytype_title"
+                    android:summary="@string/preference_displaytype_summary"
+                    android:entries="@array/display_type_text"
+                    android:entryValues="@array/display_type_values"
+                    android:defaultValue="3"/>
 
             <!--
             <ListPreference
@@ -46,103 +54,103 @@
             -->
 
             <CheckBoxPreference
-                android:key="PREF_display_bar"
-                android:title="@string/preference_displayforecastbar_title"
-                android:summary="@string/preference_displayforecastbar_summary"
-                android:defaultValue="true"/>
+                    android:key="PREF_display_bar"
+                    android:title="@string/preference_displayforecastbar_title"
+                    android:summary="@string/preference_displayforecastbar_summary"
+                    android:defaultValue="true"/>
 
             <CheckBoxPreference
-                android:key="PREF_display_simple_bar"
-                android:title="@string/preference_displaysimplebar_title"
-                android:summary="@string/preference_displaysimplebar_summary"
-                android:defaultValue="false"/>
+                    android:key="PREF_display_simple_bar"
+                    android:title="@string/preference_displaysimplebar_title"
+                    android:summary="@string/preference_displaysimplebar_summary"
+                    android:defaultValue="false"/>
 
             <CheckBoxPreference
-                android:key="PREF_display_pressure"
-                android:title="@string/preference_displaypressure_title"
-                android:summary="@string/preference_displaypressure_summary"
-                android:defaultValue="true"/>
+                    android:key="PREF_display_pressure"
+                    android:title="@string/preference_displaypressure_title"
+                    android:summary="@string/preference_displaypressure_summary"
+                    android:defaultValue="true"/>
 
             <CheckBoxPreference
-                android:key="PREF_display_visibility"
-                android:title="@string/preference_displayvisibility_title"
-                android:summary="@string/preference_displayvisibility_summary"
-                android:defaultValue="true"/>
+                    android:key="PREF_display_visibility"
+                    android:title="@string/preference_displayvisibility_title"
+                    android:summary="@string/preference_displayvisibility_summary"
+                    android:defaultValue="true"/>
 
             <CheckBoxPreference
-                android:key="PREF_display_sunrise"
-                android:title="@string/preference_displaysunrise_title"
-                android:summary="@string/preference_displaysunrise_summary"
-                android:defaultValue="true"/>
+                    android:key="PREF_display_sunrise"
+                    android:title="@string/preference_displaysunrise_title"
+                    android:summary="@string/preference_displaysunrise_summary"
+                    android:defaultValue="true"/>
 
             <CheckBoxPreference
-                android:key="PREF_display_end_of_day_bar"
-                android:title="@string/preference_displayendofdaybar_title"
-                android:summary="@string/preference_displayendofdaybar_summary"
-                android:defaultValue="true"/>
+                    android:key="PREF_display_end_of_day_bar"
+                    android:title="@string/preference_displayendofdaybar_title"
+                    android:summary="@string/preference_displayendofdaybar_summary"
+                    android:defaultValue="true"/>
 
             <CheckBoxPreference
-                android:key="PREF_display_gradient"
-                android:title="@string/preference_display_gradient_title"
-                android:summary="@string/preference_display_gradient_summary"
-                android:defaultValue="false"/>
+                    android:key="PREF_display_gradient"
+                    android:title="@string/preference_display_gradient_title"
+                    android:summary="@string/preference_display_gradient_summary"
+                    android:defaultValue="false"/>
 
-        <PreferenceScreen
-            android:key="PREF_screen_display_wind"
-            android:title="@string/preference_screen_wind_title"
-            android:summary="@string/preference_screen_wind_summary">
+            <PreferenceScreen
+                    android:key="PREF_screen_display_wind"
+                    android:title="@string/preference_screen_wind_title"
+                    android:summary="@string/preference_screen_wind_summary">
+
+                <ListPreference
+                        android:key="PREF_display_wind_type"
+                        android:title="@string/preference_display_wind_type_title"
+                        android:summary="@string/preference_display_wind_type_summary"
+                        android:entries="@array/display_wind_type_text"
+                        android:entryValues="@array/display_wind_type_values"
+                        android:defaultValue="0"/>
+
+                <ListPreference
+                        android:key="PREF_display_wind_unit"
+                        android:title="@string/preference_display_wind_unit_title"
+                        android:summary="@string/preference_display_wind_unit_summary"
+                        android:entries="@array/display_wind_unit_text"
+                        android:entryValues="@array/display_wind_unit_values"
+                        android:defaultValue="0"/>
+
+                <CheckBoxPreference
+                        android:key="PREF_display_wind_arc"
+                        android:title="@string/preference_display_wind_arc_title"
+                        android:summary="@string/preference_display_wind_arc_summary"
+                        android:defaultValue="false"/>
+
+                <ListPreference
+                        android:key="PREF_display_wind_arc_period"
+                        android:title="@string/preference_display_wind_arc_hours_title"
+                        android:summary="@string/preference_display_wind_arc_hours_summary"
+                        android:entries="@array/display_wind_arc_period_text"
+                        android:entryValues="@array/display_wind_arc_period_values"
+                        android:defaultValue="6"/>
+
+                <CheckBoxPreference
+                        android:key="PREF_display_wind_in_radar"
+                        android:title="@string/preference_display_wind_in_radar_title"
+                        android:summary="@string/preference_display_wind_in_radar_summary"
+                        android:defaultValue="true"/>
+
+            </PreferenceScreen>
 
             <ListPreference
-                android:key="PREF_display_wind_type"
-                android:title="@string/preference_display_wind_type_title"
-                android:summary="@string/preference_display_wind_type_summary"
-                android:entries="@array/display_wind_type_text"
-                android:entryValues="@array/display_wind_type_values"
-                android:defaultValue="0"/>
-
-            <ListPreference
-                android:key="PREF_display_wind_unit"
-                android:title="@string/preference_display_wind_unit_title"
-                android:summary="@string/preference_display_wind_unit_summary"
-                android:entries="@array/display_wind_unit_text"
-                android:entryValues="@array/display_wind_unit_values"
-                android:defaultValue="0"/>
+                    android:key="PREF_display_distance_unit"
+                    android:title="@string/preference_display_distance_unit_title"
+                    android:summary="@string/preference_display_distance_unit_summary"
+                    android:entries="@array/display_distance_unit_text"
+                    android:entryValues="@array/display_distance_unit_values"
+                    android:defaultValue="0"/>
 
             <CheckBoxPreference
-                android:key="PREF_display_wind_arc"
-                android:title="@string/preference_display_wind_arc_title"
-                android:summary="@string/preference_display_wind_arc_summary"
-                android:defaultValue="false"/>
-
-            <ListPreference
-                android:key="PREF_display_wind_arc_period"
-                android:title="@string/preference_display_wind_arc_hours_title"
-                android:summary="@string/preference_display_wind_arc_hours_summary"
-                android:entries="@array/display_wind_arc_period_text"
-                android:entryValues="@array/display_wind_arc_period_values"
-                android:defaultValue="6"/>
-
-            <CheckBoxPreference
-                android:key="PREF_display_wind_in_radar"
-                android:title="@string/preference_display_wind_in_radar_title"
-                android:summary="@string/preference_display_wind_in_radar_summary"
-                android:defaultValue="true"/>
-
-        </PreferenceScreen>
-
-            <ListPreference
-                android:key="PREF_display_distance_unit"
-                android:title="@string/preference_display_distance_unit_title"
-                android:summary="@string/preference_display_distance_unit_summary"
-                android:entries="@array/display_distance_unit_text"
-                android:entryValues="@array/display_distance_unit_values"
-                android:defaultValue="0"/>
-
-            <CheckBoxPreference
-                android:key="PREF_display_station_geo"
-                android:title="@string/preference_display_station_geo_title"
-                android:summary="@string/preference_display_station_geo_summary"
-                android:defaultValue="true"/>
+                    android:key="PREF_display_station_geo"
+                    android:title="@string/preference_display_station_geo_title"
+                    android:summary="@string/preference_display_station_geo_summary"
+                    android:defaultValue="true"/>
 
             <CheckBoxPreference
                     android:key="PREF_radar_show"
@@ -151,6 +159,11 @@
                     android:defaultValue="true"/>
 
         </PreferenceScreen>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/preference_category_general">
 
         <CheckBoxPreference
             android:key="PREF_setalarm"

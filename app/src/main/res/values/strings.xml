@@ -80,11 +80,14 @@
     <string name="title_activity_textlist">Texts</string>
     <string name="clouds">Clouds:</string>
     <string name="rain">Rain:</string>
+    <string name="preference_category_display">Display</string>
     <string name="preference_category_general">Weather data</string>
     <string name="preference_category_widget">Widget settings</string>
     <string name="preference_category_warnings">Weather warnings</string>
     <string name="preference_category_texts">Text forecasts</string>
     <string name="preference_category_other">Other</string>
+    <string name="preference_theme_title">App theme</string>
+    <string name="preference_theme_summary">Set the look of the app.</string>
     <string name="preference_updateinterval_title">Update interval</string>
     <string name="preference_pdateinterval_summary">Select how often the weather data should be updated.</string>
     <string name="preference_update_textforecasts_title">Update texts</string>

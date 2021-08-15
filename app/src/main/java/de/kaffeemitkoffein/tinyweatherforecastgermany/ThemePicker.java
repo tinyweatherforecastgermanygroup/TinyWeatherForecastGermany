@@ -31,11 +31,21 @@ public final class ThemePicker {
     public static int GetTheme(Context context){
         // use dark theme as default
         int themeId = R.style.AppTheme_Dark;
-        if (!isDarkTheme(context)){
+        // take preference settings with priority
+        String themePreference = WeatherSettings.getThemePreference(context);
+        if (themePreference.equals(WeatherSettings.Theme.DARK)){
+            themeId = R.style.AppTheme_Dark;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.LIGHT)){
             themeId = R.style.AppTheme_Light;
-            PrivateLog.log(context,Tag.MAIN,"Notice: device theme is not a night (dark) theme.");
         } else {
-            PrivateLog.log(context,Tag.MAIN,"Notice: device theme is a night (dark) theme.");
+            // when we follow the device settings...
+            if (!isDarkTheme(context)){
+                themeId = R.style.AppTheme_Light;
+            } else {
+                themeId = R.style.AppTheme_Dark;
+            }
+
         }
         return themeId;
     }

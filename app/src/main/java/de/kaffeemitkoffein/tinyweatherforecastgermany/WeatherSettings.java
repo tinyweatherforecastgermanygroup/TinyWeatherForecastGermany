@@ -31,6 +31,7 @@ public class WeatherSettings {
 
     public final static int DISPLAYTYPE_1HOUR = 1;
     public final static int DISPLAYTYPE_6HOURS = 3;
+    public final static int DISPLAYTYPE_24HOURS = 4;
     public final static int DISPLAYTYPE_MIXED = 256;
 
     public static final String PREF_STATION_NAME = "PREF_station_name";
@@ -82,6 +83,7 @@ public class WeatherSettings {
     public static final String PREF_AREA_DATABASE_READY = "PREF_area_database_ready";
     public static final String PREF_AREA_DATABASE_VERSION = "PREF_area_database_version";
     public static final String PREF_VIEWMODEL = "PREF_viewmodel";
+    public static final String PREF_THEME = "PREF_theme";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -131,7 +133,8 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_WIND_IN_RADAR_DEFAULT = true;
     public static final boolean PREF_AREA_DATABASE_READY_DEFAULT = false;
     public static final int PREF_AREA_DATABASE_VERSION_DEFAULT = 0;
-    public static final int PREF_VIEWMODEL_DEFAULT = VIEWMODELTYPE.SIMPLE;
+    public static final String PREF_VIEWMODEL_DEFAULT = ViewModel.SIMPLE;
+    public static final String PREF_THEME_DEFAULT = Theme.FOLLOW_DEVICE;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -181,7 +184,8 @@ public class WeatherSettings {
     public boolean display_wind_in_radar = PREF_DISPLAY_WIND_IN_RADAR_DEFAULT;
     public boolean area_database_ready = PREF_AREA_DATABASE_READY_DEFAULT;
     public int area_database_version = PREF_AREA_DATABASE_VERSION_DEFAULT;
-    public int viewModel = PREF_VIEWMODEL_DEFAULT;
+    public String viewModel = PREF_VIEWMODEL_DEFAULT;
+    public String theme = PREF_THEME_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -241,6 +245,7 @@ public class WeatherSettings {
         this.area_database_ready = readPreference(PREF_AREA_DATABASE_READY,PREF_AREA_DATABASE_READY_DEFAULT);
         this.area_database_version = readPreference(PREF_AREA_DATABASE_VERSION,PREF_AREA_DATABASE_VERSION_DEFAULT);
         this.viewModel = readPreference(PREF_VIEWMODEL,PREF_VIEWMODEL_DEFAULT);
+        this.theme = readPreference(PREF_THEME,PREF_THEME_DEFAULT);
     }
 
     public void savePreferences() {
@@ -291,6 +296,7 @@ public class WeatherSettings {
         applyPreference(PREF_AREA_DATABASE_READY,this.area_database_ready);
         applyPreference(PREF_AREA_DATABASE_VERSION,this.area_database_version);
         applyPreference(PREF_VIEWMODEL,this.viewModel);
+        applyPreference(PREF_THEME,this.theme);
     }
 
     public void commitPreferences() {
@@ -341,6 +347,7 @@ public class WeatherSettings {
         commitPreference(PREF_AREA_DATABASE_READY,this.area_database_ready);
         commitPreference(PREF_AREA_DATABASE_VERSION,this.area_database_version);
         commitPreference(PREF_VIEWMODEL,this.viewModel);
+        commitPreference(PREF_THEME,this.theme);
     }
 
     public String readPreference(String p, String d) {
@@ -792,20 +799,40 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
-    public class VIEWMODELTYPE{
-        final static int SIMPLE = 0;
-        final static int EXTENDED = 1;
+    public class ViewModel{
+        final static String SIMPLE = "SIMPLE";
+        final static String EXTENDED = "EXTENDED";
+        final static String DETAILED = "DETAILED";
     }
 
-    public static int getViewModel(Context context){
+    public static String getViewModel(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getInt(PREF_VIEWMODEL,PREF_VIEWMODEL_DEFAULT);
+        return sharedPreferences.getString(PREF_VIEWMODEL,PREF_VIEWMODEL_DEFAULT);
     }
 
-    public static void setViewModel(Context context, int model){
+    public static void setViewModel(Context context, String model){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putInt(PREF_VIEWMODEL,model);
+        pref_editor.putString(PREF_VIEWMODEL,model);
         pref_editor.apply();
     }
+
+    public class Theme{
+        final static String FOLLOW_DEVICE = "FOLLOW_DEVICE";
+        final static String DARK = "DARK";
+        final static String LIGHT = "LIGHT";
+    }
+
+    public static String getThemePreference(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(PREF_THEME,PREF_THEME_DEFAULT);
+    }
+
+    public static void setThemePreference(Context context, String theme){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putString(PREF_THEME,theme);
+        pref_editor.apply();
+    }
+
 }

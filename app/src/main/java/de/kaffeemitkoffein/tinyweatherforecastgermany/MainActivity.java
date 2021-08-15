@@ -413,6 +413,9 @@ public class MainActivity extends Activity {
                         WidgetRefresher.refresh(getApplicationContext());
                     }
                 }
+                if (key.equals(WeatherSettings.PREF_THEME)){
+                    recreate();
+                }
             }
         };
         if (!API_TESTING_ENABLED){

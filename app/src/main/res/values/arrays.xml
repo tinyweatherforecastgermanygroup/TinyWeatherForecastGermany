@@ -135,5 +135,28 @@
         <item>24</item>
     </string-array>
 
+    <string-array name="theme_text">
+        <item>Dark</item>
+        <item>Light</item>
+        <item>Automatic (based on device settings)</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>DARK</item>
+        <item>LIGHT</item>
+        <item>FOLLOW_DEVICE</item>
+    </string-array>
+
+    <string-array name="viewmodel_text">
+        <item>simple</item>
+        <item>extended</item>
+        <item>detailed</item>
+    </string-array>
+
+    <string-array name="viewmodel_values">
+        <item>SIMPLE</item>
+        <item>EXTENDED</item>
+        <item>DETAILED</item>
+    </string-array>
 
 </resources>
