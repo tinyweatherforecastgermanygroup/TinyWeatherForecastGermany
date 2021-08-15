@@ -20,9 +20,40 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo">
-        <item name="colorPrimary">@color/colorPrimary_DarkTheme</item>
+    <style name="AppTheme_Light" parent="android:Theme.Holo.Light">
 
+        <item name="colorPrimary">@color/colorPrimary_LightTheme</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_LightTheme</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight_LightTheme</item>
+        <item name="colorAccent">@color/colorAccent_LightTheme</item>
+        <item name="colorText">@color/colorText_LightTheme</item>
+        <item name="colorTextDark">@color/colorTextDark_LightTheme</item>
+        <item name="colorTextLight">@color/colorTextLight_LightTheme</item>
+        <item name="colorWelcomeBackground">@color/colorWelcomeBackground_LightTheme</item>
+
+        <item name="ic_search">@mipmap/ic_search_black_24dp</item>
+        <item name="ic_refresh">@mipmap/ic_refresh_black_24dp</item>
+        <item name="ic_short_text">@mipmap/ic_short_text_black_24dp</item>
+        <item name="ic_settings">@mipmap/ic_settings_black_24dp</item>
+        <item name="warning_icon">@mipmap/warning_icon_black</item>
+
+        <item name="ic_gps_fixed">@mipmap/ic_gps_fixed_black_24dp</item>
+        <item name="ic_info_outline">@mipmap/ic_info_outline_black_24dp</item>
+        <item name="ic_copyright">@mipmap/ic_copyright_black_24dp</item>
+        <item name="ic_announcement">@mipmap/ic_announcement_black_24dp</item>
+        <item name="ic_chevron_left">@mipmap/ic_chevron_left_black_24dp</item>
+        <item name="ic_chevron_right">@mipmap/ic_chevron_right_black_24dp</item>
+        <item name="ic_filter">@mipmap/ic_filter_black_24dp</item>
+        <item name="ic_filter_list">@mipmap/ic_filter_list_black_24dp</item>
+
+        <item name="white_bar">@mipmap/white_bar_black</item>
+        <item name="binocular">@mipmap/biocular_black</item>
+
+    </style>
+
+    <style name="AppTheme_Dark" parent="android:Theme.Holo">
+
+        <item name="colorPrimary">@color/colorPrimary_DarkTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_DarkTheme</item>
         <item name="colorPrimaryLight">@color/colorPrimaryLight_DarkTheme</item>
         <item name="colorAccent">@color/colorAccent_DarkTheme</item>
@@ -31,18 +62,26 @@
         <item name="colorTextLight">@color/colorTextLight_DarkTheme</item>
         <item name="colorWelcomeBackground">@color/colorWelcomeBackground_DarkTheme</item>
 
-        <item name="android:textColorPrimary">@color/colorText_DarkTheme</item>
-        <item name="android:actionMenuTextColor">@color/colorText_DarkTheme</item>
-        <!-- modify the ActionBar overflow icon -->
-        <item name="android:actionOverflowButtonStyle">@style/BurgerIcon</item>
-        <!-- modify the ActionBar overflow menu -->
-        <item name="android:popupMenuStyle">@style/OverflowMenu</item>
+        <item name="ic_search">@mipmap/ic_search_white_24dp</item>
+        <item name="ic_refresh">@mipmap/ic_refresh_white_24dp</item>
+        <item name="ic_short_text">@mipmap/ic_short_text_white_24dp</item>
+        <item name="ic_settings">@mipmap/ic_settings_white_24dp</item>
+        <item name="warning_icon">@mipmap/warning_icon</item>
 
-        <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
+        <item name="ic_gps_fixed">@mipmap/ic_gps_fixed_white_24dp</item>
+        <item name="ic_info_outline">@mipmap/ic_info_outline_white_24dp</item>
+        <item name="ic_copyright">@mipmap/ic_copyright_white_24dp</item>
+        <item name="ic_announcement">@mipmap/ic_announcement_white_24dp</item>
+        <item name="ic_chevron_left">@mipmap/ic_chevron_left_white_24dp</item>
+        <item name="ic_chevron_right">@mipmap/ic_chevron_right_white_24dp</item>
+        <item name="ic_filter">@mipmap/ic_filter_white_24dp</item>
+        <item name="ic_filter_list">@mipmap/ic_filter_list_white_24dp</item>
+
+        <item name="white_bar">@mipmap/white_bar</item>
+        <item name="binocular">@mipmap/biocular</item>
+
     </style>
 
-    <style name="AppTheme.NoActionBar">
-    </style>
 
     <!-- Customize ActionBar -->
     <style name="BurgerIcon" parent="android:style/Widget.Holo.ActionButton.Overflow">
@@ -51,13 +90,11 @@
 
     <!-- Customize overflow menu -->
     <style name="OverflowMenu" parent="android:Theme.Holo">
-        <item name="android:popupBackground">@color/colorPrimaryLight_DarkTheme</item>
-        <item name="android:color">@color/colorText_DarkTheme</item>
+
     </style>
 
     <style name="MyActionBarStyle" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:color">@color/colorText_DarkTheme</item>
-        <item name="android:background">@color/colorPrimary_DarkTheme</item>
+
     </style>
 
     <!-- Custom Light Theme -->

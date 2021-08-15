@@ -29,6 +29,15 @@
     <color name="colorTextLight_DarkTheme">#ffffff</color>
     <color name="colorWelcomeBackground_DarkTheme">#2222ff</color>
 
+    <color name="colorPrimary_LightTheme">#dddddd</color>
+    <color name="colorPrimaryDark_LightTheme">#eeeeee</color>
+    <color name="colorPrimaryLight_LightTheme">#ffffff</color>
+    <color name="colorAccent_LightTheme">#085758</color>
+    <color name="colorText_LightTheme">#111111</color>
+    <color name="colorTextDark_LightTheme">#333333</color>
+    <color name="colorTextLight_LightTheme">#000000</color>
+    <color name="colorWelcomeBackground_LightTheme">#04a3f6</color>
+
     <color name="colorWarning_clear">#00cc00</color>
     <color name="colorWarning_minor">#eeee00</color>
     <color name="colorWarning_moderate">#ee6600</color>

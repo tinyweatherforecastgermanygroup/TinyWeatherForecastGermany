@@ -101,10 +101,15 @@ public class TextForecastListActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = getApplicationContext();
+        try {
+            ThemePicker.SetTheme(this);
+        } catch (Exception e){
+            PrivateLog.log(context,"Error setting theme.");
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textforecastlist);
         registerForBroadcast();
-        context = getApplicationContext();
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         displayFloatButton();
@@ -181,7 +186,7 @@ public class TextForecastListActivity extends Activity {
         if (WeatherSettings.isTextForecastFilterEnabled(context)){
             gradientDrawable.setColorFilter(MainActivity.getColorFromResource(context,R.attr.colorAccent), PorterDuff.Mode.SRC_ATOP);
         } else {
-            gradientDrawable.setColorFilter(MainActivity.getColorFromResource(context,R.attr.colorPrimaryLight), PorterDuff.Mode.SRC_ATOP);
+            gradientDrawable.setColorFilter(MainActivity.getColorFromResource(context,R.attr.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
         }
     }
 

@@ -23,14 +23,14 @@
 
     <item android:id="@+id/hide_rain"
           android:title="@string/hide_rain"
-          android:icon="@mipmap/ic_filter_white_24dp"
+          android:icon="?attr/ic_filter"
           android:showAsAction="always"
           android:orderInCategory="1">
     </item>
 
     <item android:id="@+id/menu_refresh"
         android:title="@string/update_button"
-        android:icon="@mipmap/ic_refresh_white_24dp"
+        android:icon="?attr/ic_refresh"
         android:showAsAction="ifRoom"
         android:orderInCategory="2">
     </item>

@@ -200,10 +200,10 @@ public class ForecastBitmap{
         int resource = R.mipmap.not_available;
         if (weatherInfo.hasCondition()){
             // display always daytime
-            resource = WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(),true);
+            resource = WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(),true);
             // calculate daytime precisely if location is set
             if (weatherLocation!=null){
-                resource = WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(), weatherInfo.isDaytime(this.weatherLocation));
+                resource = WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(), weatherInfo.isDaytime(this.weatherLocation));
             }
         }
 

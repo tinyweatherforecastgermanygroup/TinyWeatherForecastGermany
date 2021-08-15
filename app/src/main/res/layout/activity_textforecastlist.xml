@@ -71,7 +71,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_filter_list_white_24dp"/>
+            android:src="?attr/ic_filter_list"/>
 
     </FrameLayout>
 

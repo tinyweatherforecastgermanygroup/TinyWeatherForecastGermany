@@ -152,7 +152,7 @@ public class LargeWidget extends ClassicWidget{
         String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
         // determine max. possible fontsize
         Paint paint_weekday = new Paint();
-        paint_weekday.setColor(Color.WHITE);
+        paint_weekday.setColor(ThemePicker.getWidgetTextColor(context));
         paint_weekday.setAntiAlias(true);
         paint_weekday.setTextSize(fontsize_dayofweek);
         float x_offset_day = (width_bar - paint_weekday.measureText(weekday))/2;
@@ -162,7 +162,7 @@ public class LargeWidget extends ClassicWidget{
         float y_offset_counter = height_item;
         // *** draw the weather icon ***
         if (weatherInfo.hasCondition()){
-            Bitmap condition_icon = BitmapFactory.decodeResource(context.getResources(),WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.getCondition(),true));
+            Bitmap condition_icon = BitmapFactory.decodeResource(context.getResources(),WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(),true));
             // determine the necessary icon size, the icon ratio is always 1:1
             float max_icon_diameter = width_bar;
             if (height_item<width_bar){
@@ -180,7 +180,7 @@ public class LargeWidget extends ClassicWidget{
         if (weatherInfo.hasMaxTemperature()){
             String max_temperature_string = String.valueOf(weatherInfo.getMaxTemperatureInCelsiusInt())+"°";
             Paint paint_maxtemp = new Paint();
-            paint_maxtemp.setColor(Color.WHITE);
+            paint_maxtemp.setColor(ThemePicker.getWidgetTextColor(context));
             paint_maxtemp.setAntiAlias(true);
             paint_maxtemp.setTextSize(fontsize_temperature);
             float x_offset_maxtemp = (width_bar - paint_weekday.measureText(max_temperature_string))/2;
@@ -193,7 +193,7 @@ public class LargeWidget extends ClassicWidget{
         if (weatherInfo.hasMinTemperature()){
             String min_temperature_string = String.valueOf(weatherInfo.getMinTemperatureInCelsiusInt())+"°";
             Paint paint_mintemp = new Paint();
-            paint_mintemp.setColor(Color.WHITE);
+            paint_mintemp.setColor(ThemePicker.getWidgetTextColor(context));
             paint_mintemp.setAntiAlias(true);
             paint_mintemp.setTextSize(fontsize_temperature);
             float x_offset_mintemp = (width_bar - paint_weekday.measureText(min_temperature_string))/2;

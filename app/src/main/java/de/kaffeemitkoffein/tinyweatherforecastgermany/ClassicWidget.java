@@ -104,16 +104,17 @@ public class ClassicWidget extends AppWidgetProvider {
      *
      */
 
-    public void setPressure(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
+    public void setPressure(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
         if (!weatherInfo.currentWeather.hasPressure()){
             remoteViews.setViewVisibility(R.id.widget_pressure,View.INVISIBLE);
         } else {
             remoteViews.setViewVisibility(R.id.widget_pressure,View.VISIBLE);
             remoteViews.setTextViewText(R.id.widget_pressure,weatherInfo.currentWeather.getPressure()/100+ " hPa");
+            remoteViews.setTextColor(R.id.widget_pressure,ThemePicker.getWidgetTextColor(context));
         }
     }
 
-    public void setPrecipitation(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
+    public void setPrecipitation(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
         String preciptitation = "";
         if (weatherInfo.currentWeather.hasProbPrecipitation()){
             preciptitation = weatherInfo.currentWeather.getProbPrecipitation()+"%";
@@ -129,24 +130,29 @@ public class ClassicWidget extends AppWidgetProvider {
         } else {
             remoteViews.setViewVisibility(R.id.widget_precipitation_symbol, View.VISIBLE);
             remoteViews.setTextViewText(R.id.widget_precipitation_text,preciptitation);
+            remoteViews.setTextColor(R.id.widget_precipitation_text,ThemePicker.getWidgetTextColor(context));
         }
     }
 
-    public void setVisibility(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo, int display_distance_unit){
+    public void setVisibility(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo, int display_distance_unit){
         if (weatherInfo.currentWeather.hasVisibility() || weatherInfo.currentWeather.hasProbVisibilityBelow1km()){
             remoteViews.setViewVisibility(R.id.widget_visibility_icon,View.VISIBLE);
             if (weatherInfo.currentWeather.hasVisibility()){
                 CharSequence visibility = ForecastAdapter.getVisibilityCharSequence(weatherInfo.currentWeather,display_distance_unit);
                 remoteViews.setViewVisibility(R.id.widget_visibility_text,View.VISIBLE);
                 remoteViews.setTextViewText(R.id.widget_visibility_text,visibility);
+                remoteViews.setTextColor(R.id.widget_visibility_text,ThemePicker.getWidgetTextColor(context));
             } else {
                 remoteViews.setViewVisibility(R.id.widget_visibility_text,View.GONE);
             }
             if (weatherInfo.currentWeather.hasProbVisibilityBelow1km()){
                 remoteViews.setViewVisibility(R.id.widget_visibility_probvalue,View.VISIBLE);
                 remoteViews.setViewVisibility(R.id.widget_visibility_probunit1,View.VISIBLE);
+                remoteViews.setTextColor(R.id.widget_visibility_probunit1,ThemePicker.getWidgetTextColor(context));
                 remoteViews.setViewVisibility(R.id.widget_visibility_probunit2,View.VISIBLE);
+                remoteViews.setTextColor(R.id.widget_visibility_probunit2,ThemePicker.getWidgetTextColor(context));
                 remoteViews.setTextViewText(R.id.widget_visibility_probvalue,String.valueOf(weatherInfo.currentWeather.getProbVisibilityBelow1km())+"%");
+                remoteViews.setTextColor(R.id.widget_visibility_probvalue,ThemePicker.getWidgetTextColor(context));
             } else {
                 remoteViews.setViewVisibility(R.id.widget_visibility_probvalue,View.GONE);
                 remoteViews.setViewVisibility(R.id.widget_visibility_probunit1,View.GONE);
@@ -157,22 +163,26 @@ public class ClassicWidget extends AppWidgetProvider {
         }
     }
 
-    public void setClouds(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
+    public void setClouds(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
         if (weatherInfo.currentWeather.hasClouds()){
             remoteViews.setViewVisibility(R.id.widget_clouds_icon,View.VISIBLE);
             remoteViews.setViewVisibility(R.id.widget_clouds_value,View.VISIBLE);
             remoteViews.setTextViewText(R.id.widget_clouds_value,weatherInfo.currentWeather.getClouds()+"%");
+            remoteViews.setTextColor(R.id.widget_clouds_value,ThemePicker.getWidgetTextColor(context));
+
         } else {
             remoteViews.setViewVisibility(R.id.widget_clouds_icon,View.GONE);
             remoteViews.setViewVisibility(R.id.widget_clouds_value,View.GONE);
         }
     }
 
-    public void setTemperature5cm(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
+    public void setTemperature5cm(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
         if (weatherInfo.currentWeather.hasTemperature5cm()){
             remoteViews.setViewVisibility(R.id.widget_temperature5cm_icon,View.VISIBLE);
             remoteViews.setViewVisibility(R.id.widget_temperature5cm_value,View.VISIBLE);
             remoteViews.setTextViewText(R.id.widget_temperature5cm_value,weatherInfo.currentWeather.getTemperature5cmInCelsiusInt()+"°");
+            remoteViews.setTextColor(R.id.widget_temperature5cm_value,ThemePicker.getWidgetTextColor(context));
+
         } else {
             remoteViews.setViewVisibility(R.id.widget_temperature5cm_icon,View.GONE);
             remoteViews.setViewVisibility(R.id.widget_temperature5cm_value,View.GONE);
@@ -203,11 +213,13 @@ public class ClassicWidget extends AppWidgetProvider {
         }
     }
 
-    public void setDateText(RemoteViews remoteViews) {
+    public void setDateText(Context context, RemoteViews remoteViews) {
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E dd.MM.");
         String dateString = simpleDateFormat.format(new Date(Calendar.getInstance().getTimeInMillis()));
         remoteViews.setViewVisibility(R.id.widget_date, View.VISIBLE);
         remoteViews.setTextViewText(R.id.widget_date, dateString);
+        remoteViews.setTextColor(R.id.widget_date,ThemePicker.getWidgetTextColor(context));
+
     }
 
     public void setAlarmText(Context context, RemoteViews remoteViews) {
@@ -216,6 +228,8 @@ public class ClassicWidget extends AppWidgetProvider {
             alarmString = "\u23F0 " + alarmString;
             remoteViews.setViewVisibility(R.id.widget_nextalarm,View.VISIBLE);
             remoteViews.setTextViewText(R.id.widget_nextalarm,alarmString);
+            remoteViews.setTextColor(R.id.widget_nextalarm,ThemePicker.getWidgetTextColor(context));
+
         } else {
             remoteViews.setViewVisibility(R.id.widget_nextalarm, View.GONE);
         }
@@ -224,26 +238,30 @@ public class ClassicWidget extends AppWidgetProvider {
     public void setConditionText(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo) {
         if (weatherInfo.currentWeather.hasCondition()){
             remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,WeatherCodeContract.getWeatherConditionText(context,weatherInfo.currentWeather.getCondition()));
+            remoteViews.setTextColor(R.id.classicwidget_weatherconditiontext,ThemePicker.getWidgetTextColor(context));
         } else {
             remoteViews.setTextViewText(R.id.classicwidget_weatherconditiontext,NOT_AVAILABLE);
+            remoteViews.setTextColor(R.id.classicwidget_weatherconditiontext,ThemePicker.getWidgetTextColor(context));
         }
     }
 
     public void setConditionIcon(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo) {
         if (weatherInfo.currentWeather.hasCondition()){
-            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,WeatherCodeContract.getWeatherConditionDrawableResource(weatherInfo.currentWeather.getCondition(),weatherInfo.currentWeather.isDaytime(weatherInfo.weatherLocation)));
+            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.currentWeather.getCondition(),weatherInfo.currentWeather.isDaytime(weatherInfo.weatherLocation)));
         } else {
             remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,R.mipmap.not_available);
 
         }
     }
 
-    public void setLocationText(RemoteViews remoteViews, CurrentWeatherInfo weatherInfo, boolean shorten_text){
+    public void setLocationText(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo, boolean shorten_text){
         String location_text = weatherInfo.getCity();
         if ((location_text.length()>10) && (shorten_text)){
             location_text = location_text.substring(0,10)+".";
         }
         remoteViews.setTextViewText(R.id.classicwidget_locationtext,location_text);
+        remoteViews.setTextColor(R.id.classicwidget_locationtext,ThemePicker.getWidgetTextColor(context));
+
     }
 
     public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c, boolean shorten_text){
@@ -251,13 +269,15 @@ public class ClassicWidget extends AppWidgetProvider {
             weatherCard = new CurrentWeatherInfo();
             weatherCard.setToEmpty();
         }
-        setLocationText(remoteViews,weatherCard,shorten_text);
+        setLocationText(c,remoteViews,weatherCard,shorten_text);
         setConditionText(c,remoteViews,weatherCard);
         setConditionIcon(c,remoteViews,weatherCard);
         if (weatherCard.currentWeather.hasTemperature()){
             remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.currentWeather.getTemperatureInCelsiusInt()+"°"));
+            remoteViews.setTextColor(R.id.classicwidget_temperature,ThemePicker.getWidgetTextColor(c));
         } else {
             remoteViews.setTextViewText(R.id.classicwidget_temperature,NOT_AVAILABLE);
+            remoteViews.setTextColor(R.id.classicwidget_temperature,ThemePicker.getWidgetTextColor(c));
         }
         String lowhigh = NOT_AVAILABLE;
         if (weatherCard.currentWeather.hasMinTemperature()){
@@ -270,6 +290,7 @@ public class ClassicWidget extends AppWidgetProvider {
             lowhigh = lowhigh + NOT_AVAILABLE;
         }
         remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,lowhigh);
+        remoteViews.setTextColor(R.id.classicwidget_temperature_highlow,ThemePicker.getWidgetTextColor(c));
         String windstring="";
         if (weatherCard.currentWeather.hasWindDirection()){
             if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.ARROW){
@@ -322,15 +343,18 @@ public class ClassicWidget extends AppWidgetProvider {
             }
             remoteViews.setViewVisibility(R.id.classicwidget_wind,View.VISIBLE);
             remoteViews.setTextViewText(R.id.classicwidget_wind,windstring);
+            remoteViews.setTextColor(R.id.classicwidget_wind,ThemePicker.getWidgetTextColor(c));
             remoteViews.setViewVisibility(R.id.classicwidget_wind_unit,View.VISIBLE);
             remoteViews.setTextViewText(R.id.classicwidget_wind_unit,Weather.getWindUnitString(weatherSettings.getWindDisplayUnit()));
+            remoteViews.setTextColor(R.id.classicwidget_wind_unit,ThemePicker.getWidgetTextColor(c));
         } else {
             remoteViews.setViewVisibility(R.id.classicwidget_wind,View.INVISIBLE);
         }
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
-        remoteViews.setInt(R.id.widget_maincontainer,"setBackgroundColor",getBackgroundInt(opacity));
+        remoteViews.setInt(R.id.widget_maincontainer,"setBackgroundColor",getBackgroundInt(c,opacity));
         if (weatherSettings.widget_showdwdnote) {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.VISIBLE);
+            remoteViews.setTextColor(R.id.widget_reference_text,ThemePicker.getWidgetTextColor(c));
         } else {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.GONE);
         }
@@ -362,13 +386,14 @@ public class ClassicWidget extends AppWidgetProvider {
         }
     }
 
-    public int getBackgroundInt(int alpha){
+    public int getBackgroundInt(Context context, int alpha){
         String hex_string = Integer.toHexString(Math.round((float)alpha * (float)2.55));
         if (hex_string.length()<2)
         {
             hex_string = "0" + hex_string;
         }
-        hex_string = hex_string+"101010";
+        //hex_string = hex_string+"101010";
+        hex_string = hex_string+ThemePicker.getWidgetBackgroundColorString(context);
         return Color.parseColor("#"+hex_string);
     }
 

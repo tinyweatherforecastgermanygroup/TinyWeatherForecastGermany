@@ -418,7 +418,8 @@ public final class Weather {
             // new arrow icon neutral position is 0°.
             // rotation is clockwise.
             if (wind_direction!=null){
-                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.arrow);
+                int arrowResurce = WeatherIcons.getIconResource(context,WeatherIcons.ARROW);
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),arrowResurce);
                 if (bitmap != null){
                     Matrix m = new Matrix();
                     m.postRotate(wind_direction.floatValue());
@@ -435,7 +436,7 @@ public final class Weather {
                 return getArrowBitmap(context);
             }
             if (wind_direction!=null) {
-                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getBeaufortIconResourceID(getWindSpeedInBeaufortInt()));
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getBeaufortIconResourceID(context,getWindSpeedInBeaufortInt()));
                 if (bitmap != null) {
                     Matrix m = new Matrix();
                     m.postRotate(wind_direction.floatValue());
@@ -447,23 +448,22 @@ public final class Weather {
             return null;
         }
 
-        private int getBeaufortIconResourceID(int windspeed_beaufort){
+        private int getBeaufortIconResourceID(Context context, int windspeed_beaufort){
             switch (windspeed_beaufort){
-                case 0: return R.mipmap.wind_beaufort_00;
-                case 1: return R.mipmap.wind_beaufort_01;
-                case 2: return R.mipmap.wind_beaufort_02;
-                case 3: return R.mipmap.wind_beaufort_03;
-                case 4: return R.mipmap.wind_beaufort_04;
-                case 5: return R.mipmap.wind_beaufort_05;
-                case 6: return R.mipmap.wind_beaufort_06;
-                case 7: return R.mipmap.wind_beaufort_07;
-                case 8: return R.mipmap.wind_beaufort_08;
-                case 9: return R.mipmap.wind_beaufort_09;
-                case 10: return R.mipmap.wind_beaufort_10;
-                case 11: return R.mipmap.wind_beaufort_11;
-                case 12: return R.mipmap.wind_beaufort_12;
+                case 0: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_00);
+                case 1: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_01);
+                case 2: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_02);
+                case 3: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_03);
+                case 4: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_04);
+                case 5: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_05);
+                case 6: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_06);
+                case 7: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_07);
+                case 8: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_08);
+                case 9: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_09);
+                case 10: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_10);
+                case 11: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_11);
+                default: return WeatherIcons.getIconResource(context,WeatherIcons.WIND_BEAUFORT_12);
             }
-            return 12;
         }
 
         public String getWindDirectionString(Context context){

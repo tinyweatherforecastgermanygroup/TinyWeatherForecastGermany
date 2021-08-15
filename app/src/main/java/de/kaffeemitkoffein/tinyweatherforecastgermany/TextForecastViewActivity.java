@@ -126,9 +126,14 @@ public class TextForecastViewActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = getApplicationContext();
+        try {
+            ThemePicker.SetTheme(this);
+        } catch (Exception e){
+            PrivateLog.log(context,"Error setting theme.");
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textforecastview);
-        context = getApplicationContext();
         actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar_textforecastview);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_HOME_AS_UP);

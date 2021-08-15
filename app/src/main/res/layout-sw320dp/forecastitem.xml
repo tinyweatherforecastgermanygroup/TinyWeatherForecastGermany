@@ -347,7 +347,7 @@
                     android:layout_marginLeft="2dp"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:src="@mipmap/white_bar"/>
+                    android:src="?attr/white_bar"/>
 
                 <TextView android:id="@+id/fcitem_temperature_low"
                     android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
@@ -420,7 +420,7 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center"
                     android:layout_marginRight="2dp"
-                    android:src="@mipmap/biocular">
+                    android:src="?attr/binocular">
                 </ImageView>
 
                 <TextView

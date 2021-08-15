@@ -20,6 +20,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -32,12 +33,19 @@ import java.io.InputStream;
 
 public class LicenseInfo extends Activity implements View.OnClickListener {
     private Button button_back;
+    private Context context;
     public static final String DATA_TITLE="DATA_TITLE";
     public static final String DATA_TEXTRESOURCE="DATA_TEXTRESOURCE";
     public static final String DATA_BUTTONTEXT="DATA_BUTTONTEXT";
 
     @Override
     protected void onCreate (Bundle bundle){
+        context = getApplicationContext();
+        try {
+            ThemePicker.SetTheme(this);
+        } catch (Exception e){
+            PrivateLog.log(context,"Error setting theme.");
+        }
         super.onCreate(bundle);
         displayInfo();
     }

@@ -23,14 +23,14 @@
 
     <item android:id="@+id/textforecastview_back"
         android:title="@string/update_button"
-        android:icon="@mipmap/ic_chevron_left_white_24dp"
+        android:icon="?attr/ic_chevron_left"
         android:showAsAction="always"
         android:orderInCategory="1">
     </item>
 
     <item android:id="@+id/textforecastview_next"
         android:title="@string/update_button"
-        android:icon="@mipmap/ic_chevron_right_white_24dp"
+        android:icon="?attr/ic_chevron_right"
         android:showAsAction="always"
         android:orderInCategory="1">
     </item>

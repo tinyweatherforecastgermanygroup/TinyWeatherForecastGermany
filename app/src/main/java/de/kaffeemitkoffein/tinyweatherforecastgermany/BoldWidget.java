@@ -52,30 +52,42 @@ public class BoldWidget extends ClassicWidget {
             currentWeatherInfo = new CurrentWeatherInfo();
             currentWeatherInfo.setToEmpty();
         }
+        remoteViews.setTextColor(R.id.boldwidget_dayofweek_today,ThemePicker.getWidgetTextColor(c));
         if (weatherSettings.widget_showdwdnote) {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.VISIBLE);
+            remoteViews.setTextColor(R.id.widget_reference_text,ThemePicker.getWidgetTextColor(c));
         } else {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.GONE);
         }
         if (currentWeatherInfo.currentWeather.hasTemperature()) {
             remoteViews.setTextViewText(R.id.boldwidget_current_temperature, currentWeatherInfo.currentWeather.getTemperatureInCelsiusInt() + "°");
+            remoteViews.setTextColor(R.id.boldwidget_current_temperature,ThemePicker.getWidgetTextColor(c));
         } else {
             remoteViews.setTextViewText(R.id.boldwidget_current_temperature, NOT_AVAILABLE);
+            remoteViews.setTextColor(R.id.boldwidget_current_temperature,ThemePicker.getWidgetTextColor(c));
+
         }
         if (currentWeatherInfo.currentWeather.hasCondition()) {
-            remoteViews.setImageViewResource(R.id.boldwidget_today_condition, WeatherCodeContract.getWeatherConditionDrawableResource(currentWeatherInfo.currentWeather.getCondition(), true));
+            remoteViews.setImageViewResource(R.id.boldwidget_today_condition, WeatherCodeContract.getWeatherConditionDrawableResource(c,currentWeatherInfo.currentWeather.getCondition(), true));
         } else {
             remoteViews.setImageViewResource(R.id.boldwidget_today_condition, R.mipmap.not_available);
         }
         if (currentWeatherInfo.currentWeather.hasMaxTemperature()) {
             remoteViews.setTextViewText(R.id.boldwidget_today_max, currentWeatherInfo.currentWeather.getMaxTemperatureInCelsiusInt() + "°");
+            remoteViews.setTextColor(R.id.boldwidget_today_max,ThemePicker.getWidgetTextColor(c));
+
         } else {
             remoteViews.setTextViewText(R.id.boldwidget_today_max, NOT_AVAILABLE);
+            remoteViews.setTextColor(R.id.boldwidget_today_max,ThemePicker.getWidgetTextColor(c));
+
         }
         if (currentWeatherInfo.currentWeather.hasMinTemperature()) {
             remoteViews.setTextViewText(R.id.boldwidget_today_min, currentWeatherInfo.currentWeather.getMinTemperatureInCelsiusInt() + "°");
+            remoteViews.setTextColor(R.id.boldwidget_today_min,ThemePicker.getWidgetTextColor(c));
         } else {
             remoteViews.setTextViewText(R.id.boldwidget_today_min, NOT_AVAILABLE);
+            remoteViews.setTextColor(R.id.boldwidget_today_min,ThemePicker.getWidgetTextColor(c));
+
         }
         // FORECAST 1st DAY
         if (currentWeatherInfo.forecast24hourly.size() >= 2) {
@@ -87,20 +99,25 @@ public class BoldWidget extends ClassicWidget {
             calendar.add(Calendar.DAY_OF_WEEK,-1);
             String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
             remoteViews.setTextViewText(R.id.boldwidget_dayofweek_fc1, weekday);
+            remoteViews.setTextColor(R.id.boldwidget_dayofweek_fc1,ThemePicker.getWidgetTextColor(c));
             if (currentWeatherInfo.forecast24hourly.get(1).hasCondition()) {
-                remoteViews.setImageViewResource(R.id.boldwidget_fc1_weatherconditionicon, WeatherCodeContract.getWeatherConditionDrawableResource(currentWeatherInfo.forecast24hourly.get(1).getCondition(), true));
+                remoteViews.setImageViewResource(R.id.boldwidget_fc1_weatherconditionicon, WeatherCodeContract.getWeatherConditionDrawableResource(c,currentWeatherInfo.forecast24hourly.get(1).getCondition(), true));
             } else {
                 remoteViews.setImageViewResource(R.id.boldwidget_fc1_weatherconditionicon, R.mipmap.not_available);
             }
             if (currentWeatherInfo.forecast24hourly.get(1).hasMaxTemperature()) {
                 remoteViews.setTextViewText(R.id.boldwidget_fc1_max, currentWeatherInfo.forecast24hourly.get(1).getMaxTemperatureInCelsiusInt() + "°");
+                remoteViews.setTextColor(R.id.boldwidget_fc1_max,ThemePicker.getWidgetTextColor(c));
             } else {
                 remoteViews.setTextViewText(R.id.boldwidget_fc1_max, NOT_AVAILABLE);
+                remoteViews.setTextColor(R.id.boldwidget_fc1_max,ThemePicker.getWidgetTextColor(c));
             }
             if (currentWeatherInfo.forecast24hourly.get(1).hasMinTemperature()) {
                 remoteViews.setTextViewText(R.id.boldwidget_fc1_min, currentWeatherInfo.forecast24hourly.get(1).getMinTemperatureInCelsiusInt() + "°");
+                remoteViews.setTextColor(R.id.boldwidget_fc1_min, ThemePicker.getWidgetTextColor(c));
             } else {
                 remoteViews.setTextViewText(R.id.boldwidget_fc1_min, NOT_AVAILABLE);
+                remoteViews.setTextColor(R.id.boldwidget_fc1_min,ThemePicker.getWidgetTextColor(c));
             }
         } else {
             remoteViews.setTextViewText(R.id.boldwidget_dayofweek_fc1, NOT_AVAILABLE);
@@ -118,30 +135,38 @@ public class BoldWidget extends ClassicWidget {
             calendar.add(Calendar.DAY_OF_WEEK,-1);
             String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
             remoteViews.setTextViewText(R.id.boldwidget_dayofweek_fc2, weekday);
+            remoteViews.setTextColor(R.id.boldwidget_dayofweek_fc2,ThemePicker.getWidgetTextColor(c));
             if (currentWeatherInfo.forecast24hourly.get(2).hasCondition()) {
-                remoteViews.setImageViewResource(R.id.boldwidget_fc2_weatherconditionicon, WeatherCodeContract.getWeatherConditionDrawableResource(currentWeatherInfo.forecast24hourly.get(2).getCondition(), true));
+                remoteViews.setImageViewResource(R.id.boldwidget_fc2_weatherconditionicon, WeatherCodeContract.getWeatherConditionDrawableResource(c,currentWeatherInfo.forecast24hourly.get(2).getCondition(), true));
             } else {
                 remoteViews.setImageViewResource(R.id.boldwidget_fc2_weatherconditionicon, R.mipmap.not_available);
             }
             if (currentWeatherInfo.forecast24hourly.get(2).hasMaxTemperature()) {
                 remoteViews.setTextViewText(R.id.boldwidget_fc2_max, currentWeatherInfo.forecast24hourly.get(2).getMaxTemperatureInCelsiusInt() + "°");
+                remoteViews.setTextColor(R.id.boldwidget_fc2_max,ThemePicker.getWidgetTextColor(c));
             } else {
                 remoteViews.setTextViewText(R.id.boldwidget_fc2_max, NOT_AVAILABLE);
+                remoteViews.setTextColor(R.id.boldwidget_fc2_max,ThemePicker.getWidgetTextColor(c));
             }
             if (currentWeatherInfo.forecast24hourly.get(2).hasMinTemperature()) {
                 remoteViews.setTextViewText(R.id.boldwidget_fc2_min, currentWeatherInfo.forecast24hourly.get(2).getMinTemperatureInCelsiusInt() + "°");
+                remoteViews.setTextColor(R.id.boldwidget_fc2_min,ThemePicker.getWidgetTextColor(c));
             } else {
                 remoteViews.setTextViewText(R.id.boldwidget_fc2_min, NOT_AVAILABLE);
+                remoteViews.setTextColor(R.id.boldwidget_fc2_min,ThemePicker.getWidgetTextColor(c));
             }
         } else {
             remoteViews.setTextViewText(R.id.boldwidget_dayofweek_fc2, NOT_AVAILABLE);
+            remoteViews.setTextColor(R.id.boldwidget_dayofweek_fc2,ThemePicker.getWidgetTextColor(c));
             remoteViews.setImageViewResource(R.id.boldwidget_fc2_weatherconditionicon, R.mipmap.not_available);
             remoteViews.setTextViewText(R.id.boldwidget_fc2_max, NOT_AVAILABLE);
+            remoteViews.setTextColor(R.id.boldwidget_fc2_max,ThemePicker.getWidgetTextColor(c));
             remoteViews.setTextViewText(R.id.boldwidget_fc2_min, NOT_AVAILABLE);
+            remoteViews.setTextColor(R.id.boldwidget_fc2_min,ThemePicker.getWidgetTextColor(c));
         }
         // set opacity
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
-        remoteViews.setInt(R.id.boldwidget_maincontainer, "setBackgroundColor", getBackgroundInt(opacity));
+        remoteViews.setInt(R.id.boldwidget_maincontainer, "setBackgroundColor", getBackgroundInt(c,opacity));
     }
 
     @Override
@@ -150,7 +175,7 @@ public class BoldWidget extends ClassicWidget {
             weatherCard = new CurrentWeatherInfo();
             weatherCard.setToEmpty();
         }
-        setLocationText(remoteViews,weatherCard,shorten_text);
+        setLocationText(c,remoteViews,weatherCard,shorten_text);
         setConditionText(c,remoteViews,weatherCard);
     }
 

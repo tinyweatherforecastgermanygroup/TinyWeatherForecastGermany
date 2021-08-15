@@ -62,7 +62,7 @@
                         android:id="@+id/warningactivity_map"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/germany_nc">
+                        android:src="@drawable/germany">
                 </ImageView>
                 <ImageView
                         android:id="@+id/warningactivity_windicon"

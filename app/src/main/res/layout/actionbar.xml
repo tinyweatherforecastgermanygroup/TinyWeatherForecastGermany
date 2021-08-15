@@ -32,7 +32,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:src="@mipmap/ic_search_white_24dp"/>
+        android:src="?attr/ic_search"/>
 
     <LinearLayout
         android:id="@+id/actionbar_linearinputlayout"

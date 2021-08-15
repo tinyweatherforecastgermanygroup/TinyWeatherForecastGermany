@@ -19,9 +19,10 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
-public final class WeatherCodeContract {
+public final class  WeatherCodeContract {
     public final static int NOT_AVAILABLE = 999;
     public final static int SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW = 95;
     public final static int DRIZZLE_FREEZING_MODERATE_OR_HEAVY = 57;
@@ -180,7 +181,7 @@ public final class WeatherCodeContract {
         return result;
     }
 
-    public final class OpenWeatherContract{
+    public static final class OpenWeatherContract{
         public final static int THUNDERSTORM = 211;
         public final static int FREEZING_RAIN = 511;
         public final static int HEAVY_SHOWER_SNOW = 622;
@@ -290,140 +291,144 @@ public final class WeatherCodeContract {
         return result;
     }
 
-    public static int getWeatherConditionDrawableResource(int weathercondition, boolean daytime) {
-        int result = R.mipmap.not_available;
+    public static int getWeatherConditionDrawableResource(Context context, int weathercondition, boolean daytime) {
+        int result = R.mipmap.not_available_black;
+        if (ThemePicker.isDarkTheme(context)){
+            result = R.mipmap.not_available;
+        }
         switch (weathercondition) {
             case SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW:
-                result = R.mipmap.thunderstorm;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.THUNDERSTORM);
                 break;
             case DRIZZLE_FREEZING_MODERATE_OR_HEAVY:
-                result = R.mipmap.freezing_drizzle;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.FREEZING_DRIZZLE);
                 break;
             case DRIZZLE_FREEZING_SLIGHT:
-                result = R.mipmap.freezing_drizzle_slight;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.FREEZING_DRIZZLE_SLIGHT);
                 break;
             case RAIN_FREEZING_MODERATE_OR_HEAVY:
-                result = R.mipmap.freezing_rain;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.FREEZING_RAIN);
                 break;
             case RAIN_FREEZING_SLIGHT:
-                result = R.mipmap.freezing_rain_slight;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.FREEZING_RAIN_SLIGHT);
                 break;
             case SNOW_SHOWERS_MODERATE_OR_HEAVY:
                 if (daytime) {
-                    result = R.mipmap.snow_showers_partly;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.SNOW_SHOWERS_PARTLY);
                 } else {
-                    result = R.mipmap.snow_showers_partly_night;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.SNOW_SHOWERS_PARTLY_NIGHT);
                 }
                 break;
             case SNOW_SHOWERS_SLIGHT:
                 if (daytime) {
-                    result = R.mipmap.light_snow_showers_partly;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.LIGHT_SNOW_SHOWERS_PARTLY);
                 } else {
-                    result = R.mipmap.light_snow_showers_partly_night;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.LIGHT_SNOW_SHOWERS_PARTLY_NIGHT);
                 }
                 break;
             case SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY:
                 if (daytime) {
-                    result = R.mipmap.mixed_rain_and_snow_partly;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.MIXED_RAIN_AND_SNOW_PARTLY);
                 } else {
-                    result = R.mipmap.mixed_rain_and_snow_partly_night;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.MIXED_RAIN_AND_SNOW_PARTLY_NIGHT);
                 }
                 break;
             case SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT:
                 if (daytime) {
-                    result = R.mipmap.light_mixed_rain_and_snow_partly;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.LIGHT_MIXED_RAIN_AND_SNOW_PARTLY);
                 } else {
-                    result = R.mipmap.light_mixed_rain_and_snow_partly_night;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.LIGHT_MIXED_RAIN_AND_SNOW_PARTLY_NIGHT);
                 }
                 break;
             case EXTREMELY_HEAVY_RAIN_SHOWER:
                 if (daytime) {
-                    result = R.mipmap.extremely_heavy_showers_partly;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.EXTREMELY_HEAVY_SHOWERS_PARTLY);
                 } else {
-                    result = R.mipmap.extremely_heavy_showers_partly_night;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.EXTREMELY_HEAVY_SHOWERS_PARTLY_NIGHT);
                 }
                 break;
             case MODERATE_OR_HEAVY_RAIN_SHOWERS:
                 if (daytime) {
-                    result = R.mipmap.showers_partly;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.SHOWERS_PARTLY);
                 } else {
-                    result = R.mipmap.showers_partly_night;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.SHOWERS_PARTLY_NIGHT);
                 }
                 break;
             case SLIGHT_RAIN_SHOWER:
                 if (daytime) {
-                    result = R.mipmap.light_showers_partly;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.LIGHT_SHOWERS_PARTLY);
                 } else {
-                    result = R.mipmap.light_showers_partly_night;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.LIGHT_SHOWERS_PARTLY_NIGHT);
                 }
                 break;
             case HEAVY_SNOWFALL_CONTINUOUS:
-                result = R.mipmap.heavy_snow_showers;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.HEAVY_SNOW_SHOWERS);
                 break;
             case MODERATE_SNOWFALL_CONTINUOUS:
-                result = R.mipmap.moderate_snow_showers;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.MODERATE_SNOW_SHOWERS);
                 break;
             case SLIGHT_SNOWFALL_CONTINUOUS:
-                result = R.mipmap.light_snow_showers;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.LIGHT_SNOW_SHOWERS);
                 break;
             case MODERATE_OR_HEAVY_RAIN_AND_SNOW:
-                result = R.mipmap.mixed_rain_and_snow;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.MIXED_RAIN_AND_SNOW);
                 break;
             case SLIGHT_RAIN_AND_SNOW:
-                result = R.mipmap.light_mixed_rain_and_snow;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.LIGHT_MIXED_RAIN_AND_SNOW);
                 break;
             case HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS:
-                result = R.mipmap.heavy_drizzle;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.HEAVY_DRIZZLE);
                 break;
             case MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS:
-                result = R.mipmap.moderate_drizzle;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.MODERATE_DRIZZLE);
                 break;
             case SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS:
-                result = R.mipmap.light_drizzle;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.LIGHT_DRIZZLE);
                 break;
             case HEAVY_RAIN_NOT_FREEZING_CONTINUOUS:
-                result = R.mipmap.heavy_showers;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.HEAVY_SHOWERS);
                 break;
             case MODERATE_RAIN_NOT_FREEZING_CONTINUOUS:
-                result = R.mipmap.moderate_showers;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.MODERATE_SHOWERS);
                 break;
             case SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS:
-                result = R.mipmap.light_showers;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.LIGHT_SHOWERS);
                 break;
             case ICE_FOG_SKY_NOT_RECOGNIZABLE:
-                result = R.mipmap.ice_fog;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.ICE_FOG);
                 break;
             case FOG_SKY_NOT_RECOGNIZABLE:
-                result = R.mipmap.fog;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.FOG);
                 break;
             case EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8:
-                result = R.mipmap.cloudy;
+                result = WeatherIcons.getIconResource(context,WeatherIcons.CLOUDY);
                 break;
             case EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8:
                 if (daytime) {
-                    result = R.mipmap.mostly_cloudy_day;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.MOSTLY_CLOUDY_DAY);
                 } else {
-                    result = R.mipmap.mostly_cloudy_night;
-                }
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.MOSTLY_CLOUDY_NIGHT);
+                    }
                 break;
             case EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8:
                 if (daytime) {
-                    result = R.mipmap.partly_cloudy_day;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.PARTLY_CLOUDY_DAY);
                 } else {
-                    result = R.mipmap.partly_cloudy_night;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.PARTLY_CLOUDY_NIGHT);
                     break;
                 }
                 break;
             case EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8:
                 if (daytime) {
-                    result = R.mipmap.sunny;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.SUNNY);
                 } else {
-                    result = R.mipmap.clear_night;
+                    result = WeatherIcons.getIconResource(context,WeatherIcons.CLEAR_NIGHT);
                 }
                 break;
         }
         return result;
     }
+
 
     public static String getWeatherConditionText(Context context, int weathercondition) {
         int resource = getWeatherConditionTextResource(weathercondition);

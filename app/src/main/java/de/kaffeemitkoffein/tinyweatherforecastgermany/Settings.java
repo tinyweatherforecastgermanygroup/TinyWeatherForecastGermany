@@ -29,6 +29,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
@@ -75,9 +76,26 @@ public class Settings extends PreferenceActivity{
         }
     };
 
+    public int getThemeResId(){
+        try {
+            if (!ThemePicker.isDarkTheme(getApplicationContext())){
+                return  R.style.AppTheme_Light;
+            } else {
+                return R.style.AppTheme_Dark;
+            }
+        } catch (Exception e){
+          return 0;
+        }
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public void onCreate(Bundle bundle){
+        if (!ThemePicker.isDarkTheme(getApplicationContext())){
+            setTheme(R.style.AppTheme_Light);
+        } else {
+            setTheme(R.style.AppTheme_Dark);
+        }
         super.onCreate(bundle);
         context = this;
         addPreferencesFromResource(R.xml.preferences);

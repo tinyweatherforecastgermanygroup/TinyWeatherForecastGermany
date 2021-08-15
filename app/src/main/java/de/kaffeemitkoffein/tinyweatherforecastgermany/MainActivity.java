@@ -312,7 +312,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         context = getApplicationContext();
         try {
-            setTheme(R.style.AppTheme);
+            ThemePicker.SetTheme(this);
         } catch (Exception e){
             PrivateLog.log(context,"Error setting theme.");
         }

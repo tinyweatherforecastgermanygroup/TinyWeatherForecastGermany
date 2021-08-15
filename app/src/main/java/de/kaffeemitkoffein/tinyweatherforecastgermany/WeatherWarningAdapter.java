@@ -181,15 +181,15 @@
             }
             if (warning.urgency!=null){
                 viewHolder.warning_item_urgency.setText(warning.urgency);
-                viewHolder.warning_item_urgency.setTextColor(warning.getWarningColor());
+                viewHolder.warning_item_urgency.setTextColor(ThemePicker.adaptColorToTheme(context,warning.getWarningColor()));
             }
             if (warning.severity!=null){
                 viewHolder.warning_item_severity.setText(warning.severity);
-                viewHolder.warning_item_severity.setTextColor(warning.getWarningColor());
+                viewHolder.warning_item_severity.setTextColor(ThemePicker.adaptColorToTheme(context,warning.getWarningColor()));
             }
             if (warning.certainty!=null){
                 viewHolder.warning_item_certainty.setText(warning.certainty);
-                viewHolder.warning_item_certainty.setTextColor(warning.getWarningColor());
+                viewHolder.warning_item_certainty.setTextColor(ThemePicker.adaptColorToTheme(context,warning.getWarningColor()));
             }
             final TextView multiLineTextview = viewHolder.warning_item_areas;
             Runnable longLineRunnable = new Runnable() {

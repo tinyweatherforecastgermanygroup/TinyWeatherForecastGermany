@@ -70,13 +70,19 @@ public class ClockWidget extends ClassicWidget {
     }
 
     private void fillClockWeatherItems(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo, WeatherSettings weatherSettings) {
-        setPrecipitation(remoteViews, weatherInfo);
-        setPressure(remoteViews, weatherInfo);
-        setVisibility(remoteViews,weatherInfo,weatherSettings.getDistanceDisplayUnit());
-        setClouds(remoteViews,weatherInfo);
-        setTemperature5cm(remoteViews,weatherInfo);
-        setDateText(remoteViews);
+        setPrecipitation(context, remoteViews, weatherInfo);
+        setPressure(context, remoteViews, weatherInfo);
+        setVisibility(context, remoteViews,weatherInfo,weatherSettings.getDistanceDisplayUnit());
+        setClouds(context, remoteViews,weatherInfo);
+        setTemperature5cm(context, remoteViews,weatherInfo);
+        setDateText(context, remoteViews);
         setAlarmText(context,remoteViews);
+        remoteViews.setTextColor(R.id.clockwidget_clock,ThemePicker.getWidgetTextColor(context));
+        remoteViews.setTextColor(R.id.clockwidget_precipitation_unit1,ThemePicker.getWidgetTextColor(context));
+        remoteViews.setTextColor(R.id.clockwidget_precipitation_unit2,ThemePicker.getWidgetTextColor(context));
+        remoteViews.setImageViewResource(R.id.widget_visibility_icon,WeatherIcons.getIconResource(context,WeatherIcons.BIOCULAR));
+        remoteViews.setImageViewResource(R.id.widget_temperature5cm_icon,WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_TEMPERATURE5CM));
+        remoteViews.setImageViewResource(R.id.widget_clouds_icon,WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_CLOUD));
     }
 
 }

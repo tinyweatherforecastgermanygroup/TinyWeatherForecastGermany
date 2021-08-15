@@ -46,6 +46,7 @@ public class WeatherWarningActivity extends Activity {
     ArrayList<Polygon> polygoncache;
     ArrayList<Polygon> excluded_polygoncache;
     ImageView germany;
+    ImageView warningactivity_map_collapsed;
     RelativeLayout mapcontainer;
     Bitmap germanyBitmap;
     Bitmap warningsBitmap;
@@ -57,6 +58,7 @@ public class WeatherWarningActivity extends Activity {
     private GestureDetector gestureDetector;
     ListView weatherList;
     WeatherWarningAdapter weatherWarningAdapter;
+    Context context;
     ActionBar actionBar;
     Executor executor;
     Boolean hide_rain = null;
@@ -119,7 +121,7 @@ public class WeatherWarningActivity extends Activity {
         if (germany==null){
             germany = (ImageView) findViewById(R.id.warningactivity_map);
         }
-        updateWarningsIfNeeded();
+        //updateWarningsIfNeeded();
         super.onResume();
     }
 
@@ -131,6 +133,12 @@ public class WeatherWarningActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = getApplicationContext();
+        try {
+            ThemePicker.SetTheme(this);
+        } catch (Exception e){
+            PrivateLog.log(context,"Error setting theme.");
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weatherwarning);
         registerForBroadcast();
@@ -152,6 +160,10 @@ public class WeatherWarningActivity extends Activity {
         weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext(),true);
         mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
         map_collapsed_container = (RelativeLayout) findViewById(R.id.warningactivity_map_collapsed_container);
+        warningactivity_map_collapsed = (ImageView) findViewById(R.id.warningactivity_map_collapsed);
+        if (warningactivity_map_collapsed!=null){
+            warningactivity_map_collapsed.setImageResource(WeatherIcons.getIconResource(context,WeatherIcons.MAP_COLLAPSED));
+        }
         // in layout w6600dp-land this element does not exist. This is the safest way to
         // limit collapse-function to portrait mode.
         if (map_collapsed_container!=null){
@@ -176,6 +188,7 @@ public class WeatherWarningActivity extends Activity {
         } else {
             deviceIsLandscape = true;
         }
+        updateWarningsIfNeeded();
     }
 
     @Override
@@ -277,6 +290,9 @@ public class WeatherWarningActivity extends Activity {
             UpdateAlarmManager.updateWarnings(getApplicationContext(),false);
         } else {
             PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings not outdated, recycling.");
+            if (germany==null){
+                germany = (ImageView) findViewById(R.id.warningactivity_map);
+            }
             germany.post(new Runnable() {
                 @Override
                 public void run() {
@@ -394,7 +410,7 @@ public class WeatherWarningActivity extends Activity {
         Bitmap infoBitmap=Bitmap.createBitmap(Math.round(MAP_PIXEL_WIDTH),Math.round(MAP_PIXEL_HEIGHT*0.12f), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(infoBitmap);
         Bitmap radarinfobarResourceBitmap;
-        radarinfobarResourceBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.radarinfobar),Math.round(MAP_PIXEL_WIDTH),34,false);
+        radarinfobarResourceBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADARINFOBAR)),Math.round(MAP_PIXEL_WIDTH),34,false);
         Paint rpaint = new Paint();
         rpaint.setStyle(Paint.Style.FILL);
         canvas.drawBitmap(radarinfobarResourceBitmap,0,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),rpaint);
@@ -493,11 +509,7 @@ public class WeatherWarningActivity extends Activity {
 
     @SuppressWarnings("unchecked")
     private void displayMap(){
-        if (deviceIsLandscape){
-            germanyBitmap = loadBitmapMap(R.drawable.germany_nc);
-        } else {
-            germanyBitmap = loadBitmapMap(R.drawable.germany);
-        }
+        germanyBitmap = loadBitmapMap(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.GERMANY));
         warningsBitmap = Bitmap.createBitmap(germanyBitmap.getWidth(),germanyBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         warningsBitmap.eraseColor(Color.TRANSPARENT);
         radarBitmap = Bitmap.createBitmap(germanyBitmap.getWidth(),germanyBitmap.getHeight(), Bitmap.Config.ARGB_8888);
