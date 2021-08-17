@@ -24,6 +24,8 @@ PAT maps by Ian Macky <http://ian.macky.net/pat>.
 
 Die Berechnung der relativen Luftfeuchtigkeit aus der Temperatur und dem Taupunkt erfolgt anhand eines vereinfachten Formel-Beispiels des DWD (Deutscher Wetterdienst), siehe <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
 
+Benutzt die "Solarized Precision colors for machines and people" theme, Copyright (c) 2011 Ethan Schoonover.
+
 App-Icon von Janis Bitta.
 
 Folgende Personen haben zum Projekt beigetragen:

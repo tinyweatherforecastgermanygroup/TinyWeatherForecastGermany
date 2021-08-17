@@ -36,8 +36,8 @@
 
     <ImageView
         android:id="@+id/fcitem_warningsymbol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@id/fcitem_heading"
         android:visibility="invisible"

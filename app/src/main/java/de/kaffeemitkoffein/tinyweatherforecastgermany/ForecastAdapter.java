@@ -309,7 +309,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             if (applicableWarnings.size()>0){
                 Drawable drawable = warningSymbol.getDrawable();
                 drawable.mutate();
-                drawable.setColorFilter(applicableWarnings.get(0).getWarningColor(), PorterDuff.Mode.MULTIPLY);
+                drawable.setColorFilter(ThemePicker.adaptColorToTheme(context,applicableWarnings.get(0).getWarningColor()), PorterDuff.Mode.MULTIPLY);
                 warningSymbol.setVisibility(View.VISIBLE);
                 setMiniWarningsString(warningText,weatherInfo,applicableWarnings);
                 final View finalWarningText = warningText;
@@ -964,7 +964,7 @@ private void setMiniWarningsString(TextView textView, Weather.WeatherInfo weathe
         if (!alreadyAddedWarnings.contains(text)){
             alreadyAddedWarnings.add(text);
             spannableStringBuilder.append(text);
-            spannableStringBuilder.setSpan(new ForegroundColorSpan(applicableWarnings.get(i).getWarningColor()),textPosition,textPosition+text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            spannableStringBuilder.setSpan(new ForegroundColorSpan(ThemePicker.adaptColorToTheme(context,applicableWarnings.get(i).getWarningColor())),textPosition,textPosition+text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             textPosition = textPosition + text.length();
             String s = System.getProperty("line.separator");
             if ((s!=null) && (i<applicableWarnings.size()-1)){

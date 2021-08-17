@@ -26,6 +26,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:textColor="?attr/colorText"
+    android:background="?attr/colorPrimary"
     android:gravity="left">
 
     <LinearLayout

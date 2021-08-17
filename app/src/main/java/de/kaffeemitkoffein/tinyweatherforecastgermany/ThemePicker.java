@@ -14,6 +14,14 @@ public final class ThemePicker {
     }
 
     public static boolean isDarkTheme(Context context){
+        String themePreference = WeatherSettings.getThemePreference(context);
+        if ((themePreference.equals(WeatherSettings.Theme.DARK)) || (themePreference.equals(WeatherSettings.Theme.SOLARIZED_DARK))){
+            return true;
+        }
+        if ((themePreference.equals(WeatherSettings.Theme.LIGHT)) || (themePreference.equals(WeatherSettings.Theme.SOLARIZED))){
+            return false;
+        }
+        // check device theme
         int uiMode =  context.getResources().getConfiguration().uiMode;
         int nightMode = uiMode & Configuration.UI_MODE_NIGHT_MASK;
         if (nightMode == Configuration.UI_MODE_NIGHT_NO){
@@ -23,31 +31,30 @@ public final class ThemePicker {
             return true;
         }
         else {
-            // no specific theme set
+            // no specific theme set, dark is default
             return true;
         }
     }
 
     public static int GetTheme(Context context){
-        // use dark theme as default
-        int themeId = R.style.AppTheme_Dark;
-        // take preference settings with priority
         String themePreference = WeatherSettings.getThemePreference(context);
         if (themePreference.equals(WeatherSettings.Theme.DARK)){
-            themeId = R.style.AppTheme_Dark;
+            return R.style.AppTheme_Dark;
         }
         if (themePreference.equals(WeatherSettings.Theme.LIGHT)){
-            themeId = R.style.AppTheme_Light;
-        } else {
-            // when we follow the device settings...
-            if (!isDarkTheme(context)){
-                themeId = R.style.AppTheme_Light;
-            } else {
-                themeId = R.style.AppTheme_Dark;
-            }
-
+            return R.style.AppTheme_Light;
         }
-        return themeId;
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED)){
+            return R.style.AppTheme_Solarized;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED_DARK)){
+            return R.style.AppTheme_SolarizedDark;
+        }
+        if (!isDarkTheme(context)){
+            return R.style.AppTheme_Light;
+        } else {
+            return R.style.AppTheme_Dark;
+        }
     }
 
     public static void SetTheme(Context context){

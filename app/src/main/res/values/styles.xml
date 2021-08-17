@@ -21,7 +21,6 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme_Light" parent="android:Theme.Holo.Light">
-
         <item name="colorPrimary">@color/colorPrimary_LightTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_LightTheme</item>
         <item name="colorPrimaryLight">@color/colorPrimaryLight_LightTheme</item>
@@ -30,6 +29,8 @@
         <item name="colorTextDark">@color/colorTextDark_LightTheme</item>
         <item name="colorTextLight">@color/colorTextLight_LightTheme</item>
         <item name="colorWelcomeBackground">@color/colorWelcomeBackground_LightTheme</item>
+        <item name="colorWidgetBackground">@color/colorWidgetBackground_LightTheme</item>
+        <item name="colorSecondary">@color/colorSecondary_LightTheme</item>
 
         <item name="ic_search">@mipmap/ic_search_black_24dp</item>
         <item name="ic_refresh">@mipmap/ic_refresh_black_24dp</item>
@@ -49,10 +50,36 @@
         <item name="white_bar">@mipmap/white_bar_black</item>
         <item name="binocular">@mipmap/biocular_black</item>
 
+        <!-- styles the actionbar -->
+        <item name="android:actionBarStyle">@style/ActionBar_Light</item>
+        <!-- set the overflow button to a modern burger style -->
+        <item name="android:actionOverflowButtonStyle">@style/BurgerIcon_Light</item>
+        <!-- styles the settings and the main weather listview/warnings background-->
+        <item name="android:listViewStyle">@style/ListView_Light</item>
+        <!-- set the background of the overflow menu -->
+        <item name="android:itemBackground">@color/colorPrimaryLight_LightTheme</item>
+        <!-- set the color of, activity title and overflow menu text color, settings item titles -->
+        <item name="android:textColorPrimary">@color/colorTextLight_LightTheme</item>
+        <!-- set the color of, activity subtitle, settings decriptions -->
+        <item name="android:textColorSecondary">@color/colorTextDark_LightTheme</item>
+        <!-- unknown -->
+        <item name="android:textColorTertiary">@color/colorText_LightTheme</item>
     </style>
 
-    <style name="AppTheme_Dark" parent="android:Theme.Holo">
+    <style name="ActionBar_Light" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/colorPrimaryLight_LightTheme</item>
+    </style>
 
+    <style name="BurgerIcon_Light" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@mipmap/ic_more_vert_black_24dp</item>
+    </style>
+
+    <style name="ListView_Light" parent="@android:style/Widget.ListView">
+        <item name="android:background">@color/colorPrimary_LightTheme</item>
+    </style>
+
+
+    <style name="AppTheme_Dark" parent="android:Theme.Holo">
         <item name="colorPrimary">@color/colorPrimary_DarkTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_DarkTheme</item>
         <item name="colorPrimaryLight">@color/colorPrimaryLight_DarkTheme</item>
@@ -61,6 +88,8 @@
         <item name="colorTextDark">@color/colorTextDark_DarkTheme</item>
         <item name="colorTextLight">@color/colorTextLight_DarkTheme</item>
         <item name="colorWelcomeBackground">@color/colorWelcomeBackground_DarkTheme</item>
+        <item name="colorWidgetBackground">@color/colorWidgetBackground_DarkTheme</item>
+        <item name="colorSecondary">@color/colorSecondary_DarkTheme</item>
 
         <item name="ic_search">@mipmap/ic_search_white_24dp</item>
         <item name="ic_refresh">@mipmap/ic_refresh_white_24dp</item>
@@ -80,20 +109,108 @@
         <item name="white_bar">@mipmap/white_bar</item>
         <item name="binocular">@mipmap/biocular</item>
 
+        <!-- styles the actionbar -->
+        <item name="android:actionBarStyle">@style/ActionBar_Dark</item>
+        <!-- set the overflow button to a modern burger style -->
+        <item name="android:actionOverflowButtonStyle">@style/BurgerIcon_Dark</item>
+        <!-- styles the settings and the main weather listview/warnings background-->
+        <item name="android:listViewStyle">@style/ListView_Dark</item>
+        <!-- set the background of the overflow menu -->
+        <item name="android:itemBackground">@color/colorPrimaryLight_DarkTheme</item>
+        <!-- set the color of, activity title and overflow menu text color, settings item titles -->
+        <item name="android:textColorPrimary">@color/colorTextLight_DarkTheme</item>
+        <!-- set the color of, activity subtitle, settings decriptions -->
+        <item name="android:textColorSecondary">@color/colorTextDark_DarkTheme</item>
+        <!-- unknown -->
+        <item name="android:textColorTertiary">@color/colorText_DarkTheme</item>
+    </style>
+
+    <style name="ActionBar_Dark" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/colorPrimaryLight_DarkTheme</item>
+    </style>
+
+    <style name="BurgerIcon_Dark" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@mipmap/ic_more_vert_white_24dp</item>
+    </style>
+
+    <style name="ListView_Dark" parent="@android:style/Widget.ListView">
+        <item name="android:background">@color/colorPrimary_DarkTheme</item>
+    </style>
+
+    <style name="AppTheme_Solarized" parent="AppTheme_Light">
+        <item name="colorPrimary">@color/colorPrimary_Solarized</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_Solarized</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight_Solarized</item>
+        <item name="colorAccent">@color/colorAccent_Solarized</item>
+        <item name="colorText">@color/colorText_Solarized</item>
+        <item name="colorTextDark">@color/colorTextDark_Solarized</item>
+        <item name="colorTextLight">@color/colorTextLight_Solarized</item>
+        <item name="colorWelcomeBackground">@color/colorWelcomeBackground_Solarized</item>
+        <item name="colorWidgetBackground">@color/colorWidgetBackground_Solarized</item>
+        <item name="colorSecondary">@color/colorSecondary_Solarized</item>
+
+        <!-- styles the actionbar -->
+        <item name="android:actionBarStyle">@style/ActionBar_Solarized</item>
+        <!-- styles the settings and the main weather listview/warnings background-->
+        <item name="android:listViewStyle">@style/ListView_Solarized</item>
+        <!-- set the background of the overflow menu -->
+        <item name="android:itemBackground">@color/colorPrimaryLight_Solarized</item>
+        <!-- set the color of, activity title and overflow menu text color, settings item titles -->
+        <item name="android:textColorPrimary">@color/colorTextLight_Solarized</item>
+        <!-- set the color of, activity subtitle, settings decriptions -->
+        <item name="android:textColorSecondary">@color/colorTextDark_Solarized</item>
+        <!-- unknown -->
+        <item name="android:textColorTertiary">@color/colorText_Solarized</item>
+    </style>
+
+    <style name="ActionBar_Solarized" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/colorPrimaryLight_Solarized</item>
+    </style>
+
+    <style name="ListView_Solarized" parent="@android:style/Widget.ListView">
+        <item name="android:background">@color/colorPrimary_Solarized</item>
+    </style>
+
+
+    <style name="AppTheme_SolarizedDark" parent="AppTheme_Dark">
+        <item name="colorPrimary">@color/colorPrimary_SolarizedDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_SolarizedDark</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight_SolarizedDark</item>
+        <item name="colorAccent">@color/colorAccent_SolarizedDark</item>
+        <item name="colorText">@color/colorText_SolarizedDark</item>
+        <item name="colorTextDark">@color/colorTextDark_SolarizedDark</item>
+        <item name="colorTextLight">@color/colorTextLight_SolarizedDark</item>
+        <item name="colorWelcomeBackground">@color/colorWelcomeBackground_SolarizedDark</item>
+        <item name="colorWidgetBackground">@color/colorWidgetBackground_SolarizedDark</item>
+        <item name="colorSecondary">@color/colorSecondary_SolarizedDark</item>
+
+        <!-- styles the actionbar -->
+        <item name="android:actionBarStyle">@style/ActionBar_SolarizedDark</item>
+        <!-- styles the settings and the main weather listview/warnings background-->
+        <item name="android:listViewStyle">@style/ListView_SolarizedDark</item>
+        <!-- set the background of the overflow menu -->
+        <item name="android:itemBackground">@color/colorPrimaryLight_SolarizedDark</item>
+        <!-- set the color of, activity title and overflow menu text color, settings item titles -->
+        <item name="android:textColorPrimary">@color/colorTextLight_SolarizedDark</item>
+        <!-- set the color of, activity subtitle, settings decriptions -->
+        <item name="android:textColorSecondary">@color/colorTextDark_SolarizedDark</item>
+        <!-- unknown -->
+        <item name="android:textColorTertiary">@color/colorText_SolarizedDark</item>
+    </style>
+
+    <style name="ActionBar_SolarizedDark" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/colorPrimaryLight_SolarizedDark</item>
+    </style>
+
+    <style name="ListView_SolarizedDark" parent="@android:style/Widget.ListView">
+        <item name="android:background">@color/colorPrimary_SolarizedDark</item>
     </style>
 
 
     <!-- Customize ActionBar -->
-    <style name="BurgerIcon" parent="android:style/Widget.Holo.ActionButton.Overflow">
-        <item name="android:src">@mipmap/ic_more_vert_white_24dp</item>
-    </style>
 
     <!-- Customize overflow menu -->
     <style name="OverflowMenu" parent="android:Theme.Holo">
-
-    </style>
-
-    <style name="MyActionBarStyle" parent="@android:style/Widget.Holo.ActionBar">
 
     </style>
 

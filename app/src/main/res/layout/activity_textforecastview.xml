@@ -23,6 +23,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/textforecastview_scrollcontainer"
     android:fillViewport="true"
+    android:background="?attr/colorPrimary"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -30,6 +31,7 @@
         android:id="@+id/textforecastview_maincontainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp">
 

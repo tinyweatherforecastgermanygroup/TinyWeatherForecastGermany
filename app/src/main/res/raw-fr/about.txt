@@ -26,6 +26,8 @@ Cartes PAT par Ian Macky <http://ian.macky.net/pat>.
 
 Le calcul de l'humidité relative à partir de la température et du point de rosée se fait à l'aide d'un exemple de formule simplifiée du DWD (Deutscher Wetterdienst), cf. <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
 
+Utilisée "Solarized Precision colors for machines and people" theme, Copyright (c) 2011 Ethan Schoonover.
+
 Icône de l'application par Janis Bitta.
 
 Les personnes suivantes ont contribué à ce projet :

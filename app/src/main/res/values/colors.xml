@@ -28,15 +28,41 @@
     <color name="colorTextDark_DarkTheme">#999999</color>
     <color name="colorTextLight_DarkTheme">#ffffff</color>
     <color name="colorWelcomeBackground_DarkTheme">#2222ff</color>
+    <color name="colorWidgetBackground_DarkTheme">#353535</color>
+    <color name="colorSecondary_DarkTheme">#1aad4e</color>
 
     <color name="colorPrimary_LightTheme">#dddddd</color>
-    <color name="colorPrimaryDark_LightTheme">#eeeeee</color>
-    <color name="colorPrimaryLight_LightTheme">#ffffff</color>
+    <color name="colorPrimaryDark_LightTheme">#bbbbbb</color>
+    <color name="colorPrimaryLight_LightTheme">#eeeeee</color>
     <color name="colorAccent_LightTheme">#085758</color>
     <color name="colorText_LightTheme">#111111</color>
     <color name="colorTextDark_LightTheme">#333333</color>
     <color name="colorTextLight_LightTheme">#000000</color>
     <color name="colorWelcomeBackground_LightTheme">#04a3f6</color>
+    <color name="colorWidgetBackground_LightTheme">#dfdfdf</color>
+    <color name="colorSecondary_LightTheme">#04a3f6</color>
+
+    <color name="colorPrimary_Solarized">#eee8d5</color>               <!-- base2 -->
+    <color name="colorPrimaryDark_Solarized">#eee8d5</color>           <!-- base2 -->
+    <color name="colorPrimaryLight_Solarized">#fdf6e3</color>          <!-- base3 -->
+    <color name="colorAccent_Solarized">#2aa198</color>                <!-- cyan  -->
+    <color name="colorText_Solarized">#586e75</color>                  <!-- base01 -->
+    <color name="colorTextDark_Solarized">#657b83</color>              <!-- base00 -->
+    <color name="colorTextLight_Solarized">#839496</color>             <!-- base0  -->
+    <color name="colorWelcomeBackground_Solarized">#fdf6e3</color>     <!-- base3 -->
+    <color name="colorWidgetBackground_Solarized">#eee8d5</color>      <!-- base2 -->
+    <color name="colorSecondary_Solarized">#268bd2</color>             <!-- blue -->
+
+    <color name="colorPrimary_SolarizedDark">#002b36</color>                     <!-- base03 -->
+    <color name="colorPrimaryDark_SolarizedDark">#002b36</color>                 <!-- base03 -->
+    <color name="colorPrimaryLight_SolarizedDark">#073642</color>                <!-- base02 -->
+    <color name="colorAccent_SolarizedDark">#2aa198</color>                      <!-- cyan -->
+    <color name="colorText_SolarizedDark">#839496</color>                        <!-- base0 -->
+    <color name="colorTextDark_SolarizedDark">#657b83</color>                    <!-- base00 -->
+    <color name="colorTextLight_SolarizedDark">#93a1a1</color>                   <!-- base1 -->
+    <color name="colorWelcomeBackground_SolarizedDark">#073642</color>           <!-- base02 -->
+    <color name="colorWidgetBackground_SolarizedDark">#002b36</color>            <!-- base03 -->
+    <color name="colorSecondary_SolarizedDark">#268bd2</color>                   <!-- blue -->
 
     <color name="colorWarning_clear">#00cc00</color>
     <color name="colorWarning_minor">#eeee00</color>

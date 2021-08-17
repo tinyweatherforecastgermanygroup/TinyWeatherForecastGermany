@@ -1,6 +1,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.util.Log;
 
 public class WeatherIcons {
     final static int THUNDERSTORM=1;

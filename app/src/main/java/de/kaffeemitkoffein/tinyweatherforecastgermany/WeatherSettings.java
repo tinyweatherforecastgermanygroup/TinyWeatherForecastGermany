@@ -821,6 +821,8 @@ public class WeatherSettings {
         final static String FOLLOW_DEVICE = "FOLLOW_DEVICE";
         final static String DARK = "DARK";
         final static String LIGHT = "LIGHT";
+        final static String SOLARIZED_DARK = "SOLARIZED_DARK";
+        final static String SOLARIZED = "SOLARIZED";
     }
 
     public static String getThemePreference(Context context){
