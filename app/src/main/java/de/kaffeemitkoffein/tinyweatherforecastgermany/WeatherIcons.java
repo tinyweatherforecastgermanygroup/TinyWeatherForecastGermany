@@ -1,7 +1,6 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
-import android.util.Log;
 
 public class WeatherIcons {
     final static int THUNDERSTORM=1;
@@ -77,6 +76,8 @@ public class WeatherIcons {
     final static int RADARINFOBAR = 1026;
     final static int PIN = 1027;
     final static int IC_LAUNCHER_BW = 1028;
+    final static int RADIO_BUTTON_UNCHECKED = 1100;
+    final static int RADIO_BUTTON_CHECKED = 1101;
 
     public static int getIconResource(Context context, int icon) {
         int result = 0;
@@ -229,6 +230,8 @@ public class WeatherIcons {
             case GERMANY: result = R.drawable.germany; break;
             case MAP_COLLAPSED: result = R.drawable.map_collapsed; break;
             case RADARINFOBAR: result = R.drawable.radarinfobar; break;
+            case RADIO_BUTTON_UNCHECKED: result = R.mipmap.ic_radio_button_unchecked_white_24dp; break;
+            case RADIO_BUTTON_CHECKED: result = R.mipmap.ic_radio_button_checked_white_24dp; break;
         }
         // override with dark variants if applicable
         if (!ThemePicker.isDarkTheme(context)) {
@@ -264,6 +267,8 @@ public class WeatherIcons {
                 case WIND_BEAUFORT_12 : result = R.mipmap.wind_beaufort_12_black; break;
                 case GERMANY: result = R.drawable.germany_black; break;
                 case MAP_COLLAPSED: result = R.drawable.map_collapsed_black; break;
+                case RADIO_BUTTON_UNCHECKED: result = R.mipmap.ic_radio_button_unchecked_black_24dp; break;
+                case RADIO_BUTTON_CHECKED: result = R.mipmap.ic_radio_button_checked_black_24dp; break;
             }
         }
         return result;

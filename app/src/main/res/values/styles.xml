@@ -46,6 +46,8 @@
         <item name="ic_chevron_right">@mipmap/ic_chevron_right_black_24dp</item>
         <item name="ic_filter">@mipmap/ic_filter_black_24dp</item>
         <item name="ic_filter_list">@mipmap/ic_filter_list_black_24dp</item>
+        <item name="ic_radio_button_unchecked">@mipmap/ic_radio_button_unchecked_black_24dp</item>
+        <item name="ic_radio_button_checked">@mipmap/ic_radio_button_checked_black_24dp</item>
 
         <item name="white_bar">@mipmap/white_bar_black</item>
         <item name="binocular">@mipmap/biocular_black</item>
@@ -105,6 +107,8 @@
         <item name="ic_chevron_right">@mipmap/ic_chevron_right_white_24dp</item>
         <item name="ic_filter">@mipmap/ic_filter_white_24dp</item>
         <item name="ic_filter_list">@mipmap/ic_filter_list_white_24dp</item>
+        <item name="ic_radio_button_unchecked">@mipmap/ic_radio_button_unchecked_white_24dp</item>
+        <item name="ic_radio_button_checked">@mipmap/ic_radio_button_checked_white_24dp</item>
 
         <item name="white_bar">@mipmap/white_bar</item>
         <item name="binocular">@mipmap/biocular</item>

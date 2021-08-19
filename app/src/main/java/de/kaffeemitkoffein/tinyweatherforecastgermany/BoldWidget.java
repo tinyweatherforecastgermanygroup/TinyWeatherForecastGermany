@@ -166,7 +166,8 @@ public class BoldWidget extends ClassicWidget {
         }
         // set opacity
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
-        remoteViews.setInt(R.id.boldwidget_maincontainer, "setBackgroundColor", getBackgroundInt(c,opacity));
+        remoteViews.setImageViewResource(R.id.widget_backgroundimage,ThemePicker.getWidgetBackgroundDrawable(c));
+        remoteViews.setInt(R.id.widget_backgroundimage,"setImageAlpha",Math.round(opacity*2.55f));
     }
 
     @Override

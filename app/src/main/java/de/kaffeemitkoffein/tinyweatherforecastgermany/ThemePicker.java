@@ -3,7 +3,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.util.Log;
 
 public final class ThemePicker {
 
@@ -51,9 +50,9 @@ public final class ThemePicker {
             return R.style.AppTheme_SolarizedDark;
         }
         if (!isDarkTheme(context)){
-            return R.style.AppTheme_Light;
+            return R.style.AppTheme_Solarized;
         } else {
-            return R.style.AppTheme_Dark;
+            return R.style.AppTheme_SolarizedDark;
         }
     }
 
@@ -62,26 +61,62 @@ public final class ThemePicker {
     }
 
     public static int getWidgetTextColor(Context context){
+        /*
         if (isDarkTheme(context)){
             return Color.WHITE;
         } else {
             return Color.BLACK;
         }
-    }
-
-    public static int getWidgetBackgroundColor(Context context){
-        if (isDarkTheme(context)){
-            return MainActivity.getColorFromResource(context,R.color.colorPrimaryDark_DarkTheme);
+         */
+        int c;
+        String themePreference = WeatherSettings.getThemePreference(context);
+        if (!isDarkTheme(context)){
+            c = R.color.colorText_Solarized;
         } else {
-            return MainActivity.getColorFromResource(context,R.color.colorPrimaryDark_LightTheme);
+            c = R.color.colorText_SolarizedDark;
         }
+        if (themePreference.equals(WeatherSettings.Theme.DARK)){
+            c = R.color.colorText_DarkTheme;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.LIGHT)){
+            c = R.color.colorText_LightTheme;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED)){
+            c = R.color.colorText_Solarized;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED_DARK)){
+            c = R.color.colorText_SolarizedDark;
+        }
+        int color;
+        if (android.os.Build.VERSION.SDK_INT>22){
+            color = context.getResources().getColor(c,context.getTheme());
+        } else {
+            color= context.getResources().getColor(c);
+        }
+        float[] hsv = new float[3];
+        Color.colorToHSV(color,hsv);
+        int c2 = Color.HSVToColor(255,hsv);
+        return  c2;
     }
 
-    public static String getWidgetBackgroundColorString(Context context){
-        if (isDarkTheme(context)){
-            return "000000";
+    public static int getWidgetBackgroundDrawable(Context context){
+        String themePreference = WeatherSettings.getThemePreference(context);
+        if (themePreference.equals(WeatherSettings.Theme.DARK)){
+            return R.drawable.roundedbox_dark;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.LIGHT)){
+            return R.drawable.roundedbox_light;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED)){
+            return R.drawable.roundedbox_solarized;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED_DARK)){
+            return R.drawable.roundedbox_solarizeddark;
+        }
+        if (!isDarkTheme(context)){
+            return R.drawable.roundedbox_solarized;
         } else {
-            return "eeeeee";
+            return R.drawable.roundedbox_solarizeddark;
         }
     }
 

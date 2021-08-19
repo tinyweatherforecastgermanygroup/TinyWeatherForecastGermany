@@ -415,6 +415,7 @@ public class MainActivity extends Activity {
                 }
                 if (key.equals(WeatherSettings.PREF_THEME)){
                     recreate();
+                    WidgetRefresher.refresh(context);
                 }
             }
         };
@@ -494,15 +495,12 @@ public class MainActivity extends Activity {
                 }
             }
         }
-    /*
-    } catch (Exception e){
-            errorDialog(e);
-            String s = e.getMessage()+"/n"+e.getCause()+ Arrays.toString(e.getStackTrace())+"/n";
-            PrivateLog.log(this,"Error in Main App: "+s);
-        }
-
-     */
-
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                WidgetRefresher.refresh(context);
+            }
+        });
     }
 
     private void errorDialog(Exception e){

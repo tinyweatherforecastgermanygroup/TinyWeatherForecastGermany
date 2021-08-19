@@ -74,5 +74,7 @@
     <dimen name="reader_textsize_body">14dp</dimen>
 
     <dimen name="widget_padding">2dp</dimen>
+    <dimen name="widget_margin">2dp</dimen>
+    <dimen name="widget_radius">8dp</dimen>
 
 </resources>

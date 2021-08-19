@@ -57,6 +57,7 @@ public class WelcomeActivity extends Activity {
     }
 
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(ThemePicker.GetTheme(this));
         super.onCreate(savedInstanceState);
         if (savedInstanceState!=null){
             Integer i = savedInstanceState.getInt(SIS_PAGENUMBER);
@@ -160,21 +161,21 @@ public class WelcomeActivity extends Activity {
         View result_view = null;
         if (page == 1) {
             result_view = layoutInflater.inflate(R.layout.welcome_screen1, pager, true);
-            dot1.setImageResource(R.mipmap.ic_radio_button_checked_white_24dp);
-            dot2.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
-            dot3.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
+            dot1.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_CHECKED));
+            dot2.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot3.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
         }
         if (page == 2) {
             result_view = layoutInflater.inflate(R.layout.welcome_screen2, pager, true);
-            dot1.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
-            dot2.setImageResource(R.mipmap.ic_radio_button_checked_white_24dp);
-            dot3.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
+            dot1.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot2.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_CHECKED));
+            dot3.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
         }
         if (page == 3) {
             result_view = layoutInflater.inflate(R.layout.welcome_screen3, pager, true);
-            dot1.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
-            dot2.setImageResource(R.mipmap.ic_radio_button_unchecked_white_24dp);
-            dot3.setImageResource(R.mipmap.ic_radio_button_checked_white_24dp);
+            dot1.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot2.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot3.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_CHECKED));
         }
         if (page == 4) {
             result_view = layoutInflater.inflate(R.layout.welcome_spinner, pager, true);

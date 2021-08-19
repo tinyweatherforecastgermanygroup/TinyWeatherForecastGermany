@@ -42,15 +42,15 @@
     <color name="colorWidgetBackground_LightTheme">#dfdfdf</color>
     <color name="colorSecondary_LightTheme">#04a3f6</color>
 
-    <color name="colorPrimary_Solarized">#eee8d5</color>               <!-- base2 -->
-    <color name="colorPrimaryDark_Solarized">#eee8d5</color>           <!-- base2 -->
-    <color name="colorPrimaryLight_Solarized">#fdf6e3</color>          <!-- base3 -->
+    <color name="colorPrimary_Solarized">#fdf6e3</color>               <!-- base3 -->
+    <color name="colorPrimaryDark_Solarized">#fdf6e3</color>           <!-- base3 -->
+    <color name="colorPrimaryLight_Solarized">#eee8d5</color>          <!-- base2 -->
     <color name="colorAccent_Solarized">#2aa198</color>                <!-- cyan  -->
     <color name="colorText_Solarized">#586e75</color>                  <!-- base01 -->
     <color name="colorTextDark_Solarized">#657b83</color>              <!-- base00 -->
     <color name="colorTextLight_Solarized">#839496</color>             <!-- base0  -->
     <color name="colorWelcomeBackground_Solarized">#fdf6e3</color>     <!-- base3 -->
-    <color name="colorWidgetBackground_Solarized">#eee8d5</color>      <!-- base2 -->
+    <color name="colorWidgetBackground_Solarized">#fdf6e3</color>      <!-- base3 -->
     <color name="colorSecondary_Solarized">#268bd2</color>             <!-- blue -->
 
     <color name="colorPrimary_SolarizedDark">#002b36</color>                     <!-- base03 -->

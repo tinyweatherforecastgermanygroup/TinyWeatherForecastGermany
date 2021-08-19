@@ -27,7 +27,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -351,7 +355,8 @@ public class ClassicWidget extends AppWidgetProvider {
             remoteViews.setViewVisibility(R.id.classicwidget_wind,View.INVISIBLE);
         }
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
-        remoteViews.setInt(R.id.widget_maincontainer,"setBackgroundColor",getBackgroundInt(c,opacity));
+        remoteViews.setImageViewResource(R.id.widget_backgroundimage,ThemePicker.getWidgetBackgroundDrawable(c));
+        remoteViews.setInt(R.id.widget_backgroundimage,"setImageAlpha",Math.round(opacity*2.55f));
         if (weatherSettings.widget_showdwdnote) {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.VISIBLE);
             remoteViews.setTextColor(R.id.widget_reference_text,ThemePicker.getWidgetTextColor(c));
@@ -364,7 +369,7 @@ public class ClassicWidget extends AppWidgetProvider {
         setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c,false);
     }
 
-        public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
+    public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         WeatherSettings weatherSettings = new WeatherSettings(c);
         for (int i=0; i<widget_instances.length; i++){
@@ -384,17 +389,6 @@ public class ClassicWidget extends AppWidgetProvider {
         if (wi.length>0){
             updateWidgetDisplay(c,awm,wi);
         }
-    }
-
-    public int getBackgroundInt(Context context, int alpha){
-        String hex_string = Integer.toHexString(Math.round((float)alpha * (float)2.55));
-        if (hex_string.length()<2)
-        {
-            hex_string = "0" + hex_string;
-        }
-        //hex_string = hex_string+"101010";
-        hex_string = hex_string+ThemePicker.getWidgetBackgroundColorString(context);
-        return Color.parseColor("#"+hex_string);
     }
 
     /**
