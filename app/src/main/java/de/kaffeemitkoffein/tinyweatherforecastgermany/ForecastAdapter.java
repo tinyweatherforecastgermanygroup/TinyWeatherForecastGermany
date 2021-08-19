@@ -896,6 +896,9 @@ private boolean isEndOfDay(Weather.WeatherInfo weatherInfo){
 private int getColorGradient(int position){
     float c_step = (float) (255/weatherForecasts.size());
     int pos = Math.round(c_step * position);
+    if (!ThemePicker.isDarkTheme(context)){
+        return 255 - pos;
+    }
     return pos;
 }
 
