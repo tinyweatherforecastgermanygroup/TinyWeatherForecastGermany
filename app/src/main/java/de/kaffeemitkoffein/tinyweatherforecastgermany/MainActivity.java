@@ -26,6 +26,7 @@ import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,12 +37,18 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
+import org.w3c.dom.Text;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -874,13 +881,13 @@ public class MainActivity extends Activity {
     }
 
     @SuppressWarnings("deprecation")
-    private void setOverflowMenuItemColor(Menu menu, int id, int string_id,int color_id){
+    private void setOverflowMenuItemColor(Menu menu, int id, int string_id){
         String s = getApplicationContext().getResources().getString(string_id);
         MenuItem menuItem = menu.findItem(id);
         if (menuItem.isVisible()){
             SpannableString spannableString = new SpannableString(s);
-            int color = getColorFromResource(getApplicationContext(),color_id);
-            spannableString.setSpan(color,0,s.length(),0);
+            int color = ThemePicker.getWidgetTextColor(this);
+            spannableString.setSpan(new ForegroundColorSpan(color),0,s.length(),0);
             menuItem.setTitle(spannableString);
         } else {
             // do nothing
@@ -911,12 +918,12 @@ public class MainActivity extends Activity {
             // omit the first two, as they are not in the menu
             //setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.attr.colorText);
             //setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.attr.colorText);
-            setOverflowMenuItemColor(menu,R.id.menu_texts,R.string.texts_button, R.attr.colorText);
-            setOverflowMenuItemColor(menu,R.id.menu_settings,R.string.settings_button, R.attr.colorText);
-            setOverflowMenuItemColor(menu,R.id.menu_geoinput,R.string.geoinput_button, R.attr.colorText);
-            setOverflowMenuItemColor(menu,R.id.menu_about,R.string.about_button, R.attr.colorText);
-            setOverflowMenuItemColor(menu,R.id.menu_license,R.string.license_button, R.attr.colorText);
-            setOverflowMenuItemColor(menu,R.id.menu_whatsnew,R.string.whatsnew_button, R.attr.colorText);
+            setOverflowMenuItemColor(menu,R.id.menu_texts,R.string.texts_button);
+            setOverflowMenuItemColor(menu,R.id.menu_settings,R.string.settings_button);
+            setOverflowMenuItemColor(menu,R.id.menu_geoinput,R.string.geoinput_button);
+            setOverflowMenuItemColor(menu,R.id.menu_about,R.string.about_button);
+            setOverflowMenuItemColor(menu,R.id.menu_license,R.string.license_button);
+            setOverflowMenuItemColor(menu,R.id.menu_whatsnew,R.string.whatsnew_button);
         }
         // disable weather warnings if desired by user
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
@@ -1045,6 +1052,7 @@ public class MainActivity extends Activity {
         whatsNewDialog = builder.create();
         whatsNewDialog.show();
         whatsNewDialogVisible=true;
+
         TextView textView = (TextView) whatsNewDialog.findViewById(R.id.whatsnew_textview);
         String textfile = "whatsnew";
         InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(textfile,"raw",getApplicationContext().getPackageName()));

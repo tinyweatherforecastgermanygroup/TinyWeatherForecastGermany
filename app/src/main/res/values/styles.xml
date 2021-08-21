@@ -210,16 +210,6 @@
         <item name="android:background">@color/colorPrimary_SolarizedDark</item>
     </style>
 
-
-    <!-- Customize ActionBar -->
-
-    <!-- Customize overflow menu -->
-    <style name="OverflowMenu" parent="android:Theme.Holo">
-
-    </style>
-
-    <!-- Custom Light Theme -->
-
 </resources>
 
 
