@@ -300,17 +300,17 @@ public class ClassicWidget extends AppWidgetProvider {
             if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.ARROW){
                 remoteViews.setViewVisibility(R.id.classicwidget_windarrow,View.VISIBLE);
                 if (weatherSettings.display_wind_arc) {
-                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow, Weather.WeatherInfo.getWindForecastTint(weatherCard.currentWeather.getArrowBitmap(c),weatherCard.getWindForecast(weatherSettings.getWindArcPeriod())));
+                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow, Weather.WeatherInfo.getWindForecastTint(weatherCard.currentWeather.getArrowBitmap(c,true),weatherCard.getWindForecast(weatherSettings.getWindArcPeriod())));
                 } else {
-                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getArrowBitmap(c));
+                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getArrowBitmap(c,true));
                 }
             }
             if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.BEAUFORT){
                 remoteViews.setViewVisibility(R.id.classicwidget_windarrow,View.VISIBLE);
                 if (weatherSettings.display_wind_arc){
-                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow, Weather.WeatherInfo.getWindForecastTint(weatherCard.currentWeather.getBeaufortBitmap(c),weatherCard.getWindForecast(weatherSettings.getWindArcPeriod())));
+                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow, Weather.WeatherInfo.getWindForecastTint(weatherCard.currentWeather.getBeaufortBitmap(c,true),weatherCard.getWindForecast(weatherSettings.getWindArcPeriod())));
                 } else {
-                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getBeaufortBitmap(c));
+                    remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getBeaufortBitmap(c,true));
                 }
             }
             if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.TEXT){

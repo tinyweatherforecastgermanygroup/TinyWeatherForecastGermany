@@ -163,6 +163,7 @@ public final class Weather {
         int ww;             // significant weather
         int ww3;            // significant weather at last 3h
         int W1W2;           // weather during last 6h
+        int WPc11;          // optional significant weather (highest priority) during last 1h
         int WPc31;          // optional significant weather (highest priority) during last 3h
         int WPc61;          // optional significant weather (highest priority) during last 6h
         int WPch1;          // optional significant weather (highest priority) during last 12h
@@ -400,26 +401,21 @@ public final class Weather {
             return windForecastBitmap;
         }
 
-        public Bitmap getWindIcon(Context context, int iconType, boolean applyWindForecastTint, ArrayList<WindData> windForecastList){
-            Bitmap bitmap;
-            if (iconType==WindDisplayType.ARROW){
-                bitmap = getArrowBitmap(context);
-            } else {
-                bitmap = getBeaufortBitmap(context);
-            }
-            if ((applyWindForecastTint) && (windForecastList != null)){
-                bitmap = getWindForecastTint(bitmap,windForecastList);
-            }
-            return bitmap;
-        }
-
-        public Bitmap getArrowBitmap(Context context){
+        public Bitmap getArrowBitmap(Context context, boolean fromWidget){
             // wind direction is in ° and is the direction where the wind comes from.
             // new arrow icon neutral position is 0°.
             // rotation is clockwise.
             if (wind_direction!=null){
                 int arrowResurce = WeatherIcons.getIconResource(context,WeatherIcons.ARROW);
-                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),arrowResurce);
+                // make bitmap mutable
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inMutable = true;
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),arrowResurce,options);
+                if (fromWidget) {
+                    ThemePicker.applyColor(bitmap,ThemePicker.getWidgetTextColor(context));
+                } else {
+                    ThemePicker.applyColor(bitmap,ThemePicker.getColorTextLight(context));
+                }
                 if (bitmap != null){
                     Matrix m = new Matrix();
                     m.postRotate(wind_direction.floatValue());
@@ -430,10 +426,10 @@ public final class Weather {
             return null;
         }
 
-        public Bitmap getBeaufortBitmap(Context context){
+        public Bitmap getBeaufortBitmap(Context context, boolean fromWidget){
             // fall back to arrow if wind speed is unknown
             if (wind_speed==null){
-                return getArrowBitmap(context);
+                return getArrowBitmap(context,fromWidget);
             }
             if (wind_direction!=null) {
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getBeaufortIconResourceID(context,getWindSpeedInBeaufortInt()));
@@ -496,12 +492,11 @@ public final class Weather {
           return "?";
         }
 
-
-        public Bitmap getWindSymbol(Context context, int windDisplayType){
+        public Bitmap getWindSymbol(Context context, int windDisplayType, boolean fromWidget){
             float width_bitmap = 256;
             float height_bitmap = 256;
             if (windDisplayType==WindDisplayType.BEAUFORT){
-                return getBeaufortBitmap(context);
+                return getBeaufortBitmap(context,fromWidget);
             }
             if (windDisplayType==WindDisplayType.TEXT){
                 Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bitmap),Math.round(height_bitmap), Bitmap.Config.ARGB_8888);
@@ -518,7 +513,7 @@ public final class Weather {
                 canvas.drawText(windsting,x_offset,y_offset,paint);
                 return bitmap;
             }
-            return getArrowBitmap(context);
+            return getArrowBitmap(context,fromWidget);
         }
 
         public String getWindSpeedString(Context context, boolean unit){
@@ -999,7 +994,7 @@ public final class Weather {
             if (cursor.moveToFirst()){
                 WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
                 RawWeatherInfo rawWeatherInfo = weatherForecastContentProvider.getWeatherCardFromCursor(cursor);
-                CurrentWeatherInfo currentWeatherInfo = new CurrentWeatherInfo(rawWeatherInfo);
+                CurrentWeatherInfo currentWeatherInfo = new CurrentWeatherInfo(context,rawWeatherInfo);
                 // check if local weather data is outdated
                 if (currentWeatherInfo.polling_time<Calendar.getInstance().getTimeInMillis()+weatherSettings.getForecastUpdateIntervalInMillis()){
                     return currentWeatherInfo;

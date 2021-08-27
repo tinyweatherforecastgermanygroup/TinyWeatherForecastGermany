@@ -65,6 +65,10 @@ Dieses Programm verwendet die Astronomie-Klasse. Copyright (C): 2010-2012, Helmu
 
 PAT-Karten von Ian Macky <http://ian.macky.net/pat>.
 
+Calculation of relative humidity from temperature and dew point is done using a simplified formula example from the DWD (Deutscher Wetterdienst), see <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
+
+Uses the Solarized Precision colors for machines and people theme, Copyright (c) 2011 Ethan Schoonover
+
 Mitwirkende:
 
 * Andreas Shimokawa (Fehlerbehebungen & Unterstützung für die Gadgetbridge-API)

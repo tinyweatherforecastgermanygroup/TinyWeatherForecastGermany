@@ -68,6 +68,10 @@ Tento program používá třídu Astronomy, Copyright (C) 2010-2012, Helmut Lehm
 
 Mapy PAT by Ian Macky <http://ian.macky.net/pat>.
 
+Calculation of relative humidity from temperature and dew point is done using a simplified formula example from the DWD (Deutscher Wetterdienst), see <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
+
+Uses the Solarized Precision colors for machines and people theme, Copyright (c) 2011 Ethan Schoonover
+
 Přispěvatelé:
 
 * Andreas Shimokawa (opravy chyb a podpora pro Gadgetbridge API)

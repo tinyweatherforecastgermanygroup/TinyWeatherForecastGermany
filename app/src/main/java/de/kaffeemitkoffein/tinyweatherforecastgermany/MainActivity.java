@@ -38,17 +38,12 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-import org.w3c.dom.Text;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -109,7 +104,7 @@ public class MainActivity extends Activity {
             if (intent.getAction().equals(MAINAPP_SSL_ERROR)){
                 PrivateLog.log(getApplicationContext(),Tag.MAIN,"ssl error intent received by main app.");
                 if ((!WeatherSettings.isTLSdisabled(context)) && (Build.VERSION.SDK_INT < 28)){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context,0);
                     builder.setTitle(context.getResources().getString(R.string.connerror_title));
                     builder.setIcon(R.mipmap.ic_announcement_white_24dp);
                     builder.setMessage(context.getResources().getString(R.string.connerror_message));
@@ -511,7 +506,7 @@ public class MainActivity extends Activity {
     }
 
     private void errorDialog(Exception e){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setCancelable(true);
         builder.setTitle("Error:");
         LayoutInflater layoutInflater = this.getLayoutInflater();
@@ -570,7 +565,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    private class SpinnerListener implements View.OnTouchListener, AdapterView.OnItemSelectedListener{
+    public static class SpinnerListener implements View.OnTouchListener, AdapterView.OnItemSelectedListener{
         private boolean user_touched_spinner = false;
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -782,6 +777,9 @@ public class MainActivity extends Activity {
 
     private ArrayList<Weather.WeatherInfo> getCustomForecastWeatherInfoArray(CurrentWeatherInfo weatherCard){
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+        if (weatherSettings.getDisplayType() == WeatherSettings.DISPLAYTYPE_24HOURS){
+            return weatherCard.forecast24hourly;
+        }
         if (weatherSettings.getDisplayType() == WeatherSettings.DISPLAYTYPE_6HOURS){
             return weatherCard.forecast6hourly;
         }
@@ -994,7 +992,7 @@ public class MainActivity extends Activity {
     }
 
     public void showAboutDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setCancelable(true);
         LayoutInflater layoutInflater = this.getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.aboutdialog,null,false);
@@ -1033,7 +1031,7 @@ public class MainActivity extends Activity {
     }
 
     public void showWhatsNewDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setCancelable(true);
         LayoutInflater layoutInflater = this.getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.whatsnewdialog,null,false);
@@ -1130,7 +1128,7 @@ public class MainActivity extends Activity {
     }
 
     private void showWarning(int icon, String title, String text){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setIcon(icon);
         builder.setTitle(title);
         builder.setMessage(text);
@@ -1159,7 +1157,7 @@ public class MainActivity extends Activity {
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         if (!WeatherSettings.appReleaseIsUserdebug()){
             if (weatherSettings.log_to_logcat){
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
                 builder.setIcon(R.mipmap.ic_warning_white_24dp);
                 builder.setTitle(getApplicationContext().getResources().getString(R.string.alertdialog_2_title));
                 builder.setMessage(getApplicationContext().getResources().getString(R.string.alertdialog_2_text));
@@ -1180,7 +1178,7 @@ public class MainActivity extends Activity {
     }
 
     private void startGeoinput(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
         LayoutInflater layoutInflater = this.getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.geoinput,null,false);
@@ -1297,7 +1295,7 @@ public class MainActivity extends Activity {
         for (int i=0; (i<stations.size()) && (i<items_count); i++) {
             stationDistanceList.add(stations.get(i).description+" ["+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]");
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
         builder.setIcon(R.mipmap.ic_gps_fixed_white_24dp);
         LayoutInflater layoutInflater = this.getLayoutInflater();
@@ -1417,7 +1415,7 @@ public class MainActivity extends Activity {
     }
 
     private void showSimpleLocationAlert(String text){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
         builder.setIcon(R.mipmap.ic_gps_fixed_white_24dp);
         builder.setMessage(text);

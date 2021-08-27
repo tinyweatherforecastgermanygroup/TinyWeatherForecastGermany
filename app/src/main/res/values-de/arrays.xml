@@ -68,6 +68,7 @@
     <string-array name="display_type_text">
         <item>stündliche Vorschau</item>
         <item>6-stündliche Vorschau</item>
+        <item>tägliche Vorschau</item>
         <item>gemischt</item>
     </string-array>
 

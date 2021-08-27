@@ -19,7 +19,13 @@
 
 <resources>
 
-    <!-- Base application theme. -->
+    <!--
+    *****************************************************************************
+    This is the LIGHT theme based on Holo.Light.
+    *****************************************************************************
+    Note: the Solarized Theme is a child of this theme, not all attributes need
+          to be set there again.
+    -->
     <style name="AppTheme_Light" parent="android:Theme.Holo.Light">
         <item name="colorPrimary">@color/colorPrimary_LightTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_LightTheme</item>
@@ -58,6 +64,8 @@
         <item name="android:actionOverflowButtonStyle">@style/BurgerIcon_Light</item>
         <!-- styles the settings and the main weather listview/warnings background-->
         <item name="android:listViewStyle">@style/ListView_Light</item>
+        <!-- theme of the AlertDialog - the Solarized themes inherit this -->
+        <item name="android:alertDialogTheme">@style/alertDialogTheme_LightTheme</item>
         <!-- set the background of the overflow menu -->
         <item name="android:itemBackground">@color/colorPrimaryLight_LightTheme</item>
         <!-- set the color of, activity title and overflow menu text color, settings item titles -->
@@ -79,6 +87,32 @@
     <style name="ListView_Light" parent="@android:style/Widget.ListView">
         <item name="android:background">@color/colorPrimary_LightTheme</item>
     </style>
+
+    <style name="ButtonStyle_Light" parent="@android:style/Widget.Holo.Light.Button.Borderless.Small">
+        <item name="android:textColor">@color/colorText_LightTheme</item>
+    </style>
+
+    <style name="AlertDialogTitle_Light">
+        <item name="android:textColor">@color/colorText_LightTheme</item>
+        <item name="android:textSize">@dimen/fcmain_textsize_medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="alertDialogTheme_LightTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:buttonBarButtonStyle">@style/ButtonStyle_Light</item>
+        <item name="android:windowTitleStyle">@style/AlertDialogTitle_Light</item>
+    </style>
+
+    <!--
+    *****************************************************************************
+    This is the DARK theme based on Holo.
+    *****************************************************************************
+    Note: the Solarized_Dark Theme is a child of this theme, not all attributes need
+          to be set there again.
+    -->
 
 
     <style name="AppTheme_Dark" parent="android:Theme.Holo">
@@ -120,6 +154,8 @@
         <!-- styles the settings and the main weather listview/warnings background-->
         <item name="android:listViewStyle">@style/ListView_Dark</item>
         <!-- set the background of the overflow menu -->
+        <!-- theme of the AlertDialog - the Solarized themes inherit this -->
+        <item name="android:alertDialogTheme">@style/alertDialogTheme_DarkTheme</item>
         <item name="android:itemBackground">@color/colorPrimaryLight_DarkTheme</item>
         <!-- set the color of, activity title and overflow menu text color, settings item titles -->
         <item name="android:textColorPrimary">@color/colorTextLight_DarkTheme</item>
@@ -141,6 +177,33 @@
         <item name="android:background">@color/colorPrimary_DarkTheme</item>
     </style>
 
+    <style name="ButtonStyle_Dark" parent="@android:style/Widget.Holo.Button.Borderless.Small">
+        <item name="android:textColor">@color/colorText_DarkTheme</item>
+    </style>
+
+    <style name="AlertDialogTitle_Dark">
+        <item name="android:textColor">@color/colorText_DarkTheme</item>
+        <item name="android:textSize">@dimen/fcmain_textsize_medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="alertDialogTheme_DarkTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:buttonBarButtonStyle">@style/ButtonStyle_Dark</item>
+        <item name="android:windowTitleStyle">@style/AlertDialogTitle_Dark</item>
+    </style>
+
+    <!--
+    *****************************************************************************
+    This is the SOLARIZED theme based on the Light theme, based on Holo.Light.
+    *****************************************************************************
+    Notes:
+        - the Light theme is parent, some things need not to be set again
+        - colorPrimary & colorPrimaryDark are the same
+    -->
+
     <style name="AppTheme_Solarized" parent="AppTheme_Light">
         <item name="colorPrimary">@color/colorPrimary_Solarized</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_Solarized</item>
@@ -157,6 +220,8 @@
         <item name="android:actionBarStyle">@style/ActionBar_Solarized</item>
         <!-- styles the settings and the main weather listview/warnings background-->
         <item name="android:listViewStyle">@style/ListView_Solarized</item>
+        <!-- styles the AlertDialogs -->
+        <item name="android:alertDialogStyle">@style/alertDialogStyle_Solarized</item>
         <!-- set the background of the overflow menu -->
         <item name="android:itemBackground">@color/colorPrimaryLight_Solarized</item>
         <!-- set the color of, activity title and overflow menu text color, settings item titles -->
@@ -175,6 +240,28 @@
         <item name="android:background">@color/colorPrimary_Solarized</item>
     </style>
 
+    <!-- styles the AlertDialogs-->
+    <style name="alertDialogStyle_Solarized" parent="@android:style/Theme.Dialog">
+        <item name="android:fullDark">@color/colorPrimaryLight_Solarized</item>
+        <item name="android:topDark">@color/colorPrimaryLight_Solarized</item>
+        <item name="android:centerDark">@color/colorPrimaryLight_Solarized</item>
+        <item name="android:bottomDark">@color/colorPrimaryLight_Solarized</item>
+
+        <item name="android:fullBright">@color/colorPrimary_Solarized</item>
+        <item name="android:topBright">@color/colorPrimary_Solarized</item>
+        <item name="android:centerBright">@color/colorPrimary_Solarized</item>
+        <item name="android:bottomBright">@color/colorPrimary_Solarized</item>
+        <item name="android:bottomMedium">@color/colorPrimary_Solarized</item>
+    </style>
+
+    <!--
+    *******************************************************************************
+    This is the SOLARIZED_DARK theme based on the Light theme, based on Holo.Light.
+    *******************************************************************************
+    Notes:
+        - the Dark theme is parent, some things need not to be set again
+        - colorPrimary & colorPrimaryDark are the same
+    -->
 
     <style name="AppTheme_SolarizedDark" parent="AppTheme_Dark">
         <item name="colorPrimary">@color/colorPrimary_SolarizedDark</item>
@@ -193,6 +280,8 @@
         <!-- styles the settings and the main weather listview/warnings background-->
         <item name="android:listViewStyle">@style/ListView_SolarizedDark</item>
         <!-- set the background of the overflow menu -->
+        <!-- styles the AlertDialogs -->
+        <item name="android:alertDialogStyle">@style/alertDialogStyle_SolarizedDark</item>
         <item name="android:itemBackground">@color/colorPrimaryLight_SolarizedDark</item>
         <!-- set the color of, activity title and overflow menu text color, settings item titles -->
         <item name="android:textColorPrimary">@color/colorTextLight_SolarizedDark</item>
@@ -208,6 +297,21 @@
 
     <style name="ListView_SolarizedDark" parent="@android:style/Widget.ListView">
         <item name="android:background">@color/colorPrimary_SolarizedDark</item>
+    </style>
+
+    <!-- styles the AlertDialogs, the AlertDialog title and button style are inherited
+     from the Light/Dark themes -->
+    <style name="alertDialogStyle_SolarizedDark" parent="@android:style/Theme.Dialog">
+        <item name="android:fullDark">@color/colorPrimaryLight_SolarizedDark</item>
+        <item name="android:topDark">@color/colorPrimaryLight_SolarizedDark</item>
+        <item name="android:centerDark">@color/colorPrimaryLight_SolarizedDark</item>
+        <item name="android:bottomDark">@color/colorPrimaryLight_SolarizedDark</item>
+
+        <item name="android:fullBright">@color/colorPrimary_SolarizedDark</item>
+        <item name="android:topBright">@color/colorPrimary_SolarizedDark</item>
+        <item name="android:centerBright">@color/colorPrimary_SolarizedDark</item>
+        <item name="android:bottomBright">@color/colorPrimary_SolarizedDark</item>
+        <item name="android:bottomMedium">@color/colorPrimary_SolarizedDark</item>
     </style>
 
 </resources>

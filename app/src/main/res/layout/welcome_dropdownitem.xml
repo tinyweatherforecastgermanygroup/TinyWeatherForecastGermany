@@ -19,19 +19,9 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<shape
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:shape="rectangle">
-    <corners
-            android:topLeftRadius="@dimen/widget_radius"
-            android:topRightRadius="@dimen/widget_radius"
-            android:bottomLeftRadius="@dimen/widget_radius"
-            android:bottomRightRadius="@dimen/widget_radius"/>
-    <padding
-            android:left="@dimen/widget_padding"
-            android:right="@dimen/widget_padding"
-            android:top="@dimen/widget_padding"
-            android:bottom="@dimen/widget_padding"/>
-    <solid
-            android:color="@color/colorWidgetBackground_SolarizedDark"/>
-</shape>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="?attr/colorPrimary"
+          android:textSize="@dimen/welcome_setup_size"
+/>

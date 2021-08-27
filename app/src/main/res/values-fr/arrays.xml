@@ -25,10 +25,10 @@
         <item>24 heures</item>
     </string-array>
     <string-array name="updateinterval_values">
-        <item>3</item>
         <item>6</item>
-        <item>9</item>
         <item>12</item>
+        <item>18</item>
+        <item>24</item>
     </string-array>
     <string-array name="widget_opacity_text">
         <item>0 (transparent)</item>
@@ -76,6 +76,7 @@
     <string-array name="display_type_text">
         <item>prévision horaire</item>
         <item>prévision à 6 heures</item>
+        <item>prévision quotidienne</item>
         <item>mixte</item>
     </string-array>
 

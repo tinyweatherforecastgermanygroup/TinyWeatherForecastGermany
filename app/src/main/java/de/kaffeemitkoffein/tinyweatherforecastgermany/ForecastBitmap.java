@@ -366,7 +366,7 @@ public class ForecastBitmap{
                 if (itemWidth - x_within_item_offset>=winddirection_maxsize + 1){
                     if (weatherInfos.get(position).hasWindSpeed()||weatherInfos.get(position).hasWindDirection()){
                         if (windDisplayType!=Weather.WindDisplayType.TEXT){
-                            Bitmap windsymbol = weatherInfos.get(position).getWindSymbol(context,windDisplayType);
+                            Bitmap windsymbol = weatherInfos.get(position).getWindSymbol(context,windDisplayType,false);
                             if (windsymbol!=null){
                                 windsymbol = Bitmap.createScaledBitmap(windsymbol,Math.round(winddirection_maxsize),Math.round(winddirection_maxsize),false);
                                 float y_offset_wind = (bitmapHeight - windsymbol.getHeight())/2f;

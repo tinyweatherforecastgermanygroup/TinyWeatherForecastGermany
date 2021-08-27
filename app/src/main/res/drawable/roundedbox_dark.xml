@@ -33,5 +33,5 @@
             android:top="@dimen/widget_padding"
             android:bottom="@dimen/widget_padding"/>
     <solid
-            android:color="@color/colorPrimary_DarkTheme"/>
+            android:color="@color/colorWidgetBackground_DarkTheme"/>
 </shape>

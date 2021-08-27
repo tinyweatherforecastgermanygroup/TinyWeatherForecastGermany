@@ -2,7 +2,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Color;
+import android.graphics.*;
 
 public final class ThemePicker {
 
@@ -99,6 +99,39 @@ public final class ThemePicker {
         return  c2;
     }
 
+    public static int getColorTextLight(Context context){
+        int c;
+        String themePreference = WeatherSettings.getThemePreference(context);
+        if (!isDarkTheme(context)){
+            c = R.color.colorTextLight_Solarized;
+        } else {
+            c = R.color.colorTextLight_SolarizedDark;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.DARK)){
+            c = R.color.colorTextLight_DarkTheme;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.LIGHT)){
+            c = R.color.colorTextLight_LightTheme;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED)){
+            c = R.color.colorTextLight_Solarized;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED_DARK)){
+            c = R.color.colorTextLight_SolarizedDark;
+        }
+        int color;
+        if (android.os.Build.VERSION.SDK_INT>22){
+            color = context.getResources().getColor(c,context.getTheme());
+        } else {
+            color= context.getResources().getColor(c);
+        }
+        float[] hsv = new float[3];
+        Color.colorToHSV(color,hsv);
+        int c2 = Color.HSVToColor(255,hsv);
+        return  c2;
+    }
+
+
     public static int getWidgetBackgroundDrawable(Context context){
         String themePreference = WeatherSettings.getThemePreference(context);
         if (themePreference.equals(WeatherSettings.Theme.DARK)){
@@ -129,6 +162,36 @@ public final class ThemePicker {
             return Color.HSVToColor(hsv);
         }
         return color;
+    }
+
+    public static void applyColor(final Bitmap bitmap, int color){
+        Canvas canvas = new Canvas(bitmap);
+        /*
+            final Paint pTR = new Paint();
+            pTR.setColor(color);
+            pTR.setStyle(Paint.Style.FILL_AND_STROKE);
+            for (int x=0; x<bitmap.getWidth();x++){
+                for (int y=0; y<bitmap.getHeight(); y++){
+                    if (bitmap.getPixel(x,y)==Color.WHITE){
+                        canvas.drawPoint(x,y,pTR);
+                    }
+                }
+            }
+
+         */
+        Paint paint = new Paint();
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        paint.setColor(color);
+        canvas.drawRect(0,0,bitmap.getWidth(),bitmap.getHeight(),paint);
+
+    }
+
+    public static void applyColor(Context context, final Bitmap bitmap, boolean fromWidget){
+        if (fromWidget) {
+            ThemePicker.applyColor(bitmap,ThemePicker.getWidgetTextColor(context));
+        } else {
+            ThemePicker.applyColor(bitmap,ThemePicker.getColorTextLight(context));
+        }
     }
 
 }

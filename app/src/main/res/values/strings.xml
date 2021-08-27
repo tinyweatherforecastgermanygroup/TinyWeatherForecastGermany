@@ -270,6 +270,13 @@
     <string name="radar_rain3">strong</string>
     <string name="radar_rain4">extreme</string>
     <string name="hide_rain">hide rain</string>
+    <string name="welcome_setuptitle">Basic setup</string>
+    <string name="welcome_setupnote">You can change this later in the settings.</string>
     <string name="areadatabasecreator_title">Preparing data</string>
     <string name="areadatabasecreator_text">Please be patient for a moment, this only needs to be done once.</string>
+    <string name="preference_viewmodel_title">Level of detail</string>
+    <string name="preference_viewmodel_summary">Show a detailed or simplified weather forecast.</string>
+    <string name="welcome_s4_viewmodel">Show a detailed weather forecast. When unchecked, a simpler weather forecast will be displayed.</string>
+    <string name="welcome_s4_update">Always update the weather data. When unchecked, data will be updated at app launch only.</string>
+    <string name="welcome_s4_displaytype">Chose how to display the weather forecast:</string>
 </resources>

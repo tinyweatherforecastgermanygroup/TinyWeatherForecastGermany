@@ -56,6 +56,7 @@
 
     <dimen name="welcome_icon_size">36dp</dimen>
     <dimen name="welcome_action_size">24sp</dimen>
+    <dimen name="welcome_setup_size">20sp</dimen>
     <dimen name="welcome_text_size">16sp</dimen>
     <dimen name="welcome_icondesc_size">16dp</dimen>
     <dimen name="welcome_icondesc_padding">0dp</dimen>
@@ -64,6 +65,8 @@
     <dimen name="welcome_action_padding">24dp</dimen>
     <dimen name="welcome_line_height">28dp</dimen>
 
+    <dimen name="geo_textsize_very_huge">48sp</dimen>
+    <dimen name="geo_textsize_huge">24sp</dimen>
     <dimen name="geo_textsize_large">16sp</dimen>
     <dimen name="geo_textsize_medium">14sp</dimen>
     <dimen name="geo_textsize_small">12sp</dimen>

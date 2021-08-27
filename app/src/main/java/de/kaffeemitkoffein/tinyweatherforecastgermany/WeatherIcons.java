@@ -1,6 +1,8 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class WeatherIcons {
     final static int THUNDERSTORM=1;
@@ -274,6 +276,14 @@ public class WeatherIcons {
         return result;
     }
 
+    public static Bitmap getIconBitmap(Context context, int icon, boolean fromWidget){
+        int resource = getIconResource(context,icon);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = true;
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),resource,options);
+        ThemePicker.applyColor(context,bitmap,fromWidget);
+        return bitmap;
+    }
 
 }
 

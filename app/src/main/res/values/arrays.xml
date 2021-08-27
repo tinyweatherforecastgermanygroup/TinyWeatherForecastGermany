@@ -25,10 +25,10 @@
         <item>24 hours</item>
     </string-array>
     <string-array name="updateinterval_values">
-        <item>3</item>
         <item>6</item>
-        <item>9</item>
         <item>12</item>
+        <item>18</item>
+        <item>24</item>
     </string-array>
     <string-array name="widget_opacity_text">
         <item>0 (transparent)</item>
@@ -76,12 +76,14 @@
     <string-array name="display_type_text">
         <item>hourly forecast</item>
         <item>6-hourly forecast</item>
+        <item>daily forecast</item>
         <item>mixed</item>
     </string-array>
 
     <string-array name="display_type_values">
         <item>1</item>
         <item>3</item>
+        <item>4</item>
         <item>265</item>
     </string-array>
 
@@ -154,13 +156,11 @@
     <string-array name="viewmodel_text">
         <item>simple</item>
         <item>extended</item>
-        <item>detailed</item>
     </string-array>
 
     <string-array name="viewmodel_values">
         <item>SIMPLE</item>
         <item>EXTENDED</item>
-        <item>DETAILED</item>
     </string-array>
 
 </resources>

@@ -30,6 +30,7 @@
     <ScrollView
             android:orientation="vertical"
             android:scrollbars="vertical"
+            android:background="?attr/colorPrimaryDark"
             android:scrollbarAlwaysDrawVerticalTrack="true"
             android:layout_height="wrap_content"
             android:layout_width="match_parent">

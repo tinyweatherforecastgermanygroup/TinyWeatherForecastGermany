@@ -30,28 +30,28 @@
                 android:entryValues="@array/theme_values"
                 android:defaultValue="2"/>
 
+        <ListPreference
+                android:key="PREF_viewmodel"
+                android:title="@string/preference_viewmodel_title"
+                android:summary="@string/preference_viewmodel_summary"
+                android:entries="@array/viewmodel_text"
+                android:entryValues="@array/viewmodel_values"
+                android:defaultValue="1"/>
+
+        <ListPreference
+                android:key="PREF_display_type"
+                android:title="@string/preference_displaytype_title"
+                android:summary="@string/preference_displaytype_summary"
+                android:entries="@array/display_type_text"
+                android:entryValues="@array/display_type_values"
+                android:defaultValue="3"/>
+
         <PreferenceScreen
                 android:key="PREF_screen_display_extended"
                 android:title="@string/preference_screen_display_title"
                 android:summary="@string/preference_screen_display_summary">
 
-            <ListPreference
-                    android:key="PREF_display_type"
-                    android:title="@string/preference_displaytype_title"
-                    android:summary="@string/preference_displaytype_summary"
-                    android:entries="@array/display_type_text"
-                    android:entryValues="@array/display_type_values"
-                    android:defaultValue="3"/>
-
             <!--
-            <ListPreference
-                android:key="PREF_display_layout"
-                android:title="@string/preference_display_layout_title"
-                android:summary="@string/preference_display_layout_summary"
-                android:entries="@array/display_layout_text"
-                android:entryValues="@array/display_layout_values"
-                android:defaultValue="0"/>
-            -->
 
             <CheckBoxPreference
                     android:key="PREF_display_bar"
@@ -76,6 +76,8 @@
                     android:title="@string/preference_displayvisibility_title"
                     android:summary="@string/preference_displayvisibility_summary"
                     android:defaultValue="true"/>
+
+            -->
 
             <CheckBoxPreference
                     android:key="PREF_display_sunrise"

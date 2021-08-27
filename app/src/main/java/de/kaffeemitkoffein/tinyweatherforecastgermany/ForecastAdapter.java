@@ -58,9 +58,9 @@ private final boolean displaySimpleBar;
 private final boolean display_wind_arc;
 private final int display_wind_arc_perdiod;
 private final boolean warnings_disabled;
+private String viewModel;
 private final LayoutInflater layoutInflater;
 private int regularCellHeight=0;
-
 private ArrayList<WeatherWarning> warnings;
 
 private final String labelSunrise;
@@ -89,6 +89,7 @@ public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherFo
     this.display_wind_arc = weatherSettings.display_wind_arc;
     this.display_wind_arc_perdiod = weatherSettings.getWindArcPeriod();
     this.warnings_disabled = weatherSettings.warnings_disabled;
+    this.viewModel = weatherSettings.viewModel;
     layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     this.labelSunrise = context.getResources().getString(R.string.sunrise);
     this.labelSunset = context.getResources().getString(R.string.sunset);
@@ -102,7 +103,7 @@ public void setWarnings(ArrayList<WeatherWarning> warnings){
 private final static int SCALE_CONDITION_ICON = 2;
 private final static int SCALE_MINI_ICON = 8;
 
-private void loadScaledIcon(final ImageView imageView, final int id, final int scale) {
+private void loadScaledIcon(final ImageView imageView, final int id, final int scale, final boolean applyThemeColor) {
     final Integer key = Objects.hash(id, scale);
     final boolean changed = !key.equals((Integer) imageView.getTag());
 
@@ -120,11 +121,16 @@ private void loadScaledIcon(final ImageView imageView, final int id, final int s
                         // decode bitmap only as large as necessary
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inJustDecodeBounds = true;
+                        options.inMutable = true;
                         BitmapFactory.decodeResource(context.getResources(), id, options);
                         options.inSampleSize = calculateInSampleSize(options,imageView);
                         options.inJustDecodeBounds = false;
                         bitmap = BitmapFactory.decodeResource(context.getResources(), id, options);
                         bitmapCache.put(key, bitmap);
+                    }
+                    if (applyThemeColor){
+                        //ThemePicker.applyColor(context,bitmap,false);
+                        imageView.setColorFilter(ThemePicker.getColorTextLight(context),PorterDuff.Mode.SRC_IN);
                     }
                     imageView.setImageBitmap(bitmap);
                 }
@@ -181,6 +187,7 @@ static class ViewHolder {
     ImageView sunset2;
     ImageView warningSymbol;
     TextView warningText;
+    ImageView biocular;
     View endofday_bar;
 
     public ViewHolder() {
@@ -234,11 +241,16 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     View endofday_bar = null;
     ImageView warningSymbol = null;
     TextView warningText = null;
+    ImageView biocular = null;
     if (view == null) {
         // view is not available from cache
         newView = true;
         ThemePicker.SetTheme(context);
-        view = this.layoutInflater.inflate(R.layout.forecastitem, viewGroup, false);
+        int viewResource = R.layout.forecastitem;
+        if (viewModel.equals(WeatherSettings.ViewModel.SIMPLE)){
+            viewResource = R.layout.forecastitem2;
+        }
+        view = this.layoutInflater.inflate(viewResource, viewGroup, false);
     } else {
         // recycle view information
         viewHolder = (ViewHolder) view.getTag();
@@ -268,6 +280,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         endofday_bar = viewHolder.endofday_bar;
         warningSymbol = viewHolder.warningSymbol;
         warningText = viewHolder.warningText;
+        biocular = viewHolder.biocular;
     }
     // now fill the item with content
     if (main_container==null) {
@@ -279,6 +292,14 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     if ((display_gradient) && (main_container!=null)){
         int gradient = getColorGradient(i);
         main_container.setBackgroundColor(Color.argb(96,gradient,gradient,gradient));
+    }
+    // tint the biocular according to theme
+    if (biocular==null) {
+        biocular = (ImageView) view.findViewById(R.id.fcitem_binocular);
+        viewHolder.biocular = biocular;
+    }
+    if (biocular!=null){
+        biocular.setColorFilter(ThemePicker.getColorTextLight(context),PorterDuff.Mode.SRC_IN);
     }
     // heading with time of day
     if (textView_heading==null){
@@ -378,75 +399,91 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     int index = 0;
     if (weatherInfo.hasClouds()){
         ImageView clouds_view = getSymbolView(view,index,symbols,viewHolder);
-        loadScaledIcon(clouds_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_CLOUD), SCALE_MINI_ICON);
-        TextView clouds_text = getTextView(view,index,labels,viewHolder);
-        if (clouds_text!=null){
-            clouds_text.setText(weatherInfo.getClouds()+"%");
-            index ++;
+        if (clouds_view!=null){
+            loadScaledIcon(clouds_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_CLOUD), SCALE_MINI_ICON,true);
+            TextView clouds_text = getTextView(view,index,labels,viewHolder);
+            if (clouds_text!=null){
+                clouds_text.setText(weatherInfo.getClouds()+"%");
+                index ++;
+            }
         }
     }
-    final int SYMBOL_THRESHOLD = 0;
+    final int SYMBOL_THRESHOLD = -1;
     if (weatherInfo.hasProbThunderstorms()){
         if (weatherInfo.getProbThunderStorms()>SYMBOL_THRESHOLD){
             ImageView lightning_view = getSymbolView(view,index,symbols,viewHolder);
-            loadScaledIcon(lightning_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_LIGHTNING), SCALE_MINI_ICON);
-            TextView lightning_text = getTextView(view,index,labels,viewHolder);
-            if (lightning_text!=null){
-                lightning_text.setText(weatherInfo.getProbThunderStorms()+"%");
-                index ++;
+            if (lightning_view!=null){
+                loadScaledIcon(lightning_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_LIGHTNING), SCALE_MINI_ICON,false);
+                TextView lightning_text = getTextView(view,index,labels,viewHolder);
+                if (lightning_text!=null){
+                    lightning_text.setText(weatherInfo.getProbThunderStorms()+"%");
+                    index ++;
+                }
             }
         }
     }
     if (weatherInfo.hasProbSolidPrecipitation()){
         if (weatherInfo.getProbSolidPrecipitation()>SYMBOL_THRESHOLD){
             ImageView solid_view = getSymbolView(view,index,symbols,viewHolder);
-            loadScaledIcon(solid_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_HAIL), SCALE_MINI_ICON);
-            TextView solid_text = getTextView(view,index,labels,viewHolder);
-            if (solid_text!=null){
-                solid_text.setText(weatherInfo.getProbSolidPrecipitation()+"%");
-                index ++;
+            if (solid_view!=null){
+                loadScaledIcon(solid_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_HAIL), SCALE_MINI_ICON,true);
+                TextView solid_text = getTextView(view,index,labels,viewHolder);
+                if (solid_text!=null){
+                    solid_text.setText(weatherInfo.getProbSolidPrecipitation()+"%");
+                    index ++;
+                }
             }
         }
     }
     if (weatherInfo.hasProbFreezingRain()){
         if (weatherInfo.getProbFreezingRain()>SYMBOL_THRESHOLD){
             ImageView freezingrain_view = getSymbolView(view,index,symbols,viewHolder);
-            loadScaledIcon(freezingrain_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_FREEZING_RAIN), SCALE_MINI_ICON);
-            TextView freezingrain_text = getTextView(view,index,labels,viewHolder);
-            if (freezingrain_text!=null){
-                freezingrain_text.setText(weatherInfo.getProbFreezingRain()+"%");
-                index ++;
+            if (freezingrain_view!=null){
+                loadScaledIcon(freezingrain_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_FREEZING_RAIN), SCALE_MINI_ICON,true);
+                TextView freezingrain_text = getTextView(view,index,labels,viewHolder);
+                if (freezingrain_text!=null){
+                    freezingrain_text.setText(weatherInfo.getProbFreezingRain()+"%");
+                    index ++;
+                }
             }
         }
     }
     if (weatherInfo.hasProbFog()){
         if (weatherInfo.getProbFog()>SYMBOL_THRESHOLD){
             ImageView fog_view = getSymbolView(view,index,symbols,viewHolder);
-            loadScaledIcon(fog_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_FOG), SCALE_MINI_ICON);
-            TextView fog_text = getTextView(view,index,labels,viewHolder);
-            if (fog_text!=null){
-                fog_text.setText(weatherInfo.getProbFog()+"%");
-                index ++;
+            if (fog_view!=null){
+                loadScaledIcon(fog_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_FOG), SCALE_MINI_ICON,true);
+                TextView fog_text = getTextView(view,index,labels,viewHolder);
+                if (fog_text!=null){
+                    fog_text.setText(weatherInfo.getProbFog()+"%");
+                    index ++;
+                }
             }
         }
     }
     if (weatherInfo.hasProbDrizzle()){
         if (weatherInfo.getProbDrizzle()>SYMBOL_THRESHOLD){
             ImageView drizzle_view = getSymbolView(view,index,symbols,viewHolder);
-            loadScaledIcon(drizzle_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_DRIZZLE), SCALE_MINI_ICON);
-            TextView drizzle_text = getTextView(view,index,labels,viewHolder);
-            if (drizzle_text!=null){
-                drizzle_text.setText(weatherInfo.getProbDrizzle()+"%");
-                index ++;
+            if (drizzle_view!=null){
+                loadScaledIcon(drizzle_view, WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_DRIZZLE), SCALE_MINI_ICON,false);
+                TextView drizzle_text = getTextView(view,index,labels,viewHolder);
+                if (drizzle_text!=null){
+                    drizzle_text.setText(weatherInfo.getProbDrizzle()+"%");
+                    index ++;
+                }
             }
         }
     }
     // make remaining icons invisible
     while (index<6){
         ImageView iv = getSymbolView(view,index,symbols,viewHolder);
-        setVisibility(iv, View.INVISIBLE);
+        if (iv!=null){
+            setVisibility(iv, View.INVISIBLE);
+        }
         TextView tv = getTextView(view,index,labels,viewHolder);
-        setVisibility(tv, View.INVISIBLE);
+        if (tv!=null){
+            setVisibility(tv, View.INVISIBLE);
+        }
         index++;
     }
     // weather icon
@@ -456,7 +493,11 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     }
     if (weatherInfo.hasCondition() && weather_icon!=null){
         int weathercondition = weatherInfo.getCondition();
-        loadScaledIcon(weather_icon, WeatherCodeContract.getWeatherConditionDrawableResource(context,weathercondition, weatherInfo.isDaytime(weatherLocation)), SCALE_CONDITION_ICON);
+        boolean showDaylightIcon = weatherInfo.isDaytime(weatherLocation);
+        if (weatherInfo.getForecastType()==Weather.WeatherInfo.ForecastType.HOURS_24){
+            showDaylightIcon = true;
+        }
+        loadScaledIcon(weather_icon, WeatherCodeContract.getWeatherConditionDrawableResource(context,weathercondition, showDaylightIcon), SCALE_CONDITION_ICON,false);
     }
     // right column
     if (textView_temp == null){
@@ -504,17 +545,17 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             case Weather.WindDisplayType.ARROW:
                 setVisibility(imageView_windarrow, View.VISIBLE);
                 if (display_wind_arc){
-                    imageView_windarrow.setImageBitmap(Weather.WeatherInfo.getWindForecastTint(weatherInfo.getArrowBitmap(context),getWindForecast(weatherInfo)));
+                    imageView_windarrow.setImageBitmap(Weather.WeatherInfo.getWindForecastTint(weatherInfo.getArrowBitmap(context,false),getWindForecast(weatherInfo)));
                 } else {
-                    imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context));
+                    imageView_windarrow.setImageBitmap(weatherInfo.getArrowBitmap(context,false));
                 }
                 break;
             case Weather.WindDisplayType.BEAUFORT:
                 setVisibility(imageView_windarrow, View.VISIBLE);
                 if (display_wind_arc){
-                    imageView_windarrow.setImageBitmap(Weather.WeatherInfo.getWindForecastTint(weatherInfo.getBeaufortBitmap(context),getWindForecast(weatherInfo)));
+                    imageView_windarrow.setImageBitmap(Weather.WeatherInfo.getWindForecastTint(weatherInfo.getBeaufortBitmap(context,false),getWindForecast(weatherInfo)));
                 } else {
-                    imageView_windarrow.setImageBitmap(weatherInfo.getBeaufortBitmap(context));
+                    imageView_windarrow.setImageBitmap(weatherInfo.getBeaufortBitmap(context,false));
                 }
                 break;
             case Weather.WindDisplayType.TEXT:
@@ -557,7 +598,9 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         }
         windstring.append(" (").append(flurries).append(") ");
     }
-    textView_wind.setText(windstring);
+    if (textView_wind!=null){
+        textView_wind.setText(windstring);
+    }
     if (linearLayout_visibility == null){
         linearLayout_visibility = (LinearLayout) view.findViewById(R.id.fcitem_visibility_container);
         viewHolder.linearLayout_visibility = linearLayout_visibility;
@@ -585,21 +628,34 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         viewHolder.imageView_forecastBar = imageView_forecastBar;
     }
     // hourly forecast bar, display only if forecast is 6h
-    if ((weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6) && (display_bar) && (imageView_forecastBar!=null)){
+    if (((weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6) || (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_24)) && (display_bar) && (imageView_forecastBar!=null)){
         setVisibility(imageView_forecastBar, View.VISIBLE);
         // calculate offset
         int start  = getLastHourlyForecast();
         int offset = getHourlyOffset(start,i);
         int count = 6;
+        int increment = 1;
         if (offset<start){
             count = 6 - (start-offset);
             offset = start;
         }
+        if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_24){
+            start = get24BarStart(i);
+            offset = get24BarOffset(start,i);
+            count = get24BarItemCount(offset);
+            increment = 4;
+        }
         // construct arraylist with 0-6 items
         ArrayList<Weather.WeatherInfo> baritems = new ArrayList<>();
+        /*
         for (int j=offset; j<=offset+count; j++){
             baritems.add(weatherForecasts_hourly.get(j));
         }
+         */
+        for (int j=0; j<count; j++){
+            baritems.add(weatherForecasts_hourly.get(offset+(j*increment)));
+        }
+        // end new
         final ForecastBitmap forecastBitmap = new ForecastBitmap.Builder()
                 .setWetherInfos(baritems)
                 .setAnticipatedWidth(6)
@@ -689,8 +745,8 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             setVisibility(rise2, View.VISIBLE);
             setVisibility(sunset1, View.VISIBLE);
             setVisibility(sunset2, View.VISIBLE);
-            loadScaledIcon(sunset1, WeatherIcons.getIconResource(context,WeatherIcons.ARROW_UP), SCALE_MINI_ICON);
-            loadScaledIcon(sunset2, WeatherIcons.getIconResource(context,WeatherIcons.SUNSET), SCALE_MINI_ICON);
+            loadScaledIcon(sunset1, WeatherIcons.getIconResource(context,WeatherIcons.ARROW_UP), SCALE_MINI_ICON,true);
+            loadScaledIcon(sunset2, WeatherIcons.getIconResource(context,WeatherIcons.SUNSET), SCALE_MINI_ICON,false);
             String string_sunrise = labelSunrise + ": " + Weather.toHourMinuteString(Weather.getSunriseInUTC(riseset, weatherInfo.getTimestamp()));
             String string_twilight = labelTwilight + ": " + Weather.toHourMinuteString(Weather.getCivilTwilightMorning(riseset, weatherInfo.getTimestamp()));
             rise1.setText(string_twilight);
@@ -701,8 +757,8 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             setVisibility(rise2, View.VISIBLE);
             setVisibility(sunset1, View.VISIBLE);
             setVisibility(sunset2, View.VISIBLE);
-            loadScaledIcon(sunset1, WeatherIcons.getIconResource(context,WeatherIcons.SUNSET), SCALE_MINI_ICON);
-            loadScaledIcon(sunset2, WeatherIcons.getIconResource(context,WeatherIcons.ARROW_DOWN), SCALE_MINI_ICON);
+            loadScaledIcon(sunset1, WeatherIcons.getIconResource(context,WeatherIcons.SUNSET), SCALE_MINI_ICON,false);
+            loadScaledIcon(sunset2, WeatherIcons.getIconResource(context,WeatherIcons.ARROW_DOWN), SCALE_MINI_ICON,true);
             String string_sunset = labelSunset + ": " + Weather.toHourMinuteString(Weather.getSunsetInUTC(riseset, weatherInfo.getTimestamp()));
             String string_twilight = labelTwilight + ": " + Weather.toHourMinuteString(Weather.getCivilTwilightEvening(riseset, weatherInfo.getTimestamp()));
             rise1.setText(string_sunset);
@@ -793,6 +849,48 @@ private static TextView getTextView(View view, int pos, TextView[] labels, ViewH
     }
     return labels[pos];
 }
+
+private int get24BarStart(int currentPosition){
+    long time24 = weatherForecasts.get(currentPosition).getTimestamp();
+    long target = weatherForecasts.get(currentPosition).getTimestamp() - 20*60*60*1000;  // one day
+    int position = weatherForecasts_hourly.size()-1;
+    while ((weatherForecasts_hourly.get(position).getTimestamp()>target) && position>0){
+        position--;
+    }
+    return position;
+}
+
+    private int get24BarOffset(int start, int position24h){
+        int currentPosition = start;
+        // calculates corresponding position in hourly forecasts that corresponds to 24-hourly forecast.
+        while (weatherForecasts_hourly.get(currentPosition).getTimestamp()<weatherForecasts.get(position24h).getTimestamp()){
+            currentPosition++;
+        }
+        if (currentPosition-24>=0){
+            return start;
+        }
+        int i =-1;
+        Calendar calendar;
+        do {
+            i++;
+            calendar = Calendar.getInstance();
+            calendar.setTime(new Date(weatherForecasts_hourly.get(i).getTimestamp()));
+        } while ((calendar.get(Calendar.HOUR_OF_DAY)%4!=0) && (i<weatherForecasts_hourly.size()-1));
+        return i;
+    }
+
+    private int get24BarItemCount(int pos){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(weatherForecasts_hourly.get(pos).getTimestamp()));
+        switch (calendar.get(Calendar.HOUR_OF_DAY)){
+            case 4: return 6;
+            case 8: return 5;
+            case 12: return 4;
+            case 16: return 3;
+            case 20: return 2;
+            default: return 1;
+        }
+    }
 
 private int getLastHourlyForecast(){
     int position = weatherForecasts.size()-1;
@@ -905,6 +1003,9 @@ private int getColorGradient(int position){
 private long neededHoursAgo(Weather.WeatherInfo weatherInfo){
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(weatherInfo.getTimestamp());
+    if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_24){
+        calendar.add(Calendar.HOUR_OF_DAY,-24);
+    } else
     if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6){
         calendar.add(Calendar.HOUR_OF_DAY,-6);
     } else {

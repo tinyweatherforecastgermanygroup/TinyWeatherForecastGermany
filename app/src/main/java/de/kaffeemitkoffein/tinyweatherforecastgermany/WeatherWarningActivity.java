@@ -483,7 +483,7 @@ public class WeatherWarningActivity extends Activity {
                         windicon.setVisibility(View.VISIBLE);
                         CurrentWeatherInfo currentWeatherInfo = new Weather().getCurrentWeatherInfo(context);
                         if (currentWeatherInfo!=null){
-                            final Bitmap windiconBitmap = currentWeatherInfo.currentWeather.getWindSymbol(getApplicationContext(),WeatherSettings.getWindDisplayType(getApplicationContext()));
+                            final Bitmap windiconBitmap = currentWeatherInfo.currentWeather.getWindSymbol(getApplicationContext(),WeatherSettings.getWindDisplayType(getApplicationContext()),false);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

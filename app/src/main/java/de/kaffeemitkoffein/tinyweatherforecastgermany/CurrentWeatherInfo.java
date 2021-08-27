@@ -18,6 +18,8 @@
  */
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public class CurrentWeatherInfo{
@@ -93,13 +95,14 @@ public class CurrentWeatherInfo{
         return null;
     }
 
-    public CurrentWeatherInfo(RawWeatherInfo rawWeatherInfo){
+    public CurrentWeatherInfo(Context context, RawWeatherInfo rawWeatherInfo){
         if (rawWeatherInfo==null){
             return;
         }
         if (rawWeatherInfo.elements==0){
             return;
         }
+        boolean preferAlternativeIcons = WeatherSettings.preferAlternativeIcons(context);
         weatherLocation = rawWeatherInfo.weatherLocation;
         polling_time = rawWeatherInfo.polling_time;
         currentWeather = new Weather.WeatherInfo();
@@ -110,10 +113,10 @@ public class CurrentWeatherInfo{
         int current_weather_position = rawWeatherInfo.getCurrentForecastPosition();
         int next_midnight_position   = rawWeatherInfo.getNextMidnightAfterCurrentForecastPosition();
         currentWeather.setTimestamp(timesteps[current_weather_position]);
-        // try significant weather, highest priority first
-        currentWeather.setConditionCode(getIntItem((rawWeatherInfo.WPc11[current_weather_position])));
-        if (!currentWeather.hasCondition()){
-            currentWeather.setConditionCode(getIntItem(rawWeatherInfo.ww[current_weather_position]));
+        currentWeather.setConditionCode(getIntItem((rawWeatherInfo.ww[current_weather_position])));
+        // take significant weather, highest priority alternatively
+        if (preferAlternativeIcons || !currentWeather.hasCondition()) {
+            currentWeather.setConditionCode(getIntItem((rawWeatherInfo.WPc11[current_weather_position])));
         }
         currentWeather.setClouds(getIntItem(rawWeatherInfo.N[current_weather_position]));
         currentWeather.setTemperature(getDoubleItem(rawWeatherInfo.TTT[current_weather_position]));
@@ -145,10 +148,10 @@ public class CurrentWeatherInfo{
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.ONE_HOUR);
             wi.setTimestamp(timesteps[index]);
-            // try significant weather, highest priority first
-            wi.setConditionCode(getIntItem((rawWeatherInfo.WPc11[index])));
-            if (!wi.hasCondition()){
-                wi.setConditionCode(getIntItem(rawWeatherInfo.ww[index]));
+            wi.setConditionCode(getIntItem(rawWeatherInfo.ww[index]));
+            // take significant weather, highest priority alternatively
+            if (preferAlternativeIcons || !wi.hasCondition()){
+                wi.setConditionCode(getIntItem((rawWeatherInfo.WPc11[index])));
             }
             wi.setClouds(getIntItem(rawWeatherInfo.N[index]));
             wi.setTemperature(getDoubleItem(rawWeatherInfo.TTT[index]));
@@ -193,7 +196,11 @@ public class CurrentWeatherInfo{
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_6);
             wi.setTimestamp(timesteps[index]);
-            wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
+            wi.setConditionCode(getIntItem(rawWeatherInfo.W1W2[index]));
+            // take significant weather, highest priority alternatively
+            if (preferAlternativeIcons || !wi.hasCondition()){
+                wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
+            }
             wi.setClouds(rawWeatherInfo.getAverageClouds(start, index));
             wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT,start, index));
             wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start, index));

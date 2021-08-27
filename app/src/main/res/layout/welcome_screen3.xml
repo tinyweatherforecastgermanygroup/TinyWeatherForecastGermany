@@ -93,15 +93,13 @@
         android:layout_below="@id/welcome_screen3_text3"
         android:gravity="center"
         android:src="@mipmap/widget_preview">
-    </ImageView>
-
-    <TextView
+    </ImageView>    <TextView
         android:id="@+id/welcome_screen3_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:textColor="?attr/colorText"
-        android:text="@string/welcome_ready"
+        android:text="@string/welcome_next"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="@dimen/welcome_action_size"

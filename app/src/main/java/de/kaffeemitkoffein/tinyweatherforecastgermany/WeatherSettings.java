@@ -84,6 +84,7 @@ public class WeatherSettings {
     public static final String PREF_AREA_DATABASE_VERSION = "PREF_area_database_version";
     public static final String PREF_VIEWMODEL = "PREF_viewmodel";
     public static final String PREF_THEME = "PREF_theme";
+    public static final String PREF_ALTERNATIVE_ICONS = "PREF_alternative_icons";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -135,6 +136,7 @@ public class WeatherSettings {
     public static final int PREF_AREA_DATABASE_VERSION_DEFAULT = 0;
     public static final String PREF_VIEWMODEL_DEFAULT = ViewModel.SIMPLE;
     public static final String PREF_THEME_DEFAULT = Theme.FOLLOW_DEVICE;
+    public static final boolean PREF_ALTERNATIVE_ICONS_DEFAULT = true;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -186,6 +188,7 @@ public class WeatherSettings {
     public int area_database_version = PREF_AREA_DATABASE_VERSION_DEFAULT;
     public String viewModel = PREF_VIEWMODEL_DEFAULT;
     public String theme = PREF_THEME_DEFAULT;
+    public boolean preferAlternativeIcons = PREF_ALTERNATIVE_ICONS_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -246,6 +249,7 @@ public class WeatherSettings {
         this.area_database_version = readPreference(PREF_AREA_DATABASE_VERSION,PREF_AREA_DATABASE_VERSION_DEFAULT);
         this.viewModel = readPreference(PREF_VIEWMODEL,PREF_VIEWMODEL_DEFAULT);
         this.theme = readPreference(PREF_THEME,PREF_THEME_DEFAULT);
+        this.preferAlternativeIcons = readPreference(PREF_ALTERNATIVE_ICONS,PREF_ALTERNATIVE_ICONS_DEFAULT);
     }
 
     public void savePreferences() {
@@ -297,6 +301,7 @@ public class WeatherSettings {
         applyPreference(PREF_AREA_DATABASE_VERSION,this.area_database_version);
         applyPreference(PREF_VIEWMODEL,this.viewModel);
         applyPreference(PREF_THEME,this.theme);
+        applyPreference(PREF_ALTERNATIVE_ICONS,this.preferAlternativeIcons);
     }
 
     public void commitPreferences() {
@@ -348,6 +353,7 @@ public class WeatherSettings {
         commitPreference(PREF_AREA_DATABASE_VERSION,this.area_database_version);
         commitPreference(PREF_VIEWMODEL,this.viewModel);
         commitPreference(PREF_THEME,this.theme);
+        commitPreference(PREF_ALTERNATIVE_ICONS,this.preferAlternativeIcons);
     }
 
     public String readPreference(String p, String d) {
@@ -513,6 +519,38 @@ public class WeatherSettings {
             // return default
             return DISPLAYTYPE_6HOURS;
         }
+    }
+
+    public static void setDisplayType(Context context, String s){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putString(PREF_DISPLAY_TYPE, s);
+        pref_editor.apply();
+    }
+
+    public static int getDisplayType(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String display_type = sharedPreferences.getString(PREF_DISPLAY_TYPE,PREF_DISPLAY_TYPE_DEFAULT);
+        try {
+            int i = Integer.parseInt(display_type);
+            return i;
+        } catch (NumberFormatException e) {
+            // return to default if entry is corrupted (not a number)
+            setDisplayType(context,PREF_DISPLAY_TYPE_DEFAULT);
+            return DISPLAYTYPE_6HOURS;
+        }
+    }
+
+    public static boolean getUpdateForecastRegularly(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_SETALARM,PREF_SETALARM_DEFAULT);
+    }
+
+    public static void setUpdateForecastRegularly(Context context, boolean b){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_SETALARM, b);
+        pref_editor.apply();
     }
 
     public int getForecastUpdateInterval() {
@@ -802,7 +840,6 @@ public class WeatherSettings {
     public class ViewModel{
         final static String SIMPLE = "SIMPLE";
         final static String EXTENDED = "EXTENDED";
-        final static String DETAILED = "DETAILED";
     }
 
     public static String getViewModel(Context context){
@@ -814,6 +851,18 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putString(PREF_VIEWMODEL,model);
+        pref_editor.apply();
+    }
+
+    public static boolean preferAlternativeIcons(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_ALTERNATIVE_ICONS,PREF_ALTERNATIVE_ICONS_DEFAULT);
+    }
+
+    public static void setPreferAlternativeIcons(Context context, boolean b){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_ALTERNATIVE_ICONS,b);
         pref_editor.apply();
     }
 
