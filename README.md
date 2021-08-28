@@ -275,6 +275,52 @@ Setting the wind direction to Beaufort will display the wind as in a weather map
 
 It shows the direction of the wind change during the next `Wind forecast period`. E.g. if the wind comes from the south and there is a quarter of an arc to the right next to it and the `forecast period` is set to 6h the wind will veer from S to E in the next 6 hours.
 
+### How do I provide a crash log?
+
+If you pose yourself this question one can assume that you don't shy away from some more technical stuff. It is not enormously complex, though, so just read on, even though it requires you to install some developer tools. The idea is to provide a really detailed log of what TWFG actually did till the point where it died or did something unpredictable. All this is logged by your device, however, usually you can not see those logs.
+
+The key to access those extensive logs is to hook up your device to your PC via USB and use a tool called Android Debug Bridge (`adb`) to access the system log.
+
+The following steps need to be done _only once_:
+
+1. Install `adb`. Most Linux distributions package it. If you use another operating system or it is not packages in your distribution you can download it from https://developer.android.com/studio/releases/platform-tools for various platforms as ZIP-files to unpack and use the usual means to install software there. You will also find a very extensive discussion of `adb` itself [here](https://developer.android.com/studio/command-line/adb). For the purposes at hand it is enough to just get it installed, though.
+2. Enable the developer options on your device. Extensive instructions can also be found here: https://developer.android.com/studio/debug/dev-options. The short form:
+    1. Find the build number of your phone.
+        - Open `Settings` (Searching for `Build number` might guide you directly to it)
+        - Go to `System`
+        - Go to `About phone`
+    2. Tap the `Build number` several times.
+    3. A dialogue informs you how many taps you are a way from being a developer
+    4. Keep tapping on `Build number` until you see _You Are Now a Developer_
+3. Enable USB debugging in the developer options of your device:
+    1. Open `Settings`
+    2. Search for `USB debugging`
+    3. Make sure it is switched on
+
+
+After this initial setup, you are ready to access the system log.
+
+1. Connect your device to the PC via USB
+2. Open a terminal/command line/shell and start `adb logcat`. This will display the devices log on the shell. Beware, this is a _lot of_ scroll. You may want to redirect it to a file or use some shell extension that allows searches in the text output (like `screen` or `tmux`). To redirect `adb logcat > android.log` should do the trick. It will create a file `android.log` which is a plain text file that can be viewed in any text editor.
+3. Watch out for stuff related to the app. A typical log start similar to this:
+```
+08-20 13:16:33.114  1529  3193 I ActivityManager: START u0 {act=android.intent.action.VIEW flg=0x1000c000 cmp=de.kaffeemitkoffein.tinyweatherforecastgermany/.TextForecastListActivity bnds=[290,534][430,692]} from uid 10477
+```
+   `de.kaffeemitkoffein.tinyweatherforecastgermany` is the apps key and signifies that the interesting parts will follow. You'll get the crash information further down. It starts like this:
+```
+08-20 13:16:33.244 11798 11798 D AndroidRuntime: Shutting down VM
+08-20 13:16:33.245 11798 11798 E AndroidRuntime: FATAL EXCEPTION: main
+08-20 13:16:33.245 11798 11798 E AndroidRuntime: Process: de.kaffeemitkoffein.tinyweatherforecastgermany, PID: 11798
+```
+    Read: fatal exception in `de.kaffeemitkoffein.tinyweatherforecastgermany` (PID will show another number.) So, TWFG died unexpectedly.
+6. Copy all the blurb from the start mentioned in 3. above till you reach a line that holds
+```
+ActivityManager:   Force finishing activity de.kaffeemitkoffein.tinyweatherforecastgermany/.TextForecastListActivity
+```
+7. Log in to `https://codeberg.org` 
+8. Navigate to the issue tracker `https://codeberg.org/Starfish/TinyWeatherForecastGermany/issues`
+10. Create an issue describing what you did and add the log just created (copy&paste will do).
+
 
 Contributing
 ------------
