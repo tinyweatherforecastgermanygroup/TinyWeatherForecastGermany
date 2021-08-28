@@ -34,9 +34,16 @@ Folgende Personen haben zum Projekt beigetragen:
  - Janis Bitta (app icon)
  - Jonas Lochmann (.gitignore)
  - Marc Nause (code improvements, bitmap caching)
- - Mondstern (Niederländische Übersetzung)
- - Jean-Luc (Französische Übersetzung)
  - arwanger (README.md)
+
+  Übersetzungen:
+  * Deutsch: eUgEntOptIc44, mondstern, J. Lavoie
+  * Französisch: eUgEntOptIc44, mondstern, J. Lavoie
+  * Italienisch: mondstern, eUgEntOptIc44
+  * Englisch: Allan Nordhøy
+  * Niederländisch: mondstern
+  * Tschechisch: eUgEntOptIc44, mondstern
+  * Norwegisch-Bokmål: mondstern, Allan Nordhøy
 
 Lizenz:
 --------

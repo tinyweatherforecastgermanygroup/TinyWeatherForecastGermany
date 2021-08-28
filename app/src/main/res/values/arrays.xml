@@ -155,7 +155,7 @@
 
     <string-array name="viewmodel_text">
         <item>simple</item>
-        <item>extended</item>
+        <item>detailed</item>
     </string-array>
 
     <string-array name="viewmodel_values">

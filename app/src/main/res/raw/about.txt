@@ -34,9 +34,16 @@ The following persons contributed to this project:
  - Janis Bitta (app icon)
  - Jonas Lochmann (.gitignore)
  - Marc Nause (code improvements, bitmap caching)
- - Mondstern (Dutch translation)
- - Jean-Luc (French translation)
  - arwanger (README.md)
+
+ Translations:
+ * German: eUgEntOptIc44, mondstern, J. Lavoie
+ * French: eUgEntOptIc44, mondstern, J. Lavoie
+ * Italian: mondstern, eUgEntOptIc44
+ * English: Allan Nordhøy
+ * Dutch: mondstern
+ * Czech: eUgEntOptIc44, mondstern
+ * Norwegian Bokmål: mondstern, Allan Nordhøy
 
 License:
 --------

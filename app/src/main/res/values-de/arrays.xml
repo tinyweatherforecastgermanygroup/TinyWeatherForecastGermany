@@ -102,4 +102,10 @@
         <item>12</item>
         <item>24</item>
     </string-array>
+
+    <string-array name="viewmodel_text">
+        <item>einfach</item>
+        <item>detailliert</item>
+    </string-array>
+
 </resources>

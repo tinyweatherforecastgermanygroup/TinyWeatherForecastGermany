@@ -136,4 +136,9 @@
         <item>24</item>
     </string-array>
 
+    <string-array name="viewmodel_text">
+        <item>tout simplement</item>
+        <item>détaillé</item>
+    </string-array>
+
 </resources>

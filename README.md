@@ -90,7 +90,7 @@ Contributors:
 
     * eUgEntOptIc44
     * mondstern
-    * J. Lavoie 
+    * J. Lavoie
 
 
 * French
@@ -102,24 +102,24 @@ Contributors:
 
 * Italian
 
-    * mondstern 
-    * eUgEntOptIc44 
+    * mondstern
+    * eUgEntOptIc44
 
 
 * English
 
-    * Allan Nordhøy 
+    * Allan Nordhøy
 
 
 * Dutch
 
-    * mondstern 
+    * mondstern
 
 
 * Czech
 
-    * eUgEntOptIc44 
-    * mondstern 
+    * eUgEntOptIc44
+    * mondstern
 
 
 * Norwegian Bokmål

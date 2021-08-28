@@ -36,9 +36,16 @@ Les personnes suivantes ont contribué à ce projet :
  - Janis Bitta (icône de l'application)
  - Jonas Lochmann (.gitignore)
  - Marc Nause (améliorations du code, mise en cache des bitmaps)
- - Mondstern (traduction en néerlandais)
- - Jean-Luc (traduction en français)
  - arwanger (README.md)
+
+Translations :
+  * German: eUgEntOptIc44, mondstern, J. Lavoie
+  * French: eUgEntOptIc44, mondstern, J. Lavoie
+  * Italian: mondstern, eUgEntOptIc44
+  * English: Allan Nordhøy
+  * Dutch: mondstern
+  * Czech: eUgEntOptIc44, mondstern
+  * Norwegian Bokmål: mondstern, Allan Nordhøy
 
 Licence :
 --------
