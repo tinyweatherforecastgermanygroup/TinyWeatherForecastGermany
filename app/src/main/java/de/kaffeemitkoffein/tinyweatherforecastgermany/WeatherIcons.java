@@ -80,6 +80,9 @@ public class WeatherIcons {
     final static int IC_LAUNCHER_BW = 1028;
     final static int RADIO_BUTTON_UNCHECKED = 1100;
     final static int RADIO_BUTTON_CHECKED = 1101;
+    final static int IC_INFO_OUTLINE = 1102;
+    final static int IC_GPS_FIXED = 1103;
+    final static int IC_ANNOUNCEMENT = 1104;
 
     public static int getIconResource(Context context, int icon) {
         int result = 0;
@@ -234,6 +237,9 @@ public class WeatherIcons {
             case RADARINFOBAR: result = R.drawable.radarinfobar; break;
             case RADIO_BUTTON_UNCHECKED: result = R.mipmap.ic_radio_button_unchecked_white_24dp; break;
             case RADIO_BUTTON_CHECKED: result = R.mipmap.ic_radio_button_checked_white_24dp; break;
+            case IC_INFO_OUTLINE: result = R.mipmap.ic_info_outline_white_24dp; break;
+            case IC_GPS_FIXED: result = R.mipmap.ic_gps_fixed_white_24dp; break;
+            case IC_ANNOUNCEMENT: result = R.mipmap.ic_announcement_white_24dp; break;
         }
         // override with dark variants if applicable
         if (!ThemePicker.isDarkTheme(context)) {
@@ -271,6 +277,9 @@ public class WeatherIcons {
                 case MAP_COLLAPSED: result = R.drawable.map_collapsed_black; break;
                 case RADIO_BUTTON_UNCHECKED: result = R.mipmap.ic_radio_button_unchecked_black_24dp; break;
                 case RADIO_BUTTON_CHECKED: result = R.mipmap.ic_radio_button_checked_black_24dp; break;
+                case IC_INFO_OUTLINE: result = R.mipmap.ic_info_outline_black_24dp; break;
+                case IC_GPS_FIXED: result = R.mipmap.ic_gps_fixed_black_24dp; break;
+                case IC_ANNOUNCEMENT: result = R.mipmap.ic_announcement_black_24dp; break;
             }
         }
         return result;

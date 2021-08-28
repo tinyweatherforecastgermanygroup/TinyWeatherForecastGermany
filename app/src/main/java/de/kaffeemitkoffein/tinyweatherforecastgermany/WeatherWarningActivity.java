@@ -271,7 +271,7 @@ public class WeatherWarningActivity extends Activity {
                     @Override
                     public void run() {
                         weatherList = (ListView) findViewById(R.id.warningactivity_listview);
-                        weatherWarningAdapter = new WeatherWarningAdapter(getApplicationContext(),weatherWarnings,executor);
+                        weatherWarningAdapter = new WeatherWarningAdapter(getBaseContext(),weatherWarnings,executor);
                         weatherWarningAdapter.setLocalWarnings(localWarnings);
                         weatherList.setAdapter(weatherWarningAdapter);
                     }

@@ -89,7 +89,7 @@ public class TextForecastListActivity extends Activity {
     protected void onResume() {
         registerForBroadcast();
         updateTextsIfOutdated();
-        showList();
+        //showList();
         super.onResume();
     }
 
@@ -102,11 +102,7 @@ public class TextForecastListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         context = getApplicationContext();
-        try {
-            ThemePicker.SetTheme(this);
-        } catch (Exception e){
-            PrivateLog.log(context,"Error setting theme.");
-        }
+        ThemePicker.SetTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textforecastlist);
         registerForBroadcast();
@@ -127,7 +123,9 @@ public class TextForecastListActivity extends Activity {
 
             }
         };
-        executor.execute(textForecastRunnable);
+        //executor.execute(textForecastRunnable);
+        RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.textforcasts_activity_main_relative_container);
+        mainLayout.post(textForecastRunnable);
     }
 
     @Override
@@ -170,7 +168,7 @@ public class TextForecastListActivity extends Activity {
                 final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
                 actionBar.setSubtitle(simpleDateFormat.format(new Date(WeatherSettings.getLastTextForecastsUpdateTime(context)))+" ("+textForecasts.size()+")");
                 // set adapter
-                textForecastAdapter = new TextForecastAdapter(context,textForecasts);
+                textForecastAdapter = new TextForecastAdapter(getBaseContext(),textForecasts);
                 textforecasts_listview = (ListView) findViewById(R.id.textforecasts_listview);
                 textforecasts_listview.setAdapter(textForecastAdapter);
                 textforecasts_listview.setOnItemClickListener(clickListener);

@@ -408,7 +408,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             }
         }
     }
-    final int SYMBOL_THRESHOLD = -1;
+    final int SYMBOL_THRESHOLD = 0;
     if (weatherInfo.hasProbThunderstorms()){
         if (weatherInfo.getProbThunderStorms()>SYMBOL_THRESHOLD){
             ImageView lightning_view = getSymbolView(view,index,symbols,viewHolder);
@@ -726,6 +726,9 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6){
             time_interval_start = weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*6;
         }
+        if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_24){
+            time_interval_start = weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24;
+        }
         boolean sunriseInIntervalUTC = Weather.isSunriseInIntervalUTC(riseset, time_interval_start, weatherInfo.getTimestamp());
         boolean sunsetInIntervalUTC = Weather.isSunsetInIntervalUTC(riseset, time_interval_start, weatherInfo.getTimestamp());
         if (sunriseInIntervalUTC && sunsetInIntervalUTC) {
@@ -745,7 +748,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             setVisibility(rise2, View.VISIBLE);
             setVisibility(sunset1, View.VISIBLE);
             setVisibility(sunset2, View.VISIBLE);
-            loadScaledIcon(sunset1, WeatherIcons.getIconResource(context,WeatherIcons.ARROW_UP), SCALE_MINI_ICON,true);
+            loadScaledIcon(sunset1, WeatherIcons.getIconResource(context,WeatherIcons.ARROW_UP), SCALE_MINI_ICON,false);
             loadScaledIcon(sunset2, WeatherIcons.getIconResource(context,WeatherIcons.SUNSET), SCALE_MINI_ICON,false);
             String string_sunrise = labelSunrise + ": " + Weather.toHourMinuteString(Weather.getSunriseInUTC(riseset, weatherInfo.getTimestamp()));
             String string_twilight = labelTwilight + ": " + Weather.toHourMinuteString(Weather.getCivilTwilightMorning(riseset, weatherInfo.getTimestamp()));
@@ -758,7 +761,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             setVisibility(sunset1, View.VISIBLE);
             setVisibility(sunset2, View.VISIBLE);
             loadScaledIcon(sunset1, WeatherIcons.getIconResource(context,WeatherIcons.SUNSET), SCALE_MINI_ICON,false);
-            loadScaledIcon(sunset2, WeatherIcons.getIconResource(context,WeatherIcons.ARROW_DOWN), SCALE_MINI_ICON,true);
+            loadScaledIcon(sunset2, WeatherIcons.getIconResource(context,WeatherIcons.ARROW_DOWN), SCALE_MINI_ICON,false);
             String string_sunset = labelSunset + ": " + Weather.toHourMinuteString(Weather.getSunsetInUTC(riseset, weatherInfo.getTimestamp()));
             String string_twilight = labelTwilight + ": " + Weather.toHourMinuteString(Weather.getCivilTwilightEvening(riseset, weatherInfo.getTimestamp()));
             rise1.setText(string_sunset);

@@ -127,11 +127,7 @@ public class TextForecastViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         context = getApplicationContext();
-        try {
-            ThemePicker.SetTheme(this);
-        } catch (Exception e){
-            PrivateLog.log(context,"Error setting theme.");
-        }
+        ThemePicker.SetTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_textforecastview);
         actionBar = getActionBar();

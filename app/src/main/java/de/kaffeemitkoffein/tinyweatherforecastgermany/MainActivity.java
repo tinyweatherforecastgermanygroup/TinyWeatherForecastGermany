@@ -26,7 +26,10 @@ import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -106,7 +109,8 @@ public class MainActivity extends Activity {
                 if ((!WeatherSettings.isTLSdisabled(context)) && (Build.VERSION.SDK_INT < 28)){
                     AlertDialog.Builder builder = new AlertDialog.Builder(context,0);
                     builder.setTitle(context.getResources().getString(R.string.connerror_title));
-                    builder.setIcon(R.mipmap.ic_announcement_white_24dp);
+                    Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_ANNOUNCEMENT,false));
+                    builder.setIcon(drawable);
                     builder.setMessage(context.getResources().getString(R.string.connerror_message));
                     builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
                         @Override
@@ -998,6 +1002,8 @@ public class MainActivity extends Activity {
         View view = layoutInflater.inflate(R.layout.aboutdialog,null,false);
         builder.setView(view);
         builder.setTitle(getResources().getString(R.string.app_name));
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_INFO_OUTLINE,false));
+        builder.setIcon(drawable);
         builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -1036,6 +1042,8 @@ public class MainActivity extends Activity {
         LayoutInflater layoutInflater = this.getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.whatsnewdialog,null,false);
         builder.setView(view);
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_ANNOUNCEMENT,false));
+        builder.setIcon(drawable);
         builder.setTitle(getResources().getString(R.string.app_name));
         builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
             @Override
@@ -1199,7 +1207,8 @@ public class MainActivity extends Activity {
                 }
             }
         });
-        builder.setIcon(R.mipmap.ic_gps_fixed_white_24dp);
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_GPS_FIXED,false));
+        builder.setIcon(drawable);
         builder.setView(view);
         builder.setPositiveButton(R.string.geoinput_search, new DialogInterface.OnClickListener() {
             @Override
@@ -1297,7 +1306,8 @@ public class MainActivity extends Activity {
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
-        builder.setIcon(R.mipmap.ic_gps_fixed_white_24dp);
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_GPS_FIXED,false));
+        builder.setIcon(drawable);
         LayoutInflater layoutInflater = this.getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.geochoice,null,false);
         TextView textView_long = (TextView) view.findViewById(R.id.geochoice_reference_longitude);
@@ -1417,7 +1427,8 @@ public class MainActivity extends Activity {
     private void showSimpleLocationAlert(String text){
         AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
-        builder.setIcon(R.mipmap.ic_gps_fixed_white_24dp);
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_GPS_FIXED,false));
+        builder.setIcon(drawable);
         builder.setMessage(text);
         builder.setPositiveButton(R.string.alertdialog_ok, new DialogInterface.OnClickListener() {
             @Override

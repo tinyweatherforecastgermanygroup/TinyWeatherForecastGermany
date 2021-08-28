@@ -59,7 +59,7 @@ public class TextForecastContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         sqLiteDatabase = textForecastDatabaseHelper.getWritableDatabase();
-        sqLiteDatabase.enableWriteAheadLogging();
+        //sqLiteDatabase.enableWriteAheadLogging();
         return sqLiteDatabase.update(TextForecastContentProvider.TextForecastDatabaseHelper.TABLE_NAME,contentValues,selection,selectionArgs);
     }
 
@@ -109,6 +109,12 @@ public class TextForecastContentProvider extends ContentProvider {
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE);
             onCreate(sqLiteDatabase);
+        }
+
+        @Override
+        public void onConfigure(SQLiteDatabase db) {
+            super.onConfigure(db);
+            setWriteAheadLoggingEnabled(true);
         }
     }
 
