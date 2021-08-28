@@ -45,6 +45,7 @@ public class WeatherIcons {
     final static int SUNNY=38;
     final static int CLEAR_NIGHT=39;
 
+    final static int SYMBOL_RH = 255;
     final static int SYMBOL_CLOUD = 256;
     final static int SYMBOL_DRIZZLE = 257;
     final static int SYMBOL_FOG = 258;
@@ -203,6 +204,7 @@ public class WeatherIcons {
                 break;
             case CLEAR_NIGHT:
                 result = R.mipmap.clear_night;
+            case SYMBOL_RH : result = R.mipmap.symbol_rh; break;
             case SYMBOL_CLOUD : result = R.mipmap.symbol_cloud; break;
             case SYMBOL_DRIZZLE : result = R.mipmap.symbol_drizzle; break;
             case SYMBOL_FOG : result = R.mipmap.symbol_fog; break;
@@ -255,6 +257,7 @@ public class WeatherIcons {
                 case ARROW_DOWN : result = R.mipmap.arrow_down_black; break;
                 case WHITE_BAR : result = R.mipmap.white_bar_black; break;
                 case BIOCULAR : result = R.mipmap.biocular_black; break;
+                case SYMBOL_RH : result = R.mipmap.symbol_rh_black; break;
                 case SYMBOL_CLOUD : result = R.mipmap.symbol_cloud_black; break;
                 case SYMBOL_FOG : result = R.mipmap.symbol_fog_black; break;
                 case SYMBOL_FREEZING_RAIN : result = R.mipmap.symbol_freezing_rain_black; break;

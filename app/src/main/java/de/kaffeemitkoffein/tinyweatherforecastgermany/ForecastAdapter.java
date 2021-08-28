@@ -188,6 +188,7 @@ static class ViewHolder {
     ImageView warningSymbol;
     TextView warningText;
     ImageView biocular;
+    ImageView symbolRH;
     View endofday_bar;
 
     public ViewHolder() {
@@ -242,6 +243,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     ImageView warningSymbol = null;
     TextView warningText = null;
     ImageView biocular = null;
+    ImageView symbolRH = null;
     if (view == null) {
         // view is not available from cache
         newView = true;
@@ -281,6 +283,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         warningSymbol = viewHolder.warningSymbol;
         warningText = viewHolder.warningText;
         biocular = viewHolder.biocular;
+        symbolRH = viewHolder.symbolRH;
     }
     // now fill the item with content
     if (main_container==null) {
@@ -292,6 +295,14 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     if ((display_gradient) && (main_container!=null)){
         int gradient = getColorGradient(i);
         main_container.setBackgroundColor(Color.argb(96,gradient,gradient,gradient));
+    }
+    // tint rh according to theme
+    if (symbolRH==null){
+        symbolRH = (ImageView) view.findViewById(R.id.fcitem_rh_label);
+        viewHolder.symbolRH = symbolRH;
+    }
+    if (symbolRH!=null){
+        symbolRH.setColorFilter(ThemePicker.getColorTextLight(context),PorterDuff.Mode.SRC_IN);
     }
     // tint the biocular according to theme
     if (biocular==null) {
