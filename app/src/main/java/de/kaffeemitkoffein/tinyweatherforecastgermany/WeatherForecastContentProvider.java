@@ -60,7 +60,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
         sqLiteDatabase = weatherForecastDatabaseHelper.getWritableDatabase();
-        sqLiteDatabase.enableWriteAheadLogging();
+        //sqLiteDatabase.enableWriteAheadLogging();
         sqLiteDatabase.insert(WeatherForecastDatabaseHelper.TABLE_NAME,null,contentValues);
         return uri;
     }
@@ -69,7 +69,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int i = 0;
         sqLiteDatabase = weatherForecastDatabaseHelper.getWritableDatabase();
-        sqLiteDatabase.enableWriteAheadLogging();
+        //sqLiteDatabase.enableWriteAheadLogging();
             i = sqLiteDatabase.delete(WeatherForecastDatabaseHelper.TABLE_NAME,selection,selectionArgs);
         return i;
     }
@@ -77,7 +77,7 @@ public class WeatherForecastContentProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         sqLiteDatabase = weatherForecastDatabaseHelper.getWritableDatabase();
-        sqLiteDatabase.enableWriteAheadLogging();
+        //sqLiteDatabase.enableWriteAheadLogging();
         return sqLiteDatabase.update(WeatherForecastDatabaseHelper.TABLE_NAME,contentValues,selection,selectionArgs);
     }
 
@@ -362,6 +362,12 @@ public class WeatherForecastContentProvider extends ContentProvider {
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int old_version, int new_version) {
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE);
             onCreate(sqLiteDatabase);
+        }
+
+        @Override
+        public void onConfigure(SQLiteDatabase db) {
+            super.onConfigure(db);
+            setWriteAheadLoggingEnabled(true);
         }
     }
 
