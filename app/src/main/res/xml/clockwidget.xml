@@ -25,7 +25,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:updatePeriodMillis="1800000"
-    android:previewImage="@mipmap/widget_preview_clock"
+    android:previewImage="@drawable/widget_preview_clock"
     android:initialLayout="@layout/clockwidget_layout"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">
