@@ -244,4 +244,18 @@
     <string name="radar_rain4">extrémní</string>
     <string name="dwd_textforecast_notice">Datový základ: Deutscher Wetterdienst, přidány vlastní prvky, změněno rozložení.</string>
     <string name="preference_display_wind_type_summary">Jak zobrazit směr větru.</string>
+    <string name="preference_category_display">Zobrazit</string>
+    <string name="preference_category_texts">Textové předpovědi</string>
+    <string name="preference_theme_title">Design</string>
+    <string name="preference_theme_summary">Výběr barevné palety</string>
+    <string name="preference_update_textforecasts_title">Aktualizované texty</string>
+    <string name="preference_update_textforecasts_summary">Aktualizujte texty o počasí</string>
+    <string name="preference_display_wind_in_radar_title">Zobrazit v dešťovém radaru</string>
+    <string name="preference_display_wind_in_radar_summary">Zobrazení směru větru na dešťovém radaru</string>
+    <string name="welcome_s2_text11">Relativní vlhkost</string>
+    <string name="welcome_setuptitle">Základní nastavení</string>
+    <string name="welcome_setupnote">Tento údaj můžete později změnit v nastavení.</string>
+    <string name="areadatabasecreator_title">Příprava dat</string>
+    <string name="welcome_s4_viewmodel">Zobrazení podrobné předpovědi počasí.</string>
+    <string name="welcome_s4_displaytype">Zvolte způsob zobrazení předpovědi počasí:</string>
 </resources>

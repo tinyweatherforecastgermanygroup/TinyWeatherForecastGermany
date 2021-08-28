@@ -53,6 +53,7 @@ public class WelcomeActivity extends Activity {
     Spinner spinner;
     CheckBox checkBox1;
     CheckBox checkBox2;
+    CheckBox checkBox3;
 
     View result_view;
 
@@ -155,6 +156,8 @@ public class WelcomeActivity extends Activity {
                     if (page < 4) {
                         page++;
                         setPage(page);
+                    } else {
+                        startMainActivityAndShowCircle();
                     }
                 }
             });
@@ -216,6 +219,8 @@ public class WelcomeActivity extends Activity {
             icon9.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
             ImageView icon10 = (ImageView) result_view.findViewById(R.id.welcome_screen2_icon10);
             icon10.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
+            ImageView icon11 = (ImageView) result_view.findViewById(R.id.welcome_screen2_icon11);
+            icon11.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
        }
         if (page == 3) {
             result_view = layoutInflater.inflate(R.layout.welcome_screen3, pager, false);
@@ -237,7 +242,7 @@ public class WelcomeActivity extends Activity {
             skip.setTextColor(Color.GREEN);
             skip.setText(getApplicationContext().getResources().getString(R.string.welcome_ready));
             skip.setTypeface(null, Typeface.BOLD);
-            arrayAdapter = new ArrayAdapter(this, R.layout.welcome_dropdownitem, getResources().getTextArray(R.array.display_type_text));
+            arrayAdapter = new ArrayAdapter(getBaseContext(), R.layout.welcome_dropdownitem, getResources().getTextArray(R.array.display_type_text));
             arrayAdapter.setDropDownViewResource(R.layout.welcome_dropdownitem);
             spinner = (Spinner) result_view.findViewById(R.id.welcome_screen4_spinner);
             spinner.setAdapter(arrayAdapter);
@@ -283,6 +288,14 @@ public class WelcomeActivity extends Activity {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     WeatherSettings.setUpdateForecastRegularly(getApplicationContext(),b);
+                }
+            });
+            checkBox3 = result_view.findViewById(R.id.welcome_screen4_check3);
+            checkBox3.setChecked(WeatherSettings.getDisplaySunrise(getApplicationContext()));
+            checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    WeatherSettings.setDisplaySunrise(getApplicationContext(),b);
                 }
             });
         }

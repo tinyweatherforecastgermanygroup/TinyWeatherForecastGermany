@@ -360,7 +360,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView android:id="@+id/fcitem_pressure"
-                          android:textSize="@dimen/fcmain_narrowdevice_textsize_medium"
+                          android:textSize="@dimen/fcmain_textsize_medium"
                           android:textColor="?attr/colorText"
                           android:layout_gravity="left|top"
                           android:gravity="left|top"
@@ -372,15 +372,15 @@
 
                 <ImageView
                         android:id="@+id/fcitem_rh_label"
-                        android:layout_width="@dimen/fcmain_narrowdevice_textsize_large"
-                        android:layout_height="@dimen/fcmain_narrowdevice_textsize_large"
+                        android:layout_width="@dimen/fcmain_textsize_medium"
+                        android:layout_height="@dimen/fcmain_textsize_medium"
                         android:layout_toRightOf="@id/fcitem_temperature_bar"
                         android:layout_alignBottom="@id/fcitem_rh"
                         android:layout_marginLeft="12dp"
                         android:src="@mipmap/symbol_rh"/>
 
                 <TextView android:id="@+id/fcitem_rh"
-                          android:textSize="@dimen/fcmain_narrowdevice_textsize_large"
+                          android:textSize="@dimen/fcmain_textsize_medium"
                           android:textColor="?attr/colorTextLight"
                           android:layout_gravity="left|bottom"
                           android:gravity="left|bottom"

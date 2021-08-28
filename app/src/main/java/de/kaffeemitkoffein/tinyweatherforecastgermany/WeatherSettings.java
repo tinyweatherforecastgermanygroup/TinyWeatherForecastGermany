@@ -866,6 +866,18 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    public static boolean getDisplaySunrise(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_SUNRISE,PREF_DISPLAY_SUNRISE_DEFAULT);
+    }
+
+    public static void setDisplaySunrise(Context context, boolean b){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_DISPLAY_SUNRISE,b);
+        pref_editor.apply();
+    }
+
     public class Theme{
         final static String FOLLOW_DEVICE = "FOLLOW_DEVICE";
         final static String DARK = "DARK";

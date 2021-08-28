@@ -21,7 +21,7 @@
     <string name="app_name">Tiny Weather Forecast Germany</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Last Update:</string>
-    <string name="main_wait_for_gps_fix">Location is being determinded...</string>
+    <string name="main_wait_for_gps_fix">Location is being determinded…</string>
     <string name="dwd_notice">Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual values.</string>
     <string name="dwd_notice_app">Data basis: Deutscher Wetterdienst, own elements added, some data averaged over individual values. Warnings abbreviated.</string>
     <string name="dwd_warnings_notice">Data basis: Deutscher Wetterdienst, displaying condensed warnings. </string>
@@ -86,12 +86,12 @@
     <string name="preference_category_warnings">Weather warnings</string>
     <string name="preference_category_texts">Text forecasts</string>
     <string name="preference_category_other">Other</string>
-    <string name="preference_theme_title">App theme</string>
-    <string name="preference_theme_summary">Set the look of the app.</string>
+    <string name="preference_theme_title">Design</string>
+    <string name="preference_theme_summary">Chose the color palette</string>
     <string name="preference_updateinterval_title">Update interval</string>
     <string name="preference_pdateinterval_summary">Select how often the weather data should be updated.</string>
     <string name="preference_update_textforecasts_title">Update texts</string>
-    <string name="preference_update_textforecasts_summary">Keep weather texts updated.</string>
+    <string name="preference_update_textforecasts_summary">Keep weather texts updated</string>
     <string name="preference_opacity_title">Widget opacity</string>
     <string name="preference_opacity_summary">Select how transparent the widget is on your home screen.</string>
     <string name="preference_displaynoteinwidget_title">Display DWD note</string>
@@ -104,6 +104,8 @@
     <string name="preference_screen_display_summary">Customize the forecast display.</string>
     <string name="preference_displaytype_title">Forecast intervals</string>
     <string name="preference_displaytype_summary">Display hourly, 6-hourly or mixed forecasts.</string>
+    <string name="preference_viewmodel_title">Level of detail</string>
+    <string name="preference_viewmodel_summary">Show a detailed or simple weather forecast.</string>
     <string name="preference_display_layout_title">Time of Day</string>
     <string name="preference_display_layout_summary">How to display the weather data.</string>
     <string name="preference_displayforecastbar_title">Hourly forecast</string>
@@ -131,13 +133,13 @@
     <string name="preference_display_wind_unit_title">Wind speed</string>
     <string name="preference_display_wind_unit_summary">Select the unit for wind speed.</string>
     <string name="preference_display_wind_in_radar_title">Show in rain radar</string>
-    <string name="preference_display_wind_in_radar_summary">Display wind direction in the rain radar.</string>
+    <string name="preference_display_wind_in_radar_summary">Display wind direction in the rain radar</string>
     <string name="preference_display_distance_unit_title">Distance</string>
     <string name="preference_display_distance_unit_summary">Select the unit for distances.</string>
     <string name="preference_display_show_radar_by_default_title">Rain radar</string>
     <string name="preference_display_show_radar_by_default_summary">Always display automatically.</string>
     <string name="preference_setalarm_title">Always update</string>
-    <string name="preference_setalarm_summary">Always update weather data regularly.</string>
+    <string name="preference_setalarm_summary">Keep weather data up to date.</string>
     <string name="preference_setalarm_notice">NOTICE: this is currently not available, since enabled Gadgetbridge support forces automatic updates anyway.</string>
     <string name="preference_display_station_geo_title">Geographic coordinates</string>
     <string name="preference_display_station_geo_summary">Display geographic coordinates of station</string>
@@ -166,7 +168,7 @@
     <string name="preference_ssl_summary">Disable encryption over https when polling weather data.</string>
     <string name="alertdialog_yes">Yes</string>
     <string name="alertdialog_no">No</string>
-    <string name="alertdialog_ok">Ok</string>
+    <string name="alertdialog_ok">OK</string>
     <string name="alertdialog_1_title">Warning</string>
     <string name="alertdialog_1_text">Logging to logcat may leak private information to other apps. Are you sure and do you know what you are doing?</string>
     <string name="alertdialog_2_title">Logcat</string>
@@ -182,10 +184,10 @@
     <string name="button_continue">Continue</string>
     <string name="service_notification_channelname">Update notifications</string>
     <string name="service_notification_title">Tiny Weather Forecast Germany</string>
-    <string name="service_notification_text0">Getting new weather forecast...</string>
-    <string name="service_notification_text1">Getting weather warnings...</string>
-    <string name="service_notification_text2">Getting text forecasts...</string>
-    <string name="service_notification_text3">Cleaning up...</string>
+    <string name="service_notification_text0">Getting new weather forecast…</string>
+    <string name="service_notification_text1">Getting weather warnings…</string>
+    <string name="service_notification_text2">Getting text forecasts…</string>
+    <string name="service_notification_text3">Cleaning up…</string>
     <string name="direction_north">N</string>
     <string name="direction_south">S</string>
     <string name="direction_west">W</string>
@@ -199,7 +201,7 @@
     <string name="sunrise">Sunrise</string>
     <string name="twilight">Twilight</string>
     <string name="preference_feedback_title">Feedback</string>
-    <string name="preference_feedback_summary">Give the developer some feedback by mail.</string>
+    <string name="preference_feedback_summary">Give the developer some feedback by e-mail.</string>
     <string name="feedback_mail_subject">Feedback: TinyWeatherForecastGermany</string>
     <string name="feedback_mail_text">When sending a bug report, please also copy &amp; paste logs, if possible.</string>
     <string name="warnings_until">until</string>
@@ -215,7 +217,7 @@
     <string name="welcome_next">NEXT</string>
     <string name="welcome_ready">READY!</string>
     <string name="welcome_s1_text1">free, libre, open source</string>
-    <string name="welcome_s1_text2">supports > 5000 locations</string>
+    <string name="welcome_s1_text2">supports &gt; 5000 locations</string>
     <string name="welcome_s1_text3">forecast for up to 10 days</string>
     <string name="welcome_s1_text4">weather warnings for Germany</string>
     <string name="welcome_s1_text5">home screen widgets</string>
@@ -229,6 +231,7 @@
     <string name="welcome_s2_text8">wind direction</string>
     <string name="welcome_s2_text9">visibility</string>
     <string name="welcome_s2_text10">Temp. at ground</string>
+    <string name="welcome_s2_text11">Relative humidity</string>
     <string name="welcome_s3_text1">Click/Touch the icon in the upper left corner to collapse the map.</string>
     <string name="welcome_s3_text2">Click/Touch the list of cities/locations in the warning to expand it!</string>
     <string name="welcome_s3_text3">Add some widgets to your home screen:</string>
@@ -249,7 +252,7 @@
     <string name="geoinput_noprovider">No suitable location service found. Please enable location services and retry.</string>
     <string name="geoinput_reflocation_title">The reference location is:</string>
     <string name="geoinput_reflocation_longitude">Longitude:</string>
-    <string name="geoinput_reflocation_latitude">Latitude :</string>
+    <string name="geoinput_reflocation_latitude">Latitude:</string>
     <string name="geoinput_reflocation_time">Time:</string>
     <string name="georeceive_error">Error: unable to read geo coordinates.</string>
     <string name="connerror_title">TLS Issue</string>
@@ -273,10 +276,7 @@
     <string name="welcome_setuptitle">Basic setup</string>
     <string name="welcome_setupnote">You can change this later in the settings.</string>
     <string name="areadatabasecreator_title">Preparing data</string>
-    <string name="areadatabasecreator_text">Please be patient for a moment, this only needs to be done once.</string>
-    <string name="preference_viewmodel_title">Level of detail</string>
-    <string name="preference_viewmodel_summary">Show a detailed or simplified weather forecast.</string>
-    <string name="welcome_s4_viewmodel">Show a detailed weather forecast. When unchecked, a simpler weather forecast will be displayed.</string>
-    <string name="welcome_s4_update">Always update the weather data. When unchecked, data will be updated at app launch only.</string>
+    <string name="welcome_s4_viewmodel">Show detailed weather forecasts.</string>
     <string name="welcome_s4_displaytype">Chose how to display the weather forecast:</string>
+    <string name="preference_theme_summary">Chose the color palette.</string>
 </resources>

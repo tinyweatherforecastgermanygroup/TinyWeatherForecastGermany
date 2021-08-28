@@ -244,4 +244,18 @@
     <string name="warning_stationreset_text">Om een bug te herstellen zijn uw station en uw favoriete stations teruggezet naar de standaard.</string>
     <string name="dwd_notice_app">Gegevensbasis: Deutscher Wetterdienst, eigen elementen toegevoegd, sommige gegevens gemiddeld over individuele waarden. Waarschuwingen afgekort.</string>
     <string name="title_activity_textlist">Teksten</string>
+    <string name="preference_category_display">Weergave</string>
+    <string name="preference_category_texts">Tekst prognoses</string>
+    <string name="preference_theme_title">Design</string>
+    <string name="preference_theme_summary">Kies het kleurenpalet</string>
+    <string name="preference_update_textforecasts_title">Bijgewerkte teksten</string>
+    <string name="preference_update_textforecasts_summary">Houd weerteksten bijgewerkt</string>
+    <string name="preference_display_wind_in_radar_title">Toon in buienradar</string>
+    <string name="preference_display_wind_in_radar_summary">Windrichting tonen in de regenradar</string>
+    <string name="welcome_s2_text11">Relatieve vochtigheid</string>
+    <string name="welcome_setuptitle">Basisinstellingen</string>
+    <string name="welcome_setupnote">U kunt dit later in de instellingen wijzigen.</string>
+    <string name="areadatabasecreator_title">Voorbereiding van gegevens</string>
+    <string name="welcome_s4_viewmodel">Toon gedetailleerde weersvoorspellingen.</string>
+    <string name="welcome_s4_displaytype">Kiezen hoe de weersvoorspelling moet worden weergegeven:</string>
 </resources>

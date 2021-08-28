@@ -244,4 +244,19 @@
     <string name="radar_rain4">estremo</string>
     <string name="hide_rain">nascondere la pioggia</string>
     <string name="geoinput_title">Trova la stazione meteo più vicina</string>
+    <string name="preference_theme_title">Design</string>
+    <string name="preference_category_texts">Previsioni di testo</string>
+    <string name="preference_category_display">Visualizza</string>
+    <string name="preference_theme_summary">Scegliere la tavolozza dei colori</string>
+    <string name="preference_update_textforecasts_title">Aggiornare i testi</string>
+    <string name="preference_update_textforecasts_summary">Tenere aggiornati i testi meteo</string>
+    <string name="preference_display_wind_in_radar_title">Mostra nel radar della pioggia</string>
+    <string name="preference_display_wind_in_radar_summary">Visualizza la direzione del vento nel radar della pioggia
+    </string>
+    <string name="welcome_s2_text11">Umidità relativa</string>
+    <string name="welcome_setuptitle">Impostazione di base</string>
+    <string name="welcome_setupnote">Puoi cambiarlo più tardi nelle impostazioni.</string>
+    <string name="areadatabasecreator_title">Preparazione dei dati</string>
+    <string name="welcome_s4_viewmodel">Mostra previsioni meteo dettagliate.</string>
+    <string name="welcome_s4_displaytype">Scegli come visualizzare le previsioni del tempo:</string>
 </resources>

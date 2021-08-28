@@ -31,14 +31,23 @@
     <dimen name="widget_weathericon_size">64dp</dimen>
     <dimen name="widget_weathericon_medium">40dp</dimen>
 
+    <dimen name="fcmain_fciconsize">105sp</dimen>
+    <dimen name="fcmain_textsize_xxl">58sp</dimen>
+    <dimen name="fcmain_textsize_xl">28sp</dimen>
     <dimen name="fcmain_textsize_large">18sp</dimen>
     <dimen name="fcmain_textsize_medium">12sp</dimen>
     <dimen name="fcmain_textsize_small">7sp</dimen>
 
+    <dimen name="fcmain_mediumdevice_fciconsize">100sp</dimen>
+    <dimen name="fcmain_mediumdevice_textsize_xxl">48sp</dimen>
+    <dimen name="fcmain_mediumdevice_textsize_xl">24sp</dimen>
     <dimen name="fcmain_mediumdevice_textsize_large">16sp</dimen>
     <dimen name="fcmain_mediumdevice_textsize_medium">11sp</dimen>
     <dimen name="fcmain_mediumdevice_textsize_small">6sp</dimen>
 
+    <dimen name="fcmain_narrowdevice_fciconsize">80sp</dimen>
+    <dimen name="fcmain_narrowdevice_textsize_xxl">32sp</dimen>
+    <dimen name="fcmain_narrowdevice_textsize_xl">16sp</dimen>
     <dimen name="fcmain_narrowdevice_textsize_large">14sp</dimen>
     <dimen name="fcmain_narrowdevice_textsize_medium">10sp</dimen>
     <dimen name="fcmain_narrowdevice_textsize_small">6sp</dimen>
@@ -61,7 +70,7 @@
     <dimen name="welcome_icondesc_size">16dp</dimen>
     <dimen name="welcome_icondesc_padding">0dp</dimen>
     <dimen name="welcome_icontext_padding">16dp</dimen>
-    <dimen name="welcome_text_padding">8dp</dimen>
+    <dimen name="welcome_text_padding">6dp</dimen>
     <dimen name="welcome_action_padding">24dp</dimen>
     <dimen name="welcome_line_height">28dp</dimen>
 

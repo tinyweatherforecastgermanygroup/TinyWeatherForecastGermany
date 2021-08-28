@@ -129,7 +129,7 @@
     <string name="preference_display_station_geo_title">Coordonnées géographiques</string>
     <string name="preference_display_station_geo_summary">Affichage des coordonnées géographiques de la station</string>.
     <string name="preference_screen_gadgetbridge_title">Assistance du gadgetbridge</string>
-    <string name="preference_screen_gadgetbridge_summary">Options d\'intégration des données météo de cette appli dans Gadgetbridge. </string>
+    <string name="preference_screen_gadgetbridge_summary">Options d\'intégration des données météo de cette appli dans Gadgetbridge.</string>
     <string name="preference_gadgetbridge_serve_title">Activer</string>
     <string name="preference_gadgetbridge_serve_summary">Lorsque cette option est activée, toutes les données météorologiques sont envoyées localement à l\'appli Gadgetbridge sur votre appareil.</string>
     <string name="preference_gadgetbridge_packagename_title">Nom du paquet</string>
@@ -257,4 +257,19 @@
     <string name="radar_rain3">fort</string>
     <string name="radar_rain4">extrême</string>
     <string name="hide_rain">cacher la pluie</string>
+    <string name="preference_category_display">Afficher</string>
+    <string name="preference_category_texts">Prévisions de texte</string>
+    <string name="preference_theme_title">Design</string>
+    <string name="preference_theme_summary">Choisir la palette de couleurs</string>
+    <string name="preference_update_textforecasts_title">Textes de mise à jour</string>
+    <string name="preference_update_textforecasts_summary">Tenir à jour les textes météorologiques</string>
+    <string name="preference_display_wind_in_radar_title">Montrer dans le radar de pluie</string>
+    <string name="preference_display_wind_in_radar_summary">Afficher la direction du vent dans le radar de pluie
+    </string>
+    <string name="welcome_s2_text11">Humidité relative</string>
+    <string name="welcome_setuptitle">Configuration de base</string>
+    <string name="welcome_setupnote">Vous pouvez changer cela plus tard dans les paramètres.</string>
+    <string name="areadatabasecreator_title">Préparation des données</string>
+    <string name="welcome_s4_viewmodel">Afficher des prévisions météorologiques détaillées.</string>
+    <string name="welcome_s4_displaytype">Choisissez comment afficher les prévisions météorologiques:</string>
 </resources>
