@@ -176,6 +176,8 @@ Symbols used:
 <img src="app/src/main/res/mipmap-mdpi/symbol_fog.png" height="16" width="16"/>  fog
 <img src="app/src/main/res/mipmap-mdpi/symbol_drizzle.png" height="16" width="16"/> drizzle
 <img src="app/src/main/res/mipmap-mdpi/arrow.png" height="16" width="16"/> wind direction
+<img src="app/src/main/res/mipmap-mdpi/symbol_temperature5cm.png" height="16" width="16"/> temperature 5 cm above ground level
+<img src="app/src/main/res/mipmap-mdpi/symbol_rh.png" height="16" width="16"/> relative humidity
 
 ### What do the icons show do?
 
@@ -277,13 +279,15 @@ It shows the direction of the wind change during the next `Wind forecast period`
 
 ### How do I provide a crash log?
 
+Please keep in mind: device logs may include and/or compromise sensitive information, consider reviewing the logs before sending.   
+
 If you pose yourself this question one can assume that you don't shy away from some more technical stuff. It is not enormously complex, though, so just read on, even though it requires you to install some developer tools. The idea is to provide a really detailed log of what TWFG actually did till the point where it died or did something unpredictable. All this is logged by your device, however, usually you can not see those logs.
 
 The key to access those extensive logs is to hook up your device to your PC via USB and use a tool called Android Debug Bridge (`adb`) to access the system log.
 
 The following steps need to be done _only once_:
 
-1. Install `adb`. Most Linux distributions package it. If you use another operating system or it is not packages in your distribution you can download it from https://developer.android.com/studio/releases/platform-tools for various platforms as ZIP-files to unpack and use the usual means to install software there. You will also find a very extensive discussion of `adb` itself [here](https://developer.android.com/studio/command-line/adb). For the purposes at hand it is enough to just get it installed, though.
+1. Install `adb`. Most Linux distributions package it. If you use another operating system or it is not packaged in your distribution you can download it from https://developer.android.com/studio/releases/platform-tools for various platforms as ZIP-files to unpack and use the usual means to install software there. You will also find a very extensive discussion of `adb` itself [here](https://developer.android.com/studio/command-line/adb). For the purposes at hand it is enough to just get it installed, though.
 2. Enable the developer options on your device. Extensive instructions can also be found here: https://developer.android.com/studio/debug/dev-options. The short form:
     1. Find the build number of your phone.
         - Open `Settings` (Searching for `Build number` might guide you directly to it)
