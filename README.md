@@ -169,15 +169,15 @@ When showing more days (bold widget, large widget), the min and max values and t
  
 Symbols used:
 <img src="app/src/main/res/mipmap-mdpi/symbol_precipitation.png" height="16" width="16"/> precipitation
-<img src="app/src/main/res/mipmap-mdpi/symbol_cloud.png" height="16" width="16"/> clouds
+<img src="app/src/main/res/mipmap-mdpi/symbol_cloud_black.png" height="16" width="16"/> clouds
 <img src="app/src/main/res/mipmap-mdpi/symbol_lightning.png" height="16" width="16"/> thunderstorm
-<img src="app/src/main/res/mipmap-mdpi/symbol_hail.png" height="16" width="16"/> hail
-<img src="app/src/main/res/mipmap-mdpi/symbol_freezing_rain.png" height="16" width="16"/> freezing rain
-<img src="app/src/main/res/mipmap-mdpi/symbol_fog.png" height="16" width="16"/>  fog
+<img src="app/src/main/res/mipmap-mdpi/symbol_hail_black.png" height="16" width="16"/> hail
+<img src="app/src/main/res/mipmap-mdpi/symbol_freezing_rain_black.png" height="16" width="16"/> freezing rain
+<img src="app/src/main/res/mipmap-mdpi/symbol_fog_black.png" height="16" width="16"/>  fog
 <img src="app/src/main/res/mipmap-mdpi/symbol_drizzle.png" height="16" width="16"/> drizzle
-<img src="app/src/main/res/mipmap-mdpi/arrow.png" height="16" width="16"/> wind direction
-<img src="app/src/main/res/mipmap-mdpi/symbol_temperature5cm.png" height="16" width="16"/> temperature 5 cm above ground level
-<img src="app/src/main/res/mipmap-mdpi/symbol_rh.png" height="16" width="16"/> relative humidity
+<img src="app/src/main/res/mipmap-mdpi/arrow_black.png" height="16" width="16"/> wind direction
+<img src="app/src/main/res/mipmap-mdpi/symbol_temperature5cm_black.png" height="16" width="16"/> temperature 5 cm above ground level
+<img src="app/src/main/res/mipmap-mdpi/symbol_rh_black.png" height="16" width="16"/> relative humidity
 
 ### What do the icons show do?
 
@@ -185,7 +185,7 @@ You may get a hint about their functionality if you just _long-press_ them.
  
 ### My widgets don't get updated (unless I open the app).
 
-The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to ckeck if you own such a device and what you can do. 
+The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do. 
  
 ### How often does the app update the weather forecast?
  
@@ -195,13 +195,13 @@ The Deutscher Wetterdienst updates the forecast data that is used every 6 hours.
  
 When GadgetBridge support is **enabled**, the app will, in the best case, update GadgetBridge every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called for this. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in *doze mode*, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
   
-If you encounter problems with GadgetBridge not updating, placing the widget on the home screen may help, since the widget will try to also update GadgetBridge every time the widget itself gets updated by the system.
+If you encounter problems with GadgetBridge not updating, placing a widget on the home screen may help, since the widget will try to also update GadgetBridge every time the widget itself gets updated by the system.
   
-### Why is percipitation displayed in kg/m² instead of cm?
+### Why is percipitation displayed in kg/m² instead of mm?
   
-Because the DWD provides this data this way. This cannot be changed. Please consider that this unit is more precise regarding the amount of hail and snow.
+This unit is more precise regarding solid precipitation (e.g. snow). Assuming rain, after some converting of units you will notice that the value is the same like "mm".
   
-### Why does the app not display sunrise und sunset?
+### Why does the app sometimes not display sunrise und sunset?
   
 Sunrise and sunset cannot be reliably calculated with the formulas used for latitudes < -65° and > 65°. When this is the case, this feature is disabled.
 
@@ -223,6 +223,8 @@ TWFG uses _WarncellIDs_ for the regions offered. These are closely related to th
 
 *Note* more than one station will be shown if your search matches a search key. These stations are sorted by increasing distance from the initially searched entity. E.g. searching for `Insel Helgoland` in the above example will also show `Elbmuendung` (a sea area next to Cuxhaven) which is 23.4 km away, `UFS Deutsche Bucht` (an automatized weather station aboard a light vessel in the middle of the German Bight) already 29.3 km away, or `Wangerooge` (one of the East Frisian islands) at a distance of 29.4 km. (And of course many others even further away.) If `Helgoland` is searched however, it matches the station right away, and the app jumps to it immediately without a further selection.
 
+As a rule of thumb, when a name is written in capital letters (e.g. "BERLIN-ALEX."), it is the weather station. All other names help you find the proper weather station.
+
 ### Is there a map available to choose a spot if I don't know the proper names in the vicinity?
 
 You can use any application on your device that allows to share coordinates via `geo:`-intents to TWFG. Most mapping and location applications will allow this.
@@ -239,7 +241,7 @@ Select your new region and hit the clean button next to the regions title. Mind 
 
 ### Why does the app not update a location? It is in my bookmarks.
 
-TWFG tries to be very conservative with your data volume. For this reason it only updates the currently displayed region. All other regions in the regions drop down are merely places once visited and do not get any updates.
+TWFG tries to be very conservative with your download volume. For this reason it only updates the currently displayed region. All other regions in the regions drop down are merely places once visited and do not get any updates.
 
 *Note* the currently selected region is also the region displayed in any widget added to the home screen.
 
@@ -335,3 +337,5 @@ the app repository at codeberg.org:
 <https://codeberg.org/Starfish/TinyWeatherForecastGermany>
  
 Alternatively, for suggestions and bug reports, you can contact me by email: weather (at) kaffeemitkoffein.de 
+
+Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://weblate.bubu1.eu/engage/tiny-weather-forecast-germany/).
