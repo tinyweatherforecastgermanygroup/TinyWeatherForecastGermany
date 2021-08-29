@@ -49,7 +49,7 @@
     <string name="boldwidget_description">Vet</string>
     <string name="favorites_cleared">Favorieten worden gewist.</string>
     <string name="actionbar_textinput_title">Geef plaats hier:</string>
-    <string name="actionbar_textinput_hint">Probeer Umlauten te vervangen door AE, OE en UE.</string>
+    <string name="actionbar_textinput_hint">Pogingen tot landspecifieke spellingen</string>
     <string name="weathercode_UNKNOWN">onbekend</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">onweer</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">ijskoude motregen</string>

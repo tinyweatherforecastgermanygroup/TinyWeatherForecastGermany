@@ -50,7 +50,7 @@
     <string name="station_does_not_exist">Zadaná stanice neexistuje. Vyberte si prosím některou z navrhovaných stanic v seznamu.</string>
     <string name="favorites_cleared">Oblíbené stanice jsou smazány.</string>
     <string name="actionbar_textinput_title">Zde zadejte místo:</string>
-    <string name="actionbar_textinput_hint">Zkuste nahradit Umlauty za AE, OE a UE.</string>
+    <string name="actionbar_textinput_hint">Pokusy o pravopis specifický pro danou zemi</string>
     <string name="weathercode_UNKNOWN">neznámý</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">bouře</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">mrazivé mrholení</string>

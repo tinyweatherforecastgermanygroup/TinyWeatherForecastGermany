@@ -50,7 +50,7 @@
     <string name="station_does_not_exist">La stazione che hai inserito non esiste. Si prega di selezionare una delle stazioni suggerite nell\'elenco.</string>
     <string name="favorites_cleared">I preferiti sono stati cancellati.</string>
     <string name="actionbar_textinput_title">Inserisci il luogo qui:</string>
-    <string name="actionbar_textinput_hint">Prova a sostituire umlaut con AE, OE e UE.</string>
+    <string name="actionbar_textinput_hint">Tentativi di ortografia specifica del paese</string>
     <string name="weathercode_UNKNOWN">sconosciuto</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">temporale</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">pioggia gelata</string>

@@ -44,7 +44,7 @@
     <string name="station_does_not_exist">The station you have entered does not exist. Please select from the suggested stations in the list.</string>
     <string name="favorites_cleared">Favorites are deleted.</string>
     <string name="actionbar_textinput_title">Enter place here:</string>
-    <string name="actionbar_textinput_hint">Try to replace "Umlauts" with AE, OE and UE.</string>
+    <string name="actionbar_textinput_hint">Try country specific notations</string>
     <string name="weathercode_UNKNOWN">unknown</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">thunderstorm</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">freezing drizzle</string>

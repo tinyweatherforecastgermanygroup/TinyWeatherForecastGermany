@@ -39,7 +39,7 @@
     <string name="station_does_not_exist">La station que vous avez saisie n\'existe pas. Veuillez choisir parmi les stations suggérées dans la liste.</string>
     <string name="favorites_cleared">Les favoris sont supprimés.</string>
     <string name="actionbar_textinput_title">Entrez le lieu ici :</string>
-    <string name="actionbar_textinput_hint">Essayez de remplacer les umlauts par AE, OE et UE.</string>
+    <string name="actionbar_textinput_hint">Tentatives d\'orthographes spécifiques aux pays</string>
     <string name="weathercode_UNKNOWN">inconnu</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">orage</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">bruine verglaçante</string>
