@@ -1,0 +1,10 @@
+* unterstützt verschiedene Designs
+* neue, einfachere Vorschau
+* die Quelle für Regenradar wechselt vom MX zum MN Komposit
+* neue App-Shortcuts
+* relative Luftfeuchtigkeit wird angezeigt
+
+Neue Sprachen:
+* Italienisch (Danke an eUgEntOptIc44, mondstern!)
+* Tschechisch (Danke an eUgEntOptIc44, mondstern!)
+* Norwegisch Bokmål (Danke an Allan Nordhøy, mondstern!)
