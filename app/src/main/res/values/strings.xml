@@ -278,4 +278,5 @@
     <string name="areadatabasecreator_title">Preparing data</string>
     <string name="welcome_s4_viewmodel">Show detailed weather forecasts.</string>
     <string name="welcome_s4_displaytype">Chose how to display the weather forecast:</string>
+    <string name="widget_transparency_default">90</string>
 </resources>

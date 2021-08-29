@@ -118,6 +118,7 @@
                         android:entryValues="@array/display_wind_unit_values"
                         android:defaultValue="0"/>
 
+                <!--
                 <CheckBoxPreference
                         android:key="PREF_display_wind_arc"
                         android:title="@string/preference_display_wind_arc_title"
@@ -131,6 +132,7 @@
                         android:entries="@array/display_wind_arc_period_text"
                         android:entryValues="@array/display_wind_arc_period_values"
                         android:defaultValue="6"/>
+                -->
 
                 <CheckBoxPreference
                         android:key="PREF_display_wind_in_radar"
@@ -222,7 +224,7 @@
             android:summary="@string/preference_opacity_summary"
             android:entries="@array/widget_opacity_text"
             android:entryValues="@array/widget_opacity_values"
-            android:defaultValue="90 %"/>
+            android:defaultValue="@string/widget_transparency_default"/>
 
         <CheckBoxPreference
             android:key="PREF_widget_showdwdnote"

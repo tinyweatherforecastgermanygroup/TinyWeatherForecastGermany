@@ -317,17 +317,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         context = getApplicationContext();
-        try {
-            ThemePicker.SetTheme(this);
-        } catch (Exception e){
-            PrivateLog.log(context,"Error setting theme.");
-        }
+        ThemePicker.SetTheme(this);
         super.onCreate(savedInstanceState);
-        try {
-            setContentView(R.layout.activity_main);
-        } catch (Exception e){
-            PrivateLog.log(context,"Error setting main view.");
-        }
+        setContentView(R.layout.activity_main);
+        /*
+         * Temporarily disable wind arc feature until bugs are fixed
+         */
+        WeatherSettings.setDisplayWindArc(getApplicationContext(),false);
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
         // disable log to logcat if release is not a userdebug
         disableLogToLogcatIfNotUserDebug();

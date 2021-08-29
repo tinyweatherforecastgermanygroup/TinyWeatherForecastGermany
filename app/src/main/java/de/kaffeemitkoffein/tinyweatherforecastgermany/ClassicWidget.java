@@ -354,7 +354,12 @@ public class ClassicWidget extends AppWidgetProvider {
         } else {
             remoteViews.setViewVisibility(R.id.classicwidget_wind,View.INVISIBLE);
         }
-        int opacity = Integer.parseInt(weatherSettings.widget_opacity);
+        int opacity = 90;
+        try {
+            opacity = Integer.parseInt(weatherSettings.widget_opacity);
+        } catch (Exception e){
+            // do nothing
+        }
         remoteViews.setImageViewResource(R.id.widget_backgroundimage,ThemePicker.getWidgetBackgroundDrawable(c));
         remoteViews.setInt(R.id.widget_backgroundimage,"setImageAlpha",Math.round(opacity*2.55f));
         if (weatherSettings.widget_showdwdnote) {

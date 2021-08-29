@@ -728,6 +728,18 @@ public class WeatherSettings {
         }
     }
 
+    public static boolean getDisplayWindArc(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_WIND_ARC, PREF_DISPLAY_WIND_ARC_DEFAULT);
+    }
+
+    public static void setDisplayWindArc(Context context, boolean b){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_DISPLAY_WIND_ARC, b);
+        pref_editor.apply();
+    }
+
     public static void setLastTextForecastsUpdateTime(Context context, long time){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
