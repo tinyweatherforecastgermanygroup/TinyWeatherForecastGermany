@@ -67,8 +67,15 @@ public class LargeWidget extends ClassicWidget{
     private final static float OFFSET_FONTSIZE = 60;
     private final static float FONTSIZESTEP = 1;
 
-    public static float getMaxPossibleFontsize(String string, float max_width, float max_height){
-        float textsize = OFFSET_FONTSIZE;
+    public static float getMaxPossibleFontsize(String string, float max_width, float max_height, Float offset){
+        if (offset==null){
+            if (max_width>max_height){
+                offset = max_width;
+            } else {
+                offset = max_height;
+            }
+        }
+        float textsize = offset;
         Paint paint = new Paint();
         paint.setTextSize(textsize);
         while ((textsize>0) && (paint.measureText(string)>max_width)){
@@ -101,11 +108,11 @@ public class LargeWidget extends ClassicWidget{
             }
             Paint p_temp = new Paint();
             p_temp.setTextSize(fontsize_temperature);
-            float mf1 = getMaxPossibleFontsize(min_temp,max_width,(max_height/(item_count+1))*0.95f);
+            float mf1 = getMaxPossibleFontsize(min_temp,max_width,(max_height/(item_count+1))*0.95f,OFFSET_FONTSIZE);
             if (mf1<fontsize_temperature){
                 fontsize_temperature = mf1;
             }
-            float mf2 = getMaxPossibleFontsize(max_temp,max_width,(max_height/(item_count+1))*0.95f);
+            float mf2 = getMaxPossibleFontsize(max_temp,max_width,(max_height/(item_count+1))*0.95f,OFFSET_FONTSIZE);
             if (mf2<fontsize_temperature){
                 fontsize_temperature = mf2;
             }
@@ -115,7 +122,7 @@ public class LargeWidget extends ClassicWidget{
             String day      = simpleDateFormat.format(new Date(currentWeatherInfo.forecast24hourly.get(i).getTimestamp()));
             Paint p_day = new Paint();
             p_day.setTextSize(fontsize_dayofweek);
-            float mf3 = getMaxPossibleFontsize(day,max_width,(max_height/(item_count+1))*0.95f);
+            float mf3 = getMaxPossibleFontsize(day,max_width,(max_height/(item_count+1))*0.95f,OFFSET_FONTSIZE);
             if (mf3<fontsize_dayofweek){
                 fontsize_dayofweek = mf3;
             }

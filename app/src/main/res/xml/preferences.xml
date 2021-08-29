@@ -28,7 +28,7 @@
                 android:summary="@string/preference_theme_summary"
                 android:entries="@array/theme_text"
                 android:entryValues="@array/theme_values"
-                android:defaultValue="2"/>
+                android:defaultValue="FOLLOW_DEVICE"/>
 
         <ListPreference
                 android:key="PREF_viewmodel"
@@ -36,7 +36,7 @@
                 android:summary="@string/preference_viewmodel_summary"
                 android:entries="@array/viewmodel_text"
                 android:entryValues="@array/viewmodel_values"
-                android:defaultValue="1"/>
+                android:defaultValue="SIMPLE"/>
 
         <ListPreference
                 android:key="PREF_display_type"
@@ -222,7 +222,7 @@
             android:summary="@string/preference_opacity_summary"
             android:entries="@array/widget_opacity_text"
             android:entryValues="@array/widget_opacity_values"
-            android:defaultValue="10"/>
+            android:defaultValue="90 %"/>
 
         <CheckBoxPreference
             android:key="PREF_widget_showdwdnote"

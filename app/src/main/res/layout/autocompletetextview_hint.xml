@@ -20,12 +20,12 @@
 -->
 
 <TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dropdown_textitem"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:textColor="?attr/colorText"
-    android:background="?attr/colorPrimary"
-    android:gravity="left"
-    android:padding="2dp">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@android:id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="?attr/colorText"
+        android:background="?attr/colorPrimaryLight"
+        android:gravity="left"
+        android:padding="2dp">
 </TextView>

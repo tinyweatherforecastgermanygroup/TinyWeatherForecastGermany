@@ -663,7 +663,7 @@ public class MainActivity extends Activity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(context, R.layout.custom_dropdown_item, entries);
+                                ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.custom_dropdown_item, entries);
                                 if (autoCompleteTextView==null){
                                     autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
                                 }

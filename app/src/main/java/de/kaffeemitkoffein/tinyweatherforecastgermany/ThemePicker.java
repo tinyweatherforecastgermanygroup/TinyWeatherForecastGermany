@@ -131,6 +131,37 @@ public final class ThemePicker {
         return  c2;
     }
 
+    public static int getColorPrimary(Context context){
+        int c;
+        String themePreference = WeatherSettings.getThemePreference(context);
+        if (!isDarkTheme(context)){
+            c = R.color.colorPrimary_Solarized;
+        } else {
+            c = R.color.colorPrimary_SolarizedDark;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.DARK)){
+            c = R.color.colorPrimary_DarkTheme;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.LIGHT)){
+            c = R.color.colorPrimary_LightTheme;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED)){
+            c = R.color.colorPrimary_Solarized;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED_DARK)){
+            c = R.color.colorPrimary_SolarizedDark;
+        }
+        int color;
+        if (android.os.Build.VERSION.SDK_INT>22){
+            color = context.getResources().getColor(c,context.getTheme());
+        } else {
+            color= context.getResources().getColor(c);
+        }
+        float[] hsv = new float[3];
+        Color.colorToHSV(color,hsv);
+        int c2 = Color.HSVToColor(255,hsv);
+        return  c2;
+    }
 
     public static int getWidgetBackgroundDrawable(Context context){
         String themePreference = WeatherSettings.getThemePreference(context);

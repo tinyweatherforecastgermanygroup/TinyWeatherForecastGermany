@@ -475,28 +475,33 @@ public class WeatherWarningActivity extends Activity {
     private void drawWindIcon(){
         final Context context = getApplicationContext();
         final ImageView windicon = (ImageView) findViewById(R.id.warningactivity_windicon);
+
         Runnable windRunnable = new Runnable() {
             @Override
             public void run() {
-                if (windicon!=null){
+                final RelativeLayout windiconContainer = (RelativeLayout) findViewById(R.id.warningactivity_windicon_container);
+                if (windiconContainer!=null){
                     if (WeatherSettings.displayWindInRadar(getApplicationContext())){
-                        windicon.setVisibility(View.VISIBLE);
+                        windiconContainer.setVisibility(View.VISIBLE);
+                        final ImageView windiconBackground = (ImageView) findViewById(R.id.warningactivity_windicon_background);
                         CurrentWeatherInfo currentWeatherInfo = new Weather().getCurrentWeatherInfo(context);
                         if (currentWeatherInfo!=null){
                             final Bitmap windiconBitmap = currentWeatherInfo.currentWeather.getWindSymbol(getApplicationContext(),WeatherSettings.getWindDisplayType(getApplicationContext()),false);
+                            ThemePicker.applyColor(context,windiconBitmap,false);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    windiconBackground.setImageResource(R.drawable.blue);
+                                    windiconBackground.setColorFilter(ThemePicker.getColorPrimary(context),PorterDuff.Mode.SRC_IN);
                                     windicon.setImageBitmap(windiconBitmap);
                                 }
                             });
-
                         }
                     } else {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                windicon.setVisibility(View.INVISIBLE);
+                                windiconContainer.setVisibility(View.INVISIBLE);
                             }
                         });
 

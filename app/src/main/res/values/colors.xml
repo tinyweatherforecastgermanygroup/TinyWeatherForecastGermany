@@ -50,7 +50,7 @@
     <color name="colorTextDark_Solarized">#657b83</color>              <!-- base00 -->
     <color name="colorTextLight_Solarized">#839496</color>             <!-- base0  -->
     <color name="colorWelcomeBackground_Solarized">#fdf6e3</color>     <!-- base3 -->
-    <color name="colorWidgetBackground_Solarized">#eee8d5</color>      <!-- base3 -->
+    <color name="colorWidgetBackground_Solarized">#e2dcc9</color>      <!-- custom -->
     <color name="colorSecondary_Solarized">#268bd2</color>             <!-- blue -->
 
     <color name="colorPrimary_SolarizedDark">#002b36</color>                     <!-- base03 -->
@@ -61,7 +61,7 @@
     <color name="colorTextDark_SolarizedDark">#657b83</color>                    <!-- base00 -->
     <color name="colorTextLight_SolarizedDark">#93a1a1</color>                   <!-- base1 -->
     <color name="colorWelcomeBackground_SolarizedDark">#073642</color>           <!-- base02 -->
-    <color name="colorWidgetBackground_SolarizedDark">#073642</color>            <!-- base03 -->
+    <color name="colorWidgetBackground_SolarizedDark">#002f3a</color>            <!-- custom -->
     <color name="colorSecondary_SolarizedDark">#268bd2</color>                   <!-- blue -->
 
     <color name="colorWarning_clear">#00cc00</color>

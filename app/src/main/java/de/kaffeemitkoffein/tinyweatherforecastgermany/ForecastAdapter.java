@@ -574,6 +574,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 windstring.append(weatherInfo.getWindDirectionString(context)).append(' ');
                 break;
         }
+        imageView_windarrow.setColorFilter(ThemePicker.getColorTextLight(context),PorterDuff.Mode.SRC_IN);
     }
     if (textView_wind == null){
         textView_wind = (TextView) view.findViewById(R.id.fcitem_wind);

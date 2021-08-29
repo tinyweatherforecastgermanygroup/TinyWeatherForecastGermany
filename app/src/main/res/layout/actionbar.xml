@@ -58,6 +58,9 @@
             android:layout_marginBottom="2dp"
             android:inputType="text"
             android:singleLine="true"
+            android:completionHint="@string/actionbar_textinput_hint"
+            android:textColor="?attr/colorTextLight"
+            android:completionHintView="@layout/autocompletetextview_hint"
             android:text=""/>
 
     </LinearLayout>
