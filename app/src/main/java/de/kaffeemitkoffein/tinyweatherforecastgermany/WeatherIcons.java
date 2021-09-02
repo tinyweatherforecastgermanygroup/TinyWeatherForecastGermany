@@ -202,8 +202,7 @@ public class WeatherIcons {
             case SUNNY:
                 result = R.mipmap.sunny;
                 break;
-            case CLEAR_NIGHT:
-                result = R.mipmap.clear_night;
+            case CLEAR_NIGHT: result = R.mipmap.clear_night; break;
             case SYMBOL_RH : result = R.mipmap.symbol_rh; break;
             case SYMBOL_CLOUD : result = R.mipmap.symbol_cloud; break;
             case SYMBOL_DRIZZLE : result = R.mipmap.symbol_drizzle; break;
@@ -247,7 +246,7 @@ public class WeatherIcons {
         if (!ThemePicker.isDarkTheme(context)) {
             switch (icon) {
                 case CLEAR_NIGHT:
-                    result = R.mipmap.clear_night_black;
+                    result = R.mipmap.clear_night_black; break;
                 case MOSTLY_CLOUDY_NIGHT:
                     result = R.mipmap.mostly_cloudy_night_black;
                     break;
