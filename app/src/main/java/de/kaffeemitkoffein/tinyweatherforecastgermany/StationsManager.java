@@ -35,6 +35,7 @@ public class StationsManager {
 
     public StationsManager(Context context){
         this.context = context;
+        stations = new ArrayList<Weather.WeatherLocation>();
         //readStations();
     }
 
