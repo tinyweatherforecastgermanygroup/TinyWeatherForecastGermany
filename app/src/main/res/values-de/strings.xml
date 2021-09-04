@@ -43,7 +43,7 @@
     <string name="station_does_not_exist">Die eingegebene Wetterstation existiert nicht. Wähle eine aus den Vorschlägen aus.</string>
     <string name="favorites_cleared">Die Favoriten wurden zurückgesetzt.</string>
     <string name="actionbar_textinput_title">Ort hier eingeben:</string>
-    <string name="actionbar_textinput_hint">Ggf. Umlaute durch AE, OE und UE ersetzen.</string>
+    <string name="actionbar_textinput_hint">Versuche länderspezifische Bezeichnungen</string>
     <string name="weathercode_UNKNOWN">unbekannt</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">Gewitter</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">gefrierender Sprühregen</string>
@@ -85,15 +85,16 @@
     <string name="preference_category_other">Sonstiges</string>
     <string name="preference_category_texts">Wettertexte</string>
     <string name="preference_updateinterval_title">Aktualisierungs-Intervall</string>
-    <string name="preference_pdateinterval_summary">Wie oft sollen Wetterdaten aktualisiert werden</string>
+    <string name="preference_pdateinterval_summary">Wähle, wie oft die Wetterdaten aktualisiert werden sollen.</string>
     <string name="preference_update_textforecasts_title">Texte aktualisieren</string>
-    <string name="preference_update_textforecasts_summary">Wettertexte aktuell halten.</string>
+    <string name="preference_update_textforecasts_summary">Wettertexte aktuell halten</string>
     <string name="preference_opacity_title">Deckkraft Widget</string>
     <string name="preference_opacity_summary">Bestimmt die Transparenz des Widgets auf dem Homescreen.</string>
     <string name="preference_displaynoteinwidget_title">DWD-Hinweis anzeigen</string>
     <string name="preference_displaynoteinwidget_summary">Zeigt den Hinweis auf die Datenquelle Deutscher Wetterdienst im Widget.</string>
     <string name="preference_cache_warnings_title">Warnungen zwischenspeichern</string>
-    <string name="preference_cache_warnings_summary">Wie lange Warnungen angezeigt werden ohne sie vom Deutschen Wetterdienst neu zu laden.</string>    <string name="preference_disable_warnings_title">Warnungen ausschalten</string>
+    <string name="preference_cache_warnings_summary">Wie lange Warnungen angezeigt werden ohne sie vom Deutschen Wetterdienst neu zu laden.</string>
+    <string name="preference_disable_warnings_title">Warnungen ausschalten</string>
     <string name="preference_disable_warnings_summary">Keine Wetterwarnungen anzeigen.</string>
     <string name="preference_screen_display_title">Darstellung</string>
     <string name="preference_screen_display_summary">Passe die Anzeige der Vorhersagen an.</string>
@@ -128,11 +129,11 @@
     <string name="preference_display_distance_unit_title">Entfernungen</string>
     <string name="preference_display_distance_unit_summary">Wähle die Einheit für Entfernungen.</string>
     <string name="preference_display_wind_in_radar_title">Im Regenradar anzeigen</string>
-    <string name="preference_display_wind_in_radar_summary">Windrichtung im Regenradar zeigen.</string>
+    <string name="preference_display_wind_in_radar_summary">Anzeige der Windrichtung im Regenradar</string>
     <string name="preference_display_show_radar_by_default_title">Regenradar</string>
     <string name="preference_display_show_radar_by_default_summary">Immer automatisch anzeigen.</string>
     <string name="preference_setalarm_title">Immer aktualisieren</string>
-    <string name="preference_setalarm_summary">Immer Wetterdaten regelmäßig aktualisieren.</string>
+    <string name="preference_setalarm_summary">Halte die Wetterdaten auf den neuesten Stand.</string>
     <string name="preference_setalarm_notice">HINWEIS: aktuell nicht verfügbar, da aktivierter Gadgetbridge-Support ohnehin automatische Aktualisierungen erfordert.</string>
     <string name="preference_display_station_geo_title">Geographische Koordinaten</string>
     <string name="preference_display_station_geo_summary">Geographische Koordinaten der Mess-Station anzeigen</string>
@@ -194,9 +195,10 @@
     <string name="sunrise">Aufgang</string>
     <string name="twilight">Dämmerung</string>
     <string name="preference_feedback_title">Rückmeldung</string>
-    <string name="preference_feedback_summary">Dem Entwickler Rückmeldung per E-Mail geben.</string>
+    <string name="preference_feedback_summary">Gib dem Entwickler Feedback per E-Mail.</string>
     <string name="feedback_mail_subject">Rückmeldung: TinyWeatherForecastGermany</string>
-    <string name="feedback_mail_text">Wenn es sich um einen Fehler handelt, bitte auch ein Protokoll kopieren und hier einfügen, falls möglich.</string>    <string name="warnings_until">bis</string>
+    <string name="feedback_mail_text">Wenn es sich um einen Fehler handelt, bitte auch ein Protokoll kopieren und hier einfügen, falls möglich.</string>
+    <string name="warnings_until">bis</string>
     <string name="warnings_update">Warnungen aktualisiert.</string>
     <string name="warnings">Warnungen</string>
     <string name="warnings_updatetime">aktualisiert:</string>
@@ -247,7 +249,8 @@
     <string name="geoinput_reflocation_time">Zeit:</string>
     <string name="georeceive_error">Fehler: Geo-Koordinaten konnten nicht gelesen werden.</string>
     <string name="connerror_title">TLS-Probleme</string>
-    <string name="connerror_message">Die App konnte keine verschlüsselte https Verbindung zum Open Data Server des DWD aufbauen. Verschlüsselung deaktivieren\?</string>    <string name="textforecasttype_maritime_german_north_and_baltic">Maritim deutsche Nord- &amp; Ostsee</string>
+    <string name="connerror_message">Die App konnte keine verschlüsselte https Verbindung zum Open Data Server des DWD aufbauen. Verschlüsselung deaktivieren\?</string>
+    <string name="textforecasttype_maritime_german_north_and_baltic">Maritim deutsche Nord- &amp; Ostsee</string>
     <string name="textforecasttype_maritime_north_and_baltic">Maritim Nord- &amp; Ostsee</string>
     <string name="textforecasttype_maritime_mediterranian">Maritim Mittelmeer</string>
     <string name="textforecasttype_maritime_warning">Maritime Warnung</string>
@@ -257,7 +260,8 @@
     <string name="textforecasttype_medium_feature">Funktion</string>
     <string name="textforecasttype_medium_other">Sonstiges</string>
     <string name="warning_stationreset_title">Wetter-Station zurückgesetzt</string>
-    <string name="warning_stationreset_text">Um einen Fehler zu beheben, wurde die Wetter-Station auf den Standardwert zurückgesetzt.</string>    <string name="radar_rain1">gering</string>
+    <string name="warning_stationreset_text">Um einen Fehler zu beheben, wurde die Wetter-Station auf den Standardwert zurückgesetzt.</string>
+    <string name="radar_rain1">gering</string>
     <string name="radar_rain2">leicht</string>
     <string name="radar_rain3">stark</string>
     <string name="radar_rain4">extrem</string>
@@ -271,5 +275,6 @@
     <string name="welcome_setupnote">Sie können dies später in den Einstellungen ändern.</string>
     <string name="welcome_s4_viewmodel">Detaillierte Wettervorhersagen anzeigen.</string>
     <string name="welcome_s4_displaytype">Wählen Sie, wie die Wettervorhersage angezeigt werden soll:</string>
-
+    <string name="preference_viewmodel_title">Detailgenauigkeit</string>
+    <string name="preference_viewmodel_summary">Zeigt eine detaillierte oder einfache Wettervorhersage an.</string>
 </resources>

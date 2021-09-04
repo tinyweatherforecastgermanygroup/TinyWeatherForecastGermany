@@ -89,8 +89,8 @@ Contributors:
 * German
 
     * eUgEntOptIc44
-    * mondstern
     * J. Lavoie
+    * mondstern
 
 
 * French
@@ -98,6 +98,11 @@ Contributors:
     * eUgEntOptIc44
     * mondstern
     * J. Lavoie
+
+
+* Finnish
+
+    * mondstern
 
 
 * Italian
@@ -126,6 +131,11 @@ Contributors:
 
     * mondstern
     * Allan Nordhøy
+
+
+* Polish
+
+    * mondstern
 
  Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://weblate.bubu1.eu/engage/tiny-weather-forecast-germany/).
 

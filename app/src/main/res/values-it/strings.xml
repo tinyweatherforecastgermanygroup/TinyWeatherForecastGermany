@@ -2,10 +2,10 @@
 <resources>
     <string name="weathercode_HEAVY_SNOWFALL_CONTINUOUS">nevicata pesante, continua</string>
     <string name="preference_displaypressure_title">Pressione</string>
-    <string name="preference_loggingscreen_title">Debug</string>
+    <string name="preference_loggingscreen_title">Debuggare</string>
     <string name="preference_loggingscreen_summary">Imposta le opzioni di log per il debug.</string>
     <string name="geoinput_known_note">Questa è la tua posizione da:</string>
-    <string name="textforecasttype_short_term">Meteo a breve termine</string>
+    <string name="textforecasttype_short_term">Tempo Breve Termine</string>
     <string name="geoinput_noprovider">Nessun servizio di localizzazione adatto trovato. Abilita i servizi di localizzazione e riprova.</string>
     <string name="geoinput_reflocation_title">La località di riferimento è:</string>
     <string name="geoinput_reflocation_longitude">Longitudine:</string>
@@ -14,23 +14,23 @@
     <string name="georeceive_error">Errore: impossibile leggere le coordinate geografiche.</string>
     <string name="connerror_title">Problema TLS</string>
     <string name="connerror_message">L\'applicazione non è riuscita a stabilire una connessione criptata con il server DWD open data su https. Disattivare la crittografia\?</string>
-    <string name="textforecasttype_maritime_german_north_and_baltic">Marittimo tedesco del Nord &amp; Baltico</string>
-    <string name="textforecasttype_maritime_north_and_baltic">Marittimo del Nord e del Baltico</string>
+    <string name="textforecasttype_maritime_german_north_and_baltic">Marittimo tedesco del Nord e del Mar Baltico</string>
+    <string name="textforecasttype_maritime_north_and_baltic">Marittimo del Nord e del Mar Baltico</string>
     <string name="textforecasttype_maritime_mediterranian">Mare Mediterraneo</string>
     <string name="textforecasttype_maritime_warning">Avviso marittimo</string>
-    <string name="textforecasttype_maritime_north_and_baltic_medium_term">Marittimo del Nord e del Baltico a medio termine</string>
-    <string name="textforecasttype_medium_term">Medio termine</string>
-    <string name="textforecasttype_medium_feature">Featura</string>
+    <string name="textforecasttype_maritime_north_and_baltic_medium_term">Marittimo del Nord e del Mar Baltico Medio termine</string>
+    <string name="textforecasttype_medium_term">Tempo Medio Termine</string>
+    <string name="textforecasttype_medium_feature">Funzione</string>
     <string name="textforecasttype_medium_other">Altro</string>
     <string name="warning_stationreset_title">Reset stazione</string>
     <string name="weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT">leggeri rovesci di pioggia e neve mista</string>
     <string name="app_name">Tiny Weather Forecast Germany</string>
     <string name="main_selectstation">Regione:</string>
     <string name="main_updatetime">Ultimo aggiornamento:</string>
-    <string name="main_wait_for_gps_fix">Si sta determinando la posizione…</string>
-    <string name="dwd_notice">Base dati: Deutscher Wetterdienst, elementi propri aggiunti, alcuni dati mediati su valori individuali.</string>
-    <string name="dwd_notice_app">Base dei dati: Deutscher Wetterdienst, elementi propri aggiunti, alcuni dati mediati su valori individuali. Avvertenze abbreviate.</string>
-    <string name="dwd_warnings_notice">Base dati: Deutscher Wetterdienst, visualizzazione di avvisi condensati.</string>
+    <string name="main_wait_for_gps_fix">La posizione è in fase di determinazione…</string>
+    <string name="dwd_notice">Base dati: Deutscher Wetterdienst, aggiunta di elementi propri, alcuni dati mediati su valori individuali.</string>
+    <string name="dwd_notice_app">Base dati: Deutscher Wetterdienst, aggiunta di elementi propri, alcuni dati mediati su valori individuali. Avvertenze abbreviate.</string>
+    <string name="dwd_warnings_notice">Base dati: Deutscher Wetterdienst, visualizzando avvisi condensati.</string>
     <string name="dwd_textforecast_notice">Base dati: Deutscher Wetterdienst, elementi propri aggiunti, layout cambiato.</string>
     <string name="new_station">Regione cambiata in</string>
     <string name="license_button">Licenza</string>
@@ -78,8 +78,8 @@
     <string name="weathercode_FOG_SKY_NOT_RECOGNIZABLE">nebbia</string>
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8">molto nuvoloso</string>
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8">nubi moderate</string>
-    <string name="weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8">poco nuvoloso</string>
-    <string name="weathercode_EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8">sufficiente</string>
+    <string name="weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8">leggermente nuvoloso</string>
+    <string name="weathercode_EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8">fiera</string>
     <string name="title_activity_warnings">Avvisi meteo</string>
     <string name="title_activity_settings">Impostazioni</string>
     <string name="title_activity_textlist">Testi</string>
@@ -96,7 +96,7 @@
     <string name="preference_displaynoteinwidget_title">Visualizza la nota DWD</string>
     <string name="preference_displaynoteinwidget_summary">Mostra la stringa dell\'origine dati.</string>
     <string name="preference_cache_warnings_title">Avvisi sulla cache</string>
-    <string name="preference_cache_warnings_summary">Quanto tempo dovrebbero essere visualizzati gli avvisi senza ricaricare dal Deutscher Wetterdienst.</string>
+    <string name="preference_cache_warnings_summary">Quanto tempo devono essere visualizzati gli avvisi senza ricaricare dal Deutscher Wetterdienst.</string>
     <string name="preference_disable_warnings_title">Disabilita gli avvisi</string>
     <string name="preference_disable_warnings_summary">Non visualizzare le avvertenze meteo.</string>
     <string name="preference_screen_display_title">Impostazioni di visualizzazione</string>
@@ -115,8 +115,8 @@
     <string name="preference_displaysunrise_summary">Visualizza gli orari di alba, tramonto e crepuscolo.</string>
     <string name="preference_displayendofdaybar_title">Giorni separati</string>
     <string name="preference_displayendofdaybar_summary">Visualizza una barra per separare i giorni.</string>
-    <string name="preference_display_gradient_title">gradiente orario</string>
-    <string name="preference_display_gradient_summary">Visualizza il gradiente di colore per indicare il tempo della previsione.</string>
+    <string name="preference_display_gradient_title">Gradiente temporale</string>
+    <string name="preference_display_gradient_summary">Visualizza il gradiente di colore per indicare il tempo della prevista.</string>
     <string name="preference_screen_wind_title">Vento visualizzato</string>
     <string name="preference_screen_wind_summary">Personalizza come visualizzare il vento.</string>
     <string name="preference_display_wind_arc_title">Previsione del vento in icona</string>
@@ -132,8 +132,8 @@
     <string name="preference_display_show_radar_by_default_title">Radar pioggia</string>
     <string name="preference_display_show_radar_by_default_summary">Visualizza sempre automaticamente.</string>
     <string name="preference_setalarm_title">Aggiorna sempre</string>
-    <string name="preference_setalarm_summary">Aggiornare sempre i dati meteo regolarmente.</string>
-    <string name="preference_setalarm_notice">AVVISO: questo non è attualmente disponibile, poiché il supporto Gadgetbridge abilitato forza comunque gli aggiornamenti automatici.</string>
+    <string name="preference_setalarm_summary">Mantenere aggiornati i dati meteorologici.</string>
+    <string name="preference_setalarm_notice">AVVISO: questo non è attualmente possibile, poiché il supporto Gadgetbridge abilitato forza comunque gli aggiornamenti automatici.</string>
     <string name="preference_display_station_geo_title">Coordinate geografiche</string>
     <string name="preference_display_station_geo_summary">Visualizza le coordinate geografiche della stazione</string>
     <string name="preference_screen_gadgetbridge_title">Supporto Gadgetbridge</string>
@@ -151,7 +151,7 @@
     <string name="preference_logging_summary">Attiva la registrazione. I log vengono salvati LOCALMENTE sul tuo dispositivo e NON vengono inviati automaticamente.</string>
     <string name="preference_log_to_logcat_title">Registra su Logcat</string>
     <string name="preference_log_to_logcat_summary">Inserisci i log nel registro di sistema del dispositivo. Attenzione: questa può essere una perdita di privacy, altre applicazioni possono accedere al log di sistema.</string>
-    <string name="preference_loggingactivity_title">Gestione dei log</string>
+    <string name="preference_loggingactivity_title">Gestire i registri</string>
     <string name="preference_loggingactivity_summary">Invia e/o cancella i log.</string>
     <string name="preference_intro_title">Introduzione</string>
     <string name="preference_intro_summary">Riavvia l\'introduzione.</string>
@@ -189,8 +189,8 @@
     <string name="direction_southwest">SO</string>
     <string name="direction_northwest">NW</string>
     <string name="direction_calm">-</string>
-    <string name="sunset">tramonto</string>
-    <string name="sunrise">alba</string>
+    <string name="sunset">Tramonto</string>
+    <string name="sunrise">Alba</string>
     <string name="twilight">Crepuscolo</string>
     <string name="preference_feedback_title">Risultati</string>
     <string name="preference_feedback_summary">Dare un feedback allo sviluppatore via e-mail.</string>
@@ -237,7 +237,7 @@
     <string name="geoinput_wrongformat">La coordinata non ha un formato valido. Puoi usare annotazioni come +53.12345 per i gradi, o -44.22:12.12345 per inserire gradi e minuti o 33.12.12345 per inserire gradi, minuti e secondi. Per favore riprova.</string>
     <string name="geoinput_wrongvalue">La longitudine deve essere tra -180 e +180, la latitudine deve essere tra -90 e +90. Si prega di riprovare.</string>
     <string name="geoinput_rationale">I servizi di localizzazione sono necessari solo una volta, per trovare la prossima stazione meteo. Possono essere disabilitati in seguito. In alternativa, puoi inserire le geo-coordinate manualmente per trovare la prossima stazione meteo.</string>
-    <string name="warning_stationreset_text">Per risolvere un bug la tua stazione e le tue stazioni preferite sono state reimpostate ai valori di default.</string>
+    <string name="warning_stationreset_text">Per risolvere un bug, la tua stazione e le tue stazioni preferite sono state riportate ai valori di default.</string>
     <string name="radar_rain1">lieve</string>
     <string name="radar_rain2">leggero</string>
     <string name="radar_rain3">forte</string>
@@ -259,4 +259,6 @@
     <string name="areadatabasecreator_title">Preparazione dei dati</string>
     <string name="welcome_s4_viewmodel">Mostra previsioni meteo dettagliate.</string>
     <string name="welcome_s4_displaytype">Scegli come visualizzare le previsioni del tempo:</string>
+    <string name="preference_viewmodel_title">Livello di dettaglio</string>
+    <string name="preference_viewmodel_summary">Mostra una previsione meteorologica dettagliata o semplice.</string>
 </resources>

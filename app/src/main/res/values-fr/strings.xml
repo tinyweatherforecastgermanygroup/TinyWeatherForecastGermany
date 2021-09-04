@@ -124,7 +124,7 @@
     <string name="preference_display_show_radar_by_default_title">Radar des pluies</string>
     <string name="preference_display_show_radar_by_default_summary">Toujours afficher automatiquement.</string>
     <string name="preference_setalarm_title">Toujours mettre à jour</string>
-    <string name="preference_setalarm_summary">Toujours mettre à jour les données météo régulièrement.</string>
+    <string name="preference_setalarm_summary">Maintenez les données météorologiques à jour.</string>
     <string name="preference_setalarm_notice">REMARQUE : cette option n\'est actuellement pas disponible, car la prise en charge Gadgetbridge activée force de toute manière les mises à jour automatiques.</string>
     <string name="preference_display_station_geo_title">Coordonnées géographiques</string>
     <string name="preference_display_station_geo_summary">Affichage des coordonnées géographiques de la station</string>.
@@ -186,7 +186,7 @@
     <string name="sunrise">Lever du soleil</string>
     <string name="twilight">Crépuscule</string>
     <string name="preference_feedback_title">Remarques</string>
-    <string name="preference_feedback_summary">Faites des remarques au développeur par courriel.</string>
+    <string name="preference_feedback_summary">Faites part de vos réactions au développeur par courrier électronique.</string>
     <string name="feedback_mail_subject">Remarques : TinyWeatherForecastGermany</string>
     <string name="feedback_mail_text">Quand vous envoyez un rapport d\'erreur, veuillez également copier-coller les journaux, si possible.</string>
     <string name="warnings_until">jusqu\'au</string>
@@ -271,5 +271,7 @@
     <string name="welcome_setupnote">Vous pouvez changer cela plus tard dans les paramètres.</string>
     <string name="areadatabasecreator_title">Préparation des données</string>
     <string name="welcome_s4_viewmodel">Afficher des prévisions météorologiques détaillées.</string>
-    <string name="welcome_s4_displaytype">Choisissez comment afficher les prévisions météorologiques:</string>
+    <string name="welcome_s4_displaytype">Choisissez comment afficher les prévisions météorologiques :</string>
+    <string name="preference_viewmodel_title">Niveau de détail</string>
+    <string name="preference_viewmodel_summary">Afficher une prévision météorologique détaillée ou simple.</string>
 </resources>

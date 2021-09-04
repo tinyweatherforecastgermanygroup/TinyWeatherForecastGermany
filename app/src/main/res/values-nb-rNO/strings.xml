@@ -30,7 +30,7 @@
     <string name="preference_display_distance_unit_title">Avstand</string>
     <string name="preference_display_distance_unit_summary">Velg avstandsenhet.</string>
     <string name="preference_setalarm_title">Alltid oppdater</string>
-    <string name="preference_setalarm_summary">Alltid oppdater værdata regelmessig.</string>
+    <string name="preference_setalarm_summary">Holder været data oppdatert.</string>
     <string name="preference_gadgetbridge_packagename_title">Pakkenavn</string>
     <string name="preference_gadgetbridge_faketimestamp_title">Send nåværende tid</string>
     <string name="preference_gadgetbridge_notice_title">Viktig notis</string>
@@ -128,7 +128,7 @@
     <string name="sunrise">Soloppgang</string>
     <string name="preference_feedback_title">Tilbakemelding</string>
     <string name="service_notification_text3">Rengjøring…</string>
-    <string name="preference_feedback_summary">Gi utvikleren tilbakemelding via e-post.</string>
+    <string name="preference_feedback_summary">Gi utvikleren en tilbakemelding via e-post.</string>
     <string name="warnings_until">til</string>
     <string name="warnings_update_fail">Kunne ikke oppdatere væradvarsler!</string>
     <string name="welcome_s2_text2">skyer</string>
@@ -156,7 +156,7 @@
     <string name="dwd_textforecast_notice">Datagrunnlag: Deutscher Wetterdienst, egne elementer er lagt til, endret layout.</string>
     <string name="geoinput_button">Søk etter beliggenhet</string>
     <string name="station_does_not_exist">Den stasjonen du har oppgitt, eksisterer ikke. Vennligst velg fra den foreslåtte stasjoner i listen.</string>
-    <string name="actionbar_textinput_hint">Prøv å erstatte Omlyder med AE, OE og UE.</string>
+    <string name="actionbar_textinput_hint">Prøv landet spesielle merknader</string>
     <string name="weathercode_DRIZZLE_FREEZING_SLIGHT">svak underkjølt yr</string>
     <string name="weathercode_RAIN_FREEZING_MODERATE_OR_HEAVY">underkjølt regn</string>
     <string name="weathercode_RAIN_FREEZING_SLIGHT">svak underkjølt regn</string>
@@ -244,4 +244,20 @@
     <string name="preference_screen_gadgetbridge_summary">Alternativer for å integrere værdata av dette programmet i Gadgetbridge.</string>
     <string name="preference_display_wind_type_summary">Hvordan å vise vindretning.</string>
     <string name="preference_displayforecastbar_summary">Vise en bar med timebaserte data i 6-time-prognoser.</string>
+    <string name="preference_category_display">Vise</string>
+    <string name="preference_update_textforecasts_summary">Holder været tekster oppdatert</string>
+    <string name="welcome_setupnote">Du kan endre dette senere i innstillingene.</string>
+    <string name="preference_category_texts">Tekst nyhetsbrev</string>
+    <string name="preference_theme_title">Utforming</string>
+    <string name="preference_theme_summary">Valgte fargepaletten</string>
+    <string name="preference_update_textforecasts_title">Oppdatering tekster</string>
+    <string name="preference_viewmodel_title">Detaljnivå</string>
+    <string name="preference_viewmodel_summary">Viser en detaljert eller enkle værvarsel.</string>
+    <string name="preference_display_wind_in_radar_title">Vis i regn radar</string>
+    <string name="preference_display_wind_in_radar_summary">Vise vindretning i regn radar</string>
+    <string name="welcome_s2_text11">Relativ luftfuktighet</string>
+    <string name="welcome_setuptitle">Grunnleggende oppsett</string>
+    <string name="areadatabasecreator_title">Klargjør data</string>
+    <string name="welcome_s4_viewmodel">Vis detaljert værmelding.</string>
+    <string name="welcome_s4_displaytype">Velge å vise værmelding:</string>
 </resources>

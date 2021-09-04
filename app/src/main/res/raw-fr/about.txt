@@ -39,13 +39,15 @@ Les personnes suivantes ont contribué à ce projet :
  - arwanger (README.md)
 
 Translations :
-  * German: eUgEntOptIc44, mondstern, J. Lavoie
-  * French: eUgEntOptIc44, mondstern, J. Lavoie
-  * Italian: mondstern, eUgEntOptIc44
-  * English: Allan Nordhøy
-  * Dutch: mondstern
-  * Czech: eUgEntOptIc44, mondstern
-  * Norwegian Bokmål: mondstern, Allan Nordhøy
+* German: eUgEntOptIc44, J. Lavoie, mondstern
+* French: eUgEntOptIc44, mondstern, Lavoie
+* Finnish: mondstern
+* Italian: mondstern, eUgEntOptIc44
+* English: Allan Nordhøy
+* Dutch: mondstern
+* Czech: eUgEntOptIc44, mondstern
+* Norwegian Bokmål: mondstern, Allan Nordhøy
+* Polish: mondstern
 
 Licence :
 --------

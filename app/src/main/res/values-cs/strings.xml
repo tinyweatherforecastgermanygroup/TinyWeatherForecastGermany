@@ -130,7 +130,7 @@
     <string name="preference_display_distance_unit_summary">Výběr jednotky pro vzdálenost.</string>
     <string name="preference_display_show_radar_by_default_summary">Vždy se zobrazí automaticky.</string>
     <string name="preference_setalarm_title">Vždy aktualizovat</string>
-    <string name="preference_setalarm_summary">Vždy pravidelně aktualizovat údaje o počasí.</string>
+    <string name="preference_setalarm_summary">Aktualizujte údaje o počasí.</string>
     <string name="preference_setalarm_notice">UPOZORNĚNÍ: v současné době není k dispozici, protože zapnutá podpora Gadgetbridge stejně vynucuje automatické aktualizace.</string>
     <string name="preference_display_station_geo_title">Geografické souřadnice</string>
     <string name="preference_display_station_geo_summary">Zobrazení zeměpisných souřadnic stanice</string>
@@ -189,7 +189,7 @@
     <string name="sunrise">Východ slunce</string>
     <string name="twilight">Soumrak</string>
     <string name="preference_feedback_title">Zpětná vazba</string>
-    <string name="preference_feedback_summary">Dejte vývojáři zpětnou vazbu mailem.</string>
+    <string name="preference_feedback_summary">Poskytněte vývojáři zpětnou vazbu e-mailem.</string>
     <string name="feedback_mail_text">Při odesílání hlášení o chybě zkopírujte a vložte také protokoly, pokud je to možné.</string>
     <string name="warnings_until">do</string>
     <string name="warnings_update">Upozornění aktualizována.</string>
@@ -258,4 +258,6 @@
     <string name="areadatabasecreator_title">Příprava dat</string>
     <string name="welcome_s4_viewmodel">Zobrazení podrobné předpovědi počasí.</string>
     <string name="welcome_s4_displaytype">Zvolte způsob zobrazení předpovědi počasí:</string>
+    <string name="preference_viewmodel_title">Úroveň detailu</string>
+    <string name="preference_viewmodel_summary">Zobrazit podrobnou nebo jednoduchou předpověď počasí.</string>
 </resources>

@@ -651,6 +651,9 @@ public class MainActivity extends Activity {
             @Override
             public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
                 super.onLoadingListFinished(stations);
+                if (stationsManager == null){
+                    stationsManager = new StationsManager(context);
+                }
                 stationsManager.stations = stations;
                 stationSearchEngine = new StationSearchEngine(context,executor,null,stationsManager){
                     @Override

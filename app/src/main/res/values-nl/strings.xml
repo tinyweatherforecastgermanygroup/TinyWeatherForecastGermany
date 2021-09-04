@@ -111,7 +111,7 @@
     <string name="preference_gadgetbridge_serve_title">Activeer</string>
     <string name="preference_gadgetbridge_serve_summary">Wanneer deze functie is ingeschakeld, worden alle weergegevens lokaal naar de Gadgetbridge-app op uw apparaat verzonden.</string>
     <string name="preference_gadgetbridge_packagename_title">Naam pakket</string>
-    <string name="preference_setalarm_summary">Werk de weergegevens altijd regelmatig bij.</string>
+    <string name="preference_setalarm_summary">Hou de weergegevens bij.</string>
     <string name="preference_setalarm_title">Altijd bijwerken</string>
     <string name="preference_displaypressure_summary">Weergave van oppervlakteluchtdruk in voorspellingen.</string>
     <string name="preference_displaypressure_title">Druk</string>
@@ -152,7 +152,7 @@
     <string name="logging_button_copy">Kopieer logs naar Klembord</string>
     <string name="logging_title">logs</string>
     <string name="preference_log_to_logcat_title">Log naar Logcat</string>
-    <string name="preference_feedback_summary">Geef de ontwikkelaar wat feedback per mail.</string>
+    <string name="preference_feedback_summary">Geef de ontwikkelaar wat feedback via e-mail.</string>
     <string name="preference_feedback_title">Terugkoppeling</string>
     <string name="direction_calm">-</string>
     <string name="sunset">Zonsondergang</string>
@@ -258,4 +258,6 @@
     <string name="areadatabasecreator_title">Voorbereiding van gegevens</string>
     <string name="welcome_s4_viewmodel">Toon gedetailleerde weersvoorspellingen.</string>
     <string name="welcome_s4_displaytype">Kiezen hoe de weersvoorspelling moet worden weergegeven:</string>
+    <string name="preference_viewmodel_title">Mate van detail</string>
+    <string name="preference_viewmodel_summary">Toon een gedetailleerde of eenvoudige weersvoorspelling.</string>
 </resources>
