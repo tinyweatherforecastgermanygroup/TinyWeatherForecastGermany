@@ -320,11 +320,7 @@ public class MainActivity extends Activity {
         ThemePicker.SetTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        try {
-            stationsManager = new StationsManager(context);
-        } catch (Exception e){
-            PrivateLog.log(context,Tag.MAIN,"Error: StationsManager failed!");
-        }
+        stationsManager = new StationsManager(context);
         /*
          * Temporarily disable wind arc feature until bugs are fixed
          */
