@@ -1,6 +1,3 @@
-New in version ([VERSION]):
-
 * new language: Polish (thanks to mondstern!)
 * fixes wrong icon for clear night
 * fixes a crash possibility at app launch
-

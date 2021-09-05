@@ -1,5 +1,3 @@
-Neu in dieser Version ([VERSION]):
-
 * neue Sprache: Polnisch (Danke an mondstern!)
 * korrigiert falsches Icon für klare Nacht
 * korrigiert einen möglichen App-Absturz beim Start
