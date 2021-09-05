@@ -27,8 +27,8 @@ android {
         applicationId "de.kaffeemitkoffein.tinyweatherforecastgermany"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 28
-        versionName "0.57.0"
+        versionCode 29
+        versionName "0.57.1"
     }
 
     buildTypes {
