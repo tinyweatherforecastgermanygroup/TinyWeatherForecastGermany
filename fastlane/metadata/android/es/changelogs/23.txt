@@ -1,0 +1,2 @@
+- nuevo radar de lluvia
+- para el cálculo de la puesta y la salida del sol, se utiliza el desfase del horario de verano de la hora mostrada en lugar de la hora actual

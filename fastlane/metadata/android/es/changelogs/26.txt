@@ -1,0 +1,5 @@
+- mejora del rendimiento al girar el dispositivo
+- se han corregido varios errores:
+- algunos posibles fallos de la aplicación durante el lanzamiento
+- algunas estaciones meteorológicas no se podían seleccionar
+- algunas estaciones meteorológicas se duplicaban en las sugerencias

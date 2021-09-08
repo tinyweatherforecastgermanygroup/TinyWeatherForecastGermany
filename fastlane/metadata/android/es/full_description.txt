@@ -1,0 +1,9 @@
+Previsión meteorológica detallada para un máximo de 10 días, basada en los datos abiertos del Deutscher Wetterdienst (DWD). También se muestran los avisos meteorológicos del DWD.
+
+Se muestra la previsión meteorológica de la estación meteorológica deseada. Las estaciones pueden buscarse por nombre, por coordenadas geográficas o por la propia ubicación. Se dispone de la previsión meteorológica de más de 5.000 estaciones meteorológicas de Alemania y de todo el mundo.
+
+La aplicación tiene un diseño delgado. Opcionalmente, es compatible con los wearables a través de Gadgetbridge, de modo que los datos meteorológicos se pueden mostrar también en los wearables.
+
+Además, existen varias posibilidades para adaptar la visualización de los datos meteorológicos a sus propias necesidades. También se puede mostrar la hora del amanecer, del atardecer y del crepúsculo para el lugar elegido.
+
+La aplicación también cuenta con una lista de favoritos, que puede utilizarse para cambiar rápidamente entre varias estaciones meteorológicas. También ofrece múltiples widgets de diferentes tamaños con la previsión meteorológica que se pueden colocar en la pantalla de inicio y que se actualizan automáticamente.
