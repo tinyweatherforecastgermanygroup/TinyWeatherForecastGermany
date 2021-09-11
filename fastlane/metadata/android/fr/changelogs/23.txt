@@ -1,0 +1,2 @@
+- nouveau radar de pluie
+- pour le calcul du coucher et du lever du soleil, le décalage de l'heure d'été de l'heure affichée est utilisé au lieu de l'heure actuelle

@@ -1,0 +1,5 @@
+- amélioration des performances lors de la rotation de l'appareil
+- correction de plusieurs bogues :
+- certains plantages potentiels de l'application lors du lancement
+- certaines stations météo ne pouvaient pas être sélectionnées
+- certaines stations météo étaient doublées dans les suggestions

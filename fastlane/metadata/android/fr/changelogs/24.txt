@@ -1,0 +1,4 @@
+- nouvelle langue : français (merci à Jean-Luc !)
+- la carte des avertissements peut maintenant être zoomée
+- diverses améliorations, notamment au niveau des performances
+- plusieurs corrections de bogues

@@ -1,0 +1,5 @@
+- la recherche inclut désormais les villes, les communautés, les états fédéraux, les lacs et les zones maritimes
+- la recherche est désormais indulgente avec les trémas
+- correction des données relatives aux zones, en corrigeant les lacunes lors de l'affichage des zones maritimes et des zones côtières
+- les mises à jour ne démarrent plus lorsqu'aucune connexion internet n'est présente
+- les mises à jour automatiques des textes météorologiques peuvent être désactivées dans les options

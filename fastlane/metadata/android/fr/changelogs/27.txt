@@ -1,0 +1,9 @@
+- correction d'un bogue majeur résolvant les crashs après le lancement de l'application sur certains appareils/roms
+- changement de la source du radar de pluie du composite MX au composite MN
+- nouveaux raccourcis de l'application
+- introduction de l'affichage de l'humidité relative
+
+Nouvelles langues :
+* Italien (merci à eUgEntOptIc44, mondstern !)
+* Tchèque (merci à eUgEntOptIc44, mondstern !)
+* Norvégien Bokmål (merci à Allan Nordhøy, mondstern !)
