@@ -30,6 +30,7 @@ public class LoggingActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemePicker.SetTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logging);
         // action bar layout

@@ -36,6 +36,8 @@ public class WeatherContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, TABLE_NAME_TEXTS+"/*", 31);
         uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS, 40);
         uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS+"/*", 41);
+        uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS, 50);
+        uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS+"/*", 51);
     }
 
     @Override
