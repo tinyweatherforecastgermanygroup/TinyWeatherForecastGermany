@@ -1,0 +1,6 @@
+Versione 0.50.2:
+
+- regolata l'altezza minima dei widget per una migliore integrazione nelle dimensioni della griglia personalizzata nella schermata iniziale
+- corretto i widget che non si aggiornano prontamente alla nuova posizione in alcune circostanze
+- aggiustata l'opzione di gadgetbridge "invia l'ora corrente" non funzionante
+- corretto il servizio di aggiornamento non avviato perché l'attività non è in primo piano su dispositivi con API>25

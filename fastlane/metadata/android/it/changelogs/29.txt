@@ -1,0 +1,3 @@
+* nuova lingua: Polacco (grazie a mondstern!)
+* corregge l'icona sbagliata per la notte chiara
+* corregge una possibilità di crash all'avvio dell'app

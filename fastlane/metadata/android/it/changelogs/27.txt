@@ -1,0 +1,9 @@
+- importante bugfix che risolve i crash dopo l'avvio dell'app su alcuni dispositivi/rom
+- cambia la fonte del radar della pioggia da MX composito a MN composito
+- nuove scorciatoie per l'app
+- introduce la visualizzazione dell'umidità relativa
+
+nuove lingue:
+* italiano (grazie a eUgEntOptIc44, mondtern!)
+* Ceco (grazie a eUgEntOptIc44, lunedì!)
+* Bokmål norvegese (grazie a Allan Nordhøy, lunedì!)

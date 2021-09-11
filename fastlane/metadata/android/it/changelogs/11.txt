@@ -1,0 +1,2 @@
+- gli intervalli di previsione possono ora essere impostati: orari, 6 ore, misti (prima ora 24 ore, poi 6 ore)
+- barra opzionale che mostra i dettagli delle previsioni orarie nella previsione a 6 ore

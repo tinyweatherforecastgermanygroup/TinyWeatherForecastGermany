@@ -1,0 +1,10 @@
+* supporta diversi design (temi)
+* nuove previsioni più semplici
+* cambia la fonte del radar della pioggia da MX composite a MN composite
+* nuove scorciatoie per l'app
+* introduce la visualizzazione dell'umidità relativa
+
+nuove lingue:
+* italiano (grazie a eUgEntOptIc44, mondtern!)
+* Ceco (grazie a eUgEntOptIc44, lunedì!)
+* Bokmål norvegese (grazie a Allan Nordhøy, lunedì!)
