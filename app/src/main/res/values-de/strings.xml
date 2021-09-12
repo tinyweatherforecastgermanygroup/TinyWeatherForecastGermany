@@ -278,4 +278,8 @@
     <string name="preference_viewmodel_title">Detailgenauigkeit</string>
     <string name="preference_viewmodel_summary">Zeigt eine detaillierte oder einfache Wettervorhersage an.</string>
     <string name="widget_transparency_default">90</string>
+    <string name="logging_button_share">Teilen</string>
+    <string name="logging_comment_title">Protokoll teilen\?</string>
+    <string name="logging_comment_inputhint">Die App ist abgestürzt…</string>
+    <string name="logging_comment_hint">Sie können einen Kommentar zum Protokoll hinzu fügen, um den Fehler zu finden - bitte erklären Sie, was passiert ist:</string>
 </resources>
