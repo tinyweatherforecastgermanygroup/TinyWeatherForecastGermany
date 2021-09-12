@@ -68,7 +68,7 @@ public class LoggingActivity extends Activity {
         PrivateLog.AsyncGetLogs asyncGetLogs = new PrivateLog.AsyncGetLogs(this){
             @Override
             public void onPositiveResult(ArrayList<String> result) {
-                SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+                final SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
                 for (int i=0; i<result.size(); i++){
                     String line = result.get(i) + System.lineSeparator();
                     Spannable spannable = new SpannableString(line);
@@ -89,13 +89,23 @@ public class LoggingActivity extends Activity {
                     stringBuilder.append(spannable);
                 }
                 logs = stringBuilder.toString();
-                logview.setText(stringBuilder);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        logview.setText(stringBuilder);
+                    }
+                });
             }
 
             @Override
             public void onNegativeResult(){
                 if (logview!=null){
-                    logview.setText("No logs.");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            logview.setText("No logs.");
+                        }
+                    });
                 }
             }
         };

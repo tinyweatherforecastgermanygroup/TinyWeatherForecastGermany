@@ -62,7 +62,8 @@ public class UpdateAlarmManager {
          */
         long update_period = weatherSettings.getForecastUpdateIntervalInMillis();
         // set time for timer to equal next interval as set up by user
-        // weatherCard can be null on first app launch or after clearing memory
+        // weatherCard can be null on first app launch or after clearing memory or if station
+        // was not used before.
         // update_time_utc is used to calculate if an update from the DWD API is due.
         // long update_time_utc = Calendar.getInstance().getTimeInMillis() + update_period;
         long update_time_utc = 0; // set default to 1970 to force update if last update time is unknown
@@ -74,7 +75,8 @@ public class UpdateAlarmManager {
         long next_update_due_in_millis = VIEWS_UPDATE_INTERVAL;
         long next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
         boolean result;
-        if (    ((weatherSettings.serve_gadgetbridge) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
+        if (    ((weatherCard==null)) ||
+                ((weatherSettings.serve_gadgetbridge) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode==WIDGET_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 (update_mode==FORCE_UPDATE)){
