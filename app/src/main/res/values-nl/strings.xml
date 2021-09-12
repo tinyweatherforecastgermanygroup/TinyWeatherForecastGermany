@@ -260,4 +260,9 @@
     <string name="welcome_s4_displaytype">Kiezen hoe de weersvoorspelling moet worden weergegeven:</string>
     <string name="preference_viewmodel_title">Mate van detail</string>
     <string name="preference_viewmodel_summary">Toon een gedetailleerde of eenvoudige weersvoorspelling.</string>
+    <string name="logging_comment_title">De logs delen\?</string>
+    <string name="logging_comment_inputhint">De app is gecrasht…</string>
+    <string name="logging_comment_hint">U kunt een commentaar toevoegen aan de logs om te helpen de fout te vinden - leg uit, wat er gebeurde:</string>
+    <string name="logging_button_share">Delen</string>
+    <string name="widget_transparency_default">90</string>
 </resources>
