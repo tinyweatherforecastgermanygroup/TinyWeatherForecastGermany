@@ -38,6 +38,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -140,12 +141,13 @@ public class LoggingActivity extends Activity {
 
     public void shareLogs(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
-        builder.setTitle("Add a comment?");
+        builder.setTitle(getApplicationContext().getResources().getString(R.string.logging_comment_title));
         Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_ANNOUNCEMENT,false));
         builder.setIcon(drawable);
         LayoutInflater layoutInflater = this.getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.logcomment,null,false);
         builder.setView(view);
+        final EditText comment = (EditText) view.findViewById(R.id.logcomment_input);
         builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -162,7 +164,19 @@ public class LoggingActivity extends Activity {
                 intent.setAction(Intent.ACTION_SEND);
                 intent.setDataAndType(uri, "text/plain");
                 Log.v("TWFG","URI: "+uri.toString());
-                intent.putExtra(Intent.EXTRA_SUBJECT,"Logs");
+                String subject=getApplicationContext().getResources().getString(R.string.logging_title);
+                if (comment!=null){
+                    String s = comment.getText().toString();
+                    if (s!=null){
+                        if (s.length()>50){
+                            subject = subject+": " +s.substring(0,50)+"…";
+                        } else {
+                            subject = subject+":"  +s;
+                        }
+                    }
+                    logs = s + System.lineSeparator() + System.lineSeparator() + logs;
+                }
+                intent.putExtra(Intent.EXTRA_SUBJECT,subject);
                 intent.putExtra(Intent.EXTRA_TEXT,logs);
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     try {

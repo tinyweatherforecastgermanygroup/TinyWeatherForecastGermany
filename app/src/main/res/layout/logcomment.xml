@@ -29,23 +29,27 @@
 
         <TextView
                 android:id="@+id/logcomment_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?attr/colorText"
                 android:textSize="@dimen/warning_large"
                 android:paddingRight="@dimen/warning_ip"
-                android:text="Add a comment?"
+                android:text="@string/logging_comment_hint"
                 android:gravity="left">
         </TextView>
 
         <EditText
                 android:id="@+id/logcomment_input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
                 android:layout_below="@id/logcomment_text"
-                android:textColor="?attr/colorText"
+                android:textColor="?attr/colorTextLight"
                 android:textSize="@dimen/geo_textsize_large"
-                android:hint="you may enter something here"
-                android:inputType="text"/>
+                android:hint="@string/logging_comment_inputhint"
+                android:maxLines="50"
+                android:verticalScrollbarPosition="defaultPosition"
+                android:scrollbars="vertical"
+                android:maxHeight="80dp"
+                android:inputType="textMultiLine"/>
 
 </RelativeLayout>

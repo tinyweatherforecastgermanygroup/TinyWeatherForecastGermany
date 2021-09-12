@@ -177,6 +177,10 @@
     <string name="logging_button_back">Back</string>
     <string name="logging_button_clear">Clear Logs</string>
     <string name="logging_button_copy">Copy Logs to Clipboard</string>
+    <string name="logging_button_share">Share</string>
+    <string name="logging_comment_title">Share the logs?</string>
+    <string name="logging_comment_hint">You can add a comment to the logs to help find the error - please explain, what happened:</string>
+    <string name="logging_comment_inputhint">The app crashed…</string>
     <string name="logging_title">Logs</string>
     <string name="logging_copy_success">Logs have been copied to your clipboard.</string>
     <string name="logging_copy_fail">Copying logs to your clipboard failed!</string>
