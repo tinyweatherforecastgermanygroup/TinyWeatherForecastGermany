@@ -1,0 +1,4 @@
+- nuevo idioma: francés (¡gracias a Jean-Luc!)
+- el mapa de advertencias ahora puede ser ampliado
+- varias mejoras, por ejemplo, de rendimiento
+- múltiples correcciones de errores
