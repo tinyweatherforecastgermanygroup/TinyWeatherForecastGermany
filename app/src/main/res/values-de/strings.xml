@@ -277,4 +277,5 @@
     <string name="welcome_s4_displaytype">Wählen Sie, wie die Wettervorhersage angezeigt werden soll:</string>
     <string name="preference_viewmodel_title">Detailgenauigkeit</string>
     <string name="preference_viewmodel_summary">Zeigt eine detaillierte oder einfache Wettervorhersage an.</string>
+    <string name="widget_transparency_default">90</string>
 </resources>
