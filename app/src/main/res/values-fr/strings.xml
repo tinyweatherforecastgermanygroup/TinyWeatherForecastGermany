@@ -274,4 +274,9 @@
     <string name="welcome_s4_displaytype">Choisissez comment afficher les prévisions météorologiques :</string>
     <string name="preference_viewmodel_title">Niveau de détail</string>
     <string name="preference_viewmodel_summary">Afficher une prévision météorologique détaillée ou simple.</string>
+    <string name="logging_button_share">Partager</string>
+    <string name="logging_comment_title">Partager les registres \?</string>
+    <string name="logging_comment_hint">Vous pouvez ajouter un commentaire (de préférence en anglais) aux journaux pour aider à trouver l\'erreur - veuillez expliquer ce qui s\'est passé :</string>
+    <string name="logging_comment_inputhint">L\'application a planté…</string>
+    <string name="widget_transparency_default">90</string>
 </resources>
