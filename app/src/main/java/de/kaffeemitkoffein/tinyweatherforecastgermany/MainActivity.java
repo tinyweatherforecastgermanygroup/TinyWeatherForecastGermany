@@ -172,7 +172,7 @@ public class MainActivity extends Activity {
             Integer station_pos = stationsManager.getPositionFromDescription(station_description,true);
             if (station_pos != null) {
                 if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall + 3000 < Calendar.getInstance().getTimeInMillis())) {
-                    newWeatherRegionSelected(weatherSettings,station_description);
+                    newWeatherRegionSelected(station_description);
                     if (autoCompleteTextView != null) {
                         autoCompleteTextView.setText("");
                         autoCompleteTextView.clearListSelection();
@@ -208,7 +208,7 @@ public class MainActivity extends Activity {
             Integer station_pos = stationsManager.getPositionFromDescription(station_description,true);
             if (station_pos!=null){
                 if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
-                    newWeatherRegionSelected(weatherSettings,station_description);
+                    newWeatherRegionSelected(station_description);
                 }
             } else {
                 final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
@@ -384,7 +384,11 @@ public class MainActivity extends Activity {
                 // reload weather data if necessary
                 if (key.equals(WeatherSettings.PREF_STATION_NAME)){
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
-                    getWeatherForecast();
+                    // check if there is weather data (might be old) and display it while an update was launched above anyway
+                    CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
+                    if (weatherCard!=null){
+                        displayWeatherForecast(weatherCard);
+                    }
                     // update warnings async, but only if database of areas is ready
                     checkIfWarningsApply();
                     // notify GadgetBridge
@@ -536,10 +540,10 @@ public class MainActivity extends Activity {
         Toast.makeText(getApplicationContext(),"Error message has been copied to clipboard!",Toast.LENGTH_LONG).show();
     }
 
-    private void newWeatherRegionSelected(WeatherSettings weatherSettings, String station_description){
+    private void newWeatherRegionSelected(String station_description){
         station_description= station_description.toUpperCase();
         final String station_description2 = station_description;
-        final Context context = this.getApplicationContext();
+        final Context context = this;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -550,7 +554,8 @@ public class MainActivity extends Activity {
                 }
             }
         });
-        try {
+        if (stationsManager!=null){
+            try {
             int station_pos = stationsManager.getPositionFromDescription(station_description);
             stationsManager.setStation(station_pos);
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
@@ -558,20 +563,25 @@ public class MainActivity extends Activity {
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
             last_updateweathercall = Calendar.getInstance().getTimeInMillis();
             addToSpinner(station_description);
-        } catch (Exception e){
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error: Setting new station failed: "+e.getMessage());
-        }
-        // we do not get the forecast data here since this triggers the preference-changed-listener. This
-        // listener takes care of the weather data update and updates widgets and gadgetbridge.
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (autoCompleteTextView!=null){
-                    autoCompleteTextView.setText("");
-                    autoCompleteTextView.clearListSelection();
-                }
+            } catch (Exception e){
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error: Setting new station failed: "+e.getMessage());
             }
-        });
+            // we do not get the forecast data here since this triggers the preference-changed-listener. This
+            // listener takes care of the weather data update and updates widgets and gadgetbridge.
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (autoCompleteTextView!=null){
+                        try {
+                            autoCompleteTextView.setText("");
+                            autoCompleteTextView.clearListSelection();
+                        } catch (Exception e){
+                            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"unable to clear autoCompleteTextView");
+                        }
+                    }
+                }
+            });
+        }
     }
 
     public static class SpinnerListener implements View.OnTouchListener, AdapterView.OnItemSelectedListener{
@@ -617,7 +627,7 @@ public class MainActivity extends Activity {
                 Integer station_pos = stationsManager.getPositionFromDescription(station_description);
                 if (station_pos != null) {
                     if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))) {
-                        newWeatherRegionSelected(weatherSettings, station_description);
+                        newWeatherRegionSelected(station_description);
                     }
                 } else {
                     PrivateLog.log(context, PrivateLog.MAIN,PrivateLog.WARN, "Station from favorites not found!");
@@ -1370,15 +1380,17 @@ public class MainActivity extends Activity {
                 Integer station_pos = stationsManager.getPositionFromDescription(station_description);
                 if (station_pos!=null){
                     if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
-                        alertDialog.dismiss();
-                        newWeatherRegionSelected(weatherSettings,station_description);
-                    } else {
-                        alertDialog.dismiss();
+                        newWeatherRegionSelected(station_description);
                     }
                 } else {
-                    alertDialog.dismiss();
-                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
+                alertDialog.dismiss();
             }
         };
         listView.setOnItemClickListener(clickListener);

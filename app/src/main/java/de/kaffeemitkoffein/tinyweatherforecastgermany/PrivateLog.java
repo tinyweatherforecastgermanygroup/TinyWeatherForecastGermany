@@ -40,7 +40,7 @@ public class PrivateLog {
     public final static String LOGFILENAME="logs.txt";
     public final static String CLIPBOARD_LOGLABEL="Logs for";
     public final static String[] CLIPBOARD_MIMETYPES={"text/plain"};
-    public final static long LOG_MAX_FILESIZE = 1024 * 1024 * 1;
+    public final static long LOG_MAX_FILESIZE = 1024 * 512;
 
     public static final String MAIN = "main";
     public static final String SERVICE = "service";

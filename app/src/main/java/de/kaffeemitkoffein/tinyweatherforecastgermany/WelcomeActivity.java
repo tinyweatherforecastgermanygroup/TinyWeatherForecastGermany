@@ -313,8 +313,7 @@ public class WelcomeActivity extends Activity {
     }
 
     private void startMainActivity() {
-        // Intent i = new Intent(this, MainActivity.class);
-        Intent i = new Intent(this, LoggingActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         WeatherSettings.setAppLaunchedFlag(getApplicationContext());
         startActivity(i);
         finish();

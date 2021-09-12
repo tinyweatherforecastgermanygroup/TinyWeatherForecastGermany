@@ -34,7 +34,6 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -163,7 +162,6 @@ public class LoggingActivity extends Activity {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
                 intent.setDataAndType(uri, "text/plain");
-                Log.v("TWFG","URI: "+uri.toString());
                 String subject=getApplicationContext().getResources().getString(R.string.logging_title);
                 if (comment!=null){
                     String s = comment.getText().toString();
@@ -182,10 +180,10 @@ public class LoggingActivity extends Activity {
                     try {
                         startActivity(Intent.createChooser(intent, "share logs"));
                     } catch (ActivityNotFoundException e) {
-                        //
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"starting activity with chooser failed.");
                     }
                 } else {
-
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"there is no activity that can respond to text/plain for sharing.");
                 }
             }
         });
