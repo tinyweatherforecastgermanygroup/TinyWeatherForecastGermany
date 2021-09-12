@@ -261,4 +261,8 @@
     <string name="geoinput_wrongformat">Współrzędna nie ma poprawnego formatu. Możesz użyć adnotacji takich jak +53.12345 dla stopni lub -44.22:12.12345, aby wprowadzić stopnie i minuty lub 33.12.12345, aby wprowadzić stopnie, minuty i sekundy. Proszę spróbować ponownie.</string>
     <string name="geoinput_rationale">Usługi lokalizacyjne są potrzebne tylko raz, do znalezienia następnej stacji pogodowej. Później mogą być wyłączone. Alternatywnie, można wprowadzić współrzędne geograficzne ręcznie, aby znaleźć następną stację pogodową.</string>
     <string name="widget_transparency_default">90</string>
+    <string name="logging_comment_title">Udostępnić dzienniki\?</string>
+    <string name="logging_comment_inputhint">Aplikacja zawiesza się…</string>
+    <string name="logging_button_share">Udostępnij</string>
+    <string name="logging_comment_hint">Możesz dodać komentarz do logów, aby pomóc w znalezieniu błędu - proszę wyjaśnić, co się stało:</string>
 </resources>
