@@ -260,4 +260,9 @@
     <string name="welcome_s4_displaytype">Zvolte způsob zobrazení předpovědi počasí:</string>
     <string name="preference_viewmodel_title">Úroveň detailu</string>
     <string name="preference_viewmodel_summary">Zobrazit podrobnou nebo jednoduchou předpověď počasí.</string>
+    <string name="logging_comment_title">Sdílet protokoly\?</string>
+    <string name="logging_button_share">Sdílet</string>
+    <string name="logging_comment_inputhint">Aplikace se zhroutila…</string>
+    <string name="logging_comment_hint">Do protokolů můžete přidat komentář, který vám pomůže najít chybu - vysvětlete, co se stalo:</string>
+    <string name="widget_transparency_default">90</string>
 </resources>
