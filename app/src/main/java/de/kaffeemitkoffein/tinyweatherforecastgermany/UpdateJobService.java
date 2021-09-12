@@ -33,7 +33,7 @@ public class UpdateJobService extends JobService{
         intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         intent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
         sendBroadcast(intent);
-        PrivateLog.log(this,Tag.UPDATEJOBSERVICE," called, sent broadcast, terminating.");
+        PrivateLog.log(this,PrivateLog.UPDATER,PrivateLog.INFO," UpdateJobService called, sent broadcast, terminating.");
         return false;
     }
 

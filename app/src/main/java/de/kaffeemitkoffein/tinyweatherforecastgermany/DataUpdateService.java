@@ -75,7 +75,7 @@ public class DataUpdateService extends Service {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void stopThisService(){
-        PrivateLog.log(this,Tag.SERVICE2,"Shutting down service...");
+        PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Shutting down service...");
         Intent intent = new Intent();
         intent.setAction(HIDE_PROGRESS);
         sendBroadcast(intent);
@@ -93,12 +93,12 @@ public class DataUpdateService extends Service {
 
     @Override
     public void onCreate(){
-        PrivateLog.log(this,Tag.SERVICE2,"DataUpdateService started: onCreate");
+        PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Service started.");
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         notification_id = (int) Calendar.getInstance().getTimeInMillis();
         notification = getNotification();
         startForeground(notification_id,notification);
-        PrivateLog.log(this,Tag.SERVICE2,"DataUpdateService is foreground now");
+        PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Service is foreground now.");
         serviceStarted = false;
     }
 
@@ -115,7 +115,6 @@ public class DataUpdateService extends Service {
                 boolean updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
                 boolean updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
                 boolean updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
-                PrivateLog.log(this,Tag.SERVICE2,"update Warnings: "+updateWarnings);
                 // create single thread
                 final Executor executor = Executors.newSingleThreadExecutor();
                 // put
@@ -145,13 +144,13 @@ public class DataUpdateService extends Service {
                             Intent intent = new Intent();
                             intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
                             sendBroadcast(intent);
-                            PrivateLog.log(context,Tag.SERVICE2,"Weather update: success");
+                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.INFO,"Weather update: success");
                         }
                         @Override
                         public void onNegativeResult(){
-                            PrivateLog.log(context,Tag.SERVICE2,"Weather update: failed, error.");
+                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Weather update: failed, error.");
                             if (ssl_exception){
-                                PrivateLog.log(context,Tag.SERVICE2,"SSL exception detected by service.");
+                                PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"SSL exception detected by service.");
                                 Intent ssl_intent = new Intent();
                                 ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
                                 sendBroadcast(ssl_intent);
@@ -175,7 +174,7 @@ public class DataUpdateService extends Service {
                         @Override
                         public void onPositiveResult(ArrayList<WeatherWarning> warnings){
                             super.onPositiveResult(warnings);
-                            PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings updated successfully.");
+                            PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.INFO,"Warnings updated successfully.");
                             // trigger update of views in activity
                             Intent intent = new Intent();
                             intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
@@ -184,7 +183,7 @@ public class DataUpdateService extends Service {
                         }
                         public void onNegativeResult(){
                             // trigger update of views in activity
-                            PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
+                            PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.ERR,"Getting warnings failed.");
                             Intent intent = new Intent();
                             intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
                             intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
@@ -214,7 +213,7 @@ public class DataUpdateService extends Service {
                 executor.execute(serviceTerminationRunnable);
             } else {
                 // terminate immediately, because no intent with tasks delivered and/or no internet connection.
-                PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Getting warnings failed.");
+                PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.WARN,"Nothing to do, service received no tasks and/or no internet connection available.");
                 Intent i = new Intent();
                 i.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
                 i.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
@@ -222,6 +221,7 @@ public class DataUpdateService extends Service {
                 stopThisService();
             }
         } else {
+            PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.INFO,"Service already running.");
             // terminate, because service is already running
         }
         return START_NOT_STICKY;
@@ -234,7 +234,7 @@ public class DataUpdateService extends Service {
         Intent progressbar_intent = new Intent();
         progressbar_intent.setAction(MainActivity.MAINAPP_HIDE_PROGRESS);
         sendBroadcast(progressbar_intent);
-        PrivateLog.log(this,Tag.SERVICE2,"destroyed.");
+        PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Service destroyed.");
     }
 
     @Deprecated

@@ -19,20 +19,45 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.*;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 public class LoggingActivity extends Activity {
+
+    Executor executor;
+    String logs;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = getApplicationContext();
         ThemePicker.SetTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logging);
+        executor = Executors.newSingleThreadExecutor();
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
@@ -42,8 +67,29 @@ public class LoggingActivity extends Activity {
         // Read the logs asynchronously
         PrivateLog.AsyncGetLogs asyncGetLogs = new PrivateLog.AsyncGetLogs(this){
             @Override
-            public void onPositiveResult(String result) {
-                logview.setText(result);
+            public void onPositiveResult(ArrayList<String> result) {
+                SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+                for (int i=0; i<result.size(); i++){
+                    String line = result.get(i) + System.lineSeparator();
+                    Spannable spannable = new SpannableString(line);
+                    int color = Color.WHITE;
+                    if (result.get(i).contains("[0]")){
+                        color = Color.GREEN;
+                    }
+                    if (result.get(i).contains("[1]")){
+                        color = Color.YELLOW;
+                    }
+                    if (result.get(i).contains("[2]")){
+                        color = Color.RED;
+                    }
+                    if (result.get(i).contains("[3]")){
+                        color = Color.MAGENTA;
+                    }
+                    spannable.setSpan(new ForegroundColorSpan(color),0,spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    stringBuilder.append(spannable);
+                }
+                logs = stringBuilder.toString();
+                logview.setText(stringBuilder);
             }
 
             @Override
@@ -53,7 +99,7 @@ public class LoggingActivity extends Activity {
                 }
             }
         };
-        asyncGetLogs.execute();
+        executor.execute(asyncGetLogs);
         // register buttons
         final Button button_back = (Button) findViewById(R.id.logging_button_back);
         button_back.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +128,55 @@ public class LoggingActivity extends Activity {
                 }
             }
         });
+
+        final Button button_share = (Button) findViewById(R.id.logging_button_share);
+        button_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareLogs();
+            }
+        });
+    }
+
+    public void shareLogs(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
+        builder.setTitle("Add a comment?");
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_ANNOUNCEMENT,false));
+        builder.setIcon(drawable);
+        LayoutInflater layoutInflater = this.getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.logcomment,null,false);
+        builder.setView(view);
+        builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // do nothing
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton(R.string.alertdialog_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                Uri uri = PrivateLog.getLogUri(getApplicationContext());
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.setDataAndType(uri, "text/plain");
+                Log.v("TWFG","URI: "+uri.toString());
+                intent.putExtra(Intent.EXTRA_SUBJECT,"Logs");
+                intent.putExtra(Intent.EXTRA_TEXT,logs);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    try {
+                        startActivity(Intent.createChooser(intent, "share logs"));
+                    } catch (ActivityNotFoundException e) {
+                        //
+                    }
+                } else {
+
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }

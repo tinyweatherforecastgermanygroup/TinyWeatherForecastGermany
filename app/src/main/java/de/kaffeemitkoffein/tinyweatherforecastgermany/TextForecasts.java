@@ -91,7 +91,7 @@ public class TextForecasts {
             Collections.sort(textForecasts);
             Collections.reverse(textForecasts);
         } catch (Exception e) {
-            PrivateLog.log(context,Tag.TEXTS,"database error when getting texts: "+e.getMessage());
+            PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.ERR,"database error when getting texts: "+e.getMessage());
         }
         return textForecasts;
     }
@@ -121,7 +121,7 @@ public class TextForecasts {
     public static void eraseTextForecastDatabase(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         int i = contentResolver.delete(TextForecastContentProvider.URI_TEXTDATA,null,null);
-        PrivateLog.log(context,Tag.TEXTS,i+" text forecasts removed from database.");
+        PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,i+" text forecasts removed from database.");
     }
 
     public static void cleanTextForecastDatabase(Context context){

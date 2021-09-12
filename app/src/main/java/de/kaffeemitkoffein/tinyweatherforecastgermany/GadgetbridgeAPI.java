@@ -118,10 +118,10 @@ public class GadgetbridgeAPI {
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             intent.setAction(WEATHER_ACTION);
             context.sendBroadcast(intent);
-            PrivateLog.log(context,Tag.GB,"Sent weather broadcast to GadgetBridge:");
-            PrivateLog.log(context,Tag.GB,"+-> package name: "+weatherSettings.gadgetbridge_packagename);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Sent weather broadcast to GadgetBridge:");
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"+-> package name: "+weatherSettings.gadgetbridge_packagename);
         } else {
-            PrivateLog.log(context,Tag.GB,"GadgetBridge could not be served because there is no weather data.");
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.ERR,"GadgetBridge could not be served because there is no weather data.");
         }
     }
 

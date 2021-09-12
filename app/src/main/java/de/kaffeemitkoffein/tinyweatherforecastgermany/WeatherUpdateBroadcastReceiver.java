@@ -29,15 +29,15 @@ public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        PrivateLog.log(context,Tag.WUBR,"received a broadcast.");
+        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"received a broadcast to update weather data.");
         if (intent != null) {
-            PrivateLog.log(context,Tag.WUBR,"+-> intent not null.");
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"+-> intent not null.");
             String action = intent.getAction();
             if (action != null){
-                PrivateLog.log(context,Tag.WUBR,"+-> intent has action.");
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"+-> intent has an action.");
             }
             if (intent.getAction().equals(UPDATE_ACTION)) {
-                PrivateLog.log(context,Tag.WUBR,"+-> action is a update request.");
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"+-> action is a update request.");
                 UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.CHECK_FOR_UPDATE);
             }
         }

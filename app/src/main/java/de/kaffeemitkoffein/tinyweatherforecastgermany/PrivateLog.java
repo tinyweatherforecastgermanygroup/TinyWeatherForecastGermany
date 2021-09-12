@@ -22,19 +22,17 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -42,6 +40,24 @@ public class PrivateLog {
     public final static String LOGFILENAME="logs.txt";
     public final static String CLIPBOARD_LOGLABEL="Logs for";
     public final static String[] CLIPBOARD_MIMETYPES={"text/plain"};
+    public final static long LOG_MAX_FILESIZE = 1024 * 1024 * 1;
+
+    public static final String MAIN = "main";
+    public static final String SERVICE = "service";
+    public static final String ONBOOT = "onboot";
+    public static final String GB = "wearable";
+    public static final String UPDATER = "updater";
+    public static final String DATA = "data";
+    public static final String WARNINGS = "warnings";
+    public static final String WIDGET = "widget";
+    public static final String TEXTS = "texts";
+    public static final String STATIONS = "stations";
+    public static final String RADAR  = "radar";
+
+    public static final int INFO = 0;
+    public static final int WARN = 1;
+    public static final int ERR  = 2;
+    public static final int FATAL = 3;
 
     private static boolean loggingEnabled(Context context){
         WeatherSettings weatherSettings = new WeatherSettings(context);
@@ -71,13 +87,37 @@ public class PrivateLog {
         }
     }
 
-    public static boolean log(Context context, String s){
+    public static ArrayList<String> getLogsList(Context context){
+        try {
+            FileInputStream fileInputStream = new FileInputStream(context.getFileStreamPath(LOGFILENAME));
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuilder stringBuilder = new StringBuilder();
+            ArrayList<String> logList = new ArrayList<String>();
+            String line;
+            int length;
+            while ((line = bufferedReader.readLine()) != null) {
+                logList.add(line);
+            }
+            fileInputStream.close();
+            return logList;
+        } catch (Exception e){
+            return null;
+        }
+    }
+
+    private static boolean log(Context context, String s){
         if (loggingEnabled(context)) {
             if (logToLogcat(context)){
                 Log.v("TWFG",s);
             }
             File path = context.getFilesDir();
             File logfile = new File(path,LOGFILENAME);
+            long logsize = logfile.length();
+            Log.v("TWFG","Logsize:"+logsize+" bytes");
+            if (logsize > LOG_MAX_FILESIZE){
+                logfile.delete();
+            }
             if (!logfile.exists()){
                 try {
                     if (logfile.createNewFile()){
@@ -118,8 +158,16 @@ public class PrivateLog {
         }
     }
 
-    public static boolean log(Context context,String tag, String s){
-        return log(context,tag.toUpperCase()+": "+s);
+    public static boolean log(Context context,String tag, int severity, String s){
+        /*
+        switch (severity){
+            case WARN: severityText="WARN"; break;
+            case ERR: severityText="ERR"; break;
+            case FATAL: severityText="FATAL"; break;
+            default: severityText="INFO";
+        }
+         */
+        return log(context,tag.toUpperCase()+" ["+severity+"] "+s);
     }
 
     public static boolean copyLogsToClipboard(Context context){
@@ -140,7 +188,12 @@ public class PrivateLog {
         return file.delete();
     }
 
-    public static class AsyncGetLogs extends AsyncTask<Void, Void, String> {
+    public static Uri getLogUri(Context context){
+        File file = new File(context.getFilesDir().getAbsolutePath(),LOGFILENAME);
+        return Uri.parse(file.toString());
+    }
+
+    public static class AsyncGetLogs implements Runnable {
 
         private Context context;
 
@@ -148,23 +201,19 @@ public class PrivateLog {
             this.context = context;
         }
 
-        @Override
-        protected String doInBackground(Void... voids) {
-            String result = getLogs(context);
-            return result;
-        }
-
         public void onNegativeResult(){
         }
 
-        public void onPositiveResult(String result) {
+        public void onPositiveResult(ArrayList<String> result) {
         }
 
-        protected void onPostExecute(String result) {
-            if (result != null){
-                onPositiveResult(result);
-            } else {
+        @Override
+        public void run() {
+            ArrayList<String> logs = getLogsList(context);
+            if (logs==null){
                 onNegativeResult();
+            } else {
+                onPositiveResult(logs);
             }
         }
     }

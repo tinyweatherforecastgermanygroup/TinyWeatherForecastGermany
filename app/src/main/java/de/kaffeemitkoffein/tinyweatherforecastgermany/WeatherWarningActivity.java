@@ -121,7 +121,7 @@ public class WeatherWarningActivity extends Activity {
         if (germany==null){
             germany = (ImageView) findViewById(R.id.warningactivity_map);
         }
-        //updateWarningsIfNeeded();
+        PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"app resumed.");
         super.onResume();
     }
 
@@ -129,15 +129,17 @@ public class WeatherWarningActivity extends Activity {
     protected void onPause(){
         unregisterReceiver(receiver);
         super.onPause();
+        PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"app paused.");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         context = getApplicationContext();
+        PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"WeatherWarningActivity started.");
         try {
             ThemePicker.SetTheme(this);
         } catch (Exception e){
-            PrivateLog.log(context,"Error setting theme.");
+            PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Error setting theme in WeatherWarnings activity.");
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weatherwarning);
@@ -220,7 +222,7 @@ public class WeatherWarningActivity extends Activity {
                 };
                 executor.execute(radarMNGeoserverRunnable);
             }
-            PrivateLog.log(this, Tag.MAIN, "starting update of weather warnings");
+            PrivateLog.log(this, PrivateLog.WARNINGS,PrivateLog.INFO, "starting update of weather warnings");
             if (UpdateAlarmManager.updateWarnings(getApplicationContext(),true)){
                 // returns true if update service was launched successfully
                showProgressBar();
@@ -286,10 +288,10 @@ public class WeatherWarningActivity extends Activity {
 
     private void updateWarningsIfNeeded(){
         if (WeatherSettings.areWarningsOutdated(getApplicationContext())){
-            PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings outdated, getting new ones.");
+            PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"Warnings outdated, getting new ones.");
             UpdateAlarmManager.updateWarnings(getApplicationContext(),false);
         } else {
-            PrivateLog.log(getApplicationContext(),Tag.WARNINGS,"Warnings not outdated, recycling.");
+            PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"Warnings not outdated, recycling.");
             if (germany==null){
                 germany = (ImageView) findViewById(R.id.warningactivity_map);
             }

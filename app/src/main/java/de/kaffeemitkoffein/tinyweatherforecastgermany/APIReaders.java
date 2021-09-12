@@ -45,7 +45,7 @@ public class APIReaders {
                    Date date = kml_dateFormat.parse(source);
                    return date.getTime();
                } catch (ParseException e){
-                   PrivateLog.log(context,Tag.WARNINGS,"Malformed timestamp ("+source+"):"+e.getMessage());
+                   PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Malformed timestamp in warning ("+source+"):"+e.getMessage());
                    return 0;
                }
            }
@@ -284,14 +284,14 @@ public class APIReaders {
                    try {
                        HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
                        InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
-                       PrivateLog.log(context,Tag.SERVICE2,"Warning: weather warnings are polled over http without encryption.");
+                       PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"Warning: weather warnings are polled over http without encryption.");
                        return inputStream;
                    } catch (IOException e2){
-                       PrivateLog.log(context,Tag.SERVICE2,"Reading weather warnings via http failed: "+e2.getMessage());
+                       PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Reading weather warnings via http failed: "+e2.getMessage());
                        throw e2;
                    }
                } else {
-                   PrivateLog.log(context,Tag.SERVICE2,"Error: ssl connection could not be established, but http is not allowed.");
+                   PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"ssl connection could not be established, but http is not allowed.");
                    throw e;
                }
            }
@@ -319,18 +319,18 @@ public class APIReaders {
                        WeatherWarning warning = parseWarning(stringBuffer.toString());
                        warnings.add(warning);
                    } catch (ParserConfigurationException e){
-                       PrivateLog.log(context,Tag.WARNINGS,"Could not configure parser, skipping a warning:"+e.getMessage());
+                       PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Could not configure parser, skipping a warning:"+e.getMessage());
                    } catch (IOException e){
-                       PrivateLog.log(context,Tag.WARNINGS,"I/O Error, skipping a warning:"+e.getMessage());
+                       PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"I/O Error, skipping a warning:"+e.getMessage());
                    } catch (SAXException e){
-                       PrivateLog.log(context,Tag.WARNINGS,"Possibly malformed warning, skipping a warning:"+e.getMessage());
+                       PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Possibly malformed warning, skipping a warning:"+e.getMessage());
                    }
                }
            } catch (MalformedURLException e){
-               PrivateLog.log(context,Tag.WARNINGS,"Malformed URL for DWD resource:"+e.getMessage());
+               PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Malformed URL for DWD resource:"+e.getMessage());
                return null;
            } catch (IOException e){
-               PrivateLog.log(context,Tag.WARNINGS,"Unable to open DWD stream:"+e.getMessage());
+               PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Unable to open DWD stream:"+e.getMessage());
                return null;
            }
            return warnings;
@@ -360,7 +360,7 @@ public class APIReaders {
                WeatherWarnings.writeWarningsToDatabase(context,warnings);
                onPositiveResult(warnings);
            } else {
-               PrivateLog.log(context,Tag.WARNINGS,"Fatal: warnings failed.");
+               PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"getting warnings failed.");
                onNegativeResult();
            }
        }
@@ -429,13 +429,13 @@ public class APIReaders {
                     try {
                         HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
                         InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
-                        PrivateLog.log(context,Tag.SERVICE2,"Warning: weather data is polled over http without encryption.");
+                        PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"weather data is polled over http without encryption.");
                         return inputStream;
                     } catch (IOException e2){
                         throw e2;
                     }
                 } else {
-                    PrivateLog.log(context,Tag.SERVICE2,"Error: ssl connection could not be established, but http is not allowed.");
+                    PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Error: ssl connection could not be established, but http is not allowed.");
                     throw e;
                 }
             } catch (Exception e){
@@ -603,7 +603,7 @@ public class APIReaders {
                             case "PEvap": rawWeatherInfo.PEvap = assigntoRaw(element); break;
                         }
                     }
-                    PrivateLog.log(context,"Elements read: "+rawWeatherInfo.elements);
+                    PrivateLog.log(context, PrivateLog.DATA,PrivateLog.INFO,"Weather elements read: "+rawWeatherInfo.elements);
                     return rawWeatherInfo;
                 } catch (Exception e){
                     // nothing to do
@@ -622,7 +622,7 @@ public class APIReaders {
 
         public void onNegativeResult(){
             // do nothing at the moment.
-            PrivateLog.log(context,Tag.SERVICE2,"Failed getting data!");
+            PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Failed getting forecast data!");
         }
 
         /*
@@ -640,7 +640,6 @@ public class APIReaders {
         }
 
         private void onPostExecute(RawWeatherInfo rawWeatherInfo) {
-            PrivateLog.log(context,Tag.SERVICE2,"Postexecute reached.");
             if (rawWeatherInfo == null) {
                 onNegativeResult();
             } else {
@@ -761,7 +760,7 @@ public class APIReaders {
             ArrayList<TextForecast> textForecasts = getTextForecastMetadata();
             // determine which texts are new
             ArrayList<TextForecast> newTextForecasts = TextForecasts.getNewTextForecasts(context,textForecasts);
-            PrivateLog.log(context,Tag.TEXTS,newTextForecasts.size()+ " new texts found in "+textForecasts.size()+ " available online.");
+            PrivateLog.log(context,PrivateLog.DATA,PrivateLog.INFO,newTextForecasts.size()+ " new texts found in "+textForecasts.size()+ " available online.");
             for (int i=0;i<newTextForecasts.size(); i++){
                 // read text data from web and parse
                newTextForecasts.get(i).parse(getTextFromUrl(newTextForecasts.get(i).getUrlString()));
@@ -805,13 +804,13 @@ public class APIReaders {
                     try {
                         HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
                         InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
-                        PrivateLog.log(context,Tag.SERVICE2,"Warning: weather data is polled over http without encryption.");
+                        PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"weather data is polled over http without encryption.");
                         return inputStream;
                     } catch (IOException e2){
                         throw e2;
                     }
                 } else {
-                    PrivateLog.log(context,Tag.SERVICE2,"Error: ssl connection could not be established, but http is not allowed.");
+                    PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"ssl connection could not be established, but http is not allowed.");
                     throw e;
                 }
             } catch (Exception e){
@@ -946,13 +945,13 @@ public class APIReaders {
                     try {
                         HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
                         InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
-                        PrivateLog.log(context,Tag.SERVICE2,"Warning: MN radar data is polled over http without encryption.");
+                        PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"MN radar data is polled over http without encryption.");
                         return inputStream;
                     } catch (IOException e2){
                         throw e2;
                     }
                 } else {
-                    PrivateLog.log(context,Tag.SERVICE2,"Error: ssl connection could not be established, but http is not allowed.");
+                    PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Error: ssl connection could not be established, but http is not allowed.");
                     throw e;
                 }
             } catch (Exception e){

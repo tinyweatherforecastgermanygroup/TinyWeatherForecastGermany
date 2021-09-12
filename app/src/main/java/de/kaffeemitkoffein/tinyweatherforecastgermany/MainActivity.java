@@ -58,7 +58,6 @@ public class MainActivity extends Activity {
 
     private final static String SIS_ABOUT_DIALOG_STATE="ABOUT_DIALOG_VISIBLE";
     private final static String SIS_WHATSNEW_DIALOG_STATE="WHATSNEW_DIALOG_VISIBLE";
-
     public final static String MAINAPP_CUSTOM_REFRESH_ACTION = "MAINAPP_CUSTOM_ACTION_REFRESH";
     public final static String MAINAPP_SSL_ERROR = "MAINAPP_SSL_ERROR";
     public final static String MAINAPP_SHOW_PROGRESS = "SHOW_PROGRESS";
@@ -97,6 +96,7 @@ public class MainActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
+                PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"received broadcast => custom refresh action");
                 displayWeatherForecast();
                 forceWeatherUpdateFlag = false;
                 if (API_TESTING_ENABLED){
@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
                 }
             }
             if (intent.getAction().equals(MAINAPP_SSL_ERROR)){
-                PrivateLog.log(getApplicationContext(),Tag.MAIN,"ssl error intent received by main app.");
+                PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"received broadcast => ssl error intent received by main app.");
                 if ((!WeatherSettings.isTLSdisabled(context)) && (Build.VERSION.SDK_INT < 28)){
                     AlertDialog.Builder builder = new AlertDialog.Builder(context,0);
                     builder.setTitle(context.getResources().getString(R.string.connerror_title));
@@ -124,6 +124,8 @@ public class MainActivity extends Activity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             WeatherSettings.setDisableTLS(getApplicationContext(),true);
                             // re-launch the weather update via http
+                            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"SSL disabled permanently due to errors.");
+                            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"re-launching weather update.");
                             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
                             dialogInterface.dismiss();
                         }
@@ -145,6 +147,7 @@ public class MainActivity extends Activity {
                 }
             }
             if (intent.getAction().equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE)){
+                PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"broadcast received => new weather warnings.");
                 checkIfWarningsApply();
                 if (forceWeatherUpdateFlag){
                     UpdateAlarmManager.startDataUpdateService(getApplicationContext(),true,false,true);
@@ -179,7 +182,7 @@ public class MainActivity extends Activity {
                         imm.hideSoftInputFromWindow(autoCompleteTextView.getWindowToken(),0);
                         imm.hideSoftInputFromWindow(view.getWindowToken(),0);
                     } catch (Exception e){
-                        PrivateLog.log(context,Tag.MAIN,"Warning: hiding soft keyboard failed.");
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Warning: hiding soft keyboard failed.");
                     }
                 }
             } else {
@@ -191,7 +194,7 @@ public class MainActivity extends Activity {
                     try {
                         Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
                     } catch (Exception e){
-                        PrivateLog.log(context,Tag.MAIN,"Error: station does not exist.");
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error: station does not exist.");
                     }
                 }
             }
@@ -216,7 +219,7 @@ public class MainActivity extends Activity {
                     try {
                       Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
                     } catch (Exception e){
-                      PrivateLog.log(context,Tag.MAIN,"Error: station does not exist.");
+                      PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error: station does not exist.");
                     }
                 }
             }
@@ -247,6 +250,7 @@ public class MainActivity extends Activity {
         cancelAnyOpenDialogs();
         unregisterReceiver(receiver);
         stopGPSLocationSearch();
+        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app paused.");
         super.onPause();
     }
 
@@ -259,6 +263,7 @@ public class MainActivity extends Activity {
 
     @Override
     public void onRestoreInstanceState(Bundle restoreInstanceState){
+        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"restoring instance state.");
         aboutDiaglogVisible   = restoreInstanceState.getBoolean(SIS_ABOUT_DIALOG_STATE);
         whatsNewDialogVisible = restoreInstanceState.getBoolean(SIS_WHATSNEW_DIALOG_STATE);
         if (aboutDiaglogVisible){
@@ -271,6 +276,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onResume(){
+        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app resumed.");
         registerForBroadcast();
         // this is necessary if the update of weather data occurs while the app is in the background
         try {
@@ -278,18 +284,18 @@ public class MainActivity extends Activity {
                 weatherCard = new Weather().getCurrentWeatherInfo(this);
             }
         } catch (Exception e){
-            PrivateLog.log(getApplicationContext(),Tag.MAIN,"Error in onResume when getting weather: "+e.getMessage());
+            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when getting weather: "+e.getMessage());
         }
         try {
             checkIfWarningsAreOutdated();
         } catch (Exception e){
-            PrivateLog.log(getApplicationContext(),Tag.MAIN,"Error in onResume when checking for warnings: "+e.getMessage());
+            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when checking for warnings: "+e.getMessage());
         }
         if (weatherCard!=null){
             try {
                 displayWeatherForecast(weatherCard);
             } catch (Exception e){
-                PrivateLog.log(getApplicationContext(),Tag.MAIN,"Error in onResume when displaying weather: "+e.getMessage());
+                PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when displaying weather: "+e.getMessage());
             }
         }
         super.onResume();
@@ -298,6 +304,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app instance destroyed.");
         cancelAnyOpenDialogs();
     }
 
@@ -319,6 +326,7 @@ public class MainActivity extends Activity {
         context = getApplicationContext();
         ThemePicker.SetTheme(this);
         super.onCreate(savedInstanceState);
+        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
         setContentView(R.layout.activity_main);
         stationsManager = new StationsManager(context);
         /*
@@ -333,7 +341,7 @@ public class MainActivity extends Activity {
             WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
             AreaContentProvider.checkForDatabaseUpgrade(getApplicationContext());
         } catch (Exception e){
-            PrivateLog.log(context,Tag.MAIN,"Error checking/upgrading database!");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error checking/upgrading database!");
         }
         // action bar layout
         ActionBar actionBar = getActionBar();
@@ -343,12 +351,12 @@ public class MainActivity extends Activity {
         try {
             loadStationsData();
         } catch (Exception e){
-            PrivateLog.log(context,Tag.MAIN,"Error loading stations data!");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
         }
         try {
             prepareAreaDatabase();
         } catch (Exception e){
-            PrivateLog.log(context,Tag.MAIN,"Preparing database failed on main thread.");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Preparing database failed on main thread.");
         }
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
@@ -364,11 +372,12 @@ public class MainActivity extends Activity {
         try {
             loadStationsSpinner();
         } catch (Exception e){
-            PrivateLog.log(context,Tag.MAIN,"Error loading StationSpinner!");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading StationSpinner!");
         }
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"preference change detected.");
                 if (key.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (key.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
                     WidgetRefresher.refresh(context.getApplicationContext());
                 }
@@ -423,7 +432,7 @@ public class MainActivity extends Activity {
         try {
             weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
         } catch (Exception e){
-            PrivateLog.log(context,Tag.MAIN,"Error loading present weather data: "+e.getMessage());
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
         }
         // get new data from api or display present data.
         if (!API_TESTING_ENABLED){
@@ -481,9 +490,13 @@ public class MainActivity extends Activity {
                                         launchStationSearchByLocation(own_location);
                                     } catch (Exception e){
                                         // invalid geo coordinates
+                                        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"received geo intent, but unable to read it: "+e.getMessage());
+                                        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"geo content was: "+received_geolocation);
                                         Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.georeceive_error),Toast.LENGTH_LONG).show();
                                     }
                                 } catch (IndexOutOfBoundsException e){
+                                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"received geo intent, but unable to parse it poroperly: "+e.getMessage());
+                                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"geo content was: "+received_geolocation);
                                     // invalid geo-string (uri)
                                     Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.georeceive_error),Toast.LENGTH_LONG).show();
                                 }
@@ -533,20 +546,20 @@ public class MainActivity extends Activity {
                 try {
                     Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+station_description2,Toast.LENGTH_LONG).show();
                 } catch (Exception e){
-                    PrivateLog.log(context,Tag.MAIN,"Warning: new station message failed.");
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Warning: new station message failed.");
                 }
             }
         });
         try {
             int station_pos = stationsManager.getPositionFromDescription(station_description);
             stationsManager.setStation(station_pos);
-            PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
-            PrivateLog.log(context,Tag.MAIN,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
-            PrivateLog.log(context,Tag.MAIN,"-----------------------------------");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
             last_updateweathercall = Calendar.getInstance().getTimeInMillis();
             addToSpinner(station_description);
         } catch (Exception e){
-            PrivateLog.log(context,Tag.MAIN,"Error: Setting new station failed: "+e.getMessage());
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error: Setting new station failed: "+e.getMessage());
         }
         // we do not get the forecast data here since this triggers the preference-changed-listener. This
         // listener takes care of the weather data update and updates widgets and gadgetbridge.
@@ -607,7 +620,7 @@ public class MainActivity extends Activity {
                         newWeatherRegionSelected(weatherSettings, station_description);
                     }
                 } else {
-                    PrivateLog.log(context, Tag.MAIN, "Station from favorites not found!");
+                    PrivateLog.log(context, PrivateLog.MAIN,PrivateLog.WARN, "Station from favorites not found!");
                     loadStationsSpinner();
                 }
                 super.handleItemSelected(adapterView, view, pos, l);
@@ -750,6 +763,7 @@ public class MainActivity extends Activity {
                         " Long.: "+new DecimalFormat("0.00").format(weatherSettings.station_longitude)+
                         " Alt.: "+new DecimalFormat("0.00").format(weatherSettings.station_altitude));
             } catch (Exception e){
+                PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"parsing geo coordinates of station failed: "+e.getMessage());
                 textView_station_geo.setText("-");
             }
         } else {
@@ -860,13 +874,16 @@ public class MainActivity extends Activity {
 
     private void checkIfWarningsAreOutdated(){
         if (WeatherSettings.areWarningsOutdated(context) && WeatherSettings.updateWarnings(context)){
+            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Warnings are outdated and need an update.");
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
+                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Triggering update...");
                     UpdateAlarmManager.updateWarnings(context,false);
                 }
             });
         } else {
+            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Warnings are up to date.");
             checkIfWarningsApply();
         }
     }
@@ -906,6 +923,9 @@ public class MainActivity extends Activity {
                     // this is a hack to disable the icon-in-menu-feature permanently if it fails on some devices.
                     // A flag is set in the settings and the app is force-restarted with an intent.
                     // this should only happen once at the first app launch, if ever.
+                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.FATAL,"The icon-in-menu feature failed.");
+                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.FATAL,"DISABLING this feature permanently!");
+                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.FATAL,"=> This needs an app relaunch, this is being triggered now.");
                     WeatherSettings.setForceNoMenuIconsFlag(getApplicationContext(),true);
                     Intent i = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(i);
@@ -949,7 +969,7 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem mi){
         int item_id = mi.getItemId();
         if (item_id == R.id.menu_refresh){
-            PrivateLog.log(this,Tag.MAIN,"user requests update => force update");
+            PrivateLog.log(this,PrivateLog.MAIN,PrivateLog.INFO,"user requests update => force update");
             forcedWeatherUpdate();
             return true;
         }
@@ -1028,6 +1048,7 @@ public class MainActivity extends Activity {
             textView.setText(text);
         } catch (IOException e) {
             textView.setText("Error: "+e.getMessage());
+            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Showing the about dialog failed.");
         }
     }
 
@@ -1067,10 +1088,12 @@ public class MainActivity extends Activity {
             textView.setText(text);
         } catch (IOException e) {
             textView.setText("Error.");
+            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Showing the what-is-new dialog failed.");
         }
     }
 
     public static void deleteAreaDatabase(Context context){
+        PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"Area database has been cleared.");
         ContentResolver contentResolver = context.getContentResolver();
         contentResolver.delete(AreaContentProvider.URI_AREADATA,null,null);
     }
@@ -1078,17 +1101,21 @@ public class MainActivity extends Activity {
     private void prepareAreaDatabase(){
         if (WeatherSettings.areWarningsDisabled(this)){
             deleteAreaDatabase(this);
+            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"Area database will not be prepared because weather warnings are disabled.");
             return;
         }
         // delete area database if it is too big due to some database errors. It will be
         // recreated then.
         if (Areas.getAreaDatabaseSize(getApplicationContext())>Areas.AreaDatabaseCreator.DATABASE_SIZE){
+            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Area database size is: "+Areas.getAreaDatabaseSize(getApplicationContext())+", expected: "+Areas.AreaDatabaseCreator.DATABASE_SIZE);
+            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Area database will be cleared...");
             deleteAreaDatabase(this);
         }
         // update area database if:
         // a) database does not exist
         // b) if sql database is outdated
         if ((!Areas.doesAreaDatabaseExist(this)) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(this))){
+            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Start building area database...");
             // Lock screen rotation during database processing to prevent activity being destroyed
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             final RelativeLayout main_area_progress_holder = (RelativeLayout) findViewById(R.id.main_area_progress_holder);
@@ -1114,6 +1141,7 @@ public class MainActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"Area database has been built successfully.");
                             // Allow screen rotation within this app again
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                             main_area_progress_holder.setVisibility(View.GONE);
@@ -1168,7 +1196,7 @@ public class MainActivity extends Activity {
                 builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        PrivateLog.log(context,Tag.MAIN,"Logging to logcat is being disabled...");
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Logging to logcat is being disabled...");
                         WeatherSettings weatherSettings = new WeatherSettings(context);
                         weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT,WeatherSettings.PREF_LOG_TO_LOGCAT_DEFAULT);
                         Toast.makeText(context,context.getResources().getString(R.string.alertdialog_2_toast),Toast.LENGTH_LONG).show();
@@ -1228,6 +1256,7 @@ public class MainActivity extends Activity {
                             showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongvalue));
                         }
                     } catch (Exception e) {
+                        PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Error parsing geo input: "+e.getMessage());
                         showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongformat));
                     }
                 }
@@ -1362,6 +1391,7 @@ public class MainActivity extends Activity {
             if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             {
                // permission not granted
+                PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"No location permission granted by user.");
                 return false;
             }
             else
@@ -1474,6 +1504,7 @@ public class MainActivity extends Activity {
 
     @SuppressLint("MissingPermission")
     private void startGPSLocationSearch(){
+        PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Starting gps search...");
         RelativeLayout gps_spinner_layout = (RelativeLayout) findViewById(R.id.main_gps_progress_holder);
         gps_spinner_layout.setVisibility(View.VISIBLE);
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

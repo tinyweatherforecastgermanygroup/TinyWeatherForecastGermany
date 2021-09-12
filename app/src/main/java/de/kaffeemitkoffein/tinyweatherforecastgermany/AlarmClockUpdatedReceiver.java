@@ -30,6 +30,7 @@ public class AlarmClockUpdatedReceiver extends BroadcastReceiver {
             String action = intent.getAction();
             if (action!=null){
                 if (action.equals("android.app.action.NEXT_ALARM_CLOCK_CHANGED")){
+                    PrivateLog.log(context.getApplicationContext(), PrivateLog.WIDGET,PrivateLog.INFO,"new alarm (clock) received, updating widget.");
                     WidgetRefresher.refreshClockWidget(context);
                 }
             }

@@ -41,10 +41,11 @@ public class LicenseInfo extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate (Bundle bundle){
         context = getApplicationContext();
+        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"LicenseInfo activity started.");
         try {
             ThemePicker.SetTheme(this);
         } catch (Exception e){
-            PrivateLog.log(context,"Error setting theme.");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error setting theme in LicenseInfo activity.");
         }
         super.onCreate(bundle);
         displayInfo();
@@ -70,6 +71,7 @@ public class LicenseInfo extends Activity implements View.OnClickListener {
             String text = new String(textdata);
             textview.setText(text);
         } catch (IOException e) {
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.FATAL,"Error reading data in LicenseInfo activity. Forcing finish.");
             finish();
         }
     }

@@ -81,16 +81,16 @@ public class UpdateAlarmManager {
             // update now.
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.
-            PrivateLog.log(context,Tag.ALARMMANAGER,"triggering weather update from API...");
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"triggering weather update from API...");
             try {
                 startDataUpdateService(context,true,WeatherSettings.updateWarnings(context),WeatherSettings.updateTextForecasts(context));
             } catch (SecurityException e){
-                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (weather forecasts) not started because of a SecurityException: "+e.getMessage());
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather forecasts) not started because of a SecurityException: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!
                 updateAppViews(context);
             }
             catch (IllegalStateException e){
-                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (weather forecasts) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather forecasts) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!
                 updateAppViews(context);
             }
@@ -98,7 +98,7 @@ public class UpdateAlarmManager {
             result = true;
         } else {
             // update not due
-            PrivateLog.log(context,Tag.ALARMMANAGER,"update from API not due.");
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"update from API not due.");
             result = false;
             /*
              * Check if views need to be updated.
@@ -117,7 +117,7 @@ public class UpdateAlarmManager {
          * For API < 27 we use AlarmManager, for API equal or greater 27 we use JobSheduler with JobWorkItem.
         */
         if (Build.VERSION.SDK_INT < 26) {
-            PrivateLog.log(context,Tag.ALARMMANAGER,"setting new alarm in "+next_update_due_in_millis/1000/60+" minutes.");
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"setting new alarm in "+next_update_due_in_millis/1000/60+" minutes.");
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context,WeatherUpdateBroadcastReceiver.class);
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
@@ -135,7 +135,7 @@ public class UpdateAlarmManager {
                     .setMinimumLatency(next_update_due_in_millis)
                     .build();
             jobScheduler.enqueue(jobInfo,jobWorkItem);
-            PrivateLog.log(context, Tag.ALARMMANAGER,"job scheduled in "+next_update_due_in_millis/1000/60+" minutes.");
+            PrivateLog.log(context, PrivateLog.UPDATER,PrivateLog.INFO,"job scheduled in "+next_update_due_in_millis/1000/60+" minutes.");
         }
         return result;
     }
@@ -146,13 +146,13 @@ public class UpdateAlarmManager {
                 startDataUpdateService(context,false,true,false);
                 return true;
             } catch (SecurityException e){
-                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!
                 updateAppViews(context);
                 return false;
             }
             catch (IllegalStateException e){
-                PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (warnings) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!
                 updateAppViews(context);
                 return false;
@@ -166,13 +166,13 @@ public class UpdateAlarmManager {
             startDataUpdateService(context,false,false,true);
             return true;
         } catch (SecurityException e){
-            PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
             // views need to be updated from here, because starting service failed!
             updateAppViews(context);
             return false;
         }
         catch (IllegalStateException e){
-            PrivateLog.log(context,Tag.ALARMMANAGER,"WeatherUpdateService (warnings) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
             // views need to be updated from here, because starting service failed!
             updateAppViews(context);
             return false;
@@ -187,7 +187,7 @@ public class UpdateAlarmManager {
             gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
         }
         // update widgets unconditionally
-        PrivateLog.log(context,Tag.ALARMMANAGER,"updating widgets.");
+        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"updating widgets.");
         WidgetRefresher.refresh(context);
         // save the last update time
         weatherSettings.views_last_update_time = Calendar.getInstance().getTimeInMillis();

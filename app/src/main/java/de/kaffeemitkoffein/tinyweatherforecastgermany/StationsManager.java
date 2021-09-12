@@ -77,10 +77,10 @@ public class StationsManager {
                     weatherLocation.altitude = Location.convert(station_coordinates[2]);
                     stations.add(weatherLocation);
                 } else {
-                    PrivateLog.log(context,Tag.STATIONS,"Error parsing station geo-data (ignoring): "+station_values[2]+" => "+station_items[i]);
+                    PrivateLog.log(context,PrivateLog.STATIONS,PrivateLog.ERR,"Error parsing station geo-data (ignoring): "+station_values[2]+" => "+station_items[i]);
                 }
             } else {
-                PrivateLog.log(context,Tag.STATIONS,"Error parsing station (ignoring): "+station_items[i] +" (items found: "+station_values.length+")");
+                PrivateLog.log(context,PrivateLog.STATIONS,PrivateLog.ERR,"Error parsing station (ignoring): "+station_items[i] +" (items found: "+station_values.length+")");
             }
             count++;
         }

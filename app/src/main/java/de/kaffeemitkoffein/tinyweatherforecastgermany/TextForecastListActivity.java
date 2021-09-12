@@ -111,7 +111,6 @@ public class TextForecastListActivity extends Activity {
         displayFloatButton();
         floatButton.setOnClickListener(floatClickListener);
         // TESTING
-        PrivateLog.log(this,"TWF","Testing");
         Executor executor = Executors.newSingleThreadExecutor();
         APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
             @Override

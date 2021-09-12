@@ -43,6 +43,13 @@
             android:textSize="@dimen/fcmain_textsize_medium"
             android:textColor="?attr/colorText"
             android:text="@string/logging_button_clear"/>
+        <Button android:id="@+id/logging_button_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:textColor="?attr/colorText"
+                android:text="Share"/>
         <Button android:id="@+id/logging_button_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

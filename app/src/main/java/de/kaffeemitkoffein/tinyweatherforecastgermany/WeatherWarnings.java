@@ -38,7 +38,7 @@ public class WeatherWarnings {
                 contentResolver.insert(WeatherWarningContentProvider.URI_WARNINGDATA, weatherWarningContentProvider.getContentValuesFromWeatherWarning(warnings.get(i)));
             }
         } else {
-            PrivateLog.log(context,"Nothing written to database, fetched warning list is empty.");
+            PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Nothing written to database, fetched warning list is empty.");
         }
         WeatherSettings weatherSettings = new WeatherSettings(context);
         weatherSettings.setWarningsLastUpdateTime();
@@ -68,7 +68,7 @@ public class WeatherWarnings {
             Collections.sort(warnings);
             return warnings;
         } catch (Exception e) {
-            PrivateLog.log(context,Tag.DATABASE,"database error when getting weather warnings: "+e.getMessage());
+            PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.ERR,"database error when getting weather warnings: "+e.getMessage());
         }
         // return null if no corresponding data set found in local database.
         return null;
@@ -77,7 +77,7 @@ public class WeatherWarnings {
     public static void cleanWeatherWarningsDatabase(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         int i = contentResolver.delete(WeatherWarningContentProvider.URI_WARNINGDATA,null,null);
-        PrivateLog.log(context,Tag.WARNINGS,i+" warnings removed from database.");
+        PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,i+" warnings removed from database.");
     }
 
     public static ArrayList<WeatherWarning> getWarningsForLocation(Context context, ArrayList<WeatherWarning> warnings, Weather.WeatherLocation location){
