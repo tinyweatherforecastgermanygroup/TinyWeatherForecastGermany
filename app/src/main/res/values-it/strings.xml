@@ -261,4 +261,9 @@
     <string name="welcome_s4_displaytype">Scegli come visualizzare le previsioni del tempo:</string>
     <string name="preference_viewmodel_title">Livello di dettaglio</string>
     <string name="preference_viewmodel_summary">Mostra una previsione meteorologica dettagliata o semplice.</string>
+    <string name="logging_comment_title">Condividere i log\?</string>
+    <string name="logging_button_share">Condividere</string>
+    <string name="logging_comment_inputhint">L\'app si è bloccata…</string>
+    <string name="widget_transparency_default">90</string>
+    <string name="logging_comment_hint">Puoi aggiungere un commento ai log per aiutare a trovare l\'errore - spiega cosa è successo:</string>
 </resources>
