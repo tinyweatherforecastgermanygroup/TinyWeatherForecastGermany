@@ -260,4 +260,9 @@
     <string name="areadatabasecreator_title">Klargjør data</string>
     <string name="welcome_s4_viewmodel">Vis detaljert værmelding.</string>
     <string name="welcome_s4_displaytype">Velge å vise værmelding:</string>
+    <string name="logging_comment_inputhint">Appen krasjet…</string>
+    <string name="logging_comment_title">Dele loggene\?</string>
+    <string name="logging_button_share">Dele</string>
+    <string name="logging_comment_hint">Du kan legge til en kommentar til den logger seg å bidra til å finne feil - kan du forklare hva som har skjedd:</string>
+    <string name="widget_transparency_default">90</string>
 </resources>
