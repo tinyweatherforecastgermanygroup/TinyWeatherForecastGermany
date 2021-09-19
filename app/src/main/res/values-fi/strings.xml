@@ -21,4 +21,23 @@
     <string name="dwd_notice">Tietoperusta: Deutscher Wetterdienst, omat elementit lisätty, jotkut tiedot keskiarvoistettu yksittäisistä arvoista.</string>
     <string name="dwd_notice_app">Tietoperusta: Deutscher Wetterdienst, omat elementit lisätty, jotkut tiedot keskiarvoistettu yksittäisistä arvoista. Varoitukset lyhennetty.</string>
     <string name="dwd_textforecast_notice">Tietoperusta: Deutscher Wetterdienst, lisätty omia elementtejä, ulkoasua muutettu.</string>
+    <string name="weathercode_UNKNOWN">tuntematon</string>
+    <string name="weathercode_RAIN_FREEZING_MODERATE_OR_HEAVY">jäätävä sade</string>
+    <string name="largewidget_description">Suuri</string>
+    <string name="clockwidget_description">Kello &amp; sää</string>
+    <string name="station_does_not_exist">Syöttämääsi asemaa ei ole olemassa. Valitse ehdotetuista asemista luettelosta.</string>
+    <string name="favorites_cleared">Suosikit poistetaan.</string>
+    <string name="actionbar_textinput_title">Kirjoita paikka tähän:</string>
+    <string name="actionbar_textinput_hint">Kokeile maakohtaisia merkintöjä</string>
+    <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">ukkonen</string>
+    <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">jäätävä tihkusade</string>
+    <string name="weathercode_DRIZZLE_FREEZING_SLIGHT">lievä jäätävä tihkusade</string>
+    <string name="weathercode_RAIN_FREEZING_SLIGHT">lievä jäätävä sade</string>
+    <string name="weathercode_SNOW_SHOWERS_MODERATE_OR_HEAVY">lumisateet</string>
+    <string name="weathercode_SNOW_SHOWERS_SLIGHT">lieviä lumisateita</string>
+    <string name="weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY">sade- ja lumisateet sekaisin</string>
+    <string name="weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT">lieviä sade- ja lumisateita sekaisin</string>
+    <string name="weathercode_EXTREMELY_HEAVY_RAIN_SHOWER">erittäin voimakkaat sateet</string>
+    <string name="weathercode_MODERATE_OR_HEAVY_RAIN_SHOWERS">sadekuurot</string>
+    <string name="weathercode_SLIGHT_RAIN_SHOWER">lieviä sadekuuroja</string>
 </resources>
