@@ -122,7 +122,6 @@ public class PrivateLog {
             File path = context.getFilesDir();
             File logfile = new File(path,LOGFILENAME);
             long logsize = logfile.length();
-            Log.v("TWFG","Logsize:"+logsize+" bytes");
             if (logsize > LOG_MAX_FILESIZE){
                 logfile.delete();
             }

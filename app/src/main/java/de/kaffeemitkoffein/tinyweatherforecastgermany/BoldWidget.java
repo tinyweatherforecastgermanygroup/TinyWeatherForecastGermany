@@ -71,6 +71,7 @@ public class BoldWidget extends ClassicWidget {
             remoteViews.setImageViewResource(R.id.boldwidget_today_condition, WeatherCodeContract.getWeatherConditionDrawableResource(c,currentWeatherInfo.currentWeather.getCondition(), true));
         } else {
             remoteViews.setImageViewResource(R.id.boldwidget_today_condition, R.mipmap.not_available);
+            remoteViews.setImageViewBitmap(R.id.boldwidget_today_condition,WeatherIcons.getIconBitmap(c,WeatherIcons.NOT_AVAILABLE,true));
         }
         if (currentWeatherInfo.currentWeather.hasMaxTemperature()) {
             remoteViews.setTextViewText(R.id.boldwidget_today_max, currentWeatherInfo.currentWeather.getMaxTemperatureInCelsiusInt() + "°");
@@ -103,7 +104,8 @@ public class BoldWidget extends ClassicWidget {
             if (currentWeatherInfo.forecast24hourly.get(1).hasCondition()) {
                 remoteViews.setImageViewResource(R.id.boldwidget_fc1_weatherconditionicon, WeatherCodeContract.getWeatherConditionDrawableResource(c,currentWeatherInfo.forecast24hourly.get(1).getCondition(), true));
             } else {
-                remoteViews.setImageViewResource(R.id.boldwidget_fc1_weatherconditionicon, R.mipmap.not_available);
+                remoteViews.setImageViewBitmap(R.id.boldwidget_fc1_weatherconditionicon,WeatherIcons.getIconBitmap(c,WeatherIcons.NOT_AVAILABLE,true));
+
             }
             if (currentWeatherInfo.forecast24hourly.get(1).hasMaxTemperature()) {
                 remoteViews.setTextViewText(R.id.boldwidget_fc1_max, currentWeatherInfo.forecast24hourly.get(1).getMaxTemperatureInCelsiusInt() + "°");
@@ -139,7 +141,7 @@ public class BoldWidget extends ClassicWidget {
             if (currentWeatherInfo.forecast24hourly.get(2).hasCondition()) {
                 remoteViews.setImageViewResource(R.id.boldwidget_fc2_weatherconditionicon, WeatherCodeContract.getWeatherConditionDrawableResource(c,currentWeatherInfo.forecast24hourly.get(2).getCondition(), true));
             } else {
-                remoteViews.setImageViewResource(R.id.boldwidget_fc2_weatherconditionicon, R.mipmap.not_available);
+                remoteViews.setImageViewBitmap(R.id.boldwidget_fc2_weatherconditionicon,WeatherIcons.getIconBitmap(c,WeatherIcons.NOT_AVAILABLE,true));
             }
             if (currentWeatherInfo.forecast24hourly.get(2).hasMaxTemperature()) {
                 remoteViews.setTextViewText(R.id.boldwidget_fc2_max, currentWeatherInfo.forecast24hourly.get(2).getMaxTemperatureInCelsiusInt() + "°");

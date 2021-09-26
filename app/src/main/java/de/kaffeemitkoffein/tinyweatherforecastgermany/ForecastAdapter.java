@@ -372,9 +372,13 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         textView_weathercondition = (TextView) view.findViewById(R.id.fcitem_weatherconditiontext);
         viewHolder.condition_text = textView_weathercondition;
     }
-    if ((weatherInfo.hasCondition()) && (textView_weathercondition!=null)){
-        int weathercondition = weatherInfo.getCondition();
-        textView_weathercondition.setText(WeatherCodeContract.getWeatherConditionText(context,weathercondition));
+    if  (textView_weathercondition!=null){
+        if (weatherInfo.hasCondition()){
+            int weathercondition = weatherInfo.getCondition();
+            textView_weathercondition.setText(WeatherCodeContract.getWeatherConditionText(context,weathercondition));
+        } else {
+            textView_weathercondition.setText(context.getResources().getString(R.string.weathercode_UNKNOWN));
+        }
     }
     String precipitation_string = "";
     if (weatherInfo.hasProbPrecipitation()){
@@ -502,13 +506,17 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         weather_icon = (ImageView) view.findViewById(R.id.fcitem_weatherconditionicon);
         viewHolder.weather_icon = weather_icon;
     }
-    if (weatherInfo.hasCondition() && weather_icon!=null){
-        int weathercondition = weatherInfo.getCondition();
-        boolean showDaylightIcon = weatherInfo.isDaytime(weatherLocation);
-        if (weatherInfo.getForecastType()==Weather.WeatherInfo.ForecastType.HOURS_24){
-            showDaylightIcon = true;
+    if (weather_icon!=null){
+        if (weatherInfo.hasCondition()){
+            int weathercondition = weatherInfo.getCondition();
+            boolean showDaylightIcon = weatherInfo.isDaytime(weatherLocation);
+            if (weatherInfo.getForecastType()==Weather.WeatherInfo.ForecastType.HOURS_24){
+                showDaylightIcon = true;
+            }
+            loadScaledIcon(weather_icon, WeatherCodeContract.getWeatherConditionDrawableResource(context,weathercondition, showDaylightIcon), SCALE_CONDITION_ICON,false);
+        } else {
+            loadScaledIcon(weather_icon, WeatherCodeContract.getWeatherConditionDrawableResource(context,WeatherCodeContract.NOT_AVAILABLE, true), SCALE_CONDITION_ICON,true);
         }
-        loadScaledIcon(weather_icon, WeatherCodeContract.getWeatherConditionDrawableResource(context,weathercondition, showDaylightIcon), SCALE_CONDITION_ICON,false);
     }
     // right column
     if (textView_temp == null){

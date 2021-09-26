@@ -557,6 +557,9 @@ public final class Weather {
 
         public boolean hasCondition(){
             if (condition_code!=null){
+                if (condition_code==WeatherCodeContract.NOT_AVAILABLE){
+                    return false;
+                }
                 return true;
             }
             return false;

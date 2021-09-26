@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class WeatherIcons {
+    final static int NOT_AVAILABLE = 0;
     final static int THUNDERSTORM=1;
     final static int FREEZING_DRIZZLE=2;
     final static int FREEZING_DRIZZLE_SLIGHT=3;
@@ -88,6 +89,7 @@ public class WeatherIcons {
     public static int getIconResource(Context context, int icon) {
         int result = 0;
         switch (icon) {
+            case NOT_AVAILABLE: result = R.mipmap.not_available; break;
             case THUNDERSTORM:
                 result = R.mipmap.thunderstorm;
                 break;
@@ -245,6 +247,7 @@ public class WeatherIcons {
         // override with dark variants if applicable
         if (!ThemePicker.isDarkTheme(context)) {
             switch (icon) {
+                case NOT_AVAILABLE: result = R.mipmap.not_available_black; break;
                 case CLEAR_NIGHT:
                     result = R.mipmap.clear_night_black; break;
                 case MOSTLY_CLOUDY_NIGHT:
