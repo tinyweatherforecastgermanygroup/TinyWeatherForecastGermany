@@ -19,6 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.app.ActivityManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -106,6 +107,13 @@ public class PrivateLog {
         }
     }
 
+    public static long getLogFilesize(Context context){
+        File path = context.getFilesDir();
+        File logfile = new File(path,LOGFILENAME);
+        long logsize = logfile.length();
+        return logsize;
+    }
+
     private static boolean log(Context context, String s){
         if (loggingEnabled(context)) {
             if (logToLogcat(context)){
@@ -121,20 +129,8 @@ public class PrivateLog {
             if (!logfile.exists()){
                 try {
                     if (logfile.createNewFile()){
-                        PrivateLog.log(context,"Logging started, new file created. Device info:");
-                        PrivateLog.log(context,"------------------------------------------------------");
-                        PrivateLog.log(context,"Android SDK version: "+android.os.Build.VERSION.SDK_INT);
-                        PrivateLog.log(context,"Android SDK version: "+ Build.VERSION.CODENAME);
-                        PrivateLog.log(context,"Android build: "+ Build.DISPLAY);
-                        PrivateLog.log(context,"Hardware: "+ Build.HARDWARE);
-                        PrivateLog.log(context,"Product: "+ Build.PRODUCT);
-                        PrivateLog.log(context,"Model: "+ Build.MODEL);
-                        PrivateLog.log(context,"Manufacturer: "+ Build.MANUFACTURER);
-                        PrivateLog.log(context,"App build: "+ BuildConfig.VERSION_CODE);
-                        PrivateLog.log(context,"App build name: "+ BuildConfig.VERSION_NAME);
-                        PrivateLog.log(context,"------------------------------------------------------");
-                        PrivateLog.log(context,getDisplayInfoString(context));
-                        PrivateLog.log(context,"------------------------------------------------------");
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Logging started, new file created.");
+                        PrivateLog.log(context,getInfoString(context));
                     }
                 } catch (Exception e) {
                     return false;
@@ -159,14 +155,6 @@ public class PrivateLog {
     }
 
     public static boolean log(Context context,String tag, int severity, String s){
-        /*
-        switch (severity){
-            case WARN: severityText="WARN"; break;
-            case ERR: severityText="ERR"; break;
-            case FATAL: severityText="FATAL"; break;
-            default: severityText="INFO";
-        }
-         */
         return log(context,tag.toUpperCase()+" ["+severity+"] "+s);
     }
 
@@ -231,18 +219,30 @@ public class PrivateLog {
     }
 
 
-    public static String getDisplayInfoString(Context context) {
+    public static String getInfoString(Context context) {
         final String lineBreak = System.getProperty("line.separator");
         DecimalFormat df = new DecimalFormat("#.##");
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(lineBreak);
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        stringBuilder.append("Device info:");
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("------------------------------------------------------"); stringBuilder.append(lineBreak);
+        stringBuilder.append("Android SDK version: "+android.os.Build.VERSION.SDK_INT); stringBuilder.append(lineBreak);
+        stringBuilder.append("Android SDK version: "+ Build.VERSION.CODENAME); stringBuilder.append(lineBreak);
+        stringBuilder.append("Android build: "+ Build.DISPLAY); stringBuilder.append(lineBreak);
+        stringBuilder.append("Hardware: "+ Build.HARDWARE); stringBuilder.append(lineBreak);
+        stringBuilder.append("Product: "+ Build.PRODUCT); stringBuilder.append(lineBreak);
+        stringBuilder.append("Model: "+ Build.MODEL); stringBuilder.append(lineBreak);
+        stringBuilder.append("Manufacturer: "+ Build.MANUFACTURER); stringBuilder.append(lineBreak);
+        stringBuilder.append("App build: "+ BuildConfig.VERSION_CODE); stringBuilder.append(lineBreak);
+        stringBuilder.append("App build name: "+ BuildConfig.VERSION_NAME); stringBuilder.append(lineBreak);
+        stringBuilder.append("------------------------------------------------------"); stringBuilder.append(lineBreak);
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE); stringBuilder.append(lineBreak);
+        stringBuilder.append(lineBreak);
         Display display = windowManager.getDefaultDisplay();
         DisplayMetrics displayMetrics = new DisplayMetrics();
         display.getMetrics(displayMetrics);
         stringBuilder.append("Available display:");
-        stringBuilder.append(lineBreak);
-        stringBuilder.append("----------------------------------");
         stringBuilder.append(lineBreak);
         stringBuilder.append("Logical density: "+displayMetrics.density);
         stringBuilder.append(lineBreak);
@@ -270,6 +270,21 @@ public class PrivateLog {
         stringBuilder.append(lineBreak);
         stringBuilder.append("Height (y) in dp: "+Math.round(displayMetrics.heightPixels/(displayMetrics.ydpi/160)));
         stringBuilder.append(lineBreak);
+        // Mem Info
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        activityManager.getMemoryInfo(memoryInfo);
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("RAM available: "+memoryInfo.availMem/(1024*1024)+ "Mb RAM total: "+memoryInfo.totalMem/(1024*1024)+" Mb");
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("Threshold for low memory state: "+memoryInfo.threshold/(1024*1024)+ " Mb");
+        stringBuilder.append(lineBreak);
+        if (memoryInfo.lowMemory){
+            stringBuilder.append("The device is in a low memory state, potentially killing services and other processes.");
+        } else {
+            stringBuilder.append("The device is not in a low memory state.");
+        }
+        stringBuilder.append(lineBreak);
         return stringBuilder.toString();
     }
 
@@ -279,8 +294,6 @@ public class PrivateLog {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(lineBreak);
         stringBuilder.append("Currently set station in settings:");
-        stringBuilder.append(lineBreak);
-        stringBuilder.append("----------------------------------");
         stringBuilder.append(lineBreak);
         stringBuilder.append("Station name: "+weatherLocation.name);
         stringBuilder.append(lineBreak);

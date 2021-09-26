@@ -132,7 +132,7 @@ public class ClassicWidget extends AppWidgetProvider {
         if (preciptitation.equals("")){
             remoteViews.setViewVisibility(R.id.widget_precipitation_container, View.INVISIBLE);
         } else {
-            remoteViews.setViewVisibility(R.id.widget_precipitation_symbol, View.VISIBLE);
+            remoteViews.setViewVisibility(R.id.widget_precipitation_container, View.VISIBLE);
             remoteViews.setTextViewText(R.id.widget_precipitation_text,preciptitation);
             remoteViews.setTextColor(R.id.widget_precipitation_text,ThemePicker.getWidgetTextColor(context));
         }
@@ -295,6 +295,7 @@ public class ClassicWidget extends AppWidgetProvider {
         }
         remoteViews.setTextViewText(R.id.classicwidget_temperature_highlow,lowhigh);
         remoteViews.setTextColor(R.id.classicwidget_temperature_highlow,ThemePicker.getWidgetTextColor(c));
+        remoteViews.setViewVisibility(R.id.classicwidget_temperature_highlow,View.VISIBLE);
         String windstring="";
         if (weatherCard.currentWeather.hasWindDirection()){
             if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.ARROW){

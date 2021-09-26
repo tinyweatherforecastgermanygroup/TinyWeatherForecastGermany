@@ -120,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:src="@mipmap/widget_preview">
+                android:src="@drawable/widget_preview">
             </ImageView>
 
 

@@ -327,6 +327,9 @@ public class MainActivity extends Activity {
         ThemePicker.SetTheme(this);
         super.onCreate(savedInstanceState);
         PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
+        //PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"'This is a warning test.");
+        //PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"'This is an error test.");
+        //PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.FATAL,"'This is a fatal error test.");
         setContentView(R.layout.activity_main);
         stationsManager = new StationsManager(context);
         /*
@@ -1052,7 +1055,7 @@ public class MainActivity extends Activity {
             text = text.replace("[VERSION]",versioning);
             if (WeatherSettings.appReleaseIsUserdebug()){
                 text = text + PrivateLog.getDebugInfoString(getApplicationContext());
-                text = text + PrivateLog.getDisplayInfoString(getApplicationContext());
+                text = text + PrivateLog.getInfoString(getApplicationContext());
                 text = text + PrivateLog.getCurrentStationInfoString(getApplicationContext());
             }
             textView.setText(text);

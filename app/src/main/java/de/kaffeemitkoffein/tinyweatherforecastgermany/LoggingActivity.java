@@ -50,6 +50,10 @@ public class LoggingActivity extends Activity {
     Executor executor;
     String logs;
     Context context;
+    ActionBar actionBar;
+    int level0=0; int level1=0; int level2=0; int level3=0; long logSize=0;
+    final static int[] levelColor ={Color.GREEN,Color.YELLOW,Color.RED,Color.MAGENTA};
+    TextView TvLevel0; TextView TvLevel1; TextView TvLevel2; TextView TvLevel3; TextView TvRAMavail; TextView TvRAMtotal; TextView TvRAMlow; TextView TvLogSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +63,18 @@ public class LoggingActivity extends Activity {
         setContentView(R.layout.activity_logging);
         executor = Executors.newSingleThreadExecutor();
         // action bar layout
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
-
+        actionBar = getActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
+        actionBar.setCustomView(R.layout.actionbar_logging);
+        // find views
+        TvLevel0 = (TextView) findViewById(R.id.actionbar_logging_level0);
+        TvLevel1 = (TextView) findViewById(R.id.actionbar_logging_level1);
+        TvLevel2 = (TextView) findViewById(R.id.actionbar_logging_level2);
+        TvLevel3 = (TextView) findViewById(R.id.actionbar_logging_level3);
+        TvLogSize = (TextView) findViewById(R.id.actionbar_logging_logsize);
+        TvRAMavail = (TextView) findViewById(R.id.actionbar_logging_ramAvail);
+        TvRAMtotal = (TextView) findViewById(R.id.actionbar_logging_ramTotal);
+        TvRAMlow = (TextView) findViewById(R.id.actionbar_logging_ramLow);
         final TextView logview = (TextView) findViewById(R.id.logging_infoTextView);
         logview.setText("Loading...");
         // Read the logs asynchronously
@@ -69,21 +82,26 @@ public class LoggingActivity extends Activity {
             @Override
             public void onPositiveResult(ArrayList<String> result) {
                 final SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+                level0=0; level1=0; level2=0; level3=0; logSize = PrivateLog.getLogFilesize(context);
                 for (int i=0; i<result.size(); i++){
                     String line = result.get(i) + System.lineSeparator();
                     Spannable spannable = new SpannableString(line);
-                    int color = Color.WHITE;
+                    int color = ThemePicker.getColorTextLight(context);
                     if (result.get(i).contains("[0]")){
-                        color = Color.GREEN;
+                        color = ThemePicker.adaptColorToTheme(context,levelColor[0]);
+                        level0 ++;
                     }
                     if (result.get(i).contains("[1]")){
-                        color = Color.YELLOW;
+                        color = ThemePicker.adaptColorToTheme(context,levelColor[1]);
+                        level1 ++;
                     }
                     if (result.get(i).contains("[2]")){
-                        color = Color.RED;
+                        color = ThemePicker.adaptColorToTheme(context,levelColor[2]);
+                        level2 ++;
                     }
                     if (result.get(i).contains("[3]")){
-                        color = Color.MAGENTA;
+                        color = ThemePicker.adaptColorToTheme(context,levelColor[3]);
+                        level3 ++;
                     }
                     spannable.setSpan(new ForegroundColorSpan(color),0,spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     stringBuilder.append(spannable);
@@ -95,6 +113,7 @@ public class LoggingActivity extends Activity {
                         logview.setText(stringBuilder);
                     }
                 });
+                updateActionBar();
             }
 
             @Override
@@ -199,6 +218,55 @@ public class LoggingActivity extends Activity {
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void updateActionBar(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+                ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+                activityManager.getMemoryInfo(memoryInfo);
+                if (TvLevel0 != null) {
+                    TvLevel0.setTextColor(ThemePicker.adaptColorToTheme(context, levelColor[0]));
+                    TvLevel0.setText("info: " + level0);
+                }
+                if (TvLevel1 != null) {
+                    TvLevel1.setTextColor(ThemePicker.adaptColorToTheme(context, levelColor[1]));
+                    TvLevel1.setText("warn: " + level1);
+                }
+                if (TvLevel2 != null) {
+                    TvLevel2.setTextColor(ThemePicker.adaptColorToTheme(context, levelColor[2]));
+                    TvLevel2.setText("err: " + level2);
+                }
+                if (TvLevel3 != null) {
+                    TvLevel3.setTextColor(ThemePicker.adaptColorToTheme(context, levelColor[3]));
+                    TvLevel3.setText("fatal: " + level3);
+                }
+                if (TvLogSize!= null) {
+                    TvLogSize.setTextColor(ThemePicker.getWidgetTextColor(context));
+                    TvLogSize.setText(PrivateLog.getLogFilesize(context)/1024+" kB");
+                }
+                if (TvRAMavail != null) {
+                    TvRAMavail.setTextColor(ThemePicker.getWidgetTextColor(context));
+                    TvRAMavail.setText("Ram avail: " + memoryInfo.availMem / (1024 * 1024) + " Mb");
+                }
+                if (TvRAMtotal != null) {
+                    TvRAMtotal.setTextColor(ThemePicker.getWidgetTextColor(context));
+                    TvRAMtotal.setText("Ram total: " + memoryInfo.totalMem / (1024 * 1024) + " Mb");
+                }
+                if (TvRAMlow != null){
+                    if (memoryInfo.lowMemory){
+                        TvRAMlow.setTextColor(ThemePicker.adaptColorToTheme(context,levelColor[3]));
+                        TvRAMlow.setText("Low Memory state: YES (threshold: "+memoryInfo.threshold / (1024 * 1024) + " Mb)");
+                    } else {
+                        TvRAMlow.setTextColor(ThemePicker.getWidgetTextColor(context));
+                        TvRAMlow.setText("Low Memory state: no (threshold: "+memoryInfo.threshold / (1024 * 1024) + " Mb)");
+
+                    }
+                }
+            }
+        });
     }
 
 }

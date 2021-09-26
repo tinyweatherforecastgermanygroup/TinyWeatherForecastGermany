@@ -94,7 +94,7 @@
                   android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
                   android:syncable="false" />
 
-        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClassicWidget" android:icon="@mipmap/widget_preview"
+        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClassicWidget" android:icon="@drawable/widget_preview"
             android:label="@string/classicwidget_description">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -102,7 +102,7 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/classicwidget"></meta-data>
         </receiver>
 
-        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.LargeWidget" android:icon="@mipmap/widget_preview_large"
+        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.LargeWidget" android:icon="@drawable/widget_preview_large"
             android:label="@string/largewidget_description">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -110,7 +110,7 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/largewidget" />
         </receiver>
 
-        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.BoldWidget" android:icon="@mipmap/widget_preview_bold"
+        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.BoldWidget" android:icon="@drawable/widget_preview_bold"
             android:label="@string/boldwidget_description">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -118,7 +118,7 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/boldwidget" />
         </receiver>
 
-        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClockWidget" android:icon="@mipmap/widget_preview_clock"
+        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClockWidget" android:icon="@drawable/widget_preview_clock"
             android:label="@string/clockwidget_description">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
