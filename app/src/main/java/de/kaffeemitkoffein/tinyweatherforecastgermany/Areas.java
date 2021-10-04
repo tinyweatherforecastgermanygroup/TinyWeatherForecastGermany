@@ -141,7 +141,7 @@ public class Areas {
 
                          */
                         if (!knownWarncellIDs.contains(area.warncellID)){
-                            contentResolver.insert(AreaContentProvider.URI_AREADATA,AreaContentProvider.getContentValuesFromArea(area));
+                            contentResolver.insert(WeatherContentManager.AREA_URI_ALL,WeatherContentManager.getContentValuesFromArea(area));
                         }
                         i++;
                         if ((i % 25) == 0) {
@@ -160,8 +160,8 @@ public class Areas {
 
     public static int getAreaDatabaseSize(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        String[] columns = {AreaContentProvider.AreaDatabaseHelper.KEY_warncellid};
-        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,columns,null,null,null);
+        String[] columns = {WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_warncellid};
+        Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,columns,null,null,null);
         cursor.close();
         return cursor.getCount();
     }
@@ -178,14 +178,13 @@ public class Areas {
     }
 
     public static Area getArea(Context context, String warincellID){
-        AreaContentProvider areaContentProvider = new AreaContentProvider();
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        String selection = AreaContentProvider.KEY_warncellid + " =?";
+        String selection = WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_warncellid + " =?";
         String[] selectionArg = {warincellID};
-        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,null,selection,selectionArg,null);
+        Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,null,selection,selectionArg,null);
         if (cursor!=null){
             if (cursor.moveToFirst()){
-                Area area = AreaContentProvider.getAreaFromCursor(cursor);
+                Area area = WeatherContentManager.getAreaFromCursor(cursor);
                 area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
                 cursor.close();
                 return area;
@@ -206,14 +205,14 @@ public class Areas {
                 s=s+",";
             }
         }
-        String selection = AreaContentProvider.KEY_warncellid + " IN("+s+")";
+        String selection = WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_warncellid + " IN("+s+")";
         String[] selectionArg = warincellIDs.toArray(new String[warincellIDs.size()]);
-        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,null,selection,selectionArg,null);
+        Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,null,selection,selectionArg,null);
         int i = 0;
         if (cursor!=null){
             if (cursor.moveToFirst()){
                 do {
-                    Area area = AreaContentProvider.getAreaFromCursor(cursor);
+                    Area area = WeatherContentManager.getAreaFromCursor(cursor);
                     area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
                     areas.add(area); i++;
                 } while (cursor.moveToNext());
@@ -225,12 +224,12 @@ public class Areas {
 
     public static Area getAreaByName(Context context, String areaname){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        String selection = AreaContentProvider.KEY_name + " =?";
+        String selection = WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_name + " =?";
         String[] selectionArg = {areaname};
-        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,null,selection,selectionArg,null);
+        Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,null,selection,selectionArg,null);
         if (cursor!=null){
             if (cursor.moveToFirst()){
-                Area area = AreaContentProvider.getAreaFromCursor(cursor);
+                Area area = WeatherContentManager.getAreaFromCursor(cursor);
                 area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
                 return area;
             }
@@ -242,13 +241,13 @@ public class Areas {
     public static ArrayList<String> getAllAreaNames(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         ArrayList<String> result = new ArrayList<String>();
-        final String[] columns = {AreaContentProvider.KEY_name};
+        final String[] columns = {WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_name};
         try {
-            Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,columns,null,null,null);
+            Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,columns,null,null,null);
             if (cursor!=null){
                 if (cursor.moveToFirst()){
                     do {
-                        String s = AreaContentProvider.getAreaNameFromCursor(cursor);
+                        String s = WeatherContentManager.getAreaNameFromCursor(cursor);
                         if (s!=null){
                             result.add(s);
                         }
@@ -265,13 +264,13 @@ public class Areas {
     public static ArrayList<String> getAllWarncellIDs(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         ArrayList<String> result = new ArrayList<String>();
-        final String[] columns = {AreaContentProvider.KEY_warncellid};
+        final String[] columns = {WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_warncellid};
         try {
-            Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,columns,null,null,null);
+            Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,columns,null,null,null);
             if (cursor!=null){
                 if (cursor.moveToFirst()){
                     do {
-                        String s = AreaContentProvider.getWarncellIDFromCursor(cursor);
+                        String s = WeatherContentManager.getWarncellIDFromCursor(cursor);
                         if (s!=null){
                             result.add(s);
                         }
@@ -306,12 +305,12 @@ public class Areas {
 
     public static int test(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        Cursor cursor = contentResolver.query(AreaContentProvider.URI_AREADATA,null,null,null,null);
+        Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,null,null,null,null);
         int i = 0;
         try {
             if (cursor.moveToFirst()){
                 do {
-                    Area area = AreaContentProvider.getAreaFromCursor(cursor);
+                    Area area = WeatherContentManager.getAreaFromCursor(cursor);
                     i++;
                 } while (cursor.moveToNext());
             }

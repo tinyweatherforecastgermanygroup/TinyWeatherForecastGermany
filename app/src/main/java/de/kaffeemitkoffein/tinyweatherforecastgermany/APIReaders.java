@@ -647,8 +647,9 @@ public class APIReaders {
                 Calendar calendar = Calendar.getInstance();
                 rawWeatherInfo.polling_time = calendar.getTimeInMillis();
                 // writes the weather data to the database
-                WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-                weatherForecastContentProvider.writeWeatherForecast(context,rawWeatherInfo);
+                // WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
+                // weatherForecastContentProvider.writeWeatherForecast(context,rawWeatherInfo);
+                context.getContentResolver().insert(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo));
                 onPositiveResult(rawWeatherInfo);
             }
         }

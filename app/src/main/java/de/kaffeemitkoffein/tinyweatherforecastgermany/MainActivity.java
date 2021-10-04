@@ -341,8 +341,7 @@ public class MainActivity extends Activity {
         disableLogToLogcatIfNotUserDebug();
         // force a database access at the beginning to check for a needed database upgrade
         try {
-            WeatherForecastContentProvider.checkForDatabaseUpgrade(getApplicationContext());
-            AreaContentProvider.checkForDatabaseUpgrade(getApplicationContext());
+            WeatherContentManager.checkForDatabaseUpgrade(context);
         } catch (Exception e){
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error checking/upgrading database!");
         }
@@ -1108,7 +1107,7 @@ public class MainActivity extends Activity {
     public static void deleteAreaDatabase(Context context){
         PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"Area database has been cleared.");
         ContentResolver contentResolver = context.getContentResolver();
-        contentResolver.delete(AreaContentProvider.URI_AREADATA,null,null);
+        contentResolver.delete(WeatherContentManager.AREA_URI_ALL,null,null);
     }
 
     private void prepareAreaDatabase(){

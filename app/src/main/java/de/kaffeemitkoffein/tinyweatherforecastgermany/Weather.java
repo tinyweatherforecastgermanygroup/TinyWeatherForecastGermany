@@ -990,26 +990,19 @@ public final class Weather {
         String station_name = weatherSettings.station_name;
         Cursor cursor;
         String[] selectionArg={station_name};
-        //try {
-            cursor = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,
-                    null,WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name+" = ?",selectionArg,null);
-            // read only fist element. Database should not hold more than one data set for one station.
-            if (cursor.moveToFirst()){
-                WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-                RawWeatherInfo rawWeatherInfo = weatherForecastContentProvider.getWeatherCardFromCursor(cursor);
-                CurrentWeatherInfo currentWeatherInfo = new CurrentWeatherInfo(context,rawWeatherInfo);
-                // check if local weather data is outdated
-                if (currentWeatherInfo.polling_time<Calendar.getInstance().getTimeInMillis()+weatherSettings.getForecastUpdateIntervalInMillis()){
-                    return currentWeatherInfo;
-                } else {
-                    return null;
-                }
+        cursor = contentResolver.query(WeatherContentManager.FORECAST_URI_ALL,
+                null,WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+" = ?",selectionArg,null);
+        // read only fist element. Database should not hold more than one data set for one station.
+        if (cursor.moveToFirst()){
+            CurrentWeatherInfo currentWeatherInfo = WeatherContentManager.getWeatherInfo(context,cursor);
+            // check if local weather data is outdated
+            if (currentWeatherInfo.polling_time<Calendar.getInstance().getTimeInMillis()+weatherSettings.getForecastUpdateIntervalInMillis()){
+                return currentWeatherInfo;
+            } else {
+                return null;
             }
-            cursor.close();
-        //} catch (Exception e) {
-        //    PrivateLog.log(context,Tag.DATABASE,"database error when getting weather data: "+e.getMessage());
-        //}
-        // return null if no correspondig data set found in local database.
+        }
+        cursor.close();
         return null;
     }
 
@@ -1017,26 +1010,25 @@ public final class Weather {
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         int rows = 0;
         try {
-            rows = contentResolver.delete(WeatherForecastContentProvider.URI_SENSORDATA,WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name+"=?",new String[] {rawWeatherInfo.weatherLocation.name});
+            rows = contentResolver.delete(WeatherContentManager.FORECAST_URI_ALL,WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+"=?",new String[] {rawWeatherInfo.weatherLocation.name});
         } catch (Exception e) {
             // do nothing here
         }
         return rows;
     }
 
-    public static final String[] SQL_COMMAND_QUERYTIMECOLUMN = {WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_timestamp,
-                                                                WeatherForecastContentProvider.WeatherForecastDatabaseHelper.KEY_name};
+    public static final String[] SQL_COMMAND_QUERYTIMECOLUMN = {WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_timestamp,
+                                                                WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name};
 
     private static ArrayList<RawWeatherInfo> getTimestampArrayList(Context context) {
-        WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         ArrayList<RawWeatherInfo> dataArrayList = new ArrayList<RawWeatherInfo>();
         Cursor c = null;
         try {
-            c = contentResolver.query(WeatherForecastContentProvider.URI_SENSORDATA,SQL_COMMAND_QUERYTIMECOLUMN,null,null,null);
+            c = contentResolver.query(WeatherContentManager.FORECAST_URI_ALL,SQL_COMMAND_QUERYTIMECOLUMN,null,null,null);
             if (c.moveToFirst()) {
                 do {
-                    RawWeatherInfo rawWeatherInfo = weatherForecastContentProvider.getWeatherCardFromCursor(c);
+                    RawWeatherInfo rawWeatherInfo = WeatherContentManager.getRawWeatherInfoFromCursor(c);
                     dataArrayList.add(rawWeatherInfo);
                 } while (c.moveToNext());
             }

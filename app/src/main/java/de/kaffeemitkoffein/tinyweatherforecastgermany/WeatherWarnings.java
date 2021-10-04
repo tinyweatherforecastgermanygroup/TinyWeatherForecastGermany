@@ -32,10 +32,9 @@ public class WeatherWarnings {
 
     public static void writeWarningsToDatabase(Context context, ArrayList<WeatherWarning> warnings){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        WeatherWarningContentProvider weatherWarningContentProvider = new WeatherWarningContentProvider();
         if (warnings!=null){
             for (int i=0; i<warnings.size(); i++){
-                contentResolver.insert(WeatherWarningContentProvider.URI_WARNINGDATA, weatherWarningContentProvider.getContentValuesFromWeatherWarning(warnings.get(i)));
+                contentResolver.insert(WeatherContentManager.WARNING_URI_ALL, WeatherContentManager.getContentValuesFromWeatherWarning(warnings.get(i)));
             }
         } else {
             PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Nothing written to database, fetched warning list is empty.");
@@ -45,16 +44,15 @@ public class WeatherWarnings {
     }
 
     public static ArrayList<WeatherWarning> getCurrentWarnings(Context context, boolean initPolygons){
-        WeatherWarningContentProvider weatherWarningContentProvider = new WeatherWarningContentProvider();
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         Cursor cursor  = null;
         ArrayList<WeatherWarning> warnings = new ArrayList<WeatherWarning>();
         try {
-            cursor = contentResolver.query(WeatherWarningContentProvider.URI_WARNINGDATA, null,null,null,null);
+            cursor = contentResolver.query(WeatherContentManager.WARNING_URI_ALL, null,null,null,null);
             int i=0;
             if (cursor.moveToFirst()){
                 do {
-                    WeatherWarning weatherWarning = weatherWarningContentProvider.getWeatherWarningFromCursor(cursor);
+                    WeatherWarning weatherWarning = WeatherContentManager.getWeatherWarningFromCursor(cursor);
                     i++;
                     if (weatherWarning!=null){
                         if (initPolygons){
@@ -76,7 +74,7 @@ public class WeatherWarnings {
 
     public static void cleanWeatherWarningsDatabase(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        int i = contentResolver.delete(WeatherWarningContentProvider.URI_WARNINGDATA,null,null);
+        int i = contentResolver.delete(WeatherContentManager.WARNING_URI_ALL,null,null);
         PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,i+" warnings removed from database.");
     }
 

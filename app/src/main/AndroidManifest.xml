@@ -74,25 +74,10 @@
             android:parentActivityName=".TextForecastListActivity">
         </activity>
 
-        <provider android:name=".WeatherForecastContentProvider"
-            android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany.weather" android:enabled="true"
+        <provider android:name=".WeatherContentProvider"
+            android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany" android:enabled="true"
             android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
             android:syncable="false" />
-
-        <provider android:name=".WeatherWarningContentProvider"
-            android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany.warnings" android:enabled="true"
-            android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
-            android:syncable="false" />
-
-        <provider android:name=".TextForecastContentProvider"
-            android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany.texts" android:enabled="true"
-            android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
-            android:syncable="false" />
-
-        <provider android:name=".AreaContentProvider"
-                  android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany.areas" android:enabled="true"
-                  android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
-                  android:syncable="false" />
 
         <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClassicWidget" android:icon="@drawable/widget_preview"
             android:label="@string/classicwidget_description">

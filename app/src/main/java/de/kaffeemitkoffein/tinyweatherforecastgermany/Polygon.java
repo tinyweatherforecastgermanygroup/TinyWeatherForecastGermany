@@ -110,7 +110,7 @@ public class Polygon{
     }
 
     public static ArrayList<Polygon> getPolygonArraylistFromString(String source){
-        ArrayList<String> polygonStrings = AreaContentProvider.deSerializeString(source);
+        ArrayList<String> polygonStrings = WeatherContentManager.deSerializeStringToArraylist(source);
         ArrayList<Polygon> polygons = new ArrayList<Polygon>();
         for (int i=0; i<polygonStrings.size(); i++){
             Polygon polygon = new Polygon(polygonStrings.get(i));

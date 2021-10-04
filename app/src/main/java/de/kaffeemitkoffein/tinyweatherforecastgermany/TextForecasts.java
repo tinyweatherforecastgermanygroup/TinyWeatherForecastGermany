@@ -32,10 +32,9 @@ public class TextForecasts {
 
     public static void writeTextForecastsToDatabaseUnconditionally(Context context, ArrayList<TextForecast> textForecasts){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        TextForecastContentProvider textForecastContentProvider = new TextForecastContentProvider();
         if (textForecasts!=null){
             for (int i=0; i<textForecasts.size(); i++){
-                contentResolver.insert(TextForecastContentProvider.URI_TEXTDATA, textForecastContentProvider.getContentValuesFromTextForecast(textForecasts.get(i)));
+                contentResolver.insert(WeatherContentManager.TEXT_URI_ALL, WeatherContentManager.getContentValuesFromTextForecast(textForecasts.get(i)));
             }
         } else {
             // nothing to do at the moment.
@@ -72,16 +71,15 @@ public class TextForecasts {
     }
 
     public static ArrayList<TextForecast> getTextForecasts(Context context){
-        TextForecastContentProvider textForecastContentProvider = new TextForecastContentProvider();
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         Cursor cursor  = null;
         ArrayList<TextForecast> textForecasts = new ArrayList<TextForecast>();
         try {
-            cursor = contentResolver.query(TextForecastContentProvider.URI_TEXTDATA, null,null,null,null);
+            cursor = contentResolver.query(WeatherContentManager.TEXT_URI_ALL, null,null,null,null);
             int i=0;
             if (cursor.moveToFirst()){
                 do {
-                    TextForecast textForecast = textForecastContentProvider.getTextForecastFromCursor(cursor);
+                    TextForecast textForecast = WeatherContentManager.getTextForecastFromCursor(cursor);
                     if (textForecast!=null){
                         textForecasts.add(textForecast);
                     }
@@ -120,7 +118,7 @@ public class TextForecasts {
 
     public static void eraseTextForecastDatabase(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        int i = contentResolver.delete(TextForecastContentProvider.URI_TEXTDATA,null,null);
+        int i = contentResolver.delete(WeatherContentManager.TEXT_URI_ALL,null,null);
         PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,i+" text forecasts removed from database.");
     }
 
@@ -130,9 +128,9 @@ public class TextForecasts {
         long currentTime = Calendar.getInstance().getTimeInMillis();
         for (int i=0; i<textForecasts.size(); i++){
             if (textForecasts.get(i).issued + 1000*60*60*24*10 < currentTime){
-                String whereClause = TextForecastContentProvider.TextForecastDatabaseHelper.KEY_identifier+ " = ?";
+                String whereClause = WeatherContentProvider.WeatherDatabaseHelper.KEY_TEXTS_identifier+ " = ?";
                 String[] selectionArgs = {textForecasts.get(i).identifier};
-                int delCount = contentResolver.delete(TextForecastContentProvider.URI_TEXTDATA,whereClause,selectionArgs);
+                int delCount = contentResolver.delete(WeatherContentManager.TEXT_URI_ALL,whereClause,selectionArgs);
             }
         }
     }

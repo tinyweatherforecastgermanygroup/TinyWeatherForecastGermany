@@ -4,13 +4,11 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
  * IMPORTANT NOTE: this class is work in progress and not used yet. It will unify all the single ContentProviders.
  */
 
-import android.content.ContentProvider;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.UriMatcher;
+import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 
 public class WeatherContentProvider extends ContentProvider {
@@ -19,6 +17,7 @@ public class WeatherContentProvider extends ContentProvider {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "weather";
+    private SQLiteDatabase database;
 
     public static final String TABLE_NAME_FORECASTS = "forecasts";
     public static final String TABLE_NAME_WARNINGS  = "warnings";
@@ -27,27 +26,64 @@ public class WeatherContentProvider extends ContentProvider {
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
+    private static final int URICODE_FORECAST_SINGLE = 10;
+    private static final int URICODE_FORECAST_ALL    = 11;
+    private static final int URICODE_WARNING_SINGLE  = 20;
+    private static final int URICODE_WARNING_ALL     = 21;
+    private static final int URICODE_TEXT_SINGLE     = 30;
+    private static final int URICODE_TEXT_ALL        = 31;
+    private static final int URICODE_AREA_SINGLE     = 40;
+    private static final int URICODE_AREA_ALL        = 41;
+
     static {
-        uriMatcher.addURI(AUTHORITY, TABLE_NAME_FORECASTS, 10);
-        uriMatcher.addURI(AUTHORITY, TABLE_NAME_FORECASTS+"/*", 11);
-        uriMatcher.addURI(AUTHORITY, TABLE_NAME_WARNINGS, 20);
-        uriMatcher.addURI(AUTHORITY, TABLE_NAME_WARNINGS+"/*", 21);
-        uriMatcher.addURI(AUTHORITY, TABLE_NAME_TEXTS, 30);
-        uriMatcher.addURI(AUTHORITY, TABLE_NAME_TEXTS+"/*", 31);
-        uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS, 40);
-        uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS+"/*", 41);
-        uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS, 50);
-        uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS+"/*", 51);
+        uriMatcher.addURI(AUTHORITY, TABLE_NAME_FORECASTS, URICODE_FORECAST_SINGLE);
+        uriMatcher.addURI(AUTHORITY, TABLE_NAME_FORECASTS+"/*", URICODE_FORECAST_ALL);
+        uriMatcher.addURI(AUTHORITY, TABLE_NAME_WARNINGS, URICODE_WARNING_SINGLE);
+        uriMatcher.addURI(AUTHORITY, TABLE_NAME_WARNINGS+"/*", URICODE_WARNING_ALL);
+        uriMatcher.addURI(AUTHORITY, TABLE_NAME_TEXTS, URICODE_TEXT_SINGLE);
+        uriMatcher.addURI(AUTHORITY, TABLE_NAME_TEXTS+"/*", URICODE_TEXT_ALL);
+        uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS, URICODE_AREA_SINGLE);
+        uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS+"/*", URICODE_AREA_ALL);
     }
+
 
     @Override
     public boolean onCreate() {
+        Context context = getContext();
+        WeatherDatabaseHelper weatherDatabaseHelper = new WeatherDatabaseHelper(context);
+        database = weatherDatabaseHelper.getWritableDatabase();
+        if (database!=null){
+            return true;
+        }
         return false;
     }
 
+    private String getTablenameFromUri(Uri uri) throws IllegalArgumentException{
+        String tableName="";
+        switch (uriMatcher.match(uri)){
+            case URICODE_FORECAST_SINGLE:
+            case URICODE_FORECAST_ALL   :
+                tableName = TABLE_NAME_FORECASTS; break;
+            case URICODE_WARNING_SINGLE :
+            case URICODE_WARNING_ALL    :
+                tableName=TABLE_NAME_WARNINGS; break;
+            case URICODE_TEXT_SINGLE    :
+            case URICODE_TEXT_ALL       :
+                tableName=TABLE_NAME_TEXTS; break;
+            case URICODE_AREA_SINGLE    :
+            case URICODE_AREA_ALL       :
+                tableName=TABLE_NAME_AREAS; break;
+            default: throw new IllegalArgumentException("Unknown Uri: "+uri);
+        }
+        return tableName;
+    }
+
     @Override
-    public Cursor query(Uri uri, String[] strings, String s, String[] strings1, String s1) {
-        return null;
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) throws IllegalArgumentException{
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        qb.setTables(getTablenameFromUri(uri));
+        Cursor c = qb.query(database,projection,selection,selectionArgs,null,null,sortOrder);
+        return c;
     }
 
     @Override
@@ -56,18 +92,25 @@ public class WeatherContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        return null;
+    public Uri insert(Uri uri, ContentValues contentValues) throws IllegalArgumentException{
+        String tableName=getTablenameFromUri(uri);
+        long rowId = database.insert(tableName,null,contentValues);
+        Uri uriResult = ContentUris.withAppendedId(uri,rowId);
+        return uriResult;
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        return 0;
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        String tableName=getTablenameFromUri(uri);
+        int numberDeleted = database.delete(tableName,selection,selectionArgs);
+        return numberDeleted;
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        String tableName=getTablenameFromUri(uri);
+        int numberUpdated = database.update(tableName,contentValues,selection,selectionArgs);
+        return numberUpdated;
     }
 
     public static class WeatherDatabaseHelper extends SQLiteOpenHelper {
@@ -487,8 +530,19 @@ public class WeatherContentProvider extends ContentProvider {
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        public void onConfigure(SQLiteDatabase db) {
+            super.onConfigure(db);
+            setWriteAheadLoggingEnabled(true);
+        }
 
+        @Override
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+            // drop data & re-create tables
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_FORECASTS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_WARNINGS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_TEXTS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_AREAS);
+            onCreate(sqLiteDatabase);
         }
     }
 
