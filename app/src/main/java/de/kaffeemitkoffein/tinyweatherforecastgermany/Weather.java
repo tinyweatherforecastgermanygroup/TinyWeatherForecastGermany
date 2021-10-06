@@ -350,14 +350,24 @@ public final class Weather {
         }
 
         private static float getSweepAngleFromAbsoluteDegrees(float source, float target) {
-            float v1 = (360 + (target-source)) % 360;
-            float v2 = -((360 + source - target) % 360);
-            // the abs lower of both wins
-            if (Math.abs(v1)<Math.abs(v2)){
-                return v1;
-            } else {
-                return v2;
+            /*
+                Examples:
+                a   b
+                350 20 => 30	20 - 350 = -330	b - a + 360
+                280 90 => 170   90 - 280 = -190 	b - a + 360
+                10  350 => -20   350 - 10 = 340	b - a - 360
+                10  40 => 30 	40-10   		b - a
+                40  30 => -10 	30-40 			b - a
+                180 120 => -60 			b - a
+             */
+            float sweepangle = target - source;
+            if (sweepangle<-180){
+                sweepangle = sweepangle + 360;
+            } else
+            if (sweepangle>180){
+                sweepangle = sweepangle - 360;
             }
+            return sweepangle;
         }
 
         private static int getTintColor(int wind_speed){
