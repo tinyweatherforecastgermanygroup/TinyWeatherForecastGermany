@@ -118,7 +118,6 @@
                         android:entryValues="@array/display_wind_unit_values"
                         android:defaultValue="0"/>
 
-                <!--
                 <CheckBoxPreference
                         android:key="PREF_display_wind_arc"
                         android:title="@string/preference_display_wind_arc_title"
@@ -132,7 +131,6 @@
                         android:entries="@array/display_wind_arc_period_text"
                         android:entryValues="@array/display_wind_arc_period_values"
                         android:defaultValue="6"/>
-                -->
 
                 <CheckBoxPreference
                         android:key="PREF_display_wind_in_radar"
