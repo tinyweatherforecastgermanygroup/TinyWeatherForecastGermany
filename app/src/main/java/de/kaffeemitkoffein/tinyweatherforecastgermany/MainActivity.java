@@ -926,12 +926,12 @@ public class MainActivity extends Activity {
     }
 
     @SuppressWarnings("deprecation")
-    private void setOverflowMenuItemColor(Menu menu, int id, int string_id){
-        String s = getApplicationContext().getResources().getString(string_id);
+    public static void setOverflowMenuItemColor(Context context, Menu menu, int id, int string_id){
+        String s = context.getApplicationContext().getResources().getString(string_id);
         MenuItem menuItem = menu.findItem(id);
         if (menuItem.isVisible()){
             SpannableString spannableString = new SpannableString(s);
-            int color = ThemePicker.getWidgetTextColor(this);
+            int color = ThemePicker.getWidgetTextColor(context);
             spannableString.setSpan(new ForegroundColorSpan(color),0,s.length(),0);
             menuItem.setTitle(spannableString);
         } else {
@@ -966,12 +966,12 @@ public class MainActivity extends Activity {
             // omit the first two, as they are not in the menu
             //setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.attr.colorText);
             //setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.attr.colorText);
-            setOverflowMenuItemColor(menu,R.id.menu_texts,R.string.texts_button);
-            setOverflowMenuItemColor(menu,R.id.menu_settings,R.string.settings_button);
-            setOverflowMenuItemColor(menu,R.id.menu_geoinput,R.string.geoinput_button);
-            setOverflowMenuItemColor(menu,R.id.menu_about,R.string.about_button);
-            setOverflowMenuItemColor(menu,R.id.menu_license,R.string.license_button);
-            setOverflowMenuItemColor(menu,R.id.menu_whatsnew,R.string.whatsnew_button);
+            setOverflowMenuItemColor(this,menu,R.id.menu_texts,R.string.texts_button);
+            setOverflowMenuItemColor(this,menu,R.id.menu_settings,R.string.settings_button);
+            setOverflowMenuItemColor(this,menu,R.id.menu_geoinput,R.string.geoinput_button);
+            setOverflowMenuItemColor(this,menu,R.id.menu_about,R.string.about_button);
+            setOverflowMenuItemColor(this,menu,R.id.menu_license,R.string.license_button);
+            setOverflowMenuItemColor(this,menu,R.id.menu_whatsnew,R.string.whatsnew_button);
         }
         // disable weather warnings if desired by user
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());

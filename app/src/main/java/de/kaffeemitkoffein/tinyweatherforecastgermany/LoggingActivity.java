@@ -34,13 +34,13 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -53,7 +53,7 @@ public class LoggingActivity extends Activity {
     ActionBar actionBar;
     int level0=0; int level1=0; int level2=0; int level3=0; long logSize=0;
     final static int[] levelColor ={Color.GREEN,Color.YELLOW,Color.RED,Color.MAGENTA};
-    TextView TvLevel0; TextView TvLevel1; TextView TvLevel2; TextView TvLevel3; TextView TvRAMavail; TextView TvRAMtotal; TextView TvRAMlow; TextView TvLogSize;
+    TextView logview; TextView TvLevel0; TextView TvLevel1; TextView TvLevel2; TextView TvLevel3; TextView TvRAMavail; TextView TvRAMtotal; TextView TvRAMlow; TextView TvLogSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class LoggingActivity extends Activity {
         TvRAMavail = (TextView) findViewById(R.id.actionbar_logging_ramAvail);
         TvRAMtotal = (TextView) findViewById(R.id.actionbar_logging_ramTotal);
         TvRAMlow = (TextView) findViewById(R.id.actionbar_logging_ramLow);
-        final TextView logview = (TextView) findViewById(R.id.logging_infoTextView);
+        logview = (TextView) findViewById(R.id.logging_infoTextView);
         logview.setText("Loading...");
         // Read the logs asynchronously
         PrivateLog.AsyncGetLogs asyncGetLogs = new PrivateLog.AsyncGetLogs(this){
@@ -137,34 +137,81 @@ public class LoggingActivity extends Activity {
                 finish();
             }
         });
-        final Button button_copy = (Button) findViewById(R.id.logging_button_copy);
-        button_copy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (PrivateLog.copyLogsToClipboard(getApplicationContext())){
-                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.logging_copy_success),Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(),getResources().getString(R.string.logging_copy_fail),Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        final Button button_clear = (Button) findViewById(R.id.logging_button_clear);
-        button_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (PrivateLog.clearLogs(getApplicationContext())){
-                    logview.setText("");
-                }
-            }
-        });
+    }
 
-        final Button button_share = (Button) findViewById(R.id.logging_button_share);
-        button_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shareLogs();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater mi = getMenuInflater();
+        mi.inflate(R.menu.logging_activity,menu);
+        if (!WeatherSettings.forceNoMenuIcons(getApplicationContext())){
+            // try to show icons in drop-down menu
+            if (menu.getClass().getSimpleName().equals("MenuBuilder")){
+                try {
+                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible",Boolean.TYPE);
+                    method.setAccessible(true);
+                    method.invoke(menu,true);
+                } catch (Exception e){
+                    // this is a hack to disable the icon-in-menu-feature permanently if it fails on some devices.
+                    // A flag is set in the settings and the app is force-restarted with an intent.
+                    // this should only happen once at the first app launch, if ever.
+                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.FATAL,"The icon-in-menu feature failed.");
+                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.FATAL,"DISABLING this feature permanently!");
+                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.FATAL,"=> This needs an app relaunch, this is being triggered now.");
+                    WeatherSettings.setForceNoMenuIconsFlag(getApplicationContext(),true);
+                    Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(i);
+                    finish();
+                }
             }
-        });
+            MainActivity.setOverflowMenuItemColor(this,menu,R.id.lmenu_delete,R.string.logging_button_clear);
+            MainActivity.setOverflowMenuItemColor(this,menu,R.id.lmenu_share,R.string.logging_button_share);
+            MainActivity.setOverflowMenuItemColor(this,menu,R.id.lmenu_copy,R.string.logging_button_copy);
+        }
+        // disable weather warnings if desired by user
+        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+        if (weatherSettings.warnings_disabled){
+            for (int i=0; i<menu.size(); i++){
+                if (menu.getItem(i).getItemId()==R.id.menu_warnings){
+                    menu.getItem(i).setVisible(false);
+                }
+            }
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onMenuOpened(int featureID, Menu menu){
+        return super.onMenuOpened(featureID,menu);
+    }
+
+
+    @Override
+    public void onOptionsMenuClosed(Menu menu){
+        super.onOptionsMenuClosed(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem mi){
+        int item_id = mi.getItemId();
+        if (item_id == R.id.lmenu_delete){
+            if (PrivateLog.clearLogs(getApplicationContext())){
+                logview.setText("");
+            }
+            return true;
+        }
+        if (item_id == R.id.lmenu_share) {
+            shareLogs();
+            return true;
+        }
+        if (item_id == R.id.lmenu_copy) {
+            if (PrivateLog.copyLogsToClipboard(getApplicationContext())){
+                Toast.makeText(getApplicationContext(),getResources().getString(R.string.logging_copy_success),Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(),getResources().getString(R.string.logging_copy_fail),Toast.LENGTH_LONG).show();
+            }
+            return true;
+        }
+         return super.onOptionsItemSelected(mi);
     }
 
     public void shareLogs(){
@@ -253,7 +300,7 @@ public class LoggingActivity extends Activity {
                 }
                 if (TvRAMtotal != null) {
                     TvRAMtotal.setTextColor(ThemePicker.getWidgetTextColor(context));
-                    TvRAMtotal.setText("Ram total: " + memoryInfo.totalMem / (1024 * 1024) + " Mb");
+                    TvRAMtotal.setText("total: " + memoryInfo.totalMem / (1024 * 1024) + " Mb");
                 }
                 if (TvRAMlow != null){
                     if (memoryInfo.lowMemory){

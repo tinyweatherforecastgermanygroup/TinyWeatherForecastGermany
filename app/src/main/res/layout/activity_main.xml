@@ -181,7 +181,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:tint="?attr/colorText"
-                android:src="@mipmap/ic_highlight_off_white_24dp"/>
+                android:src="?attr/ic_highlight_off"/>
         </LinearLayout>
 
         <ListView android:id="@+id/main_listview"

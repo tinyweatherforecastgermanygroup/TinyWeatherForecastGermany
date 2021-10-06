@@ -91,8 +91,8 @@
             android:layout_width="wrap_content"
             android:layout_gravity="left"
             android:textSize="@dimen/fcmain_textsize_medium"
-            android:layout_alignStart="@id/actionbar_logging_logsize"
-            android:layout_below="@id/actionbar_logging_logsize"
+            android:layout_toRightOf="@id/actionbar_logging_level3"
+            android:layout_marginLeft="6dp"
             android:text="RAM avail:"
             android:textColor="?attr/colorText" />
 
@@ -103,7 +103,6 @@
             android:layout_gravity="left"
             android:textSize="@dimen/fcmain_textsize_medium"
             android:layout_toRightOf="@id/actionbar_logging_ramAvail"
-            android:layout_below="@id/actionbar_logging_level2"
             android:layout_marginLeft="6dp"
             android:text="total:"
             android:textColor="?attr/colorText" />
@@ -114,9 +113,10 @@
             android:layout_width="wrap_content"
             android:layout_gravity="left"
             android:textSize="@dimen/fcmain_textsize_medium"
-            android:layout_alignStart="@id/actionbar_logging_ramAvail"
-            android:layout_below="@id/actionbar_logging_ramAvail"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/actionbar_logging_logsize"
             android:text="Low Memory State:"
+            android:layout_marginLeft="6dp"
             android:textStyle="italic"
             android:textColor="?attr/colorText" />
 
