@@ -23,6 +23,7 @@
 
     <LinearLayout android:id="@+id/logging_intoButtonLine"
         android:layout_width="match_parent"
+                  android:weightSum="4"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
@@ -30,28 +31,33 @@
         android:layout_alignParentBottom="true">
 
         <Button android:id="@+id/logging_button_back"
-            android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/fcmain_textsize_medium"
             android:textColor="?attr/colorText"
+                android:drawableLeft="@mipmap/ic_chevron_left_white_24dp"
             android:text="@string/logging_button_back"/>
         <Button android:id="@+id/logging_button_clear"
-            android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/fcmain_textsize_medium"
             android:textColor="?attr/colorText"
-            android:text="@string/logging_button_clear"/>
+                android:text="@string/logging_button_clear"/>
         <Button android:id="@+id/logging_button_share"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/fcmain_textsize_medium"
                 android:textColor="?attr/colorText"
                 android:text="Share"/>
         <Button android:id="@+id/logging_button_copy"
-            android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/fcmain_textsize_medium"

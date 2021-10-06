@@ -362,6 +362,25 @@ public class MainActivity extends Activity {
         }
         final WeatherSettings weatherSettings = new WeatherSettings(this);
         if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
+            // remove old databases if previous version was older than 30
+            if (weatherSettings.last_version_code<30){
+                // remove abandoned forecast database file
+                if (deleteDatabase("weatherforecast.db")) {
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned forecast database file");
+                } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned forecast database file to remove!");
+                // remove abandoned warnings database file
+                if (deleteDatabase("weatherwarnings.db")){
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned weather warnings database file");
+                } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned weather warnings database file to remove!");
+                // remove abandoned texts database file
+                if (deleteDatabase("textforecasts.db")){
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned texts database file");
+                } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned texts database file to remove!");
+                // remove abandoned areas database file
+                if (deleteDatabase("areas.db")){
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned areas database file");
+                } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned areas database file to remove!");
+            }
             // remove shared preferences on app update if installed app is lower than build 20
             if ((weatherSettings.last_version_code>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT) && (weatherSettings.last_version_code<20)){
                 WeatherSettings.resetStationToDefault(getApplicationContext());
