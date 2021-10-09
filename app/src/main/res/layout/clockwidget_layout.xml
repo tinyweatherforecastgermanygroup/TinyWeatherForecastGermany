@@ -121,15 +121,34 @@
             android:layout_height="wrap_content"
             android:text="-° | -°"/>
 
+        <ImageView
+                android:id="@+id/widget_rh_icon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginLeft="2dp"
+                android:src="@mipmap/symbol_rh"
+                android:layout_alignBottom="@id/classicwidget_temperature_highlow"
+                android:layout_toRightOf="@id/classicwidget_temperature_highlow"/>
+
+        <TextView
+                android:id="@+id/widget_rh_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/widget_textsize_medium"
+                android:layout_marginLeft="2dp"
+                android:layout_alignBottom="@id/classicwidget_temperature_highlow"
+                android:layout_toRightOf="@id/widget_rh_icon"
+                android:text="99%"/>
+
         <TextView android:id="@+id/widget_pressure"
-            android:textSize="@dimen/widget_textsize_medium"
-            android:textColor="@color/colorTextWidget"
-            android:layout_gravity="right"
-            android:layout_toRightOf="@id/classicwidget_temperature"
-            android:layout_below="@id/classicwidget_temperature_highlow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="- hPa"/>
+                  android:textSize="@dimen/widget_textsize_medium"
+                  android:textColor="@color/colorTextWidget"
+                  android:layout_gravity="right"
+                  android:layout_toRightOf="@id/classicwidget_temperature"
+                  android:layout_below="@id/classicwidget_temperature_highlow"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="- hPa"/>
 
         <RelativeLayout
             android:id="@+id/widget_precipitation_container"
@@ -284,7 +303,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="km"/>
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -347,24 +365,27 @@
             android:weightSum="2">
 
             <TextView android:id="@+id/classicwidget_weatherconditiontext"
-                android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/colorTextWidget"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
-                android:textAlignment="textStart"
-                android:text="-"/>
+                      android:textSize="@dimen/widget_textsize_medium"
+                      android:textColor="@color/colorTextWidget"
+                      android:layout_weight="1"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_marginRight="2dp"
+                      android:textAlignment="textStart"
+                      android:layout_gravity="bottom"
+                      android:text="-"/>
 
-            <TextView android:id="@+id/classicwidget_locationtext"
-                android:textSize="@dimen/widget_textsize_medium"
-                android:textColor="@color/colorTextWidget"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:textAlignment="textEnd"
-                android:text="-"/>
+            <TextView
+                    android:id="@+id/classicwidget_locationtext"
+                    android:textSize="@dimen/widget_textsize_medium"
+                    android:textColor="@color/colorTextWidget"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:textAlignment="textEnd"
+                    android:layout_gravity="bottom"
+                    android:text="-"/>
 
         </LinearLayout>
 

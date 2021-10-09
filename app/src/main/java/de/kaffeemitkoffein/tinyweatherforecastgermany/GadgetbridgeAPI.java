@@ -61,6 +61,9 @@ public class GadgetbridgeAPI {
             if (weatherCard.currentWeather.hasTemperature()){
                 weatherSpec.currentTemp          = weatherCard.currentWeather.getTemperatureInt();
             }
+            if (weatherCard.currentWeather.hasRH()){
+                weatherSpec.currentHumidity      = weatherCard.currentWeather.getRHInt();
+            }
             if (weatherCard.currentWeather.hasMinTemperature()){
                 weatherSpec.todayMinTemp         = weatherCard.currentWeather.getMinTemperatureInt();
             }

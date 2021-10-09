@@ -73,6 +73,7 @@ public class ClockWidget extends ClassicWidget {
         remoteViews.setImageViewBitmap(R.id.widget_visibility_icon,WeatherIcons.getIconBitmap(context,WeatherIcons.BIOCULAR,true));
         remoteViews.setImageViewBitmap(R.id.widget_temperature5cm_icon,WeatherIcons.getIconBitmap(context,WeatherIcons.SYMBOL_TEMPERATURE5CM,true));
         remoteViews.setImageViewBitmap(R.id.widget_clouds_icon,WeatherIcons.getIconBitmap(context,WeatherIcons.SYMBOL_CLOUD,true));
+        remoteViews.setImageViewBitmap(R.id.widget_rh_icon,WeatherIcons.getIconBitmap(context,WeatherIcons.SYMBOL_RH,true));
     }
 
     private void fillClockWeatherItems(Context context, final RemoteViews remoteViews, CurrentWeatherInfo weatherInfo, WeatherSettings weatherSettings) {
@@ -81,6 +82,7 @@ public class ClockWidget extends ClassicWidget {
         setVisibility(context, remoteViews,weatherInfo,weatherSettings.getDistanceDisplayUnit());
         setClouds(context, remoteViews,weatherInfo);
         setTemperature5cm(context, remoteViews,weatherInfo);
+        setHumidity(context,remoteViews,weatherInfo);
         setDateText(context, remoteViews);
         setAlarmText(context,remoteViews);
         remoteViews.setTextColor(R.id.clockwidget_clock,ThemePicker.getWidgetTextColor(context));

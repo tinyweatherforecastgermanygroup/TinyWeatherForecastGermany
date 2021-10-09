@@ -107,13 +107,15 @@
                 android:layout_height="wrap_content"
                 android:text="-°"/>
 
-            <TextView android:id="@+id/classicwidget_temperature_highlow"
-                android:textSize="@dimen/widget_textsize_large"
-                android:textColor="@color/colorTextWidget"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="-° | -°"/>
+
+                <TextView android:id="@+id/classicwidget_temperature_highlow"
+                          android:textSize="@dimen/widget_textsize_large"
+                          android:textColor="@color/colorTextWidget"
+                          android:gravity="center"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="-° | -°"/>
+
 
             <LinearLayout
                 android:id="@+id/classicwidget_wind_horizontal_container"

@@ -188,6 +188,18 @@ public class ClassicWidget extends AppWidgetProvider {
         }
     }
 
+    public void setHumidity(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo){
+        if (weatherInfo.currentWeather.hasRH()){
+            remoteViews.setViewVisibility(R.id.widget_rh_icon,View.VISIBLE);
+            remoteViews.setViewVisibility(R.id.widget_rh_value,View.VISIBLE);
+            remoteViews.setTextViewText(R.id.widget_rh_value,Math.round(weatherInfo.currentWeather.getRH())+"%");
+            remoteViews.setTextColor(R.id.widget_rh_value,ThemePicker.getWidgetTextColor(context));
+        } else {
+            remoteViews.setViewVisibility(R.id.widget_rh_icon,View.GONE);
+            remoteViews.setViewVisibility(R.id.widget_rh_value,View.GONE);
+        }
+    }
+
     @SuppressWarnings("deprecation")
     private String getNextAlarm(Context context) {
         String alarm_string = null;
