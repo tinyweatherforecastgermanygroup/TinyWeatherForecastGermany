@@ -396,7 +396,7 @@ public class MainActivity extends Activity {
                     WidgetRefresher.refresh(context.getApplicationContext());
                 }
                 // reload weather data if necessary
-                if (key.equals(WeatherSettings.PREF_STATION_NAME)){
+                if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
                     // check if there is weather data (might be old) and display it while an update was launched above anyway
                     CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
@@ -456,6 +456,7 @@ public class MainActivity extends Activity {
         if (!API_TESTING_ENABLED){
             if (weatherCard!=null){
                 displayWeatherForecast(weatherCard);
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
             } else {
                 UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
             }
@@ -741,8 +742,6 @@ public class MainActivity extends Activity {
         }
     }
 
-
-
     private void testAPI_Call(){
         final Context context = this;
         registerForBroadcast();
@@ -842,7 +841,7 @@ public class MainActivity extends Activity {
             forecastAdapter.setWarnings(localWarnings);
         }
         weatherList.setAdapter(forecastAdapter);
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
+        //UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
    }
 
     public void displayWeatherForecast(){

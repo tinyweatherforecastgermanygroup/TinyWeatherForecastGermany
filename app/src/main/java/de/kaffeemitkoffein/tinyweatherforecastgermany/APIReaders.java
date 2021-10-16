@@ -1,6 +1,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -646,10 +647,16 @@ public class APIReaders {
                 // get timestamp
                 Calendar calendar = Calendar.getInstance();
                 rawWeatherInfo.polling_time = calendar.getTimeInMillis();
-                // writes the weather data to the database
-                // WeatherForecastContentProvider weatherForecastContentProvider = new WeatherForecastContentProvider();
-                // weatherForecastContentProvider.writeWeatherForecast(context,rawWeatherInfo);
-                context.getContentResolver().insert(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo));
+                //context.getContentResolver().insert(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo));
+                String selection = ""+WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+"=?";
+                String[] selectionArgs = {WeatherSettings.getSetStationLocation(context).name};
+                int result = context.getContentResolver().update(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo),selection,selectionArgs);
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Weather entries updated: "+result);
+                if (result==0){
+                    // insert, if the entry is not present in the data base. This happens, when this is a new station.
+                    Uri uri = context.getContentResolver().insert(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo));
+                    PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"New weather entry, content uri is: "+uri.toString());
+                }
                 onPositiveResult(rawWeatherInfo);
             }
         }

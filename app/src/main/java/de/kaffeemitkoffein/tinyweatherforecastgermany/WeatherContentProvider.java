@@ -15,7 +15,7 @@ public class WeatherContentProvider extends ContentProvider {
 
     static final String AUTHORITY = "de.kaffeemitkoffein.tinyweatherforecastgermany";
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "weather";
     private SQLiteDatabase database;
 
@@ -95,7 +95,26 @@ public class WeatherContentProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues contentValues) throws IllegalArgumentException{
         String tableName=getTablenameFromUri(uri);
         long rowId = database.insert(tableName,null,contentValues);
-        Uri uriResult = ContentUris.withAppendedId(uri,rowId);
+        // generate single item uri
+        Uri.Builder uriBuilder = new Uri.Builder();
+        uriBuilder.authority(AUTHORITY);
+        switch (uriMatcher.match(uri)){
+            case URICODE_FORECAST_SINGLE:
+            case URICODE_FORECAST_ALL   :
+                uriBuilder.appendPath(TABLE_NAME_FORECASTS); break;
+            case URICODE_WARNING_SINGLE :
+            case URICODE_WARNING_ALL    :
+                uriBuilder.appendPath(TABLE_NAME_WARNINGS); break;
+            case URICODE_TEXT_SINGLE    :
+            case URICODE_TEXT_ALL       :
+                uriBuilder.appendPath(TABLE_NAME_TEXTS); break;
+            case URICODE_AREA_SINGLE    :
+            case URICODE_AREA_ALL       :
+                uriBuilder.appendPath(TABLE_NAME_AREAS); break;
+            default: throw new IllegalArgumentException("Unknown Uri: "+uri);
+        }
+        Uri uriResult = uriBuilder.build();
+        uriResult = ContentUris.withAppendedId(uriResult,rowId);
         return uriResult;
     }
 
@@ -126,6 +145,7 @@ public class WeatherContentProvider extends ContentProvider {
 
         public static final String KEY_FORECASTS_id="id";
         public static final String KEY_FORECASTS_timetext="timetext";
+        public static final String KEY_FORECASTS_timestamp="timestamp";
         public static final String KEY_FORECASTS_name="name";
         public static final String KEY_FORECASTS_description="description";
         public static final String KEY_FORECASTS_longitude="longitude";
@@ -252,7 +272,6 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_FORECASTS_wwMh="wwMh";
         public static final String KEY_FORECASTS_wwMd="wwMd";
         public static final String KEY_FORECASTS_PEvap="PEvap";
-        public static final String KEY_FORECASTS_timestamp="timestamp";
 
         public static final String SQL_COMMAND_CREATE_TABLE_FORECASTS = "CREATE TABLE " + TABLE_NAME_FORECASTS + "("
                 + KEY_FORECASTS_id + " INTEGER PRIMARY KEY ASC,"

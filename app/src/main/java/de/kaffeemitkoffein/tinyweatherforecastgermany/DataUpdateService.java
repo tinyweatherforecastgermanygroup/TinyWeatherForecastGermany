@@ -53,7 +53,8 @@ public class DataUpdateService extends Service {
         public void run() {
             updateNotification(3);
             // remove old weather entries from the data base
-            Weather.cleanDataBase(getApplicationContext());
+            // Weather.cleanDataBase(getApplicationContext());
+            Weather.sanitizeDatabase(getApplicationContext());
             // remove old text forecasts
             TextForecasts.cleanTextForecastDatabase(getApplicationContext());
         }

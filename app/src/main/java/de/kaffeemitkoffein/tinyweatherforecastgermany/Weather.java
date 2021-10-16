@@ -1000,9 +1000,11 @@ public final class Weather {
         String station_name = weatherSettings.station_name;
         Cursor cursor;
         String[] selectionArg={station_name};
+        String orderBy=""+WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time+" DESC";
         cursor = contentResolver.query(WeatherContentManager.FORECAST_URI_ALL,
-                null,WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+" = ?",selectionArg,null);
+                null,WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+" = ?",selectionArg,orderBy);
         // read only fist element. Database should not hold more than one data set for one station.
+        // Should there be more, take the most recent by polling time. The most recent entry is at position 1.
         if (cursor.moveToFirst()){
             CurrentWeatherInfo currentWeatherInfo = WeatherContentManager.getWeatherInfo(context,cursor);
             // check if local weather data is outdated
@@ -1016,7 +1018,7 @@ public final class Weather {
         return null;
     }
 
-    private static int deleteWeatherDataSet(Context context, RawWeatherInfo rawWeatherInfo){
+    private static int deleteWeatherDataSet_Old(Context context, RawWeatherInfo rawWeatherInfo){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         int rows = 0;
         try {
@@ -1025,6 +1027,18 @@ public final class Weather {
             // do nothing here
         }
         return rows;
+    }
+
+    public static void sanitizeDatabase(Context context){
+        ContentResolver contentResolver = context.getContentResolver();
+        String selectionWeather  = WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time+"<?";
+        String selectionTexts    = WeatherContentProvider.WeatherDatabaseHelper.KEY_TEXTS_polled+"<?";
+        String selectionWarnings = WeatherContentProvider.WeatherDatabaseHelper.KEY_WARNINGS_polling_time+"<?";
+        String[] selectionArgs = {String.valueOf(Calendar.getInstance().getTimeInMillis()-1000*60*60*24*14)};  // anything polled prior to 14 days
+        int rowsWeather  = contentResolver.delete(WeatherContentManager.FORECAST_URI_ALL,selectionWeather, selectionArgs);
+        int rowsTexts    = contentResolver.delete(WeatherContentManager.TEXT_URI_ALL,selectionTexts, selectionArgs);
+        int rowsWarnings = contentResolver.delete(WeatherContentManager.WARNING_URI_ALL,selectionWarnings, selectionArgs);
+        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Deleted old entries: "+rowsWeather+" forecasts, "+rowsTexts+" texts, "+rowsWarnings+" warnings older than 14 days.");
     }
 
     public static final String[] SQL_COMMAND_QUERYTIMECOLUMN = {WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_timestamp,
@@ -1048,28 +1062,6 @@ public final class Weather {
         if (c!=null)
             c.close();
         return dataArrayList;
-    }
-
-    private static void cleanDataBase(Context context, ArrayList<RawWeatherInfo> data){
-        if (data!=null){
-            if (data.size()>0){
-                for (int i=0; i<data.size(); i++){
-                    // get time of newest entry
-                    long lastTimeInData = data.get(i).getTimeSteps()[data.get(i).elements-1];
-                    if (lastTimeInData<Calendar.getInstance().getTimeInMillis()){
-                        // delete outdated entry when no valid forecast data exists
-                        deleteWeatherDataSet(context,data.get(i));
-                    }
-                }
-            }
-        }
-    }
-
-    public static void cleanDataBase(Context context){
-        ArrayList<RawWeatherInfo> dataArrayList = getTimestampArrayList(context);
-        if (dataArrayList != null){
-            cleanDataBase(context,dataArrayList);
-        }
     }
 
     private static double getJulianDay(long time){
