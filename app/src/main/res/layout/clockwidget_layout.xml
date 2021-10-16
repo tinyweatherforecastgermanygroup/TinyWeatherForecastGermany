@@ -121,25 +121,6 @@
             android:layout_height="wrap_content"
             android:text="-° | -°"/>
 
-        <ImageView
-                android:id="@+id/widget_rh_icon"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_marginLeft="2dp"
-                android:src="@mipmap/symbol_rh"
-                android:layout_alignBottom="@id/classicwidget_temperature_highlow"
-                android:layout_toRightOf="@id/classicwidget_temperature_highlow"/>
-
-        <TextView
-                android:id="@+id/widget_rh_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/widget_textsize_medium"
-                android:layout_marginLeft="2dp"
-                android:layout_alignBottom="@id/classicwidget_temperature_highlow"
-                android:layout_toRightOf="@id/widget_rh_icon"
-                android:text="99%"/>
-
         <TextView android:id="@+id/widget_pressure"
                   android:textSize="@dimen/widget_textsize_medium"
                   android:textColor="@color/colorTextWidget"
@@ -149,6 +130,24 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="- hPa"/>
+
+        <ImageView
+                android:id="@+id/widget_rh_icon"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@mipmap/symbol_rh"
+                android:layout_below="@id/widget_pressure"
+                android:layout_toRightOf="@id/classicwidget_temperature"/>
+
+        <TextView
+                android:id="@+id/widget_rh_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/widget_textsize_medium"
+                android:layout_marginLeft="2dp"
+                android:layout_alignBottom="@id/widget_rh_icon"
+                android:layout_toRightOf="@id/widget_rh_icon"
+                android:text="99%"/>
 
         <RelativeLayout
             android:id="@+id/widget_precipitation_container"
@@ -309,7 +308,7 @@
             android:id="@+id/widget_clouds_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/classicwidget_temperature"
+            android:layout_below="@id/widget_rh_icon"
             android:layout_toRightOf="@id/classicwidget_weatherconditionicon">
 
             <ImageView
