@@ -34,16 +34,20 @@ public class BoldWidget extends ClassicWidget {
     @Override
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances) {
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
-        WeatherSettings weatherSettings = new WeatherSettings(c);
-        for (int i = 0; i < widget_instances.length; i++) {
-            // sets up a pending intent to launch main activity when the widget is touched.
-            Intent intent = new Intent(c, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
-            RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.boldwidget_layout);
-            fillBoldWidgetItems(c, remoteViews, weatherSettings, weatherCard);
-            setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
-            remoteViews.setOnClickPendingIntent(R.id.boldwidget_maincontainer, pendingIntent);
-            awm.updateAppWidget(widget_instances[i], remoteViews);
+        if (weatherCard==null){
+            UpdateAlarmManager.startDataUpdateService(c,true,true,false);
+        } else {
+            WeatherSettings weatherSettings = new WeatherSettings(c);
+            for (int i = 0; i < widget_instances.length; i++) {
+                // sets up a pending intent to launch main activity when the widget is touched.
+                Intent intent = new Intent(c, MainActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
+                RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.boldwidget_layout);
+                fillBoldWidgetItems(c, remoteViews, weatherSettings, weatherCard);
+                setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
+                remoteViews.setOnClickPendingIntent(R.id.boldwidget_maincontainer, pendingIntent);
+                awm.updateAppWidget(widget_instances[i], remoteViews);
+            }
         }
     }
 

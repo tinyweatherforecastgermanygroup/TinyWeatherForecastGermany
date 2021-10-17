@@ -64,7 +64,8 @@ public class ClassicWidget extends AppWidgetProvider {
 
     @Override
     public void onAppWidgetOptionsChanged(Context c, AppWidgetManager awm, int appWidgetID, Bundle newOptions){
-        int[] idarray = new int[appWidgetID];
+        int[] idarray = new int[1];
+        idarray[0]=appWidgetID;
         updateWidgetDisplay(c,awm,idarray);
     }
 
@@ -382,15 +383,19 @@ public class ClassicWidget extends AppWidgetProvider {
 
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
-        WeatherSettings weatherSettings = new WeatherSettings(c);
-        for (int i=0; i<widget_instances.length; i++){
-            // sets up a pending intent to launch main activity when the widget is touched.
-            Intent intent = new Intent(c,MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
-            RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.classicwidget_layout);
-            remoteViews.setOnClickPendingIntent(R.id.widget_maincontainer,pendingIntent);
-            setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
-            awm.updateAppWidget(widget_instances[i],remoteViews);
+        if (weatherCard==null){
+            UpdateAlarmManager.startDataUpdateService(c,true,true,false);
+        } else {
+            WeatherSettings weatherSettings = new WeatherSettings(c);
+            for (int i=0; i<widget_instances.length; i++){
+                // sets up a pending intent to launch main activity when the widget is touched.
+                Intent intent = new Intent(c,MainActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
+                RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.classicwidget_layout);
+                remoteViews.setOnClickPendingIntent(R.id.widget_maincontainer,pendingIntent);
+                setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
+                awm.updateAppWidget(widget_instances[i],remoteViews);
+            }
         }
     }
 
