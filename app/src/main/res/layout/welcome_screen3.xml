@@ -28,81 +28,115 @@
     android:background="?attr/colorWelcomeBackground"
     android:orientation="vertical">
 
-
-    <ImageView
-        android:id="@+id/welcome_screen3_collapse_hint_image"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/collapse_hint">
-    </ImageView>
-
     <TextView
-        android:id="@+id/welcome_screen3_text1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="80dp"
-        android:paddingRight="@dimen/welcome_text_padding"
-        android:textColor="?attr/colorText"
-        android:text="@string/welcome_s3_text1"
-        android:textSize="@dimen/welcome_text_size"
-        android:layout_toRightOf="@id/welcome_screen3_collapse_hint_image"
-        android:paddingBottom="12dp"/>
+            android:id="@+id/welcome_screen3_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:textColor="?attr/colorText"
+            android:text="@string/welcome_next"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/welcome_action_size"
+            android:paddingBottom="@dimen/welcome_action_padding"/>
 
-    <ImageView
-        android:id="@+id/welcome_screen3_expand_hint_image"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_below="@id/welcome_screen3_text1"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/expand_hint">
-    </ImageView>
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/welcome_screen3_next"
+    >
 
-    <TextView
-        android:id="@+id/welcome_screen3_text2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="60dp"
-        android:paddingLeft="@dimen/welcome_text_padding"
-        android:textColor="?attr/colorText"
-        android:text="@string/welcome_s3_text2"
-        android:textSize="@dimen/welcome_text_size"
-        android:layout_toLeftOf="@id/welcome_screen3_expand_hint_image"
-        android:layout_below="@id/welcome_screen3_collapse_hint_image"
-        android:paddingBottom="12dp"/>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/welcome_screen3_text3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="20dp"
-        android:textColor="?attr/colorText"
-        android:text="@string/welcome_s3_text3"
-        android:textSize="@dimen/welcome_text_size"
-        android:layout_below="@id/welcome_screen3_text2"
-        android:paddingBottom="12dp"/>
+            <ImageView
+                    android:id="@+id/welcome_screen3_collapse_hint_image"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/collapse_hint">
+            </ImageView>
 
-    <ImageView
-        android:id="@+id/welcome_screen3_widget_image"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@id/welcome_screen3_text3"
-        android:gravity="center"
-        android:src="@drawable/widget_preview">
-    </ImageView>    <TextView
-        android:id="@+id/welcome_screen3_next"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:textColor="?attr/colorText"
-        android:text="@string/welcome_next"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textSize="@dimen/welcome_action_size"
-        android:paddingBottom="@dimen/welcome_action_padding"/>
+            <TextView
+                    android:id="@+id/welcome_screen3_text1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="80dp"
+                    android:paddingRight="@dimen/welcome_text_padding"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_s3_text1"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:layout_toRightOf="@id/welcome_screen3_collapse_hint_image"
+                    android:paddingBottom="12dp"/>
 
+            <ImageView
+                    android:id="@+id/welcome_screen3_expand_hint_image"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_below="@id/welcome_screen3_text1"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/expand_hint">
+            </ImageView>
+
+            <TextView
+                    android:id="@+id/welcome_screen3_text2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="60dp"
+                    android:paddingLeft="@dimen/welcome_text_padding"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_s3_text2"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:layout_toLeftOf="@id/welcome_screen3_expand_hint_image"
+                    android:layout_below="@id/welcome_screen3_collapse_hint_image"
+                    android:paddingBottom="12dp"/>
+
+            <TextView
+                    android:id="@+id/welcome_screen3_text3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="20dp"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_s3_text3"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:layout_below="@id/welcome_screen3_text2"
+                    android:paddingBottom="12dp"/>
+
+            <ImageView
+                    android:id="@+id/welcome_screen3_widget_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_below="@id/welcome_screen3_text3"
+                    android:gravity="center"
+                    android:layout_marginBottom="12dp"
+                    android:src="@drawable/widget_preview"/>
+
+            <ImageView
+                    android:id="@+id/welcome_screen3_bar_image"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_below="@id/welcome_screen3_widget_image"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/bar_hint"/>
+
+            <TextView
+                    android:id="@+id/welcome_screen3_text4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:layout_toRightOf="@id/welcome_screen3_bar_image"
+                    android:layout_alignTop="@id/welcome_screen3_bar_image"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="6dp"
+                    android:text="@string/welcome_s3_text4"/>
+
+
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
