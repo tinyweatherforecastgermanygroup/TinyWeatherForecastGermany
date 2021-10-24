@@ -155,7 +155,9 @@
             android:textColor="?attr/colorTextDark"
             android:background="?attr/colorPrimaryDark"
             android:textAlignment="center"
+            android:gravity="center_horizontal"
             android:layout_gravity="center"
+            android:layout_centerVertical="true"
             android:textSize="@dimen/fcmain_textsize_medium"
             android:id="@+id/main_dwd_notice_text"/>
 
