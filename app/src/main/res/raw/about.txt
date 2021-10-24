@@ -46,6 +46,7 @@ The following persons contributed to this project:
 * Czech: eUgEntOptIc44, mondstern
 * Norwegian Bokmål: mondstern, Allan Nordhøy
 * Polish: mondstern
+* Spanish: eUgEntOptIc44
 
 License:
 --------
