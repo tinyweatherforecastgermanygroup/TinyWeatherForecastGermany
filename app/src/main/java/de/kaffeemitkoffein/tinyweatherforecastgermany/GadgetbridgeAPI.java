@@ -79,16 +79,17 @@ public class GadgetbridgeAPI {
             // build the forecast instance
             for (int i=0; i<weatherCard.forecast24hourly.size(); i++){
                 // do not add and/or stop adding forecast if values are unknown
-                if ((!weatherCard.forecast24hourly.get(i).hasMinTemperature()||
+                if (!weatherCard.forecast24hourly.get(i).hasMinTemperature()||
                         (!weatherCard.forecast24hourly.get(i).hasMaxTemperature())||
-                        (!weatherCard.forecast24hourly.get(i).hasCondition()))){
+                        (!weatherCard.forecast24hourly.get(i).hasCondition())||
+                        (!weatherCard.forecast24hourly.get(i).hasRH())){
                     break;
                 }
-                // construct forecast and add it; @DWD, humidity is always unknown because not served.
                 WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(
                         weatherCard.forecast24hourly.get(i).getMinTemperatureInt(),
                         weatherCard.forecast24hourly.get(i).getMaxTemperatureInt(),
-                        WeatherCodeContract.translateToOpenWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),0);
+                        WeatherCodeContract.translateToOpenWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),
+                        weatherCard.forecast24hourly.get(i).getRHInt());
                 weatherSpec.forecasts.add(forecast);
             }
             /*

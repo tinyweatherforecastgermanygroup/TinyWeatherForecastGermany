@@ -1,12 +1,5 @@
 New in version ([VERSION]):
 
-- updated languages, new: Spanish (thanks to eUgEntOptIc44!)
-- the wind forecast arc feature is fixed and back again
-- adds humidity to the clock widget
-- fixes widgets crashing when put on the screen before 1st app launch
-- fixes updates repeating under certain conditions
-- fixes crash when changing to known locations with no valid data
-- fixes crash of log activity, improved logging (optional)
-- minor bugfixes & enhancements concerning the user interface
+- fixes broken Gadgetbridge support
 
 
