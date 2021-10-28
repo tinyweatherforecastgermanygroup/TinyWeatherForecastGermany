@@ -265,4 +265,5 @@
     <string name="logging_comment_inputhint">Aplikace se zhroutila…</string>
     <string name="logging_comment_hint">Do protokolů můžete přidat komentář, který vám pomůže najít chybu - vysvětlete, co se stalo:</string>
     <string name="widget_transparency_default">90</string>
+    <string name="welcome_s3_text4">V pruhu předpovědi jsou mraky vyznačeny šedě a déšť modře.</string>
 </resources>
