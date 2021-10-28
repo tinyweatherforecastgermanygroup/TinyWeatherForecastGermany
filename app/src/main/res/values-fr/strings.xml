@@ -279,4 +279,5 @@
     <string name="logging_comment_hint">Vous pouvez ajouter un commentaire (de préférence en anglais) aux journaux pour aider à trouver l\'erreur - veuillez expliquer ce qui s\'est passé :</string>
     <string name="logging_comment_inputhint">L\'application a planté…</string>
     <string name="widget_transparency_default">90</string>
+    <string name="welcome_s3_text4">La barre de prévision montre les nuages en gris et la pluie en bleu.</string>
 </resources>
