@@ -266,4 +266,5 @@
     <string name="logging_comment_inputhint">L\'app si è bloccata…</string>
     <string name="widget_transparency_default">90</string>
     <string name="logging_comment_hint">Puoi aggiungere un commento ai log per aiutare a trovare l\'errore - spiega cosa è successo:</string>
+    <string name="welcome_s3_text4">La barra delle previsioni mostra le nuvole in grigio e la pioggia in blu.</string>
 </resources>
