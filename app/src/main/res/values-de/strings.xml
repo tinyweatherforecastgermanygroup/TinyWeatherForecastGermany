@@ -282,4 +282,5 @@
     <string name="logging_comment_title">Protokoll teilen\?</string>
     <string name="logging_comment_inputhint">Die App ist abgestürzt…</string>
     <string name="logging_comment_hint">Sie können einen Kommentar zum Protokoll hinzu fügen, um den Fehler zu finden - bitte erklären Sie, was passiert ist:</string>
+    <string name="welcome_s3_text4">Die Vorhersageleiste zeigt Wolken in grau und Regen in blau.</string>
 </resources>
