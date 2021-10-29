@@ -1,0 +1,5 @@
+- unidades de viento añadidas: m/s, beaufort (bf), nudos (kn)
+- se han añadido unidades de distancia: millas náuticas, millas y yardas
+- la dirección del viento puede mostrarse ahora de tres maneras: flecha simple, flecha con velocidad del viento (beaufort), texto
+- se ha corregido un error en la rotación del mapa de bits de la flecha que provocaba una visualización incorrecta de la dirección del viento
+- pequeñas mejoras en el diseño de los widgets

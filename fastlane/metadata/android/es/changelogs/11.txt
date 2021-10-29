@@ -1,0 +1,2 @@
+- ahora se pueden configurar los intervalos de previsión: horaria, 6 horas, mixta (primeras 24 horas horarias, 6 horas después)
+- barra opcional que muestra los detalles de la previsión horaria en la previsión de 6 horas

@@ -1,0 +1,6 @@
+- nuevo icono de la aplicación (Janis Bitta)
+- corregido un error en la conversión de m/s a nudos (kn)
+- corregido error en la visualización de ráfagas de viento cuando se seleccionaba km/h
+- corregidos múltiples errores y problemas relacionados con la visualización del viento en los widgets
+- se ha corregido que las previsiones horarias a veces se superponen a los detalles meteorológicos en la aplicación principal
+- múltiples pequeñas mejoras en el diseño y la visualización

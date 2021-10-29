@@ -1,0 +1,2 @@
+Formato de datos meteorológicos de Gadgetbridge actualizado para soportar la versión 0.48.0 (build 182) o superior.
+IMPORTANTE: esta versión de Tiny Weather Forecast Germany y las futuras sólo serán compatibles con las versiones 0.48.0 o superiores de Gadgetbridge, por favor, actualiza Gadgetbridge en consecuencia para que el suministro de datos meteorológicos para tu wearable siga funcionando.

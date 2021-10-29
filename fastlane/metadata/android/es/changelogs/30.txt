@@ -1,0 +1,6 @@
+- idiomas actualizados, nuevo: español (eUgEntOptIc44)
+- la función de arco de previsión del viento se ha arreglado y ha vuelto
+- añade la humedad al widget del reloj
+- se corrige la repetición de las actualizaciones bajo ciertas condiciones
+- corrige el bloqueo al cambiar a ubicaciones conocidas sin datos válidos
+- corrige el bloqueo de la actividad de registro, mejora el registro (opcional)
