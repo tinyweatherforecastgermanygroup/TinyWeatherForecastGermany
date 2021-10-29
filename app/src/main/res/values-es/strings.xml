@@ -12,7 +12,7 @@
     <string name="geoinput_select">Seleccione una de las siguientes estaciones meteorológicas:</string>
     <string name="geoinput_wrongformat">La coordenada no tiene un formato válido. Puede utilizar anotaciones como +53.12345 para grados, o -44.22:12.12345 para introducir grados y minutos o 33.12.12345 para introducir grados, minutos y segundos. Por favor, inténtelo de nuevo.</string>
     <string name="geoinput_reflocation_title">La ubicación de referencia es:</string>
-    <string name="app_name">Tiny Weather Forecast Germany</string>
+    <string name="app_name">Tiny Weather Forecast Alemania</string>
     <string name="main_selectstation">Región:</string>
     <string name="main_updatetime">Última actualización:</string>
     <string name="main_wait_for_gps_fix">Se está determinando la ubicación…</string>
@@ -25,9 +25,9 @@
     <string name="settings_button">Configuración</string>
     <string name="geoinput_button">Buscar por ubicación</string>
     <string name="about_button">Privacidad/Acerca de</string>
-    <string name="texts_button">Texts</string>
-    <string name="today">Today</string>
-    <string name="station">Station</string>
+    <string name="texts_button">Textos</string>
+    <string name="today">Hoy</string>
+    <string name="station">Estación</string>
     <string name="whatsnew_button">Qué hay de nuevo</string>
     <string name="boldwidget_description">Negrita</string>
     <string name="classicwidget_description">Clásico</string>
@@ -257,4 +257,13 @@
     <string name="welcome_s4_displaytype">Elegir cómo mostrar la previsión meteorológica:</string>
     <string name="widget_transparency_default">90</string>
     <string name="warnings_button">Avisos meteorológicos</string>
+    <string name="welcome_s3_text4">La barra de previsión muestra las nubes en gris y la lluvia en azul.</string>
+    <string name="logging_button_share">Compartir</string>
+    <string name="logging_comment_title">¿compartir los registros\?</string>
+    <string name="logging_comment_hint">Puede añadir un comentario a los registros para ayudar a encontrar el error - por favor, explique, lo que pasó:</string>
+    <string name="logging_comment_inputhint">La aplicación se estrelló…</string>
+    <string name="weathercode_SNOW_SHOWERS_MODERATE_OR_HEAVY">lluvias de nieve</string>
+    <string name="weathercode_SNOW_SHOWERS_SLIGHT">ligeros chubascos de nieve</string>
+    <string name="weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY">Chubascos de lluvia y nieve mezclados</string>
+    <string name="weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT">ligeros chubascos de lluvia y nieve mezclados</string>
 </resources>
