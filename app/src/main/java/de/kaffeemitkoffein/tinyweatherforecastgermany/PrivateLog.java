@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class PrivateLog {
+    public final static String LOGHANDLE="WEATHER";
     public final static String LOGFILENAME="logs.txt";
     public final static String CLIPBOARD_LOGLABEL="Logs for";
     public final static String[] CLIPBOARD_MIMETYPES={"text/plain"};
@@ -117,7 +118,7 @@ public class PrivateLog {
     private static boolean log(Context context, String s){
         if (loggingEnabled(context)) {
             if (logToLogcat(context)){
-                Log.v("TWFG",s);
+                Log.v(LOGHANDLE,s);
             }
             File path = context.getFilesDir();
             File logfile = new File(path,LOGFILENAME);

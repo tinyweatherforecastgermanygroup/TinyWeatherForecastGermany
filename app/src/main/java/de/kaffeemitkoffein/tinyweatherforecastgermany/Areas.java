@@ -98,7 +98,6 @@ public class Areas {
             /*
              * Override this in the main app to show the progress
              */
-            //Log.v("twfg","Progress is "+progress);
         }
 
         public void onFinished(){

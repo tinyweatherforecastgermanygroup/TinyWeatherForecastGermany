@@ -23,7 +23,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
-import android.util.Log;
 import org.astronomie.info.Astronomy;
 
 import java.text.SimpleDateFormat;
@@ -1085,32 +1084,17 @@ public final class Weather {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTimeInMillis(time);
         int zone = ((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) /(1000*60*60));
-        Log.v("TWF","------------------------------------");
-        Log.v("TWFG","Time: "+toFullDateTimeString(time)+" zone: "+zone);
         Astronomy.Riseset riseset = Astronomy.sunRise(getJulianDay(time),
                 DELTA_T,
                 Math.toRadians(weatherLocation.longitude),
                 Math.toRadians(weatherLocation.latitude),
                 zone,false);
-        Log.v("TWF","Ref. Time :"+toHourMinuteString(time));
-        Log.v("TWF","Time UP   :"+toHourMinuteString(getSunriseInUTC(riseset,time)));
-        Log.v("TWF","Time Down :"+toHourMinuteString(getSunsetInUTC(riseset,time)));
-        Log.v("TWF","Sunrise   :"+riseset.rise);
-        Log.v("TWF","Sunset    :"+riseset.set);
         return riseset;
     }
 
     public static boolean isDaytime(Weather.WeatherLocation weatherLocation, long time){
         if (usePreciseIsDaytime(weatherLocation)){
             Astronomy.Riseset riseset = getRiseset(weatherLocation,time);
-            // use precise calculation, as geo-location qualifies for use of formula
-            // determine timezone offset
-            //Log.v("TWF","Time UP   :"+getSunriseInUTC(riseset,time));
-            //Log.v("TWF","Time      :"+time);
-            //Log.v("TWF","Time Down :"+getSunsetInUTC(riseset,time));
-            //Log.v("TWF","Sunrise   :"+riseset.rise);
-            //Log.v("TWF","Sunset    :"+riseset.set);
-            // now compare in utc....
             if ((time>=getSunriseInUTC(riseset,time)) && (time<getSunsetInUTC(riseset,time))){
                 return true;
             }
@@ -1188,9 +1172,6 @@ public final class Weather {
 
     public static boolean isSunriseInIntervalUTC(Astronomy.Riseset riseset, long start, long stop){
         long sunrise = getSunriseInUTC(riseset,(start+stop)/2);
-        //Log.v("TWF","Time start  :"+toHourMinuteString(start));
-        //Log.v("TWF","Time Sunrise:"+toHourMinuteString(sunrise));
-        //Log.v("TWF","Time stop   :"+toHourMinuteString(stop));
         if ((sunrise>=start) && (sunrise<=stop)){
             return true;
         }
@@ -1199,9 +1180,6 @@ public final class Weather {
 
     public static boolean isSunsetInIntervalUTC(Astronomy.Riseset riseset, long start, long stop){
         long sunset = getSunsetInUTC(riseset,(start+stop)/2);
-        //Log.v("TWF","Time start  :"+toHourMinuteString(start)+" "+start);
-        //Log.v("TWF","Time Sunset :"+toHourMinuteString(sunset)+" "+sunset);
-        //Log.v("TWF","Time stop   :"+toHourMinuteString(stop)+" "+stop);
         if ((sunset>=start) && (sunset<=stop)){
             return true;
         }

@@ -114,8 +114,6 @@ public class Polygon{
         ArrayList<Polygon> polygons = new ArrayList<Polygon>();
         for (int i=0; i<polygonStrings.size(); i++){
             Polygon polygon = new Polygon(polygonStrings.get(i));
-            //Log.v("TWFG","Polygon data: "+polygonStrings.get(i));
-            //Log.v("TWFG","Polygon size: "+polygon.nvert);
             polygons.add(polygon);
         }
         return polygons;
