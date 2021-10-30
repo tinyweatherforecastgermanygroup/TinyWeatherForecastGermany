@@ -23,6 +23,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
+import android.util.Log;
 import org.astronomie.info.Astronomy;
 
 import java.text.SimpleDateFormat;
@@ -1075,7 +1076,8 @@ public final class Weather {
         c1.set(Calendar.SECOND,0);
         c1.set(Calendar.MILLISECOND,0);
         double days_since_2020 = TimeUnit.DAYS.convert(time - c1.getTimeInMillis(),TimeUnit.MILLISECONDS);
-        double julian_days = 2458849 + days_since_2020; // 2458849.41667 = 01.01.2020 00:00:00
+        double julian_days = 2458849.41667 + days_since_2020; // 2458849.41667 = 01.01.2020 00:00:00
+        //double julian_days = 2458849 + days_since_2020; // 2458849.41667 = 01.01.2020 00:00:00
         return julian_days;
     }
 
@@ -1083,11 +1085,19 @@ public final class Weather {
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
         calendar.setTimeInMillis(time);
         int zone = ((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) /(1000*60*60));
-        return Astronomy.sunRise(getJulianDay(time),
+        Log.v("TWF","------------------------------------");
+        Log.v("TWFG","Time: "+toFullDateTimeString(time)+" zone: "+zone);
+        Astronomy.Riseset riseset = Astronomy.sunRise(getJulianDay(time),
                 DELTA_T,
                 Math.toRadians(weatherLocation.longitude),
                 Math.toRadians(weatherLocation.latitude),
                 zone,false);
+        Log.v("TWF","Ref. Time :"+toHourMinuteString(time));
+        Log.v("TWF","Time UP   :"+toHourMinuteString(getSunriseInUTC(riseset,time)));
+        Log.v("TWF","Time Down :"+toHourMinuteString(getSunsetInUTC(riseset,time)));
+        Log.v("TWF","Sunrise   :"+riseset.rise);
+        Log.v("TWF","Sunset    :"+riseset.set);
+        return riseset;
     }
 
     public static boolean isDaytime(Weather.WeatherLocation weatherLocation, long time){
@@ -1130,48 +1140,50 @@ public final class Weather {
         return true;
     }
 
-    public static long getSunsetInUTC(Astronomy.Riseset riseset, long time){
-        Calendar c = Calendar.getInstance();
-        // set calendar to midnight
+    /**
+     * Takes a Astronomy.Riseset value and the reference time (UTC in millis) to calculate the Riseset and constructs
+     * a valid Calendar instance that represents the riseset result.
+     *
+     * E.g., passing riseset.set and time (utc) results in a milliseconds value in utc that represents the exact time
+     * of the sunset.
+     *
+     * @param risetime this is one of the Astronomy.Riseset values (double), e.g. set, rise, cicilTwilightMorning etc.
+     * @param time     reference time that was used to calculate the Astronomy.Riseset, it is used to determine
+     *                 the date.
+     * @return         time in millis (utc) when the Riseset event occurs
+     *
+     * Note: the Riseset already handles day saving time well. This function basically takes the day from the time
+     * value and overrides hour of day, minute, second and millisecond with the appropriate Riseset time.
+     */
+
+    private static long setRiseTimeToDay(double risetime, long time){
+        Calendar c = Calendar.getInstance(Locale.getDefault());
         c.setTimeInMillis(time);
-        c.set(Calendar.HOUR_OF_DAY,0);
-        c.set(Calendar.MINUTE,0);
-        c.set(Calendar.SECOND,0);
-        c.set(Calendar.MILLISECOND,0);
-        return (long) (c.getTimeInMillis() + riseset.set * MILLIS_IN_HOUR);
+        long risevalue = Math.round(risetime*MILLIS_IN_HOUR);
+        long hours = TimeUnit.MILLISECONDS.toHours(risevalue);
+        risevalue = risevalue - TimeUnit.HOURS.toMillis(hours);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(risevalue);
+        risevalue = risevalue - TimeUnit.MINUTES.toMillis(minutes);
+        c.set(Calendar.HOUR_OF_DAY,(int) hours);
+        c.set(Calendar.MINUTE,(int) minutes);
+        c.set(Calendar.MILLISECOND,(int) risevalue);
+        return c.getTimeInMillis();
+    }
+
+    public static long getSunsetInUTC(Astronomy.Riseset riseset, long time){
+        return setRiseTimeToDay(riseset.set,time);
     }
 
     public static long getSunriseInUTC(Astronomy.Riseset riseset, long time){
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(time);
-        // set calendar to midnight
-        c.set(Calendar.HOUR_OF_DAY,0);
-        c.set(Calendar.MINUTE,0);
-        c.set(Calendar.SECOND,0);
-        c.set(Calendar.MILLISECOND,0);
-        return (long) (c.getTimeInMillis() + riseset.rise * MILLIS_IN_HOUR);
+        return setRiseTimeToDay(riseset.rise,time);
     }
 
     public static long getCivilTwilightMorning(Astronomy.Riseset riseset, long time){
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(time);
-        // set calendar to midnight
-        c.set(Calendar.HOUR_OF_DAY,0);
-        c.set(Calendar.MINUTE,0);
-        c.set(Calendar.SECOND,0);
-        c.set(Calendar.MILLISECOND,0);
-        return (long) (c.getTimeInMillis() + riseset.cicilTwilightMorning*MILLIS_IN_HOUR);
+        return setRiseTimeToDay(riseset.cicilTwilightMorning,time);
     }
 
     public static long getCivilTwilightEvening(Astronomy.Riseset riseset, long time){
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(time);
-        // set calendar to midnight
-        c.set(Calendar.HOUR_OF_DAY,0);
-        c.set(Calendar.MINUTE,0);
-        c.set(Calendar.SECOND,0);
-        c.set(Calendar.MILLISECOND,0);
-        return (long) (c.getTimeInMillis() + riseset.cicilTwilightEvening*MILLIS_IN_HOUR);
+        return setRiseTimeToDay(riseset.cicilTwilightEvening,time);
     }
 
     public static boolean isSunriseInIntervalUTC(Astronomy.Riseset riseset, long start, long stop){
