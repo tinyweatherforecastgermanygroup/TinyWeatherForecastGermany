@@ -1,0 +1,6 @@
+- uusi sovelluksen kuvake (Janis Bitta!)
+- korjattu virhe muunnettaessa m/s solmuiksi (kn).
+- korjattiin, että huurut näytettiin väärin, kun km/h oli valittuna.
+- korjattu useita vikoja ja ongelmia, jotka liittyvät tuulen näyttämiseen widgetissä.
+- korjattu tuntikohtaiset ennusteet, jotka joskus menivät päällekkäin säätietojen kanssa pääsovelluksessa.
+- useita pieniä ulkoasun ja näytön parannuksia

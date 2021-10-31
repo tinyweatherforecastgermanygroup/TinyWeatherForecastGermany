@@ -1,0 +1,2 @@
+- Ennustevälit voidaan nyt määrittää: tunnin välein, 6-tunnin välein, sekaisin (ensimmäinen 24h tunnin välein, 6-tunnin välein sen jälkeen).
+- valinnainen palkki, joka näyttää tuntikohtaiset ennustetiedot 6-tunnin ennusteessa

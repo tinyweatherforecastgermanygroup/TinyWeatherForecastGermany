@@ -1,0 +1,6 @@
+Gadgetbridge-säätiedot päivitetty tukemaan versiota 0.48.0 (build 182) tai uudempaa.
+
+TÄRKEÄÄ: tämä versio Tiny Weather Forecast Germany -ohjelmasta ja tulevat versiot tukevat vain Gadgetbridgen versioita 0.48.0 tai uudempia, päivitä Gadgetbridge vastaavasti, jotta säätietojen toimitus puettavaan laitteeseesi toimii!
+
+- Pieniä parannuksia käyttöliittymään (ajan, lämpötilan ja tuulen suunnan näyttö).
+- korjattu: widgetit näyttivät väärää säätietoa tietyissä olosuhteissa

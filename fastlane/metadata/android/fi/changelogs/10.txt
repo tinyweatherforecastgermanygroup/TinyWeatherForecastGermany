@@ -1,0 +1,6 @@
+Versio 0.50.2:
+
+- Mukautettu widgetin vähimmäiskorkeutta, jotta se voidaan integroida paremmin kotinäytön mukautettuihin ruudukkokokoihin.
+- korjattu widgetit, jotka eivät päivittyneet nopeasti uuteen sijaintiin joissakin tilanteissa.
+- korjattu rikkinäinen gadgetbridge-vaihtoehto "lähetä nykyinen aika".
+- korjattu päivityspalvelu ei käynnistynyt, koska toiminta ei ollut etualalla laitteissa, joiden API>25

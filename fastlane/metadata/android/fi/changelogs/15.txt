@@ -1,0 +1,5 @@
+- lisätyt tuuliyksiköt: m/s, beaufort (bf), solmut (kn)
+- lisätty etäisyysyksiköt: meripeninkulmat, mailit ja jaardit
+- Tuulen suunta voidaan nyt näyttää kolmella tavalla: pelkkä nuoli, nuoli ja tuulen nopeus (beaufort), teksti
+- korjattu virhe nuolen bittikartan pyörimisessä, joka aiheutti väärän tuulensuunnan näyttämisen
+- pieniä parannuksia widgettien

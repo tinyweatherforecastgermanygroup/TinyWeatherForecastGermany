@@ -1,0 +1,12 @@
+Tämän version uudet ominaisuudet:
+- uudet widgetit
+- uusi asemahaku
+- suosikit
+- sovellus käyttää uudelleen eri asemien viimeisimpiä ennustetietoja
+- yksityiskohtaisemmat säätiedot
+- erilaisia suorituskyvyn parannuksia
+
+Vikakorjaukset:
+- 0°:n yläpuolella olevat epätodennäköiset lumiolosuhteet on jätetty pois.
+- korjattu tuulen nopeutta vastaavat huurteet
+- useita uusiin ominaisuuksiin liittyviä virheenkorjauksia
