@@ -5,4 +5,6 @@
     <string name="app_name">Tiny Weather Forecast Germany</string>
     <string name="main_wait_for_gps_fix">Beliggenheden er ved at blive fastlagt…</string>
     <string name="dwd_notice">Datagrundlag: Deutscher Wetterdienst, egne elementer tilføjet, nogle data er et gennemsnit af individuelle værdier.</string>
+    <string name="dwd_notice_app">Datagrundlag: Deutscher Wetterdienst, egne elementer tilføjet, nogle data er et gennemsnit af individuelle værdier. Advarsler forkortet.</string>
+    <string name="dwd_warnings_notice">Datagrundlag: Deutscher Wetterdienst, visning af kondenserede advarsler.</string>
 </resources>
