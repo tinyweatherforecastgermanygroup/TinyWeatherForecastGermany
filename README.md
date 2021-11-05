@@ -229,11 +229,11 @@ Thresholds for significant weather conditions are subjective and perhaps debatab
 
 ### Why does the app give a different value for some parameter (e.g. temperature) than the official station reading?
 
-TWFG gives _forecasts_, not the current reading at some weather station. If the displayed value in TWFG differs from an official reading at some spot, the forecast was just off.
+Tiny Weather Forecast Germany gives _forecasts_, not the current reading at some weather station. If the displayed value in Tiny Weather Forecast Germany differs from an official reading at some spot, the forecast was just off.
 
 ### Where do the names come from that are offered in searches?
 
-TWFG uses _WarncellIDs_ for the regions offered. These are closely related to the [Amtlicher Gemeindeschlüssel](https://www.destatis.de/DE/Themen/Laender-Regionen/Regionales/Gemeindeverzeichnis/_inhalt.html) (AGS) provided by destatis. Basically, the WarncellIDs are an extension of the AGS. WarncellIDs also feature human-readable names (e.g. "Landkreis Göttingen"). These names can be used while looking for a weather station. They _do not_ refer to the names of weather stations. Once you select a name  the app will give you a list of close by stations including their distance to choose from. This distance is derived from the center of the area polygon(s) associated with a given region. It may happen, that a WarncellID has more than one search key associated. E.g. searching for `Insel Helgoland` or `Gemeinde Helgoland` will show a list starting with `Helgoland` at an approximate distance of 0.4 km. Hence the weather station is actually just called `Helgoland`.
+Tiny Weather Forecast Germany uses _WarncellIDs_ for the regions offered. These are closely related to the [Amtlicher Gemeindeschlüssel](https://www.destatis.de/DE/Themen/Laender-Regionen/Regionales/Gemeindeverzeichnis/_inhalt.html) (AGS) provided by destatis. Basically, the WarncellIDs are an extension of the AGS. WarncellIDs also feature human-readable names (e.g. "Landkreis Göttingen"). These names can be used while looking for a weather station. They _do not_ refer to the names of weather stations. Once you select a name  the app will give you a list of close by stations including their distance to choose from. This distance is derived from the center of the area polygon(s) associated with a given region. It may happen, that a WarncellID has more than one search key associated. E.g. searching for `Insel Helgoland` or `Gemeinde Helgoland` will show a list starting with `Helgoland` at an approximate distance of 0.4 km. Hence the weather station is actually just called `Helgoland`.
 
 *Note* more than one station will be shown if your search matches a search key. These stations are sorted by increasing distance from the initially searched entity. E.g. searching for `Insel Helgoland` in the above example will also show `Elbmuendung` (a sea area next to Cuxhaven) which is 23.4 km away, `UFS Deutsche Bucht` (an automatized weather station aboard a light vessel in the middle of the German Bight) already 29.3 km away, or `Wangerooge` (one of the East Frisian islands) at a distance of 29.4 km. (And of course many others even further away.) If `Helgoland` is searched however, it matches the station right away, and the app jumps to it immediately without a further selection.
 
@@ -241,13 +241,13 @@ As a rule of thumb, when a name is written in capital letters (e.g. "BERLIN-ALEX
 
 ### Is there a map available to choose a spot if I don't know the proper names in the vicinity?
 
-You can use any application on your device that allows to share coordinates via `geo:`-intents to TWFG. Most mapping and location applications will allow this.
+You can use any application on your device that allows to share coordinates via `geo:`-intents to Tiny Weather Forecast Germany. Most mapping and location applications will allow this.
 
 This also works from a web browser, provided the page in question offers a `geo:` link. [geohack](https://geohack.toolforge.org) is a common service that provides such links as `Geo URI` (e.g. for [Helgoland](https://geohack.toolforge.org/geohack.php?pagename=Helgoland&language=de&params=54.1825_N_7.8852777777778_E_region:DE-SH_type:city(1307))). You may want to note that also Wikipedia links to this service once you click on the geographic coordinates in their web pages. (However, they do not provide a direct `geo:` link, yet.)
 
 ### Why does the delete icon next to the location not remove the selected location?
 
-The delete icon works the other way around: it does not remove the currently displayed region but _all other_ regions that were selected at some point in the past. The idea of TWFG is centred around the idea of your usual location and not so much on a list of bookmarks.
+The delete icon works the other way around: it does not remove the currently displayed region but _all other_ regions that were selected at some point in the past. The idea of Tiny Weather Forecast Germany is centred around the idea of your usual location and not so much on a list of bookmarks.
 
 ### How do I delete a location?
 
@@ -255,7 +255,7 @@ Select your new region and hit the clean button next to the regions title. Mind 
 
 ### Why does the app not update a location? It is in my bookmarks.
 
-TWFG tries to be very conservative with your download volume. For this reason it only updates the currently displayed region. All other regions in the regions drop down are merely places once visited and do not get any updates.
+Tiny Weather Forecast Germany tries to be very conservative with your download volume. For this reason it only updates the currently displayed region. All other regions in the regions drop down are merely places once visited and do not get any updates.
 
 *Note* the currently selected region is also the region displayed in any widget added to the home screen.
 
@@ -265,7 +265,7 @@ Just select it as current region in the app. The region displayed in the app and
 
 ### How can I fetch weather for a different location if I go on travel?
 
-If you want to update a different location e.g. before travelling, select it first and update the data. (If `Always update` is not set you may do this manually.) You can then revert to your standard location. TWFG will remove data only once it got invalid over time, but keep all fetched data in it's internal cache.
+If you want to update a different location e.g. before travelling, select it first and update the data. (If `Always update` is not set you may do this manually.) You can then revert to your standard location. Tiny Weather Forecast Germany will remove data only once it got invalid over time, but keep all fetched data in it's internal cache.
 
 ### Why do some coloured ploygons show up next to the coasts sometimes?
 
@@ -279,7 +279,7 @@ The app uses the *MOSMIX* model provided by Deutscher Wetterdienst (DWD). "The M
 
 ### Can I access textual/specialized weather reports?
 
-TWFG offers an extensive list of textual weather reports as provided by DWD. Those include short and medium term synoptic reports as well as specialized reports for the coastal regions of Germany, the sea weather bulletin for the North- and Baltic sea and the Mediterranean. Strong wind, gale and storm warnings are available for the German Bight, western and southern Baltic. *Note* Keep in mind that TWFG uses the data from DWD, so some textual reports are available in German only and the textual reports cover mainly Germany.
+Tiny Weather Forecast Germany offers an extensive list of textual weather reports as provided by DWD. Those include short and medium term synoptic reports as well as specialized reports for the coastal regions of Germany, the sea weather bulletin for the North- and Baltic sea and the Mediterranean. Strong wind, gale and storm warnings are available for the German Bight, western and southern Baltic. *Note* Keep in mind that Tiny Weather Forecast Germany uses the data from DWD, so some textual reports are available in German only and the textual reports cover mainly Germany.
 
 *Note* the textual sea and coastal weather reports coincide with those published by DWD via [RTTY radio broadcasts](https://www.dwd.de/EN/specialusers/shipping/broadcast_en/_node.html) but are drawn from the OpenData-server.
 
@@ -297,7 +297,7 @@ It shows the direction of the wind change during the next `Wind forecast period`
 
 Please keep in mind: device logs may include and/or compromise sensitive information, consider reviewing the logs before sending.   
 
-If you pose yourself this question one can assume that you don't shy away from some more technical stuff. It is not enormously complex, though, so just read on, even though it requires you to install some developer tools. The idea is to provide a really detailed log of what TWFG actually did till the point where it died or did something unpredictable. All this is logged by your device, however, usually you can not see those logs.
+If you pose yourself this question one can assume that you don't shy away from some more technical stuff. It is not enormously complex, though, so just read on, even though it requires you to install some developer tools. The idea is to provide a really detailed log of what Tiny Weather Forecast Germany actually did till the point where it died or did something unpredictable. All this is logged by your device, however, usually you can not see those logs.
 
 The key to access those extensive logs is to hook up your device to your PC via USB and use a tool called Android Debug Bridge (`adb`) to access the system log.
 
@@ -332,7 +332,7 @@ After this initial setup, you are ready to access the system log.
 08-20 13:16:33.245 11798 11798 E AndroidRuntime: FATAL EXCEPTION: main
 08-20 13:16:33.245 11798 11798 E AndroidRuntime: Process: de.kaffeemitkoffein.tinyweatherforecastgermany, PID: 11798
 ```
-    Read: fatal exception in `de.kaffeemitkoffein.tinyweatherforecastgermany` (PID will show another number.) So, TWFG died unexpectedly.
+    Read: fatal exception in `de.kaffeemitkoffein.tinyweatherforecastgermany` (PID will show another number.) So, Tiny Weather Forecast Germany died unexpectedly.
 6. Copy all the blurb from the start mentioned in 3. above till you reach a line that holds
 ```
 ActivityManager:   Force finishing activity de.kaffeemitkoffein.tinyweatherforecastgermany/.TextForecastListActivity
