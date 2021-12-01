@@ -502,6 +502,18 @@ public class MainActivity extends Activity {
         });
     }
 
+
+    /**
+     * Returns a location for a geo intent.
+     * <p>
+     * Checks if an intent's scheme is "geo". If so, and the intent data is following the pattern
+     * "latitude,longitude[optional parameters with non-numeric separator]", the content is used to populate a new location
+     * object. If it's a geo intent, but it's not following the mentioned pattern, the user is
+     * informed about the mismatch via a toast and a log message is written.
+     *
+     * @param intent the intent to analyze
+     * @return a new Location object with latitude/longitude from the intent or null if the intent is not a valid geo scheme intent.
+     */
     private Location getLocationForGeoIntent(Intent intent) {
         if (intent==null)
         {
