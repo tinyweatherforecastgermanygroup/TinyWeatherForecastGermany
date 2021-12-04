@@ -83,6 +83,8 @@ Contributors:
 * Marc Nause (code improvements, bitmap caching)
 * Jean-Luc (French translation, bugfixes, javadoc improvements, translations of this README.md file)
 * arwanger (README.md)
+* maximilianovermeyer (fix of geo-intent-handling)
+* eUgEntOptIc44 (javadoc improvements)
  
  Translations:
 

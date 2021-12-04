@@ -37,6 +37,8 @@ Les personnes suivantes ont contribué à ce projet :
  - Jonas Lochmann (.gitignore)
  - Marc Nause (améliorations du code, mise en cache des bitmaps)
  - arwanger (README.md)
+  - maximilianovermeyer (fix of geo-intent-handling)
+  - eUgEntOptIc44 (javadoc improvements)
 
 Translations :
 * German: eUgEntOptIc44, J. Lavoie, mondstern
