@@ -53,6 +53,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends Activity {
 
@@ -485,52 +487,76 @@ public class MainActivity extends Activity {
             }
         });
         // check if a geo intent was sent
-        Intent geo_intent = getIntent();
-        if (geo_intent!=null){
-            String intent_action = geo_intent.getAction();
-            if (intent_action!=null){
-                if (intent_action.equals(Intent.ACTION_VIEW)){
-                    String intent_scheme = geo_intent.getScheme();
-                    if (intent_scheme!=null){
-                        if (intent_scheme.equals("geo")){
-                            String received_geolocation = geo_intent.getData().toString();
-                            if (received_geolocation!=null){
-                                try {
-                                    String received_latitude = received_geolocation.substring(received_geolocation.indexOf(":")+1,received_geolocation.indexOf(","));
-                                    String received_longitude = received_geolocation.substring(received_geolocation.indexOf(",")+1,received_geolocation.indexOf("?"));
-                                    String received_zoom = received_geolocation.substring(received_geolocation.indexOf("z=")+2);
-                                    Location own_location = new Location("manual");
-                                    own_location.setTime(Calendar.getInstance().getTimeInMillis());
-                                    try {
-                                        double latitude = Location.convert(standardizeGeo(received_latitude));
-                                        double longitude = Location.convert(standardizeGeo(received_longitude));
-                                        own_location.setLatitude(latitude);
-                                        own_location.setLongitude(longitude);
-                                        launchStationSearchByLocation(own_location);
-                                    } catch (Exception e){
-                                        // invalid geo coordinates
-                                        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"received geo intent, but unable to read it: "+e.getMessage());
-                                        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"geo content was: "+received_geolocation);
-                                        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.georeceive_error),Toast.LENGTH_LONG).show();
-                                    }
-                                } catch (IndexOutOfBoundsException e){
-                                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"received geo intent, but unable to parse it poroperly: "+e.getMessage());
-                                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"geo content was: "+received_geolocation);
-                                    // invalid geo-string (uri)
-                                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getString(R.string.georeceive_error),Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+
+        Location intentLocation = getLocationForGeoIntent(getIntent());
+
+        if (intentLocation!=null){
+            launchStationSearchByLocation(intentLocation);
         }
+
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 WidgetRefresher.refresh(context);
             }
         });
+    }
+
+
+    /**
+     * Returns a location for a geo intent.
+     * <p>
+     * Checks if an intent's scheme is "geo". If so, and the intent data is following the pattern
+     * "latitude,longitude[optional parameters with non-numeric separator]", the content is used to populate a new location
+     * object. If it's a geo intent, but it's not following the mentioned pattern, the user is
+     * informed about the mismatch via a toast and a log message is written.
+     *
+     * @param intent the intent to analyze
+     * @return a new Location object with latitude/longitude from the intent or null if the intent is not a valid geo scheme intent.
+     */
+    private Location getLocationForGeoIntent(Intent intent) {
+        if (intent==null)
+        {
+            return null;
+        }
+        String intent_action = intent.getAction();
+
+        if (!Objects.equals(intent_action, Intent.ACTION_VIEW))
+        {
+            return null;
+        }
+
+        String intent_scheme = intent.getScheme();
+        if (intent_scheme==null || !intent_scheme.equalsIgnoreCase("geo"))
+        {
+            return null;
+        }
+
+        String received_geolocation = intent.getData().toString();
+        if (received_geolocation!=null) {
+            try {
+                Pattern pattern_lat_long = Pattern.compile("geo:(?<latitude>-?[\\d]*\\.?[\\d]*),(?<longitude>-?[\\d]*\\.?[\\d]*)", Pattern.CASE_INSENSITIVE);
+                Matcher m = pattern_lat_long.matcher(received_geolocation);
+                m.find();
+                String received_latitude = m.group(1); //Can be replaced with 'm.group("latitude")' for better readability as soon as min API level is 26
+                String received_longitude = m.group(2); //Can be replaced with 'm.group("longitude")' for better readability as soon as min API level is 26
+
+                Location own_location = new Location("manual");
+                own_location.setTime(Calendar.getInstance().getTimeInMillis());
+                double latitude = Location.convert(standardizeGeo(received_latitude));
+                double longitude = Location.convert(standardizeGeo(received_longitude));
+                own_location.setLatitude(latitude);
+                own_location.setLongitude(longitude);
+                return own_location;
+                }
+            catch (Exception e) {
+                // invalid geo-string (uri)
+                PrivateLog.log(getApplicationContext(), PrivateLog.MAIN, PrivateLog.ERR, "received geo intent, but unable to read it: " + e.getMessage());
+                PrivateLog.log(getApplicationContext(), PrivateLog.MAIN, PrivateLog.ERR, "geo content was: " + received_geolocation);
+                Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.georeceive_error), Toast.LENGTH_LONG).show();
+            }
+        }
+        return null;
     }
 
     private void errorDialog(Exception e){
