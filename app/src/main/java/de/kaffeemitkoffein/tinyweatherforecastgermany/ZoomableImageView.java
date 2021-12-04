@@ -13,30 +13,38 @@ import java.util.ArrayList;
  *
  * @author Pawel Dube
  *
- * Requirements and limitations:
- * - the imageview has to be populated with a bitmap. Other content will not work.
- * - WIDTH AND HEIGHT OF THE IMAGEVIEW MUST BE SET TO "MATCH_PARENT". When set to "wrap_content", the view will shrink
- *   when the bitmap inside the view shrinks due to zooming!
+ * <h3>Requirements and limitations:</h3>
+ * <ul>
+ * <li>the imageview has to be populated with a bitmap. Other content will not work.</li>
+ * <li>WIDTH AND HEIGHT OF THE IMAGEVIEW MUST BE SET TO "MATCH_PARENT". When set to "wrap_content", the view will shrink
+ *   when the bitmap inside the view shrinks due to zooming!</li>
+ * </ul>
  *
- * Gestures:
- * - this class catches the usual "zoom in" and "zoom out" gestures:
- *   zoom in  = move two pointers (e.g. two fingers) away from each other while touching the screen
- *   zoom out = move two pointers (e.g. two fingers) closer to each other while touching the screen
- * - moving one pointer (e.g. one finger) while touching the screen moves the scaled bitmap within the imageview
+ * <h3>Gestures:</h3>
+ * this class catches the usual "zoom in" and "zoom out" gestures:
+ * <ul>
+ *   <li>zoom in  = move two pointers (e.g. two fingers) away from each other while touching the screen</li>
+ *   <li>zoom out = move two pointers (e.g. two fingers) closer to each other while touching the screen</li>
+ * </ul>
+ *  <p>moving one pointer (e.g. one finger) while touching the screen moves the scaled bitmap within the imageview</p>
  *
- * Notes:
- * - this class always "consumes" the provided motionEvent, because the underlying ScaleGestureDetector does so.
+ * <h3>Notes:</h3>
+ * <ul>
+ *   <li> this class always "consumes" the provided motionEvent, because the underlying ScaleGestureDetector does so.
  *   Therefore, there are NEVER any "unused" events after this class has been called. However, this is not a limitation,
- *   see example how to use.
+ *   see example how to use. </li>
+ * </ul>
  *
- * How to use:
- * 1) create an instance of ZoomableImageView providing Context, the imageview and the bitmap,
- * 2) and optionally override "onGestureFinished" to catch the results once a gesture is done. If you do not need to
- *    further react after a zoom/move gesture, you can skip this.
- * 3) Register an OnTouchListerner and handle over the motionEvent to the zoomableImageView.
- * That's all.
- *
- *        mapImageView = (ImageView) findViewById(R.id.map);
+ * <h3>How to use:</h3>
+ * <ol>
+*  <li>create an instance of ZoomableImageView providing Context, the imageview and the bitmap,</li>
+ * <li>and optionally override "onGestureFinished" to catch the results once a gesture is done. If you do not need to
+ *    further react after a zoom/move gesture, you can skip this.</li>
+ * <li>Register an OnTouchListerner and handle over the motionEvent to the ZoomableImageView.</li>
+ * </ol>
+ * <p>That's all.</p>
+ * <br>       
+ *         mapImageView = (ImageView) findViewById(R.id.map);
  *
  *         zoomableImageView = new ZoomableImageView(getApplicationContext(),mapImageView,BitmapFactory.decodeResource(getResources(),R.drawable.germany_nc,null)){
  *             @Override
@@ -57,27 +65,27 @@ import java.util.ArrayList;
  *                 // zoomableImageView always returns true, meaning that the motionEvent is "consumed".
  *             }
  *         });
- *
+ * <p>
  * About the motionEvent:
  * zoomableImageView ALWAYS RETURNS TRUE, because the underlying ScaleGestureDetector always "consumes" all
  * motionEvents. If you need to do other things with the motionEvent, do so in the onTouch callback (see above).
- *
+ * </p>
  */
 
 public class ZoomableImageView {
 
     /**
-     * The current zoom:
-     * 1 = no zoom,
-     * values below 1 mean the bitmap is zoomed in (enlarged)
-     * values above 1 mean the bitmap is zoomed out (shrunk).
-     * Values above 1 are discouraged and may lead to unexpected behaviour of the imageview/bitmap.
+     * The current zoom:<br>
+     * 1 = no zoom,<br>
+     * values below 1 mean the bitmap is zoomed in (enlarged)<br>
+     * values above 1 mean the bitmap is zoomed out (shrunk).<br>
+     * Values above 1 are discouraged and may lead to unexpected behaviour of the imageview/bitmap.<br>
      *
-     * Notice: this value is only accurate once a scale gesture finished. During a scale gesture, it holds the
+     * <p><b>Notice</b>: this value is only accurate once a scale gesture finished. During a scale gesture, it holds the
      * scale factor from the beginning of the gesture. In other words: it is updated at the end of the gesture,
-     * and not while a gesture is being performed.
+     * and not while a gesture is being performed.</p>
      *
-     * Override onGestureFinished to get the results of a gesture.
+     * <p>Override onGestureFinished to get the results of a gesture.</p>
      */
     public float scaleFactor;
 
@@ -144,7 +152,7 @@ public class ZoomableImageView {
 
 
     /**
-     * Optional method to set the min and max scale range. Example:
+     * Optional method to set the min and max scale range.<br> Example:
      * setScaleRange(0.25,1); sets a maximum zoom in of 4x and a maximum zoom out to the original size.
      *
      * @param min the max. zoom, must be lower than max (e.g. 0.25 means a max. zoom of 4x).
@@ -194,19 +202,19 @@ public class ZoomableImageView {
     }
 
     /**
-     * Always called when a gesture (zoom or movement) finished.
+     * Always called when a gesture (zoom or movement) finished.<br>
      *
-     * Override this method to do something once a zoom / movement inside the imageview finished.
+     * Override this method to do something once a zoom / movement inside the imageview finished.<br>
      *
-     * The focus is the visible center coordinate.
+     * The focus is the visible center coordinate.<br>
      *
-     * @param scaleFactor the current cale factor
+     * @param scaleFactor the current scale factor
      * @param lastPressX the absolute x of last pointer/touch, reference is the whole bitmap
      * @param lastPressY the absolute y of last pointer/touch, reference is the whole bitmap
      * @param xFocus the absolute x focus in pixels, reference is the whole bitmap
      * @param yFocus the absolute y focus in pixels, reference is the whole bitmap
-     * @param xFocusRelative the relative x focus (0 <= xFocusRelative <= 1), reference is the whole bitmap
-     * @param yFocusRelative the relative y focus (0 <= yFocusRelative <= 1), reference is the whole bitmap
+     * @param xFocusRelative the relative x focus (0 {@literal <}= xFocusRelative {@literal <}= 1), reference is the whole bitmap
+     * @param yFocusRelative the relative y focus (0 {@literal <}= yFocusRelative {@literal <}= 1), reference is the whole bitmap
      * @param currentlyVisibleArea rectangle holding the coordinates of the visible area in pixels
      */
 
@@ -216,11 +224,11 @@ public class ZoomableImageView {
 
     /**
      * Returns the current focus as a relative position, returns a value between 0 (=left border of the bitmap) and
-     * 1 (=right border of the bitmap). The position refers to the bitmap.
+     * 1 (=right border of the bitmap). The position refers to the bitmap.<br>
      *
-     * The focus is the visible center coordinate.
+     * The focus is the visible center coordinate.<br>
      *
-     * @return the relative x coordinate of the focus, 0 <= x <= 1
+     * @return the relative x coordinate of the focus, 0 {@literal <}= x {@literal <}= 1
      */
 
     public float getRelativeXFocus(){
@@ -229,11 +237,11 @@ public class ZoomableImageView {
 
     /**
      * Returns the current focus as a relative position, returns a value between 0 (=left top of the bitmap) and
-     * 1 (=bottom of the bitmap). The position refers to the bitmap.
+     * 1 (=bottom of the bitmap). The position refers to the bitmap.<br>
      *
-     * The focus is the visible center coordinate.
+     * The focus is the visible center coordinate.<br>
      *
-     * @return the relative y coordinate of the focus, 0 <= y <= 1
+     * @return the relative y coordinate of the focus, 0 {@literal <}= y {@literal <}= 1
      */
 
     public float getRelativeYFocus(){
@@ -241,9 +249,9 @@ public class ZoomableImageView {
     }
 
     /**
-     * Returns the absolute focus x coordinate in pixels. The coordinate refers to the bitmap size in pixels.
+     * Returns the absolute focus x coordinate in pixels. The coordinate refers to the bitmap size in pixels.<br>
      *
-     * The focus is the visible center coordinate.
+     * The focus is the visible center coordinate.<br>
      *
      * * @return absolute x coordinate
      */
@@ -253,7 +261,7 @@ public class ZoomableImageView {
     }
 
     /**
-     * Returns the absolute focus y coordinate in pixels. The coordinate refers to the bitmap size in pixels.
+     * Returns the absolute focus y coordinate in pixels. The coordinate refers to the bitmap size in pixels.<br>
      *
      * The focus is the visible center coordinate.
      *
@@ -444,7 +452,7 @@ public class ZoomableImageView {
         }
 
         /**
-         * Handles the scale gesture & the animation.
+         * Handles the scale gesture & the animation.<br>
          *
          * To achieve a better accuracy, the scale factor is calculated at the end of the
          * gesture.
