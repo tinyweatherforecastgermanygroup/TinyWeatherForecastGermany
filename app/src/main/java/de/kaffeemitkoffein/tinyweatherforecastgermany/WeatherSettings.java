@@ -229,6 +229,7 @@ public class WeatherSettings {
         this.last_version_code = readPreference(PREF_LAST_VERSION_CODE, PREF_LAST_VERSION_CODE_DEFAULT);
         this.serve_gadgetbridge = readPreference(PREF_SERVE_GADGETBRIDGE, PREF_SERVE_GADGETBRIDGE_DEFAULT);
         this.views_last_update_time = readPreference(PREF_VIEWS_LAST_UPDATE_TIME, PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT);
+        this.gadgetbridge_packagename = readPreference(PREF_GADGETBRIDGE_PACKAGENAME,PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT);
         this.gadgetbridge_fake_timestamp = readPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP, PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT);
         this.logging = readPreference(PREF_LOGGING, PREF_LOGGING_DEFAULT);
         this.log_to_logcat = readPreference(PREF_LOG_TO_LOGCAT, PREF_LOG_TO_LOGCAT_DEFAULT);
@@ -281,6 +282,7 @@ public class WeatherSettings {
         applyPreference(PREF_WIDGET_SHOWDWDNOTE, this.widget_showdwdnote);
         applyPreference(PREF_LAST_VERSION_CODE, this.last_version_code);
         applyPreference(PREF_SERVE_GADGETBRIDGE, this.serve_gadgetbridge);
+        applyPreference(PREF_GADGETBRIDGE_PACKAGENAME,this.gadgetbridge_packagename);
         applyPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP, this.gadgetbridge_fake_timestamp);
         applyPreference(PREF_VIEWS_LAST_UPDATE_TIME, this.views_last_update_time);
         applyPreference(PREF_LOGGING, this.logging);
@@ -333,6 +335,7 @@ public class WeatherSettings {
         commitPreference(PREF_WIDGET_SHOWDWDNOTE, this.widget_showdwdnote);
         commitPreference(PREF_LAST_VERSION_CODE, this.last_version_code);
         commitPreference(PREF_SERVE_GADGETBRIDGE, this.serve_gadgetbridge);
+        commitPreference(PREF_GADGETBRIDGE_PACKAGENAME,this.gadgetbridge_packagename);
         commitPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP, this.gadgetbridge_fake_timestamp);
         commitPreference(PREF_VIEWS_LAST_UPDATE_TIME, this.views_last_update_time);
         commitPreference(PREF_LOGGING, this.logging);
