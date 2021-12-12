@@ -704,12 +704,14 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                             // this is a hack to prevent a zero value of the height on some devices:
                             // the height is always the maximum determinded up to now
                             if (height>regularCellHeight){
+                                // nothing to do
                             }
                             if (height<regularCellHeight){
-                                ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
-                                layoutParams.height = regularCellHeight;
-                                view1.setLayoutParams(layoutParams);
+                                height = regularCellHeight;
                             }
+                            ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
+                            layoutParams.height = height;
+                            view1.setLayoutParams(layoutParams);
                         }
                     });
                 }

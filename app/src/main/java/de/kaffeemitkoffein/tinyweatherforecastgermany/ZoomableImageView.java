@@ -179,13 +179,41 @@ public class ZoomableImageView {
         redrawBitmap();
     }
 
-    public class SPRITEFIXPOINT {
+    /**
+     * Static class that holds values how to fix a sprite to the underlying bitmap.
+     *
+     * For most use cases, this should be SPRITECENTER. This guarantees that the sprite center floats above the
+     * position relative to the x/y coordinates of the underlying bitmap, no matter how the underlying bitmap is zoomed
+     * in or out.
+     *
+     * However, it might be necessary to fix the sprite to one of the corners; in this case, the sprite will be fixed to
+     * the underlying pixel at one of the corners. This might be appropriate when you e.g. use an arrow that should
+     * keep pointing at something when zooming in and out.
+     */
+
+    public static class SPRITEFIXPOINT {
         public static final int TOP_LEFT     = 0;
         public static final int TOP_RIGHT    = 1;
         public static final int BOTTOM_LEFT  = 2;
         public static final int BOTTOM_RIGHT = 3;
         public static final int SPRITECENTER = 4;
     }
+
+    /**
+     * Sprite concept: a "sprite" is a small bitmap/icon that is fixed to
+     * an absolute position on top of the underlying bitmap. When the underlying bitmap gets zoomed in or out,
+     * the sprite does NOT zoom but always keeps the same size. It remains at the same (relative) position fixed
+     * to the underlying bitmap. Got it?
+     *
+     * Adds a sprite.
+     *
+     * @param bitmap the bitmap holding the sprite. May not be null.
+     * @param x x-position (on the underlying bitmap) where to fix the sprite
+     * @param y y-position (on the underlying bitmap) where to fix the sprite
+     * @param fixpoint how to fix the sprite, see SPRITEFIXPOINT class
+     *
+     * @return number of the sprite
+     */
 
     public int addSpite(Bitmap bitmap, float x, float y, int fixpoint){
         if ((spriteX == null) || (spriteY == null) || (spriteBitmap == null)){
