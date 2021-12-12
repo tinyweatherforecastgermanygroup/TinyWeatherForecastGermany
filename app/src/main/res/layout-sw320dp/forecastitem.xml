@@ -19,11 +19,24 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
+<!--
+    View height details:
+                                                small           320dp            400dp
+    heading: textsize_large                     14sp            16sp             18sp
+    forecast text: textsize_medium (2 rows)     20sp            22sp             24sp
+    3x icon line:
+       12 dp size OR textsize_medium (1 row)    30sp OR 36dp    33sp OR 36dp     36sp OR 36dp
+    forecast bar: 21dp
+    next day bar: 3dp
+-->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fcitem_maincontainer"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:padding="3dp">
+    android:layout_height="wrap_content"
+    android:minHeight="150dp"
+    android:padding="3dp"
+    android:background="?attr/colorPrimary">
 
     <TextView android:id="@+id/fcitem_heading"
         android:textSize="@dimen/fcmain_mediumdevice_textsize_large"
@@ -95,6 +108,7 @@
     <ImageView android:id="@+id/fcitem_forecastbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="21dp"
         android:layout_alignParentBottom="true"/>
 
     <LinearLayout
@@ -109,7 +123,7 @@
 
         <LinearLayout android:id="@+id/fcitem_leftcontainer"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
@@ -292,20 +306,20 @@
 
         <LinearLayout android:id="@+id/fcitem_centercontainer"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 
             <ImageView android:id="@+id/fcitem_weatherconditionicon"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"/>
         </LinearLayout>
 
         <LinearLayout android:id="@+id/fcitem_rightcontainer"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">

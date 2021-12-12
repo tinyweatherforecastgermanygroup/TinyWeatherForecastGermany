@@ -25,6 +25,7 @@ import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,7 +61,7 @@ private final int display_wind_arc_perdiod;
 private final boolean warnings_disabled;
 private String viewModel;
 private final LayoutInflater layoutInflater;
-private int regularCellHeight=0;
+private int regularCellHeight=150;
 private ArrayList<WeatherWarning> warnings;
 
 private final String labelSunrise;
@@ -687,7 +688,9 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         final View view1 = view;
         final Long timestamp = System.currentTimeMillis();
         v.setTag(timestamp);
-        v.post(new Runnable() {
+        final TextView h = textView_heading;
+        final TextView m = textView_weathercondition;
+        view.post(new Runnable() {
             @Override
             public void run() {
                 if (timestamp.equals((Long) v.getTag())) {
@@ -696,25 +699,17 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                     v.post(new Runnable() {
                         @Override
                         public void run() {
+                            regularCellHeight = determineExpectedPixelHeightOfForecastElement(h,m);
                             int height = view1.getHeight();
                             // this is a hack to prevent a zero value of the height on some devices:
                             // the height is always the maximum determinded up to now
                             if (height>regularCellHeight){
-                                regularCellHeight = height;
                             }
                             if (height<regularCellHeight){
-                                height = regularCellHeight;
+                                ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
+                                layoutParams.height = regularCellHeight;
+                                view1.setLayoutParams(layoutParams);
                             }
-                            // if height is unknown, it remains hardcoded to 150 dp; this may cause some
-                            // overlaps, but is better than an invisible item.
-                            if (height==0){
-                                height = 150;
-                            }
-                            // end
-                            ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
-                            layoutParams.height = height;
-                            // view1.setMinimumHeight(height);
-                            view1.setLayoutParams(layoutParams);
                         }
                     });
                 }
@@ -1103,6 +1098,28 @@ private void setMiniWarningsString(TextView textView, Weather.WeatherInfo weathe
         }
     }
     textView.setText(spannableStringBuilder);
+}
+
+public float DPtoPX(int dp, DisplayMetrics displayMetrics){
+    return displayMetrics.density * dp;
+}
+
+public int determineExpectedPixelHeightOfForecastElement(TextView textView_heading, TextView mediumSizeTextView){
+    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+    float headingHight = textView_heading.getTextSize();
+    float weatherConditiontextHight = 12*displayMetrics.scaledDensity;
+    if (mediumSizeTextView!=null){
+        weatherConditiontextHight = mediumSizeTextView.getTextSize()*2;
+    }
+    float threeIconRowsHeightFont = mediumSizeTextView.getTextSize()*3;
+    float threeIconRowsHeight = DPtoPX(12,displayMetrics)*4; // actually 3 rows, but we take 1 more to keep space below and above
+    if (threeIconRowsHeightFont>threeIconRowsHeight){
+        threeIconRowsHeight = threeIconRowsHeightFont;
+    }
+    float leftColumnHeight = threeIconRowsHeight + weatherConditiontextHight;
+    float fcBarHeight = DPtoPX(21,displayMetrics);
+    float nxtDayBar = DPtoPX(3,displayMetrics);
+    return Math.round(headingHight+leftColumnHeight+fcBarHeight+nxtDayBar);
 }
 
 public static int calculateInSampleSize(final BitmapFactory.Options options, final int widthRequired, final int heightRequired){

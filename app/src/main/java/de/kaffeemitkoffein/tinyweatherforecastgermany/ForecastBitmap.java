@@ -25,7 +25,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.util.SparseArray;
