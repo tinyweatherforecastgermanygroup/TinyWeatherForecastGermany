@@ -1,0 +1,5 @@
+- rettet manglende opdatering af advarsler i hovedappen
+- rettet fejl i dato-parsing i tekstprognoser
+- rettet for stor skrifttype i stor widget
+- fed widget strækker nu igen informationerne til den maksimale bredde
+- vejrvarslerne ruller nu hurtigere

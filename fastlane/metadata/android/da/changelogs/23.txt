@@ -1,0 +1,2 @@
+- ny regnradar
+- ved beregning af solnedgang og solopgang anvendes sommertidsforskydningen af den viste tid i stedet for den aktuelle tid

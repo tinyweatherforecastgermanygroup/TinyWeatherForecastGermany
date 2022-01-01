@@ -1,0 +1,9 @@
+- større fejlrettelse, der løser nedbrud efter appstart på nogle enheder/roms
+- ændrer regnradarkilden fra MX composite til MN composite
+- nye app-genveje
+- indførelse af visning af relativ luftfugtighed
+
+Nye sprog:
+* Italiensk (tak til eUgEntOptIc44, mondstern!)
+* Tjekkisk (tak til eUgEntOptIc44, mondstern!)
+* Norsk Bokmål (tak til Allan Nordhøy, mondstern!)

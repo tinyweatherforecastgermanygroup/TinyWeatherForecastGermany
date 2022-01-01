@@ -1,0 +1,5 @@
+- nye tekstprognoser
+- forbedrede vejrvarsler
+- vindikon kan vise en vindprognose
+- revideret og opdateret fed widget
+- forskellige fejlrettelser

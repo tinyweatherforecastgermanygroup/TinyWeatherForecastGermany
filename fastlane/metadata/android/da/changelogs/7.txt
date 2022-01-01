@@ -1,0 +1,12 @@
+Nye funktioner i denne version:
+- nye widgets
+- ny stationssøgning
+- favoritter
+- appen genbruger de seneste prognosedata for forskellige stationer
+- mere detaljerede vejroplysninger
+- forskellige forbedringer af ydeevnen
+
+Fejlrettelser:
+- usandsynlige sneforhold langt over 0° er udelukket
+- fastgjort flurries svarende til vindhastigheden
+- forskellige fejlrettelser i forbindelse med de nye funktioner

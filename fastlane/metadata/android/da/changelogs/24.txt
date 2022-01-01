@@ -1,0 +1,4 @@
+- nyt sprog: Fransk (tak til Jean-Luc!)
+- advarselskortet kan nu zoomes
+- forskellige forbedringer, f.eks. med hensyn til ydeevne
+- flere fejlrettelser

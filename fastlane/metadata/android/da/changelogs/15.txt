@@ -1,0 +1,5 @@
+- tilføjede vindenheder: m/s, beaufort (bf), knob (knots)
+- tilføjede afstandsenheder: nautiske mil, mil og yards
+- vindretning kan nu vises på tre måder: simpel pil, pil med vindhastighed (beaufort), tekst
+- fejl rettet i bitmap-rotation af pilen, hvilket resulterede i forkert visning af vindretningen
+- mindre forbedringer af layoutet i widgets

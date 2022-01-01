@@ -1,0 +1,2 @@
+- prognoseintervaller kan nu indstilles: timevis, 6-timersintervaller, blandet (første 24 timer timevis, derefter 6-timersintervaller)
+- valgfri bjælke, der viser detaljer om timeprognosen i 6-timersprognosen

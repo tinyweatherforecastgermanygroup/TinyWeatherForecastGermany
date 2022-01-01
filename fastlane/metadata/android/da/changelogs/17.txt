@@ -1,0 +1,5 @@
+- tilføjet funktion til at finde de nærmeste Deep L-sensorer ved hjælp af geokoordinater eller lokaliseringstjenester på enheden
+- tilføjede fallback til http uden ssl, hvis en krypteret forbindelse mislykkes på meget gamle enheder (f.eks. 4.x.x.x) 
+- ufuldstændige tidsintervaller (6 timer, 24 timer) udelader nu tidligere data i beregninger, hvor det er muligt
+- fejl rettet i beregning af min. og max. temperaturer (kunne have været for høje og for lave)
+- flere mindre fejlrettelser

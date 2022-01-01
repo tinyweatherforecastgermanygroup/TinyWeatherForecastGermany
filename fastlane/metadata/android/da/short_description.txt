@@ -1,0 +1,1 @@
+Vejrudsigt baseret på åbne data fra Deutscher Wetterdienst.

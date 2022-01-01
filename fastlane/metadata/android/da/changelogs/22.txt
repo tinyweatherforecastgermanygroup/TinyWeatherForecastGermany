@@ -1,0 +1,6 @@
+- nyt sprog: Hollandsk (tak til Mondstern!)
+- opdateret liste over vejrstationer/placeringer
+- flere fejlrettelser, hvoraf nogle potentielt kunne føre til et app-nedbrud
+- rettet for stor skriftstørrelse af ugedagen i den store widget
+- rettet forkert mærkning af dagen i den store widget og den fede widget
+- rettet prognoseelementer, der overlapper hinanden i hovedappen på nogle enheder

@@ -1,0 +1,6 @@
+- søgningen omfatter nu byer, kommuner, delstater, søer og havområder
+- søgningen er nu eftergivende over for umlautter
+- korrigeret områdedata, idet der er rettet huller ved visning af havområder og kystområder
+- opdateringer starter ikke længere, når der ikke er nogen internetforbindelse
+- automatisk opdatering af vejrtekster kan deaktiveres i indstillingerne
+- flere mindre fejlrettelser og forbedringer af visningen

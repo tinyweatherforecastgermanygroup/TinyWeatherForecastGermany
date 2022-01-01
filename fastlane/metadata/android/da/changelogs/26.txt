@@ -1,0 +1,5 @@
+- forbedret ydeevne ved drejning af enheden
+- løser flere fejl:
+- nogle potentielle app-nedbrud under opstart
+- nogle vejrstationer kunne ikke vælges
+- nogle vejrstationer blev fordoblet i forslagene

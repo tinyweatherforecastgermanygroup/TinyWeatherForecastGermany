@@ -1,0 +1,8 @@
+- opdaterede sprog, nyt: spansk (tak til eUgEntOptIc44!)
+- funktionen vindprognosebue er rettet og tilbage igen
+- tilføjer luftfugtighed til uret widget
+- løser widgets, der crasher, når de sættes på skærmen før 1. app-start
+- løser opdateringer, der gentager sig under visse betingelser
+- løser nedbrud ved ændring til kendte steder uden gyldige data
+- løser nedbrud af logaktivitet, forbedret logning (valgfrit)
+- mindre fejlrettelser og forbedringer vedrørende brugergrænsefladen

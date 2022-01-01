@@ -1,0 +1,6 @@
+- nyt ikon for appen (kreditterne går til Janis Bitta!)
+- rettet fejl i konvertering fra m/s til knob (kn)
+- rettet flurries blev vist forkert, når km/h var valgt
+- rettet flere fejl og problemer vedrørende vindvisningen i widgets
+- rettet timeprognoser, der nogle gange overlappede vejrdetaljer i hovedappen
+- flere små forbedringer af layout og visning

@@ -1,0 +1,10 @@
+- andre apps kan nu dele geokoordinater med denne app
+- betydelige forbedringer af ydeevnen i hovedappen med ny bitmap-caching (tak til Marc Nause!)
+- breddegrad vises nu over længdegrad
+- ny widget med ur og vejr
+- forbedret layout i søgedialogen
+- forbedret layout af den store widget
+- rettet max. temperatur for høj i første 6-timers post i hovedappen
+- rettet kommaer blev ikke accepteret i geo-koordinater
+- rettet is-tågetilstand blev ikke vist korrekt
+- mange andre mindre fejlrettelser

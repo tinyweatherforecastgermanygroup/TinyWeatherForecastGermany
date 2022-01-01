@@ -1,0 +1,6 @@
+Version 0.50.2:
+
+- justeret minimumshøjde for widgets for bedre integration i brugerdefinerede gitterstørrelser på startskærmen
+- rettet widgets, der ikke straks opdateres til ny placering under visse omstændigheder
+- rettet ødelagt gadgetbridge indstilling "send aktuel tid"
+- rettet opdateringstjeneste blev ikke startet, fordi aktivitet ikke var i forgrunden på enheder med API>25

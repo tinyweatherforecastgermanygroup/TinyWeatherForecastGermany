@@ -1,0 +1,3 @@
+Version 0.32:
+- (celsius til kelvin) i Gadgetbridge api'en
+- lille layoutkorrektion i widget (vejrsymbolet er nu større)

@@ -1,0 +1,3 @@
+* nyt sprog: polsk (tak til mondstern!)
+* retter forkert ikon for klar nat
+* retter en mulighed for nedbrud ved app-start
