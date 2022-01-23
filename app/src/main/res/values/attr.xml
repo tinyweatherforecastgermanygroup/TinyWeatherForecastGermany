@@ -50,6 +50,7 @@
     <attr name="ic_highlight_off" format="reference"/>
     <attr name="ic_share" format="reference"/>
     <attr name="ic_content_copy" format="reference"/>
+    <attr name="ic_add" format="reference"/>
 
     <attr name="white_bar" format="reference"/>
     <attr name="binocular" format="reference"/>

@@ -60,6 +60,8 @@ public class WeatherSettings {
     public static final String PREF_UPDATE_TEXTFORECASTS = "PREF_update_textforecasts";
     public static final String PREF_WIDGET_OPACITY = "PREF_widget_opacity";
     public static final String PREF_WIDGET_SHOWDWDNOTE = "PREF_widget_showdwdnote";
+    public static final String PREF_WIDGET_DISPLAYWARNINGS = "PREF_widget_displaywarnings";
+    public static final String PREF_NOTIFY_WARNINGS = "PREF_notify_warnings";
     public static final String PREF_LAST_VERSION_CODE = "PREF_last_version_code";
     public static final String PREF_SERVE_GADGETBRIDGE = "PREF_serve_gadgetbridge";
     public static final String PREF_VIEWS_LAST_UPDATE_TIME = "PREF_views_last_update_time";
@@ -112,6 +114,8 @@ public class WeatherSettings {
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "10";
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
+    public static final boolean PREF_WIDGET_DISPLAYWARNINGS_DEFAULT = true;
+    public static final boolean PREF_NOTIFY_WARNINGS_DEFAULT = true;
     public static final int PREF_LAST_VERSION_CODE_DEFAULT = 0;
     public static final boolean PREF_SERVE_GADGETBRIDGE_DEFAULT = false;
     public static final long PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT = 0;
@@ -164,6 +168,8 @@ public class WeatherSettings {
     public boolean update_textforecasts = PREF_UPDATE_TEXTFORECASTS_DEFAULT;
     public String widget_opacity = PREF_WIDGET_OPACITY_DEFAULT;
     public boolean widget_showdwdnote = PREF_WIDGET_SHOWDWDNOTE_DEFAULT;
+    public boolean widget_displaywarnings = PREF_WIDGET_DISPLAYWARNINGS_DEFAULT;
+    public boolean notify_warnings = PREF_NOTIFY_WARNINGS_DEFAULT;
     public int last_version_code = PREF_LAST_VERSION_CODE_DEFAULT;
     public boolean serve_gadgetbridge = PREF_SERVE_GADGETBRIDGE_DEFAULT;
     public long views_last_update_time = PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT;
@@ -226,6 +232,8 @@ public class WeatherSettings {
         this.update_textforecasts = readPreference(PREF_UPDATE_TEXTFORECASTS,PREF_UPDATE_TEXTFORECASTS_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY, PREF_WIDGET_OPACITY_DEFAULT);
         this.widget_showdwdnote = readPreference(PREF_WIDGET_SHOWDWDNOTE, PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
+        this.widget_displaywarnings = readPreference(PREF_WIDGET_DISPLAYWARNINGS,PREF_WIDGET_DISPLAYWARNINGS_DEFAULT);
+        this.notify_warnings = readPreference(PREF_NOTIFY_WARNINGS,PREF_NOTIFY_WARNINGS_DEFAULT);
         this.last_version_code = readPreference(PREF_LAST_VERSION_CODE, PREF_LAST_VERSION_CODE_DEFAULT);
         this.serve_gadgetbridge = readPreference(PREF_SERVE_GADGETBRIDGE, PREF_SERVE_GADGETBRIDGE_DEFAULT);
         this.views_last_update_time = readPreference(PREF_VIEWS_LAST_UPDATE_TIME, PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT);
@@ -280,6 +288,8 @@ public class WeatherSettings {
         applyPreference(PREF_UPDATE_TEXTFORECASTS, this.update_textforecasts);
         applyPreference(PREF_WIDGET_OPACITY, this.widget_opacity);
         applyPreference(PREF_WIDGET_SHOWDWDNOTE, this.widget_showdwdnote);
+        applyPreference(PREF_WIDGET_DISPLAYWARNINGS,this.widget_displaywarnings);
+        applyPreference(PREF_NOTIFY_WARNINGS,this.notify_warnings);
         applyPreference(PREF_LAST_VERSION_CODE, this.last_version_code);
         applyPreference(PREF_SERVE_GADGETBRIDGE, this.serve_gadgetbridge);
         applyPreference(PREF_GADGETBRIDGE_PACKAGENAME,this.gadgetbridge_packagename);
@@ -333,6 +343,8 @@ public class WeatherSettings {
         commitPreference(PREF_UPDATE_TEXTFORECASTS, this.update_textforecasts);
         commitPreference(PREF_WIDGET_OPACITY, this.widget_opacity);
         commitPreference(PREF_WIDGET_SHOWDWDNOTE, this.widget_showdwdnote);
+        commitPreference(PREF_WIDGET_DISPLAYWARNINGS,this.widget_displaywarnings);
+        commitPreference(PREF_NOTIFY_WARNINGS,this.notify_warnings);
         commitPreference(PREF_LAST_VERSION_CODE, this.last_version_code);
         commitPreference(PREF_SERVE_GADGETBRIDGE, this.serve_gadgetbridge);
         commitPreference(PREF_GADGETBRIDGE_PACKAGENAME,this.gadgetbridge_packagename);
@@ -592,13 +604,39 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_WARNINGS_DISABLE,PREF_WARNINGS_DISABLE_DEFAULT);
     }
 
-
     public void setWarningsLastUpdateTime(long time) {
         applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME, time);
     }
 
     public void setWarningsLastUpdateTime() {
         setWarningsLastUpdateTime(Calendar.getInstance().getTimeInMillis());
+    }
+
+    public static boolean notifyWarnings(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_NOTIFY_WARNINGS,PREF_NOTIFY_WARNINGS_DEFAULT);
+    }
+
+    public static void setNotifyWarnings(Context context, boolean b){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_NOTIFY_WARNINGS, b);
+        pref_editor.apply();
+    }
+
+    public static boolean displayWarningsInWidget(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (sharedPreferences.getBoolean(PREF_WARNINGS_DISABLE,PREF_WARNINGS_DISABLE_DEFAULT)){
+            return false;
+        }
+        return sharedPreferences.getBoolean(PREF_WIDGET_DISPLAYWARNINGS,PREF_WIDGET_DISPLAYWARNINGS_DEFAULT);
+    }
+
+    public static void setDisplayWarningsInWidget(Context context, boolean b){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_WIDGET_DISPLAYWARNINGS, b);
+        pref_editor.apply();
     }
 
     public static long getTextForecastLastUpdateTimeInMillis(Context context){
@@ -890,6 +928,28 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_DISPLAY_SUNRISE,b);
+        pref_editor.apply();
+    }
+
+    public static int getWarningsUpdateIntervalMenuPosition(Context context){
+        int getWarningsUpdateIntervalInMillis = (int) (getWarningsUpdateIntervalInMillis(context)/1000/60); // in minutes
+        int result = 1;
+        switch (getWarningsUpdateIntervalInMillis){
+            case 15: result=0; break;
+            case 30: result=1; break;
+            case 60: result=2; break;
+            case 120: result=3; break;
+            case 180: result=4; break;
+            case 360: result=5; break;
+            default: result=1;
+        }
+        return result;
+    }
+
+    public static void setWarningsUpdateInterval(Context context, String s){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putString(PREF_WARNINGS_CACHETIME,s);
         pref_editor.apply();
     }
 

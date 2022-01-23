@@ -71,20 +71,22 @@ public class Settings extends PreferenceActivity{
             if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)){
                 setAlarmSettingAllowed();
             }
+            if (s.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
+                setShowWarningsInWidgetAllowed();
+                setNotifyWarnings();
+            }
+            if (s.equals(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS)){
+                setShowWarningsInWidgetAllowed();
+                WidgetRefresher.refresh(context);
+            }
+            if (s.equals(WeatherSettings.PREF_NOTIFY_WARNINGS)){
+                setNotifyWarnings();
+            }
             if (s.equals(WeatherSettings.PREF_THEME)){
                 recreate();
             }
-
         }
     };
-
-    public int getThemeResId(){
-        try {
-            return ThemePicker.GetTheme(this);
-        } catch (Exception e){
-          return 0;
-        }
-    }
 
     @Override
     @SuppressWarnings("deprecation")
@@ -104,6 +106,9 @@ public class Settings extends PreferenceActivity{
         }
         // allow changing alarm state?
         setAlarmSettingAllowed();
+        // allow warinings in widget setting?
+        setShowWarningsInWidgetAllowed();
+        setNotifyWarnings();
         updateValuesDisplay();
         // action bar layout
         ActionBar actionBar = getActionBar();
@@ -143,6 +148,21 @@ public class Settings extends PreferenceActivity{
         }
     }
 
+    @SuppressWarnings("deprecation")
+    public void setShowWarningsInWidgetAllowed(){
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS);
+        checkBoxPreference.setEnabled(!weatherSettings.warnings_disabled);
+        checkBoxPreference.setShouldDisableView(true);
+    }
+
+    public void setNotifyWarnings(){
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_NOTIFY_WARNINGS);
+        checkBoxPreference.setEnabled(!weatherSettings.warnings_disabled);
+        checkBoxPreference.setShouldDisableView(true);
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     protected void onResume(){
@@ -172,6 +192,10 @@ public class Settings extends PreferenceActivity{
             Toast.makeText(this,getResources().getString(R.string.preference_gadgetbridge_package_reset_toast),Toast.LENGTH_LONG).show();
             finish();
         }
+        CheckBoxPreference warningsInWidget = (CheckBoxPreference) findPreference(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS);
+        warningsInWidget.setSummary(getResources().getString(R.string.preference_displaywarninginwidget_summary)+" "+getResources().getString(R.string.battery_and_data_hint));
+        CheckBoxPreference notifyWarnings = (CheckBoxPreference) findPreference(WeatherSettings.PREF_NOTIFY_WARNINGS);
+        notifyWarnings.setSummary(getResources().getString(R.string.preference_notify_warnings_summary)+" "+getResources().getString(R.string.battery_and_data_hint));
      }
 
 }

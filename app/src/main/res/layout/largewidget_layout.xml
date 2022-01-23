@@ -40,6 +40,16 @@
         android:gravity="center"
         android:text="@string/dwd_notice"/>
 
+    <ImageView android:id="@+id/widget_warningsymbol"
+               android:layout_marginTop="2dp"
+               android:layout_marginRight="2dp"
+               android:layout_width="18dp"
+               android:layout_height="18dp"
+               android:layout_alignParentRight="true"
+               android:layout_alignParentTop="true"
+               android:src="@mipmap/warning_icon"
+    />
+
     <LinearLayout
         android:id="@+id/large_widget_mainviewscontainer"
         android:layout_width="match_parent"

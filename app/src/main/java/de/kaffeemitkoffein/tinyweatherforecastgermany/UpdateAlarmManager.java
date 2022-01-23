@@ -45,8 +45,13 @@ public class UpdateAlarmManager {
     // suppress any view update actions if this time did not pass since last view update
     public final static int VIEWS_MAXUPDATETIME   = 10*60*1000; // 10 minutes;
 
+    // used when no valid data available (any more) from MainActivity, when update triggered by user
+    // or during API-testing
+    // meaning: always update
     public static final int FORCE_UPDATE = 0;
+    // indicates update from widget
     public static final int WIDGET_UPDATE = 1;
+    // called from MainActivtity, onBootComplete and/or if update has been requested by 3rd party app
     public static final int CHECK_FOR_UPDATE = 2;
 
     private UpdateAlarmManager(){
@@ -99,20 +104,41 @@ public class UpdateAlarmManager {
             // set result to true, as update was initiated
             result = true;
         } else {
-            // update not due
-            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"update from API not due.");
-            result = false;
-            /*
-             * Check if views need to be updated.
-             * Views means widgets and gadgetbridge.
-             */
-            if (weatherSettings.views_last_update_time + VIEWS_MAXUPDATETIME < Calendar.getInstance().getTimeInMillis()){
-                updateAppViews(context);
+            // check if an update of warnings only for widgets applies
+            // or if notification is set
+            if (((update_mode==WIDGET_UPDATE) && (weatherSettings.widget_displaywarnings) && (WeatherSettings.areWarningsOutdated(context))) ||
+               ((weatherSettings.notify_warnings) && (WeatherSettings.areWarningsOutdated(context)))){
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"triggering warnings update from API...");
+                try {
+                    startDataUpdateService(context,false,true,false);
+                } catch (SecurityException e){
+                    PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather warnings only for widgets) not started because of a SecurityException: "+e.getMessage());
+                    // views need to be updated from here, because starting service failed!
+                    updateAppViews(context);
+                }
+                catch (IllegalStateException e){
+                    PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather warnings only for widgets) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
+                    // views need to be updated from here, because starting service failed!
+                    updateAppViews(context);
+                }
+                // set result to true, as update was initiated
+                result = true;
             } else {
-                // set a shorter update period considering the time passed since last update
-                long millis_since_last_update = Calendar.getInstance().getTimeInMillis() - weatherSettings.views_last_update_time;
-                next_update_due_in_millis = VIEWS_UPDATE_INTERVAL - millis_since_last_update;
-                next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
+                // update not due, nether for forecasts nor for warnings (widgets)
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"update from API not due.");
+                result = false;
+                /*
+                 * Check if views need to be updated.
+                 * Views means widgets and gadgetbridge.
+                 */
+                if (weatherSettings.views_last_update_time + VIEWS_MAXUPDATETIME < Calendar.getInstance().getTimeInMillis()){
+                    updateAppViews(context);
+                } else {
+                    // set a shorter update period considering the time passed since last update
+                    long millis_since_last_update = Calendar.getInstance().getTimeInMillis() - weatherSettings.views_last_update_time;
+                    next_update_due_in_millis = VIEWS_UPDATE_INTERVAL - millis_since_last_update;
+                    next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
+                }
             }
         }
         /*
@@ -188,12 +214,16 @@ public class UpdateAlarmManager {
             GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
             gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
         }
-        // update widgets unconditionally
-        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"updating widgets.");
-        WidgetRefresher.refresh(context);
+        updateWarningsViews(context);
         // save the last update time
         weatherSettings.views_last_update_time = Calendar.getInstance().getTimeInMillis();
         weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,weatherSettings.views_last_update_time);
+    }
+
+    public static void updateWarningsViews(Context context){
+        // update widgets unconditionally
+        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"updating widgets.");
+        WidgetRefresher.refresh(context);
     }
 
     public static void startDataUpdateService(final Context context, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts){

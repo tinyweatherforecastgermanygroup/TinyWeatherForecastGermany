@@ -60,6 +60,52 @@
               android:layout_marginRight="@dimen/widget_margin"
         android:text="HAMBURG INNENSTADT"/>
 
+    <!--
+    WARNING
+    -->
+
+    <RelativeLayout android:id="@+id/widget_warningcontainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/classicwidget_weatherconditiontext"
+                    android:visibility="gone"
+                    android:layout_gravity="left|top"
+                    android:gravity="left|top">
+
+        <ImageView android:id="@+id/widget_warning_more"
+                   android:layout_width="18dp"
+                   android:layout_height="18dp"
+                   android:layout_alignParentRight="true"
+                   android:layout_centerVertical="true"
+                   android:gravity="right|center_vertical"
+                   android:layout_gravity="right|center_vertical"
+                   android:src="@mipmap/ic_add_white_24dp"/>
+
+        <RelativeLayout android:id="@+id/widget_warningcontainer_inner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/widget_warning_more">
+
+            <ImageView android:id="@+id/widget_warningsymbol"
+                       android:layout_width="18dp"
+                       android:layout_height="18dp"
+                       android:layout_alignParentLeft="true"
+                       android:layout_centerVertical="true"
+                       android:src="@mipmap/warning_icon"
+            />
+
+            <TextView android:id="@+id/widget_warningtext"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="@dimen/widget_textsize_medium"
+                      android:textColor="@color/colorTextWidget"
+                      android:layout_toRightOf="@id/widget_warningsymbol"
+                      android:layout_marginLeft="@dimen/widget_margin"
+                      android:text="GLÄTTE"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
         <!--
             TODAY
          -->
@@ -70,8 +116,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_above="@id/widget_reference_text"
-        android:layout_below="@id/classicwidget_locationtext"
         android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@id/widget_warningcontainer"
         android:layout_marginLeft="@dimen/widget_margin"
         android:layout_centerVertical="true">
 
@@ -143,8 +189,8 @@
         android:layout_centerHorizontal="true"
         android:paddingLeft="15dp"
         android:layout_above="@id/widget_reference_text"
-        android:layout_below="@id/classicwidget_locationtext"
         android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@id/widget_warningcontainer"
         android:layout_centerVertical="true">
 
         <ImageView android:id="@+id/boldwidget_fc1_weatherconditionicon"
@@ -203,8 +249,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_above="@id/widget_reference_text"
-        android:layout_below="@id/classicwidget_locationtext"
         android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@id/widget_warningcontainer"
         android:layout_marginRight="@dimen/widget_margin"
         android:layout_centerVertical="true">
 

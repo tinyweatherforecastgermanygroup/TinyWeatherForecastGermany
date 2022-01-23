@@ -57,6 +57,7 @@
         <item name="ic_highlight_off">@mipmap/ic_highlight_off_black_24dp</item>
         <item name="ic_share">@mipmap/ic_share_black_24dp</item>
         <item name="ic_content_copy">@mipmap/ic_content_copy_black_24dp</item>
+        <item name="ic_add">@mipmap/ic_add_black_24dp</item>
 
         <item name="white_bar">@mipmap/white_bar_black</item>
         <item name="binocular">@mipmap/biocular_black</item>
@@ -149,6 +150,7 @@
         <item name="ic_highlight_off">@mipmap/ic_highlight_off_white_24dp</item>
         <item name="ic_share">@mipmap/ic_share_white_24dp</item>
         <item name="ic_content_copy">@mipmap/ic_content_copy_white_24dp</item>
+        <item name="ic_add">@mipmap/ic_add_white_24dp</item>
 
         <item name="white_bar">@mipmap/white_bar</item>
         <item name="binocular">@mipmap/biocular</item>

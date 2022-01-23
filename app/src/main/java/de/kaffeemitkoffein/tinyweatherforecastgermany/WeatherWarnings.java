@@ -20,10 +20,20 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.SystemClock;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 
 public class WeatherWarnings {
 
@@ -119,6 +129,141 @@ public class WeatherWarnings {
         public void run() {
             ArrayList<WeatherWarning> result = getWarningsForLocation(context,warnings,location);
             onResult(result);
+        }
+    }
+
+    public static final class WarningStringType{
+        public static final int HEADLINE = 0;
+        public static final int EVENT = 1;
+    }
+
+    public static SpannableStringBuilder getMiniWarningsString(Context context, ArrayList<WeatherWarning> applicableWarnings, long itemStartTime, long itemStopTime, boolean multiLine, int textType){
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+        int textPosition = 0;
+        int warningsEnd = applicableWarnings.size();
+        if (!multiLine){
+            warningsEnd = 1;
+        }
+        ArrayList<String> alreadyAddedWarnings = new ArrayList<String>();
+        for (int i=0; i<warningsEnd; i++){
+            String text = applicableWarnings.get(i).headline;
+            if (textType==WarningStringType.EVENT){
+                text = applicableWarnings.get(i).event;
+            }
+            if (applicableWarnings.get(i).onset>itemStartTime){
+                text = context.getResources().getString(R.string.from)+" "+simpleDateFormat.format(new Date(applicableWarnings.get(i).onset))+": " + text;
+            }
+            if (applicableWarnings.get(i).expires<itemStopTime){
+                text = text + " ("+context.getResources().getString(R.string.ends)+" "+simpleDateFormat.format(new Date(applicableWarnings.get(i).expires))+")";
+            }
+            if ((!multiLine) && (applicableWarnings.size()>1)){
+                text = text + " …";
+            }
+            if (!alreadyAddedWarnings.contains(text)){
+                alreadyAddedWarnings.add(text);
+                spannableStringBuilder.append(text);
+                spannableStringBuilder.setSpan(new ForegroundColorSpan(ThemePicker.adaptColorToTheme(context,applicableWarnings.get(i).getWarningColor())),textPosition,textPosition+text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                textPosition = textPosition + text.length();
+                String s = System.getProperty("line.separator");
+                if ((s!=null) && (i<warningsEnd-1)){
+                    if (s.length()>0){
+                        spannableStringBuilder.append(s);
+                        textPosition = textPosition + s.length();
+                    }
+                }
+            }
+        }
+        return spannableStringBuilder;
+    }
+
+    public static class NotificationListDbHelper extends SQLiteOpenHelper{
+
+        private final static String DBNAME="notifications.db";
+        private final static int DBVERSION=1;
+        private final static String TABLENAME = "notificationlist";
+        private static final String COLUMN_ID = "ID";
+        private static final String COLUMN_WARNID = "WARNID";
+        private static final String COLUMN_NFID = "NFID";
+        private static final String COLUMN_TIME = "TIME";
+        private static final String SQL_CREATE = "CREATE TABLE "+TABLENAME+" ("+
+                COLUMN_ID + " INTEGER PRIMARY KEY,"+
+                COLUMN_WARNID + " TEXT," +
+                COLUMN_NFID + " INTEGER," +
+                COLUMN_TIME + " INTEGER)";
+        private static final String SQL_DELETE ="DROP TABLE IF EXISTS "+TABLENAME;
+
+        public NotificationListDbHelper(Context context) {
+            super(context, DBNAME, null, DBVERSION);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase sqLiteDatabase) {
+            sqLiteDatabase.execSQL(SQL_CREATE);
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+            sqLiteDatabase.execSQL(SQL_DELETE);
+            onCreate(sqLiteDatabase);
+        }
+    }
+
+    public static long addToNotified(Context context, WeatherWarning warning, int id){
+        NotificationListDbHelper notificationListDbHelper = new NotificationListDbHelper(context);
+        SQLiteDatabase sqLiteDatabase = notificationListDbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NotificationListDbHelper.COLUMN_WARNID,warning.identifier);
+        contentValues.put(NotificationListDbHelper.COLUMN_NFID,id);
+        contentValues.put(NotificationListDbHelper.COLUMN_TIME, Calendar.getInstance().getTimeInMillis());
+        long rowID = sqLiteDatabase.insert(NotificationListDbHelper.TABLENAME,null,contentValues);
+        sqLiteDatabase.close();
+        return rowID;
+    }
+
+    public static boolean alreadyNotified(Context context, WeatherWarning weatherWarning){
+        boolean result = false;
+        NotificationListDbHelper notificationListDbHelper = new NotificationListDbHelper(context);
+        SQLiteDatabase sqLiteDatabase = notificationListDbHelper.getReadableDatabase();
+        String selection = NotificationListDbHelper.COLUMN_WARNID + " = ?";
+        String[] selectionArgs = {weatherWarning.identifier};
+        Cursor cursor = sqLiteDatabase.query(NotificationListDbHelper.TABLENAME, new String[]{NotificationListDbHelper.COLUMN_WARNID},selection,selectionArgs,null,null,null);
+        if (cursor.moveToFirst()){
+            result = true;
+        }
+        cursor.close();
+        sqLiteDatabase.close();
+        return result;
+    }
+
+    public static int clearNotified(Context context){
+        NotificationListDbHelper notificationListDbHelper = new NotificationListDbHelper(context);
+        SQLiteDatabase sqLiteDatabase = notificationListDbHelper.getReadableDatabase();
+        String selection = NotificationListDbHelper.COLUMN_TIME + " < ?";
+        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis()-12*60*60*1000)};
+        int i = sqLiteDatabase.delete(NotificationListDbHelper.TABLENAME,selection,selectionArgs);
+        sqLiteDatabase.close();
+        return i;
+    }
+
+    public static int clearAllNotified(Context context){
+        NotificationListDbHelper notificationListDbHelper = new NotificationListDbHelper(context);
+        SQLiteDatabase sqLiteDatabase = notificationListDbHelper.getReadableDatabase();
+        // the "1" triggers count deleted
+        int i = sqLiteDatabase.delete(NotificationListDbHelper.TABLENAME,"1",null);
+        sqLiteDatabase.close();
+        return i;
+    }
+
+    public static int getBaseId(){
+        int i = (int) SystemClock.uptimeMillis(); // might overflow, but does not matter for unique ID
+        return Math.abs(i);
+    }
+
+    public static void launchNotifications(Context context){
+        ArrayList<WeatherWarning> weatherWarnings = getCurrentWarnings(context,true);
+        if (weatherWarnings!=null){
+            DataUpdateService.launchWeatherWarningNotification(context,weatherWarnings);
         }
     }
 

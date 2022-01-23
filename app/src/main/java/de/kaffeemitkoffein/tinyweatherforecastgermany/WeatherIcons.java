@@ -85,6 +85,7 @@ public class WeatherIcons {
     final static int IC_INFO_OUTLINE = 1102;
     final static int IC_GPS_FIXED = 1103;
     final static int IC_ANNOUNCEMENT = 1104;
+    final static int WARNING_ICON = 1105;
 
     public static int getIconResource(Context context, int icon) {
         int result = 0;
@@ -243,6 +244,7 @@ public class WeatherIcons {
             case IC_INFO_OUTLINE: result = R.mipmap.ic_info_outline_white_24dp; break;
             case IC_GPS_FIXED: result = R.mipmap.ic_gps_fixed_white_24dp; break;
             case IC_ANNOUNCEMENT: result = R.mipmap.ic_announcement_white_24dp; break;
+            case WARNING_ICON: result = R.mipmap.warning_icon; break;
         }
         // override with dark variants if applicable
         if (!ThemePicker.isDarkTheme(context)) {
@@ -285,6 +287,7 @@ public class WeatherIcons {
                 case IC_INFO_OUTLINE: result = R.mipmap.ic_info_outline_black_24dp; break;
                 case IC_GPS_FIXED: result = R.mipmap.ic_gps_fixed_black_24dp; break;
                 case IC_ANNOUNCEMENT: result = R.mipmap.ic_announcement_black_24dp; break;
+                case WARNING_ICON: result = R.mipmap.warning_icon_black; break;
             }
         }
         return result;

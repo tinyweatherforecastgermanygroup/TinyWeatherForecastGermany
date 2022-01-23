@@ -335,6 +335,8 @@ public class MainActivity extends Activity {
         // disable log to logcat if release is not a userdebug
         disableLogToLogcatIfNotUserDebug();
         // force a database access at the beginning to check for a needed database upgrade
+        // debug code
+        WeatherWarnings.clearAllNotified(context);
         try {
             WeatherContentManager.checkForDatabaseUpgrade(context);
         } catch (Exception e){

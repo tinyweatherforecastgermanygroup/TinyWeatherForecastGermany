@@ -237,6 +237,7 @@ public class APIReaders {
            } else {
                country = context.getResources().getConfiguration().locale.getCountry();
            }
+           // 3.2.1 Gemeindebasis mit DWD Aktualisierungsstrategie
            final String C_FIRST ="https://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_";
            final String C_LAST  = ".zip";
            switch (country){

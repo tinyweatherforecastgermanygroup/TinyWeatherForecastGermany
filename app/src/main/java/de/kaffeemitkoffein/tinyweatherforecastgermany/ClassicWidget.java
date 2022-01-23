@@ -27,14 +27,23 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -275,11 +284,56 @@ public class ClassicWidget extends AppWidgetProvider {
 
     }
 
+    public void setWarningTextAndIcon(Context context, RemoteViews remoteViews, int containerID, int imageViewId, int textViewId, int moreID){
+        if (WeatherSettings.displayWarningsInWidget(context)){
+            Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+            ArrayList<WeatherWarning> warnings =  WeatherWarnings.getCurrentWarnings(context,true);
+            ArrayList<WeatherWarning> locationWarnings = WeatherWarnings.getWarningsForLocation(context,warnings,weatherLocation);
+            if (locationWarnings.size()>0){
+                remoteViews.setViewVisibility(containerID,View.VISIBLE);
+                long startTime = Calendar.getInstance().getTimeInMillis();
+                long stopTime = startTime + 24*60*60*1000; // next 24h
+                SpannableStringBuilder spannableStringBuilder = WeatherWarnings.getMiniWarningsString(context, locationWarnings, startTime, stopTime, false,WeatherWarnings.WarningStringType.EVENT);
+                remoteViews.setTextViewText(textViewId,spannableStringBuilder);
+                int color = ThemePicker.adaptColorToTheme(context,locationWarnings.get(0).getWarningColor());
+                remoteViews.setInt(imageViewId,"setColorFilter",color);
+                if (locationWarnings.size()>1){
+                    remoteViews.setViewVisibility(moreID,View.VISIBLE);
+                    remoteViews.setInt(moreID,"setColorFilter",color);
+                } else {
+                    remoteViews.setViewVisibility(moreID,View.GONE);
+                }
+            } else {
+                remoteViews.setViewVisibility(containerID,View.GONE);
+            }
+        } else {
+            remoteViews.setViewVisibility(containerID,View.GONE);
+        }
+    }
+
+    public void setWarningIcon(Context context, RemoteViews remoteViews, int imageViewId){
+        if (WeatherSettings.displayWarningsInWidget(context)){
+            Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+            ArrayList<WeatherWarning> warnings =  WeatherWarnings.getCurrentWarnings(context,true);
+            ArrayList<WeatherWarning> locationWarnings = WeatherWarnings.getWarningsForLocation(context,warnings,weatherLocation);
+            if (locationWarnings.size()>0){
+                remoteViews.setViewVisibility(imageViewId,View.VISIBLE);
+                int color = ThemePicker.adaptColorToTheme(context,locationWarnings.get(0).getWarningColor());
+                remoteViews.setInt(imageViewId,"setColorFilter",color);
+            } else {
+                remoteViews.setViewVisibility(imageViewId,View.GONE);
+            }
+        } else {
+            remoteViews.setViewVisibility(imageViewId,View.GONE);
+        }
+    }
+
     public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c, boolean shorten_text){
         if (weatherCard==null){
             weatherCard = new CurrentWeatherInfo();
             weatherCard.setToEmpty();
         }
+        setWarningIcon(c,remoteViews,R.id.widget_warningsymbol);
         setLocationText(c,remoteViews,weatherCard,shorten_text);
         setConditionText(c,remoteViews,weatherCard);
         setConditionIcon(c,remoteViews,weatherCard);

@@ -1,12 +1,11 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.annotation.TargetApi;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.Service;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -33,8 +32,12 @@ public class DataUpdateService extends Service {
     private static boolean serviceStarted = false;
 
     public static String IC_ID = "WEATHER_NOTIFICATION";
-    public static String IC_NAME = "Updating weather data";
     public static int    IC_IMPORTANCE = NotificationManager.IMPORTANCE_LOW;
+
+    public static String WARNING_NC_ID = "WEATHER_WARNING";
+    public static int    WARNING_NC_IMPORTANCE = NotificationManager.IMPORTANCE_HIGH;
+    public static String WARNING_NC_GROUP = "de.kaffeemitkoffein.tinyweatherforecastgermany.WARNINGS";
+
     public static String SERVICEEXTRAS_UPDATE_WEATHER="SERVICEEXTRAS_UPDATE_WEATHER";
     public static String SERVICEEXTRAS_UPDATE_WARNINGS="SERVICEEXTRAS_UPDATE_WARNINGS";
     public static String SERVICEEXTRAS_UPDATE_TEXTFORECASTS="SERVICEEXTRAS_UPDATE_TEXTFORECASTS";
@@ -52,10 +55,7 @@ public class DataUpdateService extends Service {
         @Override
         public void run() {
             updateNotification(3);
-            // remove old weather entries from the data base
-            // Weather.cleanDataBase(getApplicationContext());
             Weather.sanitizeDatabase(getApplicationContext());
-            // remove old text forecasts
             TextForecasts.cleanTextForecastDatabase(getApplicationContext());
         }
 
@@ -110,7 +110,7 @@ public class DataUpdateService extends Service {
             serviceStarted = true;
             connectivityManager = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             // perform service task only if:
-            // 1) intent supplied telling what do do, AND
+            // 1) intent supplied telling what to do, AND
             // 2) internet connection is present
             if ((intent!=null) && (isConnectedToInternet())){
                 boolean updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
@@ -120,7 +120,6 @@ public class DataUpdateService extends Service {
                 final Executor executor = Executors.newSingleThreadExecutor();
                 // put
                 if ((Build.VERSION.SDK_INT > 23) && (connectivityManager!=null)){
-                    Network network = connectivityManager.getActiveNetwork();
                     networkCallback = new ConnectivityManager.NetworkCallback(){
                         @Override
                         public void onLost(Network network) {
@@ -181,6 +180,9 @@ public class DataUpdateService extends Service {
                             intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
                             intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,true);
                             sendBroadcast(intent);
+                            if (WeatherSettings.notifyWarnings(context)){
+                                launchWeatherWarningNotification(context,warnings);
+                            }
                         }
                         public void onNegativeResult(){
                             // trigger update of views in activity
@@ -238,11 +240,10 @@ public class DataUpdateService extends Service {
         PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Service destroyed.");
     }
 
-    @Deprecated
     private Notification getNotification(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel nc = new NotificationChannel(IC_ID,IC_NAME,IC_IMPORTANCE);
-            nc.setDescription(getResources().getString(R.string.service_notification_channelname));
+            NotificationChannel nc = new NotificationChannel(IC_ID,getResources().getString(R.string.service_notification_categoryname),IC_IMPORTANCE);
+            nc.setDescription(getResources().getString(R.string.service_notification_categoryname));
             nc.setShowBadge(true);
             notificationManager.createNotificationChannel(nc);
         }
@@ -282,6 +283,74 @@ public class DataUpdateService extends Service {
             case 3: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text3)));
         }
         notificationManager.notify(notification_id,notificationBuilder.build());
+    }
+
+    public static Notification getWarningNotification(Context context, NotificationManager notificationManager, WeatherWarning weatherWarning, String sortKey){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel nc = new NotificationChannel(WARNING_NC_ID,context.getResources().getString(R.string.service_warning_categoryname),WARNING_NC_IMPORTANCE);
+            nc.setDescription(context.getResources().getString(R.string.service_warning_categoryname));
+            nc.setShowBadge(true);
+            notificationManager.createNotificationChannel(nc);
+        }
+        Intent intent = new Intent(context,WeatherWarningActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
+        Bitmap warningIconBitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.warning_icon);
+        Bitmap iconMutable = warningIconBitmap.copy(Bitmap.Config.ARGB_8888,true);
+        ThemePicker.applyColor(iconMutable,weatherWarning.getWarningColor());
+        Notification n;
+        Notification.Builder notificationBuilder;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            notificationBuilder = new Notification.Builder(context.getApplicationContext(),WARNING_NC_ID);
+        } else {
+            notificationBuilder = new Notification.Builder(context.getApplicationContext());
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            n = notificationBuilder
+                    .setContentTitle(weatherWarning.headline)
+                    .setSmallIcon(WeatherIcons.getIconResource(context,WeatherIcons.WARNING_ICON))
+                    .setStyle(new Notification.BigTextStyle().bigText(weatherWarning.description))
+                    .setLargeIcon(iconMutable)
+                    .setOngoing(false)
+                    .setChannelId(WARNING_NC_ID)
+                    .setContentIntent(pendingIntent)
+                    .setShowWhen(true)
+                    .setWhen(weatherWarning.onset)
+                    .setGroup(WARNING_NC_GROUP)
+                    .setSortKey(sortKey)
+                    .build();
+        } else {
+            n = notificationBuilder
+                    .setContentTitle(weatherWarning.headline)
+                    .setSmallIcon(WeatherIcons.getIconResource(context,WeatherIcons.WARNING_ICON))
+                    .setStyle(new Notification.BigTextStyle().bigText(context.getResources().getString(R.string.service_notification_text0)))
+                    .setContentIntent(pendingIntent)
+                    .setShowWhen(true)
+                    .setWhen(weatherWarning.onset)
+                    .build();
+        }
+        return n;
+    }
+
+    public static void launchWeatherWarningNotification(Context context, ArrayList<WeatherWarning> warnings){
+        WeatherWarnings.clearNotified(context);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Checking warnings..."+warnings.size());
+        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+        ArrayList<WeatherWarning> locationWarnings = WeatherWarnings.getWarningsForLocation(context,warnings,weatherLocation);
+        PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Checking warnings, found "+locationWarnings.size());
+        int baseID = WeatherWarnings.getBaseId();
+        for (int i=0; i<locationWarnings.size(); i++){
+            WeatherWarning warning = locationWarnings.get(i);
+            if (!WeatherWarnings.alreadyNotified(context,warning)){
+                int id = baseID+i;
+                Notification notification = getWarningNotification(context,notificationManager,locationWarnings.get(i),Integer.toString(i));
+                notificationManager.notify(id,notification);
+                WeatherWarnings.addToNotified(context,warning,id);
+                PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Notifying "+i+" "+locationWarnings.get(i).headline);
+            } else {
+                PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"already notified "+i+" "+locationWarnings.get(i).headline);
+            }
+        }
     }
 
     public static boolean isConnectedToInternet(Context context){

@@ -56,6 +56,7 @@ public class BoldWidget extends ClassicWidget {
             currentWeatherInfo = new CurrentWeatherInfo();
             currentWeatherInfo.setToEmpty();
         }
+        setWarningTextAndIcon(c,remoteViews,R.id.widget_warningcontainer,R.id.widget_warningsymbol,R.id.widget_warningtext,R.id.widget_warning_more);
         remoteViews.setTextColor(R.id.boldwidget_dayofweek_today,ThemePicker.getWidgetTextColor(c));
         if (weatherSettings.widget_showdwdnote) {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.VISIBLE);

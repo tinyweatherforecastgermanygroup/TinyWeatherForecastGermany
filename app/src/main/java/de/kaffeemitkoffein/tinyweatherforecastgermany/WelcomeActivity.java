@@ -45,12 +45,15 @@ public class WelcomeActivity extends Activity {
     ImageView dot2;
     ImageView dot3;
     ImageView dot4;
+    ImageView dot5;
     ImageView arrow_right;
     ImageView arrow_left;
     TextView skip;
 
-    ArrayAdapter arrayAdapter;
-    Spinner spinner;
+    ArrayAdapter arrayAdapter1;
+    Spinner spinner1;
+    ArrayAdapter arrayAdapter2;
+    Spinner spinner2;
     CheckBox checkBox1;
     CheckBox checkBox2;
     CheckBox checkBox3;
@@ -75,7 +78,7 @@ public class WelcomeActivity extends Activity {
             }
         }
         executor = Executors.newSingleThreadExecutor();
-        boolean force_replay = false;
+        boolean force_replay = true;
         Intent intent = getIntent();
         if (intent != null) {
             Bundle bundle = intent.getExtras();
@@ -138,10 +141,19 @@ public class WelcomeActivity extends Activity {
                     setPage(page);
                 }
             });
+            dot5 = (ImageView) findViewById(R.id.welcome_dot5);
+            dot5.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
+            dot5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    page = 5;
+                    setPage(page);
+                }
+            });
             pager.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (page < 4) {
+                    if (page < 5) {
                         page++;
                         setPage(page);
                     } else {
@@ -153,7 +165,7 @@ public class WelcomeActivity extends Activity {
             arrow_right.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (page < 4) {
+                    if (page < 5) {
                         page++;
                         setPage(page);
                     } else {
@@ -193,7 +205,9 @@ public class WelcomeActivity extends Activity {
             dot2.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
             dot3.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
             dot4.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot5.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
             skip.setTextColor(ThemePicker.getWidgetTextColor(this));
+            skip.setText(getApplicationContext().getResources().getString(R.string.welcome_skip));
             skip.setTypeface(null,Typeface.NORMAL);
         }
         if (page == 2) {
@@ -203,7 +217,9 @@ public class WelcomeActivity extends Activity {
             dot2.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_CHECKED));
             dot3.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
             dot4.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot5.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
             skip.setTextColor(ThemePicker.getWidgetTextColor(this));
+            skip.setText(getApplicationContext().getResources().getString(R.string.welcome_skip));
             skip.setTypeface(null,Typeface.NORMAL);
             ImageView icon2 = (ImageView) result_view.findViewById(R.id.welcome_screen2_icon2);
             icon2.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
@@ -229,7 +245,9 @@ public class WelcomeActivity extends Activity {
             dot2.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
             dot3.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_CHECKED));
             dot4.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot5.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
             skip.setTextColor(ThemePicker.getWidgetTextColor(this));
+            skip.setText(getApplicationContext().getResources().getString(R.string.welcome_skip));
             skip.setTypeface(null,Typeface.NORMAL);
         }
         if (page == 4) {
@@ -239,18 +257,19 @@ public class WelcomeActivity extends Activity {
             dot2.setImageResource(WeatherIcons.getIconResource(getApplicationContext(), WeatherIcons.RADIO_BUTTON_UNCHECKED));
             dot3.setImageResource(WeatherIcons.getIconResource(getApplicationContext(), WeatherIcons.RADIO_BUTTON_UNCHECKED));
             dot4.setImageResource(WeatherIcons.getIconResource(getApplicationContext(), WeatherIcons.RADIO_BUTTON_CHECKED));
-            skip.setTextColor(Color.GREEN);
-            skip.setText(getApplicationContext().getResources().getString(R.string.welcome_ready));
-            skip.setTypeface(null, Typeface.BOLD);
-            arrayAdapter = new ArrayAdapter(getBaseContext(), R.layout.welcome_dropdownitem, getResources().getTextArray(R.array.display_type_text));
-            arrayAdapter.setDropDownViewResource(R.layout.welcome_dropdownitem);
-            spinner = (Spinner) result_view.findViewById(R.id.welcome_screen4_spinner);
-            spinner.setAdapter(arrayAdapter);
+            dot5.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            skip.setTextColor(ThemePicker.getWidgetTextColor(this));
+            skip.setText(getApplicationContext().getResources().getString(R.string.welcome_skip));
+            skip.setTypeface(null,Typeface.NORMAL);
+            arrayAdapter1 = new ArrayAdapter(getBaseContext(), R.layout.welcome_dropdownitem, getResources().getTextArray(R.array.display_type_text));
+            arrayAdapter1.setDropDownViewResource(R.layout.welcome_dropdownitem);
+            spinner1 = (Spinner) result_view.findViewById(R.id.welcome_screen4_spinner);
+            spinner1.setAdapter(arrayAdapter1);
             switch (WeatherSettings.getDisplayType(this)){
-                case WeatherSettings.DISPLAYTYPE_1HOUR: spinner.setSelection(0); break;
-                case WeatherSettings.DISPLAYTYPE_6HOURS: spinner.setSelection(1); break;
-                case WeatherSettings.DISPLAYTYPE_24HOURS: spinner.setSelection(2); break;
-                case WeatherSettings.DISPLAYTYPE_MIXED: spinner.setSelection(3);
+                case WeatherSettings.DISPLAYTYPE_1HOUR: spinner1.setSelection(0); break;
+                case WeatherSettings.DISPLAYTYPE_6HOURS: spinner1.setSelection(1); break;
+                case WeatherSettings.DISPLAYTYPE_24HOURS: spinner1.setSelection(2); break;
+                case WeatherSettings.DISPLAYTYPE_MIXED: spinner1.setSelection(3);
             }
             MainActivity.SpinnerListener spinnerListener = new MainActivity.SpinnerListener(){
                 @Override
@@ -264,8 +283,8 @@ public class WelcomeActivity extends Activity {
                     super.handleItemSelected(adapterView, view, i, l);
                 }
             };
-            spinner.setOnItemSelectedListener(spinnerListener);
-            spinner.setOnTouchListener(spinnerListener);
+            spinner1.setOnItemSelectedListener(spinnerListener);
+            spinner1.setOnTouchListener(spinnerListener);
             checkBox1 = result_view.findViewById(R.id.welcome_screen4_check1);
             if (WeatherSettings.getViewModel(getApplicationContext()).equals(WeatherSettings.ViewModel.SIMPLE)){
                 checkBox1.setChecked(false);
@@ -300,6 +319,57 @@ public class WelcomeActivity extends Activity {
             });
         }
         if (page == 5) {
+            result_view = layoutInflater.inflate(R.layout.welcome_screen5, pager, false);
+            pager.addView(result_view);
+            dot1.setImageResource(WeatherIcons.getIconResource(getApplicationContext(), WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot2.setImageResource(WeatherIcons.getIconResource(getApplicationContext(), WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot3.setImageResource(WeatherIcons.getIconResource(getApplicationContext(), WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot4.setImageResource(WeatherIcons.getIconResource(getApplicationContext(), WeatherIcons.RADIO_BUTTON_UNCHECKED));
+            dot5.setImageResource(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADIO_BUTTON_CHECKED));
+            skip.setTextColor(ThemePicker.getWidgetTextColor(this));
+            skip.setTextColor(Color.GREEN);
+            skip.setText(getApplicationContext().getResources().getString(R.string.welcome_ready));
+            skip.setTypeface(null, Typeface.BOLD);
+            arrayAdapter2 = new ArrayAdapter(getBaseContext(), R.layout.welcome_dropdownitem, getResources().getTextArray(R.array.cache_warnings_time_text));
+            arrayAdapter2.setDropDownViewResource(R.layout.welcome_dropdownitem);
+            spinner2 = (Spinner) result_view.findViewById(R.id.welcome_screen5_spinner);
+            spinner2.setAdapter(arrayAdapter2);
+            spinner2.setSelection(WeatherSettings.getWarningsUpdateIntervalMenuPosition(this));
+            final Context context = this;
+            MainActivity.SpinnerListener spinnerListener2 = new MainActivity.SpinnerListener(){
+                @Override
+                public void handleItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    switch (i){
+                        case 0: WeatherSettings.setWarningsUpdateInterval(context,"15"); break;
+                        case 1: WeatherSettings.setWarningsUpdateInterval(context,"30"); break;
+                        case 2: WeatherSettings.setWarningsUpdateInterval(context,"60"); break;
+                        case 3: WeatherSettings.setWarningsUpdateInterval(context,"120"); break;
+                        case 4: WeatherSettings.setWarningsUpdateInterval(context,"180"); break;
+                        case 5: WeatherSettings.setWarningsUpdateInterval(context,"360"); break;
+                    }
+                    super.handleItemSelected(adapterView, view, i, l);
+                }
+            };
+            spinner2.setOnItemSelectedListener(spinnerListener2);
+            spinner2.setOnTouchListener(spinnerListener2);
+            checkBox1 = result_view.findViewById(R.id.welcome_screen5_check1);
+            checkBox1.setChecked(WeatherSettings.notifyWarnings(this));
+            checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    WeatherSettings.setNotifyWarnings(getApplicationContext(),b);
+                }
+            });
+            checkBox2 = result_view.findViewById(R.id.welcome_screen5_check2);
+            checkBox2.setChecked(WeatherSettings.displayWarningsInWidget(this));
+            checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    WeatherSettings.setDisplayWarningsInWidget(getApplicationContext(),b);
+                }
+            });
+        }
+        if (page == 6) {
             result_view = layoutInflater.inflate(R.layout.welcome_spinner, pager, true);
             dot1.setVisibility(View.GONE);
             dot2.setVisibility(View.GONE);

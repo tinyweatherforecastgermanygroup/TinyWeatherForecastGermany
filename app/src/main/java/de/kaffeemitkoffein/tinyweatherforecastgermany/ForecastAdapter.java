@@ -1019,27 +1019,33 @@ private int getColorGradient(int position){
     }
     return pos;
 }
+    private long neededHoursAgo(Weather.WeatherInfo weatherInfo){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(weatherInfo.getTimestamp());
+        if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_24){
+            calendar.add(Calendar.HOUR_OF_DAY,-24);
+        } else
+        if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6){
+            calendar.add(Calendar.HOUR_OF_DAY,-6);
+        } else {
+            calendar.add(Calendar.HOUR_OF_DAY,-1);
+        }
+        if (calendar.getTimeInMillis()<Calendar.getInstance().getTimeInMillis()){
+            Calendar result = Calendar.getInstance();
+            result.set(Calendar.MINUTE,0);
+            result.set(Calendar.SECOND,0);
+            result.set(Calendar.MILLISECOND,0);
+            return result.getTimeInMillis();
+        }
+        return calendar.getTimeInMillis();
+    }
 
-private long neededHoursAgo(Weather.WeatherInfo weatherInfo){
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTimeInMillis(weatherInfo.getTimestamp());
-    if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_24){
-        calendar.add(Calendar.HOUR_OF_DAY,-24);
-    } else
-    if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6){
-        calendar.add(Calendar.HOUR_OF_DAY,-6);
-    } else {
-        calendar.add(Calendar.HOUR_OF_DAY,-1);
+    private void setMiniWarningsString(TextView textView, Weather.WeatherInfo weatherInfo, ArrayList<WeatherWarning> applicableWarnings){
+        long itemStartTime = neededHoursAgo(weatherInfo);
+        long itemStopTime = weatherInfo.getTimestamp();
+        SpannableStringBuilder spannableStringBuilder = WeatherWarnings.getMiniWarningsString(context,applicableWarnings,itemStartTime,itemStopTime,true,WeatherWarnings.WarningStringType.HEADLINE);
+        textView.setText(spannableStringBuilder);
     }
-    if (calendar.getTimeInMillis()<Calendar.getInstance().getTimeInMillis()){
-        Calendar result = Calendar.getInstance();
-        result.set(Calendar.MINUTE,0);
-        result.set(Calendar.SECOND,0);
-        result.set(Calendar.MILLISECOND,0);
-        return result.getTimeInMillis();
-    }
-    return calendar.getTimeInMillis();
-}
 
 private ArrayList<Weather.WindData> getWindForecast(Weather.WeatherInfo currentWeatherInfo){
     int number = display_wind_arc_perdiod;
@@ -1069,39 +1075,6 @@ private ArrayList<WeatherWarning> getApplicableWarnings(Weather.WeatherInfo weat
     }
     return applicableWarnings;
 }
-
-private void setMiniWarningsString(TextView textView, Weather.WeatherInfo weatherInfo, ArrayList<WeatherWarning> applicableWarnings){
-    final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-    SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
-    long itemStartTime = neededHoursAgo(weatherInfo);
-    long itemStopTime = weatherInfo.getTimestamp();
-    int textPosition = 0;
-    ArrayList<String> alreadyAddedWarnings = new ArrayList<String>();
-    for (int i=0; i<applicableWarnings.size(); i++){
-        String text = applicableWarnings.get(i).headline;
-        if (applicableWarnings.get(i).onset>itemStartTime){
-            text = context.getResources().getString(R.string.from)+" "+simpleDateFormat.format(new Date(applicableWarnings.get(i).onset))+": " + text;
-        }
-        if (applicableWarnings.get(i).expires<itemStopTime){
-            text = text + " ("+context.getResources().getString(R.string.ends)+" "+simpleDateFormat.format(new Date(applicableWarnings.get(i).expires))+")";
-        }
-        if (!alreadyAddedWarnings.contains(text)){
-            alreadyAddedWarnings.add(text);
-            spannableStringBuilder.append(text);
-            spannableStringBuilder.setSpan(new ForegroundColorSpan(ThemePicker.adaptColorToTheme(context,applicableWarnings.get(i).getWarningColor())),textPosition,textPosition+text.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            textPosition = textPosition + text.length();
-            String s = System.getProperty("line.separator");
-            if ((s!=null) && (i<applicableWarnings.size()-1)){
-                if (s.length()>0){
-                    spannableStringBuilder.append(s);
-                    textPosition = textPosition + s.length();
-                }
-            }
-        }
-    }
-    textView.setText(spannableStringBuilder);
-}
-
 public float DPtoPX(int dp, DisplayMetrics displayMetrics){
     return displayMetrics.density * dp;
 }

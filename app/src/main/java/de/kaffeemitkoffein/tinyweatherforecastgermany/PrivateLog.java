@@ -55,6 +55,7 @@ public class PrivateLog {
     public static final String TEXTS = "texts";
     public static final String STATIONS = "stations";
     public static final String RADAR  = "radar";
+    public static final String ALERTS  = "alerts";
 
     public static final int INFO = 0;
     public static final int WARN = 1;
