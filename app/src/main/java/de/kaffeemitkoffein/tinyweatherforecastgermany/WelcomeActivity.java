@@ -78,7 +78,7 @@ public class WelcomeActivity extends Activity {
             }
         }
         executor = Executors.newSingleThreadExecutor();
-        boolean force_replay = true;
+        boolean force_replay = false;
         Intent intent = getIntent();
         if (intent != null) {
             Bundle bundle = intent.getExtras();

@@ -363,6 +363,8 @@ public class DataUpdateService extends Service {
                     if (networkInfo != null) {
                         // returns if the network can establish connections and pass data.
                         return networkInfo.isConnected();
+                    } else {
+                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkinfo obtained => assuming no suitable network available.");
                     }
                     return false;
                 // use connectivityManager on api 23 and higher
@@ -370,22 +372,22 @@ public class DataUpdateService extends Service {
                     Network network = connectivityManager.getActiveNetwork();
                     NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
                     if (networkCapabilities==null) {
-                        // no network
+                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkCapabilities obtained => assuming no suitable network available.");
                         return false;
                     } else {
                         if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))){
                             // valid internet conn
                             return true;
                         } else {
-                            // conn is not proven
+                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Network detected, but did not prove a validated internet access => assuming no suitable network available.");
                             return false;
                         }
                     }
                 }
             }
         } catch (Exception e){
-            // connectivityManager not found, return true to be safe
-        }
+            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.WARN,"Error(s) occured when checking for a valid network: "+e.getMessage()+" => assuming there is a valid network connection.");
+       }
         return true;
     }
 
