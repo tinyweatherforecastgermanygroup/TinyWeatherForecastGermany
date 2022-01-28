@@ -41,9 +41,11 @@ public class UpdateAlarmManager {
     private static final int EARLY_ALARM_TIME = 1000*60*15; // 15 minutes in millis
 
     // time interval to loop the JobSheduler/Alarm manager
-    public final static int VIEWS_UPDATE_INTERVAL = 30*60*1000; // 30 minutes;
+    public static int VIEWS_UPDATE_INTERVAL_DEFAULT = 30*60*1000; // 10 minutes;
+    public static int VIEWS_UPDATE_INTERVAL         = VIEWS_UPDATE_INTERVAL_DEFAULT;
     // suppress any view update actions if this time did not pass since last view update
-    public final static int VIEWS_MAXUPDATETIME   = 10*60*1000; // 10 minutes;
+    public static int VIEWS_MAXUPDATETIME_DEFAULT   = 10*60*1000; // 10 minutes;
+    public static int VIEWS_MAXUPDATETIME   = VIEWS_MAXUPDATETIME_DEFAULT;
 
     // used when no valid data available (any more) from MainActivity, when update triggered by user
     // or during API-testing
@@ -57,8 +59,19 @@ public class UpdateAlarmManager {
     private UpdateAlarmManager(){
     }
 
+    private static void adaptUpdateIntervalsToSettings(Context context){
+        VIEWS_UPDATE_INTERVAL = VIEWS_UPDATE_INTERVAL_DEFAULT;
+        VIEWS_MAXUPDATETIME   = VIEWS_MAXUPDATETIME_DEFAULT;
+        int warningsUpdateInterval = WeatherSettings.getWarningsUpdateIntervalInMillis(context);
+        if ((warningsUpdateInterval<VIEWS_UPDATE_INTERVAL) || (warningsUpdateInterval<VIEWS_MAXUPDATETIME)){
+            VIEWS_UPDATE_INTERVAL = warningsUpdateInterval;
+            VIEWS_MAXUPDATETIME = warningsUpdateInterval/3;
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static boolean updateAndSetAlarmsIfAppropriate(Context context, int update_mode){
+        adaptUpdateIntervalsToSettings(context);
         WeatherSettings weatherSettings = new WeatherSettings(context);
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         /*

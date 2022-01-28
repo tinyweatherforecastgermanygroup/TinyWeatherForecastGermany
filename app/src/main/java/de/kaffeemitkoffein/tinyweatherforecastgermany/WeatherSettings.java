@@ -577,11 +577,11 @@ public class WeatherSettings {
         return (long) getForecastUpdateInterval() * 60 * 60 * 1000;
     }
 
-    public static long getWarningsUpdateIntervalInMillis(Context context) {
+    public static int getWarningsUpdateIntervalInMillis(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         try {
-            long l = Long.parseLong(sharedPreferences.getString(PREF_WARNINGS_CACHETIME, PREF_WARNINGS_CACHETIME_DEFAULT));
-            return l * 60 * 1000;
+            int i = Integer.parseInt(sharedPreferences.getString(PREF_WARNINGS_CACHETIME, PREF_WARNINGS_CACHETIME_DEFAULT));
+            return i * 60 * 1000;
         } catch (Exception e){
             return 30 * 60 * 1000;
         }
