@@ -101,7 +101,7 @@ public class ClassicWidget extends AppWidgetProvider {
         super.onReceive(c, i);
         if (i != null){
             String action = i.getAction();
-            if (action.equals(WIDGET_CUSTOM_REFRESH_ACTION)){
+            if (action.equals(WIDGET_CUSTOM_REFRESH_ACTION) || action.equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE)){
                 PrivateLog.log(c,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widget (app, custom): "+getClass().toString());
                 widgetRefreshAction(c,i);
             }

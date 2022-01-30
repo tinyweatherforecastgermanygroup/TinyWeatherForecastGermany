@@ -179,7 +179,9 @@ The app always displays the date & time of your device (and locale). Example: yo
  
 The widget icon, the weather description and the current temperature refer to the weather forecast that can be expected until the next full hour. The low and high temperatures refer to the values that can be expected to occur from now to midnight.
 
-When showing more days (bold widget, large widget), the min and max values and the weather symbol refer to the whole day.  
+When showing more days (bold widget, large widget), the min and max values and the weather symbol refer to the whole day.
+
+To display weather warnings in widgets, you need to enable this feature in the settings. When enabled, the *most severe* weather warning issued for your location is displayed in the widget. When there are multiple warnings issued, this is indicated by three dots ("...") and a plus ("+"). You have to go to the app to see them all.  
  
 ### What do the symbols in the main app mean?
  
@@ -269,7 +271,7 @@ Just select it as current region in the app. The region displayed in the app and
 
 If you want to update a different location e.g. before travelling, select it first and update the data. (If `Always update` is not set you may do this manually.) You can then revert to your standard location. Tiny Weather Forecast Germany will remove data only once it got invalid over time, but keep all fetched data in it's internal cache.
 
-### Why do some coloured ploygons show up next to the coasts sometimes?
+### Why do some coloured polygons show up next to the coasts sometimes?
 
 Those stem from coastal or sea area warnings issued by DWD in their shipping forecasts. The warning areas correspond to the coastal and sea areas in those reports. The definitions of the sea areas can be found in the document "Sturmwarnungen und Seewetterberichte für die Sport- und Küstenschifffahrt" published regularly by DWD or "Wetter- und Warnfunk" updated yearly by the Bundesamt für Seeschifffahrt und Hydrographie (BSH).
 
@@ -294,6 +296,36 @@ Setting the wind direction to Beaufort will display the wind as in a weather map
 ### What does the small arc next to the wind display refer to?
 
 It shows the direction of the wind change during the next `Wind forecast period`. E.g. if the wind comes from the south and there is a quarter of an arc to the right next to it and the `forecast period` is set to 6h the wind will veer from S to E in the next 6 hours.
+
+### When do I get a notification about a weather warning?
+
+First of all, you need to enable this feature in the settings. Second, you need to specify how often the app will update the warnings (see below). Then, you will get notifications about warnings issued for the selected location. **The app will not check for warnings when the device is in doze mode**. So do not expect to get woken up in the middle of the night when a weather warning get issued.
+
+### Which warnings get notified?
+
+You will get notified about all warnings issued for the selected location. The app does not filter for similiar types of warnings, so you may get separate warnings e.g. regarding *storm* and *gusts*.
+
+You will be notified about warnings with a future onset once they get issued and about warnings that are already ongoing. Warnings may sometimes get issued on a short-term basis and are sometimes followed up by a similiar event with a different severity.
+
+When your device has been turned off and/or in *doze mode*, old warnings that already passed won't get notified. 
+
+### How quickly do I get a warning?
+
+In the settings, you can set up the interval how often warnings are checked. The default is every 30 minutes. Please note that the interval specified may have quite an implact on battery drain and data volume use. When weather conditions are heavy, warning data may be about 300 Kb or even more in size. 
+
+Please note, that every notification has a time specified:
+- when it says "*in 3h*", the warning has an onset in *approximately* 3 hours. Please tap the warning and go  to the app to get the detailed onset time.
+- when it says "6h", the warning is effectice *since* approximately 6h.
+
+To get an immediate and current warning status, go to the app and hit "update".
+
+### Why does the app not process all the single warnings?
+
+Because listening to new warnings continuously with a very high frequency would drain your battery very fast. When polling e.g. every 30 minutes, there is even no significant benefit regarding the data size when you compare all the single warnings issued with the whole data set that gets downloaded.
+
+### What is the logic about the notifications? 
+
+Once a new warning gets issued **or** when an existing warning gets updated, you will get notified. A warning you have been already notified about will be repeated after 12 hours, provided it is still valid. 
 
 ### How do I provide a crash log?
 
