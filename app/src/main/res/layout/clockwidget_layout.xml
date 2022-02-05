@@ -100,8 +100,8 @@
                         android:gravity="left|top">
 
             <ImageView android:id="@+id/widget_warning_more"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="@dimen/widget_textsize_verylarge"
+                    android:layout_height="@dimen/widget_textsize_verylarge"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:gravity="right|center_vertical"
@@ -114,8 +114,8 @@
                     android:layout_toLeftOf="@id/widget_warning_more">
 
                 <ImageView android:id="@+id/widget_warningsymbol"
-                           android:layout_width="18dp"
-                           android:layout_height="18dp"
+                           android:layout_width="@dimen/widget_textsize_verylarge"
+                           android:layout_height="@dimen/widget_textsize_verylarge"
                            android:layout_alignParentLeft="true"
                            android:layout_centerVertical="true"
                            android:src="@mipmap/warning_icon"
@@ -128,7 +128,7 @@
                           android:textColor="@color/colorTextWidget"
                           android:layout_toRightOf="@id/widget_warningsymbol"
                           android:layout_marginLeft="@dimen/widget_margin"
-                          android:text="GLÄTTE"/>
+                          android:text=""/>
 
             </RelativeLayout>
 
@@ -180,8 +180,8 @@
 
         <ImageView
                 android:id="@+id/widget_rh_icon"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="@dimen/widget_textsize_medium"
+                android:layout_height="@dimen/widget_textsize_medium"
                 android:src="@mipmap/symbol_rh"
                 android:layout_below="@id/widget_pressure"
                 android:layout_toRightOf="@id/classicwidget_temperature"/>
@@ -205,8 +205,8 @@
             android:layout_alignParentRight="true">
 
             <ImageView android:id="@+id/widget_precipitation_symbol"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="@dimen/widget_textsize_medium"
+                android:layout_height="@dimen/widget_textsize_medium"
                 android:gravity="center_vertical|left"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
@@ -256,8 +256,8 @@
 
             <ImageView
                 android:id="@+id/classicwidget_windarrow"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+                android:layout_width="@dimen/widget_textsize_large"
+                android:layout_height="@dimen/widget_textsize_large"
                 android:layout_gravity="left"
                 android:layout_alignParentLeft="true"
                 android:src="@mipmap/not_available">
@@ -297,8 +297,8 @@
 
             <ImageView
                 android:id="@+id/widget_visibility_icon"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+                android:layout_width="@dimen/widget_textsize_large"
+                android:layout_height="@dimen/widget_textsize_large"
                 android:layout_gravity="left"
                 android:layout_alignParentLeft="true"
                 android:src="@mipmap/biocular">
@@ -361,8 +361,8 @@
 
             <ImageView
                 android:id="@+id/widget_temperature5cm_icon"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+                android:layout_width="@dimen/widget_textsize_large"
+                android:layout_height="@dimen/widget_textsize_large"
                 android:layout_gravity="left"
                 android:layout_alignParentLeft="true"
                 android:src="@mipmap/symbol_temperature5cm">
@@ -381,8 +381,8 @@
 
             <ImageView
                 android:id="@+id/widget_clouds_icon"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
+                android:layout_width="@dimen/widget_textsize_large"
+                android:layout_height="@dimen/widget_textsize_large"
                 android:layout_gravity="left"
                 android:layout_marginLeft="2dp"
                 android:layout_toRightOf="@id/widget_temperature5cm_value"

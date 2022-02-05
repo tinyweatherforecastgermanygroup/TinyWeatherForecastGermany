@@ -28,8 +28,8 @@
     <dimen name="widget_textsize_fc_day">10sp</dimen>
     <dimen name="widget_textsize_fc_temperature">10sp</dimen>
     <dimen name="widget_textsize_clock">64sp</dimen>
-    <dimen name="widget_weathericon_size">64dp</dimen>
-    <dimen name="widget_weathericon_medium">40dp</dimen>
+    <dimen name="widget_weathericon_size">64sp</dimen>
+    <dimen name="widget_weathericon_medium">40sp</dimen>
 
     <dimen name="fcmain_fciconsize">105sp</dimen>
     <dimen name="fcmain_textsize_xxl">58sp</dimen>

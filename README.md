@@ -181,7 +181,7 @@ The widget icon, the weather description and the current temperature refer to th
 
 When showing more days (bold widget, large widget), the min and max values and the weather symbol refer to the whole day.
 
-To display weather warnings in widgets, you need to enable this feature in the settings. When enabled, the *most severe* weather warning issued for your location is displayed in the widget. When there are multiple warnings issued, this is indicated by three dots ("...") and a plus ("+"). You have to go to the app to see them all.  
+Since version 0.58.0 onward, this app can display weather warnings in widgets. To display weather warnings in widgets, you need to enable this feature in the settings. When a warning is issued for your chosen location, the classic widget and the large widget display a warning symbol. The clock widget and the bold widget also display a small text indicating the warning category of the *most severe* weather warning issued for your location. When there are multiple warnings issued, this is indicated by three dots ("...") and a plus ("+"). You have to go to the app to see them all.  
  
 ### What do the symbols in the main app mean?
  
@@ -197,7 +197,7 @@ Symbols used:
 <img src="app/src/main/res/mipmap-mdpi/symbol_temperature5cm_black.png" height="16" width="16"/> temperature 5 cm above ground level
 <img src="app/src/main/res/mipmap-mdpi/symbol_rh_black.png" height="16" width="16"/> relative humidity
 
-### What do the icons show do?
+### What do the icons shown do?
 
 You may get a hint about their functionality if you just _long-press_ them.
  
@@ -211,7 +211,7 @@ The Deutscher Wetterdienst updates the forecast data that is used every 6 hours.
  
 ### How often does the GadgetBridge app gets updated (when this feature is enabled)?
  
-When GadgetBridge support is **enabled**, the app will, in the best case, update GadgetBridge every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called for this. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in *doze mode*, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
+When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called for this. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in *doze mode*, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
   
 If you encounter problems with GadgetBridge not updating, placing a widget on the home screen may help, since the widget will try to also update GadgetBridge every time the widget itself gets updated by the system.
   
@@ -252,6 +252,8 @@ This also works from a web browser, provided the page in question offers a `geo:
 ### Why does the delete icon next to the location not remove the selected location?
 
 The delete icon works the other way around: it does not remove the currently displayed region but _all other_ regions that were selected at some point in the past. The idea of Tiny Weather Forecast Germany is centred around the idea of your usual location and not so much on a list of bookmarks.
+
+It is also implemented this way to quickly delete a presumptive travel history.
 
 ### How do I delete a location?
 
