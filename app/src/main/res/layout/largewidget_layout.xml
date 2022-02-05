@@ -43,8 +43,8 @@
     <ImageView android:id="@+id/widget_warningsymbol"
                android:layout_marginTop="2dp"
                android:layout_marginRight="2dp"
-               android:layout_width="18dp"
-               android:layout_height="18dp"
+               android:layout_width="@dimen/widget_textsize_verylarge"
+               android:layout_height="@dimen/widget_textsize_verylarge"
                android:layout_alignParentRight="true"
                android:layout_alignParentTop="true"
                android:src="@mipmap/warning_icon"
@@ -141,8 +141,8 @@
 
                     <ImageView
                         android:id="@+id/classicwidget_windarrow"
-                        android:layout_width="@dimen/widget_textsize_medium"
-                        android:layout_height="@dimen/widget_textsize_medium"
+                        android:layout_width="@dimen/widget_textsize_large"
+                        android:layout_height="@dimen/widget_textsize_large"
                         android:layout_gravity="center"
                         android:src="@mipmap/not_available">
                     </ImageView>
