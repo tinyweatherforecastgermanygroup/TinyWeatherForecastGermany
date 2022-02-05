@@ -73,8 +73,8 @@
                     android:gravity="left|top">
 
         <ImageView android:id="@+id/widget_warning_more"
-                   android:layout_width="18dp"
-                   android:layout_height="18dp"
+                   android:layout_width="@dimen/widget_textsize_large"
+                   android:layout_height="@dimen/widget_textsize_large"
                    android:layout_alignParentRight="true"
                    android:layout_centerVertical="true"
                    android:gravity="right|center_vertical"
@@ -87,8 +87,8 @@
                         android:layout_toLeftOf="@id/widget_warning_more">
 
             <ImageView android:id="@+id/widget_warningsymbol"
-                       android:layout_width="18dp"
-                       android:layout_height="18dp"
+                       android:layout_width="@dimen/widget_textsize_large"
+                       android:layout_height="@dimen/widget_textsize_large"
                        android:layout_alignParentLeft="true"
                        android:layout_centerVertical="true"
                        android:src="@mipmap/warning_icon"
