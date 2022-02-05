@@ -27,6 +27,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1076,13 +1077,16 @@ private ArrayList<WeatherWarning> getApplicableWarnings(Weather.WeatherInfo weat
     return applicableWarnings;
 }
 public float DPtoPX(int dp, DisplayMetrics displayMetrics){
-    return displayMetrics.density * dp;
+    //return displayMetrics.density * dp;
+    float a = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dp,displayMetrics);
+    float b = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,dp,displayMetrics);
+    return  Math.max(a,b);
 }
 
 public int determineExpectedPixelHeightOfForecastElement(TextView textView_heading, TextView mediumSizeTextView){
     DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
     float headingHight = textView_heading.getTextSize();
-    float weatherConditiontextHight = 12*displayMetrics.scaledDensity;
+    float weatherConditiontextHight = DPtoPX(12,displayMetrics);
     if (mediumSizeTextView!=null){
         weatherConditiontextHight = mediumSizeTextView.getTextSize()*2;
     }

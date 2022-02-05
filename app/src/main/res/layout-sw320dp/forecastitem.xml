@@ -34,12 +34,17 @@
     android:id="@+id/fcitem_maincontainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="150dp"
+    android:minHeight="150sp"
     android:padding="3dp"
     android:background="?attr/colorPrimary">
 
+    <View android:id="@+id/fcitem_topspace"
+          android:layout_width="0dp"
+          android:layout_height="26sp"
+    />
+
     <TextView android:id="@+id/fcitem_heading"
-        android:textSize="@dimen/fcmain_mediumdevice_textsize_large"
+        android:textSize="@dimen/fcmain_mediumdevice_textsize_large_fixed"
         android:textColor="?attr/colorText"
         android:layout_gravity="center_horizontal"
         android:textAlignment="center"
@@ -49,8 +54,8 @@
 
     <ImageView
         android:id="@+id/fcitem_warningsymbol"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/fcmain_mediumdevice_textsize_xl"
+        android:layout_height="@dimen/fcmain_mediumdevice_textsize_xl"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@id/fcitem_heading"
         android:visibility="invisible"
@@ -61,7 +66,7 @@
         android:textColor="?attr/colorText"
         android:layout_gravity="center_horizontal"
         android:textAlignment="center"
-        android:layout_below="@id/fcitem_heading"
+        android:layout_below="@id/fcitem_topspace"
         android:singleLine="false"
         android:visibility="gone"
         android:layout_width="wrap_content"
@@ -142,8 +147,8 @@
                 android:layout_height="wrap_content">
 
                 <ImageView android:id="@+id/fcitem_precipitation_symbol"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="@dimen/fcmain_mediumdevice_textsize_medium"
+                    android:layout_height="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:layout_alignParentLeft="true"
                     android:layout_gravity="left|center_vertical"
                     android:src="@mipmap/symbol_precipitation" />
@@ -190,7 +195,7 @@
 
                 <ImageView android:id="@+id/fcitem_var1_symbol"
                     android:layout_width="0dp"
-                    android:layout_height="12dp"
+                    android:layout_height="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
                     android:src="@mipmap/symbol_cloud" />
@@ -207,7 +212,7 @@
 
                 <ImageView android:id="@+id/fcitem_var2_symbol"
                     android:layout_width="0dp"
-                    android:layout_height="12dp"
+                    android:layout_height="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
                     android:src="@mipmap/symbol_lightning" />
@@ -224,7 +229,7 @@
 
                 <ImageView android:id="@+id/fcitem_var3_symbol"
                     android:layout_width="0dp"
-                    android:layout_height="12dp"
+                    android:layout_height="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
                     android:src="@mipmap/symbol_hail" />
@@ -251,7 +256,7 @@
 
                 <ImageView android:id="@+id/fcitem_var4_symbol"
                     android:layout_width="0dp"
-                    android:layout_height="12dp"
+                    android:layout_height="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
                     android:src="@mipmap/symbol_freezing_rain" />
@@ -268,7 +273,7 @@
 
                 <ImageView android:id="@+id/fcitem_var5_symbol"
                     android:layout_width="0dp"
-                    android:layout_height="12dp"
+                    android:layout_height="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
                     android:src="@mipmap/symbol_fog" />
@@ -285,7 +290,7 @@
 
                 <ImageView android:id="@+id/fcitem_var6_symbol"
                     android:layout_width="0dp"
-                    android:layout_height="12dp"
+                    android:layout_height="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:layout_weight="1"
                     android:layout_gravity="left|center_vertical"
                     android:src="@mipmap/symbol_drizzle" />
@@ -327,7 +332,7 @@
             <RelativeLayout
                 android:id="@+id/fcitem_temperature_horizontal_container"
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
+                android:layout_height="28sp"
                 android:gravity="top"
                 android:orientation="horizontal">
 
@@ -356,7 +361,7 @@
                       android:layout_height="1dp"
                       android:layout_width="18dp"
                       android:layout_toRightOf="@id/fcitem_temperature"
-                      android:layout_marginTop="12dp"
+                      android:layout_marginTop="13sp"
                       android:layout_marginLeft="2dp"
                       android:layout_gravity="center"
                       android:gravity="center"
@@ -413,8 +418,8 @@
 
                 <ImageView
                     android:id="@+id/fcitem_windarrow"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="@dimen/fcmain_mediumdevice_textsize_large"
+                    android:layout_height="@dimen/fcmain_mediumdevice_textsize_large"
                     android:layout_marginRight="2dp"
                     android:layout_gravity="center">
                 </ImageView>
@@ -436,8 +441,8 @@
 
                 <ImageView
                     android:id="@+id/fcitem_binocular"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
+                    android:layout_width="@dimen/fcmain_mediumdevice_textsize_medium"
+                    android:layout_height="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:layout_gravity="center"
                     android:layout_marginRight="2dp"
                     android:src="?attr/binocular">

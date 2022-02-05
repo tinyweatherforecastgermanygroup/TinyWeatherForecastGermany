@@ -22,12 +22,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/fcitem_maincontainer"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="150sp"
                 android:padding="3dp"
                 android:background="?attr/colorPrimary">
 
+
     <TextView android:id="@+id/fcitem_heading"
-              android:textSize="@dimen/fcmain_mediumdevice_textsize_large"
+              android:textSize="@dimen/fcmain_mediumdevice_textsize_large_fixed"
               android:textStyle="bold"
               android:textColor="?attr/colorTextLight"
               android:layout_gravity="center_horizontal"
@@ -38,8 +39,8 @@
 
     <ImageView
             android:id="@+id/fcitem_warningsymbol"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/fcmain_mediumdevice_textsize_xl"
+            android:layout_height="@dimen/fcmain_mediumdevice_textsize_xl"
             android:layout_marginLeft="3dp"
             android:layout_toRightOf="@id/fcitem_heading"
             android:visibility="invisible"
@@ -91,7 +92,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"/>
 
-        <View android:layout_width="24dp"
+        <View android:layout_width="@dimen/fcmain_mediumdevice_textsize_xl"
               android:layout_height="1dp"
               android:layout_gravity="center"
               android:background="?attr/colorTextLight"/>
@@ -206,16 +207,16 @@
     </LinearLayout>
 
     <ImageView android:id="@+id/fcitem_sunet1"
-               android:layout_width="24dp"
-               android:layout_height="12dp"
+               android:layout_width="@dimen/fcmain_mediumdevice_textsize_xl"
+               android:layout_height="@dimen/fcmain_mediumdevice_textsize_xl_half"
                android:layout_toLeftOf="@id/fcitem_rise_textcontainer"
                android:layout_alignParentTop="true"
                android:layout_marginTop="2dp"
                android:src="@mipmap/sunset"/>
 
     <ImageView android:id="@+id/fcitem_sunet2"
-               android:layout_width="24dp"
-               android:layout_height="12dp"
+               android:layout_width="@dimen/fcmain_mediumdevice_textsize_xl"
+               android:layout_height="@dimen/fcmain_mediumdevice_textsize_xl_half"
                android:layout_toLeftOf="@id/fcitem_rise_textcontainer"
                android:layout_below="@id/fcitem_sunet1"
                android:src="@mipmap/arrow_down"/>
