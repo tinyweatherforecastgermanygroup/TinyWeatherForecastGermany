@@ -32,7 +32,7 @@ Please note that the builds linked here are not signed by the fdroid key, so you
 License
 -------
 
-Copyright (c) 2020, 2021 Pawel Dube
+Copyright (c) 2020, 2021, 2022 Pawel Dube
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
@@ -301,7 +301,7 @@ It shows the direction of the wind change during the next `Wind forecast period`
 
 ### When do I get a notification about a weather warning?
 
-First of all, you need to enable this feature in the settings. Second, you need to specify how often the app will update the warnings (see below). Then, you will get notifications about warnings issued for the selected location. **The app will not check for warnings when the device is in doze mode**. So do not expect to get woken up in the middle of the night when a weather warning get issued.
+First of all, you need to enable this feature in the settings. Second, you need to specify how often the app will update the warnings (see below). Then, you will get notifications about warnings issued for the selected location. **The app will not check for warnings when the device is in doze mode**. You will also get no notifications when your device is offline. You may also miss some notifications when you restrict the app to use *metered* networks only. So do not expect to get woken up in the middle of the night when a weather warning gets issued.
 
 ### Which warnings get notified?
 
