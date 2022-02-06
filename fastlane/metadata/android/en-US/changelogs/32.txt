@@ -1,6 +1,9 @@
 - new language: Danish (thanks to mondstern!)
-- widgets now can display weather warnings
-- new notifications for weather warnings applying to your selected region
+- widgets display weather warnings
+- notifies new warnings for your chosen location
+- new option to disable use of metered networks
+- fixed issues with VPN use
 - fixed ignoring custom gadgetbridge package name in settings
 - fixed "light snow showers" icon in light themes
+- better handling of different font sizes
 - other minor bugfixes & improvements

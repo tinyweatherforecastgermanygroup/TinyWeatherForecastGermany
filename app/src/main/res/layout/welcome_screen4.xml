@@ -19,58 +19,77 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
-        android:scrollbars="vertical"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:fillViewport="true"
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/welcome_screen3"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorWelcomeBackground"
+        android:orientation="vertical">
 
-    <RelativeLayout
-            android:id="@+id/welcome_screen4"
+    <TextView
+            android:id="@+id/welcome_screen4_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:textColor="?attr/colorText"
+            android:text="@string/welcome_next"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/welcome_action_size"
+            android:paddingBottom="@dimen/welcome_action_padding"/>
+
+    <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/colorWelcomeBackground"
-            android:orientation="vertical">
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/welcome_screen4_next"
+    >
 
-        <TextView
-                android:id="@+id/welcome_screen4_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="?attr/colorText"
-                android:text="@string/welcome_setuptitle"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:textSize="@dimen/welcome_action_size"
-                android:layout_marginTop="20dp"
-                android:paddingBottom="@dimen/welcome_action_padding"/>
-
-        <TextView
-                android:id="@+id/welcome_setupnote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="?attr/colorText"
-                android:text="@string/welcome_setupnote"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:textSize="@dimen/welcome_text_size"
-                android:layout_below="@id/welcome_screen4_title"
-                android:paddingBottom="@dimen/welcome_action_padding"/>
-
-
-        <LinearLayout
-                android:id="@+id/welcome_screen4_linearmain"
+        <RelativeLayout
+                android:id="@+id/welcome_screen4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@id/welcome_setupnote"
-                android:layout_marginLeft="20dp"
-                android:layout_centerInParent="true">
+                android:layout_height="match_parent"
+                android:background="?attr/colorWelcomeBackground"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/welcome_screen4_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_setuptitle"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="@dimen/welcome_action_size"
+                    android:layout_marginTop="20dp"
+                    android:paddingBottom="@dimen/welcome_action_padding"/>
+
+            <TextView
+                    android:id="@+id/welcome_setupnote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_setupnote"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:layout_below="@id/welcome_screen4_title"
+                    android:paddingBottom="@dimen/welcome_action_padding"/>
+
+
+            <LinearLayout
+                    android:id="@+id/welcome_screen4_linearmain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@id/welcome_setupnote"
+                    android:layout_marginLeft="20dp"
+                    android:layout_centerInParent="true">
 
 
                 <CheckBox android:id="@+id/welcome_screen4_check1"
@@ -84,47 +103,48 @@
                           android:paddingBottom="@dimen/welcome_action_padding"
                           android:enabled="true"/>
 
-            <CheckBox android:id="@+id/welcome_screen4_check2"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_marginLeft="12dp"
-                      android:gravity="top|left"
-                      android:text="@string/preference_setalarm_summary"
-                      android:textSize="@dimen/welcome_setup_size"
-                      android:textColor="?attr/colorText"
-                      android:paddingBottom="@dimen/welcome_action_padding"
-                      android:enabled="true"/>
+                <CheckBox android:id="@+id/welcome_screen4_check2"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginLeft="12dp"
+                          android:gravity="top|left"
+                          android:text="@string/preference_setalarm_summary"
+                          android:textSize="@dimen/welcome_setup_size"
+                          android:textColor="?attr/colorText"
+                          android:paddingBottom="@dimen/welcome_action_padding"
+                          android:enabled="true"/>
 
-            <CheckBox android:id="@+id/welcome_screen4_check3"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_marginLeft="12dp"
-                      android:gravity="top|left"
-                      android:text="@string/preference_displaysunrise_summary"
-                      android:textSize="@dimen/welcome_setup_size"
-                      android:textColor="?attr/colorText"
-                      android:paddingBottom="@dimen/welcome_action_padding"
-                      android:enabled="true"/>
+                <CheckBox android:id="@+id/welcome_screen4_check3"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginLeft="12dp"
+                          android:gravity="top|left"
+                          android:text="@string/preference_displaysunrise_summary"
+                          android:textSize="@dimen/welcome_setup_size"
+                          android:textColor="?attr/colorText"
+                          android:paddingBottom="@dimen/welcome_action_padding"
+                          android:enabled="true"/>
 
-            <TextView
-                    android:id="@+id/welcome_screen4_intervaltext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorText"
-                    android:text="@string/welcome_s4_displaytype"
-                    android:gravity="left"
-                    android:textSize="@dimen/welcome_setup_size"
-                    android:paddingBottom="@dimen/welcome_action_padding"/>
+                <TextView
+                        android:id="@+id/welcome_screen4_intervaltext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/colorText"
+                        android:text="@string/welcome_s4_displaytype"
+                        android:gravity="left"
+                        android:textSize="@dimen/welcome_setup_size"
+                        android:paddingBottom="@dimen/welcome_action_padding"/>
 
-            <Spinner
-                    android:id="@+id/welcome_screen4_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:layout_gravity="center_horizontal"
-                    android:entries="@array/display_type_text"/>
+                <Spinner
+                        android:id="@+id/welcome_screen4_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:entries="@array/display_type_text"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-    </RelativeLayout>
-</ScrollView>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

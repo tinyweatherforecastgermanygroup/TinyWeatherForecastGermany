@@ -43,8 +43,8 @@
 
     <ImageView
         android:id="@+id/fcitem_warningsymbol"
-        android:layout_width="@dimen/fcmain_mediumdevice_textsize_xl"
-        android:layout_height="@dimen/fcmain_mediumdevice_textsize_xl"
+        android:layout_width="@dimen/fcmain_narrowdevice_textsize_xl_fixed"
+        android:layout_height="@dimen/fcmain_narrowdevice_textsize_xl_fixed"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@id/fcitem_heading"
         android:visibility="invisible"

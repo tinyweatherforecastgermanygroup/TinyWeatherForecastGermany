@@ -95,13 +95,13 @@
     <string name="preference_opacity_title">Widget opacity</string>
     <string name="preference_opacity_summary">Select how transparent the widget is on your home screen.</string>
     <string name="preference_displaywarninginwidget_title">Show warnings in widget</string>
-    <string name="preference_displaywarninginwidget_summary">Hint at warnings applicable to your selected location in the widgets.</string>
+    <string name="preference_displaywarninginwidget_summary">Display warnings for your selected location in widgets.</string>
     <string name="preference_displaynoteinwidget_title">Display DWD note</string>
     <string name="preference_displaynoteinwidget_summary">Show the data source string.</string>
     <string name="preference_cache_warnings_title">Cache warnings</string>
     <string name="preference_cache_warnings_summary">How long warnings should be displayed without re-loading from the Deutscher Wetterdienst.</string>
     <string name="preference_notify_warnings_title">Enable notifications</string>
-    <string name="preference_notify_warnings_summary">Show notifications for new warnings applicable to your selected location.</string>
+    <string name="preference_notify_warnings_summary">Notify new warnings for your selected location.</string>
     <string name="preference_disable_warnings_title">Disable warnings</string>
     <string name="preference_disable_warnings_summary">Do not display weather warnings.</string>
     <string name="preference_screen_display_title">Display settings</string>

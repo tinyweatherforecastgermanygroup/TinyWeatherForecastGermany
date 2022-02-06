@@ -375,6 +375,7 @@ public class WelcomeActivity extends Activity {
             dot2.setVisibility(View.GONE);
             dot3.setVisibility(View.GONE);
             dot4.setVisibility(View.GONE);
+            dot5.setVisibility(View.GONE);
             arrow_left.setVisibility(View.GONE);
             arrow_right.setVisibility(View.GONE);
             skip.setVisibility(View.GONE);
@@ -391,7 +392,7 @@ public class WelcomeActivity extends Activity {
     }
 
     private void startMainActivityAndShowCircle() {
-        setPage(5);
+        setPage(6);
         startMainActivity();
         finish();
     }

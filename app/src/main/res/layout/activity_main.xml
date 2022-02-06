@@ -131,7 +131,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="right"
             android:textColor="?attr/colorText"
-            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textSize="@dimen/fcmain_textsize_medium_fixed"
             android:text="00:00:00">
         </TextView>
 
@@ -143,7 +143,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="right"
             android:textColor="?attr/colorText"
-            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textSize="@dimen/fcmain_textsize_medium_fixed"
             android:text="">
         </TextView>
 

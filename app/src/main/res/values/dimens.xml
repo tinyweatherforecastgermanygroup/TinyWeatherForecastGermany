@@ -36,7 +36,7 @@
     <dimen name="fcmain_textsize_xl">28sp</dimen>
     <dimen name="fcmain_textsize_xl_half">14sp</dimen>
     <dimen name="fcmain_textsize_large">18sp</dimen>
-    <dimen name="fcmain_textsize_large_fixed">18sp</dimen>
+    <dimen name="fcmain_textsize_large_fixed">18dp</dimen>
     <dimen name="fcmain_textsize_medium">12sp</dimen>
     <dimen name="fcmain_textsize_medium_fixed">12dp</dimen>
     <dimen name="fcmain_textsize_small">7sp</dimen>
@@ -53,9 +53,10 @@
     <dimen name="fcmain_narrowdevice_fciconsize">80sp</dimen>
     <dimen name="fcmain_narrowdevice_textsize_xxl">32sp</dimen>
     <dimen name="fcmain_narrowdevice_textsize_xl">16sp</dimen>
+    <dimen name="fcmain_narrowdevice_textsize_xl_fixed">16dp</dimen>
     <dimen name="fcmain_narrowdevice_textsize_xl_half">8sp</dimen>
     <dimen name="fcmain_narrowdevice_textsize_large">14sp</dimen>
-    <dimen name="fcmain_narrowdevice_textsize_large_fixed">16dp</dimen>
+    <dimen name="fcmain_narrowdevice_textsize_large_fixed">14dp</dimen>
     <dimen name="fcmain_narrowdevice_textsize_medium">10sp</dimen>
     <dimen name="fcmain_narrowdevice_textsize_small">6sp</dimen>
 
