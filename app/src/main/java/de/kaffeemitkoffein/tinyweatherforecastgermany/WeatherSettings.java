@@ -87,6 +87,7 @@ public class WeatherSettings {
     public static final String PREF_VIEWMODEL = "PREF_viewmodel";
     public static final String PREF_THEME = "PREF_theme";
     public static final String PREF_ALTERNATIVE_ICONS = "PREF_alternative_icons";
+    public static final String PREF_USE_METERED_NETWORKS = "PREF_use_metered_networks";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -141,6 +142,7 @@ public class WeatherSettings {
     public static final String PREF_VIEWMODEL_DEFAULT = ViewModel.SIMPLE;
     public static final String PREF_THEME_DEFAULT = Theme.FOLLOW_DEVICE;
     public static final boolean PREF_ALTERNATIVE_ICONS_DEFAULT = true;
+    public static final boolean PREF_USE_METERED_NETWORKS_DEFAULT = true;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -195,6 +197,7 @@ public class WeatherSettings {
     public String viewModel = PREF_VIEWMODEL_DEFAULT;
     public String theme = PREF_THEME_DEFAULT;
     public boolean preferAlternativeIcons = PREF_ALTERNATIVE_ICONS_DEFAULT;
+    public boolean useMeteredNetworks = PREF_USE_METERED_NETWORKS_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -971,6 +974,11 @@ public class WeatherSettings {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putString(PREF_THEME,theme);
         pref_editor.apply();
+    }
+
+    public static boolean useMeteredNetworks(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_USE_METERED_NETWORKS,PREF_USE_METERED_NETWORKS_DEFAULT);
     }
 
 }

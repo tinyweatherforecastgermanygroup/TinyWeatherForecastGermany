@@ -68,6 +68,19 @@ public class Settings extends PreferenceActivity{
                     alertDialog.show();
                 }
             }
+            if (s.equals(WeatherSettings.PREF_USE_METERED_NETWORKS) && (!WeatherSettings.useMeteredNetworks(context)) && (WeatherSettings.notifyWarnings(context) || WeatherSettings.displayWarningsInWidget(context))){
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(context.getResources().getString(R.string.alertdialog_1_title));
+                builder.setMessage(context.getResources().getString(R.string.preference_meterednetwork_notice));
+                builder.setIcon(R.mipmap.warning_icon);
+                builder.setPositiveButton(context.getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();           }
             if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)){
                 setAlarmSettingAllowed();
             }
