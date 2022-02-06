@@ -376,8 +376,10 @@ public class DataUpdateService extends Service {
                         PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkCapabilities obtained => assuming no suitable network available.");
                         return false;
                     } else {
-                        if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))){
-                            // valid internet conn
+                        //if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))){
+                        if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)){
+                            // internet conn
+                            // removed validation because this seems to have issues with VPN enabled
                             return true;
                         } else {
                             PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Network detected, but did not prove a validated internet access => assuming no suitable network available.");
