@@ -38,6 +38,7 @@
     <dimen name="fcmain_textsize_large">18sp</dimen>
     <dimen name="fcmain_textsize_large_fixed">18sp</dimen>
     <dimen name="fcmain_textsize_medium">12sp</dimen>
+    <dimen name="fcmain_textsize_medium_fixed">12dp</dimen>
     <dimen name="fcmain_textsize_small">7sp</dimen>
 
     <dimen name="fcmain_mediumdevice_fciconsize">100sp</dimen>
@@ -86,10 +87,10 @@
     <dimen name="geo_textsize_medium">14sp</dimen>
     <dimen name="geo_textsize_small">12sp</dimen>
 
-    <dimen name="reader_textsize_title">24dp</dimen>
-    <dimen name="reader_textsize_date">14dp</dimen>
-    <dimen name="reader_textsize_subtitle">16dp</dimen>
-    <dimen name="reader_textsize_body">14dp</dimen>
+    <dimen name="reader_textsize_title">24sp</dimen>
+    <dimen name="reader_textsize_date">14sp</dimen>
+    <dimen name="reader_textsize_subtitle">16sp</dimen>
+    <dimen name="reader_textsize_body">14sp</dimen>
 
     <dimen name="widget_padding">2dp</dimen>
     <dimen name="widget_margin">2dp</dimen>
