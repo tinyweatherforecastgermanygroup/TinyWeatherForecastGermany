@@ -173,7 +173,7 @@
     <string name="logging_copy_fail">La copia dei log negli appunti non è riuscita!</string>
     <string name="license_title">Licenze</string>
     <string name="button_continue">Continua</string>
-    <string name="service_notification_channelname">Notifiche di aggiornamento</string>
+    <string name="service_notification_channelname">Aggiornamento dei dati meteo</string>
     <string name="service_notification_title">Previsioni meteo Germania</string>
     <string name="service_notification_text0">Ricevere le nuove previsioni del tempo…</string>
     <string name="welcome_s2_text9">visibilità</string>
@@ -267,4 +267,15 @@
     <string name="widget_transparency_default">90</string>
     <string name="logging_comment_hint">Puoi aggiungere un commento ai log per aiutare a trovare l\'errore - spiega cosa è successo:</string>
     <string name="welcome_s3_text4">La barra delle previsioni mostra le nuvole in grigio e la pioggia in blu.</string>
+    <string name="preference_displaywarninginwidget_title">Mostra avvertimenti nel widget</string>
+    <string name="preference_displaywarninginwidget_summary">Visualizza gli avvisi per la località selezionata nei widget.</string>
+    <string name="preference_notify_warnings_title">Abilita le notifiche</string>
+    <string name="preference_notify_warnings_summary">Notifica nuovi avvisi per la località selezionata.</string>
+    <string name="preference_meterednetwork_title">Utilizzare le reti a pagamento</string>
+    <string name="preference_meterednetwork_summary">Usa anche le reti a pagamento per ottenere dati.</string>
+    <string name="preference_meterednetwork_notice">Potresti perdere gli avvisi meteorologici quando usi solo le reti non misurate.</string>
+    <string name="service_notification_categoryname">Aggiornamento dei dati meteo</string>
+    <string name="service_warning_categoryname">Avvertenze meteorologiche</string>
+    <string name="welcome_setupwarnings">Impostazione degli avvisi meteo</string>
+    <string name="battery_and_data_hint">Questo aumenterà l\'uso della batteria e del volume di dati.</string>
 </resources>
