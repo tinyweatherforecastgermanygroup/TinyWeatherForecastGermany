@@ -176,7 +176,7 @@
     <string name="logging_copy_fail">Kopieren des Protokolls in die Zwischenablage fehlgeschlagen!</string>
     <string name="license_title">Lizenzen</string>
     <string name="button_continue">Weiter</string>
-    <string name="service_notification_channelname">Aktualisierungs-Hinweise</string>
+    <string name="service_notification_channelname">Wetterdaten aktualisieren</string>
     <string name="service_notification_title">Kleine Wettervorschau Deutschland</string>
     <string name="service_notification_text0">Neue Wettervorhersage wird geholt…</string>
     <string name="service_notification_text1">Wetter-Warnungen werden geholt…</string>
@@ -283,4 +283,15 @@
     <string name="logging_comment_inputhint">Die App ist abgestürzt…</string>
     <string name="logging_comment_hint">Sie können einen Kommentar zum Protokoll hinzu fügen, um den Fehler zu finden - bitte erklären Sie, was passiert ist:</string>
     <string name="welcome_s3_text4">Die Vorhersageleiste zeigt Wolken in grau und Regen in blau.</string>
+    <string name="preference_displaywarninginwidget_summary">Warnungen für den gewählten Standort in Widgets anzeigen.</string>
+    <string name="preference_notify_warnings_title">Benachrichtigungen aktivieren</string>
+    <string name="preference_notify_warnings_summary">Über neue Warnungen für ihren gewählten Standort benachrichtigen.</string>
+    <string name="preference_meterednetwork_title">Mobile/getaktete Netzwerke benutzten</string>
+    <string name="service_notification_categoryname">Wetter-Daten werden aktualisiert</string>
+    <string name="welcome_setupwarnings">Warnungen einstellen</string>
+    <string name="preference_displaywarninginwidget_title">Warnungen in Widget(s) anzeigen</string>
+    <string name="preference_meterednetwork_summary">Auch mobile/getaktete Netzwerke für den Daten-Abruf benutzen.</string>
+    <string name="preference_meterednetwork_notice">Möglicherweise verpassen sie Warnungen wenn sie diese nur über nicht-getaktete Netzwerke (WLAN) abrufen.</string>
+    <string name="service_warning_categoryname">Wetter-Warnungen</string>
+    <string name="battery_and_data_hint">Der Batterie-Verbrauch und die Nutzung ihres Datenvolumen werden dadurch steigen.</string>
 </resources>
