@@ -167,7 +167,7 @@
     <string name="logging_copy_fail">La copie des journaux dans votre presse-papiers a échoué !</string>
     <string name="license_title">Licences</string>
     <string name="button_continue">Continuer</string>
-    <string name="service_notification_channelname">Notifications de mise à jour</string>
+    <string name="service_notification_channelname">Mise à jour des données météorologiques</string>
     <string name="service_notification_title">Petite prévision météo Allemagne</string>
     <string name="service_notification_text0">Récupération de nouvelles prévisions…</string>
     <string name="service_notification_text1">Récupération d\'avertissements météo…</string>
@@ -280,4 +280,15 @@
     <string name="logging_comment_inputhint">L\'application a planté…</string>
     <string name="widget_transparency_default">90</string>
     <string name="welcome_s3_text4">La barre de prévision montre les nuages en gris et la pluie en bleu.</string>
+    <string name="preference_displaywarninginwidget_title">Afficher les avertissements dans le widget</string>
+    <string name="preference_displaywarninginwidget_summary">Affichez les avertissements relatifs à l\'emplacement sélectionné dans les widgets.</string>
+    <string name="preference_notify_warnings_title">Activer les notifications</string>
+    <string name="service_notification_categoryname">Mise à jour des données météorologiques</string>
+    <string name="preference_notify_warnings_summary">Notifier les nouveaux avertissements pour le lieu que vous avez sélectionné.</string>
+    <string name="preference_meterednetwork_title">Utiliser des réseaux de compteurs</string>
+    <string name="preference_meterednetwork_summary">Utilisez également les réseaux à compteur pour obtenir des données.</string>
+    <string name="preference_meterednetwork_notice">Vous risquez de manquer les alertes météo si vous utilisez uniquement des réseaux sans compteur.</string>
+    <string name="service_warning_categoryname">Alertes météo</string>
+    <string name="welcome_setupwarnings">Configuration des alertes météo</string>
+    <string name="battery_and_data_hint">Cela augmentera l\'utilisation de la batterie et du volume de données.</string>
 </resources>
