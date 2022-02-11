@@ -38,7 +38,6 @@ public class OnBootCompletedReceiver extends BroadcastReceiver {
                     PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"Cleared list of notified warnings: "+i+" warnings removed from list.");
                     if (WeatherSettings.notifyWarnings(context)){
                         PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"Triggering notification(s) for applicable warnings.");
-                        WeatherWarnings.launchNotifications(context);
                     }
                 }
             }

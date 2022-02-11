@@ -41,6 +41,7 @@ public class DataUpdateService extends Service {
     public static String SERVICEEXTRAS_UPDATE_WEATHER="SERVICEEXTRAS_UPDATE_WEATHER";
     public static String SERVICEEXTRAS_UPDATE_WARNINGS="SERVICEEXTRAS_UPDATE_WARNINGS";
     public static String SERVICEEXTRAS_UPDATE_TEXTFORECASTS="SERVICEEXTRAS_UPDATE_TEXTFORECASTS";
+    public static String SERVICEEXTRAS_CANCEL_NOTIFICATIONS="SERVICEEXTRAS_CANCEL_NF";
 
     private ConnectivityManager connectivityManager;
 
@@ -106,6 +107,10 @@ public class DataUpdateService extends Service {
     @TargetApi(Build.VERSION_CODES.N)
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
+        // cancel deprecated warnings
+        if (WeatherSettings.notifyWarnings(this)){
+            cancelDeprecatedWarningNotifications();
+        }
         if (!serviceStarted){
             serviceStarted = true;
             connectivityManager = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -182,7 +187,7 @@ public class DataUpdateService extends Service {
                             sendBroadcast(intent);
                             if (WeatherSettings.notifyWarnings(context)){
                                 WidgetRefresher.refresh(context);
-                                launchWeatherWarningNotification(context,warnings);
+                                launchWeatherWarningNotification(warnings);
                             }
                         }
                         public void onNegativeResult(){
@@ -332,25 +337,37 @@ public class DataUpdateService extends Service {
         return n;
     }
 
-    public static void launchWeatherWarningNotification(Context context, ArrayList<WeatherWarning> warnings){
-        WeatherWarnings.clearNotified(context);
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Checking warnings..."+warnings.size());
-        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
-        ArrayList<WeatherWarning> locationWarnings = WeatherWarnings.getWarningsForLocation(context,warnings,weatherLocation);
-        PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Checking warnings, found "+locationWarnings.size());
-        int baseID = WeatherWarnings.getBaseId();
+    public void launchWeatherWarningNotification(ArrayList<WeatherWarning> warnings){
+        WeatherWarnings.clearNotified(this);
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
+        PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"Checking warnings..."+warnings.size());
+        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(this);
+        ArrayList<WeatherWarning> locationWarnings = WeatherWarnings.getWarningsForLocation(this,warnings,weatherLocation);
+        PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"Checking warnings, found "+locationWarnings.size());
         for (int i=0; i<locationWarnings.size(); i++){
             WeatherWarning warning = locationWarnings.get(i);
-            if (!WeatherWarnings.alreadyNotified(context,warning)){
-                int id = baseID+i;
-                Notification notification = getWarningNotification(context,notificationManager,locationWarnings.get(i),Integer.toString(i));
+            if (!WeatherWarnings.alreadyNotified(this,warning)){
+                int id = WeatherSettings.getUniqueNotificationIdentifier(this);
+                Notification notification = getWarningNotification(this,notificationManager,warning,Integer.toString(i));
                 notificationManager.notify(id,notification);
-                WeatherWarnings.addToNotified(context,warning,id);
-                PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Notifying "+i+" "+locationWarnings.get(i).headline);
+                WeatherWarnings.addToNotified(this,warning,id);
+                PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"Notifying "+warning.identifier+" "+warning.headline);
             } else {
-                PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"already notified "+i+" "+locationWarnings.get(i).headline);
+                PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"already notified "+locationWarnings.get(i).headline);
             }
+        }
+    }
+
+    public void cancelDeprecatedWarningNotifications(){
+        ArrayList<Integer> expiredNotificationIDs = WeatherWarnings.getExpiredWarningIds(this);
+        if (notificationManager!=null){
+            for (int i=0; i<expiredNotificationIDs.size(); i++) {
+                int id = expiredNotificationIDs.get(i);
+                notificationManager.cancel(id);
+                PrivateLog.log(this, PrivateLog.SERVICE, PrivateLog.INFO, "Cancelled expired notification #" + id);
+            }
+        } else {
+            PrivateLog.log(this, PrivateLog.SERVICE, PrivateLog.ERR, "NotificationManager is null, cannot cancel expired notifications.");
         }
     }
 
@@ -382,7 +399,7 @@ public class DataUpdateService extends Service {
                             // removed validation because this seems to have issues with VPN enabled
                             return true;
                         } else {
-                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Network detected, but did not prove a validated internet access => assuming no suitable network available.");
+                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Network detected, but does not have internet access => assuming no suitable network available.");
                             return false;
                         }
                     }

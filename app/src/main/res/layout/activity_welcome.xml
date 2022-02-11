@@ -36,71 +36,72 @@
         android:visibility="visible">
     </RelativeLayout>
 
+    <TextView
+            android:id="@+id/welcome_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorText"
+            android:text="@string/welcome_skip"
+            android:textSize="@dimen/welcome_action_size"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:paddingRight="12dp"
+            android:paddingBottom="12dp"/>
+
     <LinearLayout
         android:id="@+id/welcome_horizontal_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:paddingBottom="40dp"
+        android:layout_above="@id/welcome_skip"
+        android:paddingBottom="6dp"
         android:weightSum="20"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/welcome_arrow_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/welcome_action_size"
+            android:layout_height="@dimen/welcome_action_size"
             android:layout_weight="10"
             android:src="?attr/ic_chevron_left"/>
 
         <ImageView
             android:id="@+id/welcome_dot1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/welcome_action_size"
+            android:layout_height="@dimen/welcome_action_size"
             android:src="?attr/ic_radio_button_checked"/>
 
         <ImageView
             android:id="@+id/welcome_dot2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/welcome_action_size"
+            android:layout_height="@dimen/welcome_action_size"
             android:src="?attr/ic_radio_button_unchecked"/>
 
         <ImageView
             android:id="@+id/welcome_dot3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/welcome_action_size"
+            android:layout_height="@dimen/welcome_action_size"
             android:src="?attr/ic_radio_button_unchecked"/>
 
         <ImageView
                 android:id="@+id/welcome_dot4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/welcome_action_size"
+                android:layout_height="@dimen/welcome_action_size"
                 android:src="?attr/ic_radio_button_unchecked"/>
 
         <ImageView
                 android:id="@+id/welcome_dot5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/welcome_action_size"
+                android:layout_height="@dimen/welcome_action_size"
                 android:src="?attr/ic_radio_button_unchecked"/>
 
         <ImageView
             android:id="@+id/welcome_arrow_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/welcome_action_size"
+            android:layout_height="@dimen/welcome_action_size"
             android:layout_weight="10"
             android:src="?attr/ic_chevron_right"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/welcome_skip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/colorText"
-        android:text="@string/welcome_skip"
-        android:textSize="@dimen/welcome_action_size"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:paddingRight="12dp"
-        android:paddingBottom="12dp"/>
 </RelativeLayout>

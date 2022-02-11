@@ -209,6 +209,12 @@ public class WeatherWarnings {
         }
     }
 
+    public static class WarningNotification{
+        String warnID;
+        int nfid;
+        long time;
+    }
+
     public static long addToNotified(Context context, WeatherWarning warning, int id){
         NotificationListDbHelper notificationListDbHelper = new NotificationListDbHelper(context);
         SQLiteDatabase sqLiteDatabase = notificationListDbHelper.getWritableDatabase();
@@ -219,6 +225,51 @@ public class WeatherWarnings {
         long rowID = sqLiteDatabase.insert(NotificationListDbHelper.TABLENAME,null,contentValues);
         sqLiteDatabase.close();
         return rowID;
+    }
+
+    public static ArrayList<WarningNotification> getNotificationElements(Context context){
+        ArrayList<WarningNotification> result = new ArrayList<WarningNotification>();
+        NotificationListDbHelper notificationListDbHelper = new NotificationListDbHelper(context);
+        SQLiteDatabase sqLiteDatabase = notificationListDbHelper.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query(NotificationListDbHelper.TABLENAME, null,null,null,null,null,null);
+        if (cursor.moveToFirst()){
+            do {
+                WarningNotification warningNotification = new WarningNotification();
+                warningNotification.nfid = cursor.getInt(cursor.getColumnIndex(NotificationListDbHelper.COLUMN_NFID));
+                warningNotification.warnID = cursor.getString(cursor.getColumnIndex(NotificationListDbHelper.COLUMN_WARNID));
+                warningNotification.time = cursor.getLong(cursor.getColumnIndex(NotificationListDbHelper.COLUMN_TIME));
+                result.add(warningNotification);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        sqLiteDatabase.close();
+        return result;
+    }
+
+    public static Integer getNotificationIdFromWeatherWarning(final ArrayList<WarningNotification> warningNotifications, final WeatherWarning weatherWarning){
+        for (int i=0; i<warningNotifications.size(); i++){
+            if (warningNotifications.get(i).warnID.equals(weatherWarning.identifier)){
+                return warningNotifications.get(i).nfid;
+            }
+        }
+        return null;
+    }
+
+    public static ArrayList<Integer> getExpiredWarningIds(Context context){
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        ArrayList<WarningNotification> warningNotifications = getNotificationElements(context);
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        ArrayList<WeatherWarning> weatherWarnings = WeatherWarnings.getCurrentWarnings(context,false);
+        for (int i=0; i<weatherWarnings.size(); i++){
+            WeatherWarning warning = weatherWarnings.get(i);
+            Integer r = getNotificationIdFromWeatherWarning(warningNotifications,warning);
+            if (r!=null){
+                if (warning.expires<currentTime){
+                    result.add(r);
+                }
+            }
+        }
+        return result;
     }
 
     public static boolean alreadyNotified(Context context, WeatherWarning weatherWarning){
@@ -253,18 +304,6 @@ public class WeatherWarnings {
         int i = sqLiteDatabase.delete(NotificationListDbHelper.TABLENAME,"1",null);
         sqLiteDatabase.close();
         return i;
-    }
-
-    public static int getBaseId(){
-        int i = (int) SystemClock.uptimeMillis(); // might overflow, but does not matter for unique ID
-        return Math.abs(i);
-    }
-
-    public static void launchNotifications(Context context){
-        ArrayList<WeatherWarning> weatherWarnings = getCurrentWarnings(context,true);
-        if (weatherWarnings!=null){
-            DataUpdateService.launchWeatherWarningNotification(context,weatherWarnings);
-        }
     }
 
 }
