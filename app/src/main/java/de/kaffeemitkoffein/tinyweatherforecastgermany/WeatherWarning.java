@@ -54,6 +54,9 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         }
     }
 
+    public final static String ID_UPDATE="Update";
+    public final static String ID_SLIENT_UPDATE="SILENT_UPDATE";
+
     long polling_time;
     String identifier;      // id of the warning
     String sender;          // sender, usually "opendata@dwd.de"
@@ -152,6 +155,34 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         String[] colors = area_color.trim().split("\\s+");
         int result = Color.rgb(Integer.parseInt(colors[0]),Integer.parseInt(colors[1]),Integer.parseInt(colors[2]));
         return result;
+    }
+
+    /**
+     * Checks if this warning is an update of a previously issued warning.
+     *
+     * @return true if the warning is an update
+     */
+
+    public boolean isUpdate(){
+        return msgType.equalsIgnoreCase(ID_UPDATE);
+    }
+
+    public boolean isSilentUpdate(){
+        for (int i=0; i<codes.size(); i++){
+            if (codes.get(i).equalsIgnoreCase(ID_SLIENT_UPDATE)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasReferenceID(String referenceID){
+        for (int i=0; i<references.size(); i++){
+            if (references.get(i).equalsIgnoreCase(referenceID)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /*

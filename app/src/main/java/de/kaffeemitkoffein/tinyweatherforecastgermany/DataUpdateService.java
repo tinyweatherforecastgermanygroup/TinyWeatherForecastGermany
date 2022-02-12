@@ -107,12 +107,12 @@ public class DataUpdateService extends Service {
     @TargetApi(Build.VERSION_CODES.N)
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
-        // cancel deprecated warnings
-        if (WeatherSettings.notifyWarnings(this)){
-            cancelDeprecatedWarningNotifications();
-        }
         if (!serviceStarted){
             serviceStarted = true;
+            // cancel deprecated warnings
+            if (WeatherSettings.notifyWarnings(this)){
+                cancelDeprecatedWarningNotifications();
+            }
             connectivityManager = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             // perform service task only if:
             // 1) intent supplied telling what to do, AND
@@ -260,7 +260,6 @@ public class DataUpdateService extends Service {
             n = notificationBuilder
                     .setContentTitle(getResources().getString(R.string.service_notification_title))
                     .setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text0)))
-                    //.setContentText(getResources().getString(R.string.service_notification_text0))
                     .setSmallIcon(R.mipmap.ic_launcher_bw)
                     .setAutoCancel(true)
                     .setOngoing(false)
@@ -303,6 +302,10 @@ public class DataUpdateService extends Service {
         Bitmap warningIconBitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.warning_icon);
         Bitmap iconMutable = warningIconBitmap.copy(Bitmap.Config.ARGB_8888,true);
         ThemePicker.applyColor(iconMutable,weatherWarning.getWarningColor());
+        String notificationBody = weatherWarning.description;
+        String expires = WeatherWarnings.getExpiresMiniString(context,weatherWarning);
+        expires = expires.replaceFirst(String.valueOf(expires.charAt(0)),String.valueOf(expires.charAt(0)).toUpperCase());
+        notificationBody = notificationBody + " ("+expires+".)";
         Notification n;
         Notification.Builder notificationBuilder;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -314,7 +317,7 @@ public class DataUpdateService extends Service {
             n = notificationBuilder
                     .setContentTitle(weatherWarning.headline)
                     .setSmallIcon(WeatherIcons.getIconResource(context,WeatherIcons.WARNING_ICON))
-                    .setStyle(new Notification.BigTextStyle().bigText(weatherWarning.description))
+                    .setStyle(new Notification.BigTextStyle().bigText(notificationBody))
                     .setLargeIcon(iconMutable)
                     .setOngoing(false)
                     .setChannelId(WARNING_NC_ID)
@@ -328,7 +331,7 @@ public class DataUpdateService extends Service {
             n = notificationBuilder
                     .setContentTitle(weatherWarning.headline)
                     .setSmallIcon(WeatherIcons.getIconResource(context,WeatherIcons.WARNING_ICON))
-                    .setStyle(new Notification.BigTextStyle().bigText(context.getResources().getString(R.string.service_notification_text0)))
+                    .setStyle(new Notification.BigTextStyle().bigText(notificationBody))
                     .setContentIntent(pendingIntent)
                     .setShowWhen(true)
                     .setWhen(weatherWarning.onset)
