@@ -234,6 +234,7 @@ public class LoggingActivity extends Activity {
                 Uri uri = PrivateLog.getLogUri(getApplicationContext());
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"weather@kaffeemitkoffein.de"});
                 intent.setDataAndType(uri, "text/plain");
                 String subject=getApplicationContext().getResources().getString(R.string.logging_title);
                 if (comment!=null){
