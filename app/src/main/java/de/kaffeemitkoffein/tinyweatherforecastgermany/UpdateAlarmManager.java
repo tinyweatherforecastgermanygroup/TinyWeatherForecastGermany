@@ -36,6 +36,7 @@ public class UpdateAlarmManager {
 
     private static final int PRIVATE_ALARM_IDENTIFIER = 0;
     private static final int PRIVATE_JOBINFO_IDENTIFIER = 1;
+    public static final int NOTIFICATION_ALARM_IDENTIFIER = 2;
 
      // time to elapse before a next update try when network not available.
     private static final int EARLY_ALARM_TIME = 1000*60*15; // 15 minutes in millis
@@ -74,6 +75,12 @@ public class UpdateAlarmManager {
         adaptUpdateIntervalsToSettings(context);
         WeatherSettings weatherSettings = new WeatherSettings(context);
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
+        /*
+         * Create alarms to cancel notifications if applicable
+         */
+        if (WeatherSettings.notifyWarnings(context)){
+            CancelNotificationBroadcastReceiver.setCancelNotificationsAlarm(context);
+        }
         /*
          * update_period: this is the update interval from the settings. It means how often
          * data should be polled from the DWD API.
@@ -152,10 +159,12 @@ public class UpdateAlarmManager {
                     next_update_due_in_millis = VIEWS_UPDATE_INTERVAL - millis_since_last_update;
                     next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
                 }
-                // no updates are due. Finally start service to cancel expired warning notifications
+                /*
+                // deprecated, replaced by own alarmManager
                 if (WeatherSettings.notifyWarnings(context)){
                     startDataUpdateService(context,false,false,false);
                 }
+                 */
             }
         }
         /*

@@ -130,6 +130,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".CancelNotificationBroadcastReceiver" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="de.kaffeemitkoffein.broadcast.CANCEL_NOTIFICATIONS"/>
+            </intent-filter>
+        </receiver>
+
         <service android:name=".DataUpdateService" android:enabled="true" android:exported="false" />
         <service android:name=".UpdateJobService" android:enabled="true" android:exported="false" android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>

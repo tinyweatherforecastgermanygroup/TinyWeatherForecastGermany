@@ -340,25 +340,31 @@ public class DataUpdateService extends Service {
         return n;
     }
 
-    public void launchWeatherWarningNotification(ArrayList<WeatherWarning> warnings){
+    public boolean launchWeatherWarningNotification(ArrayList<WeatherWarning> warnings){
         WeatherWarnings.clearNotified(this);
         NotificationManager notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
         PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"Checking warnings..."+warnings.size());
         Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(this);
         ArrayList<WeatherWarning> locationWarnings = WeatherWarnings.getWarningsForLocation(this,warnings,weatherLocation);
         PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"Checking warnings, found "+locationWarnings.size());
+        boolean notified = false;
         for (int i=0; i<locationWarnings.size(); i++){
             WeatherWarning warning = locationWarnings.get(i);
             if (!WeatherWarnings.alreadyNotified(this,warning)){
                 int id = WeatherSettings.getUniqueNotificationIdentifier(this);
                 Notification notification = getWarningNotification(this,notificationManager,warning,Integer.toString(i));
                 notificationManager.notify(id,notification);
+                notified = true;
                 WeatherWarnings.addToNotified(this,warning,id);
                 PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"Notifying "+warning.identifier+" "+warning.headline);
             } else {
                 PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"already notified "+locationWarnings.get(i).headline);
             }
         }
+        if (notified){
+            CancelNotificationBroadcastReceiver.setCancelNotificationsAlarm(this);
+        }
+        return notified;
     }
 
     public void cancelDeprecatedWarningNotifications(){

@@ -39,8 +39,8 @@ public class WeatherWarnings {
 
     public final static int COMMUNEUNION_DWD_DIFF = 0;
     public final static int COMMUNEUNION_DWD_STAT = 1;
-    final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-    final static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE. HH:mm");
+    public final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+    public final static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE. HH:mm");
 
     public static void writeWarningsToDatabase(Context context, ArrayList<WeatherWarning> warnings){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
@@ -372,6 +372,17 @@ public class WeatherWarnings {
         int i = sqLiteDatabase.delete(NotificationListDbHelper.TABLENAME,"1",null);
         sqLiteDatabase.close();
         return i;
+    }
+
+    public static long getFirstNotificationCancelTimeInMillis(Context context){
+        ArrayList<WarningNotification> warningNotifications = getNotificationElements(context);
+        long result = 0;
+        for (int i=0; i<warningNotifications.size(); i++){
+            if (warningNotifications.get(i).expires>result){
+                result = warningNotifications.get(i).expires;
+            }
+        }
+        return result;
     }
 
 }
