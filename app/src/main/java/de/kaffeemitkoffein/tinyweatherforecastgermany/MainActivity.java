@@ -41,6 +41,7 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -333,10 +334,10 @@ public class MainActivity extends Activity {
         stationsManager = new StationsManager(context);
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
         // disable log to logcat if release is not a userdebug
-        disableLogToLogcatIfNotUserDebug();
+        // disableLogToLogcatIfNotUserDebug();
         // force a database access at the beginning to check for a needed database upgrade
         // debug code
-        WeatherWarnings.clearAllNotified(context);
+        // WeatherWarnings.clearAllNotified(context);
         try {
             WeatherContentManager.checkForDatabaseUpgrade(context);
         } catch (Exception e){
@@ -401,7 +402,16 @@ public class MainActivity extends Activity {
                 }
                 // reload weather data if necessary
                 if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
-                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
+                    boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
+                    if (!updated){
+                        // launch new warnings from present dataset only
+                        ArrayList<String> tasks = new ArrayList<String>();
+                        tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS);
+                        Log.v("TWFG","DETECTED THAT WE NEED TO UPDSATE NOTIFS ONLY");
+                        UpdateAlarmManager.startDataUpdateService(context,tasks);
+                    } else {
+                        Log.v("TWFG","RES updated = true");
+                    }
                     // check if there is weather data (might be old) and display it while an update was launched above anyway
                     CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
                     if (weatherCard!=null){
@@ -599,13 +609,13 @@ public class MainActivity extends Activity {
         });
         if (stationsManager!=null){
             try {
-            int station_pos = stationsManager.getPositionFromDescription(station_description);
-            stationsManager.setStation(station_pos);
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
-            last_updateweathercall = Calendar.getInstance().getTimeInMillis();
-            addToSpinner(station_description);
+                int station_pos = stationsManager.getPositionFromDescription(station_description);
+                stationsManager.setStation(station_pos);
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
+                last_updateweathercall = Calendar.getInstance().getTimeInMillis();
+                addToSpinner(station_description);
             } catch (Exception e){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error: Setting new station failed: "+e.getMessage());
             }

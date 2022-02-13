@@ -23,12 +23,10 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
+import android.preference.*;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
@@ -110,6 +108,7 @@ public class Settings extends PreferenceActivity{
         addPreferencesFromResource(R.xml.preferences);
         if (!WeatherSettings.appReleaseIsUserdebug()){
             disableLogCatLogging();
+            //disableClearNotifications();
         }
         if (!WeatherSettings.isTLSdisabled(context)){
             disableTLSOption();
@@ -123,6 +122,25 @@ public class Settings extends PreferenceActivity{
         setShowWarningsInWidgetAllowed();
         setNotifyWarnings();
         updateValuesDisplay();
+        // reset notifications option
+        Preference resetNotifications = (Preference) findPreference(WeatherSettings.PREF_CLEARNOTIFICATIONS);
+        if (resetNotifications!=null){
+            resetNotifications.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(context,CancelNotificationBroadcastReceiver.class);
+                    intent.setAction(CancelNotificationBroadcastReceiver.CLEAR_NOTIFICATIONS_ACTION);
+                    sendBroadcast(intent);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context,context.getResources().getString(R.string.preference_clearnotifications_message),Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    return true;
+                }
+            });
+        }
         // action bar layout
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
@@ -137,6 +155,16 @@ public class Settings extends PreferenceActivity{
         PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
         preferenceScreen.removePreference(checkBoxPreference);
     }
+
+    @SuppressWarnings("deprecation")
+    public void disableClearNotifications(){
+        Preference preference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_CLEARNOTIFICATIONS);
+        preference.setEnabled(false);
+        preference.setShouldDisableView(true);
+        PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
+        preferenceScreen.removePreference(preference);
+    }
+
 
     @SuppressWarnings("deprecation")
     public void disableTLSOption(){

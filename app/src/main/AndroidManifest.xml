@@ -133,6 +133,7 @@
         <receiver android:name=".CancelNotificationBroadcastReceiver" android:enabled="true" android:exported="true">
             <intent-filter>
                 <action android:name="de.kaffeemitkoffein.broadcast.CANCEL_NOTIFICATIONS"/>
+                <action android:name="de.kaffeemitkoffein.broadcast.CLEAR_NOTIFICATIONS"/>
             </intent-filter>
         </receiver>
 

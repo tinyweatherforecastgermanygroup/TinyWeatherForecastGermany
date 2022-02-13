@@ -12,10 +12,7 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -42,6 +39,7 @@ public class DataUpdateService extends Service {
     public static String SERVICEEXTRAS_UPDATE_WARNINGS="SERVICEEXTRAS_UPDATE_WARNINGS";
     public static String SERVICEEXTRAS_UPDATE_TEXTFORECASTS="SERVICEEXTRAS_UPDATE_TEXTFORECASTS";
     public static String SERVICEEXTRAS_CANCEL_NOTIFICATIONS="SERVICEEXTRAS_CANCEL_NF";
+    public static String SERVICEEXTRAS_UPDATE_NOTIFICATIONS="SERVICEEXTRAS_UPDATE_NF";
 
     private ConnectivityManager connectivityManager;
 
@@ -109,6 +107,21 @@ public class DataUpdateService extends Service {
     public int onStartCommand(Intent intent, int flags, int startID){
         if (!serviceStarted){
             serviceStarted = true;
+            // create single thread
+            final Executor executor = Executors.newSingleThreadExecutor();
+            boolean updateWeather = false;
+            boolean updateWarnings = false;
+            boolean updateTextForecasts = false;
+            boolean updateNotifications = false;
+            if (intent!=null){
+                updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
+                updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
+                updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
+                // update warnings from existing data only allowed when warnings are not updated
+                if (!updateWarnings){
+                    updateNotifications = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_NOTIFICATIONS, false);
+                }
+            }
             // cancel deprecated warnings
             if (WeatherSettings.notifyWarnings(this)){
                 cancelDeprecatedWarningNotifications();
@@ -117,12 +130,7 @@ public class DataUpdateService extends Service {
             // perform service task only if:
             // 1) intent supplied telling what to do, AND
             // 2) internet connection is present
-            if ((intent!=null) && (isConnectedToInternet())){
-                boolean updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
-                boolean updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
-                boolean updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
-                // create single thread
-                final Executor executor = Executors.newSingleThreadExecutor();
+            if (isConnectedToInternet()){
                 // put
                 if ((Build.VERSION.SDK_INT > 23) && (connectivityManager!=null)){
                     networkCallback = new ConnectivityManager.NetworkCallback(){
@@ -187,7 +195,7 @@ public class DataUpdateService extends Service {
                             sendBroadcast(intent);
                             if (WeatherSettings.notifyWarnings(context)){
                                 WidgetRefresher.refresh(context);
-                                launchWeatherWarningNotification(warnings);
+                                launchWeatherWarningNotifications(warnings,false);
                             }
                         }
                         public void onNegativeResult(){
@@ -219,16 +227,32 @@ public class DataUpdateService extends Service {
                     executor.execute(textForecastRunnable);
                 }
                 executor.execute(cleanUpRunnable);
-                executor.execute(serviceTerminationRunnable);
             } else {
-                // terminate immediately, because no intent with tasks delivered and/or no internet connection.
-                PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.WARN,"Nothing to do, service received no tasks and/or no internet connection available.");
-                Intent i = new Intent();
-                i.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
-                i.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
-                sendBroadcast(i);
-                stopThisService();
+                if (updateWarnings){
+                    // notify warnings activity that update was not successful.
+                    Intent i = new Intent();
+                    i.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
+                    i.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
+                    sendBroadcast(i);
+                }
             }
+            // this is for tasks without internet connection
+            if (updateNotifications){
+                // update notifications from present data, e.g. when location changed
+                final Context context = this;
+                Runnable notificationUpdater=new Runnable() {
+                    @Override
+                    public void run() {
+                        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+                        ArrayList<WeatherWarning> warnings = WeatherWarnings.getCurrentWarnings(context,true);
+                        ArrayList<WeatherWarning> locationWarnings = WeatherWarnings.getWarningsForLocation(context,warnings,weatherLocation);
+                        launchWeatherWarningNotifications(locationWarnings,true);
+                    }
+                };
+                executor.execute(notificationUpdater);
+            }
+            // queue service termination, this is always the last thing to do
+            executor.execute(serviceTerminationRunnable);
         } else {
             PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.INFO,"Service already running.");
             // terminate, because service is already running
@@ -305,7 +329,7 @@ public class DataUpdateService extends Service {
         String notificationBody = weatherWarning.description;
         String expires = WeatherWarnings.getExpiresMiniString(context,weatherWarning);
         expires = expires.replaceFirst(String.valueOf(expires.charAt(0)),String.valueOf(expires.charAt(0)).toUpperCase());
-        notificationBody = notificationBody + " ("+expires+".)";
+        notificationBody = WeatherSettings.getSetStationLocation(context).description.toUpperCase(Locale.ROOT)+": "+notificationBody + " ("+expires+".)";
         Notification n;
         Notification.Builder notificationBuilder;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -340,7 +364,7 @@ public class DataUpdateService extends Service {
         return n;
     }
 
-    public boolean launchWeatherWarningNotification(ArrayList<WeatherWarning> warnings){
+    public boolean launchWeatherWarningNotifications(ArrayList<WeatherWarning> warnings, boolean discardAlreadyNotified){
         WeatherWarnings.clearNotified(this);
         NotificationManager notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
         PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"Checking warnings..."+warnings.size());
@@ -350,7 +374,7 @@ public class DataUpdateService extends Service {
         boolean notified = false;
         for (int i=0; i<locationWarnings.size(); i++){
             WeatherWarning warning = locationWarnings.get(i);
-            if (!WeatherWarnings.alreadyNotified(this,warning)){
+            if (discardAlreadyNotified || !WeatherWarnings.alreadyNotified(this,warning)){
                 int id = WeatherSettings.getUniqueNotificationIdentifier(this);
                 Notification notification = getWarningNotification(this,notificationManager,warning,Integer.toString(i));
                 notificationManager.notify(id,notification);

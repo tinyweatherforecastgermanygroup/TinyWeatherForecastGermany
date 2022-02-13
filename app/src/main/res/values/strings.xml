@@ -215,6 +215,9 @@
     <string name="twilight">Twilight</string>
     <string name="preference_feedback_title">Feedback</string>
     <string name="preference_feedback_summary">Give the developer some feedback by e-mail.</string>
+    <string name="preference_clearnotifications_title">Reset notifications</string>
+    <string name="preference_clearnotifications_summary">Delete database with launched notifications.</string>
+    <string name="preference_clearnotifications_message">Notification memory cleared.</string>
     <string name="feedback_mail_subject">Feedback: TinyWeatherForecastGermany</string>
     <string name="feedback_mail_text">When sending a bug report, please also copy &amp; paste logs, if possible.</string>
     <string name="warnings_until">until</string>

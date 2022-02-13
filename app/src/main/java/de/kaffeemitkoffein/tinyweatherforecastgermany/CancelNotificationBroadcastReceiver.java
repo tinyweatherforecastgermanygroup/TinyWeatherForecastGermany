@@ -11,6 +11,7 @@ import java.util.Date;
 public class CancelNotificationBroadcastReceiver extends BroadcastReceiver {
 
     public final static String CANCEL_NOTIFICATIONS_ACTION = "de.kaffeemitkoffein.broadcast.CANCEL_NOTIFICATIONS";
+    public final static String CLEAR_NOTIFICATIONS_ACTION = "de.kaffeemitkoffein.broadcast.CLEAR_NOTIFICATIONS";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -22,6 +23,10 @@ public class CancelNotificationBroadcastReceiver extends BroadcastReceiver {
                     // the UpdateAlarmManager will call setCancelNotificationAlarm if necessary
                     PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Starting service to remove a notification.");
                     UpdateAlarmManager.startDataUpdateService(context,false,false,false);
+                }
+                if (action.equalsIgnoreCase(CLEAR_NOTIFICATIONS_ACTION)){
+                    WeatherWarnings.clearAllNotified(context);
+                    PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,context.getResources().getString(R.string.preference_clearnotifications_message));
                 }
             }
         }
@@ -36,7 +41,7 @@ public class CancelNotificationBroadcastReceiver extends BroadcastReceiver {
             intent.setAction(CANCEL_NOTIFICATIONS_ACTION);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context,UpdateAlarmManager.NOTIFICATION_ALARM_IDENTIFIER,intent,PendingIntent.FLAG_UPDATE_CURRENT);
             alarmManager.set(AlarmManager.RTC,alarmTimeInMillis,pendingIntent);
-            PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Registered alarm to remove notification at "+WeatherWarnings.simpleDateFormat2.format(new Date(alarmTimeInMillis))+".");
+            PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Registered alarm to remove notification at "+WeatherWarnings.getTimeMiniString(alarmTimeInMillis)+".");
         } else {
             PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Currently no notifications to cancel in the future. No alarm set.");
         }

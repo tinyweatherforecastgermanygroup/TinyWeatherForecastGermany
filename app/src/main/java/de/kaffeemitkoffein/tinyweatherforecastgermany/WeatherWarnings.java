@@ -40,7 +40,7 @@ public class WeatherWarnings {
     public final static int COMMUNEUNION_DWD_DIFF = 0;
     public final static int COMMUNEUNION_DWD_STAT = 1;
     public final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-    public final static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE. HH:mm");
+    public final static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE HH:mm");
 
     public static void writeWarningsToDatabase(Context context, ArrayList<WeatherWarning> warnings){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
@@ -145,19 +145,27 @@ public class WeatherWarnings {
         return (start-now)>diff24;
     }
 
+    public static String getTimeMiniString(long time){
+        if (isMoreThan24hAway(time)){
+            return simpleDateFormat2.format(new Date(time));
+        } else {
+            return simpleDateFormat.format(new Date(time));
+        }
+    }
+
     public static String getOnsetMiniString(Context context, WeatherWarning weatherWarning){
         if (isMoreThan24hAway(weatherWarning.onset)){
-            return context.getResources().getString(R.string.from)+" "+simpleDateFormat2.format(new Date(weatherWarning.onset));
+            return context.getResources().getString(R.string.from)+" "+getTimeMiniString(weatherWarning.onset);
         } else {
-            return context.getResources().getString(R.string.from)+" "+simpleDateFormat.format(new Date(weatherWarning.onset));
+            return context.getResources().getString(R.string.from)+" "+getTimeMiniString(weatherWarning.onset);
         }
     }
 
     public static String getExpiresMiniString(Context context, WeatherWarning weatherWarning){
         if (isMoreThan24hAway(weatherWarning.onset)){
-            return context.getResources().getString(R.string.ends)+" "+simpleDateFormat2.format(new Date(weatherWarning.expires));
+            return context.getResources().getString(R.string.ends)+" "+getTimeMiniString(weatherWarning.expires);
         } else {
-            return context.getResources().getString(R.string.ends)+" "+simpleDateFormat.format(new Date(weatherWarning.expires));
+            return context.getResources().getString(R.string.ends)+" "+getTimeMiniString(weatherWarning.expires);
         }
 
     }
@@ -376,13 +384,25 @@ public class WeatherWarnings {
 
     public static long getFirstNotificationCancelTimeInMillis(Context context){
         ArrayList<WarningNotification> warningNotifications = getNotificationElements(context);
-        long result = 0;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        ArrayList<Long> results = new ArrayList<Long>();
         for (int i=0; i<warningNotifications.size(); i++){
-            if (warningNotifications.get(i).expires>result){
-                result = warningNotifications.get(i).expires;
+            if (warningNotifications.get(i).expires>currentTime){
+                results.add(warningNotifications.get(i).expires);
             }
         }
-        return result;
+        if (results.size()==0){
+            return 0;
+        } else {
+            // get min value from Arraylist
+            long result = results.get(0);
+            for (int i=1; i<results.size(); i++){
+                if (results.get(i)<result){
+                    result = results.get(i);
+                }
+            }
+            return result;
+        }
     }
 
 }

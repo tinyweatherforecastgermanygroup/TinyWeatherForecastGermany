@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class UpdateAlarmManager {
@@ -99,7 +100,7 @@ public class UpdateAlarmManager {
         // note that realtime refers to device up time and not utc.
         long next_update_due_in_millis = VIEWS_UPDATE_INTERVAL;
         long next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
-        boolean result;
+        boolean result = false;
         if (    ((weatherCard==null)) ||
                 ((weatherSettings.serve_gadgetbridge) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
@@ -110,7 +111,7 @@ public class UpdateAlarmManager {
             // from the service. Therefore, views are only updated from here if the service has not been called.
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"triggering weather update from API...");
             try {
-                startDataUpdateService(context,true,WeatherSettings.updateWarnings(context),WeatherSettings.updateTextForecasts(context));
+                result = startDataUpdateService(context,true,WeatherSettings.updateWarnings(context),WeatherSettings.updateTextForecasts(context));
             } catch (SecurityException e){
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather forecasts) not started because of a SecurityException: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!
@@ -121,8 +122,6 @@ public class UpdateAlarmManager {
                 // views need to be updated from here, because starting service failed!
                 updateAppViews(context);
             }
-            // set result to true, as update was initiated
-            result = true;
         } else {
             // check if an update of warnings only for widgets applies
             // or if notification is set
@@ -130,7 +129,7 @@ public class UpdateAlarmManager {
                ((weatherSettings.notify_warnings) && (WeatherSettings.areWarningsOutdated(context)))){
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"triggering warnings update from API...");
                 try {
-                    startDataUpdateService(context,false,true,false);
+                    result = startDataUpdateService(context,false,true,false);
                 } catch (SecurityException e){
                     PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather warnings only for widgets) not started because of a SecurityException: "+e.getMessage());
                     // views need to be updated from here, because starting service failed!
@@ -141,8 +140,6 @@ public class UpdateAlarmManager {
                     // views need to be updated from here, because starting service failed!
                     updateAppViews(context);
                 }
-                // set result to true, as update was initiated
-                result = true;
             } else {
                 // update not due, neither for forecasts nor for warnings (widgets)
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"update from API not due.");
@@ -159,12 +156,6 @@ public class UpdateAlarmManager {
                     next_update_due_in_millis = VIEWS_UPDATE_INTERVAL - millis_since_last_update;
                     next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
                 }
-                /*
-                // deprecated, replaced by own alarmManager
-                if (WeatherSettings.notifyWarnings(context)){
-                    startDataUpdateService(context,false,false,false);
-                }
-                 */
             }
         }
         /*
@@ -252,21 +243,49 @@ public class UpdateAlarmManager {
         WidgetRefresher.refresh(context);
     }
 
-    public static void startDataUpdateService(final Context context, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts){
-        if (DataUpdateService.isConnectedToInternet(context)){
-            Intent intent = new Intent(context,DataUpdateService.class);
-            if (WeatherSettings.notifyWarnings(context)){
-                intent.putExtra(DataUpdateService.SERVICEEXTRAS_CANCEL_NOTIFICATIONS,true);
-            }
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER,updateWeather);
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS,updateWarnings);
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS,updateTextForecasts);
+    public static boolean startDataUpdateService(final Context context, final ArrayList<String> tasks){
+        Intent intent = new Intent(context,DataUpdateService.class);
+        boolean noInternetConnRequired = false;
+        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER)){
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER,true);
+        }
+        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS)){
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS,true);
+        }
+        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS)){
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS,true);
+        }
+        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_CANCEL_NOTIFICATIONS) || WeatherSettings.notifyWarnings(context)){
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_CANCEL_NOTIFICATIONS,true);
+            noInternetConnRequired = true;
+        }
+        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS)){
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS,true);
+            noInternetConnRequired = true;
+        }
+        if (DataUpdateService.isConnectedToInternet(context) || noInternetConnRequired){
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             if (Build.VERSION.SDK_INT<26){
                 context.startService(intent);
             } else {
                 context.startForegroundService(intent);
             }
+            return true;
         }
+        return false;
+    }
+
+    public static boolean startDataUpdateService(final Context context, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts){
+        ArrayList<String> tasks = new ArrayList<String>();
+        if (updateWeather){
+            tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
+        }
+        if (updateWarnings){
+            tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS);
+        }
+        if (updateTextForecasts){
+            tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS);
+        }
+        return startDataUpdateService(context,tasks);
     }
 }

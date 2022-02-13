@@ -309,7 +309,11 @@ You will get notified about all warnings issued for the selected location. The a
 
 You will be notified about warnings with a future onset once they get issued and about warnings that are already ongoing. Warnings may sometimes get issued on a short-term basis and are sometimes followed up by a similiar event with a different severity.
 
-When your device has been turned off and/or in *doze mode*, old warnings that already passed won't get notified. 
+When your device has been turned off and/or in *doze mode*, old warnings that already passed won't get notified.
+
+When a notification is not removed manually, it will be removed when...
+1. it expired,
+2. it got updated by a more recent notification.
 
 ### How quickly do I get a warning?
 

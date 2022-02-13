@@ -89,6 +89,7 @@ public class WeatherSettings {
     public static final String PREF_ALTERNATIVE_ICONS = "PREF_alternative_icons";
     public static final String PREF_USE_METERED_NETWORKS = "PREF_use_metered_networks";
     public static final String PREF_NOTIFICATION_IDENTIFIER = "PREF_notification_id";
+    public static final String PREF_CLEARNOTIFICATIONS = "PREF_clearnotifications";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_STATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
