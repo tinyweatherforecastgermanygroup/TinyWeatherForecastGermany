@@ -266,4 +266,6 @@
     <string name="logging_button_share">Udostępnij</string>
     <string name="logging_comment_hint">Możesz dodać komentarz do logów, aby pomóc w znalezieniu błędu - proszę wyjaśnić, co się stało:</string>
     <string name="welcome_s3_text4">Pasek prognozy pokazuje chmury w kolorze szarym i deszcz w kolorze niebieskim.</string>
+    <string name="preference_clearnotifications_title">Resetowanie powiadomień</string>
+    <string name="preference_clearnotifications_summary">Resetowanie powiadomień o alertach pogodowych. Wszystkie ważne powiadomienia są ponownie wyświetlane.</string>
 </resources>
