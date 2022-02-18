@@ -267,7 +267,7 @@ You may get weather warnings of a similiar type, e.g. when gusts change into a s
 
 Once you have been notified about a warning, you will also get notified about an update regarding this warning. Should the initial warning still be visible in the notification area, it will be canceled in favour of the update. A notification will be also canceled once the warning expires. Already expired weather warnings won't pop up at all.
 
-To remind you about a persistent weather warning, it will be repeated after 12 hours.
+To remind you about a persistent weather warning, the notification about this weather warning will be repeated after 12 hours.
 
 ### How quickly do I get a weather warning?
 

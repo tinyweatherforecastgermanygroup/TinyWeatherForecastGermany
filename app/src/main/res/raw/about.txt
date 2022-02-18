@@ -1,7 +1,7 @@
 Tiny Weather Forecast Germany
 =================================
 
-Copyright © 2020, 2021 Pawel Dube
+Copyright © 2020, 2021, 2022 Pawel Dube
 
 Version: [VERSION]
 
