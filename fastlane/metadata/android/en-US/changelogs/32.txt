@@ -5,6 +5,6 @@
 - better display when using custom font sizes
 - fixes display of weather alerts with an onset > 24h from now
 - fixed issues with VPN use
-- custom gadgetbridge package name is now used as intended
+- custom Gadgetbridge package name is now used as intended
 - fixed "light snow showers" icon in light themes
 
