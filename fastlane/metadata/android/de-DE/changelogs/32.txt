@@ -1,0 +1,10 @@
+- neue Sprache: Dänisch (Danke an mondstern!)
+- Widgets zeigen nun Wetter-Warnungen
+- Benachrichtigungen über Wetter-Warnungen für ausgewählten Standort
+- neue Option, um die Benutzung getakteter Netzwerke auszuschalten
+- bessere Anzeige bei angepassten Schriftgrößen
+- korrigierte Anzeige von Wetter-Warnungen, die > 24h ab jetzt einsetzen
+- Probleme mit VPNs behoben
+- angepasster Gadgetbridge-Paketname wird nun richtig benutzt
+- Icon für "leichter Schneefall" in hellen Themes repariert
+

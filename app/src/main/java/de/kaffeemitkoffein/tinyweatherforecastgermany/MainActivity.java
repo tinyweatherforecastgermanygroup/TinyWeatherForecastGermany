@@ -41,7 +41,6 @@ import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -407,10 +406,10 @@ public class MainActivity extends Activity {
                         // launch new warnings from present dataset only
                         ArrayList<String> tasks = new ArrayList<String>();
                         tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS);
-                        Log.v("TWFG","DETECTED THAT WE NEED TO UPDSATE NOTIFS ONLY");
                         UpdateAlarmManager.startDataUpdateService(context,tasks);
                     } else {
-                        Log.v("TWFG","RES updated = true");
+                        // nothing to do, views will be updated after the update finished, and notifications will be
+                        // launched, then
                     }
                     // check if there is weather data (might be old) and display it while an update was launched above anyway
                     CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);

@@ -88,60 +88,18 @@ Contributors:
  
  Translations:
 
-* German
-
-    * eUgEntOptIc44
-    * J. Lavoie
-    * mondstern
-
-
-* French
-
-    * eUgEntOptIc44
-    * mondstern
-    * J. Lavoie
-
-
-* Finnish
-
-    * mondstern
-
-
-* Italian
-
-    * mondstern
-    * eUgEntOptIc44
-
-
-* English
-
-    * Allan Nordhøy
-
-
-* Dutch
-
-    * mondstern
-
-
-* Czech
-
-    * eUgEntOptIc44
-    * mondstern
-
-
-* Norwegian Bokmål
-
-    * mondstern
-    * Allan Nordhøy
-
-
-* Polish
-
-    * mondstern
-
-* Spanish
-
-    * eUgEntOptIc44
+Translations:
+* Czech: eUgEntOptIc44, mondstern
+* Danish: mondstern
+* Dutch: mondstern
+* English: Allan Nordhøy
+* French: eUgEntOptIc44, mondstern, Lavoie
+* Finnish: mondstern
+* German: eUgEntOptIc44, J. Lavoie, mondstern
+* Italian: mondstern, eUgEntOptIc44
+* Norwegian Bokmål: mondstern, Allan Nordhøy
+* Polish: mondstern
+* Spanish: eUgEntOptIc44
 
  Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://weblate.bubu1.eu/engage/tiny-weather-forecast-germany/).
 
@@ -301,37 +259,21 @@ It shows the direction of the wind change during the next `Wind forecast period`
 
 ### When do I get a notification about a weather warning?
 
-First of all, you need to enable this feature in the settings. Second, you need to specify how often the app will update the warnings (see below). Then, you will get notifications about warnings issued for the selected location. **The app will not check for warnings when the device is in doze mode**. You will also get no notifications when your device is offline. You may also miss some notifications when you restrict the app to use *metered* networks only. So do not expect to get woken up in the middle of the night when a weather warning gets issued.
+First of all, you need to enable this feature in the settings. Second, you need to specify how often the app will update the weather warnings (see below). Then, you will get notifications about weather warnings issued for the selected location. **The app will not check for warnings when the device is in doze mode**. You will also get no notifications when your device is offline. You may also miss some notifications when you restrict the app to use *un*metered networks only. So do not expect to get woken up in the middle of the night when a weather warning gets issued.
 
-### Which warnings get notified?
+The notifications include weather warnings with a future onset once they get issued and weather warnings that are already ongoing.
 
-You will get notified about all warnings issued for the selected location. The app does not filter for similiar types of warnings, so you may get separate warnings e.g. regarding *storm* and *gusts*.
+You may get weather warnings of a similiar type, e.g. when gusts change into a storm.
 
-You will be notified about warnings with a future onset once they get issued and about warnings that are already ongoing. Warnings may sometimes get issued on a short-term basis and are sometimes followed up by a similiar event with a different severity.
+Once you have been notified about a warning, you will also get notified about an update regarding this warning. Should the initial warning still be visible in the notification area, it will be canceled in favour of the update. A notification will be also canceled once the warning expires. Already expired weather warnings won't pop up at all.
 
-When your device has been turned off and/or in *doze mode*, old warnings that already passed won't get notified.
+To remind you about a persistent weather warning, it will be repeated after 12 hours.
 
-When a notification is not removed manually, it will be removed when...
-1. it expired,
-2. it got updated by a more recent notification.
+### How quickly do I get a weather warning?
 
-### How quickly do I get a warning?
+In the settings, you can set up how often warnings are checked. The default is every 30 minutes. Please note that the interval specified may have quite an implact on battery drain and data volume use. As a rule of thumb, the warning data that gets downloaded may be about 300 Kb or even more in size when weather conditions are heavy.
 
-In the settings, you can set up the interval how often warnings are checked. The default is every 30 minutes. Please note that the interval specified may have quite an implact on battery drain and data volume use. When weather conditions are heavy, warning data may be about 300 Kb or even more in size. 
-
-Please note, that every notification has a time specified:
-- when it says "*in 3h*", the warning has an onset in *approximately* 3 hours. Please tap the warning and go  to the app to get the detailed onset time.
-- when it says "6h", the warning is effectice *since* approximately 6h.
-
-To get an immediate and current warning status, go to the app and hit "update".
-
-### Why does the app not process all the single warnings?
-
-Because listening to new warnings continuously with a very high frequency would drain your battery very fast. When polling e.g. every 30 minutes, there is even no significant benefit regarding the data size when you compare all the single warnings issued with the whole data set that gets downloaded.
-
-### What is the logic about the notifications? 
-
-Once a new warning gets issued **or** when an existing warning gets updated, you will get notified. A warning you have been already notified about will be repeated after 12 hours, provided it is still valid. 
+To get an immediate and current weather warning status, go to the app and hit "update".
 
 ### How do I provide a crash log?
 
