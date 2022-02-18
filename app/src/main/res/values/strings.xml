@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
  This file is part of TinyWeatherForecastGermany.
 
@@ -15,9 +16,7 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<resources>
+--><resources>
     <string name="app_name">Tiny Weather Forecast Germany</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Last Update:</string>
@@ -216,7 +215,7 @@
     <string name="preference_feedback_title">Feedback</string>
     <string name="preference_feedback_summary">Give the developer some feedback by e-mail.</string>
     <string name="preference_clearnotifications_title">Reset notifications</string>
-    <string name="preference_clearnotifications_summary">Delete database with launched notifications.</string>
+    <string name="preference_clearnotifications_summary">Reset notifications for weather alerts. All valid notifications will be displayed again.</string>
     <string name="preference_clearnotifications_message">Notification memory cleared.</string>
     <string name="feedback_mail_subject">Feedback: TinyWeatherForecastGermany</string>
     <string name="feedback_mail_text">When sending a bug report, please also copy &amp; paste logs, if possible.</string>
