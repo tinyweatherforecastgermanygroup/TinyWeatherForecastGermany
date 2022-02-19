@@ -17,13 +17,13 @@ Tiny Weather Forecast Germany is available from the F-Droid main repository. You
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" 
     alt="Get it on F-Droid"
-    height="80">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
+    height="80px">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
 **Alternative sources:**
 
 You can get the binary builds here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/qqao88LzSQ4rTeg>
 
-Or from the developer's own fdroid repo: <https://kaffeemitkoffein.de/fdroid>
+Or from the developer's own F-Droid repository: <https://kaffeemitkoffein.de/fdroid>
 
 You get userdebug builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/4SXHaLxLSmFd8Ri>
 
@@ -84,11 +84,9 @@ Contributors:
 * Jean-Luc (French translation, bugfixes, javadoc improvements, translations of this README.md file)
 * arwanger (README.md)
 * maximilianovermeyer (fix of geo-intent-handling)
-* eUgEntOptIc44 (javadoc improvements)
  
- Translations:
-
 Translations:
+
 * Czech: eUgEntOptIc44, mondstern
 * Danish: mondstern
 * Dutch: mondstern
@@ -101,9 +99,9 @@ Translations:
 * Polish: mondstern
 * Spanish: eUgEntOptIc44
 
- Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://weblate.bubu1.eu/engage/tiny-weather-forecast-germany/).
+Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://weblate.bubu1.eu/engage/tiny-weather-forecast-germany/).
 
-<img src="https://weblate.bubu1.eu/widgets/tiny-weather-forecast-germany/-/multi-blue.svg" alt="Translation status">
+<img src="https://weblate.bubu1.eu/widgets/tiny-weather-forecast-germany/-/multi-blue.svg" alt="Weblate translation live status" title="Live status of Tiny Weather Forecast Germany's translations.">
 
 Privacy
 -------
