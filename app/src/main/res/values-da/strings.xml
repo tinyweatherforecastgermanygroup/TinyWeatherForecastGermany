@@ -149,7 +149,7 @@
     <string name="service_notification_text0">Få ny vejrudsigt…</string>
     <string name="license_title">Licenser</string>
     <string name="button_continue">Fortsæt</string>
-    <string name="service_notification_channelname">Opdatere meddelelser</string>
+    <string name="service_notification_channelname">Opdatering af vejrdata</string>
     <string name="service_notification_text1">Modtagelse af vejrvarsler.s…</string>
     <string name="service_notification_text2">Få tekstprognoser…</string>
     <string name="service_notification_text3">Oprydning…</string>
