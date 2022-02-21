@@ -291,4 +291,7 @@
     <string name="service_warning_categoryname">Alertes météo</string>
     <string name="welcome_setupwarnings">Configuration des alertes météo</string>
     <string name="battery_and_data_hint">Cela augmentera l\'utilisation de la batterie et du volume de données.</string>
+    <string name="preference_clearnotifications_message">La mémoire de notification est effacée.</string>
+    <string name="preference_clearnotifications_title">Réinitialisation des notifications</string>
+    <string name="preference_clearnotifications_summary">Réinitialiser les notifications d\'alertes météorologiques. Toutes les notifications valides s\'afficheront à nouveau.</string>
 </resources>
