@@ -278,4 +278,7 @@
     <string name="service_warning_categoryname">Avvertenze meteorologiche</string>
     <string name="welcome_setupwarnings">Impostazione degli avvisi meteo</string>
     <string name="battery_and_data_hint">Questo aumenterà l\'uso della batteria e del volume di dati.</string>
+    <string name="preference_clearnotifications_message">Memoria di notifica cancellata.</string>
+    <string name="preference_clearnotifications_title">Azzerare le notifiche</string>
+    <string name="preference_clearnotifications_summary">Ripristina le notifiche per le allerte meteo. Tutte le notifiche valide saranno visualizzate di nuovo.</string>
 </resources>
