@@ -46,7 +46,7 @@
             android:id="@+id/actionbar_text"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:textSize="@dimen/fcmain_textsize_medium"
+            android:textSize="@dimen/fcmain_textsize_medium_fixed"
             android:textColor="?attr/colorText"
             android:text="@string/actionbar_textinput_title" />
 
