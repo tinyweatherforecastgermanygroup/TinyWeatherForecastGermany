@@ -81,23 +81,23 @@ Contributors:
 * Janis Bitta (new app icon)
 * Jonas Lochmann (.gitignore)
 * Marc Nause (code improvements, bitmap caching)
-* Jean-Luc (French translation, bugfixes, javadoc improvements, translations of this README.md file)
+* Jean-Luc Tibaux (French translation, bugfixes, javadoc improvements, translations of this README.md file)
 * arwanger (README.md)
 * maximilianovermeyer (fix of geo-intent-handling)
  
 Translations:
 
-* Czech: Starfish, mondstern
+* Czech: eUgEntOptIc44, mondstern
 * Danish: mondstern
 * Dutch: mondstern
 * English: Allan Nordhøy
-* French: Starfish, mondstern, Lavoie
+* French: eUgEntOptIc44, mondstern, Lavoie
 * Finnish: mondstern
-* German: Starfish, J. Lavoie, mondstern
-* Italian: mondstern, Starfish
+* German: eUgEntOptIc44, J. Lavoie, mondstern
+* Italian: mondstern, eUgEntOptIc44
 * Norwegian Bokmål: mondstern, Allan Nordhøy
 * Polish: mondstern
-* Spanish: Starfish
+* Spanish: eUgEntOptIc44
 
 Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://weblate.bubu1.eu/engage/tiny-weather-forecast-germany/).
 
