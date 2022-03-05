@@ -6,9 +6,9 @@ Weather forecast with widgets for up to 10 days, based on open data from the Deu
 Screenshots
 --------
 
-![Screenshot #1](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
-![Screenshot #2](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
-![Screenshot #3](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
+![Screenshot #1](https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
+![Screenshot #2](https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
+![Screenshot #3](https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
 
 How to get the app
 ------------------
@@ -81,7 +81,7 @@ Contributors:
 * Janis Bitta (new app icon)
 * Jonas Lochmann (.gitignore)
 * Marc Nause (code improvements, bitmap caching)
-* Jean-Luc (French translation, bugfixes, javadoc improvements, translations of this README.md file)
+* Jean-Luc Tibaux (French translation, bugfixes, javadoc improvements, translations of this README.md file)
 * arwanger (README.md)
 * maximilianovermeyer (fix of geo-intent-handling)
  
@@ -142,16 +142,16 @@ Since version 0.58.0 onward, this app can display weather warnings in widgets. T
 ### What do the symbols in the main app mean?
  
 Symbols used:
-<img src="app/src/main/res/mipmap-mdpi/symbol_precipitation.png" height="16" width="16"/> precipitation
-<img src="app/src/main/res/mipmap-mdpi/symbol_cloud_black.png" height="16" width="16"/> clouds
-<img src="app/src/main/res/mipmap-mdpi/symbol_lightning.png" height="16" width="16"/> thunderstorm
-<img src="app/src/main/res/mipmap-mdpi/symbol_hail_black.png" height="16" width="16"/> hail
-<img src="app/src/main/res/mipmap-mdpi/symbol_freezing_rain_black.png" height="16" width="16"/> freezing rain
-<img src="app/src/main/res/mipmap-mdpi/symbol_fog_black.png" height="16" width="16"/>  fog
-<img src="app/src/main/res/mipmap-mdpi/symbol_drizzle.png" height="16" width="16"/> drizzle
-<img src="app/src/main/res/mipmap-mdpi/arrow_black.png" height="16" width="16"/> wind direction
-<img src="app/src/main/res/mipmap-mdpi/symbol_temperature5cm_black.png" height="16" width="16"/> temperature 5 cm above ground level
-<img src="app/src/main/res/mipmap-mdpi/symbol_rh_black.png" height="16" width="16"/> relative humidity
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_precipitation.png" height="16" width="16"/> precipitation
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_cloud_black.png" height="16" width="16"/> clouds
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_lightning.png" height="16" width="16"/> thunderstorm
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_hail_black.png" height="16" width="16"/> hail
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_freezing_rain_black.png" height="16" width="16"/> freezing rain
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_fog_black.png" height="16" width="16"/>  fog
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_drizzle.png" height="16" width="16"/> drizzle
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/arrow_black.png" height="16" width="16"/> wind direction
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_temperature5cm_black.png" height="16" width="16"/> temperature 5 cm above ground level
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_rh_black.png" height="16" width="16"/> relative humidity
 
 ### What do the icons shown do?
 
@@ -291,7 +291,7 @@ The following steps need to be done _only once_:
         - Go to `About phone`
     2. Tap the `Build number` several times.
     3. A dialogue informs you how many taps you are a way from being a developer
-    4. Keep tapping on `Build number` until you see _You Are Now a Developer_
+    4. Keep tapping on `Build number` until you see _You Are Now a Developer_
 3. Enable USB debugging in the developer options of your device:
     1. Open `Settings`
     2. Search for `USB debugging`
@@ -317,16 +317,15 @@ After this initial setup, you are ready to access the system log.
 ```
 ActivityManager:   Force finishing activity de.kaffeemitkoffein.tinyweatherforecastgermany/.TextForecastListActivity
 ```
-7. Log in to `https://codeberg.org` 
-8. Navigate to the issue tracker `https://codeberg.org/Starfish/TinyWeatherForecastGermany/issues`
-10. Create an issue describing what you did and add the log just created (copy&paste will do).
+7. Log in to [`codeberg.org`](https://codeberg.org)
+8. Navigate to the issue tracker [`https://codeberg.org/Starfish/TinyWeatherForecastGermany/issues`](https://codeberg.org/Starfish/TinyWeatherForecastGermany/issues)
+10. Create an **issue** describing what you did and add the log just created (copy&paste will do).
 
 
 Contributing
 ------------
 
-Please leave comments, bug reports, issues and feature requests at
-the app repository at codeberg.org:
+Please leave comments, bug reports, issues and feature requests at the app repository at [codeberg.org](https://codeberg.org/Starfish/TinyWeatherForecastGermany):
  
 <https://codeberg.org/Starfish/TinyWeatherForecastGermany>
  
