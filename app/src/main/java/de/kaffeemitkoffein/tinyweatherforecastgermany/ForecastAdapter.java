@@ -512,6 +512,11 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         if (weatherInfo.hasCondition()){
             int weathercondition = weatherInfo.getCondition();
             boolean showDaylightIcon = weatherInfo.isDaytime(weatherLocation);
+
+            if (weatherInfo.getForecastType()==Weather.WeatherInfo.ForecastType.HOURS_6) {
+                // in case if the 6-h forecast, take the middle of the interval to determine day/night icon
+                showDaylightIcon = Weather.isDaytime(weatherLocation,(weatherInfo.getTimestamp()+six_hours_ago)/2);
+            }
             if (weatherInfo.getForecastType()==Weather.WeatherInfo.ForecastType.HOURS_24){
                 showDaylightIcon = true;
             }
