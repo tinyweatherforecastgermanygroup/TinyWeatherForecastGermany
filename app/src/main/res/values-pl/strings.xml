@@ -140,7 +140,7 @@
     <string name="logging_button_clear">Wyczyść dzienniki</string>
     <string name="license_title">Licencje</string>
     <string name="button_continue">Kontynuuj</string>
-    <string name="service_notification_channelname">Powiadomienia o aktualizacji</string>
+    <string name="service_notification_channelname">Aktualizacja danych pogodowych</string>
     <string name="service_notification_title">Tiny Weather Forecast Germany</string>
     <string name="service_notification_text0">Nowa prognoza pogody…</string>
     <string name="service_notification_text1">Ostrzeżenia pogodowe…</string>
@@ -268,4 +268,12 @@
     <string name="welcome_s3_text4">Pasek prognozy pokazuje chmury w kolorze szarym i deszcz w kolorze niebieskim.</string>
     <string name="preference_clearnotifications_title">Resetowanie powiadomień</string>
     <string name="preference_clearnotifications_summary">Resetowanie powiadomień o alertach pogodowych. Wszystkie ważne powiadomienia są ponownie wyświetlane.</string>
+    <string name="preference_displaywarninginwidget_title">Pokaż ostrzeżenia w widżecie</string>
+    <string name="preference_displaywarninginwidget_summary">Wyświetlaj ostrzeżenia dla wybranej lokalizacji w widżetach.</string>
+    <string name="preference_notify_warnings_title">Włącz powiadomienia</string>
+    <string name="preference_notify_warnings_summary">Powiadomienie o nowych ostrzeżeniach dla wybranej lokalizacji.</string>
+    <string name="preference_meterednetwork_title">Korzystaj z sieci opomiarowanych</string>
+    <string name="preference_meterednetwork_summary">Aby uzyskać dane, należy również korzystać z sieci z licznikami.</string>
+    <string name="preference_meterednetwork_notice">Ostrzeżenia pogodowe mogą nie zostać uwzględnione, jeśli korzystasz wyłącznie z sieci bez limitu.</string>
+    <string name="preference_clearnotifications_message">Pamięć powiadomień skasowana.</string>
 </resources>
