@@ -1,4 +1,3 @@
-
 Version 0.50.1:
 - behoben: Wearables zeigten falsches Wetter-Icon an
 - behoben: Pfeil zeigte falsche Windrichtung
@@ -20,5 +19,3 @@ Gadgetbridge Unterstützung:
 - Option hinzu gefügt, um als Zeitstempel die aktuelle Uhrzeit anstelle der Vorhersage-Zeit zu setzen, da einige Wearables eine Vorhersage nicht als aktuelles Wetter akzeptieren
 - behoben: unbekannter Update-Zeitpunkt beim ersten App-Start
 - behoben: Wetter-Text auf Wearables wurde nicht korrekt dargestellt
-
-

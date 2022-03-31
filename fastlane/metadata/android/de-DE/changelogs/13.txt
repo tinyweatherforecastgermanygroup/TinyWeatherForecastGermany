@@ -1,4 +1,3 @@
-
 - behoben: Umrechnungsfehler von Pascal zu Hektopascal (Luftdruck)
 - behoben: App-Absturz beim ersten Aufrufen der Einstellungen
 - das stündliche Wetter-Icon ist nun das mit der höchsten Priorität, wenn verfügbar; dies sollte zu einer besseren Übereinstimmung mit den 6-stündlichen Icons und Tages-Icons führen

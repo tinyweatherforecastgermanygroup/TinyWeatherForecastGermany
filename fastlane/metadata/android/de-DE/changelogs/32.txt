@@ -7,4 +7,3 @@
 - Probleme mit VPNs behoben
 - angepasster Gadgetbridge-Paketname wird nun richtig benutzt
 - Icon für "leichter Schneefall" in hellen Themes repariert
-

@@ -6,4 +6,3 @@
 - behebt Absturz beim Wechsel zu einer bekannten Wetterstation, wenn aktuelle Daten fehlten
 - behebt Absturz der Log-Aktivität, verbessertes Logging (optional)
 - kleinere Fehlerbehebungen & Verbesserungen der Benutzeroberfläche
-

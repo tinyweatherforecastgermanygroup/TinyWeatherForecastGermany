@@ -1,4 +1,3 @@
-
 - neue Einheiten für Wind: m/s, Beaufort (bf), Knoten (kn)
 - neue Einheiten für Entfernungen: nautische Meilen, Meilen & Yards
 - die Windrichtung kann nun als simpler Pfeil, Pfeil mit Windgeschwindigkeit (Beaufort) oder Text angezeigt werden

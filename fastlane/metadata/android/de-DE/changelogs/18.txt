@@ -1,4 +1,3 @@
-
 - Geokoordinaten können nun an diese App geteilt werden
 - signifikante Verbesserung der Leistung der Hauptapp durch neues Bitmap-Chaching (Danke an Marc Nause!)
 - Breitengrad wird nun vor Längengrad angegeben

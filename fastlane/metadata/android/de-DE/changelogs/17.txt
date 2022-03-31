@@ -1,4 +1,3 @@
-
 - die nächsten Wetterstationen können nun anhand von Geokoordinaten oder der Standortbestimmung des Gerätes gesucht werden
 - die App fällt nun auf http ohne SSL zurück, falls eine verschlüsselte Verbindung auf sehr alten Geräten (z.B. 4.x.x) nicht aufgebaut werden kann, weil Cipher-Suites fehlen
 - Inkomplette Zeitfenster (6h, 24h) beachten vergangene Wetterdaten nicht mehr, soweit möglich

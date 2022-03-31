@@ -17,4 +17,3 @@ Wichtiger Hinweis:
 Falls die App nach dem Wechsel auf einen neuen Sensor abstürzt, bitte diesen Sensor mir melden.
 
 Die App kann wieder zum Laufen gebracht werden, indem die App-Daten gelöscht werden; damit werden die Einstellungen auch zurückgesetzt und die App zeigt wieder das Wetter in Hamburg an.
-

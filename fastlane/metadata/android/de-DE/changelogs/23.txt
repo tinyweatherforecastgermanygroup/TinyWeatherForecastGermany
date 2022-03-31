@@ -1,3 +1,2 @@
 - neues Regenradar
 - für die Berechnung von Sonnenaufgang und Untergang wird nun die Zeitumstellung zur angezeigten Zeit berücksichtigt anstelle der aktuellen Zeit
-

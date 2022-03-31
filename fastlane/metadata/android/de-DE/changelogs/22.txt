@@ -4,5 +4,3 @@
 - behoben: zu große Schrift des Wochentages im großen Widget
 - behoben: falsche Tages-Beschriftung im großen und kräftigen Widget
 - behoben: Vorhersage-Werte überdeckten sich in der App auf einigen Geräten
-
-

@@ -1,4 +1,3 @@
-
 - fehlende Aktualisierung der Warnungen in der Haupt-App behoben
 - falsche Datums-Umwandlung in den Text-Vorhersagen behoben
 - zu große Schrift im großen Widget korrigiert

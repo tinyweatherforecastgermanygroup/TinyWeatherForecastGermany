@@ -1,0 +1,4 @@
+- App-Installation wird jetzt auf dem internen Speicher erzwungen (behebt ein Problem beim Widget, das nicht verfügbar ist, wenn die App auf der SD-Karte installiert wird)
+- Bildschirm "Was ist neu" hinzugefügt
+- Experimentelle Unterstützung für Gadgetbridge hinzugefügt (noch nicht funktionsfähig!)
+- Parsing-Fehler in Wind-Informationen behoben

@@ -1,8 +1,6 @@
-
 - neues App Icon (Danke an Janis Bitta!)
 - behoben: Fehler in der Umrechnung m/s zu Knoten (kn)
 - behoben: Böen wurden nicht korrekt dargestellt, wenn km/h ausgewählt war
 - behoben: mehrere Fehler und Probleme hinsichtlich der Wind-Darstellung in den Widgets
 - behoben: stündliche Vorhersagen überlappten manchmal Wetter-Details in der App
 - mehrere, kleine Verbesserungen im Layout und der Darstellung
-

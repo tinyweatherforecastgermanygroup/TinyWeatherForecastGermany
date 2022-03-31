@@ -7,5 +7,3 @@ Die App verfügt über ein schlankes Design. Ferner unterstützt sie optional au
 Darüber hinaus bestehen vielfältige Möglichkeiten, die App in der Darstellung der Wetterdaten an die eigenen Bedürfnisse anzupassen. Es können auch die Zeiten von Sonnenaufgang, Sonnenuntergang und Dämmerung für den ausgewählten Standort angezeigt werden.
 
 Ebenso verfügt die App über eine Favoriten-Liste, mit der zwischen verschiedenen Wetterstationen schnell gewechselt werden kann. Sie bietet auch mehrere, verschieden große Widgets mit Wettervorhersage an, die auf dem Homescreen plaziert werden können und automatisch aktualisiert werden.
-
-

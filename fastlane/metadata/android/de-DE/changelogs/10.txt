@@ -4,4 +4,3 @@ Version 0.50.2:
 - behoben: Widgets aktualisierten sich nicht immer sofort bei Ortswechsel in der App
 - defekte Option "aktuelle Zeit senden" repariert
 - behoben: Aktualisierungs-Service wurde bei Geräten mit API>25 nicht gestartet, wenn die App nicht im Vordergrund war
-

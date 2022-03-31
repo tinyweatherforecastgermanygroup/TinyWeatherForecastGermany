@@ -3,4 +3,3 @@
 - mehrere potentielle App-Abstürze beim Start,
 - einige Wetterstationen konnten nicht ausgewählt werden und
 - einige Wetterstationen waren in der Vorschlagsliste doppelt
-

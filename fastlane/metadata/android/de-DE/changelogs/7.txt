@@ -1,4 +1,3 @@
-
 Neue Funktionen in dieser Version:
 - neue Widgets
 - neue Suche der Station
