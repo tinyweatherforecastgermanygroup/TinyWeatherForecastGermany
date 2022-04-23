@@ -46,7 +46,7 @@ public class StationsManager {
     }
 
     private static String getStationsStringFromResource(Context context){
-        InputStream inputStream = context.getResources().openRawResource(R.raw.stations3);
+        InputStream inputStream = context.getResources().openRawResource(R.raw.stations4);
         try {
             int size = inputStream.available();
             byte[] textdata = new byte[size];
