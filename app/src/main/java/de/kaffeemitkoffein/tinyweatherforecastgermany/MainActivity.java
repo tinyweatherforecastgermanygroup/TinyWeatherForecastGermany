@@ -333,7 +333,7 @@ public class MainActivity extends Activity {
         stationsManager = new StationsManager(context);
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
         // disable log to logcat if release is not a userdebug
-        // disableLogToLogcatIfNotUserDebug();
+        disableLogToLogcatIfNotUserDebug();
         // force a database access at the beginning to check for a needed database upgrade
         // debug code
         // WeatherWarnings.clearAllNotified(context);
