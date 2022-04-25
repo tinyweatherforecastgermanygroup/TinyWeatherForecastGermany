@@ -27,7 +27,7 @@ Or from the developer's own F-Droid repository: <https://kaffeemitkoffein.de/fdr
 
 You get userdebug builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/4SXHaLxLSmFd8Ri>
 
-Please note that the builds linked here are not signed by the fdroid key, so you basically need to uninstall the fdroid versions before installing them and vice versa.
+Please note that the builds linked here are not signed by the F-Droid key, so you basically need to uninstall the F-Droid versions before installing them and vice versa.
 
 License
 -------
@@ -84,10 +84,9 @@ Contributors:
 * Jean-Luc Tibaux (French translation, bugfixes, javadoc improvements, translations of this README.md file)
 * arwanger (README.md)
 * maximilianovermeyer (fix of geo-intent-handling)
- 
-Translations:
 
 Translations:
+
 * Czech: eUgEntOptIc44, mondstern
 * Danish: eUgEntOptIc44, mondstern
 * Dutch: mondstern
@@ -130,7 +129,7 @@ FAQ
 
 ### For locations in a different time zone the day/night icons seem incorrect.
  
-The app always displays the date & time of your device (and locale). Example: you are in Berlin and have selected the weater for Cuba. The app shows you the weather in Cuba at the corresponding Berlin time and uses the day/night-icons corresponding to the Berlin time. Once you have travelled to Cuba and your device switched to the local time in Cuba, the app will display the weather in Cuba at the Cuba time.   
+The app always displays the date & time of your device (and locale). Example: you are in Berlin and have selected the weather for Cuba. The app shows you the weather in Cuba at the corresponding Berlin time and uses the day/night-icons corresponding to the Berlin time. Once you have travelled to Cuba and your device switched to the local time in Cuba, the app will display the weather in Cuba at the Cuba time.   
  
 ### How to read the widget?
  
