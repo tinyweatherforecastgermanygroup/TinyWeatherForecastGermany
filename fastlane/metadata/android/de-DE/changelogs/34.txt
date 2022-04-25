@@ -1,0 +1,7 @@
+0.58.1:
+- aktualisierte Stationsdaten und Warngebiete
+- verbesserte Berechnung, wann Tag/Nacht-Icons angezeigt werden
+- behoben: falscher Standardwert bei der Widget-Transparenz
+- verbesserte Übersetzungen
+0.58.2:
+- behebt falsche Datenbank-Größe
