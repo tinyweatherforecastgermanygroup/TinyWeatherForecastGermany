@@ -1,5 +1,8 @@
 New in version ([VERSION]):
 
-- fixes broken Gadgetbridge support
+- updated stations data and warning areas
+- improved logic when to display day/night icons
+- fixes wrong default widget opacity
+- improved translations
 
 

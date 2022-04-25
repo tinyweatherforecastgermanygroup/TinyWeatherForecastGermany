@@ -39,7 +39,8 @@ Folgende Personen haben zum Projekt beigetragen:
   - eUgEntOptIc44 (javadoc improvements)
 
   Übersetzungen:
-* Deutsch: eUgEntOptIc44, J. Lavoie, mondstern
+* Dänisch: eUgEntOptIc44, mondstern
+* Deutsch: eUgEntOptIc44, J. Lavoie, mondstern, w4ts0n
 * Französisch: eUgEntOptIc44, mondstern, Lavoie
 * Finnisch: mondstern
 * Italienisch: mondstern, eUgEntOptIc44

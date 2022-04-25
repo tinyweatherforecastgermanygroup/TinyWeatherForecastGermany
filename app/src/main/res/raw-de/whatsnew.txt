@@ -1,3 +1,6 @@
 Neu in dieser Version ([VERSION]):
 
-- behebt defekten Gadgetbridge-Support
+- aktualisierte Stationsdaten und Warngebiete
+- verbesserte Berechnung, wann Tag/Nacht-Icons angezeigt werden
+- behoben: falscher Standardwert bei der Widget-Transparenz
+- verbesserte Übersetzungen
