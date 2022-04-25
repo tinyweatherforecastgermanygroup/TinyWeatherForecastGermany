@@ -42,7 +42,7 @@ public class Areas {
 
     public static class AreaDatabaseCreator{
 
-        public final static int DATABASE_SIZE = 11638;
+        public final static int DATABASE_SIZE = 11676; // old in 2.0: 11638;
 
         private final Context context;
         private final Executor executor;

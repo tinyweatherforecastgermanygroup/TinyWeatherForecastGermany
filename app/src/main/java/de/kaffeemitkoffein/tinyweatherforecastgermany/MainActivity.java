@@ -333,7 +333,7 @@ public class MainActivity extends Activity {
         stationsManager = new StationsManager(context);
         autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
         // disable log to logcat if release is not a userdebug
-        // disableLogToLogcatIfNotUserDebug();
+        disableLogToLogcatIfNotUserDebug();
         // force a database access at the beginning to check for a needed database upgrade
         // debug code
         // WeatherWarnings.clearAllNotified(context);
@@ -386,7 +386,7 @@ public class MainActivity extends Activity {
             }
             // the station name K2226 has been changed to 10522, effective from 25.04.2022 9:00
             // the old name does not exist in stations4.txt any more.
-            if (weatherSettings.last_version_code<33){
+            if (weatherSettings.last_version_code<34){
                 Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(this);
                 if (currentStation.name.equals("K2226")){
                     currentStation.name = "10522";

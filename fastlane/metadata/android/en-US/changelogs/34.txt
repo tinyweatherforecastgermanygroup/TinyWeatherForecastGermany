@@ -1,0 +1,7 @@
+0.58.1:
+- updated stations data and warning areas
+- improved logic when to display day/night icons
+- fixes wrong default widget opacity
+- improved translations
+0.58.2:
+- fixes wrong database size
