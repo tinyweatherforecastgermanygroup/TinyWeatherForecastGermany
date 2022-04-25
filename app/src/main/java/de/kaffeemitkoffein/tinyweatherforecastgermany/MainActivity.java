@@ -383,9 +383,17 @@ public class MainActivity extends Activity {
                 WeatherSettings.resetStationToDefault(getApplicationContext());
                 WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
                 showWarning(R.mipmap.ic_warning_white_24dp,getResources().getString(R.string.warning_stationreset_title),getResources().getString(R.string.warning_stationreset_text));
-            } else {
-                showWhatsNewDialog();
             }
+            // the station name K2226 has been changed to 10522, effective from 25.04.2022 9:00
+            // the old name does not exist in stations4.txt any more.
+            if (weatherSettings.last_version_code<33){
+                Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(this);
+                if (currentStation.name.equals("K2226")){
+                    currentStation.name = "10522";
+                    WeatherSettings.setStation(this,currentStation);
+                }
+            }
+            showWhatsNewDialog();
         }
         try {
             loadStationsSpinner();
