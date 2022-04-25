@@ -40,12 +40,12 @@ The following persons contributed to this project:
 
  Translations:
 * Czech: eUgEntOptIc44, mondstern
-* Danish: mondstern
+* Danish: eUgEntOptIc44, mondstern
 * Dutch: mondstern
 * English: Allan Nordhøy
 * French: eUgEntOptIc44, mondstern, Lavoie
 * Finnish: mondstern
-* German: eUgEntOptIc44, J. Lavoie, mondstern
+* German: eUgEntOptIc44, J. Lavoie, mondstern, w4ts0n
 * Italian: mondstern, eUgEntOptIc44
 * Norwegian Bokmål: mondstern, Allan Nordhøy
 * Polish: mondstern

@@ -1,1 +1,4 @@
 - aktualisierte Stationsdaten und Warngebiete
+- verbesserte Berechnung, wann Tag/Nacht-Icons angezeigt werden
+- behoben: falscher Standardwert bei der Widget-Transparenz
+- verbesserte Übersetzungen
