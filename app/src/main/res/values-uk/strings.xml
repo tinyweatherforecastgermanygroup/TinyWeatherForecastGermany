@@ -251,4 +251,18 @@
     <string name="radar_rain2">легкий</string>
     <string name="radar_rain4">надзвичайний</string>
     <string name="hide_rain">сховати дощ</string>
+    <string name="preference_gadgetbridge_notice_summary">Вам потрібна принаймні версія Gadgetbridge 0.48.0, підтримка даних про погоду не працює на нижчих версіях Gadgetbridge.</string>
+    <string name="weathercode_SNOW_SHOWERS_SLIGHT">невеликий снігопад</string>
+    <string name="preference_gadgetbridge_notice_title">Важливе повідомлення</string>
+    <string name="alertdialog_2_title">Logcat</string>
+    <string name="logging_comment_hint">Ви можете додати коментар до журналів, щоб допомогти знайти помилку - будь ласка, поясніть, що сталося:</string>
+    <string name="geoinput_known_note">Це ваше місцезнаходження з:</string>
+    <string name="geoinput_reflocation_title">Довідкове місце:</string>
+    <string name="textforecasttype_maritime_north_and_baltic">Морське Північне та Балтійське моря</string>
+    <string name="textforecasttype_maritime_mediterranian">Морське Середземне море</string>
+    <string name="textforecasttype_maritime_warning">Морське попередження</string>
+    <string name="textforecasttype_maritime_north_and_baltic_medium_term">Морське Північне та Балтійське моря Середньострокові</string>
+    <string name="warning_stationreset_title">Скидання станції</string>
+    <string name="radar_rain1">незначний</string>
+    <string name="radar_rain3">сильний</string>
 </resources>
