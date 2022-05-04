@@ -251,7 +251,7 @@
     <string name="radar_rain2">легкий</string>
     <string name="radar_rain4">надзвичайний</string>
     <string name="hide_rain">сховати дощ</string>
-    <string name="preference_gadgetbridge_notice_summary">Вам потрібна принаймні версія Gadgetbridge 0.48.0, підтримка даних про погоду не працює на нижчих версіях Gadgetbridge.</string>
+    <string name="preference_gadgetbridge_notice_summary">Вам потрібна версія Gadgetbridge не менше 0.48.0, підтримка даних про погоду не працює на менших версіях Gadgetbridge.</string>
     <string name="weathercode_SNOW_SHOWERS_SLIGHT">невеликий снігопад</string>
     <string name="preference_gadgetbridge_notice_title">Важливе повідомлення</string>
     <string name="alertdialog_2_title">Logcat</string>
