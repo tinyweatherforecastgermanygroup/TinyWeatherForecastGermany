@@ -271,4 +271,5 @@
     <string name="preference_setalarm_notice">ПРИМІТКА: зараз це недоступно, поки дозволена підтримка Gadgetbridge, яка все одно примушує автоматичні оновлення.</string>
     <string name="alertdialog_2_toast">Запис у Logcat деактивовано.</string>
     <string name="preference_gadgetbridge_packagename_summary">Ви можете вказати власну назву для пакунка, наприклад, коли використовуєте відгілку Gadgetbridge. Вилучіть назву, щоб повернутися до типової назви пакунка.</string>
+    <string name="preference_gadgetbridge_faketimestamp_summary">Деякі носимі пристрої не приймають прогноз поточної погоди, замість цього завжди надсилайте поточний час.</string>
 </resources>
