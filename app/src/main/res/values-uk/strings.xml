@@ -267,6 +267,7 @@
     <string name="radar_rain3">сильний</string>
     <string name="preference_log_to_logcat_summary">Вставте журнали в системний журнал на пристрої. Увага: це може бути витоком конфіденційності, інші програми можуть отримати доступ до системного журналу.</string>
     <string name="alertdialog_1_text">Реєстрація в logcat може призвести до витоку приватної інформації в інші програми. Ви впевнені і знаєте, що робите\?</string>
-    <string name="alertdialog_2_text">Ця програма зараз реєструється в logcat. Реєстрація в logcat буде вимкнена, оскільки ця функція не призначена для офіційних випусків.</string>
+    <string name="alertdialog_2_text">Ця програма зараз пише в logcat. Запис в logcat буде вимкнено, оскільки ця функція не призначена для офіційних випусків.</string>
     <string name="preference_setalarm_notice">ПРИМІТКА: наразі це недоступно, оскільки ввімкнена підтримка Gadgetbridge все одно примушує автоматичні оновлення.</string>
+    <string name="alertdialog_2_toast">Запис у Logcat деактивовано.</string>
 </resources>
