@@ -19,8 +19,6 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class CurrentWeatherInfo{
@@ -113,7 +111,6 @@ public class CurrentWeatherInfo{
             result[11] = Math.round(Float.parseFloat(rawWeatherInfo.RR1u1[position]));
             return result;
         } catch (NumberFormatException e){
-            Log.v("TWFG","ERROR : "+e.getMessage());
             return null;
         }
     }

@@ -45,7 +45,6 @@ import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -218,7 +217,6 @@ public class MainActivity extends Activity {
             ArrayList<Weather.WeatherInfo> weatherInfoArrayList = getCustomForecastWeatherInfoArray(weatherCard);
             Weather.WeatherInfo weatherInfo = weatherInfoArrayList.get(i);
             long time = weatherInfo.getTimestamp();
-            Log.v("TWFG","KLICK i="+i+" TIME OF i => "+Weather.GetDateString(Weather.SIMPLEDATEFORMATS.DETAILED,weatherInfo.getTimestamp()));
             int hoursToDisplay = 1;
             if (WeatherSettings.getDisplayType(context) == WeatherSettings.DISPLAYTYPE_24HOURS){
                 hoursToDisplay = 24;

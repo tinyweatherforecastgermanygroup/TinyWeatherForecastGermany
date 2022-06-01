@@ -22,12 +22,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.*;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.util.SparseArray;
-import android.widget.PopupWindow;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -683,7 +679,6 @@ public class ForecastBitmap{
             startPosition--;
         }
         int itemCount = Math.abs(startPosition-weatherInfos.size());
-        Log.v("TWFG","Items to display: "+itemCount);
         int minTemp=weatherInfos.get(startPosition).getTemperatureInCelsiusInt();
         int maxTemp=weatherInfos.get(startPosition).getTemperatureInCelsiusInt();
         for (int i=startPosition; i<weatherInfos.size(); i++){
@@ -715,8 +710,6 @@ public class ForecastBitmap{
         if (temp_bottom_offset_value != 0){
             zeroline_position = height + temp_bottom_offset_value / temp_graphscale;
         }
-
-        Log.v("TWFG","Temp range: "+minTemp+" to "+maxTemp);
         // paint chart outline
         canvas.drawLine(xChartOffset,0,xChartOffset,height,chartPaint);
         canvas.drawLine(xChartOffset,zeroline_position,width,zeroline_position,chartPaint);

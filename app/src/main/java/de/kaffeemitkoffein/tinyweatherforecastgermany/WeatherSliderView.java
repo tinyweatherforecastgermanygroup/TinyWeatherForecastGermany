@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -327,7 +326,6 @@ public class WeatherSliderView extends HorizontalScrollView {
             newView.measure(0,0);
             int newViewWidth=newView.getMeasuredWidth();
             wholeScrollViewWidth = wholeScrollViewWidth + newViewWidth;
-            Log.v("TWFG","MEASURE "+newViewWidth+" OF "+width+" , crrently total: "+wholeScrollViewWidth);
             // finally, add the view
             linearLayout.addView(newView);
         }
