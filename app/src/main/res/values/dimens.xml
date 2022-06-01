@@ -97,4 +97,6 @@
     <dimen name="widget_margin">2dp</dimen>
     <dimen name="widget_radius">8dp</dimen>
 
+    <dimen name="slider_margin">2dp</dimen>
+    <dimen name="slider_marginDouble">4dp</dimen>
 </resources>

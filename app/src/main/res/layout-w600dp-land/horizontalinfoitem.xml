@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020, 2021 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/hzi_maincontainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorPrimaryLight">
+
+        <TextView
+                android:id="@+id/hzi_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/fcmain_textsize_large"
+                android:textColor="?attr/colorText"
+                android:text="00:00"/>
+
+        <LinearLayout
+                android:id="@+id/hzi_topcontainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/hzi_heading"
+                android:weightSum="5">
+
+                <ImageView
+                        android:id="@+id/hzi_weathericon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:layout_gravity="top"
+                        android:gravity="top"
+                        android:src="@mipmap/cloudy"/>
+
+                <RelativeLayout
+                        android:id="@+id/hzi_infoholder"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2">
+
+                        <RelativeLayout
+                              android:id="@+id/hzi_tempdisplaycontainer"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_alignParentLeft="true"
+                              android:layout_alignParentTop="true"
+                              android:layout_marginRight="@dimen/slider_margin"
+                              android:layout_marginBottom="@dimen/slider_margin">
+
+                                <TextView
+                                        android:id="@+id/hzi_temperature"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="@dimen/fcmain_textsize_xl"
+                                        android:textStyle="bold"
+                                        android:textColor="?attr/colorText"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="0°"/>
+
+                                <TextView
+                                        android:id="@+id/hzi_pressure"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/hzi_temperature"
+                                        android:layout_alignTop="@id/hzi_temperature"
+                                        android:textSize="@dimen/fcmain_textsize_medium"
+                                        android:textColor="?attr/colorText"
+                                        android:text="1000 hPa"/>
+
+
+                                <ImageView
+                                        android:id="@+id/hzi_humidityicon"
+                                        android:layout_height="@dimen/fcmain_textsize_medium"
+                                        android:layout_width="@dimen/fcmain_textsize_medium"
+                                        android:layout_below="@id/hzi_pressure"
+                                        android:layout_toRightOf="@id/hzi_temperature"
+                                        android:layout_gravity="top"
+                                        android:gravity="top"
+                                        android:layout_marginBottom="@dimen/slider_margin"
+                                        android:src="@mipmap/symbol_rh"/>
+
+                                <TextView
+                                        android:id="@+id/hzi_humidity"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignBottom="@id/hzi_humidityicon"
+                                        android:layout_toRightOf="@id/hzi_humidityicon"
+                                        android:textSize="@dimen/fcmain_textsize_medium"
+                                        android:textColor="?attr/colorText"
+                                        android:text="99%"/>
+
+                        </RelativeLayout>
+
+                        <ImageView
+                                android:id="@+id/hzi_groundicon"
+                                android:layout_height="@dimen/fcmain_textsize_medium"
+                                android:layout_width="@dimen/fcmain_textsize_medium"
+                                android:layout_below="@id/hzi_tempdisplaycontainer"
+                                android:layout_alignParentLeft="true"
+                                android:layout_gravity="top"
+                                android:gravity="top"
+                                android:layout_marginBottom="@dimen/slider_margin"
+                                android:src="@mipmap/symbol_temperature5cm"/>
+
+                        <TextView
+                                android:id="@+id/hzi_temperatureGround"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@id/hzi_groundicon"
+                                android:layout_toRightOf="@id/hzi_groundicon"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:textColor="?attr/colorText"
+                                android:layout_marginLeft="@dimen/slider_margin"
+                                android:text="100°"/>
+
+                        <ImageView
+                                android:id="@+id/hzi_cloudsicon"
+                                android:layout_height="@dimen/fcmain_textsize_medium"
+                                android:layout_width="@dimen/fcmain_textsize_medium"
+                                android:layout_alignBottom="@id/hzi_groundicon"
+                                android:layout_toRightOf="@id/hzi_temperatureGround"
+                                android:layout_gravity="top"
+                                android:gravity="top"
+                                android:layout_marginLeft="@dimen/slider_margin"
+                                android:src="@mipmap/symbol_cloud"/>
+
+                        <TextView
+                                android:id="@+id/hzi_clouds"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@id/hzi_groundicon"
+                                android:layout_toRightOf="@id/hzi_cloudsicon"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:layout_marginLeft="@dimen/slider_margin"
+                                android:textColor="?attr/colorText"
+                                android:text="33%"/>
+
+                        <ImageView
+                                android:id="@+id/hzi_precipitationicon"
+                                android:layout_height="@dimen/fcmain_textsize_medium"
+                                android:layout_width="@dimen/fcmain_textsize_medium"
+                                android:layout_below="@id/hzi_groundicon"
+                                android:layout_alignParentLeft="true"
+                                android:layout_gravity="top"
+                                android:gravity="top"
+                                android:layout_marginBottom="@dimen/slider_margin"
+                                android:src="@mipmap/symbol_precipitation"/>
+
+                        <TextView
+                                android:id="@+id/hzi_precipitation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@id/hzi_precipitationicon"
+                                android:layout_toRightOf="@id/hzi_precipitationicon"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:textColor="?attr/colorText"
+                                android:text="3%, 0.0"/>
+
+                        <TextView android:id="@+id/hzi_precipitation_unit1"
+                                  android:textSize="@dimen/widget_textsize_small"
+                                  android:textColor="?attr/colorText"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginLeft="2dp"
+                                  android:gravity="top"
+                                  android:layout_toRightOf="@id/hzi_precipitation"
+                                  android:layout_alignTop="@id/hzi_precipitation"
+                                  android:text=" kg/"/>
+
+                        <TextView android:id="@+id/hzi_precipitation_unit2"
+                                  android:textSize="@dimen/widget_textsize_small"
+                                  android:textColor="?attr/colorText"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginLeft="2dp"
+                                  android:gravity="bottom"
+                                  android:layout_toRightOf="@id/hzi_precipitation"
+                                  android:layout_alignBottom="@id/hzi_precipitation"
+                                  android:text=" m²/h"/>
+
+                        <ImageView
+                                android:id="@+id/hzi_windarrow"
+                                android:layout_width="@dimen/widget_textsize_large"
+                                android:layout_height="@dimen/widget_textsize_large"
+                                android:layout_gravity="left"
+                                android:layout_alignParentLeft="true"
+                                android:layout_below="@id/hzi_precipitationicon"
+                                android:layout_marginBottom="@dimen/slider_margin"
+                                android:src="@mipmap/not_available">
+                        </ImageView>
+
+                        <TextView
+                                android:id="@+id/hzi_wind"
+                                android:textSize="@dimen/widget_textsize_medium"
+                                android:textColor="?attr/colorText"
+                                android:gravity="left"
+                                android:layout_marginLeft="@dimen/slider_margin"
+                                android:layout_toRightOf="@id/hzi_windarrow"
+                                android:layout_alignBottom="@id/hzi_windarrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="- (-)"/>
+
+                        <TextView
+                                android:id="@+id/hzi_windunit"
+                                android:textSize="@dimen/widget_textsize_small"
+                                android:textColor="?attr/colorText"
+                                android:gravity="left"
+                                android:layout_toRightOf="@id/hzi_wind"
+                                android:layout_alignBottom="@id/hzi_windarrow"
+                                android:text="km/h"
+                                android:layout_marginLeft="2dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        <ImageView
+                                android:id="@+id/hzi_visibilityicon"
+                                android:layout_width="@dimen/widget_textsize_large"
+                                android:layout_height="@dimen/widget_textsize_large"
+                                android:layout_gravity="left"
+                                android:layout_alignParentLeft="true"
+                                android:layout_below="@id/hzi_windarrow"
+                                android:src="@mipmap/biocular">
+                        </ImageView>
+
+                        <TextView
+                                android:id="@+id/hzi_visibility"
+                                android:textSize="@dimen/widget_textsize_medium"
+                                android:textColor="?attr/colorText"
+                                android:gravity="left"
+                                android:layout_marginLeft="2dp"
+                                android:layout_toRightOf="@id/hzi_visibilityicon"
+                                android:layout_alignBottom="@id/hzi_visibilityicon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""/>
+
+                        <TextView
+                                android:id="@+id/hzi_visibilitybelowprob"
+                                android:textSize="@dimen/widget_textsize_medium"
+                                android:textColor="?attr/colorText"
+                                android:gravity="left"
+                                android:layout_marginLeft="2dp"
+                                android:layout_toRightOf="@id/hzi_visibility"
+                                android:layout_alignBottom="@id/hzi_visibilityicon"
+                                android:layout_marginRight="@dimen/slider_margin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""/>
+
+                        <TextView
+                                android:id="@+id/hzi_visibilitybelowprobunit1"
+                                android:textSize="@dimen/widget_textsize_small"
+                                android:textColor="?attr/colorText"
+                                android:gravity="left"
+                                android:layout_toRightOf="@id/hzi_visibilitybelowprob"
+                                android:layout_alignTop="@id/hzi_visibilitybelowprob"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="&lt;1"/>
+
+                        <TextView
+                                android:id="@+id/hzi_visibilitybelowprobunit2"
+                                android:textSize="@dimen/widget_textsize_small"
+                                android:textColor="?attr/colorText"
+                                android:gravity="left"
+                                android:layout_toRightOf="@id/hzi_visibilitybelowprob"
+                                android:layout_alignBottom="@id/hzi_visibilitybelowprob"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="km"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:id="@+id/hzi_probcontainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="@dimen/slider_margin"
+                        android:layout_marginBottom="@dimen/slider_margin">
+
+                        <ImageView android:id="@+id/hzitem_var1_symbol"
+                                   android:layout_width="@dimen/fcmain_textsize_medium"
+                                   android:layout_height="@dimen/fcmain_textsize_medium"
+                                   android:layout_alignParentTop="true"
+                                   android:layout_centerHorizontal="true"
+                                   android:layout_marginLeft="@dimen/slider_marginDouble"
+                                   android:src="@mipmap/symbol_cloud" />
+
+                        <TextView android:id="@+id/hzitem_var1_text"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginLeft="@dimen/slider_margin"
+                                  android:layout_toRightOf="@id/hzitem_var1_symbol"
+                                  android:layout_alignBaseline="@id/hzitem_var1_symbol"
+                                  android:textSize="@dimen/fcmain_textsize_medium"
+                                  android:textColor="?attr/colorTextLight"
+                                  android:lines="1"
+                                  android:text="--%"/>
+
+                        <ImageView android:id="@+id/hzitem_var2_symbol"
+                                   android:layout_width="@dimen/fcmain_textsize_medium"
+                                   android:layout_height="@dimen/fcmain_textsize_medium"
+                                   android:layout_below="@id/hzitem_var1_symbol"
+                                   android:layout_centerHorizontal="true"
+                                   android:layout_marginLeft="@dimen/slider_marginDouble"
+                                   android:layout_marginTop="@dimen/slider_marginDouble"
+                                   android:src="@mipmap/symbol_cloud" />
+
+                        <TextView android:id="@+id/hzitem_var2_text"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginLeft="@dimen/slider_margin"
+                                  android:layout_toRightOf="@id/hzitem_var2_symbol"
+                                  android:layout_alignBottom="@id/hzitem_var2_symbol"
+                                  android:textSize="@dimen/fcmain_textsize_medium"
+                                  android:textColor="?attr/colorTextLight"
+                                  android:lines="1"
+                                  android:text="--%"/>
+
+                        <ImageView android:id="@+id/hzitem_var3_symbol"
+                                   android:layout_width="@dimen/fcmain_textsize_medium"
+                                   android:layout_height="@dimen/fcmain_textsize_medium"
+                                   android:layout_below="@id/hzitem_var2_symbol"
+                                   android:layout_centerHorizontal="true"
+                                   android:layout_marginLeft="@dimen/slider_marginDouble"
+                                   android:layout_marginTop="@dimen/slider_marginDouble"
+                                   android:src="@mipmap/symbol_cloud" />
+
+                        <TextView android:id="@+id/hzitem_var3_text"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginLeft="@dimen/slider_margin"
+                                  android:layout_toRightOf="@id/hzitem_var3_symbol"
+                                  android:layout_alignBottom="@id/hzitem_var3_symbol"
+                                  android:textSize="@dimen/fcmain_textsize_medium"
+                                  android:textColor="?attr/colorTextLight"
+                                  android:lines="1"
+                                  android:text="--%"/>
+
+                        <ImageView android:id="@+id/hzitem_var4_symbol"
+                                   android:layout_width="@dimen/fcmain_textsize_medium"
+                                   android:layout_height="@dimen/fcmain_textsize_medium"
+                                   android:layout_below="@id/hzitem_var3_symbol"
+                                   android:layout_centerHorizontal="true"
+                                   android:layout_marginTop="@dimen/slider_marginDouble"
+                                   android:src="@mipmap/symbol_cloud" />
+
+                        <TextView android:id="@+id/hzitem_var4_text"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginLeft="@dimen/slider_margin"
+                                  android:layout_toRightOf="@id/hzitem_var4_symbol"
+                                  android:layout_alignBottom="@id/hzitem_var4_symbol"
+                                  android:textSize="@dimen/fcmain_textsize_medium"
+                                  android:textColor="?attr/colorTextLight"
+                                  android:lines="1"
+                                  android:text="--%"/>
+
+                        <ImageView android:id="@+id/hzitem_var5_symbol"
+                                   android:layout_width="@dimen/fcmain_textsize_medium"
+                                   android:layout_height="@dimen/fcmain_textsize_medium"
+                                   android:layout_below="@id/hzitem_var4_symbol"
+                                   android:layout_centerHorizontal="true"
+                                   android:layout_marginTop="@dimen/slider_marginDouble"
+                                   android:layout_marginLeft="@dimen/slider_marginDouble"
+                                   android:src="@mipmap/symbol_cloud" />
+
+                        <TextView android:id="@+id/hzitem_var5_text"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginLeft="@dimen/slider_margin"
+                                  android:layout_toRightOf="@id/hzitem_var5_symbol"
+                                  android:layout_alignBottom="@id/hzitem_var5_symbol"
+                                  android:textSize="@dimen/fcmain_textsize_medium"
+                                  android:textColor="?attr/colorTextLight"
+                                  android:lines="1"
+                                  android:text="--%"/>
+
+                        <ImageView android:id="@+id/hzitem_var6_symbol"
+                                   android:layout_width="@dimen/fcmain_textsize_medium"
+                                   android:layout_height="@dimen/fcmain_textsize_medium"
+                                   android:layout_below="@id/hzitem_var5_symbol"
+                                   android:layout_centerHorizontal="true"
+                                   android:layout_marginTop="@dimen/slider_marginDouble"
+                                   android:layout_marginLeft="@dimen/slider_marginDouble"
+                                   android:src="@mipmap/symbol_cloud" />
+
+                        <TextView android:id="@+id/hzitem_var6_text"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginLeft="@dimen/slider_margin"
+                                  android:layout_toRightOf="@id/hzitem_var6_symbol"
+                                  android:layout_alignBottom="@id/hzitem_var6_symbol"
+                                  android:textSize="@dimen/fcmain_textsize_medium"
+                                  android:textColor="?attr/colorTextLight"
+                                  android:lines="1"
+                                  android:text="--%"/>
+
+                </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/hzi_chartcontainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/hzi_topcontainer"
+                android:layout_alignParentBottom="true"
+                android:weightSum="3">
+
+                <RelativeLayout
+                        android:id="@+id/hzi_chartcontainer_rain"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="@dimen/fcmain_textsize_medium">
+
+                        <TextView
+                                android:id="@+id/hzi_rainchartlabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:textColor="?attr/colorText"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentLeft="true"
+                                android:text="Rain"/>
+
+                        <ImageView
+                                android:id="@+id/hzi_precipitationdetails"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/hzi_rainchartlabel"
+                                android:layout_alignParentLeft="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:id="@+id/hzi_chartcontainer_clouds"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center">
+
+                        <TextView
+                                android:id="@+id/hzi_cloudschartlabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:textColor="?attr/colorText"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentLeft="true"
+                                android:text="Clouds"/>
+
+                        <ImageView
+                                android:id="@+id/hzi_clouddetails"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/hzi_cloudschartlabel"
+                                android:layout_alignParentLeft="true"/>
+                </RelativeLayout>
+
+        </LinearLayout>
+
+</RelativeLayout>

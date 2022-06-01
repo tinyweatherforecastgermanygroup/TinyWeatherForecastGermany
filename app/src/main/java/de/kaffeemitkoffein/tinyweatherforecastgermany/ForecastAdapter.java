@@ -84,12 +84,12 @@ public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherFo
     this.display_endofday_bar = weatherSettings.display_endofday_bar;
     this.display_gradient = weatherSettings.display_gradient;
     this.display_wind_type = weatherSettings.getWindDisplayType();
-    this.display_wind_unit = weatherSettings.getWindDisplayUnit();
+    this.display_wind_unit = WeatherSettings.getWindDisplayUnit(context);
     this.display_distance_unit = weatherSettings.getDistanceDisplayUnit();
     this.display_layout = weatherSettings.getDisplayLayout();
     this.displaySimpleBar = weatherSettings.display_simple_bar;
     this.display_wind_arc = weatherSettings.display_wind_arc;
-    this.display_wind_arc_perdiod = weatherSettings.getWindArcPeriod();
+    this.display_wind_arc_perdiod = WeatherSettings.getWindArcPeriod(context);
     this.warnings_disabled = weatherSettings.warnings_disabled;
     this.viewModel = weatherSettings.viewModel;
     layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -944,7 +944,7 @@ public static String formatDistanceNumberToString(double d){
 }
 
 public static CharSequence getVisibilityCharSequence(Weather.WeatherInfo weatherInfo, int display_distance_unit) {
-    if (!weatherInfo.hasVisibility() && !weatherInfo.hasProbVisibilityBelow1km()) {
+    if (!weatherInfo.hasVisibility()) {
         return null;
     } else {
         StringBuilder s = new StringBuilder();

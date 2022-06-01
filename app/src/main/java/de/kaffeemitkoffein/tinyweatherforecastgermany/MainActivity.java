@@ -28,6 +28,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -38,9 +40,12 @@ import android.os.Bundle;
 import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.telephony.mbms.MbmsErrors;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -200,6 +205,86 @@ public class MainActivity extends Activity {
                     }
                 }
             }
+        }
+    };
+
+    final AdapterView.OnItemLongClickListener weatherItemLongClickListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            // i seems to be the absolute position in the adapterview, l is always "0"
+            if (weatherCard==null){
+                weatherCard = new Weather().getCurrentWeatherInfo(context);
+            }
+            ArrayList<Weather.WeatherInfo> weatherInfoArrayList = getCustomForecastWeatherInfoArray(weatherCard);
+            Weather.WeatherInfo weatherInfo = weatherInfoArrayList.get(i);
+            long time = weatherInfo.getTimestamp();
+            Log.v("TWFG","KLICK i="+i+" TIME OF i => "+Weather.GetDateString(Weather.SIMPLEDATEFORMATS.DETAILED,weatherInfo.getTimestamp()));
+            int hoursToDisplay = 1;
+            if (WeatherSettings.getDisplayType(context) == WeatherSettings.DISPLAYTYPE_24HOURS){
+                hoursToDisplay = 24;
+            }
+            if (WeatherSettings.getDisplayType(context) == WeatherSettings.DISPLAYTYPE_6HOURS){
+                hoursToDisplay = 6;
+            }
+            // seek the absolute offset position for the horizontal detail display
+            int poisitionEnd = weatherCard.forecast1hourly.size()-1;
+            while ((poisitionEnd>0) && (weatherCard.forecast1hourly.get(poisitionEnd).getTimestamp()>time)){
+                poisitionEnd--;
+            }
+            // calculate left offset & adapt number of items if applicable
+            int positionStart = poisitionEnd - hoursToDisplay;
+            if (positionStart<0){
+                positionStart = 0;
+            }
+            poisitionEnd = positionStart + 24;
+            if (poisitionEnd>weatherCard.forecast1hourly.size()-1){
+                poisitionEnd = weatherCard.forecast1hourly.size()-1;
+            }
+            ArrayList<Weather.WeatherInfo> itemsToDisplay = new ArrayList<Weather.WeatherInfo>();
+            for (int position=positionStart; position<poisitionEnd; position++){
+                Weather.WeatherInfo weatherInfo1 = weatherCard.forecast1hourly.get(position);
+                itemsToDisplay.add(weatherInfo1);
+            }
+            // display PopUp
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int displayWidth  = Math.round(displayMetrics.widthPixels);
+            int displayHeight = Math.round(displayMetrics.heightPixels);
+            final boolean isLandscape = displayWidth>displayHeight;
+            int width  = Math.round(displayWidth * 0.66f);
+            int height = Math.round(displayHeight * 0.66f);
+            int borderLeft = Math.round(displayMetrics.widthPixels * 0.165f);
+            int borderTop  = Math.round(displayMetrics.heightPixels * 0.165f);
+            if (isLandscape){
+                width  = Math.round(displayWidth * 0.85f);
+                height = Math.round(displayHeight * 0.85f);
+                borderLeft = Math.round(displayMetrics.widthPixels * 0.075f);
+                borderTop  = Math.round(displayMetrics.heightPixels * 0.075f);
+            }
+            int xoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderLeft,displayMetrics));
+            int yoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderTop,displayMetrics));
+            View parentView = (View) findViewById(R.id.main_layoutholder);
+            WeatherSliderView weatherSliderView = new WeatherSliderView(getApplicationContext(),weatherCard);
+            boolean popUpWindowIsScrollable = weatherSliderView.setItems(width,height,itemsToDisplay);
+            weatherSliderView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View popupView = layoutInflater.inflate(R.layout.popupwindow,null);
+            final PopupWindow popupWindow = new PopupWindow(popupView,width,height,true);
+            RelativeLayout hookUp = (RelativeLayout) popupView.findViewById(R.id.popupwindow_relativelayout2);
+            hookUp.addView(weatherSliderView);
+            // if items do not fill the window and no scrolling is present, add a touch listener to cancel the window upon touch, as
+            // touch events are not handled by the underlying HorizontalScrollView
+            if (!popUpWindowIsScrollable){
+                popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        popupWindow.dismiss();
+                        return true;
+                    }
+                });
+            }
+            popupWindow.showAtLocation(parentView, Gravity.NO_GRAVITY, xoffset,yoffset);
+            return true;
         }
     };
 
@@ -614,6 +699,8 @@ public class MainActivity extends Activity {
                 }
             }
         });
+        // invalidate current weather data
+        weatherCard = null;
         if (stationsManager!=null){
             try {
                 int station_pos = stationsManager.getPositionFromDescription(station_description);
@@ -838,6 +925,12 @@ public class MainActivity extends Activity {
             textView_station_geo.setVisibility(View.INVISIBLE);
             textView_station_geo.invalidate();
         }
+        ImageView overviewChartImageView = (ImageView) findViewById(R.id.main_overview_chart);
+        if (overviewChartImageView!=null){
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            overviewChartImageView.setImageBitmap(ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,displayMetrics.heightPixels/10,currentWeatherInfo.forecast1hourly));
+        }
     }
 
     private int get24passedPosition(CurrentWeatherInfo currentWeatherInfo,int lasthourlypostion){
@@ -886,6 +979,8 @@ public class MainActivity extends Activity {
             forecastAdapter.setWarnings(localWarnings);
         }
         weatherList.setAdapter(forecastAdapter);
+        // new
+        weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
         //UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
    }
 

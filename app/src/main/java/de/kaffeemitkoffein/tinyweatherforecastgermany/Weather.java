@@ -23,8 +23,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import org.astronomie.info.Astronomy;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +38,8 @@ public final class Weather {
     public final static double KelvinConstant = 273.15;
     public final static int MILLIS_IN_HOUR = 60*60*1000;
     public final static int DELTA_T = 69;
+
+    public final static int PROB_OF_PRECIPITATION_ITEM_COUNT=12;
 
     public static class WeatherLocation implements Comparator<WeatherLocation> {
 
@@ -198,6 +204,36 @@ public final class Weather {
 
     public final static int DATA_SIZE = 250;
 
+    public static class Clouds{
+        private Integer N;          // 0-100% total cloud cover
+        private Integer N05;        // % cloud cover below 500ft
+        private Integer Nl;         // % low cloud cover (lower than 2 km)
+        private Integer Nm;         // % midlevel cloud cover (2-7 km)
+        private Integer Nh;         // % high cloud cover (>7 km)
+        private Integer Nlm;        // % cloud cover low and mid level clouds below 7 km
+        private Double H_BsC;       // m; cloud base of convective clouds
+
+        public Integer[] getIntArray(){
+            Integer[] result = new Integer[7];
+            result[0] = this.N;
+            result[1] = this.N05;
+            result[2] = this.Nl;
+            result[3] = this.Nm;
+            result[4] = this.Nh;
+            result[5] = this.Nlm;
+            if (this.H_BsC==null){
+                result[6] = null;
+            } else {
+                result[6] = (int) Math.round(this.H_BsC);
+            }
+            return result;
+        }
+
+        public boolean hasHeightValues(){
+            return ((this.N05!=null) && (this.Nl!=null) && (this.Nm!=null) && (this.Nh!=null));
+        }
+    }
+
     public static class WeatherInfo{
         private long timestamp;
         private int forecast_type = ForecastType.UNKNOWN;
@@ -211,7 +247,6 @@ public final class Weather {
         private Double wind_direction;
         private Double flurries;
         private Double precipitation;
-        private Integer clouds;
         private Integer prob_thunderstorms;
         private Integer prob_precipitation;
         private Integer prob_solid_precipitation;
@@ -223,6 +258,8 @@ public final class Weather {
         private Double pressure;
         private Double uv;
         private Double td;
+        private Integer[] probOfPrecipitation;
+        public Clouds clouds;
 
         final class ForecastType{
             public static final int CURRENT  = 0;
@@ -235,7 +272,7 @@ public final class Weather {
         }
 
         public WeatherInfo(){
-
+            this.clouds = new Clouds();
         }
 
         public WeatherInfo(int forecast_type){
@@ -287,7 +324,31 @@ public final class Weather {
         }
 
         public void setClouds(Integer clouds){
-            this.clouds = clouds;
+            this.clouds.N = clouds;
+        }
+
+        public void setClouds_N05(Integer clouds){
+            this.clouds.N05 = clouds;
+        }
+
+        public void setClouds_Nl(Integer clouds){
+            this.clouds.Nl = clouds;
+        }
+
+        public void setClouds_Nm(Integer clouds){
+            this.clouds.Nm = clouds;
+        }
+
+        public void setClouds_Nh(Integer clouds){
+            this.clouds.Nh = clouds;
+        }
+
+        public void setClouds_Nlm(Integer clouds){
+            this.clouds.Nlm = clouds;
+        }
+
+        public void setClouds_H_BsC(Double clouds){
+            this.clouds.H_BsC = clouds;
         }
 
         public void setProbThunderstorms(Integer thunderstorms){
@@ -332,6 +393,14 @@ public final class Weather {
 
         public void setTd(Double td) {
             this.td = td;
+        }
+
+        public boolean hasPrecipitationDetails(){
+            return probOfPrecipitation != null;
+        }
+
+        public void setPrecipitationDetails(Integer[] ints){
+           this.probOfPrecipitation = ints;
         }
 
         public long getTimestamp(){
@@ -528,21 +597,21 @@ public final class Weather {
 
         public String getWindSpeedString(Context context, boolean unit){
             WeatherSettings weatherSettings = new WeatherSettings(context);
-            if (weatherSettings.getWindDisplayUnit()==WindDisplayUnit.KNOTS){
+            if (weatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.KNOTS){
                 String windspeedstring = String.valueOf(getWindSpeedInKnotsInt());
                 if (unit){
                     windspeedstring = windspeedstring + "kn";
                 }
                 return windspeedstring;
             }
-            if (weatherSettings.getWindDisplayUnit()==WindDisplayUnit.BEAUFORT){
+            if (weatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.BEAUFORT){
                 String windspeedstring = String.valueOf(getWindSpeedInBeaufortInt());
                 if (unit){
                     windspeedstring = windspeedstring + "bf";
                 }
                 return windspeedstring;
             }
-            if (weatherSettings.getWindDisplayUnit()==WindDisplayUnit.METERS_PER_SECOND){
+            if (weatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.METERS_PER_SECOND){
                 String windspeedstring = String.valueOf(getWindSpeedInMsInt());
                 if (unit){
                     windspeedstring = windspeedstring + "m/s";
@@ -834,14 +903,80 @@ public final class Weather {
         }
 
         public boolean hasClouds(){
-            if (clouds!=null){
+            if (clouds.N!=null){
                 return true;
             }
             return false;
         }
 
         public int getClouds(){
-            return clouds;
+            return clouds.N;
+        }
+
+        public boolean hasClouds_N05(){
+            if (clouds.N05!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getClouds_N05(){
+            return clouds.N05;
+        }
+
+        public boolean hasClouds_Nl(){
+            if (clouds.Nl!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getClouds_Nl(){
+            return clouds.Nl;
+        }
+
+        public boolean hasClouds_Nm(){
+            if (clouds.Nm!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getClouds_Nm(){
+            return clouds.Nm;
+        }
+
+        public boolean hasClouds_Nh(){
+            if (clouds.Nh!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getClouds_Nh(){
+            return clouds.Nh;
+        }
+
+        public boolean hasClouds_Nlm(){
+            if (clouds.Nlm!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public int getClouds_Nlm(){
+            return clouds.Nlm;
+        }
+
+        public boolean hasClouds_H_BsC(){
+            if (clouds.H_BsC!=null){
+                return true;
+            }
+            return false;
+        }
+
+        public double getClouds_H_BsC(){
+            return clouds.H_BsC;
         }
 
         public boolean hasProbThunderstorms(){
@@ -990,6 +1125,10 @@ public final class Weather {
 
         public boolean isConditionCalculated(){
             return condition_is_calculated;
+        }
+
+        public Integer[] getPrecipitationDetails(){
+            return this.probOfPrecipitation;
         }
 
     }
@@ -1260,5 +1399,49 @@ public final class Weather {
         }
     }
 
+    public static String getWindString(Context context,CurrentWeatherInfo weatherCard){
+        if (weatherCard.currentWeather.hasWindSpeed()){
+            String windstring="";
+            String windspeed = "";
+            if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.METERS_PER_SECOND){
+                windspeed = String.valueOf(weatherCard.currentWeather.getWindSpeedInMsInt())+" ";
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.KILOMETERS_PER_HOUR){
+                windspeed = String.valueOf(weatherCard.currentWeather.getWindSpeedInKmhInt())+" ";
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.BEAUFORT){
+                windspeed = String.valueOf(weatherCard.currentWeather.getWindSpeedInBeaufortInt())+" ";
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.KNOTS){
+                windspeed = String.valueOf(weatherCard.currentWeather.getWindSpeedInKnotsInt())+" ";
+            }
+            windstring = windstring + windspeed;
+            if (weatherCard.currentWeather.hasFlurries()){
+                String flurries = "";
+                switch (WeatherSettings.getWindDisplayUnit(context)){
+                    case Weather.WindDisplayUnit.METERS_PER_SECOND: flurries=String.valueOf(weatherCard.currentWeather.getFlurriesInMsInt()); break;
+                    case Weather.WindDisplayUnit.BEAUFORT: flurries=String.valueOf(weatherCard.currentWeather.getFlurriesInBeaufortInt()); break;
+                    case Weather.WindDisplayUnit.KILOMETERS_PER_HOUR: flurries=String.valueOf(weatherCard.currentWeather.getFlurriesInKmhInt()); break;
+                    case Weather.WindDisplayUnit.KNOTS: flurries=String.valueOf(weatherCard.currentWeather.getFlurriesInKnotsInt());
+                }
+                windstring = windstring + " ("+flurries+") ";
+            }
+            return windstring;
+        }
+        return null;
+    }
+
+    final static class SIMPLEDATEFORMATS {
+        final static SimpleDateFormat DETAILED  = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+        final static SimpleDateFormat DATETIME  = new SimpleDateFormat("dd.MM, HH:mm");
+        final static SimpleDateFormat TIME      = new SimpleDateFormat("HH:mm");
+        final static SimpleDateFormat HOUR      = new SimpleDateFormat("HH");
+        final static SimpleDateFormat DAYOFWEEK = new SimpleDateFormat("EE");
+    }
+
+
+    final static String GetDateString(SimpleDateFormat simpleDateFormat, long time){
+        return simpleDateFormat.format(time);
+    }
 }
 

@@ -114,84 +114,99 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:text="@string/main_selectstation"
-            android:textColor="?attr/colorText"
-            android:layout_gravity="left"
-            android:textSize="@dimen/fcmain_textsize_large"
-            android:id="@+id/main_selectstation_text"/>
-
-        <TextView
-            android:id="@+id/main_update_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:textColor="?attr/colorText"
-            android:textSize="@dimen/fcmain_textsize_medium_fixed"
-            android:text="00:00:00">
-        </TextView>
-
-        <TextView
-            android:id="@+id/main_station_geo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/main_update_time"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:textColor="?attr/colorText"
-            android:textSize="@dimen/fcmain_textsize_medium_fixed"
-            android:text="">
-        </TextView>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dwd_notice_app"
-            android:layout_alignParentBottom="true"
-            android:textColor="?attr/colorTextDark"
-            android:background="?attr/colorPrimaryDark"
-            android:textAlignment="center"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center"
-            android:layout_centerVertical="true"
-            android:textSize="@dimen/fcmain_textsize_medium"
-            android:id="@+id/main_dwd_notice_text"/>
-
-        <LinearLayout
-            android:id="@+id/main_spinner_linearlayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="20"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_below="@id/main_station_geo">
-
-            <Spinner android:id="@+id/stations_spinner"
-                android:layout_width="0dp"
-                android:layout_weight="18"
-                android:layout_height="wrap_content"/>
-
-            <ImageView android:id="@+id/main_reset_favorites"
-                android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/dwd_notice_app"
+                android:layout_alignParentBottom="true"
+                android:textColor="?attr/colorTextDark"
+                android:background="?attr/colorPrimaryDark"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:tint="?attr/colorText"
-                android:src="?attr/ic_highlight_off"/>
-        </LinearLayout>
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:id="@+id/main_dwd_notice_text"/>
+
+        <RelativeLayout
+                android:id="@+id/main_top_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/main_selectstation"
+                    android:textColor="?attr/colorText"
+                    android:layout_gravity="left"
+                    android:textSize="@dimen/fcmain_textsize_large"
+                    android:id="@+id/main_selectstation_text"/>
+
+            <TextView
+                    android:id="@+id/main_update_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:textColor="?attr/colorText"
+                    android:textSize="@dimen/fcmain_textsize_medium_fixed"
+                    android:text="00:00:00">
+            </TextView>
+
+            <TextView
+                    android:id="@+id/main_station_geo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/main_update_time"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:textColor="?attr/colorText"
+                    android:textSize="@dimen/fcmain_textsize_medium_fixed"
+                    android:text="">
+            </TextView>
+
+            <LinearLayout
+                    android:id="@+id/main_spinner_linearlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="20"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_below="@id/main_station_geo">
+
+                <Spinner android:id="@+id/stations_spinner"
+                         android:layout_width="0dp"
+                         android:layout_weight="18"
+                         android:layout_height="wrap_content"/>
+
+                <ImageView android:id="@+id/main_reset_favorites"
+                           android:layout_width="0dp"
+                           android:layout_weight="2"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="center"
+                           android:gravity="center"
+                           android:tint="?attr/colorText"
+                           android:src="?attr/ic_highlight_off"/>
+            </LinearLayout>
+
+            <ImageView
+                    android:id="@+id/main_overview_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_below="@id/main_spinner_linearlayout"
+                    android:background="?attr/colorPrimaryDark"/>
+
+        </RelativeLayout>
 
         <ListView android:id="@+id/main_listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="?attr/colorPrimaryLight"
             android:dividerHeight="1dp"
-            android:layout_below="@id/main_spinner_linearlayout"
+            android:layout_below="@id/main_top_container"
             android:layout_above="@id/main_dwd_notice_text"
             android:scrollbars="vertical"
             android:scrollbarThumbVertical="?attr/colorTextDark"

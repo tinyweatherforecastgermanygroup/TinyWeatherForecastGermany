@@ -19,6 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -95,6 +96,49 @@ public class CurrentWeatherInfo{
         return null;
     }
 
+    private Integer[] getProbOfPrecipitation(RawWeatherInfo rawWeatherInfo, int position){
+        Integer[] result = new Integer[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT];
+        try {
+            result[0] = Math.round(Float.parseFloat(rawWeatherInfo.R101[position]));
+            result[1] = Math.round(Float.parseFloat(rawWeatherInfo.R102[position]));
+            result[2] = Math.round(Float.parseFloat(rawWeatherInfo.R103[position]));
+            result[3] = Math.round(Float.parseFloat(rawWeatherInfo.R105[position]));
+            result[4] = Math.round(Float.parseFloat(rawWeatherInfo.R107[position]));
+            result[5] = Math.round(Float.parseFloat(rawWeatherInfo.R110[position]));
+            result[6] = Math.round(Float.parseFloat(rawWeatherInfo.R120[position]));
+            result[7] = Math.round(Float.parseFloat(rawWeatherInfo.R130[position]));
+            result[8] = Math.round(Float.parseFloat(rawWeatherInfo.R150[position]));
+            result[9] = Math.round(Float.parseFloat(rawWeatherInfo.RR1o1[position]));
+            result[10] = Math.round(Float.parseFloat(rawWeatherInfo.RR1w1[position]));
+            result[11] = Math.round(Float.parseFloat(rawWeatherInfo.RR1u1[position]));
+            return result;
+        } catch (NumberFormatException e){
+            Log.v("TWFG","ERROR : "+e.getMessage());
+            return null;
+        }
+    }
+
+    private Integer[] getProbOfPrecipitationAverage(RawWeatherInfo rawWeatherInfo, int start, int end){
+        if (end>rawWeatherInfo.elements){
+            end=rawWeatherInfo.elements;
+        }
+        if (start<0){
+            start=0;
+        }
+        int length=end-start;
+        Integer[] result = new Integer[length];
+        for (int i=start; i<end; i++){
+            Integer[] pa = getProbOfPrecipitation(rawWeatherInfo,i);
+            for (int j=0; j<pa.length; j++){
+                result[j]=result[j]+pa[j];
+            }
+        }
+        for (int j=0; j<result.length; j++){
+            result[j]=result[j]/length;
+        }
+        return result;
+    }
+
     public CurrentWeatherInfo(Context context, RawWeatherInfo rawWeatherInfo){
         if (rawWeatherInfo==null){
             return;
@@ -119,6 +163,12 @@ public class CurrentWeatherInfo{
             currentWeather.setConditionCode(getIntItem((rawWeatherInfo.WPc11[current_weather_position])));
         }
         currentWeather.setClouds(getIntItem(rawWeatherInfo.N[current_weather_position]));
+        currentWeather.setClouds_N05(getIntItem(rawWeatherInfo.N05[current_weather_position]));
+        currentWeather.setClouds_Nl(getIntItem(rawWeatherInfo.Nl[current_weather_position]));
+        currentWeather.setClouds_Nm(getIntItem(rawWeatherInfo.Nm[current_weather_position]));
+        currentWeather.setClouds_Nh(getIntItem(rawWeatherInfo.Nh[current_weather_position]));
+        currentWeather.setClouds_Nlm(getIntItem(rawWeatherInfo.Nlm[current_weather_position]));
+        currentWeather.setClouds_H_BsC(getDoubleItem(rawWeatherInfo.H_BsC[current_weather_position]));
         currentWeather.setTemperature(getDoubleItem(rawWeatherInfo.TTT[current_weather_position]));
         currentWeather.setTemperature5cm(getDoubleItem(rawWeatherInfo.T5cm[current_weather_position]));
         currentWeather.setLowTemperature(rawWeatherInfo.getMinTemperature(current_weather_position,next_midnight_position));
@@ -138,6 +188,7 @@ public class CurrentWeatherInfo{
         currentWeather.setPressure(getDoubleItem(rawWeatherInfo.PPPP[current_weather_position]));
         currentWeather.setUV(getDoubleItem(rawWeatherInfo.RRad1[current_weather_position]));
         currentWeather.setTd(getDoubleItem(rawWeatherInfo.Td[current_weather_position]));
+        currentWeather.setPrecipitationDetails(getProbOfPrecipitation(rawWeatherInfo,current_weather_position));
         if (!currentWeather.hasCondition()){
             currentWeather.calculateMissingCondition();
         }
@@ -154,6 +205,12 @@ public class CurrentWeatherInfo{
                 wi.setConditionCode(getIntItem((rawWeatherInfo.WPc11[index])));
             }
             wi.setClouds(getIntItem(rawWeatherInfo.N[index]));
+            wi.setClouds_N05(getIntItem(rawWeatherInfo.N05[index]));
+            wi.setClouds_Nl(getIntItem(rawWeatherInfo.Nl[index]));
+            wi.setClouds_Nm(getIntItem(rawWeatherInfo.Nm[index]));
+            wi.setClouds_Nh(getIntItem(rawWeatherInfo.Nh[index]));
+            wi.setClouds_Nlm(getIntItem(rawWeatherInfo.Nlm[index]));
+            wi.setClouds_H_BsC(getDoubleItem(rawWeatherInfo.H_BsC[index]));
             wi.setTemperature(getDoubleItem(rawWeatherInfo.TTT[index]));
             wi.setTemperature5cm(getDoubleItem(rawWeatherInfo.TTT[index]));
             if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
@@ -177,7 +234,7 @@ public class CurrentWeatherInfo{
             wi.setPressure(getDoubleItem(rawWeatherInfo.PPPP[index]));
             wi.setUV(getDoubleItem(rawWeatherInfo.RRad1[index]));
             wi.setTd(getDoubleItem(rawWeatherInfo.Td[index]));
-
+            wi.setPrecipitationDetails(getProbOfPrecipitation(rawWeatherInfo,index));
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
@@ -202,6 +259,12 @@ public class CurrentWeatherInfo{
                 wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
             }
             wi.setClouds(rawWeatherInfo.getAverageClouds(start, index));
+            wi.setClouds_N05(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.N05,start,index));
+            wi.setClouds_Nl(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nl,start,index));
+            wi.setClouds_Nm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nm,start,index));
+            wi.setClouds_Nh(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nh,start,index));
+            wi.setClouds_Nlm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nlm,start,index));
+            wi.setClouds_H_BsC(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.H_BsC,start,index));
             wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT,start, index));
             wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start, index));
             if (start==startposition6h){
@@ -258,6 +321,7 @@ public class CurrentWeatherInfo{
             wi.setPressure(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.PPPP, start, index));
             wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1, start, index));
             wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td,start,index));
+            //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
@@ -278,6 +342,12 @@ public class CurrentWeatherInfo{
             wi.setTimestamp(timesteps[index]);
             wi.setConditionCode(getIntItem(rawWeatherInfo.WPcd1[index]));
             wi.setClouds(rawWeatherInfo.getAverageClouds(start,index));
+            wi.setClouds_N05(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.N05,start,index));
+            wi.setClouds_Nl(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nl,start,index));
+            wi.setClouds_Nm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nm,start,index));
+            wi.setClouds_Nh(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nh,start,index));
+            wi.setClouds_Nlm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nlm,start,index));
+            wi.setClouds_H_BsC(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.H_BsC,start,index));
             wi.setTemperature(rawWeatherInfo.getAverageTemperature(start,index));
             wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start,index));
             if (index==startposition24h){
@@ -322,6 +392,7 @@ public class CurrentWeatherInfo{
             wi.setPressure(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1,start,index));
             wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1,start,index));
             wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td,start,index));
+            //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }

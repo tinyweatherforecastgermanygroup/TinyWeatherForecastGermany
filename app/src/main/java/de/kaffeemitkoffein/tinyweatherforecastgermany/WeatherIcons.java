@@ -86,6 +86,7 @@ public class WeatherIcons {
     final static int IC_GPS_FIXED = 1103;
     final static int IC_ANNOUNCEMENT = 1104;
     final static int WARNING_ICON = 1105;
+    final static int CONVECTIVE_CLOUDS1 = 1106;
 
     public static int getIconResource(Context context, int icon) {
         int result = 0;
@@ -245,6 +246,7 @@ public class WeatherIcons {
             case IC_GPS_FIXED: result = R.mipmap.ic_gps_fixed_white_24dp; break;
             case IC_ANNOUNCEMENT: result = R.mipmap.ic_announcement_white_24dp; break;
             case WARNING_ICON: result = R.mipmap.warning_icon; break;
+            case CONVECTIVE_CLOUDS1:
         }
         // override with dark variants if applicable
         if (!ThemePicker.isDarkTheme(context)) {
@@ -299,6 +301,17 @@ public class WeatherIcons {
         options.inMutable = true;
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),resource,options);
         ThemePicker.applyColor(context,bitmap,fromWidget);
+        return bitmap;
+    }
+
+    public static Bitmap getIconBitmap(Context context, int icon, boolean fromWidget, boolean applyFilter){
+        int resource = getIconResource(context,icon);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = true;
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),resource,options);
+        if (applyFilter){
+            ThemePicker.applyColor(context,bitmap,fromWidget);
+        }
         return bitmap;
     }
 

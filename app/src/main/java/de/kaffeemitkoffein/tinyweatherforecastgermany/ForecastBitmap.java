@@ -20,17 +20,17 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
+import android.graphics.*;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.util.SparseArray;
+import android.widget.PopupWindow;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -228,7 +228,7 @@ public class ForecastBitmap{
         BITMAP_CACHE.clear();
     }
 
-    private void drawPolygon(Canvas canvas, float[] poly_x, float[] poly_y, int color, int alpha){
+    private static void drawPolygon(Canvas canvas, float[] poly_x, float[] poly_y, int color, int alpha){
         POLY_PAINT.setColor(color);
         POLY_PAINT.setAlpha(alpha);
         Path path = new Path();
@@ -462,6 +462,342 @@ public class ForecastBitmap{
 
     public static int getDisplayOrientation(Context context){
         return context.getResources().getConfiguration().orientation;
+    }
+
+    public static Bitmap getPrecipitationChartRaw(Context context, Weather.WeatherInfo weatherInfo, int width, int height){
+        final int MAX_PRECIPITATION=25;
+        final float[] PRECIPITATION_STEPS = {0.1f, 0.2f, 0.3f, 0.5f, 0.7f, 1.0f, 2.0f, 3.0f, 5.0f, 10.0f, 15.0f, 25.0f};
+        final Integer[] precipitation_values = weatherInfo.getPrecipitationDetails();
+        Bitmap bitmap = Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        float shiftX=(float) (width/Weather.PROB_OF_PRECIPITATION_ITEM_COUNT);
+        float[] polygonX = new float[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+4];
+        float[] polygonY = new float[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+4];
+        for (int i=0; i<Weather.PROB_OF_PRECIPITATION_ITEM_COUNT; i++){
+            polygonX[i] = shiftX + i*(width/Weather.PROB_OF_PRECIPITATION_ITEM_COUNT);
+            polygonY[i] = height- ((height/100)*precipitation_values[i]);
+        }
+        polygonX[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT] = width;
+        polygonY[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT] = polygonY[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT-1];
+        polygonX[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+1] = width;
+        polygonY[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+1] = height;
+        polygonX[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+2] = 0;
+        polygonY[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+2] = height;
+        polygonX[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+3] = polygonX[0];
+        polygonY[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+3] = polygonY[0];
+        drawPolygon(canvas,polygonX,polygonY, ThemePicker.getColor(context,ThemePicker.ThemeColor.SECONDARY),255);
+        return bitmap;
+    }
+
+    public static Bitmap getPrecipitationChart(Context context, Weather.WeatherInfo weatherInfo, int width, int height, boolean isLandscape) {
+        final String[] PRECIPITATION_STEP_LABELS = {"0.1", "0.2", "0.3", "0.5", "0.7", "1.0", "2.0", "3.0", "5.0", "10.0", "15.0", "25.0"};
+        int maxValue=0;
+        final Integer[] precipitation_values = weatherInfo.getPrecipitationDetails();
+        for (int i=0;i<Weather.PROB_OF_PRECIPITATION_ITEM_COUNT;i++){
+            if (precipitation_values[i]>maxValue){
+                maxValue=precipitation_values[i];
+            }
+        }
+        float chartWidth=Math.round(width*0.9f);
+        float chartHeight=Math.round(height*0.9f);
+        float shiftX=(float) ((chartWidth/Weather.PROB_OF_PRECIPITATION_ITEM_COUNT)/2);
+        float stepX = chartWidth/Weather.PROB_OF_PRECIPITATION_ITEM_COUNT;
+        int s = 100;
+        Paint textPaint = new Paint();
+        textPaint.setAntiAlias(true);
+        textPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
+        textPaint.setTextSize(s);
+        while (textPaint.measureText("XX.0")>stepX*0.9f){
+            s=s-1;
+            textPaint.setTextSize(s);
+        }
+        float chartOffsetX = width * 0.1f;
+        float chartOffsetY = s;
+        Bitmap chart = getPrecipitationChartRaw(context, weatherInfo, Math.round(chartWidth), Math.round(chartHeight));
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint linePaint = new Paint();
+        linePaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
+        linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        Paint lineStrokePaint = new Paint();
+        lineStrokePaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
+        lineStrokePaint.setStyle(Paint.Style.STROKE);
+        lineStrokePaint.setStrokeWidth(1);
+        lineStrokePaint.setPathEffect(new DashPathEffect(new float[] {2f,4f},0));
+        canvas.drawLine(chartOffsetX-1, chartOffsetY, chartOffsetX-1, chartHeight+chartOffsetY, linePaint);
+        canvas.drawLine(chartOffsetX-1, chartHeight+chartOffsetY, width, chartHeight+chartOffsetY, linePaint);
+        Paint bitmapPaint = new Paint();
+        bitmapPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+        canvas.drawBitmap(chart, chartOffsetX, chartOffsetY, bitmapPaint);
+        for (int x=0; x<Weather.PROB_OF_PRECIPITATION_ITEM_COUNT;x++){
+            canvas.drawLine(chartOffsetX+shiftX+x*stepX,chartHeight+chartOffsetY,chartOffsetX+shiftX+x*stepX,chartHeight+chartOffsetY+height*0.02f,linePaint);
+            canvas.drawText(PRECIPITATION_STEP_LABELS[x],chartOffsetX+shiftX+x*stepX-textPaint.measureText(PRECIPITATION_STEP_LABELS[x])/2,chartHeight+chartOffsetY+height*0.02f+s,textPaint);
+        }
+        for (int y=0; y<=10; y++){
+            float ypos = chartHeight - (y*(chartHeight/10)) +chartOffsetY;
+            canvas.drawLine(chartOffsetX,ypos,chartOffsetX-width*0.02f,ypos,linePaint);
+            canvas.drawLine(chartOffsetX,ypos,width,ypos,lineStrokePaint);
+            if (((isLandscape) && (y%2==0)) | (!isLandscape)){
+                canvas.drawText(y*10+"%",0,ypos+s/2,textPaint);
+            }
+        }
+        if (WeatherSettings.cropPrecipitationChart(context)){
+            int maxDisplayValue=maxValue+10;
+            while ((maxDisplayValue % 10)==0){
+                maxDisplayValue--;
+            }
+            if (maxDisplayValue>100){
+                maxDisplayValue=100;
+            }
+            float cropStart=height-((maxDisplayValue)*(float) (height/100))-s-height*0.02f;
+            bitmap = Bitmap.createBitmap(bitmap,0,Math.round(cropStart),Math.round(width),Math.round(height-cropStart));
+        }
+        return bitmap;
+    }
+
+    public static Bitmap getCloudCoverChart(Context context, Weather.WeatherInfo weatherInfo, int width, int height){
+        // height           label height       cloud display height
+        //==================================================================
+        // 500ft = 152.4 m  0.018 * height  => 76,2     0.006       * height
+        // < 2km            0.286 * height  => 1152.4   0.16        * height
+        // 2-7 km           1.0   * height  => 4500     0.64        * height
+        // > 7km            1.0   * height  => 7000     1.0         * height
+        // range is 7km
+        // base convective cloud =          value/7000  * chartHeight
+        final float[] RELATIVE_DISPLAY_CLOUD_HEIGHTS = new float[] {0.006f, 0.16f, 0.64f, 1.02f};
+        final float[] RELATIVE_LABEL_CLOUD_HEIGHTS = new float[] {0.018f, 0.286f, 1.0f, 1.0f};
+        final String[] LABEL_CLOUD_HEIGHTS         = new String[] {"152.4m","2 km", "7 km", "7 km"};
+        final float strokeWidth = height*0.03f;
+        final float chartHeight = height - strokeWidth*2;
+        final float chartWidth  = width*0.7f;
+        final float chartCenter = width*0.3f + (width*0.7f)/2f;
+        Bitmap bitmap = Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint groundPaint = new Paint();
+        groundPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.ACCENT));
+        groundPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        Paint linePaint = new Paint();
+        linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        linePaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
+        Paint lineStrokePaint = new Paint();
+        lineStrokePaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
+        lineStrokePaint.setStyle(Paint.Style.STROKE);
+        lineStrokePaint.setStrokeWidth(1);
+        lineStrokePaint.setPathEffect(new DashPathEffect(new float[] {2f,4f},0));
+        Paint cloudPaint = new Paint();
+        cloudPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        cloudPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
+        Paint textPaint = new Paint();
+        textPaint.setAntiAlias(true);
+        textPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
+        int s = 100;
+        textPaint.setTextSize(s);
+        while (textPaint.measureText("152.4m")>width*0.3f){
+            s=s-1;
+            textPaint.setTextSize(s);
+        }
+        canvas.drawRect(0,height-strokeWidth*0.6f,width,height,groundPaint);
+        canvas.drawLine(width-chartWidth,0,width-chartWidth,height-strokeWidth,linePaint);
+        Integer[] cloudData = weatherInfo.clouds.getIntArray();
+        for (int y=1; y<5; y++ ){
+            if (cloudData[y]!=null){
+                float cloudWidth = cloudData[y]*(chartWidth/100);
+                float cloudHeight = height - RELATIVE_DISPLAY_CLOUD_HEIGHTS[y-1]*chartHeight - strokeWidth;
+                float labelHeight = height - RELATIVE_LABEL_CLOUD_HEIGHTS[y-1]*chartHeight - strokeWidth;
+                canvas.drawRect(chartCenter-cloudWidth/2,cloudHeight-strokeWidth/2,chartCenter+cloudWidth/2,cloudHeight+strokeWidth/2,cloudPaint);
+                canvas.drawLine(width-chartWidth,labelHeight,width,labelHeight,lineStrokePaint);
+                canvas.drawText(LABEL_CLOUD_HEIGHTS[y-1],0,labelHeight+s/2,textPaint);
+            }
+        }
+        return bitmap;
+    }
+
+    public static Paint GetDefaultLinePaint(int color, int lineWidth) {
+        Paint rPaint = new Paint();
+        rPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        rPaint.setColor(color);
+        rPaint.setStrokeWidth(lineWidth);
+        rPaint.setShadowLayer(5,5,5,Color.BLACK);
+        rPaint.setAntiAlias(true);
+        return rPaint;
+    }
+
+    public static Bitmap getOverviewChart(Context context, int width, int height, ArrayList<Weather.WeatherInfo> weatherInfos){
+        // integrity checks of data
+        if (weatherInfos==null){
+            return null;
+        }
+        if (weatherInfos.size()<3){
+            return null;
+        }
+        int startPosition = weatherInfos.size()-1;
+        boolean hasTemperature = true;
+        boolean hasPrecipitation = true;
+        boolean hasClouds = true;
+        for (int i=startPosition; i<weatherInfos.size(); i++){
+            Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
+            if (!weatherInfo1.hasTemperature()){
+                hasTemperature = false;
+            }
+            if (!weatherInfo1.hasClouds()){
+                hasClouds = false;
+            }
+            if (!weatherInfo1.hasPrecipitation()){
+                hasPrecipitation=false;
+            }
+        }
+        if ((!hasTemperature)&&(!hasClouds)&&(!hasPrecipitation)){
+            return null;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        int lineWidth = 4;
+        Paint chartPaint = new Paint();
+        chartPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
+        chartPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        chartPaint.setAntiAlias(true);
+        chartPaint.setStrokeWidth(1);
+        // Paint borderPaint = new Paint();
+        Paint temperaturePaint = GetDefaultLinePaint(Color.RED,lineWidth);
+        Paint cloudsPaint = GetDefaultLinePaint(Color.GRAY,lineWidth);
+        Paint precipitationPaint = GetDefaultLinePaint(Color.BLUE,lineWidth);
+        Paint linePaint = new Paint();
+        linePaint.setStyle(Paint.Style.STROKE);
+        linePaint.setStrokeWidth(1);
+        linePaint.setPathEffect(new DashPathEffect(new float[]{2,4,2,4},0));
+        linePaint.setAntiAlias(true);
+        linePaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
+        Paint textPaint = new Paint();
+        textPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
+        textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        textPaint.setAntiAlias(true);
+        int labelTextSize = 100;
+        textPaint.setTextSize(labelTextSize);
+        while (textPaint.measureText("-XX°")>(width/30f)){
+            labelTextSize=labelTextSize-1;
+            textPaint.setTextSize(labelTextSize);
+        }
+        float xChartOffset = textPaint.measureText("-XX°");
+        // determine current position in forecast data
+        while ((weatherInfos.get(startPosition).getTimestamp()> Calendar.getInstance().getTimeInMillis()) && (startPosition>0)){
+            startPosition--;
+        }
+        int itemCount = Math.abs(startPosition-weatherInfos.size());
+        Log.v("TWFG","Items to display: "+itemCount);
+        int minTemp=weatherInfos.get(startPosition).getTemperatureInCelsiusInt();
+        int maxTemp=weatherInfos.get(startPosition).getTemperatureInCelsiusInt();
+        for (int i=startPosition; i<weatherInfos.size(); i++){
+            if (weatherInfos.get(i).getTemperatureInCelsiusInt()<minTemp){
+                minTemp=weatherInfos.get(i).getTemperatureInCelsiusInt();
+            }
+            if (weatherInfos.get(i).getTemperatureInCelsiusInt()>maxTemp){
+                maxTemp=weatherInfos.get(i).getTemperatureInCelsiusInt();
+            }
+        }
+        int deltaTemp = maxTemp - minTemp;
+        if (minTemp>=0){
+            deltaTemp = maxTemp;
+        }
+        int display_steps = 5;
+        if (height < 100)
+            display_steps = 3;
+        float temp_scale_step_value = 20;
+        if (deltaTemp / display_steps < 10)
+            temp_scale_step_value = 10;
+        if (deltaTemp / display_steps < 5)
+            temp_scale_step_value = 5;
+        float temp_bottom_offset_value = 0;
+        if (minTemp < 0){
+            temp_bottom_offset_value = -(((int) Math.abs(minTemp)/ (int) temp_scale_step_value)+1)*temp_scale_step_value;
+        }
+        float temp_graphscale = temp_scale_step_value * display_steps / height;
+        float zeroline_position = height;
+        if (temp_bottom_offset_value != 0){
+            zeroline_position = height + temp_bottom_offset_value / temp_graphscale;
+        }
+
+        Log.v("TWFG","Temp range: "+minTemp+" to "+maxTemp);
+        // paint chart outline
+        canvas.drawLine(xChartOffset,0,xChartOffset,height,chartPaint);
+        canvas.drawLine(xChartOffset,zeroline_position,width,zeroline_position,chartPaint);
+        for (int i=1; i<=display_steps; i++){
+            String s2 = String.valueOf((int) (temp_bottom_offset_value+temp_scale_step_value*i));
+            if (i == display_steps){
+                s2 = s2 + "°C";
+            }
+            float x1 = 0;
+            float x2 = width;
+            float y1 = 100 / ((float) 100 / height) - (100/display_steps*i/((float) 100 / height));
+            canvas.drawLine(x1,y1,x2,y1,linePaint);
+            canvas.drawText(s2,x1+lineWidth+lineWidth/10,y1+labelTextSize,textPaint);
+        }
+        float[] rainPolygonX = new float[itemCount+4];
+        float[] rainPolygonY = new float[itemCount+4];
+        float[] cloudPolygonX = new float[itemCount+4];
+        float[] cloudPolygonY = new float[itemCount+4];
+        for (int i=startPosition; i<weatherInfos.size(); i++) {
+            int pos = i - startPosition;
+            Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
+            float x1 = xChartOffset+ ((float) width/(float) itemCount)*pos;
+            if (hasPrecipitation){
+                rainPolygonX[pos]=x1;
+                rainPolygonY[pos]=height - (weatherInfo1.getProbPrecipitation()/100f) * height;
+            }
+            if (hasClouds){
+                cloudPolygonX[pos]=x1;
+                cloudPolygonY[pos]=height - (weatherInfo1.getClouds()/100f) * height;
+            }
+        }
+        if (hasClouds){
+            cloudPolygonX[itemCount]=width;
+            cloudPolygonY[itemCount]=cloudPolygonY[itemCount-1];
+            cloudPolygonX[itemCount+1]=width;
+            cloudPolygonY[itemCount+1]=height;
+            cloudPolygonX[itemCount+2]=xChartOffset;
+            cloudPolygonY[itemCount+2]=height;
+            cloudPolygonX[itemCount+3]=xChartOffset;
+            cloudPolygonY[itemCount+3]=cloudPolygonY[0];
+            drawPolygon(canvas,cloudPolygonX,cloudPolygonY,0xaaaaaa,65);
+        }
+        if (hasPrecipitation){
+            rainPolygonX[itemCount]=width;
+            rainPolygonY[itemCount]=rainPolygonY[itemCount-1];
+            rainPolygonX[itemCount+1]=width;
+            rainPolygonY[itemCount+1]=height;
+            rainPolygonX[itemCount+2]=xChartOffset;
+            rainPolygonY[itemCount+2]=height;
+            rainPolygonX[itemCount+3]=xChartOffset;
+            rainPolygonY[itemCount+3]=rainPolygonY[0];
+            drawPolygon(canvas,rainPolygonX,rainPolygonY,0x2222aa,85);
+        }
+        if (hasTemperature){
+            for (int i=startPosition; i<weatherInfos.size()-1; i++){
+                int pos = i - startPosition;
+                Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
+                Weather.WeatherInfo weatherInfo2 = weatherInfos.get(i+1);
+                float y1_t = zeroline_position - weatherInfo1.getTemperatureInCelsiusInt() / temp_graphscale;
+                float y2_t = zeroline_position - weatherInfo2.getTemperatureInCelsiusInt() / temp_graphscale;
+                float x1 = xChartOffset+ ((float) width/(float) itemCount)*pos;
+                float x2 = xChartOffset+ ((float) width/(float) itemCount)*(pos+1);
+                if (weatherInfo2.getTemperatureInCelsiusInt()>0){
+                    temperaturePaint.setColor(Color.RED);
+                } else {
+                    temperaturePaint.setColor(Color.CYAN);
+                }
+                canvas.drawLine(x1,y1_t,x2,y2_t,temperaturePaint);
+                //is midnight?
+                if (weatherInfo1.getTimestamp()%86400000==0){
+                    canvas.drawLine(x1,0,x1,height,linePaint);
+                }
+                // is noon?
+                if ((weatherInfo1.getTimestamp()%43200000==0) && (weatherInfo1.getTimestamp()%86400000!=0)){
+                    String dayOfWeek = Weather.GetDateString(Weather.SIMPLEDATEFORMATS.DAYOFWEEK,weatherInfo1.getTimestamp());
+                    float startDOWX = x1 - textPaint.measureText(dayOfWeek)/2;
+                    canvas.drawText(dayOfWeek,startDOWX,textPaint.getTextSize(),textPaint);
+                }
+            }
+        }
+        return bitmap;
     }
 
 }

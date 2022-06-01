@@ -54,6 +54,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_WIND_TYPE = "PREF_display_wind_type";
     public static final String PREF_DISPLAY_WIND_UNIT = "PREF_display_wind_unit";
     public static final String PREF_DISPLAY_DISTANCE_UNIT = "PREF_display_distance_unit";
+    public static final String PREF_DISPLAY_CROP_PRECIPITATIONCHART = "PREF_crop_precipchart";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_UPDATE_WARNINGS = "PREF_update_warnings";
@@ -111,6 +112,8 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_WIND_TYPE_DEFAULT = "0";
     public static final String PREF_DISPLAY_WIND_UNIT_DEFAULT = "0";
     public static final String PREF_DISPLAY_DISTANCE_UNIT_DEFAULT = "0";
+    public static final boolean PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT = false;
+
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
     public static final boolean PREF_UPDATE_TEXTFORECASTS_DEFAULT = true;
@@ -167,6 +170,7 @@ public class WeatherSettings {
     public String display_wind_type = PREF_DISPLAY_WIND_TYPE_DEFAULT;
     public String display_wind_unit = PREF_DISPLAY_WIND_UNIT_DEFAULT;
     public String display_distance_unit = PREF_DISPLAY_DISTANCE_UNIT_DEFAULT;
+    public boolean cropPrecipitationChart = PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
     public boolean update_warnings = PREF_UPDATE_WARNINGS_DEFAULT;
@@ -234,6 +238,7 @@ public class WeatherSettings {
         this.display_wind_type = readPreference(PREF_DISPLAY_WIND_TYPE,PREF_DISPLAY_WIND_TYPE_DEFAULT);
         this.display_wind_unit = readPreference(PREF_DISPLAY_WIND_UNIT,PREF_DISPLAY_WIND_TYPE_DEFAULT);
         this.display_distance_unit = readPreference(PREF_DISPLAY_DISTANCE_UNIT,PREF_DISPLAY_DISTANCE_UNIT_DEFAULT);
+        this.cropPrecipitationChart = readPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT);
         this.update_warnings = readPreference(PREF_UPDATE_WARNINGS,PREF_UPDATE_WARNINGS_DEFAULT);
         this.update_textforecasts = readPreference(PREF_UPDATE_TEXTFORECASTS,PREF_UPDATE_TEXTFORECASTS_DEFAULT);
@@ -291,6 +296,7 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_WIND_TYPE,this.display_wind_type);
         applyPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
         applyPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
+        applyPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,this.cropPrecipitationChart);
         applyPreference(PREF_SETALARM, this.setalarm);
         applyPreference(PREF_UPDATEINTERVAL, this.updateinterval);
         applyPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
@@ -348,6 +354,7 @@ public class WeatherSettings {
         commitPreference(PREF_DISPLAY_WIND_TYPE,this.display_wind_type);
         commitPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
         commitPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
+        commitPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,this.cropPrecipitationChart);
         commitPreference(PREF_SETALARM, this.setalarm);
         commitPreference(PREF_UPDATEINTERVAL, this.updateinterval);
         commitPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
@@ -740,14 +747,16 @@ public class WeatherSettings {
         }
     }
 
-    public int getWindDisplayUnit(){
+    public static int getWindDisplayUnit(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         try {
-            int i = Integer.parseInt(this.display_wind_unit);
+            int i = Integer.parseInt(sharedPreferences.getString(PREF_DISPLAY_WIND_UNIT,PREF_DISPLAY_WIND_UNIT_DEFAULT));
             return i;
         } catch (NumberFormatException e) {
             // return to default if entry is corrupted (not a number)
-            this.display_wind_unit = PREF_DISPLAY_WIND_UNIT_DEFAULT;
-            applyPreference(PREF_DISPLAY_WIND_UNIT, display_wind_unit);
+            SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+            pref_editor.putString(PREF_DISPLAY_WIND_UNIT,PREF_DISPLAY_WIND_UNIT_DEFAULT);
+            pref_editor.apply();
             // return default
             return Weather.WindDisplayUnit.METERS_PER_SECOND;
         }
@@ -770,14 +779,16 @@ public class WeatherSettings {
         return display_wind_arc;
     }
 
-    public int getWindArcPeriod(){
+    public static int getWindArcPeriod(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         try {
-            int i = Integer.parseInt(this.display_wind_arc_period);
+            int i = Integer.parseInt(sharedPreferences.getString(PREF_DISPLAY_WIND_ARC_PERIOD,PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT));
             return i;
         } catch (NumberFormatException e) {
             // return to default if entry is corrupted (not a number)
-            this.display_wind_arc_period= PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT;
-            applyPreference(PREF_DISPLAY_WIND_ARC_PERIOD,PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT);
+            SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+            pref_editor.putString(PREF_DISPLAY_WIND_ARC_PERIOD,PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT);
+            pref_editor.apply();
             // return default, is 6
             return 6;
         }
@@ -1000,6 +1011,11 @@ public class WeatherSettings {
         pref_editor.putInt(PREF_NOTIFICATION_IDENTIFIER,b);
         pref_editor.apply();
         return i;
+    }
+
+    public static boolean cropPrecipitationChart(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_CROP_PRECIPITATIONCHART,PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT);
     }
 
 }
