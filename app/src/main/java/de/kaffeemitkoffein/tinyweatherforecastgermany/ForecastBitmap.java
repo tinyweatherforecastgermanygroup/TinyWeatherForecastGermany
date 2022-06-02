@@ -654,9 +654,9 @@ public class ForecastBitmap{
         chartPaint.setAntiAlias(true);
         chartPaint.setStrokeWidth(1);
         // Paint borderPaint = new Paint();
-        Paint temperaturePaint = GetDefaultLinePaint(Color.RED,lineWidth);
-        Paint cloudsPaint = GetDefaultLinePaint(Color.GRAY,lineWidth);
-        Paint precipitationPaint = GetDefaultLinePaint(Color.BLUE,lineWidth);
+        Paint temperaturePaint = GetDefaultLinePaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.ORANGE),lineWidth);
+        Paint cloudsPaint = GetDefaultLinePaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTDARK),lineWidth);
+        Paint precipitationPaint = GetDefaultLinePaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE),lineWidth);
         Paint linePaint = new Paint();
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeWidth(1);
@@ -667,13 +667,18 @@ public class ForecastBitmap{
         textPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
         textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         textPaint.setAntiAlias(true);
+        final float yAxisFontSizeScaleFactor = 1.2f;
+        final float yNoticeFontSizeScaleFactor = 1.0f;
         int labelTextSize = 100;
+        int chartHeight = height;
         textPaint.setTextSize(labelTextSize);
-        while (textPaint.measureText("-XX°")>(width/30f)){
+        while (textPaint.measureText("-XX°")>(width/18f)){
             labelTextSize=labelTextSize-1;
             textPaint.setTextSize(labelTextSize);
         }
-        float xChartOffset = textPaint.measureText("-XX°");
+        textPaint.setTextSize(labelTextSize*yAxisFontSizeScaleFactor);
+        float xChartOffset = textPaint.measureText("-XX°C");
+        textPaint.setTextSize(labelTextSize);
         // determine current position in forecast data
         while ((weatherInfos.get(startPosition).getTimestamp()> Calendar.getInstance().getTimeInMillis()) && (startPosition>0)){
             startPosition--;
@@ -694,7 +699,7 @@ public class ForecastBitmap{
             deltaTemp = maxTemp;
         }
         int display_steps = 5;
-        if (height < 100)
+        if (chartHeight < 100)
             display_steps = 3;
         float temp_scale_step_value = 20;
         if (deltaTemp / display_steps < 10)
@@ -705,25 +710,31 @@ public class ForecastBitmap{
         if (minTemp < 0){
             temp_bottom_offset_value = -(((int) Math.abs(minTemp)/ (int) temp_scale_step_value)+1)*temp_scale_step_value;
         }
-        float temp_graphscale = temp_scale_step_value * display_steps / height;
-        float zeroline_position = height;
+        float temp_graphscale = temp_scale_step_value * display_steps / chartHeight;
+        float zeroline_position = chartHeight;
         if (temp_bottom_offset_value != 0){
-            zeroline_position = height + temp_bottom_offset_value / temp_graphscale;
+            zeroline_position = chartHeight + temp_bottom_offset_value / temp_graphscale;
         }
         // paint chart outline
-        canvas.drawLine(xChartOffset,0,xChartOffset,height,chartPaint);
+        canvas.drawLine(xChartOffset,0,xChartOffset,chartHeight,chartPaint);
         canvas.drawLine(xChartOffset,zeroline_position,width,zeroline_position,chartPaint);
         for (int i=1; i<=display_steps; i++){
             String s2 = String.valueOf((int) (temp_bottom_offset_value+temp_scale_step_value*i));
-            if (i == display_steps){
+            textPaint.setTextSize(labelTextSize);
+            textPaint.setFakeBoldText(false);
+            if ((i==1) || (i == display_steps)){
                 s2 = s2 + "°C";
+                textPaint.setTextSize(labelTextSize*yAxisFontSizeScaleFactor);
+                textPaint.setFakeBoldText(true);
             }
             float x1 = 0;
             float x2 = width;
-            float y1 = 100 / ((float) 100 / height) - (100/display_steps*i/((float) 100 / height));
+            float y1 = 100 / ((float) 100 / chartHeight) - (100/display_steps*i/((float) 100 / chartHeight));
             canvas.drawLine(x1,y1,x2,y1,linePaint);
-            canvas.drawText(s2,x1+lineWidth+lineWidth/10,y1+labelTextSize,textPaint);
+            canvas.drawText(s2,x1+lineWidth+lineWidth/10,y1+textPaint.getTextSize(),textPaint);
         }
+        textPaint.setTextSize(labelTextSize);
+        textPaint.setFakeBoldText(false);
         float[] rainPolygonX = new float[itemCount+4];
         float[] rainPolygonY = new float[itemCount+4];
         float[] cloudPolygonX = new float[itemCount+4];
@@ -734,34 +745,34 @@ public class ForecastBitmap{
             float x1 = xChartOffset+ ((float) width/(float) itemCount)*pos;
             if (hasPrecipitation){
                 rainPolygonX[pos]=x1;
-                rainPolygonY[pos]=height - (weatherInfo1.getProbPrecipitation()/100f) * height;
+                rainPolygonY[pos]=chartHeight - (weatherInfo1.getProbPrecipitation()/100f) * chartHeight;
             }
             if (hasClouds){
                 cloudPolygonX[pos]=x1;
-                cloudPolygonY[pos]=height - (weatherInfo1.getClouds()/100f) * height;
+                cloudPolygonY[pos]=chartHeight - (weatherInfo1.getClouds()/100f) * chartHeight;
             }
         }
         if (hasClouds){
             cloudPolygonX[itemCount]=width;
             cloudPolygonY[itemCount]=cloudPolygonY[itemCount-1];
             cloudPolygonX[itemCount+1]=width;
-            cloudPolygonY[itemCount+1]=height;
+            cloudPolygonY[itemCount+1]=chartHeight;
             cloudPolygonX[itemCount+2]=xChartOffset;
-            cloudPolygonY[itemCount+2]=height;
+            cloudPolygonY[itemCount+2]=chartHeight;
             cloudPolygonX[itemCount+3]=xChartOffset;
             cloudPolygonY[itemCount+3]=cloudPolygonY[0];
-            drawPolygon(canvas,cloudPolygonX,cloudPolygonY,0xaaaaaa,65);
+            drawPolygon(canvas,cloudPolygonX,cloudPolygonY,ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTDARK),65);
         }
         if (hasPrecipitation){
             rainPolygonX[itemCount]=width;
             rainPolygonY[itemCount]=rainPolygonY[itemCount-1];
             rainPolygonX[itemCount+1]=width;
-            rainPolygonY[itemCount+1]=height;
+            rainPolygonY[itemCount+1]=chartHeight;
             rainPolygonX[itemCount+2]=xChartOffset;
-            rainPolygonY[itemCount+2]=height;
+            rainPolygonY[itemCount+2]=chartHeight;
             rainPolygonX[itemCount+3]=xChartOffset;
             rainPolygonY[itemCount+3]=rainPolygonY[0];
-            drawPolygon(canvas,rainPolygonX,rainPolygonY,0x2222aa,85);
+            drawPolygon(canvas,rainPolygonX,rainPolygonY,ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE),85);
         }
         if (hasTemperature){
             for (int i=startPosition; i<weatherInfos.size()-1; i++){
@@ -773,20 +784,23 @@ public class ForecastBitmap{
                 float x1 = xChartOffset+ ((float) width/(float) itemCount)*pos;
                 float x2 = xChartOffset+ ((float) width/(float) itemCount)*(pos+1);
                 if (weatherInfo2.getTemperatureInCelsiusInt()>0){
-                    temperaturePaint.setColor(Color.RED);
+                    temperaturePaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.ORANGE));
                 } else {
-                    temperaturePaint.setColor(Color.CYAN);
+                    temperaturePaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN));
                 }
                 canvas.drawLine(x1,y1_t,x2,y2_t,temperaturePaint);
                 //is midnight?
                 if (weatherInfo1.getTimestamp()%86400000==0){
-                    canvas.drawLine(x1,0,x1,height,linePaint);
+                    canvas.drawLine(x1,0,x1,chartHeight,linePaint);
                 }
                 // is noon?
                 if ((weatherInfo1.getTimestamp()%43200000==0) && (weatherInfo1.getTimestamp()%86400000!=0)){
                     String dayOfWeek = Weather.GetDateString(Weather.SIMPLEDATEFORMATS.DAYOFWEEK,weatherInfo1.getTimestamp());
                     float startDOWX = x1 - textPaint.measureText(dayOfWeek)/2;
-                    canvas.drawText(dayOfWeek,startDOWX,textPaint.getTextSize(),textPaint);
+                    // do not draw text if it starts left of the y-axis
+                    if (startDOWX>xChartOffset){
+                        canvas.drawText(dayOfWeek,startDOWX,textPaint.getTextSize(),textPaint);
+                    }
                 }
             }
         }

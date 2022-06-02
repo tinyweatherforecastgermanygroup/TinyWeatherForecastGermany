@@ -37,6 +37,14 @@
         <item name="colorWelcomeBackground">@color/colorWelcomeBackground_LightTheme</item>
         <item name="colorWidgetBackground">@color/colorWidgetBackground_LightTheme</item>
         <item name="colorSecondary">@color/colorSecondary_LightTheme</item>
+        <item name="colorAccentYellow">@color/colorAccentYellow_Solarized</item>
+        <item name="colorAccentOrange">@color/colorAccentOrange_Solarized</item>
+        <item name="colorAccentRed">@color/colorAccentRed_Solarized</item>
+        <item name="colorAccentMagenta">@color/colorAccentMagenta_Solarized</item>
+        <item name="colorAccentViolet">@color/colorAccentViolet_Solarized</item>
+        <item name="colorAccentBlue">@color/colorAccentBlue_Solarized</item>
+        <item name="colorAccentCyan">@color/colorAccentCyan_Solarized</item>
+        <item name="colorAccentGreen">@color/colorAccentGreen_Solarized</item>
 
         <item name="ic_search">@mipmap/ic_search_black_24dp</item>
         <item name="ic_refresh">@mipmap/ic_refresh_black_24dp</item>
@@ -130,6 +138,15 @@
         <item name="colorWelcomeBackground">@color/colorWelcomeBackground_DarkTheme</item>
         <item name="colorWidgetBackground">@color/colorWidgetBackground_DarkTheme</item>
         <item name="colorSecondary">@color/colorSecondary_DarkTheme</item>
+
+        <item name="colorAccentYellow">@color/colorAccentYellow_Solarized</item>
+        <item name="colorAccentOrange">@color/colorAccentOrange_Solarized</item>
+        <item name="colorAccentRed">@color/colorAccentRed_Solarized</item>
+        <item name="colorAccentMagenta">@color/colorAccentMagenta_Solarized</item>
+        <item name="colorAccentViolet">@color/colorAccentViolet_Solarized</item>
+        <item name="colorAccentBlue">@color/colorAccentBlue_Solarized</item>
+        <item name="colorAccentCyan">@color/colorAccentCyan_Solarized</item>
+        <item name="colorAccentGreen">@color/colorAccentGreen_Solarized</item>
 
         <item name="ic_search">@mipmap/ic_search_white_24dp</item>
         <item name="ic_refresh">@mipmap/ic_refresh_white_24dp</item>

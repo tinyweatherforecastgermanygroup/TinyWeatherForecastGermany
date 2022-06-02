@@ -181,26 +181,42 @@ public final class ThemePicker {
         public static final int WELCOMEBACKGROUND = 7;
         public static final int WIDGETBACKGROUND = 8;
         public static final int SECONDARY = 9;
+        public static final int YELLOW = 10;
+        public static final int ORANGE = 11;
+        public static final int RED = 12;
+        public static final int MAGENTA = 13;
+        public static final int VIOLET = 14;
+        public static final int BLUE = 15;
+        public static final int CYAN = 16;
+        public static final int GREEN = 17;
         public static final int[] VALUES_SOLARIZED = new int[]
                 {R.color.colorPrimary_Solarized, R.color.colorPrimaryDark_Solarized, R.color.colorPrimaryLight_Solarized,
                  R.color.colorAccent_Solarized, R.color.colorText_Solarized, R.color.colorTextDark_Solarized,
                  R.color.colorTextLight_Solarized,R.color.colorWelcomeBackground_Solarized, R.color.colorWidgetBackground_Solarized,
-                 R.color.colorSecondary_Solarized};
+                 R.color.colorSecondary_Solarized, R.color.colorAccentYellow_Solarized, R.color.colorAccentOrange_Solarized,
+                 R.color.colorAccentRed_Solarized, R.color.colorAccentMagenta_Solarized, R.color.colorAccentViolet_Solarized,
+                 R.color.colorAccentBlue_Solarized, R.color.colorAccentCyan_Solarized, R.color.colorAccentGreen_Solarized};
         public static final int[] VALUES_SOLARIZED_DARK = new int[]
                 {R.color.colorPrimary_SolarizedDark, R.color.colorPrimaryDark_SolarizedDark, R.color.colorPrimaryLight_SolarizedDark,
                         R.color.colorAccent_SolarizedDark, R.color.colorText_SolarizedDark, R.color.colorTextDark_SolarizedDark,
                         R.color.colorTextLight_SolarizedDark,R.color.colorWelcomeBackground_SolarizedDark, R.color.colorWidgetBackground_SolarizedDark,
-                        R.color.colorSecondary_SolarizedDark};
+                        R.color.colorSecondary_SolarizedDark, R.color.colorAccentYellow_Solarized, R.color.colorAccentOrange_Solarized,
+                        R.color.colorAccentRed_Solarized, R.color.colorAccentMagenta_Solarized, R.color.colorAccentViolet_Solarized,
+                        R.color.colorAccentBlue_Solarized, R.color.colorAccentCyan_Solarized, R.color.colorAccentGreen_Solarized};
         public static final int[] VALUES_LIGHT = new int[]
                 {R.color.colorPrimary_LightTheme, R.color.colorPrimaryDark_LightTheme, R.color.colorPrimaryLight_LightTheme,
                         R.color.colorAccent_LightTheme, R.color.colorText_LightTheme, R.color.colorTextDark_LightTheme,
                         R.color.colorTextLight_LightTheme,R.color.colorWelcomeBackground_LightTheme, R.color.colorWidgetBackground_LightTheme,
-                        R.color.colorSecondary_LightTheme};
+                        R.color.colorSecondary_LightTheme, R.color.colorAccentYellow_Solarized, R.color.colorAccentOrange_Solarized,
+                        R.color.colorAccentRed_Solarized, R.color.colorAccentMagenta_Solarized, R.color.colorAccentViolet_Solarized,
+                        R.color.colorAccentBlue_Solarized, R.color.colorAccentCyan_Solarized, R.color.colorAccentGreen_Solarized};
         public static final int[] VALUES_DARK= new int[]
                 {R.color.colorPrimary_DarkTheme, R.color.colorPrimaryDark_DarkTheme, R.color.colorPrimaryLight_DarkTheme,
                         R.color.colorAccent_DarkTheme, R.color.colorText_DarkTheme, R.color.colorTextDark_DarkTheme,
                         R.color.colorTextLight_DarkTheme,R.color.colorWelcomeBackground_DarkTheme, R.color.colorWidgetBackground_DarkTheme,
-                        R.color.colorSecondary_DarkTheme};
+                        R.color.colorSecondary_DarkTheme, R.color.colorAccentYellow_Solarized, R.color.colorAccentOrange_Solarized,
+                        R.color.colorAccentRed_Solarized, R.color.colorAccentMagenta_Solarized, R.color.colorAccentViolet_Solarized,
+                        R.color.colorAccentBlue_Solarized, R.color.colorAccentCyan_Solarized, R.color.colorAccentGreen_Solarized};
     }
 
     public static int getColor(Context context, int color){

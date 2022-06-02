@@ -31,6 +31,15 @@
     <attr name="colorWidgetBackground" format="color"/>
     <attr name="colorSecondary" format="color"/>
 
+    <attr name="colorAccentYellow" format="color"/>
+    <attr name="colorAccentOrange" format="color"/>
+    <attr name="colorAccentRed" format="color"/>
+    <attr name="colorAccentMagenta" format="color"/>
+    <attr name="colorAccentViolet" format="color"/>
+    <attr name="colorAccentBlue" format="color"/>
+    <attr name="colorAccentCyan" format="color"/>
+    <attr name="colorAccentGreen" format="color"/>
+
     <attr name="ic_search" format="reference"/>
     <attr name="ic_refresh" format="reference"/>
     <attr name="ic_short_text" format="reference"/>

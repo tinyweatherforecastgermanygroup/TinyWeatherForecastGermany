@@ -30,6 +30,8 @@
     <color name="colorWelcomeBackground_DarkTheme">#2222ff</color>
     <color name="colorWidgetBackground_DarkTheme">#353535</color>
     <color name="colorSecondary_DarkTheme">#1aad4e</color>
+    <color name="colorChartTemperatureCold_DarkTheme">#960d0d</color>
+    <color name="colorChartTemperatureWarm_DarkTheme">#157cc8</color>
 
     <color name="colorPrimary_LightTheme">#dddddd</color>
     <color name="colorPrimaryDark_LightTheme">#bbbbbb</color>
@@ -41,6 +43,8 @@
     <color name="colorWelcomeBackground_LightTheme">#04a3f6</color>
     <color name="colorWidgetBackground_LightTheme">#dfdfdf</color>
     <color name="colorSecondary_LightTheme">#04a3f6</color>
+    <color name="colorChartTemperatureCold_LightTheme">#f8c41c</color>
+    <color name="colorChartTemperatureWarm_LightTheme">#889ff8</color>
 
     <color name="colorPrimary_Solarized">#fdf6e3</color>               <!-- base3 -->
     <color name="colorPrimaryDark_Solarized">#fdf6e3</color>           <!-- base3 -->
@@ -52,6 +56,14 @@
     <color name="colorWelcomeBackground_Solarized">#fdf6e3</color>     <!-- base3 -->
     <color name="colorWidgetBackground_Solarized">#e2dcc9</color>      <!-- custom -->
     <color name="colorSecondary_Solarized">#268bd2</color>             <!-- blue -->
+    <color name="colorAccentYellow_Solarized">#b58900</color>
+    <color name="colorAccentOrange_Solarized">#cb4b16</color>
+    <color name="colorAccentRed_Solarized">#dc322f</color>
+    <color name="colorAccentMagenta_Solarized">#d33682</color>
+    <color name="colorAccentViolet_Solarized">#6c71c4</color>
+    <color name="colorAccentBlue_Solarized">#268bd2</color>
+    <color name="colorAccentCyan_Solarized">#2aa198</color>
+    <color name="colorAccentGreen_Solarized">#859900</color>
 
     <color name="colorPrimary_SolarizedDark">#002b36</color>                     <!-- base03 -->
     <color name="colorPrimaryDark_SolarizedDark">#002b36</color>                 <!-- base03 -->
@@ -63,7 +75,8 @@
     <color name="colorWelcomeBackground_SolarizedDark">#073642</color>           <!-- base02 -->
     <color name="colorWidgetBackground_SolarizedDark">#002f3a</color>            <!-- custom -->
     <color name="colorSecondary_SolarizedDark">#268bd2</color>                   <!-- blue -->
-
+    <color name="colorChartTemperatureCold_SolarizedDark">#f8c41c</color>
+    <color name="colorChartTemperatureWarm_SolarizedDark">#889ff8</color>
     <color name="colorWarning_clear">#00cc00</color>
     <color name="colorWarning_minor">#eeee00</color>
     <color name="colorWarning_moderate">#ee6600</color>

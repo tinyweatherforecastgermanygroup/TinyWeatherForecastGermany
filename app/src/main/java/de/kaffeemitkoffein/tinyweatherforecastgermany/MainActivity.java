@@ -902,7 +902,7 @@ public class MainActivity extends Activity {
         testAPI_Call();
     }
 
-    public void displayUpdateTime(CurrentWeatherInfo currentWeatherInfo){
+    public void displayUpdateTime(final CurrentWeatherInfo currentWeatherInfo){
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
         String updatetime = simpleDateFormat.format(new Date(currentWeatherInfo.polling_time));
         TextView textView_update_time = (TextView) findViewById(R.id.main_update_time);
@@ -923,11 +923,31 @@ public class MainActivity extends Activity {
             textView_station_geo.setVisibility(View.INVISIBLE);
             textView_station_geo.invalidate();
         }
-        ImageView overviewChartImageView = (ImageView) findViewById(R.id.main_overview_chart);
+        final ImageView overviewChartImageView = (ImageView) findViewById(R.id.main_overview_chart);
         if (overviewChartImageView!=null){
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            overviewChartImageView.setImageBitmap(ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,displayMetrics.heightPixels/10,currentWeatherInfo.forecast1hourly));
+            int displayWidth  = Math.round(displayMetrics.widthPixels);
+            int displayHeight = Math.round(displayMetrics.heightPixels);
+            final boolean isLandscape = displayWidth>displayHeight;
+            if (!isLandscape){
+                Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,displayMetrics.heightPixels/10,currentWeatherInfo.forecast1hourly);
+                if (overViewChartBitmap!=null){
+                    overviewChartImageView.setImageBitmap(overViewChartBitmap);
+                }
+            } else {
+                LinearLayout main_landscape_mainlinearlayout = (LinearLayout) findViewById(R.id.main_landscape_mainlinearlayout);
+                overviewChartImageView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        overviewChartImageView.measure(0,0);
+                        Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,overviewChartImageView.getWidth(),overviewChartImageView.getHeight(),currentWeatherInfo.forecast1hourly);
+                        if (overViewChartBitmap!=null){
+                            overviewChartImageView.setImageBitmap(overViewChartBitmap);
+                        }
+                    }
+                });
+            }
         }
     }
 
