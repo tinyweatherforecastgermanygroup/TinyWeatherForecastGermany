@@ -513,8 +513,7 @@ public class WeatherWarningActivity extends Activity {
         };
         executor.execute(windRunnable);
     }
-
-    @SuppressWarnings("unchecked")
+    
     private void displayMap(){
         germanyBitmap = loadBitmapMap(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.GERMANY));
         warningsBitmap = Bitmap.createBitmap(germanyBitmap.getWidth(),germanyBitmap.getHeight(), Bitmap.Config.ARGB_8888);

@@ -141,6 +141,8 @@
     <string name="preference_display_distance_unit_summary">Select the unit for distances.</string>
     <string name="preference_display_show_radar_by_default_title">Rain radar</string>
     <string name="preference_display_show_radar_by_default_summary">Always display automatically.</string>
+    <string name="preference_display_overviewchart_title">Overview chart</string>
+    <string name="preference_display_overviewchart_summary">Always show the chart indicating temperature, clouds and rain for the next days. When disabled, the chart will only be visible in landscape mode, and only if there is enough space.</string>
     <string name="preference_setalarm_title">Always update</string>
     <string name="preference_setalarm_summary">Keep weather data up to date.</string>
     <string name="preference_setalarm_notice">NOTICE: this is currently not available, since enabled Gadgetbridge support forces automatic updates anyway.</string>

@@ -296,8 +296,10 @@ public class WelcomeActivity extends Activity {
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (!b){
                         WeatherSettings.setViewModel(getApplicationContext(), WeatherSettings.ViewModel.SIMPLE);
+                        WeatherSettings.setDisplayOverviewChart(getApplicationContext(),false);
                     } else {
                         WeatherSettings.setViewModel(getApplicationContext(),WeatherSettings.ViewModel.EXTENDED);
+                        WeatherSettings.setDisplayOverviewChart(getApplicationContext(),true);
                     }
                 }
             });
@@ -385,7 +387,6 @@ public class WelcomeActivity extends Activity {
 
     private void startMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
-        //Intent i = new Intent(this, LoggingActivity.class);
         WeatherSettings.setAppLaunchedFlag(getApplicationContext());
         startActivity(i);
         finish();

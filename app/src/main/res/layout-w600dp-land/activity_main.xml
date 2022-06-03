@@ -25,14 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="10">
 
     <LinearLayout
             android:id="@+id/main_leftcontainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="?attr/colorPrimary"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:orientation="vertical">
 
         <RelativeLayout
@@ -218,7 +218,8 @@
             android:id="@+id/main_rightcontainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2">
+            android:layout_margin="@dimen/slider_marginDouble"
+            android:layout_weight="6">
 
         <ListView android:id="@+id/main_listview"
                   android:layout_width="match_parent"

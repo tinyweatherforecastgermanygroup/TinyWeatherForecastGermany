@@ -55,6 +55,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_WIND_UNIT = "PREF_display_wind_unit";
     public static final String PREF_DISPLAY_DISTANCE_UNIT = "PREF_display_distance_unit";
     public static final String PREF_DISPLAY_CROP_PRECIPITATIONCHART = "PREF_crop_precipchart";
+    public static final String PREF_DISPLAY_OVERVIEWCHART = "PREF_display_overviewchart";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_UPDATE_WARNINGS = "PREF_update_warnings";
@@ -113,6 +114,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_WIND_UNIT_DEFAULT = "0";
     public static final String PREF_DISPLAY_DISTANCE_UNIT_DEFAULT = "0";
     public static final boolean PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT = false;
+    public static final boolean PREF_DISPLAY_OVERVIEWCHART_DEFAULT = true;
 
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
@@ -171,6 +173,7 @@ public class WeatherSettings {
     public String display_wind_unit = PREF_DISPLAY_WIND_UNIT_DEFAULT;
     public String display_distance_unit = PREF_DISPLAY_DISTANCE_UNIT_DEFAULT;
     public boolean cropPrecipitationChart = PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT;
+    public boolean displayOverviewChart = PREF_DISPLAY_OVERVIEWCHART_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
     public boolean update_warnings = PREF_UPDATE_WARNINGS_DEFAULT;
@@ -239,6 +242,7 @@ public class WeatherSettings {
         this.display_wind_unit = readPreference(PREF_DISPLAY_WIND_UNIT,PREF_DISPLAY_WIND_TYPE_DEFAULT);
         this.display_distance_unit = readPreference(PREF_DISPLAY_DISTANCE_UNIT,PREF_DISPLAY_DISTANCE_UNIT_DEFAULT);
         this.cropPrecipitationChart = readPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT);
+        this.displayOverviewChart = readPreference(PREF_DISPLAY_OVERVIEWCHART,PREF_DISPLAY_OVERVIEWCHART_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT);
         this.update_warnings = readPreference(PREF_UPDATE_WARNINGS,PREF_UPDATE_WARNINGS_DEFAULT);
         this.update_textforecasts = readPreference(PREF_UPDATE_TEXTFORECASTS,PREF_UPDATE_TEXTFORECASTS_DEFAULT);
@@ -297,6 +301,7 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
         applyPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
         applyPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,this.cropPrecipitationChart);
+        applyPreference(PREF_DISPLAY_OVERVIEWCHART,this.displayOverviewChart);
         applyPreference(PREF_SETALARM, this.setalarm);
         applyPreference(PREF_UPDATEINTERVAL, this.updateinterval);
         applyPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
@@ -355,6 +360,7 @@ public class WeatherSettings {
         commitPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
         commitPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
         commitPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,this.cropPrecipitationChart);
+        commitPreference(PREF_DISPLAY_OVERVIEWCHART,this.displayOverviewChart);
         commitPreference(PREF_SETALARM, this.setalarm);
         commitPreference(PREF_UPDATEINTERVAL, this.updateinterval);
         commitPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
@@ -1018,9 +1024,17 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_DISPLAY_CROP_PRECIPITATIONCHART,PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT);
     }
 
-    public static boolean displayDWDNote(Context context){
+    public static boolean displayOverviewChart(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getBoolean(PREF_WIDGET_SHOWDWDNOTE,PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_OVERVIEWCHART,PREF_DISPLAY_OVERVIEWCHART_DEFAULT);
     }
+
+    public static void setDisplayOverviewChart(Context context, boolean value){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_DISPLAY_OVERVIEWCHART,value);
+        pref_editor.apply();
+    }
+
 
 }

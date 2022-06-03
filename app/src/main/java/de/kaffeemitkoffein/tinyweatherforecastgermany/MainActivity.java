@@ -25,11 +25,7 @@ import android.annotation.TargetApi;
 import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -40,7 +36,6 @@ import android.os.Bundle;
 import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.telephony.mbms.MbmsErrors;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -261,7 +256,8 @@ public class MainActivity extends Activity {
             }
             int xoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderLeft,displayMetrics));
             int yoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderTop,displayMetrics));
-            View parentView = (View) findViewById(R.id.main_layoutholder);
+            // this view is solely used to get the windowToken by popupWindow. It can therefore be any view within the layout.
+            View parentView = (View) findViewById(R.id.main_gps_progress_holder);
             WeatherSliderView weatherSliderView = new WeatherSliderView(getApplicationContext(),weatherCard);
             boolean popUpWindowIsScrollable = weatherSliderView.setItems(width,height,itemsToDisplay);
             weatherSliderView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
@@ -525,9 +521,10 @@ public class MainActivity extends Activity {
                 if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
                     invalidateOptionsMenu();
                 }
-                // invalidate weather display beacuse the display options have changed
+                // invalidate weather display because the display options have changed
                 if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
-                        (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT))){
+                    (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT)) ||
+                    key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART)){
                     // on 1st app call, weatherCard can be still null
                     if (weatherCard!=null){
                         displayWeatherForecast(weatherCard);
@@ -924,31 +921,40 @@ public class MainActivity extends Activity {
             textView_station_geo.invalidate();
         }
         final ImageView overviewChartImageView = (ImageView) findViewById(R.id.main_overview_chart);
-        if (overviewChartImageView!=null){
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int displayWidth  = Math.round(displayMetrics.widthPixels);
-            int displayHeight = Math.round(displayMetrics.heightPixels);
-            final boolean isLandscape = displayWidth>displayHeight;
-            if (!isLandscape){
-                Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,displayMetrics.heightPixels/10,currentWeatherInfo.forecast1hourly);
-                if (overViewChartBitmap!=null){
-                    overviewChartImageView.setImageBitmap(overViewChartBitmap);
+        final LinearLayout main_leftcontainer = (LinearLayout) findViewById(R.id.main_leftcontainer);
+        final boolean isLandscape = (main_leftcontainer!=null);
+            if (overviewChartImageView!=null){
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int displayWidth  = Math.round(displayMetrics.widthPixels);
+                int displayHeight = Math.round(displayMetrics.heightPixels);
+                if (WeatherSettings.displayOverviewChart(context)){
+                    overviewChartImageView.setVisibility(View.VISIBLE);
                 }
-            } else {
-                LinearLayout main_landscape_mainlinearlayout = (LinearLayout) findViewById(R.id.main_landscape_mainlinearlayout);
-                overviewChartImageView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        overviewChartImageView.measure(0,0);
-                        Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,overviewChartImageView.getWidth(),overviewChartImageView.getHeight(),currentWeatherInfo.forecast1hourly);
+                if (!isLandscape){
+                    if (WeatherSettings.displayOverviewChart(context)){
+                        Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,displayMetrics.heightPixels/10,currentWeatherInfo.forecast1hourly);
                         if (overViewChartBitmap!=null){
                             overviewChartImageView.setImageBitmap(overViewChartBitmap);
                         }
+                    } else {
+                        overviewChartImageView.setVisibility(View.GONE);
                     }
-                });
+                } else {
+                    LinearLayout main_landscape_mainlinearlayout = (LinearLayout) findViewById(R.id.main_landscape_mainlinearlayout);
+                    overviewChartImageView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            overviewChartImageView.measure(0,0);
+                            Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,overviewChartImageView.getWidth(),overviewChartImageView.getHeight(),currentWeatherInfo.forecast1hourly);
+                            if (overViewChartBitmap!=null){
+                                overviewChartImageView.setImageBitmap(overViewChartBitmap);
+                            }
+                        }
+                    });
+                }
             }
-        }
+
     }
 
     private int get24passedPosition(CurrentWeatherInfo currentWeatherInfo,int lasthourlypostion){
