@@ -299,4 +299,9 @@
     <string name="welcome_setupwarnings">Setup warnings</string>
     <string name="widget_transparency_default">90</string>
     <string name="battery_and_data_hint">This will increase battery and data volume use.</string>
+    <string name="update_failed">Update failed:</string>
+    <string name="network_lost">internet connection lost.</string>
+    <string name="network_nonetwork">no internet connection.</string>
+    <string name="network_timeout">internet connection timed out.</string>
+
 </resources>

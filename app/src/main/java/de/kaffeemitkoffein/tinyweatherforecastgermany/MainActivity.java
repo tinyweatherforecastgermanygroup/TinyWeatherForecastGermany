@@ -95,7 +95,25 @@ public class MainActivity extends Activity {
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(final Context context, Intent intent) {
+            if (intent.hasExtra(DataUpdateService.StopReason.STOPREASON_EXTRA) && (forceWeatherUpdateFlag)){
+                final int stopReason = intent.getIntExtra(DataUpdateService.StopReason.STOPREASON_EXTRA,DataUpdateService.StopReason.REGULAR);
+                if (stopReason!=DataUpdateService.StopReason.REGULAR){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String reasonText = context.getString(R.string.network_nonetwork);
+                            if (stopReason==DataUpdateService.StopReason.NETWORK_LOSS){
+                                reasonText = context.getString(R.string.network_lost);
+                            }
+                            if (stopReason==DataUpdateService.StopReason.NETWORK_TIMEOUT){
+                                reasonText = context.getString(R.string.network_timeout);
+                            }
+                            Toast.makeText(context, context.getResources().getString(R.string.update_failed)+" "+reasonText, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"received broadcast => custom refresh action");
                 displayWeatherForecast();

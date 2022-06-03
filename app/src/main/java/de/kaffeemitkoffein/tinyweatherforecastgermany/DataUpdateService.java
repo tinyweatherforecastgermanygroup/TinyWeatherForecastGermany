@@ -43,10 +43,25 @@ public class DataUpdateService extends Service {
 
     private ConnectivityManager connectivityManager;
 
-    private Runnable serviceTerminationRunnable = new Runnable() {
+    static class StopReason {
+        public static final int REGULAR = 0;
+        public static final int NETWORK_LOSS = 1;
+        public static final int NONETWORK = 2;
+        public static final int NETWORK_TIMEOUT = 3;
+        public static final String STOPREASON_EXTRA = "STOPREASON_EXTRA";
+    }
+
+    private Runnable serviceTerminationRunnableNetwork = new Runnable() {
         @Override
         public void run() {
-            stopThisService();
+            stopThisService(StopReason.REGULAR);
+        }
+    };
+
+    private Runnable serviceTerminationRunnableNoNetwork = new Runnable() {
+        @Override
+        public void run() {
+            stopThisService(StopReason.NONETWORK);
         }
     };
 
@@ -69,15 +84,16 @@ public class DataUpdateService extends Service {
     TimerTask timeOutTask = new TimerTask() {
         @Override
         public void run() {
-            stopThisService();
+            stopThisService(StopReason.NETWORK_TIMEOUT);
         }
     };
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void stopThisService(){
+    private void stopThisService(int cause){
         PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Shutting down service...");
         Intent intent = new Intent();
         intent.setAction(HIDE_PROGRESS);
+        intent.putExtra(StopReason.STOPREASON_EXTRA,cause);
         sendBroadcast(intent);
         notificationManager.cancel(notification_id);
         if ((connectivityManager!=null) && (networkCallback!=null) && (Build.VERSION.SDK_INT > 23)){
@@ -130,13 +146,15 @@ public class DataUpdateService extends Service {
             // perform service task only if:
             // 1) intent supplied telling what to do, AND
             // 2) internet connection is present
+            boolean hasNetwork = false;
             if (isConnectedToInternet()){
+                hasNetwork = true;
                 // put
                 if ((Build.VERSION.SDK_INT > 23) && (connectivityManager!=null)){
                     networkCallback = new ConnectivityManager.NetworkCallback(){
                         @Override
                         public void onLost(Network network) {
-                            stopThisService();
+                            stopThisService(StopReason.NETWORK_LOSS);
                         }
                     };
                     connectivityManager.registerDefaultNetworkCallback((ConnectivityManager.NetworkCallback) networkCallback);
@@ -233,6 +251,7 @@ public class DataUpdateService extends Service {
                     Intent i = new Intent();
                     i.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
                     i.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
+                    i.putExtra(StopReason.STOPREASON_EXTRA,StopReason.NONETWORK);
                     sendBroadcast(i);
                 }
             }
@@ -252,7 +271,11 @@ public class DataUpdateService extends Service {
                 executor.execute(notificationUpdater);
             }
             // queue service termination, this is always the last thing to do
-            executor.execute(serviceTerminationRunnable);
+            if (hasNetwork){
+                executor.execute(serviceTerminationRunnableNetwork);
+            } else {
+                executor.execute(serviceTerminationRunnableNoNetwork);
+            }
         } else {
             PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.INFO,"Service already running.");
             // terminate, because service is already running
