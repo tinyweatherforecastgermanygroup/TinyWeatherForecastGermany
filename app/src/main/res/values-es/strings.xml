@@ -107,7 +107,7 @@
     <string name="preference_displayendofdaybar_summary">Mostrar una barra para separar los días.</string>
     <string name="preference_display_gradient_title">Gradiente de tiempo</string>
     <string name="preference_display_gradient_summary">Mostrar un gradiente de color para indicar la hora de la previsión.</string>
-    <string name="preference_screen_wind_title">Mostrar el viento</string>
+    <string name="preference_screen_wind_title">Mostrar el vientoz</string>
     <string name="preference_screen_wind_summary">Personaliza cómo mostrar el viento.</string>
     <string name="preference_display_wind_arc_title">Previsión del viento en el icono</string>
     <string name="preference_display_wind_arc_summary">Un pequeño arco muestra los cambios del viento.</string>
@@ -127,7 +127,7 @@
     <string name="preference_setalarm_summary">Mantener los datos meteorológicos actualizados.</string>
     <string name="preference_setalarm_notice">NOTIFICACIÓN: actualmente no está disponible, ya que la compatibilidad con Gadgetbridge habilitada fuerza las actualizaciones automáticas de todos modos.</string>
     <string name="preference_display_station_geo_summary">Mostrar coordenadas geográficas de la estación</string>
-    <string name="preference_screen_gadgetbridge_title">Soporte para gadgets</string>
+    <string name="preference_screen_gadgetbridge_title">Soporte para gadgetbridge</string>
     <string name="preference_screen_gadgetbridge_summary">Opciones para integrar los datos meteorológicos de esta app en Gadgetbridge.</string>
     <string name="alertdialog_2_title">Logcat</string>
     <string name="alertdialog_2_text">Esta aplicación registra actualmente en logcat. El registro en logcat se desactivará, ya que esta función no está pensada para las versiones oficiales.</string>
@@ -141,7 +141,7 @@
     <string name="preference_gadgetbridge_package_reset_toast">El nombre del paquete de Gadgetbridge vuelve a ser el predeterminado.</string>
     <string name="preference_loggingscreen_title">Debug</string>
     <string name="preference_loggingscreen_summary">Configura las opciones de registro para la depuración.</string>
-    <string name="preference_logging_title">Registro</string>
+    <string name="preference_logging_title">Logging</string>
     <string name="preference_logging_summary">Activar el registro. Los registros se guardan LOCALMENTE en tu dispositivo y NO se envían automáticamente.</string>
     <string name="preference_log_to_logcat_title">Registro en Logcat</string>
     <string name="preference_log_to_logcat_summary">Inserta los registros en el registro del sistema en el dispositivo. Precaución: esto puede suponer una fuga de privacidad, otras apps pueden acceder al registro del sistema.</string>
@@ -266,4 +266,11 @@
     <string name="weathercode_SNOW_SHOWERS_SLIGHT">ligeros chubascos de nieve</string>
     <string name="weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY">Chubascos de lluvia y nieve mezclados</string>
     <string name="weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT">ligeros chubascos de lluvia y nieve mezclados</string>
+    <string name="preference_displaywarninginwidget_title">Mostrar avisos en el widget</string>
+    <string name="preference_displaywarninginwidget_summary">Mostrar avisos de la ubicación seleccionada en los widgets.</string>
+    <string name="preference_notify_warnings_title">Activar las notificaciones</string>
+    <string name="preference_notify_warnings_summary">Notificar nuevos avisos para la ubicación seleccionada.</string>
+    <string name="preference_meterednetwork_title">Utilizar redes con contador</string>
+    <string name="preference_meterednetwork_summary">Utiliza también las redes con contador para obtener datos.</string>
+    <string name="preference_meterednetwork_notice">Es posible que se pierdan los avisos meteorológicos si sólo se utilizan las redes sin medidor.</string>
 </resources>
