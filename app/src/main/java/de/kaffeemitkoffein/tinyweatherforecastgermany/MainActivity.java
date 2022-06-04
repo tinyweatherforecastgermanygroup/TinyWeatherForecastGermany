@@ -95,24 +95,15 @@ public class MainActivity extends Activity {
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(final Context context, Intent intent) {
-            if (intent.hasExtra(DataUpdateService.StopReason.STOPREASON_EXTRA) && (forceWeatherUpdateFlag)){
-                final int stopReason = intent.getIntExtra(DataUpdateService.StopReason.STOPREASON_EXTRA,DataUpdateService.StopReason.REGULAR);
-                if (stopReason!=DataUpdateService.StopReason.REGULAR){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String reasonText = context.getString(R.string.network_nonetwork);
-                            if (stopReason==DataUpdateService.StopReason.NETWORK_LOSS){
-                                reasonText = context.getString(R.string.network_lost);
-                            }
-                            if (stopReason==DataUpdateService.StopReason.NETWORK_TIMEOUT){
-                                reasonText = context.getString(R.string.network_timeout);
-                            }
-                            Toast.makeText(context, context.getResources().getString(R.string.update_failed)+" "+reasonText, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
+        public void onReceive(Context c, Intent intent) {
+            final String errorText = DataUpdateService.StopReason.getStopReasonErrorText(context,intent);
+            if ((errorText!=null) && (forceWeatherUpdateFlag)){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
+                    }
+                });
             }
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"received broadcast => custom refresh action");
@@ -164,12 +155,13 @@ public class MainActivity extends Activity {
                 if (progressBar!=null){
                     progressBar.setVisibility(View.INVISIBLE);
                 }
+                forceWeatherUpdateFlag = false;
             }
             if (intent.getAction().equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE)){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"broadcast received => new weather warnings.");
                 checkIfWarningsApply();
                 if (forceWeatherUpdateFlag){
-                    UpdateAlarmManager.startDataUpdateService(getApplicationContext(),true,false,true);
+                    //UpdateAlarmManager.startDataUpdateService(getApplicationContext(),true,false,true);
                     forceWeatherUpdateFlag = false;
                 }
             }
@@ -489,6 +481,10 @@ public class MainActivity extends Activity {
                     currentStation.name = "10522";
                     WeatherSettings.setStation(this,currentStation);
                 }
+            }
+            // fix possible (but very unlikely) unique notification ID in reserved area introduced in version 35
+            if (weatherSettings.last_version_code<35){
+                WeatherSettings.fixUniqueNotificationIdentifier(context);
             }
             showWhatsNewDialog();
         }

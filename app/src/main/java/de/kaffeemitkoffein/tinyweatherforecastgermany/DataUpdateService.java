@@ -12,6 +12,8 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
+import android.widget.Toast;
+
 import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -49,6 +51,21 @@ public class DataUpdateService extends Service {
         public static final int NONETWORK = 2;
         public static final int NETWORK_TIMEOUT = 3;
         public static final String STOPREASON_EXTRA = "STOPREASON_EXTRA";
+
+        public static String getStopReasonErrorText(Context context, Intent intent){
+            if (intent!=null){
+                if (intent.hasExtra(STOPREASON_EXTRA)){
+                    int stopReason = intent.getIntExtra(STOPREASON_EXTRA,REGULAR);
+                    switch (stopReason){
+                        case NETWORK_LOSS: return context.getResources().getString(R.string.update_failed)+" "+context.getString(R.string.network_lost);
+                        case NONETWORK: return context.getResources().getString(R.string.update_failed)+" "+context.getString(R.string.network_nonetwork);
+                        case NETWORK_TIMEOUT: return context.getResources().getString(R.string.update_failed)+" "+context.getString(R.string.network_timeout);
+                        default: return null;
+                    }
+                }
+            }
+            return null;
+        }
     }
 
     private Runnable serviceTerminationRunnableNetwork = new Runnable() {
@@ -110,11 +127,12 @@ public class DataUpdateService extends Service {
     @Override
     public void onCreate(){
         PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Service started.");
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        notification_id = (int) Calendar.getInstance().getTimeInMillis();
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        //notification_id = (int) Calendar.getInstance().getTimeInMillis();
+        notification_id = WeatherSettings.StaticNotifationIDs.SERVICE_NOTIFICATION_IDENTIFIER;
         notification = getNotification();
-        startForeground(notification_id,notification);
-        PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Service is foreground now.");
+        startForeground(notification_id, notification);
+        PrivateLog.log(this, PrivateLog.SERVICE, PrivateLog.INFO, "Service is foreground now.");
         serviceStarted = false;
     }
 
@@ -285,12 +303,14 @@ public class DataUpdateService extends Service {
 
     @Override
     public void onDestroy(){
-        notificationManager.cancel(notification_id);
-        // hide progressbar in main app
-        Intent progressbar_intent = new Intent();
-        progressbar_intent.setAction(MainActivity.MAINAPP_HIDE_PROGRESS);
-        sendBroadcast(progressbar_intent);
-        PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Service destroyed.");
+        if (notificationManager!=null){
+            notificationManager.cancel(notification_id);
+            // hide progressbar in main app
+            Intent progressbar_intent = new Intent();
+            progressbar_intent.setAction(MainActivity.MAINAPP_HIDE_PROGRESS);
+            sendBroadcast(progressbar_intent);
+            PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Service destroyed.");
+        }
     }
 
     private Notification getNotification(){

@@ -27,6 +27,16 @@ import java.util.Calendar;
 
 public class WeatherSettings {
 
+    final static class NotificationIDRange {
+        //  2147483601 to 2147483647 are reserved for other unique IDs
+        final static int MIN = -2147483648;
+        final static int MAX = 2147483600;
+    }
+
+    final static class StaticNotifationIDs {
+        public static final int SERVICE_NOTIFICATION_IDENTIFIER = 2147483601;
+    }
+
     final static String FAVORITES_SEPERATOR = ";";
 
     public final static int DISPLAYTYPE_1HOUR = 1;
@@ -150,7 +160,7 @@ public class WeatherSettings {
     public static final String PREF_THEME_DEFAULT = Theme.FOLLOW_DEVICE;
     public static final boolean PREF_ALTERNATIVE_ICONS_DEFAULT = true;
     public static final boolean PREF_USE_METERED_NETWORKS_DEFAULT = true;
-    public static final int PREF_NOTIFICATION_IDENTIFIER_DEFAULT = -2147483648;
+    public static final int PREF_NOTIFICATION_IDENTIFIER_DEFAULT = -2147483640;
 
     public String station_description = PREF_STATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -1013,10 +1023,24 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int i = sharedPreferences.getInt(PREF_NOTIFICATION_IDENTIFIER, PREF_NOTIFICATION_IDENTIFIER_DEFAULT);
         int b = i + 1;
+        // prevent uncontrolled int rollover & respect reserved notification ID area
+        if (b>NotificationIDRange.MAX){
+            b = NotificationIDRange.MIN;
+        }
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putInt(PREF_NOTIFICATION_IDENTIFIER,b);
         pref_editor.apply();
         return i;
+    }
+
+    public static void fixUniqueNotificationIdentifier(Context context){
+        int identifier = getUniqueNotificationIdentifier(context);
+        if (identifier>NotificationIDRange.MAX){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+            pref_editor.putInt(PREF_DISPLAY_OVERVIEWCHART,NotificationIDRange.MIN);
+            pref_editor.apply();
+        }
     }
 
     public static boolean cropPrecipitationChart(Context context){

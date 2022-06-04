@@ -66,6 +66,8 @@ public class WeatherWarningActivity extends Activity {
 
     Bundle zoomMapState = null;
 
+    boolean forceWeatherUpdateFlag = false;
+
     static float MAP_PIXEL_WIDTH;
     static float MAP_PIXEL_HEIGHT;
 
@@ -77,7 +79,16 @@ public class WeatherWarningActivity extends Activity {
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context c, Intent intent) {
+            final String errorText = DataUpdateService.StopReason.getStopReasonErrorText(context,intent);
+            if ((errorText!=null)  && (forceWeatherUpdateFlag)){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
             if (intent!=null){
                 // update warning display if warnings have been updated
                 if (intent.getAction().equals(WEATHER_WARNINGS_UPDATE)) {
@@ -91,6 +102,7 @@ public class WeatherWarningActivity extends Activity {
                     boolean updateResult = intent.getBooleanExtra(WEATHER_WARNINGS_UPDATE_RESULT,false);
                 }
                 if (intent.getAction().equals(DataUpdateService.HIDE_PROGRESS)){
+                    forceWeatherUpdateFlag = false;
                     hideProgressBar();
                 }
             }
@@ -225,6 +237,7 @@ public class WeatherWarningActivity extends Activity {
             PrivateLog.log(this, PrivateLog.WARNINGS,PrivateLog.INFO, "starting update of weather warnings");
             if (UpdateAlarmManager.updateWarnings(getApplicationContext(),true)){
                 // returns true if update service was launched successfully
+                forceWeatherUpdateFlag = true;
                showProgressBar();
             }
             return true;

@@ -3,3 +3,5 @@
 - new chart giving an overview of temperature, clouds & rain for the next days (can be enabled in the settings)
 - new, improved landscape layout for displays with a width of at least 600dp
 - long-pressing a forecast interval in the app now opens a very detailed, horizontally scrollable, hourly forecast
+- when the user starts an update, the app now notifies when it fails
+- fixed notification icon sometimes appearing twice

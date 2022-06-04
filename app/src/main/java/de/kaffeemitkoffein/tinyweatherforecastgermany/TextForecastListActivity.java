@@ -51,16 +51,27 @@ public class TextForecastListActivity extends Activity {
     ImageView floatButton;
     Context context;
     ActionBar actionBar;
+    boolean forceWeatherUpdateFlag = false;
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context c, Intent intent) {
+            final String errorText = DataUpdateService.StopReason.getStopReasonErrorText(context,intent);
+            if ((errorText!=null) && (forceWeatherUpdateFlag)){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
             if (intent.getAction().equals(ACTION_UPDATE_TEXTS)){
                 hideProgressBar();
                 showList();
             }
             if (intent.getAction().equals(DataUpdateService.HIDE_PROGRESS)){
                 hideProgressBar();
+                forceWeatherUpdateFlag = false;
             }
         }
     };
@@ -140,6 +151,7 @@ public class TextForecastListActivity extends Activity {
         if (item_id == R.id.menu_refresh) {
             if (UpdateAlarmManager.updateTexts(context)){
                 // returns true if update service was launched sucessfully
+                forceWeatherUpdateFlag = true;
                 showProgressBar();
             }
             return true;
