@@ -128,7 +128,6 @@ public class DataUpdateService extends Service {
     public void onCreate(){
         PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Service started.");
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        //notification_id = (int) Calendar.getInstance().getTimeInMillis();
         notification_id = WeatherSettings.StaticNotifationIDs.SERVICE_NOTIFICATION_IDENTIFIER;
         notification = getNotification();
         startForeground(notification_id, notification);

@@ -76,8 +76,8 @@ public class GadgetbridgeAPI {
             if (weatherCard.currentWeather.hasWindDirection()){
                 weatherSpec.windDirection        = (int) weatherCard.currentWeather.getWindDirection();
             }
-            // build the forecast instance
-            for (int i=0; i<weatherCard.forecast24hourly.size(); i++){
+            // build the forecast instance, ingore 1st entry (current day)
+            for (int i=1; i<weatherCard.forecast24hourly.size(); i++){
                 // do not add and/or stop adding forecast if values are unknown
                 if (!weatherCard.forecast24hourly.get(i).hasMinTemperature()||
                         (!weatherCard.forecast24hourly.get(i).hasMaxTemperature())||
@@ -92,20 +92,21 @@ public class GadgetbridgeAPI {
                         weatherCard.forecast24hourly.get(i).getRHInt());
                 weatherSpec.forecasts.add(forecast);
             }
-            /*
-            PrivateLog.log(context,Tag.GB,"Timestamp          : "+weatherSpec.timestamp);
-            PrivateLog.log(context,Tag.GB,"Condition Code     : "+weatherSpec.currentConditionCode);
-            PrivateLog.log(context,Tag.GB,"Condition          : "+weatherSpec.currentCondition);
-            PrivateLog.log(context,Tag.GB,"Temperature current: "+weatherSpec.currentTemp);
-            PrivateLog.log(context,Tag.GB,"Temperature min    : "+weatherSpec.todayMinTemp);
-            PrivateLog.log(context,Tag.GB,"Temperature max    : "+weatherSpec.todayMaxTemp);
-            PrivateLog.log(context,Tag.GB,"FC-Temperature max : "+weatherSpec.forecasts.get(0).minTemp);
-            PrivateLog.log(context,Tag.GB,"FC-Temperature max : "+weatherSpec.forecasts.get(0).maxTemp);
-            PrivateLog.log(context,Tag.GB,"FC-Condition       : "+weatherSpec.forecasts.get(0).conditionCode);
-            PrivateLog.log(context,Tag.GB,"# of day forecasts : "+weatherSpec.forecasts.size());
-            PrivateLog.log(context,Tag.GB,"Windspeed          : "+weatherSpec.windSpeed);
-            PrivateLog.log(context,Tag.GB,"Windspeed direct.  : "+weatherSpec.windDirection);
-            */
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Values served to Gadgetbridge:");
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Current weather:");
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Timestamp          : "+weatherSpec.timestamp);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Condition Code     : "+weatherSpec.currentConditionCode);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Condition          : "+weatherSpec.currentCondition);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Temperature current: "+weatherSpec.currentTemp);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Temperature min    : "+weatherSpec.todayMinTemp);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Temperature max    : "+weatherSpec.todayMaxTemp);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Windspeed          : "+weatherSpec.windSpeed);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Windspeed direct.  : "+weatherSpec.windDirection);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecasts:");
+            for (int i=0; i<weatherSpec.forecasts.size(); i++){
+                PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecast #"+i+": Tmin/Tmax/Cond./RH: "+(weatherSpec.forecasts.get(i).minTemp-273)+"/"+(weatherSpec.forecasts.get(i).maxTemp-273)+"/"+weatherSpec.forecasts.get(i).conditionCode+"/"+weatherSpec.forecasts.get(i).humidity);
+            }
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Please consider that rounding errors may lead to a difference of 1° compared to the displayed values.");
         }
     }
 

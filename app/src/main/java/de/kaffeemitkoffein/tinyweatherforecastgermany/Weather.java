@@ -630,7 +630,7 @@ public final class Weather {
         }
 
         public int getWindDirectionInt(){
-            int j = wind_direction.intValue();
+            int j = (int) Math.round(wind_direction);
             return j;
         }
 
@@ -660,7 +660,7 @@ public final class Weather {
         }
 
         public int getTemperatureInt(){
-            int j = temperature.intValue();
+            int j = (int) Math.round(temperature);
             return j;
         }
 
@@ -670,7 +670,7 @@ public final class Weather {
         }
         public int getTemperatureInCelsiusInt(){
             Double d = (temperature - KelvinConstant);
-            int j = d.intValue();
+            int j = (int) Math.round(d);
             return j;
         }
 
@@ -683,7 +683,7 @@ public final class Weather {
         }
 
         public int getTemperture5cmInt(){
-            int j = temperature5cm.intValue();
+            int j = (int) Math.round(temperature5cm);
             return j;
         }
 
@@ -694,7 +694,7 @@ public final class Weather {
 
         public int getTemperature5cmInCelsiusInt(){
             Double d = (temperature5cm-KelvinConstant);
-            int j = d.intValue();
+            int j = (int) Math.round(d);
             return j;
         }
 
@@ -706,7 +706,7 @@ public final class Weather {
         }
 
         public int getMaxTemperatureInt(){
-            int j = temperature_high.intValue();
+            int j = (int) Math.round(temperature_high);
             return j;
         }
 
@@ -716,7 +716,7 @@ public final class Weather {
 
         public int getMaxTemperatureInCelsiusInt(){
             Double d = getMaxTemperatureInCelsius();
-            int j = d.intValue();
+            int j = (int) Math.round(d);
             return j;
         }
 
@@ -732,13 +732,13 @@ public final class Weather {
         }
 
         public int getMinTemperatureInt(){
-            int j = temperature_low.intValue();
+            int j = (int) Math.round(temperature_low);
             return j;
         }
 
         public int getMinTemperatureInCelsiusInt(){
             Double d = temperature_low - KelvinConstant;
-            int j = d.intValue();
+            int j = (int) Math.round(d);
             return j;
         }
 
@@ -816,12 +816,12 @@ public final class Weather {
 
         public int getWindSpeedInMsInt(){
             Double d = wind_speed;
-            return d.intValue();
+            return (int) Math.round(d);
         }
 
         public int getWindSpeedInKmhInt(){
             Double d = (wind_speed*3.6);
-            int speed = d.intValue();
+            int speed = (int) Math.round(d);
             return speed;
         }
 
@@ -872,7 +872,7 @@ public final class Weather {
 
         public int getWindSpeedInKnotsInt(){
             Double d = wind_speed*1.943844;
-            return d.intValue();
+            return (int) Math.round(d);
         }
 
         public boolean hasFlurries(){
@@ -884,12 +884,12 @@ public final class Weather {
 
         public int getFlurriesInMsInt(){
             Double d = flurries;
-            return d.intValue();
+            return (int) Math.round(d);
         }
 
         public int getFlurriesInKmhInt(){
             Double d = (flurries*3.6);
-            int flurries = d.intValue();
+            int flurries = (int) Math.round(d);
             return flurries;
         }
 
@@ -899,7 +899,7 @@ public final class Weather {
 
         public int getFlurriesInKnotsInt(){
             Double d = flurries*1.943844;
-            return d.intValue();
+            return (int) Math.round(d);
         }
 
         public boolean hasClouds(){
@@ -1065,7 +1065,7 @@ public final class Weather {
         }
 
         public int getPressure(){
-            int p = pressure.intValue();
+            int p = (int) Math.round(pressure);
             return p;
         }
 
@@ -1077,7 +1077,7 @@ public final class Weather {
         }
 
         public int getUV(){
-            int j = uv.intValue();
+            int j = (int) Math.round(uv);
             return j;
         }
 
