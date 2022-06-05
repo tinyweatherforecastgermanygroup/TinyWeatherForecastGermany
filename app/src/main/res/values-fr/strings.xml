@@ -294,4 +294,11 @@
     <string name="preference_clearnotifications_message">La mémoire de notification est effacée.</string>
     <string name="preference_clearnotifications_title">Réinitialisation des notifications</string>
     <string name="preference_clearnotifications_summary">Réinitialiser les notifications d\'alertes météorologiques. Toutes les notifications valides s\'afficheront à nouveau.</string>
+    <string name="network_lost">connexion internet perdue.</string>
+    <string name="network_timeout">La connexion Internet a été interrompue.</string>
+    <string name="preference_display_overviewchart_title">Graphique général</string>
+    <string name="preference_display_overviewchart_summary">Affiche toujours le graphique indiquant la température, les nuages et la pluie pour les jours à venir. Lorsqu\'elle est désactivée, la carte ne sera visible qu\'en mode paysage, et uniquement si l\'espace est suffisant.</string>
+    <string name="welcome_s3_text5">Appuyez longuement sur la prévision pour ouvrir une vue plus détaillée.</string>
+    <string name="update_failed">La mise à jour a échoué :</string>
+    <string name="network_nonetwork">pas de connexion internet.</string>
 </resources>
