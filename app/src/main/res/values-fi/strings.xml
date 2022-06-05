@@ -266,4 +266,25 @@
     <string name="welcome_ready">VALMIS!</string>
     <string name="geoinput_wrongvalue">Pituuspiirin on oltava välillä -180-180 ja leveyspiirin välillä -90 ja +90. Yritä uudelleen.</string>
     <string name="geoinput_wrongformat">Koordinaatilla ei ole kelvollista muotoa. Voit käyttää merkintöjä, kuten +53.12345 asteille, tai -44.22:12.12345 asteiden ja minuuttien syöttämiseen tai 33.12.12345 asteiden, minuuttien ja sekuntien syöttämiseen. Yritä uudelleen.</string>
+    <string name="preference_displaywarninginwidget_summary">Näytä valitun sijainnin varoitukset widgetissä.</string>
+    <string name="preference_displaywarninginwidget_title">Näytä varoitukset widgetissä</string>
+    <string name="preference_notify_warnings_title">Ota ilmoitukset käyttöön</string>
+    <string name="preference_notify_warnings_summary">Ilmoita valitun sijainnin uusista varoituksista.</string>
+    <string name="preference_meterednetwork_title">Käytä mitattuja verkkoja</string>
+    <string name="preference_meterednetwork_summary">Käytä myös mitattuja verkkoja datan hankkimiseen.</string>
+    <string name="preference_meterednetwork_notice">Saatat jäädä paitsi säävaroituksista, kun käytät vain mittaamattomia verkkoja.</string>
+    <string name="network_nonetwork">ei internet-yhteyttä.</string>
+    <string name="welcome_setupwarnings">Asetusvaroitukset</string>
+    <string name="battery_and_data_hint">Tämä lisää akun ja datamäärän käyttöä.</string>
+    <string name="network_timeout">Internet-yhteys katkesi.</string>
+    <string name="preference_clearnotifications_title">Ilmoitusten nollaaminen</string>
+    <string name="preference_clearnotifications_summary">Säähälytysten ilmoitusten nollaaminen. Kaikki voimassa olevat ilmoitukset näytetään uudelleen.</string>
+    <string name="preference_clearnotifications_message">Ilmoitusmuisti tyhjennetty.</string>
+    <string name="preference_display_overviewchart_title">Yleiskaavio</string>
+    <string name="preference_display_overviewchart_summary">Näytä aina kaavio, josta näkyvät seuraavien päivien lämpötila, pilvet ja sateet. Kun toiminto on poistettu käytöstä, kaavio näkyy vain maisematilassa ja vain, jos tilaa on riittävästi.</string>
+    <string name="welcome_s3_text5">Avaa yksityiskohtaisempi näkymä painamalla pitkään ennustetta.</string>
+    <string name="update_failed">Päivitys epäonnistui:</string>
+    <string name="network_lost">Internet-yhteys katkeaa.</string>
+    <string name="service_notification_categoryname">Säätietojen päivittäminen</string>
+    <string name="service_warning_categoryname">Säävaroitukset</string>
 </resources>
