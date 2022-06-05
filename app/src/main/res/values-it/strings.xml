@@ -281,4 +281,11 @@
     <string name="preference_clearnotifications_message">Memoria di notifica cancellata.</string>
     <string name="preference_clearnotifications_title">Azzerare le notifiche</string>
     <string name="preference_clearnotifications_summary">Ripristina le notifiche per le allerte meteo. Tutte le notifiche valide saranno visualizzate di nuovo.</string>
+    <string name="welcome_s3_text5">Premere a lungo sulle previsioni per aprire una vista più dettagliata.</string>
+    <string name="network_lost">perdita della connessione a Internet.</string>
+    <string name="network_timeout">La connessione a Internet si è interrotta.</string>
+    <string name="preference_display_overviewchart_title">Grafico d\'insieme</string>
+    <string name="preference_display_overviewchart_summary">Mostra sempre il grafico che indica temperatura, nuvole e pioggia per i prossimi giorni. Se disattivato, il grafico sarà visibile solo in modalità orizzontale e solo se c\'è spazio sufficiente.</string>
+    <string name="update_failed">Aggiornamento fallito:</string>
+    <string name="network_nonetwork">nessuna connessione a Internet.</string>
 </resources>
