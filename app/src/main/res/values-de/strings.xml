@@ -297,4 +297,11 @@
     <string name="preference_clearnotifications_title">Benachrichtigungen zurück setzen</string>
     <string name="preference_clearnotifications_summary">Benachrichtigungen zurücksetzen. Alle Warnungen werden erneut benachrichtigt.</string>
     <string name="preference_clearnotifications_message">Benachrichtigungsspeicher gelöscht.</string>
+    <string name="preference_display_overviewchart_title">Übersichts-Grafik</string>
+    <string name="preference_display_overviewchart_summary">Zeigt immer die Karte mit der Temperatur, den Wolken und dem Regen für die nächsten Tage an. Wenn diese Funktion deaktiviert ist, wird die Karte nur im Querformat angezeigt, und auch nur, wenn genügend Platz vorhanden ist.</string>
+    <string name="update_failed">Aktualisierung fehlgeschlagen:</string>
+    <string name="network_lost">Internetverbindung verloren.</string>
+    <string name="network_nonetwork">keine Internetverbindung.</string>
+    <string name="network_timeout">Die Internetverbindung wurde unterbrochen.</string>
+    <string name="welcome_s3_text5">Drücken Sie lange auf die Vorhersage, um eine detailliertere Ansicht zu öffnen.</string>
 </resources>
