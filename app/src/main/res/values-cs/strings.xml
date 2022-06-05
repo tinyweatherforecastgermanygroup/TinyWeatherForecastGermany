@@ -280,4 +280,11 @@
     <string name="preference_clearnotifications_summary">Resetování oznámení o výstrahách před počasím. Znovu se zobrazí všechna platná oznámení.</string>
     <string name="preference_clearnotifications_message">Paměť oznámení vymazána.</string>
     <string name="welcome_setupwarnings">Varování při nastavení</string>
+    <string name="update_failed">Aktualizace se nezdařila:</string>
+    <string name="network_lost">ztráta internetového připojení.</string>
+    <string name="network_nonetwork">bez připojení k internetu.</string>
+    <string name="network_timeout">vypršel čas připojení k internetu.</string>
+    <string name="preference_display_overviewchart_title">Přehledový diagram</string>
+    <string name="preference_display_overviewchart_summary">Vždy zobrazte graf s údaji o teplotě, oblačnosti a dešti pro následující dny. Pokud je tato funkce vypnutá, graf se zobrazí pouze v režimu na šířku, a to pouze v případě, že je k dispozici dostatek místa.</string>
+    <string name="welcome_s3_text5">Dlouhým stisknutím předpovědi otevřete podrobnější zobrazení.</string>
 </resources>
