@@ -280,4 +280,11 @@
     <string name="service_notification_categoryname">Aktualizacja danych pogodowych</string>
     <string name="welcome_setupwarnings">Ostrzeżenia o konfiguracji</string>
     <string name="battery_and_data_hint">Spowoduje to zwiększenie zużycia baterii i objętości danych.</string>
+    <string name="preference_display_overviewchart_title">Wykres poglądowy</string>
+    <string name="welcome_s3_text5">Naciśnij długo prognozę, aby otworzyć bardziej szczegółowy widok.</string>
+    <string name="update_failed">Aktualizacja nie powiodła się:</string>
+    <string name="network_lost">utrata połączenia z Internetem.</string>
+    <string name="network_nonetwork">brak połączenia z Internetem.</string>
+    <string name="preference_display_overviewchart_summary">awsze wyświetlaj wykres temperatury, zachmurzenia i deszczu na najbliższe dni. Gdy opcja ta jest wyłączona, wykres będzie widoczny tylko w trybie poziomym i tylko wtedy, gdy będzie wystarczająco dużo miejsca.</string>
+    <string name="network_timeout">połączenie internetowe zostało przerwane.</string>
 </resources>
