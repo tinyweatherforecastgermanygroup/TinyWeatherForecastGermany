@@ -266,4 +266,25 @@
     <string name="connerror_message">Appen kunne ikke etablere en krypteret forbindelse med DWD\'s åbne dataserver via https. Deaktiverer du kryptering\?</string>
     <string name="warning_stationreset_text">For at rette en fejl er din station og dine favoritstationer blevet nulstillet til standardværdien.</string>
     <string name="geoinput_hint_longitude">f.eks. 10.1, -10:01.22342, 10:01:12345</string>
+    <string name="preference_display_overviewchart_title">Oversigtsdiagram</string>
+    <string name="preference_displaywarninginwidget_summary">Viser advarsler for din valgte placering i widgets.</string>
+    <string name="preference_displaywarninginwidget_title">Vis advarsler i widget</string>
+    <string name="preference_notify_warnings_title">Aktiver meddelelser</string>
+    <string name="preference_notify_warnings_summary">Giv besked om nye advarsler for den valgte placering.</string>
+    <string name="preference_meterednetwork_notice">Du kan gå glip af vejrvarsler, hvis du kun bruger net uden målerafgift.</string>
+    <string name="preference_meterednetwork_title">Brug målerbaserede net</string>
+    <string name="preference_meterednetwork_summary">Du kan også bruge net med taxameter til at få data.</string>
+    <string name="service_notification_categoryname">Opdatering af vejrdata</string>
+    <string name="service_warning_categoryname">Advarsler om vejret</string>
+    <string name="welcome_s3_text5">Tryk længe på prognosen for at åbne en mere detaljeret visning.</string>
+    <string name="update_failed">Opdateringen mislykkedes:</string>
+    <string name="network_lost">internetforbindelse tabt.</string>
+    <string name="network_nonetwork">ingen internetforbindelse.</string>
+    <string name="network_timeout">internetforbindelsen gik i stå.</string>
+    <string name="welcome_setupwarnings">Advarsler ved opsætning</string>
+    <string name="battery_and_data_hint">Dette vil øge forbruget af batteri og datamængde.</string>
+    <string name="preference_clearnotifications_title">Nulstil notifikationer</string>
+    <string name="preference_clearnotifications_summary">Nulstiller meddelelser om vejrvarsler. Alle gyldige meddelelser vises igen.</string>
+    <string name="preference_clearnotifications_message">Meddelelseshukommelse ryddet.</string>
+    <string name="preference_display_overviewchart_summary">Vis altid diagrammet med temperatur, skyer og regn for de næste dage. Når den er deaktiveret, vil kortet kun være synligt i landskabstilstand, og kun hvis der er plads nok.</string>
 </resources>
