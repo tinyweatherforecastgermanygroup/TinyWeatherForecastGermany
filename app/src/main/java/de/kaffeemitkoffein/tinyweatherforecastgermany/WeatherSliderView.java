@@ -130,7 +130,7 @@ public class WeatherSliderView extends HorizontalScrollView {
             View newView = LayoutInflater.from(context).inflate(R.layout.horizontalinfoitem,linearLayout,false);
             // time
             TextView textViewHeading = (TextView) newView.findViewById(R.id.hzi_heading);
-            textViewHeading.setText(Weather.GetDateString(Weather.SIMPLEDATEFORMATS.DETAILED,weatherInfo.getTimestamp()));
+            textViewHeading.setText(Weather.GetDateString(Weather.SIMPLEDATEFORMATS.DETAILED_NO_SECONDS,weatherInfo.getTimestamp()));
             // weather icon
             ImageView weatherConditionImageView = (ImageView) newView.findViewById(R.id.hzi_weathericon);
             if (!weatherInfo.hasCondition()){

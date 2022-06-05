@@ -136,6 +136,25 @@
                     android:layout_marginLeft="6dp"
                     android:text="@string/welcome_s3_text4"/>
 
+            <ImageView
+                    android:id="@+id/welcome_screen3_long_press_item"
+                    android:layout_marginTop="@dimen/welcome_text_padding"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_below="@id/welcome_screen3_bar_image"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/long_press_item"/>
+
+            <TextView
+                    android:id="@+id/welcome_screen3_text5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:layout_toRightOf="@id/welcome_screen3_long_press_item"
+                    android:layout_alignTop="@id/welcome_screen3_long_press_item"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="6dp"
+                    android:text="@string/welcome_s3_text5"/>
 
         </RelativeLayout>
     </ScrollView>

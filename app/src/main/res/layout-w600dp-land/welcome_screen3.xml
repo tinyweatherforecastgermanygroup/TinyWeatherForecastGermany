@@ -137,6 +137,27 @@
                     android:text="@string/welcome_s3_text4"
                     android:textSize="@dimen/welcome_text_size"/>
 
+            <ImageView
+                    android:id="@+id/welcome_screen3_long_press_item"
+                    android:layout_marginTop="@dimen/welcome_text_padding"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_toEndOf="@id/welcome_screen3_bar_image"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/long_press_item"/>
+
+            <TextView
+                    android:id="@+id/welcome_screen3_text5"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/welcome_text_padding"
+                    android:gravity="center"
+                    android:layout_below="@id/welcome_screen3_collapse_hint_image"
+                    android:layout_alignStart="@id/welcome_screen3_long_press_item"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_s3_text5"
+                    android:textSize="@dimen/welcome_text_size"/>
+
         </RelativeLayout>
     </HorizontalScrollView>
 

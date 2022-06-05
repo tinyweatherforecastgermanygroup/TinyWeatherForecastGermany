@@ -244,7 +244,7 @@ public class CurrentWeatherInfo{
         index = startposition6h;
         while (index<rawWeatherInfo.elements){
             int start = index - 5;
-            if (index==startposition6h){
+            if (start<current_weather_position){
                 start = current_weather_position;
             }
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
@@ -264,16 +264,13 @@ public class CurrentWeatherInfo{
             wi.setClouds_H_BsC(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.H_BsC,start,index));
             wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT,start, index));
             wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start, index));
-            if (start==startposition6h){
-                if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
-                    wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
+            wi.setLowTemperature(rawWeatherInfo.getMinTemperature(start, index));
+            wi.setHighTemperature(rawWeatherInfo.getMaxTemperature(start, index));
+            if (start==index) {
+                if ((getDoubleItem(rawWeatherInfo.TTT[index]) != null) && (getDoubleItem(rawWeatherInfo.E_TTT[index]) != null)) {
+                    wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index]) - getDoubleItem(rawWeatherInfo.E_TTT[index]));
+                    wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index]) + getDoubleItem(rawWeatherInfo.E_TTT[index]));
                 }
-                if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
-                    wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index])+getDoubleItem(rawWeatherInfo.E_TTT[index]));
-                }
-            } else {
-                wi.setLowTemperature(rawWeatherInfo.getMinTemperature(start, index));
-                wi.setHighTemperature(rawWeatherInfo.getMaxTemperature(start, index));
             }
             wi.setWindSpeed(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.FF, start, index));
             wi.setWindDirection(getDoubleItem(rawWeatherInfo.DD[index]));

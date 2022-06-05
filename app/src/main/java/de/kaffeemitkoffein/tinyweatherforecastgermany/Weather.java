@@ -1432,11 +1432,12 @@ public final class Weather {
     }
 
     final static class SIMPLEDATEFORMATS {
-        final static SimpleDateFormat DETAILED  = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
-        final static SimpleDateFormat DATETIME  = new SimpleDateFormat("dd.MM, HH:mm");
-        final static SimpleDateFormat TIME      = new SimpleDateFormat("HH:mm");
-        final static SimpleDateFormat HOUR      = new SimpleDateFormat("HH");
-        final static SimpleDateFormat DAYOFWEEK = new SimpleDateFormat("EE");
+        final static SimpleDateFormat DETAILED              = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+        final static SimpleDateFormat DETAILED_NO_SECONDS   = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm");
+        final static SimpleDateFormat DATETIME              = new SimpleDateFormat("dd.MM, HH:mm");
+        final static SimpleDateFormat TIME                  = new SimpleDateFormat("HH:mm");
+        final static SimpleDateFormat HOUR                  = new SimpleDateFormat("HH");
+        final static SimpleDateFormat DAYOFWEEK             = new SimpleDateFormat("EE");
     }
 
 

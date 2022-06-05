@@ -104,9 +104,8 @@ public class GadgetbridgeAPI {
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Windspeed direct.  : "+weatherSpec.windDirection);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecasts:");
             for (int i=0; i<weatherSpec.forecasts.size(); i++){
-                PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecast #"+i+": Tmin/Tmax/Cond./RH: "+(weatherSpec.forecasts.get(i).minTemp-273)+"/"+(weatherSpec.forecasts.get(i).maxTemp-273)+"/"+weatherSpec.forecasts.get(i).conditionCode+"/"+weatherSpec.forecasts.get(i).humidity);
+                PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecast #"+i+": Tmin/Tmax/Cond./RH: "+(weatherSpec.forecasts.get(i).minTemp)+"/"+(weatherSpec.forecasts.get(i).maxTemp)+"/"+weatherSpec.forecasts.get(i).conditionCode+"/"+weatherSpec.forecasts.get(i).humidity);
             }
-            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Please consider that rounding errors may lead to a difference of 1° compared to the displayed values.");
         }
     }
 
