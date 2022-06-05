@@ -50,6 +50,7 @@ The following persons contributed to this project:
 * Norwegian Bokmål: mondstern, Allan Nordhøy
 * Polish: mondstern
 * Spanish: eUgEntOptIc44
+* Ukrainian: eUgEntOptIc44, Andrij Mizyk
 
 License:
 --------

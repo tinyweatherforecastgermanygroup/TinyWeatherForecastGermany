@@ -50,6 +50,7 @@ Folgende Personen haben zum Projekt beigetragen:
 * Norwegisch Bokmål: mondstern, Allan Nordhøy
 * Polnisch: mondstern
 * Spanisch: eUgEntOptIc44
+* Ukrainisch: eUgEntOptIc44, Andrij Mizyk
 
 Lizenz:
 --------

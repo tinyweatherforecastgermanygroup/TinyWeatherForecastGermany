@@ -41,16 +41,18 @@ Les personnes suivantes ont contribué à ce projet :
   - eUgEntOptIc44 (javadoc improvements)
 
 Translations :
-* German: eUgEntOptIc44, J. Lavoie, mondstern
+* Czech: eUgEntOptIc44, mondstern
+* Danish: eUgEntOptIc44, mondstern
+* Dutch: mondstern
+* English: Allan Nordhøy
 * French: eUgEntOptIc44, mondstern, Lavoie
 * Finnish: mondstern
+* German: eUgEntOptIc44, J. Lavoie, mondstern, w4ts0n
 * Italian: mondstern, eUgEntOptIc44
-* English: Allan Nordhøy
-* Dutch: mondstern
-* Czech: eUgEntOptIc44, mondstern
 * Norwegian Bokmål: mondstern, Allan Nordhøy
 * Polish: mondstern
 * Spanish: eUgEntOptIc44
+* Ukrainian: eUgEntOptIc44, Andrij Mizyk
 
 Licence :
 --------
