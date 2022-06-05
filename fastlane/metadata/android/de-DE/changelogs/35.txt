@@ -1,5 +1,3 @@
-Neu in dieser Version ([VERSION]):
-
 - neue Sprache: Ukrainisch (Danke an Andrij Mizyk & eUgEntOptIc44!)
 - aktualisierte Übersetzungen
 - leicht verbessere Solarized Farbprofile

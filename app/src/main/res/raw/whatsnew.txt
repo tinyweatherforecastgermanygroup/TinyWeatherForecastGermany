@@ -1,8 +1,14 @@
 New in version ([VERSION]):
 
-- updated stations data and warning areas
-- improved logic when to display day/night icons
-- fixes wrong default widget opacity
-- improved translations
+- new language: Ukrainian (thanks to Andrij Mizyk & eUgEntOptIc44!)
+- updated translations
+- slightly improved Solarized Themes
+- new chart giving an overview of temperature, clouds & rain for the next days (can be enabled in the settings)
+- new, improved landscape layout for displays with a width of at least 600dp
+- long-pressing a forecast item in the app now opens a more detailed view
+- when the user starts an update of weather data, the app now notifies when it fails
+- fixed notification icon sometimes appearing twice
+- fixed forecast days on wearables shifted by one day
+- fixed min/max. temperatures sometimes wrong in the 1st forecast interval
 
 
