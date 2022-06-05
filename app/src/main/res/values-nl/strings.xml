@@ -266,4 +266,25 @@
     <string name="logging_button_share">Delen</string>
     <string name="widget_transparency_default">90</string>
     <string name="welcome_s3_text4">De voorspellingsbalk toont wolken in grijs en regen in blauw.</string>
+    <string name="preference_displaywarninginwidget_summary">Toon waarschuwingen voor uw geselecteerde locatie in widgets.</string>
+    <string name="preference_displaywarninginwidget_title">Toon waarschuwingen in widget</string>
+    <string name="preference_notify_warnings_title">Meldingen inschakelen</string>
+    <string name="preference_notify_warnings_summary">Kennisgeving van nieuwe waarschuwingen voor uw geselecteerde locatie.</string>
+    <string name="preference_meterednetwork_title">Gebruik bemeterde netwerken</string>
+    <string name="preference_meterednetwork_summary">Gebruik ook netwerken met een meter om gegevens te krijgen.</string>
+    <string name="preference_meterednetwork_notice">Het is mogelijk dat u weerwaarschuwingen mist wanneer u alleen gebruik maakt van niet-bemeterde netwerken.</string>
+    <string name="service_notification_categoryname">Bijwerken van weergegevens</string>
+    <string name="preference_clearnotifications_summary">Reset meldingen voor weeralarmen. Alle geldige meldingen zullen opnieuw worden weergegeven.</string>
+    <string name="service_warning_categoryname">Weerwaarschuwingen</string>
+    <string name="welcome_s3_text5">Druk lang op forecast om een meer gedetailleerde weergave te openen.</string>
+    <string name="welcome_setupwarnings">Waarschuwingen</string>
+    <string name="battery_and_data_hint">Dit zal het batterij- en datavolumeverbruik verhogen.</string>
+    <string name="update_failed">Update mislukt:</string>
+    <string name="network_lost">internetverbinding verloren.</string>
+    <string name="network_nonetwork">geen internetverbinding.</string>
+    <string name="network_timeout">internet verbinding verbroken.</string>
+    <string name="preference_clearnotifications_title">Reset meldingen</string>
+    <string name="preference_clearnotifications_message">Melding geheugen gewist.</string>
+    <string name="preference_display_overviewchart_title">Overzichtsgrafiek</string>
+    <string name="preference_display_overviewchart_summary">Toont altijd de grafiek met de temperatuur, wolken en regen voor de komende dagen. Indien uitgeschakeld, zal de kaart alleen zichtbaar zijn in landschapsmodus, en alleen als er voldoende ruimte is.</string>
 </resources>
