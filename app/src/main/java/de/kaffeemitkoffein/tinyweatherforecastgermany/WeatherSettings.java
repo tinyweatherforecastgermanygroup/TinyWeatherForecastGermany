@@ -124,7 +124,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_WIND_UNIT_DEFAULT = "0";
     public static final String PREF_DISPLAY_DISTANCE_UNIT_DEFAULT = "0";
     public static final boolean PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT = false;
-    public static final boolean PREF_DISPLAY_OVERVIEWCHART_DEFAULT = true;
+    public static final boolean PREF_DISPLAY_OVERVIEWCHART_DEFAULT = false;
 
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
