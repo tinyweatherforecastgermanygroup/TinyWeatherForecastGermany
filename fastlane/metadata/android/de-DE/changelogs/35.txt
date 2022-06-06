@@ -1,10 +1,6 @@
 - neue Sprache: Ukrainisch (Danke an Andrij Mizyk & eUgEntOptIc44!)
-- aktualisierte Übersetzungen
-- leicht verbessere Solarized Farbprofile
-- neue Grafik, die einen Überblick über Temperatur, Wolken und Regen für die nächsten Tage anzeigt (kann in den Einstellungen aktiviert werden)
+- neue Übersicht-Grafik (kann in den Einstellungen aktiviert werden)
 - neues, horizontales Layout für Anzeigen mit einer Breite von mindestens 600dp
 - langes Drücken auf eine Vorhersage öffnet eine detailliertere Ansicht
-- bei manueller Aktualisierung der Wetterdaten zeigt die App nun an, wenn diese misslingt
-- behoben: Benachrichtigungs-Icon wurde manchmal doppelt angezeigt
 - behoben: Vorhersagen auf Wearables waren um einen Tag verschoben
 - behoben: min./max. Temperaturwerte waren manchmal im 1. Vorhersage-Intervall falsch

@@ -102,6 +102,10 @@ public void setWarnings(ArrayList<WeatherWarning> warnings){
     this.warnings = warnings;
 }
 
+public ArrayList<WeatherWarning> getWarnings(){
+    return this.warnings;
+}
+
 private final static int SCALE_CONDITION_ICON = 2;
 private final static int SCALE_MINI_ICON = 8;
 
@@ -1081,6 +1085,7 @@ private ArrayList<WeatherWarning> getApplicableWarnings(Weather.WeatherInfo weat
     }
     return applicableWarnings;
 }
+
 public float DPtoPX(int dp, DisplayMetrics displayMetrics){
     //return displayMetrics.density * dp;
     float a = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dp,displayMetrics);

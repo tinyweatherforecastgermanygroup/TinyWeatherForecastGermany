@@ -618,7 +618,7 @@ public class ForecastBitmap{
         return rPaint;
     }
 
-    public static Bitmap getOverviewChart(Context context, int width, int height, ArrayList<Weather.WeatherInfo> weatherInfos){
+    public static Bitmap getOverviewChart(Context context, int width, int height, ArrayList<Weather.WeatherInfo> weatherInfos, ArrayList<WeatherWarning> warnings){
         // integrity checks of data
         if (weatherInfos==null){
             return null;
@@ -671,6 +671,9 @@ public class ForecastBitmap{
         final float yNoticeFontSizeScaleFactor = 1.0f;
         int labelTextSize = 100;
         int chartHeight = height;
+        final int alphaClouds = 125;
+        final int alphaRain = 125;
+        final int alphaWarnings = 65;
         textPaint.setTextSize(labelTextSize);
         while (textPaint.measureText("-XX°")>(width/18f)){
             labelTextSize=labelTextSize-1;
@@ -724,7 +727,11 @@ public class ForecastBitmap{
             textPaint.setFakeBoldText(false);
             if ((i==1) || (i == display_steps)){
                 s2 = s2 + "°C";
-                textPaint.setTextSize(labelTextSize*yAxisFontSizeScaleFactor);
+                float f1 = labelTextSize*yAxisFontSizeScaleFactor;
+                if (f1>((float)chartHeight)/((float)display_steps)){
+                    f1 = ((float)chartHeight)/((float)display_steps)-3;
+                }
+                textPaint.setTextSize(f1);
                 textPaint.setFakeBoldText(true);
             }
             float x1 = 0;
@@ -733,6 +740,36 @@ public class ForecastBitmap{
             canvas.drawLine(x1,y1,x2,y1,linePaint);
             canvas.drawText(s2,x1+lineWidth+lineWidth/10,y1+textPaint.getTextSize(),textPaint);
         }
+        // paint warnings
+        // the warnings arraylist may be empty at 1st call, but this will be called again once the main app knows
+        // which warnings apply to the location. The warnings arraylist only includes warnings that apply to the
+        // selected location. We need to only check here if time applies.
+        long chartTimeStart = weatherInfos.get(0).getTimestamp();
+        long chartTimeStop  = weatherInfos.get(weatherInfos.size()-1).getTimestamp();
+        float chartWidth = width-xChartOffset;
+        if (warnings!=null){
+             for (int i=0; i<warnings.size(); i++){
+                 WeatherWarning warning = warnings.get(i);
+                 // omit already expired warnings
+                 if (warning.expires>=chartTimeStart){
+                     float x1 = xChartOffset + (warning.onset-chartTimeStart)*(((float)width)/((float)(chartTimeStop-chartTimeStart)));
+                     if (x1<xChartOffset){
+                         x1 = xChartOffset;
+                     }
+                     float x2 = xChartOffset + (warning.expires-chartTimeStart)*(((float)width)/((float)(chartTimeStop-chartTimeStart)));
+                     int color = warning.getWarningColor();
+                     float[] warningPolygonX = new float[5];
+                     float[] warningPolygonY = new float[5];
+                     warningPolygonX[0] = x1; warningPolygonY[0] = 0;
+                     warningPolygonX[1] = x2; warningPolygonY[1] = 0;
+                     warningPolygonX[2] = x2; warningPolygonY[2] = chartHeight;
+                     warningPolygonX[3] = x1; warningPolygonY[3] = chartTimeStart;
+                     warningPolygonX[4] = x1; warningPolygonY[4] = 0;
+                     drawPolygon(canvas,warningPolygonX,warningPolygonY,color,alphaWarnings);
+                 }
+             }
+        }
+        // paint clouds & rain
         textPaint.setTextSize(labelTextSize);
         textPaint.setFakeBoldText(false);
         float[] rainPolygonX = new float[itemCount+4];
@@ -761,7 +798,7 @@ public class ForecastBitmap{
             cloudPolygonY[itemCount+2]=chartHeight;
             cloudPolygonX[itemCount+3]=xChartOffset;
             cloudPolygonY[itemCount+3]=cloudPolygonY[0];
-            drawPolygon(canvas,cloudPolygonX,cloudPolygonY,ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTDARK),65);
+            drawPolygon(canvas,cloudPolygonX,cloudPolygonY,ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTDARK),alphaClouds);
         }
         if (hasPrecipitation){
             rainPolygonX[itemCount]=width;
@@ -772,7 +809,7 @@ public class ForecastBitmap{
             rainPolygonY[itemCount+2]=chartHeight;
             rainPolygonX[itemCount+3]=xChartOffset;
             rainPolygonY[itemCount+3]=rainPolygonY[0];
-            drawPolygon(canvas,rainPolygonX,rainPolygonY,ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE),85);
+            drawPolygon(canvas,rainPolygonX,rainPolygonY,ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE),alphaRain);
         }
         if (hasTemperature){
             for (int i=startPosition; i<weatherInfos.size()-1; i++){

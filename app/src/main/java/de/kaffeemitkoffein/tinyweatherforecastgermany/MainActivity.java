@@ -947,7 +947,7 @@ public class MainActivity extends Activity {
                 }
                 if (!isLandscape){
                     if (WeatherSettings.displayOverviewChart(context)){
-                        Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,displayMetrics.heightPixels/10,currentWeatherInfo.forecast1hourly);
+                        Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,displayMetrics.heightPixels/10,currentWeatherInfo.forecast1hourly,localWarnings);
                         if (overViewChartBitmap!=null){
                             overviewChartImageView.setImageBitmap(overViewChartBitmap);
                         }
@@ -960,7 +960,7 @@ public class MainActivity extends Activity {
                         @Override
                         public void run() {
                             overviewChartImageView.measure(0,0);
-                            Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,overviewChartImageView.getWidth(),overviewChartImageView.getHeight(),currentWeatherInfo.forecast1hourly);
+                            Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,overviewChartImageView.getWidth(),overviewChartImageView.getHeight(),currentWeatherInfo.forecast1hourly,localWarnings);
                             if (overViewChartBitmap!=null){
                                 overviewChartImageView.setImageBitmap(overViewChartBitmap);
                             }
