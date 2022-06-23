@@ -144,7 +144,7 @@ public class StationsManager {
 
     public int getSetPosition(){
         WeatherSettings weatherSettings = new WeatherSettings(context);
-        String description = weatherSettings.station_description;
+        String description = weatherSettings.location_description;
         if (stations != null){
             for (int i=0; i<stations.size();i++){
                 if (stations.get(i).description.equals(description)){
@@ -157,7 +157,7 @@ public class StationsManager {
 
     public static int getSetPosition(Context context, ArrayList<Weather.WeatherLocation> locationArrayList, Weather.WeatherLocation location){
         WeatherSettings weatherSettings = new WeatherSettings(context);
-        String description = weatherSettings.station_description;
+        String description = weatherSettings.location_description;
         if (locationArrayList != null){
             for (int i=0; i<locationArrayList.size();i++){
                 if (locationArrayList.get(i).description.equals(description)){
@@ -229,23 +229,6 @@ public class StationsManager {
         return 0;
     }
 
-    public boolean setStation(int position){
-        if (stations != null) {
-            if (position < stations.size()) {
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString(WeatherSettings.PREF_STATION_NAME,stations.get(position).name);
-                editor.putString(WeatherSettings.PREF_STATION_DESCRIPTION,stations.get(position).description);
-                editor.putFloat(WeatherSettings.PREF_STATION_LATIDTUDE,(float) stations.get(position).latitude);
-                editor.putFloat(WeatherSettings.PREF_STATION_LONGITUDE,(float) stations.get(position).longitude);
-                editor.putFloat(WeatherSettings.PREF_STATION_ALTITUDE,(float) stations.get(position).altitude);
-                editor.commit();
-                return true;
-            }
-        }
-        return false;
-    }
-
     public int getStationCount(){
         if (stations != null){
             return stations.size();
@@ -283,6 +266,15 @@ public class StationsManager {
             } else {
                 return i;
             }
+        }
+        return null;
+    }
+
+    public Weather.WeatherLocation getLocationFromDescription(String description){
+        Integer position = getPositionFromDescription(description);
+        if (position!=null){
+            Weather.WeatherLocation weatherLocation = stations.get(position);
+            return weatherLocation;
         }
         return null;
     }

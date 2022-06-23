@@ -183,7 +183,7 @@ public class MainActivity extends Activity {
             Integer station_pos = stationsManager.getPositionFromDescription(station_description,true);
             if (station_pos != null) {
                 if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall + 3000 < Calendar.getInstance().getTimeInMillis())) {
-                    newWeatherRegionSelected(station_description);
+                    newWeatherRegionSelected(stationsManager.getLocationFromDescription(station_description));
                     if (autoCompleteTextView != null) {
                         autoCompleteTextView.setText("");
                         autoCompleteTextView.clearListSelection();
@@ -299,7 +299,7 @@ public class MainActivity extends Activity {
             Integer station_pos = stationsManager.getPositionFromDescription(station_description,true);
             if (station_pos!=null){
                 if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
-                    newWeatherRegionSelected(station_description);
+                    newWeatherRegionSelected(stationsManager.getLocationFromDescription(station_description));
                 }
             } else {
                 final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
@@ -694,15 +694,14 @@ public class MainActivity extends Activity {
         Toast.makeText(getApplicationContext(),"Error message has been copied to clipboard!",Toast.LENGTH_LONG).show();
     }
 
-    private void newWeatherRegionSelected(String station_description){
-        station_description= station_description.toUpperCase();
-        final String station_description2 = station_description;
+    private void newWeatherRegionSelected(Weather.WeatherLocation weatherLocation){
+        final String station_description = weatherLocation.description;
         final Context context = this;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+station_description2,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+station_description,Toast.LENGTH_LONG).show();
                 } catch (Exception e){
                     PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Warning: new station message failed.");
                 }
@@ -710,34 +709,27 @@ public class MainActivity extends Activity {
         });
         // invalidate current weather data
         weatherCard = null;
-        if (stationsManager!=null){
-            try {
-                int station_pos = stationsManager.getPositionFromDescription(station_description);
-                stationsManager.setStation(station_pos);
-                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
-                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+stationsManager.getDescription(station_pos)+ " ("+stationsManager.getName(station_pos)+")");
-                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
-                last_updateweathercall = Calendar.getInstance().getTimeInMillis();
-                addToSpinner(station_description);
-            } catch (Exception e){
-                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error: Setting new station failed: "+e.getMessage());
-            }
-            // we do not get the forecast data here since this triggers the preference-changed-listener. This
-            // listener takes care of the weather data update and updates widgets and gadgetbridge.
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (autoCompleteTextView!=null){
-                        try {
-                            autoCompleteTextView.setText("");
-                            autoCompleteTextView.clearListSelection();
-                        } catch (Exception e){
-                            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"unable to clear autoCompleteTextView");
-                        }
+        WeatherSettings.setStation(this,weatherLocation);
+        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
+        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+weatherLocation.description);
+        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
+        last_updateweathercall = Calendar.getInstance().getTimeInMillis();
+        addToSpinner(station_description);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (autoCompleteTextView!=null){
+                    try {
+                        autoCompleteTextView.setText("");
+                        autoCompleteTextView.clearListSelection();
+                    } catch (Exception e){
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"unable to clear autoCompleteTextView");
                     }
                 }
-            });
-        }
+            }
+        });
+        // we do not get the forecast data here since this triggers the preference-changed-listener. This
+        // listener takes care of the weather data update and updates widgets and gadgetbridge.
     }
 
     public static class SpinnerListener implements View.OnTouchListener, AdapterView.OnItemSelectedListener{
@@ -783,7 +775,7 @@ public class MainActivity extends Activity {
                 Integer station_pos = stationsManager.getPositionFromDescription(station_description);
                 if (station_pos != null) {
                     if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))) {
-                        newWeatherRegionSelected(station_description);
+                        newWeatherRegionSelected(stationsManager.getLocationFromDescription(station_description));
                     }
                 } else {
                     PrivateLog.log(context, PrivateLog.MAIN,PrivateLog.WARN, "Station from favorites not found!");
@@ -815,7 +807,7 @@ public class MainActivity extends Activity {
     private void clearFavorites(){
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         ArrayList<String> new_spinner_items = new ArrayList<String>();
-        new_spinner_items.add(weatherSettings.station_description);
+        new_spinner_items.add(weatherSettings.location_description);
         spinnerItems = new_spinner_items;
         weatherSettings.updateFavorites(spinnerItems);
         loadStationsSpinner();
@@ -921,11 +913,11 @@ public class MainActivity extends Activity {
         TextView textView_station_geo = (TextView) findViewById(R.id.main_station_geo);
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         if (weatherSettings.display_station_geo){
-            String s = "Lat.: "+weatherSettings.station_latitude+" Long.: "+weatherSettings.station_longitude+" Alt.: "+weatherSettings.station_altitude;
+            String s = "Lat.: "+weatherSettings.latitude+" Long.: "+weatherSettings.longitude+" Alt.: "+weatherSettings.altitude;
             try {
-                textView_station_geo.setText(getApplicationContext().getResources().getString(R.string.station)+" Lat.: "+new DecimalFormat("0.00").format(weatherSettings.station_latitude)+
-                        " Long.: "+new DecimalFormat("0.00").format(weatherSettings.station_longitude)+
-                        " Alt.: "+new DecimalFormat("0.00").format(weatherSettings.station_altitude));
+                textView_station_geo.setText(getApplicationContext().getResources().getString(R.string.station)+" Lat.: "+new DecimalFormat("0.00").format(weatherSettings.latitude)+
+                        " Long.: "+new DecimalFormat("0.00").format(weatherSettings.longitude)+
+                        " Alt.: "+new DecimalFormat("0.00").format(weatherSettings.altitude));
             } catch (Exception e){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"parsing geo coordinates of station failed: "+e.getMessage());
                 textView_station_geo.setText("-");
@@ -1500,6 +1492,29 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void calcualateClosestStation(ArrayList<Weather.WeatherLocation> stations, final Location own_location){
+        stopGPSLocationSearch();
+        for (int i=0; i<stations.size(); i++){
+            Location location_station = new Location("weather");
+            location_station.setLatitude(stations.get(i).latitude);
+            location_station.setLongitude(stations.get(i).longitude);
+            stations.get(i).distance = location_station.distanceTo(own_location);
+        }
+        Collections.sort(stations, new Comparator<Weather.WeatherLocation>() {
+            @Override
+            public int compare(Weather.WeatherLocation t0, Weather.WeatherLocation t1) {
+                if (t0.distance<t1.distance){
+                    return -1;
+                }
+                if (t0.distance==t1.distance){
+                    return 0;
+                }
+                return 1;
+            }
+        });
+    }
+
+
     private void calcualateClosestStations(ArrayList<Weather.WeatherLocation> stations, final Location own_location){
         stopGPSLocationSearch();
         for (int i=0; i<stations.size(); i++){
@@ -1568,10 +1583,10 @@ public class MainActivity extends Activity {
                 TextView textView = view.findViewById(R.id.geochoiceitem_text);
                 String station_description = textView.getText().toString();
                 station_description = station_description.substring(0,station_description.indexOf(" ["));
-                Integer station_pos = stationsManager.getPositionFromDescription(station_description);
-                if (station_pos!=null){
-                    if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
-                        newWeatherRegionSelected(station_description);
+                Weather.WeatherLocation newWeatherLocation = stationsManager.getLocationFromDescription(station_description);
+                if (newWeatherLocation!=null){
+                    if (!weatherSettings.station_name.equals(newWeatherLocation.name)){
+                        newWeatherRegionSelected(newWeatherLocation);
                     }
                 } else {
                     runOnUiThread(new Runnable() {
