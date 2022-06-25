@@ -20,9 +20,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.location.Location;
-import android.preference.PreferenceManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -36,13 +34,11 @@ public class StationsManager {
     public StationsManager(Context context){
         this.context = context;
         stations = new ArrayList<Weather.WeatherLocation>();
-        //readStations();
     }
 
     public StationsManager(Context context, ArrayList<Weather.WeatherLocation> stations){
         this.context = context;
         this.stations = stations;
-        //readStations();
     }
 
     private static String getStationsStringFromResource(Context context){
@@ -86,6 +82,10 @@ public class StationsManager {
         }
         Collections.sort(stations, new Weather.WeatherLocation());
         return stations;
+    }
+
+    public void readStations(){
+        stations = readStations(context);
     }
 
     /*
@@ -265,6 +265,29 @@ public class StationsManager {
                 }
             } else {
                 return i;
+            }
+        }
+        return null;
+    }
+
+    public Integer getPositionFromName(String name){
+        if (stations!=null){
+            int index = 0;
+            while (index < stations.size()){
+                if (stations.get(index).name.toUpperCase().equals(name.toUpperCase())){
+                    return index;
+                }
+                index ++;
+            }
+        }
+        return null;
+    }
+
+    public Weather.WeatherLocation getFromName(String name){
+        if (stations.size()>0){
+            Integer position = getPositionFromName(name);
+            if (position!=null){
+                return stations.get(position);
             }
         }
         return null;

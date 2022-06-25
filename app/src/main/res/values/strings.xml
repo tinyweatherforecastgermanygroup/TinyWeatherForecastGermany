@@ -30,6 +30,7 @@
     <string name="update_button">Update</string>
     <string name="settings_button">Settings</string>
     <string name="geoinput_button">Find by location</string>
+    <string name="travel_button">Update favorites</string>
     <string name="about_button">Privacy/About</string>
     <string name="warnings_button">Weather warnings</string>
     <string name="texts_button">Texts</string>

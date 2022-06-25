@@ -377,8 +377,8 @@ public class APIReaders {
 
     public static class WeatherForecastRunnable implements Runnable {
 
-        public Context context;
-        public Weather.WeatherLocation weatherLocation;
+        private Context context;
+        private ArrayList<Weather.WeatherLocation> weatherLocations;
         public boolean ssl_exception = false;
 
         private String[] seperateValues(String s){
@@ -403,14 +403,14 @@ public class APIReaders {
             return result;
         }
 
-        public WeatherForecastRunnable(Context context){
+        public WeatherForecastRunnable(Context context, ArrayList<Weather.WeatherLocation> weatherLocations){
             this.context = context;
-            this.weatherLocation = WeatherSettings.getSetStationLocation(context);
+            this.weatherLocations = weatherLocations;
         }
 
-        private InputStream getWeatherInputStream() throws IOException {
-            String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
-            String weather_url_legacy = "http://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
+        private InputStream getWeatherInputStream(String stationName) throws IOException {
+            String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+stationName+"/kml/MOSMIX_L_LATEST_"+stationName+".kmz";
+            String weather_url_legacy = "http://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+stationName+"/kml/MOSMIX_L_LATEST_"+stationName+".kmz";
             // PrivateLog.log(context,Tag.SERVICE2,"URL: "+weather_url);
             URL url;
             URL url_legacy;
@@ -445,20 +445,15 @@ public class APIReaders {
             }
         }
 
-        private RawWeatherInfo doInBackground() {
-            // String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
-            // String weather_url = "http://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+weatherLocation.name+"/kml/MOSMIX_L_LATEST_"+weatherLocation.name+".kmz";
+        private RawWeatherInfo updateWeatherLocationData(Weather.WeatherLocation weatherLocation) {
             try{
-                // works:
-                // URL url = new URL(weather_url);
-                // ZipInputStream zipInputStream = new ZipInputStream(new URL(weather_url).openStream());
-                InputStream inputStream = new BufferedInputStream(getWeatherInputStream());
+                InputStream inputStream = new BufferedInputStream(getWeatherInputStream(weatherLocation.name));
                 ZipInputStream zipInputStream = new ZipInputStream(inputStream);
                 zipInputStream.getNextEntry();
                 // init new RawWeatherInfo instance to fill with data
                 RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
                 // populate name from settings, as name is file-name in API but not repeated in the content
-                rawWeatherInfo.weatherLocation = this.weatherLocation;
+                rawWeatherInfo.weatherLocation = weatherLocation;
                 try {
                     DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
                     Document document = documentBuilder.parse(zipInputStream);
@@ -637,36 +632,48 @@ public class APIReaders {
             // do nothing at the moment.
         }
 
-        public void onPositiveResult(RawWeatherInfo rawWeatherInfo){
+        public void onPositiveResult(ArrayList<RawWeatherInfo> rawWeatherInfos){
             onPositiveResult();
         }
 
-        private void onPostExecute(RawWeatherInfo rawWeatherInfo) {
-            if (rawWeatherInfo == null) {
+        private void addEntryToDatabase(RawWeatherInfo rawWeatherInfo){
+            // get timestamp
+            Calendar calendar = Calendar.getInstance();
+            rawWeatherInfo.polling_time = calendar.getTimeInMillis();
+            //context.getContentResolver().insert(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo));
+            String selection = ""+WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+"=?";
+            String[] selectionArgs = {rawWeatherInfo.weatherLocation.name};
+            int result = context.getContentResolver().update(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo),selection,selectionArgs);
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Weather entries updated: "+result);
+            if (result==0){
+                // insert, if the entry is not present in the data base. This happens, when this is a new station.
+                Uri uri = context.getContentResolver().insert(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo));
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"New weather entry, content uri is: "+uri.toString());
+            }
+        }
+
+        private void onPostExecute(ArrayList<RawWeatherInfo> rawWeatherInfos) {
+            if (rawWeatherInfos == null) {
                 onNegativeResult();
             } else {
-                // get timestamp
-                Calendar calendar = Calendar.getInstance();
-                rawWeatherInfo.polling_time = calendar.getTimeInMillis();
-                //context.getContentResolver().insert(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo));
-                String selection = ""+WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+"=?";
-                String[] selectionArgs = {WeatherSettings.getSetStationLocation(context).name};
-                int result = context.getContentResolver().update(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo),selection,selectionArgs);
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Weather entries updated: "+result);
-                if (result==0){
-                    // insert, if the entry is not present in the data base. This happens, when this is a new station.
-                    Uri uri = context.getContentResolver().insert(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo));
-                    PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"New weather entry, content uri is: "+uri.toString());
+                for (int i=0; i<rawWeatherInfos.size(); i++){
+                    addEntryToDatabase(rawWeatherInfos.get(i));
                 }
-                onPositiveResult(rawWeatherInfo);
+                onPositiveResult(rawWeatherInfos);
             }
         }
 
         @Override
         public void run() {
             onStart();
-            RawWeatherInfo rawWeatherInfo = doInBackground();
-            onPostExecute(rawWeatherInfo);
+            ArrayList<RawWeatherInfo> rawWeatherInfos = new ArrayList<RawWeatherInfo>();
+            for (int i=0; i<weatherLocations.size(); i++){
+                RawWeatherInfo rawWeatherInfo = updateWeatherLocationData(weatherLocations.get(i));
+                if (rawWeatherInfo!=null){
+                    rawWeatherInfos.add(rawWeatherInfo);
+                }
+            }
+            onPostExecute(rawWeatherInfos);
         }
     }
 

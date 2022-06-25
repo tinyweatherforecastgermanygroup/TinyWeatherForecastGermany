@@ -141,7 +141,7 @@ public class WeatherSettings {
     public static final boolean PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT = false;
     public static final boolean PREF_LOGGING_DEFAULT = false;
     public static final boolean PREF_LOG_TO_LOGCAT_DEFAULT = false;
-    public static final String PREF_FAVORITESDATA_DEFAULT = PREF_LOCATION_DESCRIPTION_DEFAULT;
+    public static final String PREF_FAVORITESDATA_DEFAULT = PREF_STATION_NAME_DEFAULT;
     public static final String PREF_WARNINGS_CACHETIME_DEFAULT = "30";
     public static final boolean PREF_WARNINGS_DISABLE_DEFAULT = false;
     public static final long PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT = 0;
@@ -537,12 +537,15 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
-    public void updateFavorites(ArrayList<String> favorites) {
+    public static void updateFavorites(Context context, ArrayList<Weather.WeatherLocation> favorites) {
         String result = "";
         for (int i = 0; i < favorites.size(); i++) {
-            result = result + favorites.get(i) + FAVORITES_SEPERATOR;
+            result = result + favorites.get(i).name + FAVORITES_SEPERATOR;
         }
-        applyPreference(PREF_FAVORITESDATA, result);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putString(PREF_FAVORITESDATA, result);
+        pref_editor.commit();
     }
 
     public ArrayList<String> getFavorites() {
@@ -558,6 +561,28 @@ public class WeatherSettings {
             applyPreference(PREF_FAVORITESDATA,this.favoritesdata);
         }
         return result;
+    }
+
+    public static ArrayList<Weather.WeatherLocation> getFavoritesWeatherLocations(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String favoritesData = sharedPreferences.getString(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
+        String[] namesArray = favoritesData.split(FAVORITES_SEPERATOR);
+        // convert array to arrayList
+        ArrayList<String> names = new ArrayList<String>();
+        for (int i=0; i<namesArray.length; i++){
+            names.add(namesArray[i]);
+        }
+        ArrayList<Weather.WeatherLocation> favorites = new ArrayList<Weather.WeatherLocation>();
+        ArrayList<Weather.WeatherLocation> weatherLocations = StationsManager.readStations(context);
+        for (int i=0; i<names.size(); i++){
+            for (int j=0; j<weatherLocations.size(); j++){
+                Weather.WeatherLocation weatherLocation = weatherLocations.get(j);
+                if (weatherLocation.name.equals(names.get(i))){
+                    favorites.add(weatherLocation);
+                }
+            }
+        }
+        return favorites;
     }
 
     public int getDisplayType() {

@@ -438,7 +438,8 @@ public class ClassicWidget extends AppWidgetProvider {
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         if (weatherCard==null){
-            UpdateAlarmManager.startDataUpdateService(c,true,true,false);
+            //UpdateAlarmManager.startDataUpdateService(c,true,true,false,false);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c,UpdateAlarmManager.WIDGET_UPDATE);
         } else {
             WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i=0; i<widget_instances.length; i++){

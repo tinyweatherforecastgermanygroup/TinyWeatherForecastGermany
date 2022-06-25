@@ -23,6 +23,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -41,10 +43,11 @@ public final class Weather {
 
     public final static int PROB_OF_PRECIPITATION_ITEM_COUNT=12;
 
-    public static class WeatherLocation implements Comparator<WeatherLocation> {
+    public static class WeatherLocation implements Comparator<WeatherLocation>, Parcelable {
 
         public static final String EXTRAS_NAME="NAME";
         public static final String EXTRAS_ITEMS_TO_SHOW="ITEMS_TO_SHOW";
+        public static final String PARCELABLE_NAME = "de.kaffeemitkoffein.tinyweatherforecastgermany.WHEATHERLOCATION";
 
         public String description;
         public String name;
@@ -70,9 +73,67 @@ public final class Weather {
             this.altitude = altitude;
         }
 
+        protected WeatherLocation(Parcel in) {
+            description = in.readString();
+            name = in.readString();
+            latitude = in.readDouble();
+            longitude = in.readDouble();
+            altitude = in.readDouble();
+            distance = in.readFloat();
+        }
+
+        public static final Creator<WeatherLocation> CREATOR = new Creator<WeatherLocation>() {
+            @Override
+            public WeatherLocation createFromParcel(Parcel in) {
+                return new WeatherLocation(in);
+            }
+
+            @Override
+            public WeatherLocation[] newArray(int size) {
+                return new WeatherLocation[size];
+            }
+        };
+
         @Override
         public int compare(WeatherLocation s1, WeatherLocation s2) {
             return s1.description.compareTo(s2.description);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int flags) {
+            parcel.writeString(description);
+            parcel.writeString(name);
+            parcel.writeDouble(latitude);
+            parcel.writeDouble(longitude);
+            parcel.writeDouble(altitude);
+            parcel.writeFloat(distance);
+        }
+
+        public static ArrayList<String> getDescriptions(ArrayList<WeatherLocation> weatherLocations){
+            if (weatherLocations!=null){
+                ArrayList<String> descriptions = new ArrayList<String>();
+                for (int i=0; i<weatherLocations.size(); i++){
+                    descriptions.add(weatherLocations.get(i).description);
+                }
+                return descriptions;
+            }
+            return null;
+        }
+
+        public static ArrayList<String> getNames(ArrayList<WeatherLocation> weatherLocations){
+            if (weatherLocations!=null){
+                ArrayList<String> names = new ArrayList<String>();
+                for (int i=0; i<weatherLocations.size(); i++){
+                    names.add(weatherLocations.get(i).name);
+                }
+                return names;
+            }
+            return null;
         }
 
     }

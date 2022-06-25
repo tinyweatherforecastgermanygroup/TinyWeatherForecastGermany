@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
 
     Context context;
     StationsManager stationsManager;
-    ArrayList<String> spinnerItems;
+    ArrayList<Weather.WeatherLocation> spinnerItems;
     Spinner spinner;
     AutoCompleteTextView autoCompleteTextView;
     StationSearchEngine stationSearchEngine;
@@ -432,9 +432,13 @@ public class MainActivity extends Activity {
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error checking/upgrading database!");
         }
         // action bar layout
+        // View actionBarView = getLayoutInflater().inflate(R.layout.actionbar,null);
+        // actionBar.setCustomView(actionBarView);
         ActionBar actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
+        // anchor long click update
+
         executor = Executors.newSingleThreadExecutor();
         try {
             loadStationsData();
@@ -694,14 +698,13 @@ public class MainActivity extends Activity {
         Toast.makeText(getApplicationContext(),"Error message has been copied to clipboard!",Toast.LENGTH_LONG).show();
     }
 
-    private void newWeatherRegionSelected(Weather.WeatherLocation weatherLocation){
-        final String station_description = weatherLocation.description;
+    private void newWeatherRegionSelected(final Weather.WeatherLocation weatherLocation){
         final Context context = this;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+station_description,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+weatherLocation.description,Toast.LENGTH_LONG).show();
                 } catch (Exception e){
                     PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Warning: new station message failed.");
                 }
@@ -714,7 +717,7 @@ public class MainActivity extends Activity {
         PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+weatherLocation.description);
         PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
         last_updateweathercall = Calendar.getInstance().getTimeInMillis();
-        addToSpinner(station_description);
+        addToSpinner(weatherLocation);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -755,12 +758,28 @@ public class MainActivity extends Activity {
         }
     }
 
+    private ArrayList<String> getDescriptionsFromNames(ArrayList<String> names){
+        ArrayList<String> descriptions = new ArrayList<String>();
+        if (stationsManager==null){
+            stationsManager = new StationsManager(context);
+            stationsManager.readStations();
+        }
+        for (int i=0; i<names.size(); i++){
+            String description = stationsManager.getFromName(names.get(i)).description;
+            if (description!=null){
+                descriptions.add(description);
+            }
+        }
+        return descriptions;
+    }
+
+
     private void loadStationsSpinner() {
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         // spinner code
         spinner = (Spinner) findViewById(R.id.stations_spinner);
-        spinnerItems = weatherSettings.getFavorites();
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, spinnerItems);
+        spinnerItems = WeatherSettings.getFavoritesWeatherLocations(context);
+        ArrayList<String> spinnerDescriptions = Weather.WeatherLocation.getDescriptions(spinnerItems);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, spinnerDescriptions);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
         spinner.setAdapter(spinnerArrayAdapter);
         final Context context = this;
@@ -788,28 +807,26 @@ public class MainActivity extends Activity {
         spinner.setOnTouchListener(spinnerListener);
     }
 
-    private void addToSpinner(String s){
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-        spinnerItems = weatherSettings.getFavorites();
-        ArrayList<String> new_spinner_items = new ArrayList<String>();
-        new_spinner_items.add(s);
+    private void addToSpinner(Weather.WeatherLocation weatherLocation){
+        spinnerItems = WeatherSettings.getFavoritesWeatherLocations(context);
+        ArrayList<Weather.WeatherLocation> new_spinner_items = new ArrayList<Weather.WeatherLocation>();
+        new_spinner_items.add(weatherLocation);
         for (int i=0; i<spinnerItems.size() && i<10; i++){
             // prevent double entries
-            if (!spinnerItems.get(i).equals(s)){
+            if (!spinnerItems.get(i).name.equals(weatherLocation.name)){
                 new_spinner_items.add(spinnerItems.get(i));
             }
         }
         spinnerItems = new_spinner_items;
-        weatherSettings.updateFavorites(spinnerItems);
+        WeatherSettings.updateFavorites(context,spinnerItems);
         loadStationsSpinner();
     }
 
     private void clearFavorites(){
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-        ArrayList<String> new_spinner_items = new ArrayList<String>();
-        new_spinner_items.add(weatherSettings.location_description);
+        ArrayList<Weather.WeatherLocation> new_spinner_items = new ArrayList<Weather.WeatherLocation>();
+        new_spinner_items.add(WeatherSettings.getSetStationLocation(this));
         spinnerItems = new_spinner_items;
-        weatherSettings.updateFavorites(spinnerItems);
+        WeatherSettings.updateFavorites(context,spinnerItems);
         loadStationsSpinner();
     }
 
@@ -1178,6 +1195,10 @@ public class MainActivity extends Activity {
         }
         if (item_id == R.id.menu_geoinput) {
             startGeoinput();
+            return true;
+        }
+        if (item_id == R.id.menu_travelupdate) {
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.FORCE_UPDATE|UpdateAlarmManager.TRAVEL_UPDATE);
             return true;
         }
         if (item_id==R.id.menu_license) {
@@ -1771,6 +1792,11 @@ public class MainActivity extends Activity {
 
     public String standardizeGeo(final String s){
         return s.replace(",",".");
+    }
+
+    public void travelUpdate(){
+        ArrayList<Weather.WeatherLocation> weatherLocations = new ArrayList<Weather.WeatherLocation>();
+        //ArrayList<String> names = WeatherSettings.getF
     }
 }
 

@@ -22,7 +22,8 @@ public class CancelNotificationBroadcastReceiver extends BroadcastReceiver {
                     // this starts the service with the only action being canceling notifications.
                     // the UpdateAlarmManager will call setCancelNotificationAlarm if necessary
                     PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Starting service to remove a notification.");
-                    UpdateAlarmManager.startDataUpdateService(context,false,false,false);
+                    //UpdateAlarmManager.startDataUpdateService(context,false,false,false);
+                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.CHECK_FOR_UPDATE);
                 }
                 if (action.equalsIgnoreCase(CLEAR_NOTIFICATIONS_ACTION)){
                     WeatherWarnings.clearAllNotified(context);

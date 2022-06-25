@@ -30,6 +30,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -52,11 +54,13 @@ public class UpdateAlarmManager {
     // used when no valid data available (any more) from MainActivity, when update triggered by user
     // or during API-testing
     // meaning: always update
-    public static final int FORCE_UPDATE = 0;
+    public static final int FORCE_UPDATE = 1;
     // indicates update from widget
-    public static final int WIDGET_UPDATE = 1;
+    public static final int WIDGET_UPDATE = 2;
     // called from MainActivtity, onBootComplete and/or if update has been requested by 3rd party app
-    public static final int CHECK_FOR_UPDATE = 2;
+    public static final int CHECK_FOR_UPDATE = 4;
+    // update everything and all locations from history
+    public static final int TRAVEL_UPDATE = 128;
 
     private UpdateAlarmManager(){
     }
@@ -76,6 +80,7 @@ public class UpdateAlarmManager {
         adaptUpdateIntervalsToSettings(context);
         WeatherSettings weatherSettings = new WeatherSettings(context);
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
+        boolean travelUpdate = (update_mode&TRAVEL_UPDATE)==TRAVEL_UPDATE;
         /*
          * Create alarms to cancel notifications if applicable
          */
@@ -105,13 +110,13 @@ public class UpdateAlarmManager {
                 ((weatherSettings.serve_gadgetbridge) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode==WIDGET_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
-                (update_mode==FORCE_UPDATE)){
+                ((update_mode&FORCE_UPDATE)==FORCE_UPDATE)){
             // update now.
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"triggering weather update from API...");
             try {
-                result = startDataUpdateService(context,true,WeatherSettings.updateWarnings(context),WeatherSettings.updateTextForecasts(context));
+                result = startDataUpdateService(context,true,WeatherSettings.updateWarnings(context),WeatherSettings.updateTextForecasts(context),travelUpdate);
             } catch (SecurityException e){
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather forecasts) not started because of a SecurityException: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!
@@ -129,7 +134,7 @@ public class UpdateAlarmManager {
                ((weatherSettings.notify_warnings) && (WeatherSettings.areWarningsOutdated(context)))){
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"triggering warnings update from API...");
                 try {
-                    result = startDataUpdateService(context,false,true,false);
+                    result = startDataUpdateService(context,false,true,false,false);
                 } catch (SecurityException e){
                     PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather warnings only for widgets) not started because of a SecurityException: "+e.getMessage());
                     // views need to be updated from here, because starting service failed!
@@ -188,7 +193,7 @@ public class UpdateAlarmManager {
     public static boolean updateWarnings(Context context, boolean forceUpdate){
         if (WeatherSettings.areWarningsOutdated(context) || forceUpdate) {
             try {
-                startDataUpdateService(context,false,true,false);
+                startDataUpdateService(context,false,true,false,false);
                 return true;
             } catch (SecurityException e){
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
@@ -208,7 +213,7 @@ public class UpdateAlarmManager {
 
     public static boolean updateTexts(Context context){
         try {
-            startDataUpdateService(context,false,false,true);
+            startDataUpdateService(context,false,false,true,false);
             return true;
         } catch (SecurityException e){
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
@@ -255,6 +260,13 @@ public class UpdateAlarmManager {
         if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS)){
             intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS,true);
         }
+        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST)){
+            ArrayList<Weather.WeatherLocation> weatherLocations = WeatherSettings.getFavoritesWeatherLocations(context);
+            Log.v("twfg","GOT FROM SETTINGS: "+weatherLocations.size());
+            if (weatherLocations.size()>0){
+                intent = intent.putParcelableArrayListExtra(Weather.WeatherLocation.PARCELABLE_NAME,weatherLocations);
+            }
+        }
         if (tasks.contains(DataUpdateService.SERVICEEXTRAS_CANCEL_NOTIFICATIONS) || WeatherSettings.notifyWarnings(context)){
             intent.putExtra(DataUpdateService.SERVICEEXTRAS_CANCEL_NOTIFICATIONS,true);
             noInternetConnRequired = true;
@@ -275,7 +287,7 @@ public class UpdateAlarmManager {
         return false;
     }
 
-    public static boolean startDataUpdateService(final Context context, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts){
+    private static boolean startDataUpdateService(final Context context, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts, final boolean travelUpdate){
         ArrayList<String> tasks = new ArrayList<String>();
         if (updateWeather){
             tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
@@ -285,6 +297,9 @@ public class UpdateAlarmManager {
         }
         if (updateTextForecasts){
             tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS);
+        }
+        if (travelUpdate){
+            tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST);
         }
         return startDataUpdateService(context,tasks);
     }

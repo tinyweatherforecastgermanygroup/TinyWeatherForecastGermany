@@ -12,6 +12,7 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.*;
@@ -42,6 +43,7 @@ public class DataUpdateService extends Service {
     public static String SERVICEEXTRAS_UPDATE_TEXTFORECASTS="SERVICEEXTRAS_UPDATE_TEXTFORECASTS";
     public static String SERVICEEXTRAS_CANCEL_NOTIFICATIONS="SERVICEEXTRAS_CANCEL_NF";
     public static String SERVICEEXTRAS_UPDATE_NOTIFICATIONS="SERVICEEXTRAS_UPDATE_NF";
+    public static String SERVICEEXTRAS_UPDATE_LOCATIONSLIST="SERVICEEXTRAS_LOCATIONS";
 
     private ConnectivityManager connectivityManager;
 
@@ -138,6 +140,7 @@ public class DataUpdateService extends Service {
     @TargetApi(Build.VERSION_CODES.N)
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
+        final Context context = this;
         if (!serviceStarted){
             serviceStarted = true;
             // create single thread
@@ -146,6 +149,7 @@ public class DataUpdateService extends Service {
             boolean updateWarnings = false;
             boolean updateTextForecasts = false;
             boolean updateNotifications = false;
+            ArrayList<Weather.WeatherLocation> weatherLocations = null;
             if (intent!=null){
                 updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
                 updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
@@ -154,6 +158,7 @@ public class DataUpdateService extends Service {
                 if (!updateWarnings){
                     updateNotifications = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_NOTIFICATIONS, false);
                 }
+                weatherLocations = intent.getParcelableArrayListExtra(Weather.WeatherLocation.PARCELABLE_NAME);
             }
             // cancel deprecated warnings
             if (WeatherSettings.notifyWarnings(this)){
@@ -179,7 +184,22 @@ public class DataUpdateService extends Service {
                     timer.schedule(timeOutTask,TIMEOUTTASK_DELAY);
                 }
                 if (updateWeather) {
-                    APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(this){
+                    // check if an arraylist of stations was provided, if not get the one from settings
+                    boolean getLocationFromSettings = false;
+                    if (weatherLocations==null){
+                        getLocationFromSettings = true;
+                    } else {
+                        if (weatherLocations.size()==0){
+                            getLocationFromSettings = true;
+                        }
+                    }
+                    // when arrayList of stations is null or empty, get the station from settings
+                    if (getLocationFromSettings){
+                        weatherLocations = new ArrayList<Weather.WeatherLocation>();
+                        weatherLocations.add(WeatherSettings.getSetStationLocation(context));
+                    }
+                    Log.v("twfg","UPDATING: "+weatherLocations.size());
+                    APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(this,weatherLocations){
                         @Override
                         public void onStart(){
                             updateNotification(0);
@@ -275,7 +295,6 @@ public class DataUpdateService extends Service {
             // this is for tasks without internet connection
             if (updateNotifications){
                 // update notifications from present data, e.g. when location changed
-                final Context context = this;
                 Runnable notificationUpdater=new Runnable() {
                     @Override
                     public void run() {
