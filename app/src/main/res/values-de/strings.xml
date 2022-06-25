@@ -304,4 +304,5 @@
     <string name="network_nonetwork">keine Internetverbindung.</string>
     <string name="network_timeout">Die Internetverbindung wurde unterbrochen.</string>
     <string name="welcome_s3_text5">Drücken Sie lange auf die Vorhersage, um eine detailliertere Ansicht zu öffnen.</string>
+    <string name="travel_button">Favoriten aktualisieren</string>
 </resources>
