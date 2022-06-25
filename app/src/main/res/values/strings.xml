@@ -150,6 +150,12 @@
     <string name="preference_meterednetwork_title">Use metered networks</string>
     <string name="preference_meterednetwork_summary">Also use metered networks to get data.</string>
     <string name="preference_meterednetwork_notice">You might miss weather warnings when using unmetered networks only.</string>
+    <string name="preference_category_location">Location</string>
+    <string name="preference_usegps_title">Use location services</string>
+    <string name="preference_gpsauto_title">Check location</string>
+    <string name="preference_gpsauto_summary">Check that the location is correct at each startup.</string>
+    <string name="preference_gpsmanual_title">Manual</string>
+    <string name="preference_gpsmanual_summary">Select the weather station from a list of nearest stations by yourself.</string>
     <string name="preference_display_station_geo_title">Geographic coordinates</string>
     <string name="preference_display_station_geo_summary">Display geographic coordinates of station</string>
     <string name="preference_screen_gadgetbridge_title">Gadgetbridge support</string>

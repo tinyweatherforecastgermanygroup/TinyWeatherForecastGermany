@@ -40,6 +40,7 @@ import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -563,6 +564,7 @@ public class MainActivity extends Activity {
                 }
             }
         };
+        updateGeo();
         if (!API_TESTING_ENABLED){
             weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         }
@@ -699,40 +701,42 @@ public class MainActivity extends Activity {
     }
 
     private void newWeatherRegionSelected(final Weather.WeatherLocation weatherLocation){
-        final Context context = this;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+weatherLocation.description,Toast.LENGTH_LONG).show();
-                } catch (Exception e){
-                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Warning: new station message failed.");
-                }
-            }
-        });
-        // invalidate current weather data
-        weatherCard = null;
-        WeatherSettings.setStation(this,weatherLocation);
-        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
-        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+weatherLocation.description);
-        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
-        last_updateweathercall = Calendar.getInstance().getTimeInMillis();
-        addToSpinner(weatherLocation);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (autoCompleteTextView!=null){
+        if (!weatherLocation.name.equals(WeatherSettings.getSetStationLocation(context).name)){
+            final Context context = this;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
                     try {
-                        autoCompleteTextView.setText("");
-                        autoCompleteTextView.clearListSelection();
+                        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+weatherLocation.description,Toast.LENGTH_LONG).show();
                     } catch (Exception e){
-                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"unable to clear autoCompleteTextView");
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Warning: new station message failed.");
                     }
                 }
-            }
-        });
-        // we do not get the forecast data here since this triggers the preference-changed-listener. This
-        // listener takes care of the weather data update and updates widgets and gadgetbridge.
+            });
+            // invalidate current weather data
+            weatherCard = null;
+            WeatherSettings.setStation(this,weatherLocation);
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+weatherLocation.description);
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
+            last_updateweathercall = Calendar.getInstance().getTimeInMillis();
+            addToSpinner(weatherLocation);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (autoCompleteTextView!=null){
+                        try {
+                            autoCompleteTextView.setText("");
+                            autoCompleteTextView.clearListSelection();
+                        } catch (Exception e){
+                            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"unable to clear autoCompleteTextView");
+                        }
+                    }
+                }
+            });
+            // we do not get the forecast data here since this triggers the preference-changed-listener. This
+            // listener takes care of the weather data update and updates widgets and gadgetbridge.
+        }
     }
 
     public static class SpinnerListener implements View.OnTouchListener, AdapterView.OnItemSelectedListener{
@@ -1561,66 +1565,78 @@ public class MainActivity extends Activity {
         if (bundle!=null) {
             items_count = bundle.getInt(Weather.WeatherLocation.EXTRAS_ITEMS_TO_SHOW, 20);
         }
-        ArrayList<String> stationDistanceList = new ArrayList<String>();
-        for (int i=0; (i<stations.size()) && (i<items_count); i++) {
-            stationDistanceList.add(stations.get(i).description+" ["+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]");
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
-        builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
-        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_GPS_FIXED,false));
-        builder.setIcon(drawable);
-        LayoutInflater layoutInflater = this.getLayoutInflater();
-        final View view = layoutInflater.inflate(R.layout.geochoice,null,false);
-        TextView textView_long = (TextView) view.findViewById(R.id.geochoice_reference_longitude);
-        TextView textView_lat  = (TextView) view.findViewById(R.id.geochoice_reference_latitude);
-        TextView textView_time = (TextView) view.findViewById(R.id.geochoice_reference_time);
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
-        textView_long.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_longitude)+" "+new DecimalFormat("000.00000").format(own_location.getLongitude()));
-        textView_lat.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_latitude)+" "+new DecimalFormat("00.00000").format(own_location.getLatitude()));
-        long time = own_location.getTime();
-        if (time!=0){
-        textView_time.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_time)+" "+simpleDateFormat.format(new Date(time)));
-        } else {
-            // do not display time if time is unknown in Location data
-            String s = own_location.getExtras().getString(Weather.WeatherLocation.EXTRAS_NAME,"");
-            textView_time.setText(s);
-        }
-        builder.setView(view);
-        builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+        if (WeatherSettings.GPSManual(context)){
+            ArrayList<String> stationDistanceList = new ArrayList<String>();
+            for (int i=0; (i<stations.size()) && (i<items_count); i++) {
+                stationDistanceList.add(stations.get(i).description+" ["+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]");
             }
-        });
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,R.layout.geochoice_item,R.id.geochoiceitem_text,stationDistanceList);
-        ListView listView = view.findViewById(R.id.geochoice_listview);
-        listView.setAdapter(arrayAdapter);
-        final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-                TextView textView = view.findViewById(R.id.geochoiceitem_text);
-                String station_description = textView.getText().toString();
-                station_description = station_description.substring(0,station_description.indexOf(" ["));
-                Weather.WeatherLocation newWeatherLocation = stationsManager.getLocationFromDescription(station_description);
-                if (newWeatherLocation!=null){
-                    if (!weatherSettings.station_name.equals(newWeatherLocation.name)){
-                        newWeatherRegionSelected(newWeatherLocation);
-                    }
-                } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
-                        }
-                    });
+            AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
+            builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
+            Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_GPS_FIXED,false));
+            builder.setIcon(drawable);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            final View view = layoutInflater.inflate(R.layout.geochoice,null,false);
+            TextView textView_long = (TextView) view.findViewById(R.id.geochoice_reference_longitude);
+            TextView textView_lat  = (TextView) view.findViewById(R.id.geochoice_reference_latitude);
+            TextView textView_time = (TextView) view.findViewById(R.id.geochoice_reference_time);
+            final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+            textView_long.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_longitude)+" "+new DecimalFormat("000.00000").format(own_location.getLongitude()));
+            textView_lat.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_latitude)+" "+new DecimalFormat("00.00000").format(own_location.getLatitude()));
+            long time = own_location.getTime();
+            if (time!=0){
+                textView_time.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_time)+" "+simpleDateFormat.format(new Date(time)));
+            } else {
+                // do not display time if time is unknown in Location data
+                String s = own_location.getExtras().getString(Weather.WeatherLocation.EXTRAS_NAME,"");
+                textView_time.setText(s);
+            }
+            builder.setView(view);
+            builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
                 }
-                alertDialog.dismiss();
+            });
+            final AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,R.layout.geochoice_item,R.id.geochoiceitem_text,stationDistanceList);
+            ListView listView = view.findViewById(R.id.geochoice_listview);
+            listView.setAdapter(arrayAdapter);
+            final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+                    TextView textView = view.findViewById(R.id.geochoiceitem_text);
+                    String station_description = textView.getText().toString();
+                    station_description = station_description.substring(0,station_description.indexOf(" ["));
+                    Weather.WeatherLocation newWeatherLocation = stationsManager.getLocationFromDescription(station_description);
+                    if (newWeatherLocation!=null){
+                        if (!weatherSettings.station_name.equals(newWeatherLocation.name)){
+                            newWeatherRegionSelected(newWeatherLocation);
+                        }
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                    alertDialog.dismiss();
+                }
+            };
+            listView.setOnItemClickListener(clickListener);
+        } else {
+            if (stations.size()>0){
+                Weather.WeatherLocation newWeatherLocation = new Weather.WeatherLocation();
+                newWeatherLocation.altitude = own_location.getAltitude();
+                newWeatherLocation.latitude = own_location.getLatitude();
+                newWeatherLocation.longitude = own_location.getLongitude();
+                newWeatherLocation.name = stations.get(0).name;
+                newWeatherLocation.description = stations.get(0).description;
+                newWeatherRegionSelected(newWeatherLocation);
             }
-        };
-        listView.setOnItemClickListener(clickListener);
+        }
     }
 
     private static final int PERMISSION_CALLBACK_LOCATION = 121;
@@ -1790,14 +1806,24 @@ public class MainActivity extends Activity {
         return location;
     }
 
+    public void updateGeo(){
+        Location location = getLastKnownLocation();
+        if (location!=null){
+            Log.v("twfg","Known location.");
+        } else {
+            Log.v("twfg","Sorry, *no* known location.");
+        }
+        if (!hasLocationPermission()){
+            requestLocationPermission();
+        } else {
+            startGPSLocationSearch();
+        }
+    }
+
     public String standardizeGeo(final String s){
         return s.replace(",",".");
     }
 
-    public void travelUpdate(){
-        ArrayList<Weather.WeatherLocation> weatherLocations = new ArrayList<Weather.WeatherLocation>();
-        //ArrayList<String> names = WeatherSettings.getF
-    }
 }
 
 
