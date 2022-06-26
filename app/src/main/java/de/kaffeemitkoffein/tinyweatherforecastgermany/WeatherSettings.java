@@ -89,6 +89,7 @@ public class WeatherSettings {
     public static final String PREF_USEGPS = "PREF_usegps";
     public static final String PREF_GPSAUTO = "PREF_gpsauto";
     public static final String PREF_GPSMANUAL = "PREF_gpsmanual";
+    public static final String PREF_LASTGPSFIX = "PREF_lastgpsfix";
     public static final String PREF_DISABLE_TLS = "PREF_disable_tls";
     public static final String PREF_TEXTFORECAST_LAST_UPDATE_TIME = "PREF_textforecast_last_update_time";
     public static final String PREF_TEXTFORECAST_FILTER = "PREF_textforecast_filter";
@@ -150,7 +151,7 @@ public class WeatherSettings {
     public static final boolean PREF_USEGPS_DEFAULT = false;
     public static final boolean PREF_GPSAUTO_DEFAULT = false;
     public static final boolean PREF_GPSMANUAL_DEFAULT = false;
-
+    public static final long PREF_LASTGPSFIX_DEFAULT = 0;
     public static final boolean PREF_DISABLE_TLS_DEFAULT = false;
     public static final long PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final boolean PREF_TEXTFORECAST_FILTER_DEFAULT = false;
@@ -209,8 +210,9 @@ public class WeatherSettings {
     public boolean warnings_disabled = PREF_WARNINGS_DISABLE_DEFAULT;
     public boolean is_first_app_launch = true;
     public boolean usegps = PREF_USEGPS_DEFAULT;
-    public boolean gpsauto = false;
-    public boolean gpsmanual = false;
+    public boolean gpsauto = PREF_GPSAUTO_DEFAULT;
+    public boolean gpsmanual = PREF_GPSMANUAL_DEFAULT;
+    public long lastgpsfix = PREF_LASTGPSFIX_DEFAULT;
     public boolean disable_tls = PREF_DISABLE_TLS_DEFAULT;
     public long textforecast_last_update_time = PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT;
     public boolean textforecast_filter = PREF_TEXTFORECAST_FILTER_DEFAULT;
@@ -764,6 +766,29 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
         return sharedPreferences.getBoolean(PREF_GPSAUTO, PREF_GPSAUTO_DEFAULT);
     }
+
+    public static void saveGPSfixtime(Context context, long time){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_LASTGPSFIX,time);
+        pref_editor.apply();
+    }
+
+    public static long getlastGPSfixtime(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getLong(PREF_LASTGPSFIX, PREF_LASTGPSFIX_DEFAULT);
+    }
+
+    public static boolean isGPSFixOutdated(Context context, long time){
+        long lastgpsfix = getlastGPSfixtime(context);
+        return (time > (lastgpsfix+WeatherLocationManager.GPSFIXINTERVAL));
+    }
+
+    public static boolean isLastGPSFixOutdated(Context context){
+        long time = Calendar.getInstance().getTimeInMillis();
+        return isGPSFixOutdated(context,time);
+    }
+
 
     public static boolean isTLSdisabled(Context c){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);

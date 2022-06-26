@@ -20,13 +20,18 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.app.AlertDialog;
+import android.content.*;
+import android.content.pm.PackageManager;
 import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
@@ -41,7 +46,7 @@ public class WeatherWarningActivity extends Activity {
 
     ArrayList<WeatherWarning> weatherWarnings;
     ArrayList<WeatherWarning> localWarnings;
-    Weather.WeatherLocation localStation;
+    Weather.WeatherLocation ownLocation;
     View.OnTouchListener mapTouchListener;
     ArrayList<Polygon> polygoncache;
     ArrayList<Polygon> excluded_polygoncache;
@@ -63,6 +68,8 @@ public class WeatherWarningActivity extends Activity {
     Executor executor;
     Boolean hide_rain = null;
     // Radarmap radarmap;
+    WeatherLocationManager weatherLocationManager;
+    RelativeLayout gpsProgressHolder;
 
     Bundle zoomMapState = null;
 
@@ -134,6 +141,7 @@ public class WeatherWarningActivity extends Activity {
             germany = (ImageView) findViewById(R.id.warningactivity_map);
         }
         PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"app resumed.");
+        weatherLocationManager.checkLocation();
         super.onResume();
     }
 
@@ -167,7 +175,6 @@ public class WeatherWarningActivity extends Activity {
             hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
         }
         executor = Executors.newSingleThreadExecutor();
-        localStation = WeatherSettings.getSetStationLocation(getApplicationContext());
         // action bar layout
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
@@ -203,6 +210,27 @@ public class WeatherWarningActivity extends Activity {
             deviceIsLandscape = true;
         }
         updateWarningsIfNeeded();
+        gpsProgressHolder = (RelativeLayout) findViewById(R.id.gps_progress_holder);
+        weatherLocationManager = new WeatherLocationManager(context){
+          @Override
+          public void newLocation(Location location){
+              super.newLocation(location);
+              Weather.WeatherLocationFinder weatherLocationFinder = new Weather.WeatherLocationFinder(context,location){
+                @Override
+                public void newWeatherLocation(Weather.WeatherLocation weatherLocation){
+                    ownLocation = weatherLocation;
+                    displayWarnings();
+                }
+              };
+              weatherLocationFinder.run();
+          }
+        };
+        WeatherSettings.saveGPSfixtime(context,0);
+        // set to station, perhaps override with current location later
+        ownLocation = WeatherSettings.getSetStationLocation(getApplicationContext());
+        getApplication().registerActivityLifecycleCallbacks(weatherLocationManager);
+        weatherLocationManager.setView(gpsProgressHolder);
+        weatherLocationManager.registerCancelButton((Button) findViewById(R.id.cancel_gps));
     }
 
     @Override
@@ -713,7 +741,7 @@ public class WeatherWarningActivity extends Activity {
         }
         // add the pin sprite
         int pinsize = Math.round(18*this.getApplicationContext().getResources().getDisplayMetrics().density);
-        PlotPoint pinPoint = getPlotPoint((float) localStation.longitude, (float) localStation.latitude);
+        PlotPoint pinPoint = getPlotPoint((float) ownLocation.longitude, (float) ownLocation.latitude);
         Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinsize,pinsize,false);
         mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT);
         mapZoomable.redrawBitmap();
@@ -884,6 +912,45 @@ public class WeatherWarningActivity extends Activity {
         registerReceiver(receiver,filter);
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int permRequestCode, String perms[], int[] grantRes){
+        Boolean hasLocationPermission = false;
+        for (int i=0; i<grantRes.length; i++){
+            if ((perms[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)) && (grantRes[i]== PackageManager.PERMISSION_GRANTED)){
+                hasLocationPermission = true;
+            }
+        }
+        if (permRequestCode == WeatherLocationManager.PERMISSION_CALLBACK_LOCATION){
+            if (hasLocationPermission){
+                if (weatherLocationManager!=null){
+                    weatherLocationManager.checkLocation();
+                }
+            } else {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
+                    showLocationPermissionsRationale();
+                }
+            }
+        }
+    }
 
+    private void showSimpleLocationAlert(String text){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
+        builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_GPS_FIXED,false));
+        builder.setIcon(drawable);
+        builder.setMessage(text);
+        builder.setPositiveButton(R.string.alertdialog_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
+    private void showLocationPermissionsRationale(){
+        showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_rationale));
+    }
 }

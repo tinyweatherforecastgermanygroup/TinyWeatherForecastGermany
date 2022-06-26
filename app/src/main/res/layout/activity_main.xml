@@ -28,7 +28,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/main_gps_progress_holder"
+        android:id="@+id/gps_progress_holder"
         android:layout_width="match_parent"
         android:layout_height="18dp"
         android:visibility="gone"
@@ -36,7 +36,7 @@
         android:orientation="horizontal">
 
        <ProgressBar
-           android:id="@+id/main_gps_progress_bar"
+           android:id="@+id/gps_progress_bar"
            android:layout_width="wrap_content"
            android:layout_height="match_parent"
            android:indeterminate="true"
@@ -45,19 +45,19 @@
        />
 
         <TextView
-            android:id="@+id/main_wait_for_gps_fix_text"
+            android:id="@+id/wait_for_gps_fix_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:text="@string/main_wait_for_gps_fix"
             android:textColor="?attr/colorText"
             android:layout_gravity="left"
-            android:layout_toRightOf="@id/main_gps_progress_bar"
+            android:layout_toRightOf="@id/gps_progress_bar"
             android:background="?attr/colorPrimaryLight"
             android:textSize="@dimen/fcmain_textsize_medium"/>
 
         <Button
-            android:id="@+id/main_cancel_gps"
+            android:id="@+id/cancel_gps"
             android:layout_width="wrap_content"
             android:layout_height="14dp"
             android:background="?attr/colorPrimary"

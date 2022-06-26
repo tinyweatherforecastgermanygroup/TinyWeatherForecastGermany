@@ -29,8 +29,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.*;
@@ -40,7 +38,6 @@ import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -93,6 +90,8 @@ public class MainActivity extends Activity {
     Executor executor;
 
     ArrayList<WeatherWarning> localWarnings;
+
+    WeatherLocationManager weatherLocationManager;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -201,7 +200,7 @@ public class MainActivity extends Activity {
                 final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
                 Location startLocation = stationSearchEngine.getCentroidLocationFromArea(station_description);
                 if (startLocation!=null){
-                    calcualateClosestStations(stations,startLocation);
+                    calcualateClosestStations(stations,startLocation,WeatherSettings.GPSManual(context));
                 } else {
                     try {
                         Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
@@ -268,7 +267,7 @@ public class MainActivity extends Activity {
             int xoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderLeft,displayMetrics));
             int yoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderTop,displayMetrics));
             // this view is solely used to get the windowToken by popupWindow. It can therefore be any view within the layout.
-            View parentView = (View) findViewById(R.id.main_gps_progress_holder);
+            View parentView = (View) findViewById(R.id.gps_progress_holder);
             WeatherSliderView weatherSliderView = new WeatherSliderView(getApplicationContext(),weatherCard);
             boolean popUpWindowIsScrollable = weatherSliderView.setItems(width,height,itemsToDisplay);
             weatherSliderView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
@@ -306,7 +305,7 @@ public class MainActivity extends Activity {
                 final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
                 Location startLocation = stationSearchEngine.getCentroidLocationFromArea(station_description);
                 if (startLocation!=null){
-                    calcualateClosestStations(stations,startLocation);
+                    calcualateClosestStations(stations,startLocation,WeatherSettings.GPSManual(context));
                 } else {
                     try {
                       Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
@@ -341,7 +340,7 @@ public class MainActivity extends Activity {
     protected void onPause(){
         cancelAnyOpenDialogs();
         unregisterReceiver(receiver);
-        stopGPSLocationSearch();
+        weatherLocationManager.stopGPSLocationSearch();
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app paused.");
         super.onPause();
     }
@@ -390,6 +389,7 @@ public class MainActivity extends Activity {
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when displaying weather: "+e.getMessage());
             }
         }
+        weatherLocationManager.checkLocation();
         super.onResume();
     }
 
@@ -398,6 +398,7 @@ public class MainActivity extends Activity {
         super.onDestroy();
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app instance destroyed.");
         cancelAnyOpenDialogs();
+        getApplication().unregisterActivityLifecycleCallbacks(weatherLocationManager);
     }
 
     private void cancelAnyOpenDialogs(){
@@ -564,7 +565,19 @@ public class MainActivity extends Activity {
                 }
             }
         };
-        updateGeo();
+        // register the GPS methods
+        // debug only: WeatherSettings.saveGPSfixtime(context,0);
+        weatherLocationManager = new WeatherLocationManager(context){
+            @Override
+            public void newLocation(Location location){
+                launchStationSearchByLocation(location,WeatherSettings.GPSManual(context));
+                super.newLocation(location);
+            }
+        };
+        getApplication().registerActivityLifecycleCallbacks(weatherLocationManager);
+        weatherLocationManager.setView((RelativeLayout) findViewById(R.id.gps_progress_holder));
+        weatherLocationManager.registerCancelButton((Button) findViewById(R.id.cancel_gps));
+
         if (!API_TESTING_ENABLED){
             weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
         }
@@ -598,21 +611,13 @@ public class MainActivity extends Activity {
                 }
             });
         }
-        Button cancel_gps = (Button) findViewById(R.id.main_cancel_gps);
-        cancel_gps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopGPSLocationSearch();
-            }
-        });
         // check if a geo intent was sent
 
         Location intentLocation = getLocationForGeoIntent(getIntent());
 
         if (intentLocation!=null){
-            launchStationSearchByLocation(intentLocation);
+            launchStationSearchByLocation(intentLocation,WeatherSettings.GPSManual(context));
         }
-
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -1458,7 +1463,7 @@ public class MainActivity extends Activity {
                     if (!hasLocationPermission()){
                         requestLocationPermission();
                     } else {
-                        startGPSLocationSearch();
+                        weatherLocationManager.startGPSLocationSearch();
                     }
                 } else {
                     Location own_location = new Location("manual");
@@ -1469,7 +1474,7 @@ public class MainActivity extends Activity {
                         own_location.setLatitude(latitude);
                         own_location.setLongitude(longitude);
                         if ((latitude>=-90) && (latitude<=90) && (longitude>=-180) && (longitude<=180)) {
-                            launchStationSearchByLocation(own_location);
+                            launchStationSearchByLocation(own_location,WeatherSettings.GPSManual(context));
                         } else {
                             showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongvalue));
                         }
@@ -1489,7 +1494,7 @@ public class MainActivity extends Activity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
         useGPS.setChecked(WeatherSettings.getUseGPSFlag(getApplicationContext()));
-        Location location = getLastKnownLocation();
+        Location location = weatherLocationManager.getLastKnownLocation();
         if (location!=null){
             text_longitude.setText(new DecimalFormat("000.00000").format(location.getLongitude()));
             text_latitude.setText(new DecimalFormat("00.00000").format(location.getLatitude()));
@@ -1500,48 +1505,25 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void launchStationSearchByLocation(final Location own_location){
+    private void launchStationSearchByLocation(final Location own_location, final boolean manual){
         // load stations
         final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
         if (stations.size()>0){
-            calcualateClosestStations(stations,own_location);
+            calcualateClosestStations(stations,own_location,manual);
         } else {
             StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(context) {
                 @Override
                 public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> new_stations) {
                     super.onLoadingListFinished(new_stations);
-                    calcualateClosestStations(stations, own_location);
+                    calcualateClosestStations(stations, own_location, manual);
                 }
             };
             executor.execute(stationsReader);
         }
     }
 
-    private void calcualateClosestStation(ArrayList<Weather.WeatherLocation> stations, final Location own_location){
-        stopGPSLocationSearch();
-        for (int i=0; i<stations.size(); i++){
-            Location location_station = new Location("weather");
-            location_station.setLatitude(stations.get(i).latitude);
-            location_station.setLongitude(stations.get(i).longitude);
-            stations.get(i).distance = location_station.distanceTo(own_location);
-        }
-        Collections.sort(stations, new Comparator<Weather.WeatherLocation>() {
-            @Override
-            public int compare(Weather.WeatherLocation t0, Weather.WeatherLocation t1) {
-                if (t0.distance<t1.distance){
-                    return -1;
-                }
-                if (t0.distance==t1.distance){
-                    return 0;
-                }
-                return 1;
-            }
-        });
-    }
-
-
-    private void calcualateClosestStations(ArrayList<Weather.WeatherLocation> stations, final Location own_location){
-        stopGPSLocationSearch();
+    private void calcualateClosestStations(ArrayList<Weather.WeatherLocation> stations, final Location own_location, final boolean manual){
+        weatherLocationManager.stopGPSLocationSearch();
         for (int i=0; i<stations.size(); i++){
             Location location_station = new Location("weather");
             location_station.setLatitude(stations.get(i).latitude);
@@ -1565,7 +1547,7 @@ public class MainActivity extends Activity {
         if (bundle!=null) {
             items_count = bundle.getInt(Weather.WeatherLocation.EXTRAS_ITEMS_TO_SHOW, 20);
         }
-        if (WeatherSettings.GPSManual(context)){
+        if (manual){
             ArrayList<String> stationDistanceList = new ArrayList<String>();
             for (int i=0; (i<stations.size()) && (i<items_count); i++) {
                 stationDistanceList.add(stations.get(i).description+" ["+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]");
@@ -1678,7 +1660,7 @@ public class MainActivity extends Activity {
         }
         if (permRequestCode == PERMISSION_CALLBACK_LOCATION){
             if (hasLocationPermission){
-                startGPSLocationSearch();
+                weatherLocationManager.startGPSLocationSearch();
             } else {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
                     showLocationPermissionsRationale();
@@ -1722,102 +1704,6 @@ public class MainActivity extends Activity {
 
     private void showLocationPermissionsRationale(){
         showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_rationale));
-    }
-
-    final LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            launchStationSearchByLocation(location);
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-            // nothing to do
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-            startGPSLocationSearch();
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-            startGPSLocationSearch();
-        }
-    };
-
-    private void stopGPSLocationSearch(){
-        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager!=null){
-            if (locationListener != null) {
-                locationManager.removeUpdates(locationListener);
-            }
-        }
-        RelativeLayout gps_spinner_layout = (RelativeLayout) findViewById(R.id.main_gps_progress_holder);
-        gps_spinner_layout.setVisibility(View.GONE);
-    }
-
-    @SuppressLint("MissingPermission")
-    private void startGPSLocationSearch(){
-        PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Starting gps search...");
-        RelativeLayout gps_spinner_layout = (RelativeLayout) findViewById(R.id.main_gps_progress_holder);
-        gps_spinner_layout.setVisibility(View.VISIBLE);
-        final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager!=null){
-            if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locationListener,null);
-            } else
-                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                    locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,locationListener,null);
-                }  else {
-                    showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_noprovider));
-                    gps_spinner_layout.setVisibility(View.GONE);
-                }
-            }
-    }
-
-    @SuppressLint("MissingPermission")
-    private Location getLastKnownLocation(){
-        Location location = null;
-        if (hasLocationPermission()) {
-            final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            if (locationManager != null) {
-                    if (locationManager.getProvider(LocationManager.NETWORK_PROVIDER) != null) {
-                        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        }
-                    }
-                    if (location == null) {
-                        if (locationManager.getProvider(LocationManager.GPS_PROVIDER) != null) {
-                            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            }
-                        }
-                    }
-                    if (location == null) {
-                        if (locationManager.getProvider(LocationManager.PASSIVE_PROVIDER) != null) {
-                            if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
-                                location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-                            }
-                        }
-                    }
-            }
-        }
-        return location;
-    }
-
-    public void updateGeo(){
-        Location location = getLastKnownLocation();
-        if (location!=null){
-            Log.v("twfg","Known location.");
-        } else {
-            Log.v("twfg","Sorry, *no* known location.");
-        }
-        if (!hasLocationPermission()){
-            requestLocationPermission();
-        } else {
-            startGPSLocationSearch();
-        }
     }
 
     public String standardizeGeo(final String s){

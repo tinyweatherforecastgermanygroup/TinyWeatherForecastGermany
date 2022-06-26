@@ -23,13 +23,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import org.astronomie.info.Astronomy;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -136,6 +132,49 @@ public final class Weather {
             return null;
         }
 
+    }
+
+    public static class WeatherLocationFinder implements Runnable{
+
+        private Context context;
+        private Location ownLocation;
+
+        public WeatherLocationFinder(Context context, Location location){
+            this.context = context;
+            this.ownLocation = location;
+        }
+
+        @Override
+        public void run() {
+            StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(context){
+                @Override
+                public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> new_stations){
+                    new_stations = StationsManager.sortStationsByDistance(new_stations, ownLocation);
+                    sortedStations(new_stations);
+                    closestStation(new_stations.get(0));
+                    Weather.WeatherLocation newWeatherLocation = new Weather.WeatherLocation();
+                    newWeatherLocation.altitude = ownLocation.getAltitude();
+                    newWeatherLocation.latitude = ownLocation.getLatitude();
+                    newWeatherLocation.longitude = ownLocation.getLongitude();
+                    newWeatherLocation.name = new_stations.get(0).name;
+                    newWeatherLocation.description = new_stations.get(0).description;
+                    newWeatherLocation(newWeatherLocation);
+                }
+            };
+            stationsReader.run();
+        }
+
+        public void sortedStations(ArrayList<Weather.WeatherLocation> new_stations){
+
+        }
+
+        public void closestStation(WeatherLocation weatherLocation){
+
+        }
+
+        public void newWeatherLocation(WeatherLocation weatherLocation){
+
+        }
     }
 
     public class WeatherItem{

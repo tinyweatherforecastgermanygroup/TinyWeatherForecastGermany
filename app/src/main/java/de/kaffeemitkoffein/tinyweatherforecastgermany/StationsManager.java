@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class StationsManager {
 
@@ -317,6 +318,28 @@ public class StationsManager {
             }
         }
         return resultList;
+    }
+
+    public static ArrayList<Weather.WeatherLocation> sortStationsByDistance(ArrayList<Weather.WeatherLocation> stations, Location targetLocation){
+        for (int i=0; i<stations.size(); i++){
+            Location location_station = new Location("weather");
+            location_station.setLatitude(stations.get(i).latitude);
+            location_station.setLongitude(stations.get(i).longitude);
+            stations.get(i).distance = location_station.distanceTo(targetLocation);
+        }
+        Collections.sort(stations, new Comparator<Weather.WeatherLocation>() {
+            @Override
+            public int compare(Weather.WeatherLocation t0, Weather.WeatherLocation t1) {
+                if (t0.distance<t1.distance){
+                    return -1;
+                }
+                if (t0.distance==t1.distance){
+                    return 0;
+                }
+                return 1;
+            }
+        });
+        return stations;
     }
 
 }

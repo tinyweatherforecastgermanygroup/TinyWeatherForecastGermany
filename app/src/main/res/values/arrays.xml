@@ -163,4 +163,15 @@
         <item>EXTENDED</item>
     </string-array>
 
+    <string-array name="gpsinterval_text">
+        <item>every hour</item>
+        <item>every 6 hours</item>
+        <item>once daily</item>
+    </string-array>
+
+    <string-array name="gpsinterval_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>
