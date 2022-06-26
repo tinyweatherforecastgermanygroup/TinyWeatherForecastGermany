@@ -10,7 +10,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -74,7 +73,6 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
     }
 
     private void removeCallback(){
-        Log.v("twfg","callback remove");
         if (locationManager!=null){
             locationManager.removeUpdates(locationListener);
             locationManager = null;
@@ -167,7 +165,6 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
     final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            Log.v("twfg","new location gps fix!");
             newLocation(location);
         }
 
@@ -231,7 +228,6 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
                     } else
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                         locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,locationListener,null);
-                        Log.v("twfg","GPS search");
                         displaySpinner();
                     }  else {
                         // fail silently
@@ -258,7 +254,6 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
                 }
             }
             if (WeatherSettings.isLastGPSFixOutdated(context)){
-                Log.v("twfg","outdated");
                 startGPSLocationSearch();
             }
         }
@@ -269,7 +264,6 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
      */
 
     public void newLocation(Location location){
-        Log.v("twfg","super");
         WeatherSettings.saveGPSfixtime(context,location.getTime());
         removeCallback();
     }
