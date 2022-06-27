@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -94,9 +95,6 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
             this.activity = activity;
             this.activityHash = activity.hashCode();
         }
-        if (!hasLocationPermission(activity.getApplicationContext())){
-            requestLocationPermission();
-        }
     }
 
     @Override
@@ -157,11 +155,6 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
         }
     }
 
-    @SuppressLint("NewApi")
-    private void requestLocationPermission(){
-        activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CALLBACK_LOCATION);
-    }
-
     final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -217,22 +210,28 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
     @SuppressLint("MissingPermission")
     public void startGPSLocationSearch(){
         if (activity!=null){
-            displaySpinner();
-            if (locationManager==null){
-                locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-                // register callback only in MainActivity & WeatherWarningActivity
-                if ((locationManager!=null) && (isLegitActivity(activity))){
-                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locationListener,null);
-                        displaySpinner();
-                    } else
-                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,locationListener,null);
-                        displaySpinner();
-                    }  else {
-                        // fail silently
-                        removeSpinner();
+            if (!hasLocationPermission(activity.getApplicationContext())){
+                // fail silently
+            } else {
+                displaySpinner();
+                if (locationManager==null){
+                    locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+                    // register callback only in MainActivity & WeatherWarningActivity
+                    if ((locationManager!=null) && (isLegitActivity(activity))){
+                        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                            locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locationListener,null);
+                            displaySpinner();
+                        } else
+                        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,locationListener,null);
+                            displaySpinner();
+                        }  else {
+                            // fail silently
+                            removeSpinner();
+                        }
                     }
+                } else {
+                    // fail silently
                 }
             }
         }

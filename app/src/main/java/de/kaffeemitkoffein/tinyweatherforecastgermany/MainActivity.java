@@ -38,6 +38,7 @@ import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -566,7 +567,7 @@ public class MainActivity extends Activity {
             }
         };
         // register the GPS methods
-        // debug only: WeatherSettings.saveGPSfixtime(context,0);
+        WeatherSettings.saveGPSfixtime(context,0);
         weatherLocationManager = new WeatherLocationManager(context){
             @Override
             public void newLocation(Location location){
@@ -577,6 +578,9 @@ public class MainActivity extends Activity {
         getApplication().registerActivityLifecycleCallbacks(weatherLocationManager);
         weatherLocationManager.setView((RelativeLayout) findViewById(R.id.gps_progress_holder));
         weatherLocationManager.registerCancelButton((Button) findViewById(R.id.cancel_gps));
+        if (WeatherSettings.GPSAuto(context) && (!hasLocationPermission())){
+            requestLocationPermission();
+        }
 
         if (!API_TESTING_ENABLED){
             weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
@@ -1644,6 +1648,7 @@ public class MainActivity extends Activity {
         }
     }
 
+
     @SuppressLint("NewApi")
     private void requestLocationPermission(){
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CALLBACK_LOCATION);
@@ -1662,7 +1667,7 @@ public class MainActivity extends Activity {
             if (hasLocationPermission){
                 weatherLocationManager.startGPSLocationSearch();
             } else {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) && (!WeatherSettings.GPSAuto(context))){
                     showLocationPermissionsRationale();
                 }
             }
