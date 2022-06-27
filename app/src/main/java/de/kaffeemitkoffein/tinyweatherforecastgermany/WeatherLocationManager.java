@@ -82,9 +82,6 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
 
     @SuppressLint("MissingPermission")
     private void updateActivity(Activity activity){
-        if (!hasLocationPermission(activity.getApplicationContext())){
-            requestLocationPermission();
-        }
         if (this.activity==null){
             this.activity = activity;
             activityHash  = activity.hashCode();
@@ -96,6 +93,9 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
             }
             this.activity = activity;
             this.activityHash = activity.hashCode();
+        }
+        if (!hasLocationPermission(activity.getApplicationContext())){
+            requestLocationPermission();
         }
     }
 
