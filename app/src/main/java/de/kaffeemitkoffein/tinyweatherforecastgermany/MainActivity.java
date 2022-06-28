@@ -38,7 +38,6 @@ import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -567,7 +566,7 @@ public class MainActivity extends Activity {
             }
         };
         // register the GPS methods
-        WeatherSettings.saveGPSfixtime(context,0);
+        // debug only WeatherSettings.saveGPSfixtime(context,0);
         weatherLocationManager = new WeatherLocationManager(context){
             @Override
             public void newLocation(Location location){
@@ -1441,6 +1440,13 @@ public class MainActivity extends Activity {
         LayoutInflater layoutInflater = this.getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.geoinput,null,false);
         final CheckBox useGPS = view.findViewById(R.id.geoinput_check_gps);
+        if (!hasLocationPermission() && WeatherSettings.askedForLocationPermission(context)){
+            // user actively denied permissions
+            useGPS.setChecked(false);
+            useGPS.setActivated(false);
+            useGPS.setClickable(false);
+            WeatherSettings.setUSEGPSFlag(getApplicationContext(),false);
+        }
         final EditText text_latitude = view.findViewById(R.id.geoinput_edit_latitude);
         final EditText text_longitude = view.findViewById(R.id.geoinput_edit_longitude);
         useGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1652,6 +1658,7 @@ public class MainActivity extends Activity {
     @SuppressLint("NewApi")
     private void requestLocationPermission(){
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CALLBACK_LOCATION);
+        WeatherSettings.setAskedLocationFlag(context);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -1667,8 +1674,12 @@ public class MainActivity extends Activity {
             if (hasLocationPermission){
                 weatherLocationManager.startGPSLocationSearch();
             } else {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) && (!WeatherSettings.GPSAuto(context))){
+                if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
                     showLocationPermissionsRationale();
+                } else {
+                    if (WeatherSettings.askedForLocationPermission(context)){
+                        // do nothing
+                    }
                 }
             }
         }

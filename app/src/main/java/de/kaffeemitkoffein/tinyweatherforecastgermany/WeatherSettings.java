@@ -105,6 +105,7 @@ public class WeatherSettings {
     public static final String PREF_USE_METERED_NETWORKS = "PREF_use_metered_networks";
     public static final String PREF_NOTIFICATION_IDENTIFIER = "PREF_notification_id";
     public static final String PREF_CLEARNOTIFICATIONS = "PREF_clearnotifications";
+    public static final String PREF_ASKEDFORLOCATIONPERMISSION = "PREF_askedlocpermission";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -166,6 +167,7 @@ public class WeatherSettings {
     public static final boolean PREF_ALTERNATIVE_ICONS_DEFAULT = true;
     public static final boolean PREF_USE_METERED_NETWORKS_DEFAULT = true;
     public static final int PREF_NOTIFICATION_IDENTIFIER_DEFAULT = -2147483640;
+    public static final boolean PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT = false;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -227,6 +229,7 @@ public class WeatherSettings {
     public boolean preferAlternativeIcons = PREF_ALTERNATIVE_ICONS_DEFAULT;
     public boolean useMeteredNetworks = PREF_USE_METERED_NETWORKS_DEFAULT;
     public int notificationIdentifier = PREF_NOTIFICATION_IDENTIFIER_DEFAULT;
+    private boolean askedforlocationpermission = PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -1132,5 +1135,16 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    public static void setAskedLocationFlag(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_ASKEDFORLOCATIONPERMISSION,true);
+        pref_editor.apply();
+    }
+
+    public static boolean askedForLocationPermission(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_ASKEDFORLOCATIONPERMISSION,PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT);
+    }
 
 }
