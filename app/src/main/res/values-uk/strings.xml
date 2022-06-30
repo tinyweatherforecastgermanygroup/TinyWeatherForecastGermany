@@ -280,4 +280,12 @@
     <string name="warning_stationreset_text">Щоб виправити помилку вашу станцію та відібрані станції скинуто до типових.</string>
     <string name="geoinput_wrongformat">Координата не має правильний формат. Ви можете використовувати анотації, як-от +53.12345 для градусів, або -44.22:12.12345 для введення градусів і хвилин або 33.12.12345 для введення градусів, хвилин і секунд. Будь ласка, спробуйте ще раз.</string>
     <string name="geoinput_rationale">Служби локації потрібні лише один раз, щоб знайти наступну метеостанцію. Після цього їх можна відключити. Крім того, ви можете ввести геокоординати вручну, щоб знайти наступну метеостанцію.</string>
+    <string name="travel_button">Оновити все</string>
+    <string name="welcome_s3_text5">Довге натискання на прогнозі відкриває детальний перегляд.</string>
+    <string name="update_failed">Невдале оновлення:</string>
+    <string name="network_lost">втрачено зʼєднання з інтернетом.</string>
+    <string name="preference_display_overviewchart_summary">Завжди відображати діаграму, що показує температуру, хмари та дощі на наступні дні. Якщо вимкнено, діаграма буде видима лише в альбомному режимі і лише за умови достатнього місця.</string>
+    <string name="preference_display_overviewchart_title">Перегляд діаграми</string>
+    <string name="network_nonetwork">нема зʼєднання з інтернетом.</string>
+    <string name="network_timeout">час на зʼєднання з інтернетом вичерпано.</string>
 </resources>
