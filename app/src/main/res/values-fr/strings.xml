@@ -301,4 +301,11 @@
     <string name="welcome_s3_text5">Appuyez longuement sur la prévision pour ouvrir une vue plus détaillée.</string>
     <string name="update_failed">La mise à jour a échoué :</string>
     <string name="network_nonetwork">pas de connexion internet.</string>
+    <string name="preference_category_location">Lieu</string>
+    <string name="preference_usegps_title">Utiliser les services de localisation</string>
+    <string name="preference_gpsauto_title">Vérifier l\'emplacement</string>
+    <string name="preference_gpsmanual_title">Manuel</string>
+    <string name="preference_gpsauto_summary">Vérifiez que l\'emplacement est correct à chaque démarrage.</string>
+    <string name="preference_gpsmanual_summary">Sélectionnez vous-même la station météorologique dans une liste des stations les plus proches.</string>
+    <string name="travel_button">Tout mettre à jour</string>
 </resources>
