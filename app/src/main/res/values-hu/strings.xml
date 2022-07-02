@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="main_updatetime">Utolsó frissítés:</string>
+    <string name="geoinput_button">Keresés helyzet alapján</string>
+    <string name="app_name">Kis Időjárás-előrejelzés Németország</string>
+    <string name="main_selectstation">Régió:</string>
+    <string name="main_wait_for_gps_fix">Helyzet-meghatározás folyamatban…</string>
+    <string name="new_station">A régió megváltozott</string>
+    <string name="license_button">Licenc</string>
+    <string name="update_button">Frissítés</string>
+    <string name="settings_button">Beállítások</string>
+    <string name="travel_button">Minden frissítése</string>
+</resources>
