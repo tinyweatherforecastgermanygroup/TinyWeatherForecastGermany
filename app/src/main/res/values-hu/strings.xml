@@ -10,4 +10,7 @@
     <string name="update_button">Frissítés</string>
     <string name="settings_button">Beállítások</string>
     <string name="travel_button">Minden frissítése</string>
+    <string name="preference_display_show_radar_by_default_title">Eső radar</string>
+    <string name="whatsnew_button">Mi újság</string>
+    <string name="weathercode_SLIGHT_SNOWFALL_CONTINUOUS">enyhe havazás, folyamatos</string>
 </resources>
