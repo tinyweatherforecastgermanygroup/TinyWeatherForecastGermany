@@ -9,7 +9,7 @@
     <string name="station">Станція</string>
     <string name="whatsnew_button">Що нового</string>
     <string name="app_name">Tiny Weather Forecast Germany</string>
-    <string name="main_wait_for_gps_fix">Визначення місцерозташувань…</string>
+    <string name="main_wait_for_gps_fix">Визначення місцезнаходження…</string>
     <string name="new_station">Регіон змінено на</string>
     <string name="about_button">Приватність/Про</string>
     <string name="warnings_button">Погодні попередження</string>
@@ -142,11 +142,11 @@
     <string name="welcome_setuptitle">Основне налаштування</string>
     <string name="areadatabasecreator_title">Підготовка даних</string>
     <string name="welcome_s4_displaytype">Оберіть як відображати прогноз погоди:</string>
-    <string name="geoinput_button">Шукати за розташуванням</string>
+    <string name="geoinput_button">Шукати за місцезнаходженням</string>
     <string name="station_does_not_exist">Введена вами станція не існує. Будь ласка, виберіть станцію із запропонованих у списку.</string>
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8">помірна хмарність</string>
     <string name="preference_category_texts">Текстові прогнози</string>
-    <string name="preference_displaywarninginwidget_summary">Відображати попередження для Вашого розташування у віджетах.</string>
+    <string name="preference_displaywarninginwidget_summary">Відображати попередження для Вашого місцезнаходження у віджетах.</string>
     <string name="preference_displaytype_summary">Відображати погодинні, 6-годинні або змішані прогнози.</string>
     <string name="preference_displaysimplebar_summary">Показувати лише значок погоди і температуру на панелі.</string>
     <string name="dwd_warnings_notice">Основні дані: Deutscher Wetterdienst, відображення стислих попереджень.</string>
@@ -155,7 +155,7 @@
     <string name="weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT">змішані легкі зливи зі снігом</string>
     <string name="weathercode_HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS">сильна мряка, тривала</string>
     <string name="preference_update_textforecasts_summary">Зберігати погодні тексти актуальними</string>
-    <string name="preference_notify_warnings_summary">Сповіщати про нові попередження для вибраного Вами розташування.</string>
+    <string name="preference_notify_warnings_summary">Сповіщати про нові попередження для вибраного Вами місцезнаходження.</string>
     <string name="preference_meterednetwork_notice">Ви можете пропустити погодні попередження, якщо використовуватимете лише не дозовані мережі.</string>
     <string name="preference_loggingscreen_summary">Налаштування параметрів журналювання для зневадження.</string>
     <string name="preference_logging_summary">Активувати журналювання. Журнали зберігатимуться ЛОКАЛЬНО на Вашому пристрої і НЕ надсилатимуться автоматично.</string>
@@ -288,4 +288,10 @@
     <string name="preference_display_overviewchart_title">Перегляд діаграми</string>
     <string name="network_nonetwork">нема зʼєднання з інтернетом.</string>
     <string name="network_timeout">час на зʼєднання з інтернетом вичерпано.</string>
+    <string name="preference_category_location">Місцезнаходження</string>
+    <string name="preference_usegps_title">Викор. сервіси місцезнаходження</string>
+    <string name="preference_gpsauto_summary">Перевіряти правильність місцезнаходження під час кожного запуску.</string>
+    <string name="preference_gpsmanual_title">Вручну</string>
+    <string name="preference_gpsauto_title">Перевірити місцезнаходження</string>
+    <string name="preference_gpsmanual_summary">Вибрати метеостанцію зі списку найближчих станцій самостійно.</string>
 </resources>
