@@ -53,6 +53,7 @@ public class LicenseInfo extends Activity implements View.OnClickListener {
 
     private void displayInfo(){
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        WeatherSettings.setRotationMode(this);
         setContentView(R.layout.licenseinfo);
         TextView title = (TextView) findViewById(R.id.infoTitle);
         TextView textview = (TextView) findViewById(R.id.infoTextView);

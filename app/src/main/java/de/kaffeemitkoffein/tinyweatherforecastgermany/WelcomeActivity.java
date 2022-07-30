@@ -92,6 +92,7 @@ public class WelcomeActivity extends Activity {
             }
         }
         if ((WeatherSettings.isFirstAppLaunch(getApplicationContext())) || (force_replay)) {
+            WeatherSettings.setRotationMode(this);
             setContentView(R.layout.activity_welcome);
             // action bar layout
             ActionBar actionBar = getActionBar();

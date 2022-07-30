@@ -96,6 +96,9 @@ public class Settings extends PreferenceActivity{
             if (s.equals(WeatherSettings.PREF_THEME)){
                 recreate();
             }
+            if (s.equals(WeatherSettings.PREF_ROTATIONMODE)){
+                recreate();
+            }
         }
     };
 
@@ -105,6 +108,7 @@ public class Settings extends PreferenceActivity{
         setTheme(ThemePicker.GetTheme(this));
         super.onCreate(bundle);
         context = this;
+        WeatherSettings.setRotationMode(this);
         addPreferencesFromResource(R.xml.preferences);
         if (!WeatherSettings.appReleaseIsUserdebug()){
             disableLogCatLogging();
@@ -237,6 +241,8 @@ public class Settings extends PreferenceActivity{
         warningsInWidget.setSummary(getResources().getString(R.string.preference_displaywarninginwidget_summary)+" "+getResources().getString(R.string.battery_and_data_hint));
         CheckBoxPreference notifyWarnings = (CheckBoxPreference) findPreference(WeatherSettings.PREF_NOTIFY_WARNINGS);
         notifyWarnings.setSummary(getResources().getString(R.string.preference_notify_warnings_summary)+" "+getResources().getString(R.string.battery_and_data_hint));
+        ListPreference displayRotation = (ListPreference) findPreference(WeatherSettings.PREF_ROTATIONMODE);
+        displayRotation.setSummary(WeatherSettings.getDeviceRotationString(this));
      }
 
 }

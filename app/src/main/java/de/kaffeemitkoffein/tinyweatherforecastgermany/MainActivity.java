@@ -418,6 +418,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         context = getApplicationContext();
         ThemePicker.SetTheme(this);
+        WeatherSettings.setRotationMode(this);
         super.onCreate(savedInstanceState);
         PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
         setContentView(R.layout.activity_main);
@@ -562,6 +563,9 @@ public class MainActivity extends Activity {
                 if (key.equals(WeatherSettings.PREF_THEME)){
                     recreate();
                     WidgetRefresher.refresh(context);
+                }
+                if (key.equals(WeatherSettings.PREF_ROTATIONMODE)){
+                    recreate();
                 }
             }
         };
@@ -1506,6 +1510,8 @@ public class MainActivity extends Activity {
         useGPS.setChecked(WeatherSettings.getUseGPSFlag(getApplicationContext()));
         Location location = weatherLocationManager.getLastKnownLocation();
         if (location!=null){
+            // fake last location to hamburg
+                location.setLatitude(53.57530); location.setLongitude(10.01530);
             text_longitude.setText(new DecimalFormat("000.00000").format(location.getLongitude()));
             text_latitude.setText(new DecimalFormat("00.00000").format(location.getLatitude()));
             TextView gps_known_knote = view.findViewById(R.id.geoinput_known_note);

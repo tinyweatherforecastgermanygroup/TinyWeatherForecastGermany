@@ -162,6 +162,7 @@ public class WeatherWarningActivity extends Activity {
             PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Error setting theme in WeatherWarnings activity.");
         }
         super.onCreate(savedInstanceState);
+        WeatherSettings.setRotationMode(this);
         setContentView(R.layout.activity_weatherwarning);
         registerForBroadcast();
         // try to restore zoom factor if it is available from the savedInstanceState

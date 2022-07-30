@@ -19,8 +19,10 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.preference.PreferenceManager;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -106,6 +108,7 @@ public class WeatherSettings {
     public static final String PREF_NOTIFICATION_IDENTIFIER = "PREF_notification_id";
     public static final String PREF_CLEARNOTIFICATIONS = "PREF_clearnotifications";
     public static final String PREF_ASKEDFORLOCATIONPERMISSION = "PREF_askedlocpermission";
+    public static final String PREF_ROTATIONMODE = "PREF_rotationmode";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -168,6 +171,7 @@ public class WeatherSettings {
     public static final boolean PREF_USE_METERED_NETWORKS_DEFAULT = true;
     public static final int PREF_NOTIFICATION_IDENTIFIER_DEFAULT = -2147483640;
     public static final boolean PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT = false;
+    public static final String PREF_ROTATIONMODE_DEFAULT = DeviceRotation.DEVICE;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -230,6 +234,7 @@ public class WeatherSettings {
     public boolean useMeteredNetworks = PREF_USE_METERED_NETWORKS_DEFAULT;
     public int notificationIdentifier = PREF_NOTIFICATION_IDENTIFIER_DEFAULT;
     private boolean askedforlocationpermission = PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT;
+    public String rotationMode = PREF_ROTATIONMODE_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -300,6 +305,7 @@ public class WeatherSettings {
         this.preferAlternativeIcons = readPreference(PREF_ALTERNATIVE_ICONS,PREF_ALTERNATIVE_ICONS_DEFAULT);
         this.useMeteredNetworks = readPreference(PREF_USE_METERED_NETWORKS,PREF_USE_METERED_NETWORKS_DEFAULT);
         this.notificationIdentifier = readPreference(PREF_NOTIFICATION_IDENTIFIER,PREF_NOTIFICATION_IDENTIFIER_DEFAULT);
+        this.rotationMode = readPreference(PREF_ROTATIONMODE,PREF_ROTATIONMODE_DEFAULT);
     }
 
     public void savePreferences() {
@@ -361,6 +367,7 @@ public class WeatherSettings {
         applyPreference(PREF_ALTERNATIVE_ICONS,this.preferAlternativeIcons);
         applyPreference(PREF_USE_METERED_NETWORKS,this.useMeteredNetworks);
         applyPreference(PREF_NOTIFICATION_IDENTIFIER,this.notificationIdentifier);
+        applyPreference(PREF_ROTATIONMODE,rotationMode);
     }
 
     public void commitPreferences() {
@@ -422,7 +429,7 @@ public class WeatherSettings {
         commitPreference(PREF_ALTERNATIVE_ICONS,this.preferAlternativeIcons);
         commitPreference(PREF_USE_METERED_NETWORKS,this.useMeteredNetworks);
         commitPreference(PREF_NOTIFICATION_IDENTIFIER,this.notificationIdentifier);
-
+        commitPreference(PREF_ROTATIONMODE,rotationMode);
     }
 
     public String readPreference(String p, String d) {
@@ -1145,6 +1152,42 @@ public class WeatherSettings {
     public static boolean askedForLocationPermission(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_ASKEDFORLOCATIONPERMISSION,PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT);
+    }
+
+    public final class DeviceRotation {
+        final static String DEVICE = "0";
+        final static String PORTRAIT = "1";
+        final static String LANDSCAPE = "2";
+    }
+
+    public static String getRotationmode(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String rotationMode = sharedPreferences.getString(PREF_ROTATIONMODE,PREF_ROTATIONMODE_DEFAULT);
+        return rotationMode;
+    }
+
+    public static String getDeviceRotationString(Context context){
+        String rotationMode = getRotationmode(context);
+        String[] s = context.getResources().getStringArray(R.array.display_rotation_text);
+        if (rotationMode.equals(DeviceRotation.LANDSCAPE)){
+            return s[2];
+        }
+        if (rotationMode.equals(DeviceRotation.PORTRAIT)){
+            return s[1];
+        }
+        return s[0];
+    }
+
+    public static void setRotationMode(Activity activity){
+        String rotationMode = getRotationmode(activity.getApplicationContext());
+        if (rotationMode.equals(DeviceRotation.LANDSCAPE)){
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else if (rotationMode.equals(DeviceRotation.PORTRAIT)){
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            //activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        }
     }
 
 }

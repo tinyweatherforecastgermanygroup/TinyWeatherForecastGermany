@@ -57,6 +57,7 @@ public class LoggingActivity extends Activity {
         context = getApplicationContext();
         ThemePicker.SetTheme(this);
         super.onCreate(savedInstanceState);
+        WeatherSettings.setRotationMode(this);
         setContentView(R.layout.activity_logging);
         executor = Executors.newSingleThreadExecutor();
         // action bar layout

@@ -33,9 +33,12 @@
         <activity
             android:name=".LoggingActivity"
             android:label="@string/logging_title"
+            android:screenOrientation="locked"
             android:parentActivityName=".Settings">
         </activity>
-        <activity android:name=".WelcomeActivity">
+        <activity
+                android:name=".WelcomeActivity"
+                android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -46,7 +49,8 @@
 
         </activity>
         <activity android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -56,22 +60,27 @@
         </activity>
         <activity android:name=".WeatherWarningActivity"
                   android:label="@string/title_activity_warnings"
+                  android:screenOrientation="locked"
                   android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name=".Settings"
                   android:label="@string/title_activity_settings"
+                  android:screenOrientation="locked"
                   android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name=".LicenseInfo"
                   android:label="@string/app_name"
+                  android:screenOrientation="locked"
                   android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name=".TextForecastListActivity"
             android:label="@string/title_activity_textlist"
+            android:screenOrientation="locked"
             android:parentActivityName=".MainActivity">
         </activity>
         <activity android:name=".TextForecastViewActivity"
             android:label="@string/app_name"
+            android:screenOrientation="locked"
             android:parentActivityName=".TextForecastListActivity">
         </activity>
 

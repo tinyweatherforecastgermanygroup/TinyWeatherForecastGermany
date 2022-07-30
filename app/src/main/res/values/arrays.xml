@@ -174,4 +174,17 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <string-array name="display_rotation_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="display_rotation_text">
+        <item>Device orientation</item>
+        <item>Portrait</item>
+        <item>Landscape</item>
+    </string-array>
+
 </resources>

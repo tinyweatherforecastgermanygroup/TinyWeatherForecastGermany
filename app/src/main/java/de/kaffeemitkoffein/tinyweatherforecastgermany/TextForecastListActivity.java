@@ -115,6 +115,7 @@ public class TextForecastListActivity extends Activity {
         context = getApplicationContext();
         ThemePicker.SetTheme(this);
         super.onCreate(savedInstanceState);
+        WeatherSettings.setRotationMode(this);
         setContentView(R.layout.activity_textforecastlist);
         registerForBroadcast();
         actionBar = getActionBar();
