@@ -1447,8 +1447,8 @@ public class MainActivity extends Activity {
         if (!hasLocationPermission() && WeatherSettings.askedForLocationPermission(context)){
             // user actively denied permissions
             useGPS.setChecked(false);
-            useGPS.setActivated(false);
-            useGPS.setClickable(false);
+            // useGPS.setActivated(false);
+            // useGPS.setClickable(false);
             WeatherSettings.setUSEGPSFlag(getApplicationContext(),false);
         }
         final EditText text_latitude = view.findViewById(R.id.geoinput_edit_latitude);
