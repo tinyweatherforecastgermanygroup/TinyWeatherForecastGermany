@@ -22,7 +22,7 @@ Ce programme utilise PNPOLY - Point Inclusion in Polygon Test de W. Randolph Fra
 
 Ce programme utilise la classe Astronomy, Copyright (C) 2010-2012, Helmut Lehmeyer <helmut.lehmeyer@gmail.com>, sous licence GNU General Public License version 3.
 
-Cartes PAT par Ian Macky <http://ian.macky.net/pat>.
+Cartes PAT par Ian Macky <http://ian.macky.net/pat>. Images of the "Lange Anna" (Helgoland) and the Pellworm lighthouse by arwanger.
 
 Le calcul de l'humidité relative à partir de la température et du point de rosée se fait à l'aide d'un exemple de formule simplifiée du DWD (Deutscher Wetterdienst), cf. <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
 
