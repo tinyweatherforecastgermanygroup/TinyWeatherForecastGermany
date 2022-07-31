@@ -30,7 +30,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -262,7 +261,6 @@ public class UpdateAlarmManager {
         }
         if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST)){
             ArrayList<Weather.WeatherLocation> weatherLocations = WeatherSettings.getFavoritesWeatherLocations(context);
-            Log.v("twfg","GOT FROM SETTINGS: "+weatherLocations.size());
             if (weatherLocations.size()>0){
                 intent = intent.putParcelableArrayListExtra(Weather.WeatherLocation.PARCELABLE_NAME,weatherLocations);
             }

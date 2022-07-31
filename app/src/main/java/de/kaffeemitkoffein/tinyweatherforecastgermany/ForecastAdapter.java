@@ -22,9 +22,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -173,6 +172,7 @@ static class ViewHolder {
     TextView condition_text;
     View iconbar1_view;
     TextView precipitation_textview;
+    TextView precipitation_unit_upper;
     TextView precipitation_unit_lower;
     ImageView weather_icon;
     TextView textView_temp;
@@ -227,6 +227,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     TextView textView_heading = null;
     View iconbar1_view = null;
     TextView precipitation_textview = null;
+    TextView precipitation_unit_upper = null;
     TextView precipitation_unit_lower = null;
     ImageView weather_icon = null;
     TextView textView_temp = null;
@@ -267,6 +268,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         textView_heading = viewHolder.textView_heading;
         iconbar1_view = viewHolder.iconbar1_view;
         precipitation_textview = viewHolder.precipitation_textview;
+        precipitation_unit_upper = viewHolder.precipitation_unit_upper;
         precipitation_unit_lower = viewHolder.precipitation_unit_lower;
         weather_icon = viewHolder.weather_icon;
         textView_temp = viewHolder.textView_temp;
@@ -295,6 +297,10 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     if (main_container==null) {
         main_container = (RelativeLayout) view.findViewById(R.id.fcitem_maincontainer);
         viewHolder.main_container = main_container;
+    }
+    // set the background drawable depending on theme
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        main_container.setBackground(context.getDrawable(ThemePicker.getWidgetBackgroundDrawable(context)));
     }
     Weather.WeatherInfo weatherInfo = weatherForecasts.get(i);
     // optinal color gradient
@@ -406,6 +412,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         }
         if (precipitation_textview!=null){
             precipitation_textview.setText(precipitation_string);
+            precipitation_textview.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
         }
     }
     if (precipitation_unit_lower==null){
@@ -414,6 +421,14 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     }
     if (precipitation_unit_lower!=null){
         precipitation_unit_lower.setText(weatherInfo.getPrecipitationUnitLower());
+        precipitation_unit_lower.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
+    }
+    if (precipitation_unit_upper==null){
+        precipitation_unit_upper = (TextView) view.findViewById(R.id.fcitem_precipitation_unit_upper);
+        viewHolder.precipitation_unit_upper = precipitation_unit_upper;
+        if (precipitation_unit_upper!=null){
+            precipitation_unit_upper.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
+        }
     }
     // weather probabilities icons, sorted by priority
     // clouds
@@ -490,6 +505,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 TextView drizzle_text = getTextView(view,index,labels,viewHolder);
                 if (drizzle_text!=null){
                     drizzle_text.setText(weatherInfo.getProbDrizzle()+"%");
+                    drizzle_text.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
                     index ++;
                 }
             }
@@ -535,7 +551,13 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         viewHolder.textView_temp = textView_temp;
     }
     if (weatherInfo.hasTemperature() && textView_temp!=null){
-        textView_temp.setText(weatherInfo.getTemperatureInCelsiusInt()+"°");
+        int temperature = weatherInfo.getTemperatureInCelsiusInt();
+        textView_temp.setText(temperature+"°");
+        if (temperature>0){
+            textView_temp.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.RED));
+        } else {
+            textView_temp.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN));
+        }
     }
     if (textView_temphigh == null){
         textView_temphigh = (TextView) view.findViewById(R.id.fcitem_temperature_high);
@@ -694,39 +716,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 .displaySimpleBar(displaySimpleBar)
                 .setWindDisplayType(display_wind_type)
                 .create(context);
-        final ImageView v = imageView_forecastBar;
-        final View view1 = view;
-        final Long timestamp = System.currentTimeMillis();
-        v.setTag(timestamp);
-        final TextView h = textView_heading;
-        final TextView m = textView_weathercondition;
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                if (timestamp.equals((Long) v.getTag())) {
-                    v.setImageBitmap(forecastBitmap.getForecastBitmap());
-                    // when the forecastbar image was set, re-calculate real size of the listview item and set it
-                    v.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            regularCellHeight = determineExpectedPixelHeightOfForecastElement(h,m);
-                            int height = view1.getHeight();
-                            // this is a hack to prevent a zero value of the height on some devices:
-                            // the height is always the maximum determinded up to now
-                            if (height>regularCellHeight){
-                                // nothing to do
-                            }
-                            if (height<regularCellHeight){
-                                height = regularCellHeight;
-                            }
-                            ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
-                            layoutParams.height = height;
-                            view1.setLayoutParams(layoutParams);
-                        }
-                    });
-                }
-            }
-        });
+        imageView_forecastBar.setImageBitmap(forecastBitmap.getForecastBitmap());
     } else {
         // hide forecast bar when not needed
         setVisibility(imageView_forecastBar, View.GONE);
@@ -810,12 +800,43 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         endofday_bar = view.findViewById(R.id.fcitem_endofday_bar);
         viewHolder.endofday_bar = endofday_bar;
     }
-
+    boolean endOfDayBarVisible = false;
     if (isEndOfDay(weatherInfo) && (display_endofday_bar)){
         setVisibility(endofday_bar, View.VISIBLE);
+        // endofday_bar.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.ACCENT));
+        endOfDayBarVisible = true;
     } else {
         setVisibility(endofday_bar, View.GONE);
     }
+    // when the forecastbar image was set, re-calculate real size of the listview item and set it
+    final View view1 = view;
+    final TextView h = textView_heading;
+    final TextView m = textView_weathercondition;
+    final ImageView fcBv = imageView_forecastBar;
+    final boolean eODv = endOfDayBarVisible;
+    final View eodBar = endofday_bar;
+    view.post(new Runnable() {
+        @Override
+        public void run() {
+            regularCellHeight = determineExpectedPixelHeightOfForecastElement(h,m,fcBv,eODv);
+            int height = view1.getHeight();
+            // this is a hack to prevent a zero value of the height on some devices:
+            // the height is always the maximum determinded up to now
+            if (height>regularCellHeight){
+                // nothing to do
+            }
+            if (height<regularCellHeight){
+                height = regularCellHeight;
+            }
+            ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
+            layoutParams.height = height;
+            view1.setLayoutParams(layoutParams);
+            // this is bacically a hack, so that this view only gets visible after everything else is layouted
+            if (eodBar!=null){
+                eodBar.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.ACCENT));
+            }
+        }
+    });
     if (newView){
         view.setTag(viewHolder);
     }
@@ -1087,28 +1108,45 @@ private ArrayList<WeatherWarning> getApplicableWarnings(Weather.WeatherInfo weat
 }
 
 public float DPtoPX(int dp, DisplayMetrics displayMetrics){
-    //return displayMetrics.density * dp;
     float a = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dp,displayMetrics);
     float b = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,dp,displayMetrics);
     return  Math.max(a,b);
 }
 
-public int determineExpectedPixelHeightOfForecastElement(TextView textView_heading, TextView mediumSizeTextView){
+public int determineExpectedPixelHeightOfForecastElement(TextView textView_heading, TextView mediumSizeTextView, ImageView forecastBar, boolean isEndOfDayBarVisible){
     DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
     float headingHight = textView_heading.getTextSize();
-    float weatherConditiontextHight = DPtoPX(12,displayMetrics);
+    float weatherConditiontextHight = DPtoPX(12,displayMetrics)*2; // may be 2 lines
     if (mediumSizeTextView!=null){
         weatherConditiontextHight = mediumSizeTextView.getTextSize()*2;
     }
-    float threeIconRowsHeightFont = mediumSizeTextView.getTextSize()*3;
-    float threeIconRowsHeight = DPtoPX(12,displayMetrics)*4; // actually 3 rows, but we take 1 more to keep space below and above
+    // actually 3 rows, but we take 1 more to keep space below and above;
+    // however, additional spacing makes it up tp 6
+    float threeIconRowsHeightFont = mediumSizeTextView.getTextSize()*6;
+    float threeIconRowsHeight = DPtoPX(12,displayMetrics)*6;
     if (threeIconRowsHeightFont>threeIconRowsHeight){
         threeIconRowsHeight = threeIconRowsHeightFont;
     }
     float leftColumnHeight = threeIconRowsHeight + weatherConditiontextHight;
     float fcBarHeight = DPtoPX(21,displayMetrics);
-    float nxtDayBar = DPtoPX(3,displayMetrics);
-    return Math.round(headingHight+leftColumnHeight+fcBarHeight+nxtDayBar);
+    if (forecastBar!=null){
+        if (forecastBar.getHeight()>fcBarHeight){
+            fcBarHeight = forecastBar.getHeight();
+        }
+    }
+    float nxtDayBar = 0;
+    if (isEndOfDayBarVisible) {
+        nxtDayBar = DPtoPX(12,displayMetrics);
+    }
+    float paddingElements = DPtoPX(4,displayMetrics);
+    // Log.v("twfg","heading   : "+headingHight);
+    // Log.v("twfg","leftColumn: "+leftColumnHeight);
+    // Log.v("twfg","fcBar     : "+fcBarHeight);
+    // Log.v("twfg","nxtDayBar : "+nxtDayBar);
+    // Log.v("twfg","paddingEl : "+paddingElements*2);
+    int total = Math.round(headingHight+leftColumnHeight+fcBarHeight+nxtDayBar+paddingElements*2);
+    // Log.v("twfg","TOTAL     : "+total);
+    return total;
 }
 
 public static int calculateInSampleSize(final BitmapFactory.Options options, final int widthRequired, final int heightRequired){

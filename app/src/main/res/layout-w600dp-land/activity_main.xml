@@ -225,7 +225,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:divider="?attr/colorPrimaryLight"
-                  android:dividerHeight="1dp"
+                  android:dividerHeight="0dp"
                   android:scrollbars="vertical"
                   android:scrollbarThumbVertical="?attr/colorTextDark"
                   android:verticalScrollbarPosition="right"

@@ -654,7 +654,7 @@ public class ForecastBitmap{
         chartPaint.setAntiAlias(true);
         chartPaint.setStrokeWidth(1);
         // Paint borderPaint = new Paint();
-        Paint temperaturePaint = GetDefaultLinePaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.ORANGE),lineWidth);
+        Paint temperaturePaint = GetDefaultLinePaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.RED),lineWidth);
         Paint cloudsPaint = GetDefaultLinePaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTDARK),lineWidth);
         Paint precipitationPaint = GetDefaultLinePaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE),lineWidth);
         Paint linePaint = new Paint();

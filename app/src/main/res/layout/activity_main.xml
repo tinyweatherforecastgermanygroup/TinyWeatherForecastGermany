@@ -205,7 +205,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="?attr/colorPrimaryLight"
-            android:dividerHeight="1dp"
+            android:dividerHeight="0dp"
             android:layout_below="@id/main_top_container"
             android:layout_above="@id/main_dwd_notice_text"
             android:scrollbars="vertical"

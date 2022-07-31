@@ -12,8 +12,6 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.*;
 import java.util.concurrent.Executor;
@@ -198,7 +196,7 @@ public class DataUpdateService extends Service {
                         weatherLocations = new ArrayList<Weather.WeatherLocation>();
                         weatherLocations.add(WeatherSettings.getSetStationLocation(context));
                     }
-                    Log.v("twfg","UPDATING: "+weatherLocations.size());
+
                     APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(this,weatherLocations){
                         @Override
                         public void onStart(){

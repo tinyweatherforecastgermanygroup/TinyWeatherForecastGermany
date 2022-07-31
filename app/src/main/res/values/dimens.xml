@@ -99,4 +99,7 @@
 
     <dimen name="slider_margin">2dp</dimen>
     <dimen name="slider_marginDouble">4dp</dimen>
+
+    <dimen name="forcecastadapterPadding">4dp</dimen>
+
 </resources>
