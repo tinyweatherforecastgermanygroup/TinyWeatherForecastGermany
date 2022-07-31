@@ -440,6 +440,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             TextView clouds_text = getTextView(view,index,labels,viewHolder);
             if (clouds_text!=null){
                 clouds_text.setText(weatherInfo.getClouds()+"%");
+                clouds_text.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXT));
                 index ++;
             }
         }
@@ -453,6 +454,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 TextView lightning_text = getTextView(view,index,labels,viewHolder);
                 if (lightning_text!=null){
                     lightning_text.setText(weatherInfo.getProbThunderStorms()+"%");
+                    lightning_text.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXT));
                     index ++;
                 }
             }
@@ -466,6 +468,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 TextView solid_text = getTextView(view,index,labels,viewHolder);
                 if (solid_text!=null){
                     solid_text.setText(weatherInfo.getProbSolidPrecipitation()+"%");
+                    solid_text.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXT));
                     index ++;
                 }
             }
@@ -479,6 +482,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 TextView freezingrain_text = getTextView(view,index,labels,viewHolder);
                 if (freezingrain_text!=null){
                     freezingrain_text.setText(weatherInfo.getProbFreezingRain()+"%");
+                    freezingrain_text.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXT));
                     index ++;
                 }
             }
@@ -492,6 +496,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 TextView fog_text = getTextView(view,index,labels,viewHolder);
                 if (fog_text!=null){
                     fog_text.setText(weatherInfo.getProbFog()+"%");
+                    fog_text.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXT));
                     index ++;
                 }
             }
