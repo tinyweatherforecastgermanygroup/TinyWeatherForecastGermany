@@ -200,7 +200,7 @@ public class MainActivity extends Activity {
                 final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
                 Location startLocation = stationSearchEngine.getCentroidLocationFromArea(station_description);
                 if (startLocation!=null){
-                    calcualateClosestStations(stations,startLocation,WeatherSettings.GPSManual(context));
+                    calcualateClosestStations(stations,startLocation);
                 } else {
                     try {
                         Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
@@ -305,7 +305,7 @@ public class MainActivity extends Activity {
                 final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
                 Location startLocation = stationSearchEngine.getCentroidLocationFromArea(station_description);
                 if (startLocation!=null){
-                    calcualateClosestStations(stations,startLocation,WeatherSettings.GPSManual(context));
+                    calcualateClosestStations(stations,startLocation);
                 } else {
                     try {
                       Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
@@ -574,7 +574,7 @@ public class MainActivity extends Activity {
         weatherLocationManager = new WeatherLocationManager(context){
             @Override
             public void newLocation(Location location){
-                launchStationSearchByLocation(location,WeatherSettings.GPSManual(context));
+                launchStationSearchByLocation(location);
                 super.newLocation(location);
             }
         };
@@ -623,7 +623,7 @@ public class MainActivity extends Activity {
         Location intentLocation = getLocationForGeoIntent(getIntent());
 
         if (intentLocation!=null){
-            launchStationSearchByLocation(intentLocation,WeatherSettings.GPSManual(context));
+            launchStationSearchByLocation(intentLocation);
         }
         executor.execute(new Runnable() {
             @Override
@@ -1488,7 +1488,7 @@ public class MainActivity extends Activity {
                         own_location.setLatitude(latitude);
                         own_location.setLongitude(longitude);
                         if ((latitude>=-90) && (latitude<=90) && (longitude>=-180) && (longitude<=180)) {
-                            launchStationSearchByLocation(own_location,WeatherSettings.GPSManual(context));
+                            launchStationSearchByLocation(own_location);
                         } else {
                             showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongvalue));
                         }
@@ -1521,24 +1521,24 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void launchStationSearchByLocation(final Location own_location, final boolean manual){
+    private void launchStationSearchByLocation(final Location own_location){
         // load stations
         final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
         if (stations.size()>0){
-            calcualateClosestStations(stations,own_location,manual);
+            calcualateClosestStations(stations,own_location);
         } else {
             StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(context) {
                 @Override
                 public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> new_stations) {
                     super.onLoadingListFinished(new_stations);
-                    calcualateClosestStations(stations, own_location, manual);
+                    calcualateClosestStations(stations, own_location);
                 }
             };
             executor.execute(stationsReader);
         }
     }
 
-    private void calcualateClosestStations(ArrayList<Weather.WeatherLocation> stations, final Location own_location, final boolean manual){
+    private void calcualateClosestStations(ArrayList<Weather.WeatherLocation> stations, final Location own_location){
         weatherLocationManager.stopGPSLocationSearch();
         for (int i=0; i<stations.size(); i++){
             Location location_station = new Location("weather");
@@ -1563,7 +1563,7 @@ public class MainActivity extends Activity {
         if (bundle!=null) {
             items_count = bundle.getInt(Weather.WeatherLocation.EXTRAS_ITEMS_TO_SHOW, 20);
         }
-        if (manual){
+        if (WeatherSettings.GPSManual(context)){
             ArrayList<String> stationDistanceList = new ArrayList<String>();
             for (int i=0; (i<stations.size()) && (i<items_count); i++) {
                 stationDistanceList.add(stations.get(i).description+" ["+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]");
