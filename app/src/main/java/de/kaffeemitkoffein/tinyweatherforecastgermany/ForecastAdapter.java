@@ -806,13 +806,17 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         viewHolder.endofday_bar = endofday_bar;
     }
     boolean endOfDayBarVisible = false;
-    if (isEndOfDay(weatherInfo) && (display_endofday_bar)){
-        setVisibility(endofday_bar, View.VISIBLE);
-        // endofday_bar.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.ACCENT));
+    final Long endOfDayBarTag = Calendar.getInstance().getTimeInMillis();
+    if (isEndOfDay(weatherInfo)){
+        endofday_bar.setVisibility(View.VISIBLE);
         endOfDayBarVisible = true;
+        if (!display_endofday_bar){
+            endofday_bar.setBackgroundColor(Color.TRANSPARENT);
+        }
     } else {
-        setVisibility(endofday_bar, View.GONE);
+        endofday_bar.setVisibility(View.GONE);
     }
+
     // when the forecastbar image was set, re-calculate real size of the listview item and set it
     final View view1 = view;
     final TextView h = textView_heading;
@@ -838,7 +842,9 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             view1.setLayoutParams(layoutParams);
             // this is bacically a hack, so that this view only gets visible after everything else is layouted
             if (eodBar!=null){
-                eodBar.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.ACCENT));
+                if ((display_endofday_bar) && (eODv)){
+                    eodBar.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.ACCENT));
+                }
             }
         }
     });
