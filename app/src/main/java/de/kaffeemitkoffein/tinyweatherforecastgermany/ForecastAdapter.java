@@ -298,16 +298,25 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         main_container = (RelativeLayout) view.findViewById(R.id.fcitem_maincontainer);
         viewHolder.main_container = main_container;
     }
-    // set the background drawable depending on theme
+    // set the background drawable depending on theme and apply gradient if applicable
+    int gradient = getColorGradient(i);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        main_container.setBackground(context.getDrawable(ThemePicker.getWidgetBackgroundDrawable(context)));
+        Drawable drawable = context.getDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
+        if ((display_gradient) && (main_container!=null)){
+            if (Build.VERSION.SDK_INT < 29) {
+                drawable.setColorFilter(Color.argb(96,gradient,gradient,gradient),PorterDuff.Mode.SRC_IN);
+            } else {
+                drawable.setColorFilter(new BlendModeColorFilter(Color.argb(96,gradient,gradient,gradient),BlendMode.SRC_IN));
+            }
+        }
+        main_container.setBackground(drawable);
+    } else {
+        main_container.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.WIDGETBACKGROUND));
+        if ((display_gradient) && (main_container!=null)){
+            main_container.setBackgroundColor(Color.argb(96,gradient,gradient,gradient));
+        }
     }
     Weather.WeatherInfo weatherInfo = weatherForecasts.get(i);
-    // optinal color gradient
-    if ((display_gradient) && (main_container!=null)){
-        int gradient = getColorGradient(i);
-        main_container.setBackgroundColor(Color.argb(96,gradient,gradient,gradient));
-    }
     // tint rh according to theme
     if (symbolRH==null){
         symbolRH = (ImageView) view.findViewById(R.id.fcitem_rh_label);
