@@ -421,7 +421,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         }
         if (precipitation_textview!=null){
             precipitation_textview.setText(precipitation_string);
-            precipitation_textview.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
+            ThemePicker.applyPrecipitationAccentColor(context,precipitation_textview);
         }
     }
     if (precipitation_unit_lower==null){
@@ -430,13 +430,13 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     }
     if (precipitation_unit_lower!=null){
         precipitation_unit_lower.setText(weatherInfo.getPrecipitationUnitLower());
-        precipitation_unit_lower.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
+        ThemePicker.applyPrecipitationAccentColor(context,precipitation_unit_lower);
     }
     if (precipitation_unit_upper==null){
         precipitation_unit_upper = (TextView) view.findViewById(R.id.fcitem_precipitation_unit_upper);
         viewHolder.precipitation_unit_upper = precipitation_unit_upper;
         if (precipitation_unit_upper!=null){
-            precipitation_unit_upper.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
+            ThemePicker.applyPrecipitationAccentColor(context,precipitation_unit_lower);
         }
     }
     // weather probabilities icons, sorted by priority
@@ -519,7 +519,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 TextView drizzle_text = getTextView(view,index,labels,viewHolder);
                 if (drizzle_text!=null){
                     drizzle_text.setText(weatherInfo.getProbDrizzle()+"%");
-                    drizzle_text.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
+                    ThemePicker.applyPrecipitationAccentColor(context,drizzle_text);
                     index ++;
                 }
             }
@@ -566,12 +566,8 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     }
     if (weatherInfo.hasTemperature() && textView_temp!=null){
         int temperature = weatherInfo.getTemperatureInCelsiusInt();
+        ThemePicker.applyTemperatureAccentColor(context,weatherInfo,textView_temp);
         textView_temp.setText(temperature+"°");
-        if (temperature>0){
-            textView_temp.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.RED));
-        } else {
-            textView_temp.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN));
-        }
     }
     if (textView_temphigh == null){
         textView_temphigh = (TextView) view.findViewById(R.id.fcitem_temperature_high);

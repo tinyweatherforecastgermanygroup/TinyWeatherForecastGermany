@@ -92,8 +92,8 @@ public class ClockWidget extends ClassicWidget {
         setAlarmText(context,remoteViews);
         setWarningTextAndIcon(context,remoteViews,R.id.widget_warningcontainer,R.id.widget_warningsymbol,R.id.widget_warningtext,R.id.widget_warning_more);
         remoteViews.setTextColor(R.id.clockwidget_clock,ThemePicker.getWidgetTextColor(context));
-        remoteViews.setTextColor(R.id.clockwidget_precipitation_unit1,ThemePicker.getWidgetTextColor(context));
-        remoteViews.setTextColor(R.id.clockwidget_precipitation_unit2,ThemePicker.getWidgetTextColor(context));
+        remoteViews.setTextColor(R.id.clockwidget_precipitation_unit1,ThemePicker.getPrecipitationAccentColor(context));
+        remoteViews.setTextColor(R.id.clockwidget_precipitation_unit2,ThemePicker.getPrecipitationAccentColor(context));
         remoteViews.setImageViewResource(R.id.widget_visibility_icon,WeatherIcons.getIconResource(context,WeatherIcons.BIOCULAR));
         remoteViews.setImageViewResource(R.id.widget_temperature5cm_icon,WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_TEMPERATURE5CM));
         remoteViews.setImageViewResource(R.id.widget_clouds_icon,WeatherIcons.getIconResource(context,WeatherIcons.SYMBOL_CLOUD));

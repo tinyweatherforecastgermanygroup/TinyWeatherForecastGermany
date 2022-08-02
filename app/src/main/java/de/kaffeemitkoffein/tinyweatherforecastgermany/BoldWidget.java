@@ -67,7 +67,8 @@ public class BoldWidget extends ClassicWidget {
         }
         if (currentWeatherInfo.currentWeather.hasTemperature()) {
             remoteViews.setTextViewText(R.id.boldwidget_current_temperature, currentWeatherInfo.currentWeather.getTemperatureInCelsiusInt() + "°");
-            remoteViews.setTextColor(R.id.boldwidget_current_temperature,ThemePicker.getWidgetTextColor(c));
+            //remoteViews.setTextColor(R.id.boldwidget_current_temperature,ThemePicker.getWidgetTextColor(c));
+            remoteViews.setTextColor(R.id.boldwidget_current_temperature,ThemePicker.getTemperatureAccentColor(c,currentWeatherInfo.currentWeather));
         } else {
             remoteViews.setTextViewText(R.id.boldwidget_current_temperature, NOT_AVAILABLE);
             remoteViews.setTextColor(R.id.boldwidget_current_temperature,ThemePicker.getWidgetTextColor(c));

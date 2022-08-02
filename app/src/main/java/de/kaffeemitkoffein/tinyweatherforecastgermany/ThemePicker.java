@@ -313,4 +313,25 @@ public final class ThemePicker {
         }
     }
 
+    public static int getTemperatureAccentColor(Context context, Weather.WeatherInfo weatherInfo){
+        if (weatherInfo.getTemperature()>0){
+            return ThemePicker.getColor(context,ThemePicker.ThemeColor.RED);
+        } else {
+            return ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN);
+        }
+    }
+
+    public static void applyTemperatureAccentColor(Context context, Weather.WeatherInfo weatherInfo, TextView textView){
+        textView.setTextColor(getTemperatureAccentColor(context,weatherInfo));
+    }
+
+    public static int getPrecipitationAccentColor(Context context){
+        return ThemePicker.getColor(context, ThemeColor.BLUE);
+    }
+
+    public static void applyPrecipitationAccentColor(Context context, TextView textView){
+        textView.setTextColor(getPrecipitationAccentColor(context));
+    }
+
+
 }

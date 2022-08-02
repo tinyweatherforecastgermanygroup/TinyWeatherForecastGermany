@@ -139,7 +139,7 @@ public class ClassicWidget extends AppWidgetProvider {
         } else {
             remoteViews.setViewVisibility(R.id.widget_precipitation_container, View.VISIBLE);
             remoteViews.setTextViewText(R.id.widget_precipitation_text,preciptitation);
-            remoteViews.setTextColor(R.id.widget_precipitation_text,ThemePicker.getWidgetTextColor(context));
+            remoteViews.setTextColor(R.id.widget_precipitation_text,ThemePicker.getPrecipitationAccentColor(context));
         }
     }
 
@@ -342,7 +342,8 @@ public class ClassicWidget extends AppWidgetProvider {
         } else {
             remoteViews.setTextViewText(R.id.classicwidget_temperature,NOT_AVAILABLE);
         }
-        remoteViews.setTextColor(R.id.classicwidget_temperature,ThemePicker.getWidgetTextColor(c));
+        //remoteViews.setTextColor(R.id.classicwidget_temperature,ThemePicker.getWidgetTextColor(c));
+        remoteViews.setTextColor(R.id.classicwidget_temperature,ThemePicker.getTemperatureAccentColor(c,weatherCard.currentWeather));
         String lowhigh = NOT_AVAILABLE;
         if (weatherCard.currentWeather.hasMinTemperature()){
             lowhigh = String.valueOf(weatherCard.currentWeather.getMinTemperatureInCelsiusInt()+"°");
