@@ -167,6 +167,7 @@ private static void switchVisibility(final View view) {
 
 
 static class ViewHolder {
+    RelativeLayout supermaincontainer;
     RelativeLayout main_container;
     TextView textView_heading;
     TextView condition_text;
@@ -222,6 +223,7 @@ public long getItemId(int i) {
 public View getView(int i, View view, ViewGroup viewGroup) {
     boolean newView = false;
     ViewHolder viewHolder = new ViewHolder();
+    RelativeLayout supermaincontainer = null;
     RelativeLayout main_container = null;
     TextView textView_weathercondition = null;
     TextView textView_heading = null;
@@ -263,6 +265,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     } else {
         // recycle view information
         viewHolder = (ViewHolder) view.getTag();
+        supermaincontainer = viewHolder.supermaincontainer;
         main_container = viewHolder.main_container;
         textView_weathercondition = viewHolder.condition_text;
         textView_heading = viewHolder.textView_heading;
@@ -294,6 +297,17 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         symbolRH = viewHolder.symbolRH;
     }
     // now fill the item with content
+    if (supermaincontainer==null) {
+        supermaincontainer = (RelativeLayout) view.findViewById(R.id.fcitem_supermaincontainer);
+        viewHolder.supermaincontainer = supermaincontainer;
+    }
+    /*
+    if (supermaincontainer!=null){
+        if (ThemePicker.GetTheme(context)==R.style.AppTheme_Solarized){
+            supermaincontainer.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.PRIMARYLIGHT));
+        }
+    }
+     */
     if (main_container==null) {
         main_container = (RelativeLayout) view.findViewById(R.id.fcitem_maincontainer);
         viewHolder.main_container = main_container;

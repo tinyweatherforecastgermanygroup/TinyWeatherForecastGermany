@@ -34,7 +34,7 @@
                 android:id="@+id/fcitem_supermaincontainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimaryLight">
+                android:background="?attr/colorPrimary">
 
     <View android:id="@+id/fcitem_topPadding"
           android:layout_width="match_parent"
