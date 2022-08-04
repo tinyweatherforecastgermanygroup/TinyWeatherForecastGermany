@@ -24,6 +24,7 @@
         android:id="@+id/main_landscape_mainlinearlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorPrimary"
         android:orientation="horizontal"
         android:weightSum="10">
 
@@ -33,6 +34,7 @@
             android:layout_height="match_parent"
             android:background="?attr/colorPrimary"
             android:layout_weight="4"
+            android:layout_marginLeft="@dimen/slider_marginDouble"
             android:orientation="vertical">
 
         <RelativeLayout

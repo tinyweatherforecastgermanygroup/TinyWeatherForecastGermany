@@ -161,7 +161,9 @@
             android:layout_weight="6"
             android:divider="?attr/colorTextDark"
             android:dividerHeight="0dp"
-            android:footerDividersEnabled="true"/>
+                  android:layout_marginLeft="@dimen/slider_marginDouble"
+                  android:layout_marginRight="@dimen/slider_marginDouble"
+                  android:footerDividersEnabled="true"/>
 
         <TextView
             android:layout_width="match_parent"

@@ -212,7 +212,8 @@
             android:scrollbarThumbVertical="?attr/colorTextDark"
             android:verticalScrollbarPosition="right"
             android:scrollbarSize="6dp"
-            android:footerDividersEnabled="true"/>
+                  android:layout_margin="@dimen/slider_marginDouble"
+                  android:footerDividersEnabled="true"/>
 
         <ProgressBar
             android:id="@+id/main_progressbar"
