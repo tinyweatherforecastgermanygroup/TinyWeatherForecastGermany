@@ -301,13 +301,6 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         supermaincontainer = (RelativeLayout) view.findViewById(R.id.fcitem_supermaincontainer);
         viewHolder.supermaincontainer = supermaincontainer;
     }
-    /*
-    if (supermaincontainer!=null){
-        if (ThemePicker.GetTheme(context)==R.style.AppTheme_Solarized){
-            supermaincontainer.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.PRIMARYLIGHT));
-        }
-    }
-     */
     if (main_container==null) {
         main_container = (RelativeLayout) view.findViewById(R.id.fcitem_maincontainer);
         viewHolder.main_container = main_container;

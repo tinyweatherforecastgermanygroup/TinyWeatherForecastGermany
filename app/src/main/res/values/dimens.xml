@@ -101,5 +101,6 @@
     <dimen name="slider_marginDouble">4dp</dimen>
 
     <dimen name="forcecastadapterPadding">4dp</dimen>
+    <dimen name="forcecastadapterPaddingDouble">8dp</dimen>
 
 </resources>

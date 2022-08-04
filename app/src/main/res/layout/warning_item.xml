@@ -1,209 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
  This file is part of TinyWeatherForecastGermany.
-
  Copyright (c) 2020, 2021 Pawel Dube
-
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
-
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
-
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/warning_item_maincontainer"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:textColor="?attr/colorText"
-    android:background="?attr/colorPrimary"
-    android:gravity="left">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/fcitem_supermaincontainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary">
+
+    <View android:id="@+id/fcitem_topPadding"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/forcecastadapterPaddingDouble"
+    />
 
     <LinearLayout
-        android:id="@+id/warning_item_line1container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/warning_ip"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/warning_item_effective"
-            android:layout_width="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/warning_item_maincontainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/fcitem_topPadding"
+            android:orientation="vertical"
             android:textColor="?attr/colorText"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
+            android:background="?attr/colorPrimary"
             android:gravity="left">
-        </TextView>
-
+        <LinearLayout
+                android:id="@+id/warning_item_line1container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/warning_ip"
+                android:orientation="horizontal">
+            <TextView
+                    android:id="@+id/warning_item_effective"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:textSize="@dimen/warning_medium"
+                    android:paddingRight="@dimen/warning_ip"
+                    android:gravity="left">
+            </TextView>
+            <TextView
+                    android:id="@+id/warning_item_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorTextDark"
+                    android:textSize="@dimen/warning_medium"
+                    android:paddingRight="@dimen/warning_ip"
+                    android:gravity="left">
+            </TextView>
+            <TextView
+                    android:id="@+id/warning_item_msgtype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorTextDark"
+                    android:textSize="@dimen/warning_medium"
+                    android:paddingRight="@dimen/warning_ip"
+                    android:gravity="left">
+            </TextView>
+        </LinearLayout>
         <TextView
-            android:id="@+id/warning_item_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorTextDark"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
-            android:gravity="left">
+                android:id="@+id/warning_item_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorAccent"
+                android:textSize="@dimen/warning_medium"
+                android:paddingRight="@dimen/warning_ip"
+                android:gravity="left">
         </TextView>
-
+        <LinearLayout
+                android:id="@+id/warning_item_line2container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <TextView
+                    android:id="@+id/warning_item_onset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:textSize="@dimen/warning_medium"
+                    android:paddingRight="@dimen/warning_ip"
+                    android:gravity="left">
+            </TextView>
+            <TextView
+                    android:id="@+id/warning_item_untilTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorTextDark"
+                    android:textSize="@dimen/warning_medium"
+                    android:paddingRight="@dimen/warning_ip"
+                    android:text="@string/warnings_until"
+                    android:gravity="left">
+            </TextView>
+            <TextView
+                    android:id="@+id/warning_item_expires"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:textSize="@dimen/warning_medium"
+                    android:paddingRight="@dimen/warning_ip"
+                    android:gravity="left">
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/warning_item_line3container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <TextView
+                    android:id="@+id/warning_item_urgency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:textSize="@dimen/warning_medium"
+                    android:paddingRight="@dimen/warning_ip"
+                    android:gravity="left"/>
+            <TextView
+                    android:id="@+id/warning_item_severity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:textSize="@dimen/warning_medium"
+                    android:paddingRight="@dimen/warning_ip"
+                    android:gravity="left"/>
+            <TextView
+                    android:id="@+id/warning_item_certainty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:textSize="@dimen/warning_medium"
+                    android:paddingRight="@dimen/warning_ip"
+                    android:gravity="left"/>
+        </LinearLayout>
         <TextView
-            android:id="@+id/warning_item_msgtype"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorTextDark"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
-            android:gravity="left">
+                android:id="@+id/warning_item_areas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorText"
+                android:textSize="@dimen/warning_medium"
+                android:paddingTop="@dimen/warning_ip"
+                android:paddingRight="@dimen/warning_ip"
+                android:paddingBottom="@dimen/warning_ip"
+                android:maxLines="3"
+                android:minLines="3"
+                android:gravity="left"/>
+        <TextView
+                android:id="@+id/warning_item_headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorAccent"
+                android:textSize="@dimen/warning_large"
+                android:paddingBottom="@dimen/warning_ip"
+                android:gravity="left">
         </TextView>
-
+        <TextView
+                android:id="@+id/warning_item_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorText"
+                android:textSize="@dimen/warning_medium"
+                android:paddingBottom="@dimen/warning_ip"
+                android:gravity="left">
+        </TextView>
+        <TextView
+                android:id="@+id/warning_item_instruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorTextLight"
+                android:textSize="@dimen/warning_medium"
+                android:paddingBottom="@dimen/warning_ip"
+                android:gravity="left">
+        </TextView>
+        <TextView
+                android:id="@+id/warning_item_elements"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorTextDark"
+                android:textSize="@dimen/warning_medium"
+                android:gravity="left">
+        </TextView>
     </LinearLayout>
 
-    <TextView
-            android:id="@+id/warning_item_event"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
-            android:gravity="left">
-    </TextView>
-
-    <LinearLayout
-        android:id="@+id/warning_item_line2container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/warning_item_onset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
-            android:gravity="left">
-        </TextView>
-
-        <TextView
-            android:id="@+id/warning_item_untilTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorTextDark"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
-            android:text="@string/warnings_until"
-            android:gravity="left">
-        </TextView>
-
-        <TextView
-            android:id="@+id/warning_item_expires"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
-            android:gravity="left">
-        </TextView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/warning_item_line3container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/warning_item_urgency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
-            android:gravity="left"/>
-
-        <TextView
-            android:id="@+id/warning_item_severity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
-            android:gravity="left"/>
-
-        <TextView
-            android:id="@+id/warning_item_certainty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:textSize="@dimen/warning_medium"
-            android:paddingRight="@dimen/warning_ip"
-            android:gravity="left"/>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/warning_item_areas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/colorText"
-        android:textSize="@dimen/warning_medium"
-        android:paddingTop="@dimen/warning_ip"
-        android:paddingRight="@dimen/warning_ip"
-        android:paddingBottom="@dimen/warning_ip"
-        android:maxLines="3"
-        android:gravity="left"/>
-
-    <TextView
-        android:id="@+id/warning_item_headline"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="?attr/colorAccent"
-        android:textSize="@dimen/warning_large"
-        android:paddingBottom="@dimen/warning_ip"
-        android:gravity="left">
-    </TextView>
-
-    <TextView
-        android:id="@+id/warning_item_description"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="?attr/colorText"
-        android:textSize="@dimen/warning_medium"
-        android:paddingBottom="@dimen/warning_ip"
-        android:gravity="left">
-    </TextView>
-
-    <TextView
-        android:id="@+id/warning_item_instruction"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="?attr/colorTextLight"
-        android:textSize="@dimen/warning_medium"
-        android:paddingBottom="@dimen/warning_ip"
-        android:gravity="left">
-    </TextView>
-
-    <TextView
-        android:id="@+id/warning_item_elements"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="?attr/colorTextDark"
-        android:textSize="@dimen/warning_medium"
-        android:paddingBottom="@dimen/warning_ip"
-        android:gravity="left">
-    </TextView>
-
-</LinearLayout>
-
+</RelativeLayout>
 

@@ -404,5 +404,30 @@ public class WeatherWarnings {
         }
     }
 
+    /**
+     * Determines first position in fullList that corresponds to the items in applyingList, defined by "identifier".
+     * As both warning lists are sorted by serverity, it also returns the 1st item of the highest severity. If more
+     * than one item has the highest severity, simply the first one found is retured.
+     *
+     * Both lists may not be null!
+     *
+     * Returns 0 if no warnings are found.
+     *
+     * @param fullList
+     * @param applyingList
+     * @return
+     */
+
+    public static int getFirstWarningPosition(ArrayList<WeatherWarning> fullList, ArrayList<WeatherWarning> applyingList){
+        for (int i=0; i<fullList.size(); i++){
+            for (int j=0; j<applyingList.size(); j++){
+                if (applyingList.get(j).identifier.equals(fullList.get(i).identifier)){
+                    return i;
+                }
+            }
+        }
+        return 0;
+    }
+
 }
 

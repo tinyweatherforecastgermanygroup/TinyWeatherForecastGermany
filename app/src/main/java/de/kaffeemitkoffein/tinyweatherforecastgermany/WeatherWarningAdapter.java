@@ -21,7 +21,12 @@
 
     import android.app.Activity;
     import android.content.Context;
+    import android.graphics.BlendMode;
+    import android.graphics.BlendModeColorFilter;
     import android.graphics.Color;
+    import android.graphics.PorterDuff;
+    import android.graphics.drawable.Drawable;
+    import android.os.Build;
     import android.os.Handler;
     import android.os.Looper;
     import android.view.LayoutInflater;
@@ -29,6 +34,7 @@
     import android.view.ViewGroup;
     import android.widget.BaseAdapter;
     import android.widget.LinearLayout;
+    import android.widget.RelativeLayout;
     import android.widget.TextView;
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
@@ -73,6 +79,7 @@
         }
 
         static class ViewHolder{
+            RelativeLayout warning_item_supermaincontainer;
             LinearLayout warning_item_maincontainer;
             LinearLayout warning_item_line1container;
             TextView warning_item_effective;
@@ -127,6 +134,7 @@
                 viewHolder = (ViewHolder) view.getTag();
             } else {
                 view = this.layoutInflater.inflate(R.layout.warning_item,viewGroup,false);
+                viewHolder.warning_item_supermaincontainer = (RelativeLayout) view.findViewById(R.id.fcitem_supermaincontainer);
                 viewHolder.warning_item_maincontainer = (LinearLayout) view.findViewById(R.id.warning_item_maincontainer);
                 viewHolder.warning_item_line1container = (LinearLayout) view.findViewById(R.id.warning_item_line1container);
                 viewHolder.warning_item_effective = (TextView) view.findViewById(R.id.warning_item_effective);
@@ -149,12 +157,30 @@
                 view.setTag(viewHolder);
             }
             final WeatherWarning warning = weatherWarnings.get(i);
-            if (isInLocalWarnings(warning)){
-                int color = warning.getWarningColor();
-                color = Color.rgb(Math.round(Color.red(color)/3.5f),Math.round(Color.green(color)/3.5f),Math.round(Color.blue(color)/3.5f));
-                viewHolder.warning_item_maincontainer.setBackgroundColor(color);
+            int color = warning.getWarningColor();
+            float colorFactor = 3.5f;
+            if (ThemePicker.GetTheme(context)==R.style.AppTheme_Solarized){
+                colorFactor = 1.2f;
+            }
+            color = Color.rgb(Math.round(Color.red(color)/colorFactor),Math.round(Color.green(color)/colorFactor),Math.round(Color.blue(color)/colorFactor));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Drawable drawable = context.getDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
+                viewHolder.warning_item_maincontainer.setBackground(drawable);
+                if (isInLocalWarnings(warning)) {
+                    if (Build.VERSION.SDK_INT < 29) {
+                        // drawable.setColorFilter(Color.argb(96, color, color, color), PorterDuff.Mode.SRC_IN);
+                        drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                    } else {
+                        drawable.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_IN));
+                    }
+                }
             } else {
-                viewHolder.warning_item_maincontainer.setBackgroundColor(MainActivity.getColorFromResource(context,R.attr.colorPrimary));
+                if (isInLocalWarnings(warning)){
+                    viewHolder.warning_item_maincontainer.setBackgroundColor(color);
+                } else {
+                    viewHolder.warning_item_maincontainer.setBackgroundColor(MainActivity.getColorFromResource(context,R.attr.colorPrimary));
+                }
+                viewHolder.warning_item_maincontainer.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.WIDGETBACKGROUND));
             }
             String line1 = new String();
             if (warning.effective!=0){

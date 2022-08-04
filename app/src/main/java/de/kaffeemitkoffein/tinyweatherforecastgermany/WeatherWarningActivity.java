@@ -318,6 +318,7 @@ public class WeatherWarningActivity extends Activity {
                         weatherWarningAdapter = new WeatherWarningAdapter(getBaseContext(),weatherWarnings,executor);
                         weatherWarningAdapter.setLocalWarnings(localWarnings);
                         weatherList.setAdapter(weatherWarningAdapter);
+                        weatherList.setSelection(WeatherWarnings.getFirstWarningPosition(weatherWarnings,localWarnings));
                     }
                 });
             }
@@ -704,11 +705,14 @@ public class WeatherWarningActivity extends Activity {
                     map_collapsed_container.setVisibility(View.VISIBLE);
                     map_collapsed_container.invalidate();
                     LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
-                    lop.height=0;
-                    lop.weight=19;
-                    weatherList.setLayoutParams(lop);
-                    weatherList.invalidate();
-                    return true;
+                    if (lop!=null){
+                        lop.height=0;
+                        lop.weight=19;
+                        weatherList.setLayoutParams(lop);
+                        weatherList.invalidate();
+                        return true;
+                    }
+                    return false;
                 }
             });
         }
