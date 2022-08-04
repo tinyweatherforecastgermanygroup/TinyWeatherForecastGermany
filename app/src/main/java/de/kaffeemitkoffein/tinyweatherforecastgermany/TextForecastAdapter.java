@@ -20,11 +20,14 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +47,8 @@ public class TextForecastAdapter extends BaseAdapter {
     }
 
     static class ViewHolder{
+        RelativeLayout supermaincontainer;
+        RelativeLayout maincontainer;
         ImageView image;
         TextView date;
         TextView title;
@@ -78,6 +83,8 @@ public class TextForecastAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         } else {
             view = this.layoutInflater.inflate(R.layout.textforecast_item,viewGroup,false);
+            viewHolder.supermaincontainer = (RelativeLayout) view.findViewById(R.id.textforecast_item_supermaincontainer);
+            viewHolder.maincontainer = (RelativeLayout) view.findViewById(R.id.textforecast_item_maincontainer);
             viewHolder.number = (TextView) view.findViewById(R.id.textforecast_item_number);
             viewHolder.image = (ImageView) view.findViewById(R.id.textforecast_item_image);
             viewHolder.date = (TextView) view.findViewById(R.id.textforecast_item_date);
@@ -89,6 +96,14 @@ public class TextForecastAdapter extends BaseAdapter {
         viewHolder.date.setText(textForecast.getIssued());
         viewHolder.number.setText(String.valueOf(i));
         viewHolder.image.setImageDrawable(TextForecasts.getTextForecastDrawable(context,textForecast.type));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Drawable drawable = context.getDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
+            viewHolder.maincontainer.setBackground(drawable);
+        } else {
+            viewHolder.maincontainer.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.WIDGETBACKGROUND));
+        }
+
         if (textForecast.title!=null){
             viewHolder.title.setVisibility(View.VISIBLE);
             viewHolder.title.setText(textForecast.title);

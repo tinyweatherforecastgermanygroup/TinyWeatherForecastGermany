@@ -19,71 +19,85 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textforecast_item_maincontainer"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
-    android:orientation="vertical"
-    android:gravity="left">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/textforecast_item_supermaincontainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary">
 
-    <ImageView
-        android:id="@+id/textforecast_item_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:gravity="center_vertical"
-        android:layout_gravity="center"
-        android:layout_marginRight="10dp"
-        android:src="@mipmap/ic_highlight_off_white_24dp"/>
+    <View android:id="@+id/textforecast_item_topPadding"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/forcecastadapterPadding"
+    />
 
-    <TextView
-        android:id="@+id/textforecast_item_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/textforecast_item_image"
-        android:textColor="?attr/colorText"
-        android:textSize="@dimen/geo_textsize_large"
-        android:gravity="left">
-    </TextView>
+    <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/textforecast_item_maincontainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/textforecast_item_topPadding"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:orientation="vertical"
+            android:gravity="left">
 
-    <TextView
-        android:id="@+id/textforecast_item_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/textforecast_item_date"
-        android:textSize="@dimen/fcmain_textsize_medium"
-        android:visibility="gone"/>
+        <ImageView
+                android:id="@+id/textforecast_item_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/ic_highlight_off_white_24dp"/>
 
-    <TextView
-        android:id="@+id/textforecast_item_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textforecast_item_date"
-        android:layout_toRightOf="@id/textforecast_item_image"
-        android:textColor="?attr/colorText"
-        android:textSize="@dimen/geo_textsize_large"
-        android:text="Ultimate weather"
-        android:gravity="left">
-    </TextView>
+        <TextView
+                android:id="@+id/textforecast_item_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/textforecast_item_image"
+                android:textColor="?attr/colorText"
+                android:textSize="@dimen/geo_textsize_large"
+                android:gravity="left">
+        </TextView>
 
-    <TextView
-        android:id="@+id/textforecast_item_subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/textforecast_item_image"
-        android:layout_below="@id/textforecast_item_title"
-        android:textColor="?attr/colorText"
-        android:textSize="@dimen/warning_medium"
-        android:text="subtitle"
-        android:gravity="left">
-    </TextView>
+        <TextView
+                android:id="@+id/textforecast_item_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/textforecast_item_date"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:visibility="gone"/>
 
+        <TextView
+                android:id="@+id/textforecast_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textforecast_item_date"
+                android:layout_toRightOf="@id/textforecast_item_image"
+                android:textColor="?attr/colorText"
+                android:textSize="@dimen/geo_textsize_large"
+                android:text="Ultimate weather"
+                android:gravity="left">
+        </TextView>
+
+        <TextView
+                android:id="@+id/textforecast_item_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/textforecast_item_image"
+                android:layout_below="@id/textforecast_item_title"
+                android:textColor="?attr/colorText"
+                android:textSize="@dimen/warning_medium"
+                android:text="subtitle"
+                android:gravity="left">
+        </TextView>
+
+    </RelativeLayout>
 
 </RelativeLayout>
+
 
 
