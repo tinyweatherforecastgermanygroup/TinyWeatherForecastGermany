@@ -38,19 +38,20 @@ Folgende Personen haben zum Projekt beigetragen:
   - maximilianovermeyer (fix of geo-intent-handling)
   - eUgEntOptIc44 (javadoc improvements)
 
-  Übersetzungen:
+Übersetzungen:
 * Dänisch: eUgEntOptIc44, mondstern
-* Deutsch: eUgEntOptIc44, J. Lavoie, mondstern, w4ts0n
-* Französisch: eUgEntOptIc44, mondstern, Lavoie
+* Deutsch: eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
+* Französisch: eUgEntOptIc44, mondstern, J. Lavoie
 * Finnisch: mondstern
 * Italienisch: mondstern, eUgEntOptIc44
 * Englisch: Allan Nordhøy
 * Niederländisch: mondstern
 * Tschechisch: eUgEntOptIc44, mondstern
-* Norwegisch Bokmål: mondstern, Allan Nordhøy
+* Norwegisch Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
 * Polnisch: mondstern
 * Spanisch: eUgEntOptIc44
 * Ukrainisch: eUgEntOptIc44, Andrij Mizyk
+* Ungarisch: eUgEntOptIc44, Gőz Barnabás
 
 Lizenz:
 --------

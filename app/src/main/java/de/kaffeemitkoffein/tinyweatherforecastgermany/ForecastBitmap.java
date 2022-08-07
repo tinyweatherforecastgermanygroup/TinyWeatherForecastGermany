@@ -460,44 +460,50 @@ public class ForecastBitmap{
         return context.getResources().getConfiguration().orientation;
     }
 
-    public static Bitmap getPrecipitationChartRaw(Context context, Weather.WeatherInfo weatherInfo, int width, int height){
+    public static Bitmap getPrecipitationChartRaw(Context context, Weather.WeatherInfo weatherInfo, int width, int height, int maxValueX, int maxValueY){
         final int MAX_PRECIPITATION=25;
         final float[] PRECIPITATION_STEPS = {0.1f, 0.2f, 0.3f, 0.5f, 0.7f, 1.0f, 2.0f, 3.0f, 5.0f, 10.0f, 15.0f, 25.0f};
         final Integer[] precipitation_values = weatherInfo.getPrecipitationDetails();
         Bitmap bitmap = Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        float shiftX=(float) (width/Weather.PROB_OF_PRECIPITATION_ITEM_COUNT);
-        float[] polygonX = new float[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+4];
-        float[] polygonY = new float[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+4];
-        for (int i=0; i<Weather.PROB_OF_PRECIPITATION_ITEM_COUNT; i++){
-            polygonX[i] = shiftX + i*(width/Weather.PROB_OF_PRECIPITATION_ITEM_COUNT);
-            polygonY[i] = height- ((height/100)*precipitation_values[i]);
+        float shiftX=(float) (width/maxValueX);
+        float[] polygonX = new float[maxValueX+4];
+        float[] polygonY = new float[maxValueX+4];
+        for (int i=0; i<maxValueX; i++){
+            polygonX[i] = shiftX + i*(width/maxValueX);
+            polygonY[i] = height- ((height/maxValueY)*precipitation_values[i]);
         }
-        polygonX[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT] = width;
-        polygonY[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT] = polygonY[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT-1];
-        polygonX[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+1] = width;
-        polygonY[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+1] = height;
-        polygonX[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+2] = 0;
-        polygonY[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+2] = height;
-        polygonX[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+3] = polygonX[0];
-        polygonY[Weather.PROB_OF_PRECIPITATION_ITEM_COUNT+3] = polygonY[0];
+        polygonX[maxValueX] = width;
+        polygonY[maxValueX] = polygonY[maxValueX-1];
+        polygonX[maxValueX+1] = width;
+        polygonY[maxValueX+1] = height;
+        polygonX[maxValueX+2] = 0;
+        polygonY[maxValueX+2] = height;
+        polygonX[maxValueX+3] = polygonX[0];
+        polygonY[maxValueX+3] = polygonY[0];
         drawPolygon(canvas,polygonX,polygonY, ThemePicker.getColor(context,ThemePicker.ThemeColor.SECONDARY),255);
         return bitmap;
     }
 
     public static Bitmap getPrecipitationChart(Context context, Weather.WeatherInfo weatherInfo, int width, int height, boolean isLandscape) {
         final String[] PRECIPITATION_STEP_LABELS = {"0.1", "0.2", "0.3", "0.5", "0.7", "1.0", "2.0", "3.0", "5.0", "10.0", "15.0", "25.0"};
-        int maxValue=0;
         final Integer[] precipitation_values = weatherInfo.getPrecipitationDetails();
-        for (int i=0;i<Weather.PROB_OF_PRECIPITATION_ITEM_COUNT;i++){
-            if (precipitation_values[i]>maxValue){
-                maxValue=precipitation_values[i];
+        int maxValueY=0;
+        int maxScaleY=0;
+        int maxValueX=weatherInfo.getPrecipitationDetails().length-1;
+        while ((precipitation_values[maxValueX]==0) && (maxValueX>0)){
+            maxValueX--;
+        }
+        for (int i=0;i<maxValueX;i++){
+            if (precipitation_values[i]>maxValueY){
+                maxValueY=precipitation_values[i];
+                maxScaleY=i;
             }
         }
         float chartWidth=Math.round(width*0.9f);
         float chartHeight=Math.round(height*0.9f);
-        float shiftX=(float) ((chartWidth/Weather.PROB_OF_PRECIPITATION_ITEM_COUNT)/2);
-        float stepX = chartWidth/Weather.PROB_OF_PRECIPITATION_ITEM_COUNT;
+        float shiftX=(float) ((chartWidth/maxValueX)/2);
+        float stepX = chartWidth/maxValueX;
         int s = 100;
         Paint textPaint = new Paint();
         textPaint.setAntiAlias(true);
@@ -509,7 +515,7 @@ public class ForecastBitmap{
         }
         float chartOffsetX = width * 0.1f;
         float chartOffsetY = s;
-        Bitmap chart = getPrecipitationChartRaw(context, weatherInfo, Math.round(chartWidth), Math.round(chartHeight));
+        Bitmap chart = getPrecipitationChartRaw(context, weatherInfo, Math.round(chartWidth), Math.round(chartHeight),maxValueX,maxValueY);
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         Paint linePaint = new Paint();
@@ -525,28 +531,17 @@ public class ForecastBitmap{
         Paint bitmapPaint = new Paint();
         bitmapPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
         canvas.drawBitmap(chart, chartOffsetX, chartOffsetY, bitmapPaint);
-        for (int x=0; x<Weather.PROB_OF_PRECIPITATION_ITEM_COUNT;x++){
+        for (int x=0; x<maxValueX;x++){
             canvas.drawLine(chartOffsetX+shiftX+x*stepX,chartHeight+chartOffsetY,chartOffsetX+shiftX+x*stepX,chartHeight+chartOffsetY+height*0.02f,linePaint);
             canvas.drawText(PRECIPITATION_STEP_LABELS[x],chartOffsetX+shiftX+x*stepX-textPaint.measureText(PRECIPITATION_STEP_LABELS[x])/2,chartHeight+chartOffsetY+height*0.02f+s,textPaint);
         }
-        for (int y=0; y<=10; y++){
-            float ypos = chartHeight - (y*(chartHeight/10)) +chartOffsetY;
+        for (int y=0; y<=maxScaleY; y++){
+            float ypos = chartHeight - (y*(chartHeight/maxScaleY)) +chartOffsetY;
             canvas.drawLine(chartOffsetX,ypos,chartOffsetX-width*0.02f,ypos,linePaint);
             canvas.drawLine(chartOffsetX,ypos,width,ypos,lineStrokePaint);
             if (((isLandscape) && (y%2==0)) | (!isLandscape)){
                 canvas.drawText(y*10+"%",0,ypos+s/2,textPaint);
             }
-        }
-        if (WeatherSettings.cropPrecipitationChart(context)){
-            int maxDisplayValue=maxValue+10;
-            while ((maxDisplayValue % 10)==0){
-                maxDisplayValue--;
-            }
-            if (maxDisplayValue>100){
-                maxDisplayValue=100;
-            }
-            float cropStart=height-((maxDisplayValue)*(float) (height/100))-s-height*0.02f;
-            bitmap = Bitmap.createBitmap(bitmap,0,Math.round(cropStart),Math.round(width),Math.round(height-cropStart));
         }
         return bitmap;
     }

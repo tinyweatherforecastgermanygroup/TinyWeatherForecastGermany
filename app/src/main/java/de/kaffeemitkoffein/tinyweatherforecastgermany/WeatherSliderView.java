@@ -1,9 +1,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PorterDuff;
+import android.graphics.*;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
@@ -11,33 +9,229 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.*;
-import java.util.ArrayList;
-import java.util.Objects;
+import org.astronomie.info.Astronomy;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class WeatherSliderView extends HorizontalScrollView {
+
+    private class ValueSet{
+        int popupWidth;
+        int popupHeight;
+        int marginImageLeft;
+        boolean isLandscape;
+        int iconSize;
+        int XSCALE;
+        int imageHeight;
+        int imageWidth;
+        double minTemperatureKelvin=Weather.KelvinConstant*2;
+        double maxTemperatureKelvin=0f;
+        double temperatureRange;
+        double minTemperatureCelsius;
+        double maxTemperatureCelsius;
+        double pixelPerDegree;
+        double pixelPerProb;
+        float paddingX;
+        float paddingY;
+        float labelTextSize;
+        double millisPerPixel;
+        float pixelPer1hItem;
+        float pixelPer6hItem;
+        long timeXOffset;
+        float cloudsOffsetHigh;
+        float cloudsOffsetMid;
+        float cloudsOffsetLow;
+        float cloudsImageHight;
+        float cloudsImageWidth;
+        float cloudsImageinSampleSize;
+        float cloudsImageXSampleFactor;
+        float cloudsImageYSampleFactor;
+
+        final class COLOR {
+            final static int Sky = 0xff50b2f0;
+            final static int Night = 0xff2e373c;
+        }
+
+        public ValueSet(int popupWidth, int popupHeight){
+            this.imageHeight = popupHeight;
+            this.marginImageLeft = popupWidth/2;
+            this.XSCALE = popupWidth/12;
+            if (popupWidth>popupHeight){
+                this.XSCALE = popupWidth/36;
+            }
+            if (isLandscape){
+                this.XSCALE = popupWidth/64;
+            }
+            //this.XSCALE=20;
+            for (int i=0; i<weatherInfos.size(); i++){
+                if (weatherInfos.get(i).getTemperature()>maxTemperatureKelvin){
+                    maxTemperatureKelvin=weatherInfos.get(i).getTemperature();
+                }
+                if (weatherInfos.get(i).getTemperature()<minTemperatureKelvin){
+                    minTemperatureKelvin=weatherInfos.get(i).getTemperature();
+                }
+            }
+            temperatureRange=maxTemperatureKelvin-minTemperatureKelvin;
+            minTemperatureCelsius=minTemperatureKelvin-Weather.KelvinConstant;
+            maxTemperatureCelsius=maxTemperatureKelvin-Weather.KelvinConstant;
+            pixelPerDegree = (imageHeight*0.9f / temperatureRange);
+            pixelPerProb   = (imageHeight*0.9f / 100);
+            paddingY = imageHeight * 0.05f;
+            this.cloudsOffsetHigh=imageHeight*0.25f;
+            this.cloudsOffsetMid=imageHeight*0.5f;
+            this.cloudsOffsetLow=imageHeight*0.75f;
+            paddingX=XSCALE;
+            this.imageWidth=Math.round(weatherInfos.size()*XSCALE);
+            this.timeXOffset = weatherInfos.get(0).getTimestamp();
+            this.pixelPer1hItem = (imageWidth-paddingX*2)/weatherInfos.size();
+            this.pixelPer6hItem = (imageWidth-paddingX*2)/weatherInfos6h.size();
+            this.cloudsImageHight = imageHeight/5f;
+            this.cloudsImageWidth = pixelPer6hItem;
+            final float staticCloudMultiplier = 2f;
+            this.cloudsImageinSampleSize = Math.max(700/cloudsImageWidth,700/cloudsImageHight)/staticCloudMultiplier;
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+            // px = imageOriginalPixels * 0.39 * (dpiDevice/160)
+            this.cloudsImageXSampleFactor  = (float) (0.39 * (displayMetrics.xdpi/160))*staticCloudMultiplier;
+            this.cloudsImageYSampleFactor  = (float) (0.39 * (displayMetrics.ydpi/160))*staticCloudMultiplier;
+            long timeSpan = weatherInfos.get(weatherInfos.size()-1).getTimestamp() - weatherInfos.get(0).getTimestamp();
+            this.millisPerPixel = (double) (timeSpan/(imageWidth-paddingX*2));
+            /*
+            Log.v("twfg","imageWidth: "+imageWidth);
+            Log.v("twfg","imageHeight: "+imageHeight+" ("+imageHeight/4+")");
+            Log.v("twfg","timespan  : "+timeSpan);
+            Log.v("twfg","pixelPerMilli: "+millisPerPixel);
+            Log.v("twfg","pixelPer1hItem: "+pixelPer1hItem);
+            Log.v("twfg","pixelPer6hItem: "+pixelPer6hItem);
+             */
+            Paint textPaint = new Paint();
+            labelTextSize = paddingX;
+            do {
+                labelTextSize--;
+                textPaint.setTextSize(labelTextSize);
+            } while (textPaint.measureText("XXX°")>paddingX);
+        }
+    }
 
     private Context context;
     private static final SparseArray<Bitmap> BITMAP_CACHE = new SparseArray<>();
     private Weather.WeatherLocation weatherLocation;
-    private int displayWidth;
-    private int displayHeight;
-    private int iconSize;
-    private CurrentWeatherInfo currentWeatherInfo;
+    private ValueSet valueSet;
+    private ArrayList<Weather.WeatherInfo> weatherInfos;
+    private ArrayList<Weather.WeatherInfo> weatherInfos6h;
+    private boolean isScrollable = false;
+    private TextView temperatureTextView;
+    private TextView dayTextView;
+    private ImageView windImageView;
+    private TextView windTextView;
+    private ImageView labellingImageView;
+    private WindowManager windowManager;
 
-    public WeatherSliderView(Context context, CurrentWeatherInfo currentWeatherInfo) {
+
+    final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, HH:mm");
+
+    @Override
+    public void onScrollChanged(int x, int y, int oldx, int oldy){
+        int itemPosition = Math.round(x / valueSet.pixelPer1hItem);
+        //Log.v("twfg","current offset: "+x+ "item: "+itemPosition+" => 6h item: "+get6hPosition(itemPosition));
+        upateViews(itemPosition);
+    }
+
+    public void upateViews(int itemPosition){
+        if ((itemPosition>=0) && (itemPosition<weatherInfos.size())) {
+            if (temperatureTextView != null) {
+                temperatureTextView.setText(weatherInfos.get(itemPosition).getTemperatureInCelsiusInt()+"°");
+            }
+            if (dayTextView != null){
+                dayTextView.setText(simpleDateFormat.format(new Date(weatherInfos.get(itemPosition).getTimestamp())));
+            }
+            if (windImageView != null){
+                if (WeatherSettings.getWindDisplayType(context)==Weather.WindDisplayType.BEAUFORT){
+                    windImageView.setImageBitmap(weatherInfos.get(itemPosition).getBeaufortBitmap(context,false));
+                } else {
+                    windImageView.setImageBitmap(weatherInfos.get(itemPosition).getArrowBitmap(context,false));
+                }
+                windImageView.setColorFilter(Color.WHITE,PorterDuff.Mode.SRC_IN);
+            }
+            if (windTextView != null){
+                final String windspeed;
+                switch (WeatherSettings.getWindDisplayUnit(context)) {
+                    case Weather.WindDisplayUnit.METERS_PER_SECOND:
+                        windspeed = String.valueOf(weatherInfos.get(itemPosition).getWindSpeedInMsInt()) + ' ';
+                        break;
+                    case Weather.WindDisplayUnit.BEAUFORT:
+                        windspeed = String.valueOf(weatherInfos.get(itemPosition).getWindSpeedInBeaufortInt()) + ' ';
+                        break;
+                    case Weather.WindDisplayUnit.KILOMETERS_PER_HOUR:
+                        windspeed = String.valueOf(weatherInfos.get(itemPosition).getWindSpeedInKmhInt()) + ' ';
+                        break;
+                    case Weather.WindDisplayUnit.KNOTS:
+                        windspeed = String.valueOf(weatherInfos.get(itemPosition).getWindSpeedInKnotsInt()) + ' ';
+                        break;
+                    default:
+                        windspeed = "";
+                }
+                final StringBuilder windstring = new StringBuilder();
+                windstring.append(windspeed).append(Weather.getWindUnitString(WeatherSettings.getWindDisplayUnit(context)));
+                windTextView.setText(windstring.toString());
+            }
+        }
+
+    }
+
+    public Integer get6hPosition(int position1h){
+        long targetTime = weatherInfos.get(position1h).getTimestamp();
+        int position = 0;
+        while ((weatherInfos6h.get(position).getTimestamp()<targetTime) && (position<weatherInfos6h.size()-1)){
+            position++;
+        }
+        if (position<weatherInfos6h.size()-1){
+            return position;
+        }
+        return null;
+    }
+
+    public Integer get6hPixelOffset(int position6h){
+        int position = 0;
+        while ((weatherInfos.get(position).getTimestamp()<weatherInfos6h.get(position6h).getTimestamp()) && (position<weatherInfos.size()-1)){
+            position++;
+        }
+        if (position<weatherInfos.size()-1){
+            return position*valueSet.XSCALE;
+        }
+        return null;
+    }
+
+    public WeatherSliderView(Context context, WindowManager windowManager, CurrentWeatherInfo currentWeatherInfo, int popUpWidth, int popupHeight) {
         super(context);
         this.context = context;
-        this.currentWeatherInfo = currentWeatherInfo;
-        weatherLocation = WeatherSettings.getSetStationLocation(context);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-        displayWidth  = Math.round(displayMetrics.widthPixels);
-        displayHeight = Math.round(displayMetrics.heightPixels);
-        iconSize = displayWidth/3;
-        if (displayWidth>displayHeight){
-            iconSize = displayHeight/3;
+        this.windowManager = windowManager;
+        //this.weatherInfos = currentWeatherInfo.forecast1hourly;
+        //this.weatherInfos6h = currentWeatherInfo.forecast6hourly;
+        this.weatherInfos = new ArrayList<Weather.WeatherInfo>();
+        for (int i=0; i<currentWeatherInfo.forecast1hourly.size(); i++){
+            if (currentWeatherInfo.forecast1hourly.get(i).getTimestamp()>= Calendar.getInstance().getTimeInMillis()){
+                this.weatherInfos.add(currentWeatherInfo.forecast1hourly.get(i));
+            }
         }
+        this.weatherInfos6h = new ArrayList<Weather.WeatherInfo>();
+        for (int i=0; i<currentWeatherInfo.forecast6hourly.size(); i++){
+            if (currentWeatherInfo.forecast6hourly.get(i).getTimestamp()>= Calendar.getInstance().getTimeInMillis()){
+                this.weatherInfos6h.add(currentWeatherInfo.forecast6hourly.get(i));
+            }
+        }
+        this.weatherLocation = WeatherSettings.getSetStationLocation(context);
+        this.valueSet = new ValueSet(popUpWidth,popupHeight);
+        this.valueSet.popupWidth = popUpWidth;
+        this.valueSet.popupHeight = popupHeight;
+        this.valueSet.iconSize = valueSet.popupWidth/3;
+        if (valueSet.popupWidth>valueSet.popupHeight){
+            this.valueSet.isLandscape = true;
+        } else {
+            this.valueSet.isLandscape = false;
+        }
+        setItems(popUpWidth);
     }
 
     public WeatherSliderView(Context context, AttributeSet attrs) {
@@ -49,35 +243,47 @@ public class WeatherSliderView extends HorizontalScrollView {
         this.context = context;
     }
 
-    private Bitmap getIconBitmap(Context context, Weather.WeatherInfo weatherInfo, int bitmapWidth, int bitmapHeight){
+    public void setViews(TextView dayTextView, TextView temperatureTextView, ImageView windImageView, TextView windTextView, ImageView labellingImageView) {
+        this.dayTextView = dayTextView;
+        this.temperatureTextView = temperatureTextView;
+        this.windImageView = windImageView;
+        this.windTextView = windTextView;
+        this.labellingImageView = labellingImageView;
+    }
+
+    public boolean isScrollable(){
+        return isScrollable;
+    }
+
+    private Bitmap getCloudBitmap(Context context, int cloudID){
         // set default resource to not available;
         int resource = R.mipmap.not_available;
-        if (weatherInfo.hasCondition()){
-            // display always daytime
-            resource = WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(),true);
-            // calculate daytime precisely if location is set
-            if (weatherLocation!=null){
-                resource = WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(), weatherInfo.isDaytime(this.weatherLocation));
-            }
-        }
-
-        final int key = Objects.hash(resource, bitmapHeight, bitmapWidth);
+        resource = WeatherIcons.getIconResource(context,cloudID);
+        final int key = Objects.hash(resource);
         Bitmap bitmap = BITMAP_CACHE.get(key);
-
         if (bitmap == null) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
             BitmapFactory.decodeResource(context.getResources(), resource, options);
-            options.inSampleSize = ForecastAdapter.calculateInSampleSize(options,bitmapWidth,bitmapHeight);
+            options.inSampleSize = Math.round(valueSet.cloudsImageinSampleSize);
             options.inJustDecodeBounds = false;
-            bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), resource, options),bitmapWidth,
-                    bitmapHeight,
+            bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), resource, options),
+                    Math.round(options.outWidth*valueSet.cloudsImageXSampleFactor),
+                    Math.round(options.outHeight*valueSet.cloudsImageYSampleFactor),
                     true);
+            /*
+            Log.v("twfg","-----------------------------");
+            Log.v("twfg","cloudsItemWidth        :"+valueSet.cloudsImageWidth);
+            Log.v("twfg","cloudsItemHeight       :"+valueSet.cloudsImageHight);
+            Log.v("twfg","cloudsImageinSampleSize:"+valueSet.cloudsImageinSampleSize);
+            Log.v("twfg","inSampleSize           :"+options.inSampleSize);
+            Log.v("twfg","Bitmap original        :"+options.outWidth+"x"+options.outHeight);
+            Log.v("twfg","Bitmap result          :"+bitmap.getWidth()+"x"+bitmap.getHeight());
+             */
             BITMAP_CACHE.put(key, bitmap);
         }
         return bitmap;
     }
-
     public static void clearBitmapCache() {
         BITMAP_CACHE.clear();
     }
@@ -117,225 +323,270 @@ public class WeatherSliderView extends HorizontalScrollView {
         }
     }
 
-    public boolean setItems(int width, int height, ArrayList<Weather.WeatherInfo> weatherInfos) {
-        final boolean isLandscape = width>height;
-        LinearLayout linearLayout = new LinearLayout(getContext());
-        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        linearLayout.setLayoutParams(linearLayoutParams);
-        addView(linearLayout);
-        LinearLayout.LayoutParams imageLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        int wholeScrollViewWidth = 0;
-        for (int i = 0; i < weatherInfos.size(); i++) {
-            Weather.WeatherInfo weatherInfo = weatherInfos.get(i);
-            View newView = LayoutInflater.from(context).inflate(R.layout.horizontalinfoitem,linearLayout,false);
-            // time
-            TextView textViewHeading = (TextView) newView.findViewById(R.id.hzi_heading);
-            textViewHeading.setText(Weather.GetDateString(Weather.SIMPLEDATEFORMATS.DETAILED_NO_SECONDS,weatherInfo.getTimestamp()));
-            // weather icon
-            ImageView weatherConditionImageView = (ImageView) newView.findViewById(R.id.hzi_weathericon);
-            if (!weatherInfo.hasCondition()){
-                weatherConditionImageView.setVisibility(INVISIBLE);
-            } else {
-                weatherConditionImageView.setImageBitmap(getIconBitmap(context,weatherInfo,iconSize,iconSize));
-            }
-            // temperature
-            TextView textViewTemperature = newView.findViewById(R.id.hzi_temperature);
-            if (!weatherInfo.hasTemperature()){
-                textViewTemperature.setVisibility(INVISIBLE);
-            } else {
-                textViewTemperature.setText(weatherInfo.getTemperatureInCelsiusInt()+"°");
-            }
-            ImageView symbolTG = (ImageView) newView.findViewById(R.id.hzi_groundicon);
-            TextView textViewTemperature5cm = (TextView) newView.findViewById(R.id.hzi_temperatureGround);
-            if (!weatherInfo.hasTemperature5cm()){
-                symbolTG.setVisibility(INVISIBLE);
-                textViewTemperature5cm.setVisibility(INVISIBLE);
-            } else {
-                symbolTG.setColorFilter(ThemePicker.getColorTextLight(context), PorterDuff.Mode.SRC_IN);
-                textViewTemperature5cm.setText(weatherInfo.getTemperature5cmInCelsiusInt()+"°");
-            }
-            // pressure
-            TextView textViewPressure = (TextView) newView.findViewById(R.id.hzi_pressure);
-            if (!weatherInfo.hasPressure()){
-                textViewPressure.setVisibility(INVISIBLE);
-            } else {
-                textViewPressure.setText(weatherInfo.getPressure()/100+ " hPa");
-            }
-            // humidity
-            ImageView symbolRH = (ImageView) newView.findViewById(R.id.hzi_humidityicon);
-            TextView textViewRH = (TextView) newView.findViewById(R.id.hzi_humidity);
-            if (!weatherInfo.hasRH()){
-                symbolRH.setVisibility(INVISIBLE);
-                textViewRH.setVisibility(INVISIBLE);
-            } else {
-                symbolRH.setColorFilter(ThemePicker.getColorTextLight(context), PorterDuff.Mode.SRC_IN);
-                textViewRH.setText(weatherInfo.getRHInt()+"%");
-            }
-            // clouds
-            ImageView symbolClouds = (ImageView) newView.findViewById(R.id.hzi_cloudsicon);
-            TextView textViewClouds = (TextView) newView.findViewById(R.id.hzi_clouds);
-            if (!weatherInfo.hasClouds()){
-                symbolClouds.setVisibility(INVISIBLE);
-                textViewClouds.setVisibility(INVISIBLE);
-            } else {
-                symbolClouds.setColorFilter(ThemePicker.getColorTextLight(context), PorterDuff.Mode.SRC_IN);
-                textViewClouds.setText(weatherInfo.getRHInt()+"%");
-            }
-            // precipitation
-            ImageView imageViewPrecipitation = (ImageView) newView.findViewById(R.id.hzi_precipitationicon);
-            TextView textViewPrecipitation = (TextView) newView.findViewById(R.id.hzi_precipitation);
-            TextView textViewPrecipitationUnit1 = (TextView) newView.findViewById(R.id.hzi_precipitation_unit1);
-            TextView textViewPrecipitationUnit2 = (TextView) newView.findViewById(R.id.hzi_precipitation_unit2);
-            if ((!weatherInfo.hasPrecipitation()) && (!weatherInfo.hasProbPrecipitation())){
-                imageViewPrecipitation.setVisibility(GONE);
-                textViewPrecipitation.setVisibility(GONE);
-            } else {
-                String precipitationText = "";
-                if (weatherInfo.hasProbPrecipitation()){
-                    precipitationText=weatherInfo.getProbPrecipitation()+"%";
-                    if (weatherInfo.hasPrecipitation()){
-                        precipitationText = precipitationText + ", ";
-                    }
-                }
-                if (!weatherInfo.hasPrecipitation()) {
-                    textViewPrecipitationUnit1.setVisibility(View.INVISIBLE);
-                    textViewPrecipitationUnit2.setVisibility(View.INVISIBLE);
-                } else {
-                    precipitationText = precipitationText + weatherInfo.getPrecipitation();
-                }
-                textViewPrecipitation.setText(precipitationText);
-            }
-            // wind icon
-            ImageView imageViewWind = (ImageView) newView.findViewById(R.id.hzi_windarrow);
-            if (!weatherInfo.hasWindDirection()){
-                imageViewWind.setVisibility(INVISIBLE);
-            } else {
-                if (WeatherSettings.getWindDisplayType(context)==Weather.WindDisplayType.ARROW){
-                    if (WeatherSettings.getDisplayWindArc(context)) {
-                        imageViewWind.setImageBitmap(Weather.WeatherInfo.getWindForecastTint(currentWeatherInfo.currentWeather.getBeaufortBitmap(context,true),currentWeatherInfo.getWindForecast(WeatherSettings.getWindArcPeriod(context))));
-                    } else {
-                        imageViewWind.setImageBitmap(currentWeatherInfo.currentWeather.getArrowBitmap(context,true));
-                    }
-                }
-                if (WeatherSettings.getWindDisplayType(context)==Weather.WindDisplayType.BEAUFORT){
-                    if (WeatherSettings.getDisplayWindArc(context)){
-                        imageViewWind.setImageBitmap(Weather.WeatherInfo.getWindForecastTint(currentWeatherInfo.currentWeather.getBeaufortBitmap(context,true),currentWeatherInfo.getWindForecast(WeatherSettings.getWindArcPeriod(context))));
-                    } else {
-                        imageViewWind.setImageBitmap(currentWeatherInfo.currentWeather.getBeaufortBitmap(context,true));
-                    }
-                }
-            }
-            // wind values
-            TextView textViewWindText = (TextView) newView.findViewById(R.id.hzi_wind);
-            TextView textViewWindUnit = (TextView) newView.findViewById(R.id.hzi_windunit);
-            String windstring = Weather.getWindString(context,currentWeatherInfo);
-            if (windstring==null){
-                textViewWindText.setVisibility(INVISIBLE);
-                textViewWindUnit.setVisibility(INVISIBLE);
-            } else {
-                textViewWindText.setText(windstring);
-                textViewWindUnit.setText(Weather.getWindUnitString(WeatherSettings.getWindDisplayUnit(context)));
-            }
-            // visibility
-            ImageView imageViewVisibilityIcon = (ImageView) newView.findViewById(R.id.hzi_visibilityicon);
-            TextView textViewVisibilityText = (TextView) newView.findViewById(R.id.hzi_visibility);
-            if (!weatherInfo.hasVisibility()){
-                imageViewVisibilityIcon.setVisibility(INVISIBLE);
-                textViewVisibilityText.setVisibility(INVISIBLE);
-            } else {
-                imageViewVisibilityIcon.setColorFilter(ThemePicker.getColorTextLight(context), PorterDuff.Mode.SRC_IN);
-                textViewVisibilityText.setText(ForecastAdapter.getVisibilityCharSequence(weatherInfo,WeatherSettings.getWindDisplayUnit(context)));
-            }
-            TextView textViewVisibilityBelow1km = (TextView) newView.findViewById(R.id.hzi_visibilitybelowprob);
-            TextView textViewVisibilityBelow1kmUnit1 = (TextView) newView.findViewById(R.id.hzi_visibilitybelowprobunit1);
-            TextView textViewVisibilityBelow1kmUnit2 = (TextView) newView.findViewById(R.id.hzi_visibilitybelowprobunit2);
-            if (!weatherInfo.hasProbVisibilityBelow1km()){
-                textViewVisibilityBelow1km.setVisibility(INVISIBLE);
-                textViewVisibilityBelow1kmUnit1.setVisibility(INVISIBLE);
-                textViewVisibilityBelow1kmUnit2.setVisibility(INVISIBLE);
-            } else {
-                textViewVisibilityBelow1km.setText(weatherInfo.getProbVisibilityBelow1km()+"%");
-            }
-            // calculate the space left for the charts
-            LinearLayout topcontainer = (LinearLayout) newView.findViewById(R.id.hzi_topcontainer);
-            topcontainer.measure(0,0);
-            int topcontainerMeasuredHeight = topcontainer.getMeasuredHeight();
-            int topcontainerMeasuredWidth  = topcontainer.getMeasuredWidth();
-            RelativeLayout probcontainer = (RelativeLayout) newView.findViewById(R.id.hzi_probcontainer);
-            int probcontainerMeasuredHight = 0;
-            if (!isLandscape){
-                probcontainer.measure(0,0);
-                probcontainerMeasuredHight = probcontainer.getMeasuredHeight();
-            }
-            int chartWidth = topcontainerMeasuredWidth;
-            int chartHeight = height - topcontainerMeasuredHeight - probcontainerMeasuredHight;
-            // precipitation details
-            ImageView imageViewPD = (ImageView) newView.findViewById(R.id.hzi_precipitationdetails);
-            if (weatherInfo.hasPrecipitationDetails()){
-                imageViewPD.setImageBitmap(ForecastBitmap.getPrecipitationChart(context, weatherInfo,Math.round(chartWidth*0.66f),chartHeight,isLandscape));
-            } else {
-                imageViewPD.setVisibility(GONE);
-            }
-            // cloud details
-            ImageView imageViewCD = (ImageView) newView.findViewById(R.id.hzi_clouddetails);
-            if (weatherInfo.clouds.hasHeightValues()){
-                imageViewCD.setImageBitmap(ForecastBitmap.getCloudCoverChart(context, weatherInfo,Math.round(chartWidth*0.33f),chartHeight));
-            } else {
-                imageViewCD.setVisibility(GONE);
-            }
-            // add the probability displays
-            int position = 1;
-            // lightning
-            if (weatherInfo.hasProbThunderstorms()){
-                setProbValue(newView,WeatherIcons.SYMBOL_LIGHTNING,position,weatherInfo.getProbThunderStorms(),false);
-                position++;
-            }
-            // hail
-            if (weatherInfo.hasProbSolidPrecipitation()){
-                setProbValue(newView,WeatherIcons.SYMBOL_HAIL,position,weatherInfo.getProbSolidPrecipitation(),true);
-                position++;
-            }
-            // freezing rain
-            if (weatherInfo.hasProbFreezingRain()){
-                setProbValue(newView,WeatherIcons.SYMBOL_FREEZING_RAIN,position,weatherInfo.getProbFreezingRain(),false);
-                position++;
-            }
-            // fog
-            if (weatherInfo.hasProbFog()){
-                setProbValue(newView,WeatherIcons.SYMBOL_FOG,position,weatherInfo.getProbFog(),true);
-                position++;
-            }
-            // drizzle
-            if (weatherInfo.hasProbDrizzle()){
-                setProbValue(newView,WeatherIcons.SYMBOL_DRIZZLE,position,weatherInfo.getProbDrizzle(),true);
-                position++;
-            }
-            // hide unused positions
-            while (position<7){
-                TextView probTextView   = (TextView) newView.findViewById(getProbTextView(position));
-                ImageView probImageView = (ImageView) newView.findViewById(getProbImageView(position));
-                if (probTextView!=null){
-                    probTextView.setVisibility(GONE);
-                }
-                if (probImageView!=null){
-                    probImageView.setVisibility(GONE);
-                }
-                position++;
-            }
-            // measure the new view
-            newView.measure(0,0);
-            int newViewWidth=newView.getMeasuredWidth();
-            wholeScrollViewWidth = wholeScrollViewWidth + newViewWidth;
-            // finally, add the view
-            linearLayout.addView(newView);
-        }
-        if (wholeScrollViewWidth<width){
-            View placeHolderView = LayoutInflater.from(context).inflate(R.layout.placeholder,linearLayout,false);
-            placeHolderView.setLayoutParams(new LayoutParams(width-wholeScrollViewWidth,height));
-            linearLayout.addView(placeHolderView);
-            return false;
-        }
-        return true;
+    private float calcTempY(double temperature){
+        return (float) (valueSet.imageHeight-(temperature-valueSet.minTemperatureKelvin)*valueSet.pixelPerDegree)-valueSet.paddingY;
     }
+
+    private float calcRainY(int probability){
+        return (float) (valueSet.imageHeight-(probability*valueSet.pixelPerProb)-valueSet.paddingY);
+    }
+
+    private void drawDawn(Canvas canvas, float y0, float y1){
+        //LinearGradient linearGradient = new LinearGradient(y0,0,y1,valueSet.imageHeight, ValueSet.COLOR.Night,ValueSet.COLOR.Sky, Shader.TileMode.CLAMP);
+        LinearGradient linearGradient = new LinearGradient(y0,0,y1,0, ValueSet.COLOR.Night,ValueSet.COLOR.Sky, Shader.TileMode.CLAMP);
+        Paint paint = new Paint();
+        paint.setAlpha(255);
+        paint.setShader(linearGradient);
+        canvas.drawRect(y0,0,y1,valueSet.imageHeight,paint);
+    }
+
+    private void drawDusk(Canvas canvas, float y0, float y1){
+        LinearGradient linearGradient = new LinearGradient(y1,0,y0,0, ValueSet.COLOR.Night,ValueSet.COLOR.Sky, Shader.TileMode.CLAMP);
+        Paint paint = new Paint();
+        paint.setAlpha(255);
+        paint.setShader(linearGradient);
+        canvas.drawRect(y0,0,y1,valueSet.imageHeight,paint);
+    }
+
+    private static class CloudType{
+        private static final int LOW = 0;
+        private static final int MID = 1;
+        private static final int HIGH = 2;
+    }
+
+    private int getCloudName(int cloudType, int number){
+        if (cloudType==CloudType.LOW){
+            if (number==0){
+                return WeatherIcons.CLOUDS_LOW1;
+            }
+            if (number==1){
+                return WeatherIcons.CLOUDS_LOW2;
+            }
+            if (number==2){
+                return WeatherIcons.CLOUDS_LOW3;
+            }
+            if (number==3){
+                return WeatherIcons.CLOUDS_LOW4;
+            }
+        }
+        if (cloudType==CloudType.MID){
+            if (number==0){
+                return WeatherIcons.CLOUDS_MID1;
+            }
+            if (number==1){
+                return WeatherIcons.CLOUDS_MID2;
+            }
+            if (number==2){
+                return WeatherIcons.CLOUDS_MID3;
+            }
+            if (number==3){
+                return WeatherIcons.CLOUDS_MID4;
+            }
+        }
+        if (number==0){
+            return WeatherIcons.CLOUDS_HIGH1;
+        }
+        if (number==1){
+            return WeatherIcons.CLOUDS_HIGH2;
+        }
+        if (number==2){
+            return WeatherIcons.CLOUDS_HIGH3;
+        }
+        return WeatherIcons.CLOUDS_HIGH4;
+    }
+
+    private void drawCloud(Canvas canvas, int cloudType, int position6h, int count){
+        Random random = new Random();
+        int yoffset = Math.round(valueSet.cloudsOffsetHigh);
+        if (cloudType == CloudType.MID){
+            yoffset = Math.round(valueSet.cloudsOffsetMid);
+        }
+        if (cloudType == CloudType.LOW){
+            yoffset = Math.round(valueSet.cloudsOffsetLow);
+        }
+        for (int i=0; i<count; i++){
+            int x = random.nextInt(Math.round(valueSet.cloudsImageWidth)) + get6hPixelOffset(position6h);
+            int y = random.nextInt(Math.round(valueSet.cloudsImageHight/2)) + yoffset + Math.round(valueSet.cloudsImageHight/4);
+            int cloudPicture = random.nextInt(4);
+            Bitmap cloudBitmap = getCloudBitmap(context,getCloudName(cloudType,cloudPicture));
+            // center clouds, allow overlap
+            x = x - cloudBitmap.getWidth()/2;
+            if (x<0){
+                x = 0;
+            }
+            if (x+cloudBitmap.getWidth()>valueSet.imageWidth){
+                x = valueSet.imageWidth - cloudBitmap.getWidth();
+            }
+            Paint cloudPaint = new Paint();
+            canvas.drawBitmap(cloudBitmap,x,y,cloudPaint);
+        }
+    }
+
+    public void setItems(int popUpWidth) {
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        RelativeLayout mainLayout = (RelativeLayout) layoutInflater.inflate(R.layout.sliderview,null);
+        RelativeLayout.LayoutParams mainLayoutParams = (RelativeLayout.LayoutParams) mainLayout.getLayoutParams();
+        addView(mainLayout);
+        ImageView imageView = mainLayout.findViewById(R.id.sliderview_image);
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
+        layoutParams.setMargins(popUpWidth/2,0,popUpWidth/2,0);
+        Bitmap bitmap = Bitmap.createBitmap(valueSet.imageWidth,valueSet.imageHeight, Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(ValueSet.COLOR.Sky);
+        Canvas canvas = new Canvas(bitmap);
+        // paints
+        Path temperaturePath = new Path();
+        Path rainPath = new Path();
+        Paint temperaturePaint = new Paint();
+        temperaturePaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.RED));
+        temperaturePaint.setStyle(Paint.Style.STROKE);
+        temperaturePaint.setAntiAlias(true);
+        temperaturePaint.setStrokeWidth(5);
+        temperaturePaint.setShadowLayer(5,5,5,Color.BLACK);
+        Paint rainPaint = new Paint();
+        rainPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
+        rainPaint.setStyle(Paint.Style.STROKE);
+        rainPaint.setAntiAlias(true);
+        rainPaint.setStrokeWidth(5);
+        rainPaint.setShadowLayer(5,5,5,Color.BLACK);
+        Paint labelTextPaint = new Paint();
+        labelTextPaint.setColor(Color.WHITE);
+        labelTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        labelTextPaint.setTextSize(valueSet.labelTextSize);
+        labelTextPaint.setAntiAlias(true);
+        // determine night
+        ArrayList<Long> dawnStarts  = new ArrayList<Long>();
+        ArrayList<Long> dawnStops   = new ArrayList<Long>();
+        ArrayList<Long> duskStarts  = new ArrayList<Long>();
+        ArrayList<Long> duskStops   = new ArrayList<Long>();
+        // insert dummy set at the beginning, will mostly be not visible
+        long fakeDayTime = weatherInfos.get(0).getTimestamp()-24*60*60*1000; // -24h
+        Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,fakeDayTime);
+        long dawnStart = Weather.getCivilTwilightMorning(riseset,fakeDayTime)-valueSet.timeXOffset;
+        long dawnStop  = Weather.getSunriseInUTC(riseset,fakeDayTime)-valueSet.timeXOffset;
+        long duskStart = Weather.getSunsetInUTC(riseset, fakeDayTime)-valueSet.timeXOffset;
+        long duskStop  = Weather.getCivilTwilightEvening(riseset,fakeDayTime)-valueSet.timeXOffset;
+        dawnStarts.add(dawnStart); dawnStops.add(dawnStop); duskStarts.add(duskStart); duskStops.add(duskStop);
+        // calculate times from database entries
+        for (int dayProbe=0; dayProbe<weatherInfos.size(); dayProbe=dayProbe+24){
+            riseset = Weather.getRiseset(weatherLocation,weatherInfos.get(dayProbe).getTimestamp());
+            dawnStart = Weather.getCivilTwilightMorning(riseset,weatherInfos.get(dayProbe).getTimestamp())-valueSet.timeXOffset;
+            dawnStop  = Weather.getSunriseInUTC(riseset,weatherInfos.get(dayProbe).getTimestamp())-valueSet.timeXOffset;
+            duskStart = Weather.getSunsetInUTC(riseset, weatherInfos.get(dayProbe).getTimestamp())-valueSet.timeXOffset;
+            duskStop  = Weather.getCivilTwilightEvening(riseset,weatherInfos.get(dayProbe).getTimestamp())-valueSet.timeXOffset;
+            dawnStarts.add(dawnStart); dawnStops.add(dawnStop); duskStarts.add(duskStart); duskStops.add(duskStop);
+            //final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+            //Log.v("twfg","UP: "+simpleDateFormat.format(sunrise)+" DOWN: "+simpleDateFormat.format(sunset));
+            fakeDayTime = dayProbe;
+        }
+        // insert dummy set at the end, will mostly be not visible
+        fakeDayTime = weatherInfos.get((int) fakeDayTime).getTimestamp() +24*60*60*1000; // +24h
+        riseset = Weather.getRiseset(weatherLocation,fakeDayTime);
+        dawnStart = Weather.getCivilTwilightMorning(riseset,fakeDayTime)-valueSet.timeXOffset;
+        dawnStop  = Weather.getSunriseInUTC(riseset,fakeDayTime)-valueSet.timeXOffset;
+        duskStart = Weather.getSunsetInUTC(riseset, fakeDayTime)-valueSet.timeXOffset;
+        duskStop  = Weather.getCivilTwilightEvening(riseset,fakeDayTime)-valueSet.timeXOffset;
+        dawnStarts.add(dawnStart); dawnStops.add(dawnStop); duskStarts.add(duskStart); duskStops.add(duskStop);
+        for (int i=0; i<dawnStarts.size(); i++){
+            float x = (float) (dawnStarts.get(i)/valueSet.millisPerPixel);
+            drawDawn(canvas,(float) (dawnStarts.get(i)/valueSet.millisPerPixel),(float) (dawnStops.get(i)/valueSet.millisPerPixel));
+            //canvas.drawLine(x,0,x,valueSet.imageHeight,labelTextPaint);
+        }
+        for (int i=0; i<dawnStops.size(); i++){
+            float x = (float) (dawnStops.get(i)/valueSet.millisPerPixel);
+            //canvas.drawLine(x,0,x,valueSet.imageHeight,labelTextPaint);
+        }
+        for (int i=0; i<duskStarts.size(); i++){
+            float x = (float) (duskStarts.get(i)/valueSet.millisPerPixel);
+            drawDusk(canvas,(float) (duskStarts.get(i)/valueSet.millisPerPixel),(float) (duskStops.get(i)/valueSet.millisPerPixel));
+            //canvas.drawLine(x,0,x,valueSet.imageHeight,labelTextPaint);
+        }
+        for (int i=0; i<duskStops.size(); i++){
+            float x = (float) (duskStops.get(i)/valueSet.millisPerPixel);
+            //canvas.drawLine(x,0,x,valueSet.imageHeight,labelTextPaint);
+        }
+        Paint nightPaint = new Paint();
+        nightPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        nightPaint.setColor(ValueSet.COLOR.Night);
+        nightPaint.setAlpha(255);
+        Paint cloudPaint = new Paint();
+        Random random = new Random();
+        Bitmap starBitmap = getCloudBitmap(context,WeatherIcons.STAR1);
+        for (int i=0; i<duskStops.size()-1; i++){
+            if (i<dawnStarts.size()){
+                canvas.drawRect((float) (duskStops.get(i)/valueSet.millisPerPixel),0f,(float) (dawnStarts.get(i+1)/valueSet.millisPerPixel),valueSet.imageHeight,nightPaint);
+                int nightWidth = (int) Math.round(dawnStarts.get(i+1)/valueSet.millisPerPixel - duskStops.get(i)/valueSet.millisPerPixel);
+                for (int star=0; star<30; star++){
+                    int starX = (int) Math.round(duskStops.get(i)/valueSet.millisPerPixel + random.nextInt(nightWidth));
+                    if (starX+starBitmap.getWidth()>Math.round(duskStops.get(i)/valueSet.millisPerPixel+nightWidth)){
+                        starX = (int) (Math.round(duskStops.get(i)/valueSet.millisPerPixel+nightWidth) - starBitmap.getWidth());
+                    }
+                    int starY = random.nextInt(valueSet.imageHeight);
+                    canvas.drawBitmap(starBitmap,starX,starY,cloudPaint);
+                }
+            }
+        }
+        // clouds
+        for (int position=0; position<weatherInfos6h.size(); position++) {
+            int cloudCoverHigh = weatherInfos6h.get(position).getClouds_Nh();
+            int cloudCoverMid = weatherInfos6h.get(position).getClouds_Nm();
+            int cloudCoverLow = weatherInfos6h.get(position).getClouds_Nl();
+            /*
+            int tcc = 75;
+            drawCloud(canvas,CloudType.HIGH,position,tcc/4);
+            drawCloud(canvas,CloudType.MID,position,tcc/8);
+            drawCloud(canvas,CloudType.LOW,position,tcc/16);
+             */
+            drawCloud(canvas,CloudType.HIGH,position,cloudCoverHigh/4);
+            drawCloud(canvas,CloudType.MID,position,cloudCoverMid/8);
+            drawCloud(canvas,CloudType.LOW,position,cloudCoverLow/16);
+        }
+
+        float x = 0;
+        for (int i=0; i<weatherInfos.size()-2; i++){
+            float temperature_y1=calcTempY(weatherInfos.get(i).getTemperature());
+            float temperature_y2=calcTempY(weatherInfos.get(i+1).getTemperature());
+            if (i==0){
+                temperaturePath.moveTo(x,temperature_y1);
+            }
+            //canvas.drawLine(x,temperature_y1,x+valueSet.XSCALE,temperature_y2,temperaturePaint);
+            temperaturePath.quadTo(x,temperature_y1,x+valueSet.XSCALE,temperature_y2);
+            float rain_y1 = calcRainY(weatherInfos.get(i).getProbPrecipitation());
+            float rain_y2 = calcRainY(weatherInfos.get(i+1).getProbPrecipitation());
+            if (i==0){
+                rainPath.moveTo(x,rain_y1);
+            }
+            //canvas.drawLine(x,rain_y1,x+valueSet.XSCALE,rain_y2,rainPaint);
+            rainPath.quadTo(x,rain_y1,x+valueSet.XSCALE,rain_y2);
+            x=x+valueSet.XSCALE;
+        }
+        canvas.drawPath(temperaturePath,temperaturePaint);
+        canvas.drawPath(rainPath,rainPaint);
+        imageView.setImageBitmap(bitmap);
+    }
+
+    public void setLabelImage(){
+        // draw labels
+        Bitmap bitmap = Bitmap.createBitmap(Math.round(valueSet.paddingX),Math.round(valueSet.imageHeight), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        bitmap.eraseColor(Color.TRANSPARENT);
+        Paint labelTextPaint = new Paint();
+        labelTextPaint.setColor(Color.WHITE);
+        labelTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        labelTextPaint.setTextSize(valueSet.labelTextSize);
+        labelTextPaint.setAntiAlias(true);
+        for (int i=(int) Math.round(valueSet.minTemperatureKelvin); i<valueSet.maxTemperatureKelvin; i++){
+            if ((i-Math.round(Weather.KelvinConstant))%5==0){
+                int temperatureCelsius = (int) (i-Math.round(Weather.KelvinConstant));
+                String s = temperatureCelsius+"°";
+                int x = Math.round(valueSet.paddingX - labelTextPaint.measureText(s));
+                canvas.drawText(s,x,calcTempY(i),labelTextPaint);
+            }
+        }
+        if (labellingImageView != null){
+            labellingImageView.setImageBitmap(bitmap);
+        }
+
+    }
+
 }
 

@@ -1130,7 +1130,7 @@ private ArrayList<WeatherWarning> getApplicableWarnings(Weather.WeatherInfo weat
     return applicableWarnings;
 }
 
-public float DPtoPX(int dp, DisplayMetrics displayMetrics){
+public static float DPtoPX(int dp, DisplayMetrics displayMetrics){
     float a = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dp,displayMetrics);
     float b = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,dp,displayMetrics);
     return  Math.max(a,b);

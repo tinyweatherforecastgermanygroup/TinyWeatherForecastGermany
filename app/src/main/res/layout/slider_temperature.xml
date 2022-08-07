@@ -21,11 +21,21 @@
 
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/popupwindow_relativelayout"
+        android:id="@+id/sliderview_temperature_relativelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:background="#50b2f0">
+        android:background="?attr/colorPrimaryLight">
+
+    <TextView
+            android:id="@+id/sliderview_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_alignParentRight="true"
+            android:textSize="24dp"
+            android:textColor="?attr/colorText"
+            android:text="XXXX 21°"/>
 
 
 </RelativeLayout>

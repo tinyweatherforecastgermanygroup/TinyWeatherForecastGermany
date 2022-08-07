@@ -26,6 +26,7 @@ import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -216,79 +217,7 @@ public class MainActivity extends Activity {
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
             // i seems to be the absolute position in the adapterview, l is always "0"
-            if (weatherCard==null){
-                weatherCard = new Weather().getCurrentWeatherInfo(context);
-            }
-            ArrayList<Weather.WeatherInfo> weatherInfoArrayList = getCustomForecastWeatherInfoArray(weatherCard);
-            Weather.WeatherInfo weatherInfo = weatherInfoArrayList.get(i);
-            long time = weatherInfo.getTimestamp();
-            int hoursToDisplay = 1;
-            if (WeatherSettings.getDisplayType(context) == WeatherSettings.DISPLAYTYPE_24HOURS){
-                hoursToDisplay = 24;
-            }
-            if (WeatherSettings.getDisplayType(context) == WeatherSettings.DISPLAYTYPE_6HOURS){
-                hoursToDisplay = 6;
-            }
-            // seek the absolute offset position for the horizontal detail display
-            int poisitionEnd = weatherCard.forecast1hourly.size()-1;
-            while ((poisitionEnd>0) && (weatherCard.forecast1hourly.get(poisitionEnd).getTimestamp()>time)){
-                poisitionEnd--;
-            }
-            // calculate left offset & adapt number of items if applicable
-            int positionStart = poisitionEnd - hoursToDisplay;
-            if (positionStart<0){
-                positionStart = 0;
-            }
-            poisitionEnd = positionStart + 24;
-            if (poisitionEnd>weatherCard.forecast1hourly.size()-1){
-                poisitionEnd = weatherCard.forecast1hourly.size()-1;
-            }
-            ArrayList<Weather.WeatherInfo> itemsToDisplay = new ArrayList<Weather.WeatherInfo>();
-            for (int position=positionStart; position<poisitionEnd; position++){
-                Weather.WeatherInfo weatherInfo1 = weatherCard.forecast1hourly.get(position);
-                itemsToDisplay.add(weatherInfo1);
-            }
-            // display PopUp
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int displayWidth  = Math.round(displayMetrics.widthPixels);
-            int displayHeight = Math.round(displayMetrics.heightPixels);
-            final boolean isLandscape = displayWidth>displayHeight;
-            int width  = Math.round(displayWidth * 0.66f);
-            int height = Math.round(displayHeight * 0.66f);
-            int borderLeft = Math.round(displayMetrics.widthPixels * 0.165f);
-            int borderTop  = Math.round(displayMetrics.heightPixels * 0.165f);
-            if (isLandscape){
-                width  = Math.round(displayWidth * 0.85f);
-                height = Math.round(displayHeight * 0.85f);
-                borderLeft = Math.round(displayMetrics.widthPixels * 0.075f);
-                borderTop  = Math.round(displayMetrics.heightPixels * 0.075f);
-            }
-            int xoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderLeft,displayMetrics));
-            int yoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderTop,displayMetrics));
-            // this view is solely used to get the windowToken by popupWindow. It can therefore be any view within the layout.
-            View parentView = (View) findViewById(R.id.gps_progress_holder);
-            WeatherSliderView weatherSliderView = new WeatherSliderView(getApplicationContext(),weatherCard);
-            boolean popUpWindowIsScrollable = weatherSliderView.setItems(width,height,itemsToDisplay);
-            weatherSliderView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View popupView = layoutInflater.inflate(R.layout.popupwindow,null);
-            final PopupWindow popupWindow = new PopupWindow(popupView,width,height,true);
-            RelativeLayout hookUp = (RelativeLayout) popupView.findViewById(R.id.popupwindow_relativelayout2);
-            hookUp.addView(weatherSliderView);
-            // if items do not fill the window and no scrolling is present, add a touch listener to cancel the window upon touch, as
-            // touch events are not handled by the underlying HorizontalScrollView
-            if (!popUpWindowIsScrollable){
-                popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        popupWindow.dismiss();
-                        return true;
-                    }
-                });
-            }
-            popupWindow.showAtLocation(parentView, Gravity.NO_GRAVITY, xoffset,yoffset);
-            return true;
+            return showOverviewPopUp();
         }
     };
 
@@ -694,7 +623,6 @@ public class MainActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setCancelable(true);
         builder.setTitle("Error:");
-        LayoutInflater layoutInflater = this.getLayoutInflater();
         String s = e.getMessage()+"/n"+e.getCause()+ Arrays.toString(e.getStackTrace())+"/n";
         builder.setMessage(s);
         builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
@@ -1162,8 +1090,10 @@ public class MainActivity extends Activity {
             //setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.attr.colorText);
             //setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.attr.colorText);
             setOverflowMenuItemColor(this,menu,R.id.menu_texts,R.string.texts_button);
+            setOverflowMenuItemColor(this,menu,R.id.menu_overview,R.string.overview_button);
             setOverflowMenuItemColor(this,menu,R.id.menu_settings,R.string.settings_button);
             setOverflowMenuItemColor(this,menu,R.id.menu_geoinput,R.string.geoinput_button);
+            setOverflowMenuItemColor(this,menu,R.id.menu_travelupdate,R.string.travel_button);
             setOverflowMenuItemColor(this,menu,R.id.menu_about,R.string.about_button);
             setOverflowMenuItemColor(this,menu,R.id.menu_license,R.string.license_button);
             setOverflowMenuItemColor(this,menu,R.id.menu_whatsnew,R.string.whatsnew_button);
@@ -1236,6 +1166,9 @@ public class MainActivity extends Activity {
         if (item_id == R.id.menu_texts) {
             Intent i = new Intent(this, TextForecastListActivity.class);
             startActivity(i);
+        }
+        if (item_id == R.id.menu_overview){
+            showOverviewPopUp();
         }
         return super.onOptionsItemSelected(mi);
     }
@@ -1436,6 +1369,93 @@ public class MainActivity extends Activity {
                 alertDialog.show();
             }
         }
+    }
+
+    private boolean showOverviewPopUp(){
+        if (weatherCard==null){
+            weatherCard = new Weather().getCurrentWeatherInfo(context);
+        }
+        // display PopUp
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int displayWidth  = Math.round(displayMetrics.widthPixels);
+        int displayHeight = Math.round(displayMetrics.heightPixels);
+        final boolean isLandscape = displayWidth>displayHeight;
+        int width  = Math.round(displayWidth * 0.66f);
+        int height = Math.round(displayHeight * 0.66f);
+        int borderLeft = Math.round(displayMetrics.widthPixels * 0.165f);
+        int borderTop  = Math.round(displayMetrics.heightPixels * 0.165f);
+        if (isLandscape){
+            width  = Math.round(displayWidth * 0.85f);
+            height = Math.round(displayHeight * 0.85f);
+            borderLeft = Math.round(displayMetrics.widthPixels * 0.075f);
+            borderTop  = Math.round(displayMetrics.heightPixels * 0.075f);
+        }
+        int xoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderLeft,displayMetrics));
+        int yoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderTop,displayMetrics));
+        // this view is solely used to get the windowToken by popupWindow. It can therefore be any view within the layout.
+        View parentView = (View) findViewById(R.id.gps_progress_holder);
+        WeatherSliderView weatherSliderView = new WeatherSliderView(getApplicationContext(),getWindowManager(),weatherCard,width,height);
+        weatherSliderView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = layoutInflater.inflate(R.layout.popupwindow,null);
+        final PopupWindow popupWindow = new PopupWindow(popupView,width,height,true);
+        RelativeLayout hookUp = (RelativeLayout) popupView.findViewById(R.id.popupwindow_relativelayout);
+        hookUp.addView(weatherSliderView);
+        ImageView labelImageView = new ImageView(context); labelImageView.setId(View.generateViewId());
+        RelativeLayout.LayoutParams labelImageViewLAP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.MATCH_PARENT);
+        labelImageViewLAP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        labelImageViewLAP.addRule(RelativeLayout.CENTER_VERTICAL);
+        labelImageView.setLayoutParams(labelImageViewLAP);
+        TextView sliderDay = new TextView(getApplicationContext()); sliderDay.setId(View.generateViewId());
+        RelativeLayout.LayoutParams sliderDayLAP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        sliderDayLAP.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        sliderDayLAP.addRule(RelativeLayout.RIGHT_OF,labelImageView.getId());
+        sliderDayLAP.setMargins(Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)),Math.round(ForecastAdapter.DPtoPX(20,displayMetrics)),0,Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)));
+        sliderDay.setText("Montag");
+        sliderDay.setTextSize(ForecastAdapter.DPtoPX(6,displayMetrics));
+        sliderDay.setTextColor(Color.WHITE);
+        sliderDay.setLayoutParams(sliderDayLAP);
+        TextView sliderTemperature = new TextView(getApplicationContext()); sliderTemperature.setId(View.generateViewId());
+        RelativeLayout.LayoutParams sliderTemperatureLAP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        sliderTemperatureLAP.addRule(RelativeLayout.BELOW,sliderDay.getId());
+        sliderTemperatureLAP.addRule(RelativeLayout.RIGHT_OF,labelImageView.getId());
+        sliderTemperatureLAP.setMargins(Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)),0,0,Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)));
+        sliderTemperature.setTextSize(ForecastAdapter.DPtoPX(12,displayMetrics));
+        sliderTemperature.setTextColor(Color.WHITE);
+        sliderTemperature.setLayoutParams(sliderTemperatureLAP);
+        ImageView sliderWindImage = new ImageView(getApplicationContext()); sliderWindImage.setId(View.generateViewId());
+        RelativeLayout.LayoutParams sliderWindImageLAP = new RelativeLayout.LayoutParams((int) ForecastAdapter.DPtoPX(42,displayMetrics),(int) ForecastAdapter.DPtoPX(42,displayMetrics));
+        sliderWindImageLAP.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        sliderWindImageLAP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        sliderWindImageLAP.setMargins(0,Math.round(ForecastAdapter.DPtoPX(20,displayMetrics)),Math.round(ForecastAdapter.DPtoPX(20,displayMetrics)),Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)));
+        sliderWindImage.setImageBitmap(WeatherIcons.getIconBitmap(context,WeatherIcons.WIND_BEAUFORT_10,false));
+        sliderWindImage.setLayoutParams(sliderWindImageLAP);
+        TextView sliderWindText = new TextView(getApplicationContext()); sliderWindText.setId(View.generateViewId());
+        RelativeLayout.LayoutParams sliderWindTextLAP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        sliderWindTextLAP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        sliderWindTextLAP.addRule(RelativeLayout.BELOW,sliderWindImage.getId());
+        sliderWindTextLAP.setMargins(0,0,Math.round(ForecastAdapter.DPtoPX(20,displayMetrics)),Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)));
+        sliderWindText.setTextColor(Color.WHITE);
+        sliderWindText.setTextSize(ForecastAdapter.DPtoPX(6,displayMetrics));
+        sliderWindText.setLayoutParams(sliderWindTextLAP);
+        hookUp.addView(sliderDay); hookUp.addView(sliderTemperature); hookUp.addView(sliderWindImage); hookUp.addView(sliderWindText); hookUp.addView(labelImageView);
+        weatherSliderView.setViews(sliderDay,sliderTemperature,sliderWindImage,sliderWindText,labelImageView);
+        weatherSliderView.setLabelImage();
+        weatherSliderView.upateViews(0);
+        // if items do not fill the window and no scrolling is present, add a touch listener to cancel the window upon touch, as
+        // touch events are not handled by the underlying HorizontalScrollView
+        if (weatherSliderView.isScrollable()){
+            popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    popupWindow.dismiss();
+                    return true;
+                }
+            });
+        }
+        popupWindow.showAtLocation(parentView, Gravity.NO_GRAVITY, xoffset,yoffset);
+        return true;
     }
 
     private void startGeoinput(){

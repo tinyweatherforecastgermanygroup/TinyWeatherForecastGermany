@@ -34,6 +34,7 @@
     <string name="about_button">Privacy/About</string>
     <string name="warnings_button">Weather warnings</string>
     <string name="texts_button">Texts</string>
+    <string name="overview_button">Overview</string>
     <string name="today">Today</string>
     <string name="station">Station</string>
     <string name="whatsnew_button">What\'s new</string>

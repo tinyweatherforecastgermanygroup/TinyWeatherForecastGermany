@@ -87,6 +87,20 @@ public class WeatherIcons {
     final static int IC_ANNOUNCEMENT = 1104;
     final static int WARNING_ICON = 1105;
     final static int CONVECTIVE_CLOUDS1 = 1106;
+    final static int STAR1 = 1107;
+
+    final static int CLOUDS_HIGH1 = 1210;
+    final static int CLOUDS_HIGH2 = 1220;
+    final static int CLOUDS_HIGH3 = 1230;
+    final static int CLOUDS_HIGH4 = 1240;
+    final static int CLOUDS_MID1  = 1250;
+    final static int CLOUDS_MID2  = 1260;
+    final static int CLOUDS_MID3  = 1270;
+    final static int CLOUDS_MID4  = 1280;
+    final static int CLOUDS_LOW1  = 1290;
+    final static int CLOUDS_LOW2  = 1300;
+    final static int CLOUDS_LOW3  = 1310;
+    final static int CLOUDS_LOW4  = 1320;
 
     public static int getIconResource(Context context, int icon) {
         int result = 0;
@@ -246,7 +260,19 @@ public class WeatherIcons {
             case IC_GPS_FIXED: result = R.mipmap.ic_gps_fixed_white_24dp; break;
             case IC_ANNOUNCEMENT: result = R.mipmap.ic_announcement_white_24dp; break;
             case WARNING_ICON: result = R.mipmap.warning_icon; break;
-            case CONVECTIVE_CLOUDS1:
+            case STAR1: result = R.drawable.star1; break;
+            case CLOUDS_HIGH1: result = R.drawable.clouds_high01; break;
+            case CLOUDS_HIGH2: result = R.drawable.clouds_high02; break;
+            case CLOUDS_HIGH3: result = R.drawable.clouds_high03; break;
+            case CLOUDS_HIGH4: result = R.drawable.clouds_high04; break;
+            case CLOUDS_MID1: result = R.drawable.clouds_mid01; break;
+            case CLOUDS_MID2: result = R.drawable.clouds_mid02; break;
+            case CLOUDS_MID3: result = R.drawable.clouds_mid03; break;
+            case CLOUDS_MID4: result = R.drawable.clouds_mid04; break;
+            case CLOUDS_LOW1: result = R.drawable.clouds_low01; break;
+            case CLOUDS_LOW2: result = R.drawable.clouds_low02; break;
+            case CLOUDS_LOW3: result = R.drawable.clouds_low03; break;
+            case CLOUDS_LOW4: result = R.drawable.clouds_low04; break;
         }
         // override with dark variants if applicable
         if (!ThemePicker.isDarkTheme(context)) {

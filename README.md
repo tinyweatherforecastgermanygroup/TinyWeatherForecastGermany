@@ -91,11 +91,12 @@ Translations:
 * Danish: eUgEntOptIc44, mondstern
 * Dutch: mondstern
 * English: Allan Nordhøy
-* French: eUgEntOptIc44, mondstern, Lavoie
+* French: eUgEntOptIc44, mondstern, J. Lavoie
 * Finnish: mondstern
-* German: eUgEntOptIc44, J. Lavoie, mondstern, w4ts0n
+* German: eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
+* Hungarian: eUgEntOptIc44, Gőz Barnabás
 * Italian: mondstern, eUgEntOptIc44
-* Norwegian Bokmål: mondstern, Allan Nordhøy
+* Norwegian Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
 * Polish: mondstern
 * Spanish: eUgEntOptIc44
 * Ukrainian: eUgEntOptIc44, Andrij Mizyk

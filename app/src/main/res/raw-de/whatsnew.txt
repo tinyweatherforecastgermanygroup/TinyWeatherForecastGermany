@@ -1,8 +1,12 @@
 Neu in dieser Version ([VERSION]):
 
-- neue Sprache: Ukrainisch (Danke an Andrij Mizyk & eUgEntOptIc44!)
-- neue Übersicht-Grafik (kann in den Einstellungen aktiviert werden)
-- neues, horizontales Layout für Anzeigen mit einer Breite von mindestens 600dp
-- langes Drücken auf eine Vorhersage öffnet eine detailliertere Ansicht
-- behoben: Vorhersagen auf Wearables waren um einen Tag verschoben
-- behoben: min./max. Temperaturwerte waren manchmal im 1. Vorhersage-Intervall falsch
+- neue Sprache: Ungarisch (Danke an eUgEntOptIc44 und Gőz Barnabás!)
+- neuer, scrollbarer Wetter-Überblick
+- verbessertes Design der Bedienoberfläche
+- verbesserte Unterstützung der Solarized Themes
+- neue Option, um die Wetterdaten aller Favoriten zu aktualisieren
+- die App aktualisiert nun auf Wunsch automatisch den Standort bei jedem Start
+- verbesserte Handhabung abgelehnter und/oder entzogener Standort-Berechtigungen
+- neue Einstellung, um wahlweise das Quer- oder Hochkantformat zu erzwingen
+- vereinfachte Suche der Wetterstation
+- verbesserte Übersetzungen

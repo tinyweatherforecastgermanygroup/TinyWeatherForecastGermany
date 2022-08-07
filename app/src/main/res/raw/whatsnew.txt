@@ -1,10 +1,13 @@
 New in version ([VERSION]):
 
-- new language: Ukrainian (thanks to Andrij Mizyk & eUgEntOptIc44!)
-- new overview chart (can be enabled in the settings)
-- new landscape layout for displays with a width of at least 600dp
-- long-pressing a forecast item in the app now opens a more detailed view
-- fixed forecast days on wearables shifted by one day
-- fixed min/max. temperatures sometimes wrong in the 1st forecast interval
-
+- new language: Hungarian (thanks to eUgEntOptIc44 and Gőz Barnabás!)
+- new, scrollable weather overview
+- improved design of the user interface
+- improved support of the Solarized themes
+- new option to trigger a weather data update for all favorites
+- the app now optionally updates the location automatically upon app launch
+- improved handling of denied and/or revoked location permissions
+- added a setting to force landscape or portrait mode
+- simplified station search
+- updated translations
 
