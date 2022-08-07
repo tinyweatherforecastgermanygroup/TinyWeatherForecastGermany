@@ -696,7 +696,8 @@ public class ForecastBitmap{
         if (minTemp>=0){
             deltaTemp = maxTemp;
         }
-        int display_steps = 5;
+        //int display_steps = 5;
+        int display_steps = deltaTemp / 5 + 2;
         if (chartHeight < 100)
             display_steps = 3;
         float temp_scale_step_value = 20;
