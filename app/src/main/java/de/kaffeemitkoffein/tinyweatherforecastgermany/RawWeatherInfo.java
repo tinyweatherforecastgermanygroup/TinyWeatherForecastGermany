@@ -397,6 +397,24 @@ public class RawWeatherInfo{
         return null;
     }
 
+    public Integer getSumInt(String[] item, int first, int last){
+        if (first<0){
+            first = 0;
+        }
+        if (last>elements){
+            last = elements;
+        }
+        int[] itemlist = toIntArray(item);
+        int result = 0;
+        if (itemlist!=null){
+            for (int i=first; i<=last; i++){
+                result = result + itemlist[i];
+            }
+            return result;
+        }
+        return null;
+    }
+
     public Integer getMaxIntValue(String[] item, int first, int last){
         if (first<0){
             first = 0;

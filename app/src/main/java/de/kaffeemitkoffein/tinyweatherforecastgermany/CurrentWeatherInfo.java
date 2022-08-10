@@ -189,6 +189,7 @@ public class CurrentWeatherInfo{
         if (!currentWeather.hasCondition()){
             currentWeather.calculateMissingCondition();
         }
+        currentWeather.setSunDuration(getIntItem(rawWeatherInfo.D1[current_weather_position]));
         // fill 1h forecast arraylist
         forecast1hourly = new ArrayList<Weather.WeatherInfo>();
         int index = rawWeatherInfo.getCurrentForecastPosition();
@@ -235,6 +236,7 @@ public class CurrentWeatherInfo{
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
+            currentWeather.setSunDuration(getIntItem(rawWeatherInfo.D1[index]));
             forecast1hourly.add(wi);
             index++;
         }
@@ -319,6 +321,7 @@ public class CurrentWeatherInfo{
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
+            wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1,start,index));
             forecast6hourly.add(wi);
             index = index + 6;
         }
@@ -388,6 +391,7 @@ public class CurrentWeatherInfo{
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
+            wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1,start,index));
             forecast24hourly.add(wi);
             index = index + 24;
         }

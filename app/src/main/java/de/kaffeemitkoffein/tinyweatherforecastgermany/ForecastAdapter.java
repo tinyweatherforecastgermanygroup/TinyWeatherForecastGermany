@@ -172,9 +172,12 @@ static class ViewHolder {
     TextView textView_heading;
     TextView condition_text;
     View iconbar1_view;
+    ImageView precipitation_symbol;
     TextView precipitation_textview;
     TextView precipitation_unit_upper;
     TextView precipitation_unit_lower;
+    ImageView sunDuration_symbol;
+    TextView sunDuration_textview;
     ImageView weather_icon;
     TextView textView_temp;
     TextView textView_temphigh;
@@ -228,9 +231,12 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     TextView textView_weathercondition = null;
     TextView textView_heading = null;
     View iconbar1_view = null;
+    ImageView precipitation_symbol = null;
     TextView precipitation_textview = null;
     TextView precipitation_unit_upper = null;
     TextView precipitation_unit_lower = null;
+    ImageView sunDuration_symbol = null;
+    TextView sunDuration_textview = null;
     ImageView weather_icon = null;
     TextView textView_temp = null;
     TextView textView_temphigh = null;
@@ -270,9 +276,12 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         textView_weathercondition = viewHolder.condition_text;
         textView_heading = viewHolder.textView_heading;
         iconbar1_view = viewHolder.iconbar1_view;
+        precipitation_symbol = viewHolder.precipitation_symbol;
         precipitation_textview = viewHolder.precipitation_textview;
         precipitation_unit_upper = viewHolder.precipitation_unit_upper;
         precipitation_unit_lower = viewHolder.precipitation_unit_lower;
+        sunDuration_symbol = viewHolder.sunDuration_symbol;
+        sunDuration_textview = viewHolder.sunDuration_textview;
         weather_icon = viewHolder.weather_icon;
         textView_temp = viewHolder.textView_temp;
         textView_temphigh = viewHolder.textView_temphigh;
@@ -408,6 +417,10 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             textView_weathercondition.setText(context.getResources().getString(R.string.weathercode_UNKNOWN));
         }
     }
+    if (iconbar1_view == null){
+        iconbar1_view = view.findViewById(R.id.fcitem_iconbar1);
+        viewHolder.iconbar1_view = iconbar1_view;
+    }
     String precipitation_string = "";
     if (weatherInfo.hasProbPrecipitation()){
         precipitation_string = weatherInfo.getProbPrecipitation()+"% ";
@@ -416,11 +429,10 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         precipitation_string = precipitation_string +weatherInfo.getPrecipitation();
     }
     if (precipitation_string.equals("")){
-        if (iconbar1_view == null){
-            iconbar1_view = view.findViewById(R.id.fcitem_iconbar1);
-            viewHolder.iconbar1_view = iconbar1_view;
-        }
-        setVisibility(iconbar1_view, View.INVISIBLE);
+        setVisibility(precipitation_symbol,View.GONE);
+        setVisibility(precipitation_textview,View.GONE);
+        setVisibility(precipitation_unit_upper,View.GONE);
+        setVisibility(precipitation_unit_lower, View.GONE);
     } else {
         if (precipitation_textview == null){
             precipitation_textview = (TextView) view.findViewById(R.id.fcitem_precipitation_text);
@@ -443,7 +455,28 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         precipitation_unit_upper = (TextView) view.findViewById(R.id.fcitem_precipitation_unit_upper);
         viewHolder.precipitation_unit_upper = precipitation_unit_upper;
         if (precipitation_unit_upper!=null){
-            ThemePicker.applyPrecipitationAccentColor(context,precipitation_unit_lower);
+            ThemePicker.applyPrecipitationAccentColor(context,precipitation_unit_upper);
+        }
+    }
+    if (sunDuration_symbol==null){
+        sunDuration_symbol = (ImageView) view.findViewById(R.id.fcitem_sunduration_symbol);
+        viewHolder.sunDuration_symbol = sunDuration_symbol;
+    }
+    if (sunDuration_textview==null){
+        sunDuration_textview = (TextView) view.findViewById(R.id.fcitem_sunduration_text);
+        viewHolder.sunDuration_textview = sunDuration_textview;
+    }
+    if (weatherInfo.hasSunDuration()){
+        if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.ONE_HOUR){
+            sunDuration_textview.setText(weatherInfo.getSunDurationInMinutes());
+        } else {
+            sunDuration_textview.setText(weatherInfo.getSunDurationInHoursString());
+        }
+    } else {
+        setVisibility(sunDuration_symbol, View.GONE);
+        setVisibility(sunDuration_textview, View.GONE);
+        if (precipitation_string.equals("")){
+            setVisibility(iconbar1_view, View.GONE);
         }
     }
     // weather probabilities icons, sorted by priority

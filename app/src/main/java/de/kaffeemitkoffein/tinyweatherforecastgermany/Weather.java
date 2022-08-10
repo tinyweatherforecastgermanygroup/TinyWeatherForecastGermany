@@ -27,6 +27,8 @@ import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 import org.astronomie.info.Astronomy;
+
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -360,6 +362,8 @@ public final class Weather {
         private Double td;
         private Integer[] probOfPrecipitation;
         public Clouds clouds;
+        public Integer sunDuration;
+
 
         final class ForecastType{
             public static final int CURRENT  = 0;
@@ -501,6 +505,10 @@ public final class Weather {
 
         public void setPrecipitationDetails(Integer[] ints){
            this.probOfPrecipitation = ints;
+        }
+
+        public void setSunDuration(Integer i){
+            this.sunDuration = i;
         }
 
         public long getTimestamp(){
@@ -1231,6 +1239,27 @@ public final class Weather {
             return this.probOfPrecipitation;
         }
 
+        public boolean hasSunDuration(){
+            return this.sunDuration != null;
+        }
+
+        public int getSunDurationInSeconds(){
+            return this.sunDuration;
+        }
+
+        public int getSunDurationInMinutes(){
+            return getSunDurationInSeconds()/60;
+        }
+
+        public int getSunDurationInHours(){
+            return getSunDurationInMinutes()/60;
+        }
+
+        public String getSunDurationInHoursString(){
+            int i = getSunDurationInSeconds();
+            DecimalFormat decimalFormat = new DecimalFormat("0.0");
+            return decimalFormat.format((i/60f/60f));
+        }
     }
 
     public CurrentWeatherInfo getCurrentWeatherInfo(Context context){
@@ -1497,6 +1526,7 @@ public final class Weather {
         public long getTimestamp(){
             return timestamp;
         }
+
     }
 
     public static String getWindString(Context context,CurrentWeatherInfo weatherCard){
@@ -1544,5 +1574,6 @@ public final class Weather {
     final static String GetDateString(SimpleDateFormat simpleDateFormat, long time){
         return simpleDateFormat.format(time);
     }
+
 }
 

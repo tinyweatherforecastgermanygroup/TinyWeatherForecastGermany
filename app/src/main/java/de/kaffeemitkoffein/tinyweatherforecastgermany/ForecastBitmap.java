@@ -664,7 +664,7 @@ public class ForecastBitmap{
         textPaint.setAntiAlias(true);
         final float yAxisFontSizeScaleFactor = 1.2f;
         final float yNoticeFontSizeScaleFactor = 1.0f;
-        int labelTextSize = 100;
+        float labelTextSize = 100;
         int chartHeight = height;
         final int alphaClouds = 125;
         final int alphaRain = 125;
@@ -707,7 +707,7 @@ public class ForecastBitmap{
             temp_scale_step_value = 5;
         float temp_bottom_offset_value = 0;
         if (minTemp < 0){
-            temp_bottom_offset_value = -(((int) Math.abs(minTemp)/ (int) temp_scale_step_value)+1)*temp_scale_step_value;
+            temp_bottom_offset_value = -((Math.abs(minTemp)/temp_scale_step_value)+1)*temp_scale_step_value;
         }
         float temp_graphscale = temp_scale_step_value * display_steps / chartHeight;
         float zeroline_position = chartHeight;
@@ -717,24 +717,27 @@ public class ForecastBitmap{
         // paint chart outline
         canvas.drawLine(xChartOffset,0,xChartOffset,chartHeight,chartPaint);
         canvas.drawLine(xChartOffset,zeroline_position,width,zeroline_position,chartPaint);
+        while ((labelTextSize+4> ((float) chartHeight)/display_steps) && (labelTextSize>6)){
+            labelTextSize--;
+        }
         for (int i=1; i<=display_steps; i++){
             String s2 = String.valueOf((int) (temp_bottom_offset_value+temp_scale_step_value*i));
-            textPaint.setTextSize(labelTextSize);
+            textPaint.setTextSize(labelTextSize*yAxisFontSizeScaleFactor);
             textPaint.setFakeBoldText(false);
             if ((i==1) || (i == display_steps)){
                 s2 = s2 + "°C";
-                float f1 = labelTextSize*yAxisFontSizeScaleFactor;
-                if (f1>((float)chartHeight)/((float)display_steps)){
-                    f1 = ((float)chartHeight)/((float)display_steps)-3;
-                }
-                textPaint.setTextSize(f1);
+                //float f1 = labelTextSize*yAxisFontSizeScaleFactor;
+                //if (f1>((float)chartHeight)/((float)display_steps)){
+                //    f1 = ((float)chartHeight)/((float)display_steps)-3;
+                //}
+                //textPaint.setTextSize(f1);
                 textPaint.setFakeBoldText(true);
             }
             float x1 = 0;
             float x2 = width;
-            float y1 = 100 / ((float) 100 / chartHeight) - (100/display_steps*i/((float) 100 / chartHeight));
+            float y1 = 100 / ((float) 100 / chartHeight) - (100f/display_steps*i/((float) 100 / chartHeight));
             canvas.drawLine(x1,y1,x2,y1,linePaint);
-            canvas.drawText(s2,x1+lineWidth+lineWidth/10,y1+textPaint.getTextSize(),textPaint);
+            canvas.drawText(s2,x1+lineWidth+lineWidth/10f,y1+textPaint.getTextSize(),textPaint);
         }
         // paint warnings
         // the warnings arraylist may be empty at 1st call, but this will be called again once the main app knows
