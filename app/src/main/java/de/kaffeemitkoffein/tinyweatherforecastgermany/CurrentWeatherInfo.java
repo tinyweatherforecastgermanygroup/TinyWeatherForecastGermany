@@ -19,6 +19,9 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
+import android.util.Log;
+import org.astronomie.info.Astronomy;
+
 import java.util.ArrayList;
 
 public class CurrentWeatherInfo{
@@ -189,10 +192,11 @@ public class CurrentWeatherInfo{
         if (!currentWeather.hasCondition()){
             currentWeather.calculateMissingCondition();
         }
-        currentWeather.setSunDuration(getIntItem(rawWeatherInfo.D1[current_weather_position]));
+
         // fill 1h forecast arraylist
         forecast1hourly = new ArrayList<Weather.WeatherInfo>();
-        int index = rawWeatherInfo.getCurrentForecastPosition();
+        int startPosition1h = rawWeatherInfo.getCurrentForecastPosition();
+        int index = startPosition1h;
         while (index<rawWeatherInfo.elements){
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.ONE_HOUR);
@@ -236,39 +240,55 @@ public class CurrentWeatherInfo{
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
-            currentWeather.setSunDuration(getIntItem(rawWeatherInfo.D1[index]));
+            wi.setSunDuration(getIntItem(rawWeatherInfo.D1[index]));
+            if (!wi.hasSunDuration()){
+                // add clculated values to rawWeatherInfo to make correct intervals possible later
+                rawWeatherInfo.D1[index] = String.valueOf(setSunDurationFromClouds(wi));
+            }
             forecast1hourly.add(wi);
             index++;
         }
+        /* calc sun durations
+        for (int i=0; i<forecast1hourly.size(); i++){
+            if (!forecast1hourly.get(i).hasSunDuration()){
+                getSunDurationForLastHourInSeconds(forecast1hourly.get(i));
+                //forecast1hourly.get(i).setSunDuration(a);
+            }
+        }
+         */
         // fill 6h forecast arraylist
         forecast6hourly = new ArrayList<Weather.WeatherInfo>();
         int startposition6h = rawWeatherInfo.getNext6hPosition();
         index = startposition6h;
-        while (index<rawWeatherInfo.elements){
+        while (index<rawWeatherInfo.elements) {
             int start = index - 5;
-            if (start<current_weather_position){
+            if (start < current_weather_position) {
                 start = current_weather_position;
             }
+            /*
+            long[] timestamps = rawWeatherInfo.getTimeSteps();
+            Log.v("twfg","6H INTERVAL: "+Weather.toFullDateTimeString(timestamps[start])+" - "+Weather.toFullDateTimeString(timestamps[index]));
+            */
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_6);
             wi.setTimestamp(timesteps[index]);
             wi.setConditionCode(getIntItem(rawWeatherInfo.W1W2[index]));
             // take significant weather, highest priority alternatively
-            if (preferAlternativeIcons || !wi.hasCondition()){
+            if (preferAlternativeIcons || !wi.hasCondition()) {
                 wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
             }
             wi.setClouds(rawWeatherInfo.getAverageClouds(start, index));
-            wi.setClouds_N05(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.N05,start,index));
-            wi.setClouds_Nl(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nl,start,index));
-            wi.setClouds_Nm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nm,start,index));
-            wi.setClouds_Nh(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nh,start,index));
-            wi.setClouds_Nlm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nlm,start,index));
-            wi.setClouds_H_BsC(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.H_BsC,start,index));
-            wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT,start, index));
-            wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start, index));
+            wi.setClouds_N05(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.N05, start, index));
+            wi.setClouds_Nl(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nl, start, index));
+            wi.setClouds_Nm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nm, start, index));
+            wi.setClouds_Nh(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nh, start, index));
+            wi.setClouds_Nlm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nlm, start, index));
+            wi.setClouds_H_BsC(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.H_BsC, start, index));
+            wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT, start, index));
+            wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm, start, index));
             wi.setLowTemperature(rawWeatherInfo.getMinTemperature(start, index));
             wi.setHighTemperature(rawWeatherInfo.getMaxTemperature(start, index));
-            if (start==index) {
+            if (start == index) {
                 if ((getDoubleItem(rawWeatherInfo.TTT[index]) != null) && (getDoubleItem(rawWeatherInfo.E_TTT[index]) != null)) {
                     wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index]) - getDoubleItem(rawWeatherInfo.E_TTT[index]));
                     wi.setHighTemperature(getDoubleItem(rawWeatherInfo.TTT[index]) + getDoubleItem(rawWeatherInfo.E_TTT[index]));
@@ -278,50 +298,51 @@ public class CurrentWeatherInfo{
             wi.setWindDirection(getDoubleItem(rawWeatherInfo.DD[index]));
             wi.setFlurries(rawWeatherInfo.getMaxDoubleValue(rawWeatherInfo.FX1, start, index));
             wi.setPrecipitation(getDoubleItem(rawWeatherInfo.RR6c[index]));
-            if (!wi.hasPrecipitation()){
-               // try to self-calculate this
-               wi.setPrecipitation(rawWeatherInfo.getMaxDoubleValue(rawWeatherInfo.RR1c, start,index));
+            if (!wi.hasPrecipitation()) {
+                // try to self-calculate this
+                wi.setPrecipitation(rawWeatherInfo.getMaxDoubleValue(rawWeatherInfo.RR1c, start, index));
             }
             wi.setProbPrecipitation(getIntItem(rawWeatherInfo.wwP6[index]));
-            if (!wi.hasProbPrecipitation()){
+            if (!wi.hasProbPrecipitation()) {
                 // try to self-calculate this
-                wi.setProbPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwP, start,index));
+                wi.setProbPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwP, start, index));
             }
             wi.setProbDrizzle(getIntItem(rawWeatherInfo.wwZ6[current_weather_position]));
-            if (!wi.hasProbDrizzle()){
+            if (!wi.hasProbDrizzle()) {
                 // try to self-calculate this
-                wi.setProbDrizzle(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwZ, start,index));
+                wi.setProbDrizzle(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwZ, start, index));
             }
             wi.setProbThunderstorms(getIntItem(rawWeatherInfo.wwT6[index]));
-            if (!wi.hasProbThunderstorms()){
+            if (!wi.hasProbThunderstorms()) {
                 // try to self-calculate this
-                wi.setProbThunderstorms(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwT, start,index));
+                wi.setProbThunderstorms(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwT, start, index));
             }
             wi.setProbFog(getIntItem(rawWeatherInfo.wwM6[index]));
-            if (!wi.hasProbFog()){
+            if (!wi.hasProbFog()) {
                 // try to self-calculate this
-                wi.setProbFog(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwM, start,index));
+                wi.setProbFog(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwM, start, index));
             }
             wi.setProbSolidPrecipitation(getIntItem(rawWeatherInfo.wwS6[index]));
-            if (!wi.hasProbSolidPrecipitation()){
+            if (!wi.hasProbSolidPrecipitation()) {
                 // try to self-calculate this
-                wi.setProbSolidPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS, start,index));
+                wi.setProbSolidPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS, start, index));
             }
             wi.setProbFreezingRain(getIntItem(rawWeatherInfo.wwF6[index]));
-            if (!wi.hasProbFreezingRain()){
+            if (!wi.hasProbFreezingRain()) {
                 // try to self-calculate this
-                wi.setProbFreezingRain(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS, start,index));
+                wi.setProbFreezingRain(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS, start, index));
             }
             wi.setVisibility(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.VV, start, index));
-            wi.setProbVisibilityBelow1km(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.VV10,start, index));
+            wi.setProbVisibilityBelow1km(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.VV10, start, index));
             wi.setPressure(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.PPPP, start, index));
             wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1, start, index));
-            wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td,start,index));
+            wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td, start, index));
             //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
-            if (!wi.hasCondition()){
+            if (!wi.hasCondition()) {
                 wi.calculateMissingCondition();
             }
-            wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1,start,index));
+            //wi.setSunDuration(getSunDuration(start, index));
+            wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
             forecast6hourly.add(wi);
             index = index + 6;
         }
@@ -334,6 +355,10 @@ public class CurrentWeatherInfo{
             if (start<current_weather_position){
                 start = current_weather_position;
             }
+            /*
+            long[] timestamps = rawWeatherInfo.getTimeSteps();
+            Log.v("twfg","24H INTERVAL: "+Weather.toFullDateTimeString(timestamps[start])+" - "+Weather.toFullDateTimeString(timestamps[index]));
+            */
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_24);
             wi.setTimestamp(timesteps[index]);
@@ -391,7 +416,8 @@ public class CurrentWeatherInfo{
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
-            wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1,start,index));
+            //wi.setSunDuration(getSunDuration(rawWeatherInfo,start,index));
+            wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
             forecast24hourly.add(wi);
             index = index + 24;
         }
@@ -411,5 +437,36 @@ public class CurrentWeatherInfo{
         }
         return windData;
     }
+
+    public Integer setSunDurationFromClouds(Weather.WeatherInfo weatherInfo){
+        if (weatherInfo.hasClouds()){
+            Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,weatherInfo.getTimestamp());
+            long sunrise = Weather.getSunriseInUTC(riseset,weatherInfo.getTimestamp());
+            long sunset  = Weather.getSunsetInUTC(riseset,weatherInfo.getTimestamp());
+            if ((sunrise<weatherInfo.getTimestamp()) && (sunrise>weatherInfo.getTimestamp()-60*1000)){
+                long result = weatherInfo.getTimestamp() - sunrise;
+                int result2 = Math.round(result * ((100-weatherInfo.getClouds())/100f))/1000;
+                weatherInfo.setSunDuration(result2);
+                return result2;
+            }
+            // is sunset within this hour?
+            if ((sunset<weatherInfo.getTimestamp()) && (sunset>weatherInfo.getTimestamp()-60*1000)){
+                long result = sunset - weatherInfo.getTimestamp();
+                int result2 = Math.round(result * ((100-weatherInfo.getClouds())/100f))/1000;
+                weatherInfo.setSunDuration(result2);
+                return result2;
+            }
+            // full sunshine day?
+            if ((weatherInfo.getTimestamp()>sunrise) && (weatherInfo.getTimestamp()<sunset)){
+                int result2 = Math.round(60f*60f* ((100-weatherInfo.getClouds())/100f));
+                weatherInfo.setSunDuration(result2);
+                return result2;
+            }
+            // nighttime....
+        }
+        weatherInfo.setSunDuration(null);
+        return null;
+    }
+
 
 }

@@ -25,6 +25,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -178,6 +179,7 @@ static class ViewHolder {
     TextView precipitation_unit_lower;
     ImageView sunDuration_symbol;
     TextView sunDuration_textview;
+    TextView sunDuration_unit;
     ImageView weather_icon;
     TextView textView_temp;
     TextView textView_temphigh;
@@ -237,6 +239,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     TextView precipitation_unit_lower = null;
     ImageView sunDuration_symbol = null;
     TextView sunDuration_textview = null;
+    TextView sunDuration_unit = null;
     ImageView weather_icon = null;
     TextView textView_temp = null;
     TextView textView_temphigh = null;
@@ -282,6 +285,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         precipitation_unit_lower = viewHolder.precipitation_unit_lower;
         sunDuration_symbol = viewHolder.sunDuration_symbol;
         sunDuration_textview = viewHolder.sunDuration_textview;
+        sunDuration_unit = viewHolder.sunDuration_unit;
         weather_icon = viewHolder.weather_icon;
         textView_temp = viewHolder.textView_temp;
         textView_temphigh = viewHolder.textView_temphigh;
@@ -466,18 +470,34 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         sunDuration_textview = (TextView) view.findViewById(R.id.fcitem_sunduration_text);
         viewHolder.sunDuration_textview = sunDuration_textview;
     }
+    if (sunDuration_unit==null){
+        sunDuration_unit = (TextView) view.findViewById(R.id.fcitem_sunduration_unit);
+        viewHolder.sunDuration_unit = sunDuration_unit;
+    }
     if (weatherInfo.hasSunDuration()){
+        sunDuration_symbol.setColorFilter(ThemePicker.getColorTextLight(context),PorterDuff.Mode.SRC_IN);
+        setVisibility(sunDuration_symbol, View.VISIBLE);
+        setVisibility(sunDuration_textview, View.VISIBLE);
+        setVisibility(sunDuration_unit,View.VISIBLE);
         if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.ONE_HOUR){
-            sunDuration_textview.setText(weatherInfo.getSunDurationInMinutes());
+            sunDuration_textview.setText(Integer.toString(weatherInfo.getSunDurationInMinutes()));
+            sunDuration_unit.setText("min");
         } else {
-            sunDuration_textview.setText(weatherInfo.getSunDurationInHoursString());
+            sunDuration_textview.setText(Integer.toString(weatherInfo.getSunDurationInHours()));
+            sunDuration_unit.setText("h");
         }
-    } else {
+    }
+    if ((!weatherInfo.hasSunDuration()) ||
+            ((weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.ONE_HOUR) && (weatherInfo.getSunDurationInMinutes()==0)) ||
+            ((weatherInfo.getForecastType() != Weather.WeatherInfo.ForecastType.ONE_HOUR) && (weatherInfo.getSunDurationInHours()==0))){
         setVisibility(sunDuration_symbol, View.GONE);
         setVisibility(sunDuration_textview, View.GONE);
+        setVisibility(sunDuration_unit,View.GONE);
         if (precipitation_string.equals("")){
             setVisibility(iconbar1_view, View.GONE);
         }
+    }
+    else {
     }
     // weather probabilities icons, sorted by priority
     // clouds

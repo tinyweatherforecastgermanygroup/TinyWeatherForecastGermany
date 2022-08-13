@@ -18,6 +18,8 @@
  */
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
+import org.astronomie.info.Astronomy;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -256,7 +258,7 @@ public class RawWeatherInfo{
             try {
                 result[i] = (int) Double.parseDouble(valuearray[i]);
             } catch (NumberFormatException e){
-                return null;
+                result[i] = 0;
             }
         }
         return result;
@@ -276,6 +278,22 @@ public class RawWeatherInfo{
         }
         return result;
     }
+
+    public long[] getTimeSteps(int start, int stop){
+        long[] result = new long[Weather.DATA_SIZE];
+        SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        kml_dateFormat.setLenient(true);
+        for (int i=start; i<stop; i++){
+            try {
+                Date parse = kml_dateFormat.parse(timesteps[i]);
+                result[i] = parse.getTime();
+            } catch (Exception e){
+                // nothing to dd
+            }
+        }
+        return result;
+    }
+
 
     public int getCurrentForecastPosition(){
         long current_time = Calendar.getInstance().getTimeInMillis();

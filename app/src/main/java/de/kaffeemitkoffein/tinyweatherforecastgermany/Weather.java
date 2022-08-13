@@ -362,7 +362,7 @@ public final class Weather {
         private Double td;
         private Integer[] probOfPrecipitation;
         public Clouds clouds;
-        public Integer sunDuration;
+        private Integer sunDuration;
 
 
         final class ForecastType{
@@ -619,8 +619,16 @@ public final class Weather {
                 return getArrowBitmap(context,fromWidget);
             }
             if (wind_direction!=null) {
-                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getBeaufortIconResourceID(context,getWindSpeedInBeaufortInt()));
+                // make bitmap mutable
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inMutable = true;
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getBeaufortIconResourceID(context,getWindSpeedInBeaufortInt()),options);
                 if (bitmap != null) {
+                    if (fromWidget) {
+                        ThemePicker.applyColor(bitmap,ThemePicker.getWidgetTextColor(context));
+                    } else {
+                        ThemePicker.applyColor(bitmap,ThemePicker.getColorTextLight(context));
+                    }
                     Matrix m = new Matrix();
                     m.postRotate(wind_direction.floatValue());
                     return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, false);
@@ -1252,11 +1260,11 @@ public final class Weather {
         }
 
         public int getSunDurationInHours(){
-            return getSunDurationInMinutes()/60;
+            return Math.round(getSunDurationInSeconds()/(60f*60f));
         }
 
         public String getSunDurationInHoursString(){
-            int i = getSunDurationInSeconds();
+            int i = getSunDurationInSeconds()*1000;
             DecimalFormat decimalFormat = new DecimalFormat("0.0");
             return decimalFormat.format((i/60f/60f));
         }

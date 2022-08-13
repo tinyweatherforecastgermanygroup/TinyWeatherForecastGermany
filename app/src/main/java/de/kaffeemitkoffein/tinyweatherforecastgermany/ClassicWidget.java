@@ -246,13 +246,19 @@ public class ClassicWidget extends AppWidgetProvider {
     public void setAlarmText(Context context, RemoteViews remoteViews) {
         String alarmString = getNextAlarm(context);
         if (!alarmString.equals("")) {
-            alarmString = "\u23F0 " + alarmString;
+            //alarmString = "\u23F0 " + alarmString;
             remoteViews.setViewVisibility(R.id.widget_nextalarm,View.VISIBLE);
+            remoteViews.setViewVisibility(R.id.widget_alarmicon,View.VISIBLE);
             remoteViews.setTextViewText(R.id.widget_nextalarm,alarmString);
             remoteViews.setTextColor(R.id.widget_nextalarm,ThemePicker.getWidgetTextColor(context));
-
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inMutable = true;
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_access_alarm_black_24dp,options);
+            ThemePicker.applyColor(bitmap,ThemePicker.getWidgetTextColor(context));
+            remoteViews.setImageViewBitmap(R.id.widget_alarmicon,bitmap);
         } else {
             remoteViews.setViewVisibility(R.id.widget_nextalarm, View.GONE);
+            remoteViews.setViewVisibility(R.id.widget_alarmicon, View.GONE);
         }
     }
 

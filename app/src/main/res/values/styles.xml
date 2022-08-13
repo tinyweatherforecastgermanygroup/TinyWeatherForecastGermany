@@ -67,9 +67,11 @@
         <item name="ic_content_copy">@mipmap/ic_content_copy_black_24dp</item>
         <item name="ic_add">@mipmap/ic_add_black_24dp</item>
         <item name="ic_stay_current_landscape">@mipmap/ic_stay_current_landscape_black_24dp</item>
+        <item name="ic_access_alarm">@mipmap/ic_access_alarm_black_24dp</item>
 
         <item name="white_bar">@mipmap/white_bar_black</item>
         <item name="binocular">@mipmap/biocular_black</item>
+        <item name="symbol_sun">@mipmap/symbol_sun_black</item>
 
         <!-- styles the actionbar -->
         <item name="android:actionBarStyle">@style/ActionBar_Light</item>
@@ -170,9 +172,11 @@
         <item name="ic_content_copy">@mipmap/ic_content_copy_white_24dp</item>
         <item name="ic_add">@mipmap/ic_add_white_24dp</item>
         <item name="ic_stay_current_landscape">@mipmap/ic_stay_current_landscape_white_24dp</item>
+        <item name="ic_access_alarm">@mipmap/ic_access_alarm_white_24dp</item>
 
         <item name="white_bar">@mipmap/white_bar</item>
         <item name="binocular">@mipmap/biocular</item>
+        <item name="symbol_sun">@mipmap/symbol_sun</item>
 
         <!-- styles the actionbar -->
         <item name="android:actionBarStyle">@style/ActionBar_Dark</item>

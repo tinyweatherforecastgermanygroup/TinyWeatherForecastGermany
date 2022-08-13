@@ -217,8 +217,9 @@
                                android:layout_height="@dimen/fcmain_mediumdevice_textsize_medium"
                                android:layout_gravity="left"
                                android:layout_marginRight="2dp"
+                               android:layout_marginLeft="2dp"
                                android:layout_toRightOf="@id/fcitem_precipitation_unit_lower"
-                               android:src="@mipmap/symbol_sun" />
+                               android:src="?attr/symbol_sun" />
 
                     <TextView android:id="@+id/fcitem_sunduration_text"
                               android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
@@ -229,6 +230,18 @@
                               android:layout_height="wrap_content"
                               android:layout_marginRight="2dp"
                               android:text=""/>
+
+                    <TextView android:id="@+id/fcitem_sunduration_unit"
+                              android:textSize="@dimen/fcmain_mediumdevice_textsize_small"
+                              android:textColor="?attr/colorText"
+                              android:layout_gravity="left"
+                              android:layout_toRightOf="@id/fcitem_sunduration_text"
+                              android:layout_alignBottom="@id/fcitem_sunduration_text"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginRight="2dp"
+                              android:text=""/>
+
 
                 </RelativeLayout>
 

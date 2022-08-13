@@ -74,6 +74,7 @@ public class WeatherIcons {
     final static int WIND_BEAUFORT_10 = 280;
     final static int WIND_BEAUFORT_11 = 281;
     final static int WIND_BEAUFORT_12 = 282;
+    final static int SYMBOL_SUN = 283;
 
     final static int GERMANY = 1024;
     final static int MAP_COLLAPSED = 1025;
@@ -249,6 +250,7 @@ public class WeatherIcons {
             case WIND_BEAUFORT_10 : result = R.mipmap.wind_beaufort_10; break;
             case WIND_BEAUFORT_11 : result = R.mipmap.wind_beaufort_11; break;
             case WIND_BEAUFORT_12 : result = R.mipmap.wind_beaufort_12; break;
+            case SYMBOL_SUN: result = R.mipmap.symbol_sun; break;
             case PIN : result = R.mipmap.pin; break;
             case IC_LAUNCHER_BW : result = R.mipmap.ic_launcher_bw; break;
             case GERMANY: result = R.drawable.germany; break;
@@ -308,6 +310,7 @@ public class WeatherIcons {
                 case WIND_BEAUFORT_10 : result = R.mipmap.wind_beaufort_10_black; break;
                 case WIND_BEAUFORT_11 : result = R.mipmap.wind_beaufort_11_black; break;
                 case WIND_BEAUFORT_12 : result = R.mipmap.wind_beaufort_12_black; break;
+                case SYMBOL_SUN: result = R.mipmap.symbol_sun_black; break;
                 case GERMANY: result = R.drawable.germany_black; break;
                 case MAP_COLLAPSED: result = R.drawable.map_collapsed_black; break;
                 case RADIO_BUTTON_UNCHECKED: result = R.mipmap.ic_radio_button_unchecked_black_24dp; break;
