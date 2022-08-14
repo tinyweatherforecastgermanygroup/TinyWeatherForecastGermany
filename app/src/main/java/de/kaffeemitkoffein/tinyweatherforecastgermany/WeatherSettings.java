@@ -123,7 +123,7 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_PRESSURE_DEFAULT = true;
     public static final boolean PREF_DISPLAY_VISIBILITY_DEFAULT = true;
     public static final boolean PREF_DISPLAY_SUNRISE_DEFAULT = true;
-    public static final boolean PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT = true;
+    public static final boolean PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT = false;
     public static final boolean PREF_DISPLAY_GRADIENT_DEFAULT = false;
     public static final boolean PREF_DISPLAY_WIND_ARC_DEFAULT=false;
     public static final String PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT="6";
