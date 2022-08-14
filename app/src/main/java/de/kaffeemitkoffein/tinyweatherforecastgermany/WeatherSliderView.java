@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,12 +137,10 @@ public class WeatherSliderView extends HorizontalScrollView {
     @Override
     public void onScrollChanged(int x, int y, int oldx, int oldy){
         int itemPosition = Math.round(x / valueSet.pixelPer1hItem);
-        //Log.v("twfg","current offset: "+x+ "item: "+itemPosition+" => 6h item: "+get6hPosition(itemPosition));
         upateViews(itemPosition);
     }
 
     public void setScrollPosition(int itemPosition){
-        Log.v("twfg","Scrolling to position: "+itemPosition);
         smoothScrollTo(Math.round(valueSet.pixelPer1hItem*itemPosition),0);
     }
 
@@ -156,13 +153,6 @@ public class WeatherSliderView extends HorizontalScrollView {
                 dayTextView.setText(simpleDateFormat.format(new Date(weatherInfos.get(itemPosition).getTimestamp())));
             }
             if ((windImageView != null) && (weatherInfos.get(itemPosition).hasWindDirection())){
-                /*
-                if ((WeatherSettings.getWindDisplayType(context)==Weather.WindDisplayType.BEAUFORT) && (weatherInfos.get(itemPosition).hasWindSpeed())){
-                    windImageView.setImageBitmap(weatherInfos.get(itemPosition).getBeaufortBitmap(context,false));
-                } else {
-                    windImageView.setImageBitmap(weatherInfos.get(itemPosition).getArrowBitmap(context,false));
-                }
-                 */
                 windImageView.setImageBitmap(weatherInfos.get(itemPosition).getWindSymbol(context,WeatherSettings.getWindDisplayType(context),false));
                 windImageView.setColorFilter(Color.WHITE,PorterDuff.Mode.SRC_IN);
             }
@@ -522,8 +512,6 @@ public class WeatherSliderView extends HorizontalScrollView {
             duskStart = Weather.getSunsetInUTC(riseset, weatherInfos.get(dayProbe).getTimestamp())-valueSet.timeXOffset;
             duskStop  = Weather.getCivilTwilightEvening(riseset,weatherInfos.get(dayProbe).getTimestamp())-valueSet.timeXOffset;
             dawnStarts.add(dawnStart); dawnStops.add(dawnStop); duskStarts.add(duskStart); duskStops.add(duskStop);
-            //final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
-            //Log.v("twfg","UP: "+simpleDateFormat.format(sunrise)+" DOWN: "+simpleDateFormat.format(sunset));
             fakeDayTime = dayProbe;
         }
         // insert dummy set at the end, will mostly be not visible

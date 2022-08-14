@@ -19,7 +19,6 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
-import android.util.Log;
 import org.astronomie.info.Astronomy;
 
 import java.util.ArrayList;
