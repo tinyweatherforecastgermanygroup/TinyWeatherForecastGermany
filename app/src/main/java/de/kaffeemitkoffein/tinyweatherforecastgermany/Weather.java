@@ -597,17 +597,23 @@ public final class Weather {
                 // make bitmap mutable
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inMutable = true;
-                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),arrowResurce,options);
-                if (fromWidget) {
-                    ThemePicker.applyColor(bitmap,ThemePicker.getWidgetTextColor(context));
-                } else {
-                    ThemePicker.applyColor(bitmap,ThemePicker.getColorTextLight(context));
-                }
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.arrow,options);
                 if (bitmap != null){
+                    int originalX = bitmap.getWidth();
+                    int originalY = bitmap.getHeight();
+                    if (fromWidget) {
+                        ThemePicker.applyColor(bitmap,ThemePicker.getWidgetTextColor(context));
+                    } else {
+                        ThemePicker.applyColor(bitmap,ThemePicker.getColorTextLight(context));
+                    }
                     Matrix m = new Matrix();
                     m.postRotate(wind_direction.floatValue());
                     // draw the wind forecast
-                    return Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
+                    bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
+                    int deltaX = bitmap.getWidth() - originalX;
+                    int deltaY = bitmap.getHeight() - originalY;
+                    bitmap = Bitmap.createBitmap(bitmap,deltaX/2,deltaY/2,originalX,originalY);
+                    return bitmap;
                 }
             }
             return null;
@@ -624,6 +630,8 @@ public final class Weather {
                 options.inMutable = true;
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), getBeaufortIconResourceID(context,getWindSpeedInBeaufortInt()),options);
                 if (bitmap != null) {
+                    int originalX = bitmap.getWidth();
+                    int originalY = bitmap.getHeight();
                     if (fromWidget) {
                         ThemePicker.applyColor(bitmap,ThemePicker.getWidgetTextColor(context));
                     } else {
@@ -631,7 +639,9 @@ public final class Weather {
                     }
                     Matrix m = new Matrix();
                     m.postRotate(wind_direction.floatValue());
-                    return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, false);
+                    // draw the wind forecast
+                    bitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),m,false);
+                    return bitmap;
                 } else {
                     return null;
                 }

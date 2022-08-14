@@ -216,7 +216,7 @@ public int getCount() {
 
 @Override
 public Object getItem(int i) {
-    return null;
+    return weatherForecasts.get(i);
 }
 
 @Override
@@ -474,7 +474,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         sunDuration_unit = (TextView) view.findViewById(R.id.fcitem_sunduration_unit);
         viewHolder.sunDuration_unit = sunDuration_unit;
     }
-    if (weatherInfo.hasSunDuration()){
+    if (weatherInfo.hasSunDuration() && (sunDuration_symbol!=null) && (sunDuration_textview!=null) && (sunDuration_unit!=null)){
         sunDuration_symbol.setColorFilter(ThemePicker.getColorTextLight(context),PorterDuff.Mode.SRC_IN);
         setVisibility(sunDuration_symbol, View.VISIBLE);
         setVisibility(sunDuration_textview, View.VISIBLE);

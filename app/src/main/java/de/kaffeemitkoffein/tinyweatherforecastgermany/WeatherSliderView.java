@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,6 +127,9 @@ public class WeatherSliderView extends HorizontalScrollView {
     private ImageView windImageView;
     private TextView windTextView;
     private ImageView labellingImageView;
+    private TextView clouds1;
+    private TextView clouds2;
+    private TextView clouds3;
     private WindowManager windowManager;
 
 
@@ -138,23 +142,31 @@ public class WeatherSliderView extends HorizontalScrollView {
         upateViews(itemPosition);
     }
 
+    public void setScrollPosition(int itemPosition){
+        Log.v("twfg","Scrolling to position: "+itemPosition);
+        smoothScrollTo(Math.round(valueSet.pixelPer1hItem*itemPosition),0);
+    }
+
     public void upateViews(int itemPosition){
         if ((itemPosition>=0) && (itemPosition<weatherInfos.size())) {
-            if (temperatureTextView != null) {
+            if ((temperatureTextView != null) && (weatherInfos.get(itemPosition).hasTemperature())){
                 temperatureTextView.setText(weatherInfos.get(itemPosition).getTemperatureInCelsiusInt()+"°");
             }
             if (dayTextView != null){
                 dayTextView.setText(simpleDateFormat.format(new Date(weatherInfos.get(itemPosition).getTimestamp())));
             }
-            if (windImageView != null){
-                if (WeatherSettings.getWindDisplayType(context)==Weather.WindDisplayType.BEAUFORT){
+            if ((windImageView != null) && (weatherInfos.get(itemPosition).hasWindDirection())){
+                /*
+                if ((WeatherSettings.getWindDisplayType(context)==Weather.WindDisplayType.BEAUFORT) && (weatherInfos.get(itemPosition).hasWindSpeed())){
                     windImageView.setImageBitmap(weatherInfos.get(itemPosition).getBeaufortBitmap(context,false));
                 } else {
                     windImageView.setImageBitmap(weatherInfos.get(itemPosition).getArrowBitmap(context,false));
                 }
+                 */
+                windImageView.setImageBitmap(weatherInfos.get(itemPosition).getWindSymbol(context,WeatherSettings.getWindDisplayType(context),false));
                 windImageView.setColorFilter(Color.WHITE,PorterDuff.Mode.SRC_IN);
             }
-            if (windTextView != null){
+            if ((windTextView != null) && (weatherInfos.get(itemPosition).hasWindSpeed())){
                 final String windspeed;
                 switch (WeatherSettings.getWindDisplayUnit(context)) {
                     case Weather.WindDisplayUnit.METERS_PER_SECOND:
@@ -174,7 +186,40 @@ public class WeatherSliderView extends HorizontalScrollView {
                 }
                 final StringBuilder windstring = new StringBuilder();
                 windstring.append(windspeed).append(Weather.getWindUnitString(WeatherSettings.getWindDisplayUnit(context)));
+                if (weatherInfos.get(itemPosition).hasFlurries()) {
+                    switch (WeatherSettings.getWindDisplayUnit(context)) {
+                        case Weather.WindDisplayUnit.METERS_PER_SECOND:
+                            windstring.append(" (");
+                            windstring.append(weatherInfos.get(itemPosition).getFlurriesInMsInt());
+                            windstring.append(")");
+                            break;
+                        case Weather.WindDisplayUnit.BEAUFORT:
+                            windstring.append(" (");
+                            windstring.append(weatherInfos.get(itemPosition).getFlurriesInBeaufortInt());
+                            windstring.append(")");
+                            break;
+                        case Weather.WindDisplayUnit.KILOMETERS_PER_HOUR:
+                            windstring.append(" (");
+                            windstring.append(weatherInfos.get(itemPosition).getFlurriesInKmhInt());
+                            windstring.append(")");
+                            break;
+                        case Weather.WindDisplayUnit.KNOTS:
+                            windstring.append(" (");
+                            windstring.append(weatherInfos.get(itemPosition).getFlurriesInKnotsInt());
+                            windstring.append(")");
+                            break;
+                    }
+                }
                 windTextView.setText(windstring.toString());
+            }
+            if ((clouds1!=null) && (weatherInfos.get(itemPosition).hasClouds_Nh())){
+                clouds1.setText(weatherInfos.get(itemPosition).getClouds_Nh()+"%");
+            }
+            if ((clouds2!=null) && (weatherInfos.get(itemPosition).hasClouds_Nm())){
+                clouds2.setText(weatherInfos.get(itemPosition).getClouds_Nm()+"%");
+            }
+            if ((clouds3!=null) && (weatherInfos.get(itemPosition).hasClouds_Nl())){
+                clouds3.setText(weatherInfos.get(itemPosition).getClouds_Nl()+"%");
             }
         }
 
@@ -243,12 +288,15 @@ public class WeatherSliderView extends HorizontalScrollView {
         this.context = context;
     }
 
-    public void setViews(TextView dayTextView, TextView temperatureTextView, ImageView windImageView, TextView windTextView, ImageView labellingImageView) {
+    public void setViews(TextView dayTextView, TextView temperatureTextView, ImageView windImageView, TextView windTextView, ImageView labellingImageView, TextView clouds1, TextView clouds2, TextView clouds3) {
         this.dayTextView = dayTextView;
         this.temperatureTextView = temperatureTextView;
         this.windImageView = windImageView;
         this.windTextView = windTextView;
         this.labellingImageView = labellingImageView;
+        this.clouds1 = clouds1;
+        this.clouds2 = clouds2;
+        this.clouds3 = clouds3;
     }
 
     public boolean isScrollable(){
