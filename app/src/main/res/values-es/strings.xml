@@ -274,7 +274,7 @@
     <string name="preference_meterednetwork_summary">Utiliza también las redes con contador para obtener datos.</string>
     <string name="preference_meterednetwork_notice">Es posible que se pierdan los avisos meteorológicos si sólo se utilizan las redes sin medidor.</string>
     <string name="service_notification_categoryname">Actualización de los datos meteorológicos</string>
-    <string name="service_warning_categoryname">Avisos meteorológicos</string>
+    <string name="service_warning_categoryname">Alertas meteorológicas</string>
     <string name="battery_and_data_hint">Esto aumentará el uso de la batería y el volumen de datos.</string>
     <string name="update_failed">Actualización fallida:</string>
     <string name="network_lost">se ha perdido la conexión a Internet.</string>
