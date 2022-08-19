@@ -287,4 +287,5 @@
     <string name="preference_clearnotifications_message">Melding geheugen gewist.</string>
     <string name="preference_display_overviewchart_title">Overzichtsgrafiek</string>
     <string name="preference_display_overviewchart_summary">Toont altijd de grafiek met de temperatuur, wolken en regen voor de komende dagen. Indien uitgeschakeld, zal de kaart alleen zichtbaar zijn in landschapsmodus, en alleen als er voldoende ruimte is.</string>
+    <string name="travel_button">Alles bijwerken</string>
 </resources>
