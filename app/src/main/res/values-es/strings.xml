@@ -287,4 +287,14 @@
     <string name="preference_display_overviewchart_summary">Mostrar siempre el gráfico que indica la temperatura, las nubes y la lluvia para los próximos días. Si se desactiva, el gráfico sólo será visible en modo horizontal, y sólo si hay espacio suficiente.</string>
     <string name="welcome_s3_text5">Pulse prolongadamente la previsión para abrir una vista más detallada.</string>
     <string name="welcome_setupwarnings">Advertencias de configuración</string>
+    <string name="preference_category_location">Ubicación</string>
+    <string name="overview_button">Panorama general</string>
+    <string name="preference_gpsmanual_title">Manual</string>
+    <string name="preference_gpsmanual_summary">Seleccione usted mismo la estación meteorológica de la lista de estaciones más cercanas.</string>
+    <string name="preference_gpsauto_title">Comprobar ubicación</string>
+    <string name="preference_gpsauto_summary">Compruebe que la ubicación es correcta en cada puesta en marcha.</string>
+    <string name="preference_display_rotation_title">Mostrar alineación</string>
+    <string name="preference_display_rotation_summary">Cómo alinear el display</string>
+    <string name="preference_usegps_title">Utilizar los servicios de localización</string>
+    <string name="travel_button">Actualizar todo</string>
 </resources>
