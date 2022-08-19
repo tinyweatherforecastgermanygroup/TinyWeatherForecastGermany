@@ -145,7 +145,7 @@
     <string name="preference_gadgetbridge_package_reset_toast">Gadgetbridge pakketnaam is teruggezet naar standaard.</string>
     <string name="preference_loggingscreen_summary">Stel logging opties in voor debugging.</string>
     <string name="service_notification_title">Tiny Weather Forecast Germany</string>
-    <string name="service_notification_channelname">Kennisgevingen bijwerken</string>
+    <string name="service_notification_channelname">Bijwerken van weergegevens</string>
     <string name="button_continue">Ga door</string>
     <string name="license_title">Licenties</string>
     <string name="logging_copy_fail">Het kopiëren van logs naar je klembord is mislukt!</string>
@@ -288,4 +288,10 @@
     <string name="preference_display_overviewchart_title">Overzichtsgrafiek</string>
     <string name="preference_display_overviewchart_summary">Toont altijd de grafiek met de temperatuur, wolken en regen voor de komende dagen. Indien uitgeschakeld, zal de kaart alleen zichtbaar zijn in landschapsmodus, en alleen als er voldoende ruimte is.</string>
     <string name="travel_button">Werk alles bij</string>
+    <string name="preference_category_location">Locatie</string>
+    <string name="preference_usegps_title">Gebruik locatiediensten</string>
+    <string name="preference_gpsauto_summary">Controleer bij elke opstart of de locatie correct is.</string>
+    <string name="preference_gpsmanual_title">Handmatig</string>
+    <string name="preference_gpsauto_title">Controleer locatie</string>
+    <string name="preference_gpsmanual_summary">Kies zelf het weerstation uit een lijst van dichtstbijzijnde stations.</string>
 </resources>
