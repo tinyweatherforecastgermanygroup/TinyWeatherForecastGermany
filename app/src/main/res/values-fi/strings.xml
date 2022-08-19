@@ -291,4 +291,10 @@
     <string name="preference_display_rotation_title">Näytön kohdistaminen</string>
     <string name="preference_display_rotation_summary">Näytön kohdistaminen</string>
     <string name="travel_button">Päivitä kaikki</string>
+    <string name="preference_gpsauto_summary">Tarkista, että sijainti on oikea jokaisen käynnistyksen yhteydessä.</string>
+    <string name="preference_gpsmanual_summary">Valitse itse sääasema lähimpien asemien luettelosta.</string>
+    <string name="preference_gpsmanual_title">Manuaalinen</string>
+    <string name="preference_category_location">Sijainti</string>
+    <string name="preference_usegps_title">Käytä sijaintipalveluja</string>
+    <string name="preference_gpsauto_title">Tarkista sijainti</string>
 </resources>
