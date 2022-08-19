@@ -287,4 +287,14 @@
     <string name="network_nonetwork">brak połączenia z Internetem.</string>
     <string name="preference_display_overviewchart_summary">awsze wyświetlaj wykres temperatury, zachmurzenia i deszczu na najbliższe dni. Gdy opcja ta jest wyłączona, wykres będzie widoczny tylko w trybie poziomym i tylko wtedy, gdy będzie wystarczająco dużo miejsca.</string>
     <string name="network_timeout">połączenie internetowe zostało przerwane.</string>
+    <string name="preference_gpsauto_title">Sprawdź lokalizację</string>
+    <string name="preference_category_location">Lokalizacja</string>
+    <string name="preference_usegps_title">Korzystaj z usług lokalizacyjnych</string>
+    <string name="preference_gpsmanual_title">Ręcznie</string>
+    <string name="preference_gpsauto_summary">Przy każdym uruchomieniu sprawdź, czy lokalizacja jest prawidłowa.</string>
+    <string name="overview_button">Przegląd</string>
+    <string name="preference_display_rotation_title">Ustawienie ekranu</string>
+    <string name="preference_display_rotation_summary">Jak wyrównać ekran</string>
+    <string name="preference_gpsmanual_summary">Samodzielnie wybierz stację pogodową z listy najbliższych stacji.</string>
+    <string name="travel_button">Zaktualizuj wszystko</string>
 </resources>
