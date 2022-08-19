@@ -311,4 +311,7 @@
     <string name="preference_gpsmanual_summary">Händisch eine Station aus einer Liste der nächst gelegenen Stationen auswählen.</string>
     <string name="preference_category_location">Standort</string>
     <string name="preference_usegps_title">Ortungsdienste nutzen</string>
+    <string name="overview_button">Übersicht</string>
+    <string name="preference_display_rotation_title">Anzeige ausrichten</string>
+    <string name="preference_display_rotation_summary">Ausrichten der Anzeige</string>
 </resources>
