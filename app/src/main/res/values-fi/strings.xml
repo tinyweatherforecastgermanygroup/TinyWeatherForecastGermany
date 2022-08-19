@@ -65,7 +65,7 @@
     <string name="logging_copy_fail">Lokien kopiointi leikepöydälle epäonnistui!</string>
     <string name="license_title">Lisenssit</string>
     <string name="button_continue">Jatka</string>
-    <string name="service_notification_channelname">Ilmoitusten päivitys</string>
+    <string name="service_notification_channelname">Säätietojen päivittäminen</string>
     <string name="service_notification_title">Tiny Weather Forecast Germany</string>
     <string name="service_notification_text0">Saadaan uusi sääennuste…</string>
     <string name="service_notification_text1">Saamme säävaroituksia…</string>
@@ -287,4 +287,8 @@
     <string name="network_lost">Internet-yhteys katkeaa.</string>
     <string name="service_notification_categoryname">Säätietojen päivittäminen</string>
     <string name="service_warning_categoryname">Säävaroitukset</string>
+    <string name="overview_button">Yleiskatsaus</string>
+    <string name="preference_display_rotation_title">Näytön kohdistaminen</string>
+    <string name="preference_display_rotation_summary">Näytön kohdistaminen</string>
+    <string name="travel_button">Päivitä kaikki</string>
 </resources>
