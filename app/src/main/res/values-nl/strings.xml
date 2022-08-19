@@ -294,4 +294,7 @@
     <string name="preference_gpsmanual_title">Handmatig</string>
     <string name="preference_gpsauto_title">Controleer locatie</string>
     <string name="preference_gpsmanual_summary">Kies zelf het weerstation uit een lijst van dichtstbijzijnde stations.</string>
+    <string name="overview_button">Overzicht</string>
+    <string name="preference_display_rotation_title">Weergave uitlijnen</string>
+    <string name="preference_display_rotation_summary">Uitlijnen van het scherm</string>
 </resources>
