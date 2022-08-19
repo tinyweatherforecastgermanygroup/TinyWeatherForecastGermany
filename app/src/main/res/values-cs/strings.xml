@@ -287,4 +287,14 @@
     <string name="preference_display_overviewchart_title">Přehledový diagram</string>
     <string name="preference_display_overviewchart_summary">Vždy zobrazte graf s údaji o teplotě, oblačnosti a dešti pro následující dny. Pokud je tato funkce vypnutá, graf se zobrazí pouze v režimu na šířku, a to pouze v případě, že je k dispozici dostatek místa.</string>
     <string name="welcome_s3_text5">Dlouhým stisknutím předpovědi otevřete podrobnější zobrazení.</string>
+    <string name="preference_category_location">Umístění</string>
+    <string name="overview_button">Přehled</string>
+    <string name="preference_gpsauto_title">Zkontrolujte umístění</string>
+    <string name="preference_gpsmanual_title">Ručně</string>
+    <string name="preference_usegps_title">Používání služeb určování polohy</string>
+    <string name="preference_gpsmanual_summary">Vyberte si sami meteorologickou stanici ze seznamu nejbližších stanic.</string>
+    <string name="preference_display_rotation_title">Zarovnání displeje</string>
+    <string name="preference_display_rotation_summary">Jak zarovnat displej</string>
+    <string name="preference_gpsauto_summary">Při každém spuštění zkontrolujte, zda je umístění správné.</string>
+    <string name="travel_button">Aktualizovat vše</string>
 </resources>
