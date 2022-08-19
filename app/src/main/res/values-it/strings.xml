@@ -294,4 +294,8 @@
     <string name="preference_gpsauto_summary">Verificare che la posizione sia corretta a ogni avvio.</string>
     <string name="preference_gpsmanual_title">Manuale</string>
     <string name="preference_gpsmanual_summary">Selezionare la stazione meteorologica da un elenco di stazioni più vicine.</string>
+    <string name="overview_button">Panoramica</string>
+    <string name="preference_display_rotation_title">Allineamento del display</string>
+    <string name="preference_display_rotation_summary">Come allineare il display</string>
+    <string name="travel_button">Aggiornare tutto</string>
 </resources>
