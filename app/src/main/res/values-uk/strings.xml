@@ -289,9 +289,9 @@
     <string name="network_nonetwork">нема зʼєднання з інтернетом.</string>
     <string name="network_timeout">час на зʼєднання з інтернетом вичерпано.</string>
     <string name="preference_category_location">Місцезнаходження</string>
-    <string name="preference_usegps_title">Викор. сервіси місцезнаходження</string>
-    <string name="preference_gpsauto_summary">Перевіряти правильність місцезнаходження під час кожного запуску.</string>
-    <string name="preference_gpsmanual_title">Вручну</string>
-    <string name="preference_gpsauto_title">Перевірити місцезнаходження</string>
-    <string name="preference_gpsmanual_summary">Вибрати метеостанцію зі списку найближчих станцій самостійно.</string>
+    <string name="preference_usegps_title">Використовуйте служби визначення місцезнаходження</string>
+    <string name="preference_gpsauto_summary">Під час кожного запуску перевіряйте правильність розташування.</string>
+    <string name="preference_gpsmanual_title">Інструкція</string>
+    <string name="preference_gpsauto_title">Перевірте місцезнаходження</string>
+    <string name="preference_gpsmanual_summary">Самостійно виберіть метеостанцію зі списку найближчих станцій.</string>
 </resources>
