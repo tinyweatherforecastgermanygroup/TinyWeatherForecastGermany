@@ -13,4 +13,8 @@
     <string name="preference_display_show_radar_by_default_title">Eső radar</string>
     <string name="whatsnew_button">Mi újság</string>
     <string name="weathercode_SLIGHT_SNOWFALL_CONTINUOUS">enyhe havazás, folyamatos</string>
+    <string name="dwd_notice">Adatbázis: Deutscher Wetterdienst, saját elemekkel kiegészítve, egyes adatok egyedi értékekből átlagolva.</string>
+    <string name="dwd_notice_app">Adatbázis: Deutscher Wetterdienst, saját elemekkel kiegészítve, egyes adatok egyedi értékekből átlagolva. Figyelmeztetések rövidítve.</string>
+    <string name="dwd_warnings_notice">Adatbázis: Deutscher Wetterdienst, sűrített figyelmeztetések megjelenítése.</string>
+    <string name="dwd_textforecast_notice">Adatbázis: Deutscher Wetterdienst, saját elemek hozzáadása, megváltozott elrendezés.</string>
 </resources>
