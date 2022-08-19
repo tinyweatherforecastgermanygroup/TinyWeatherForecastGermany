@@ -288,4 +288,10 @@
     <string name="preference_display_overviewchart_summary">Mostra sempre il grafico che indica temperatura, nuvole e pioggia per i prossimi giorni. Se disattivato, il grafico sarà visibile solo in modalità orizzontale e solo se c\'è spazio sufficiente.</string>
     <string name="update_failed">Aggiornamento fallito:</string>
     <string name="network_nonetwork">nessuna connessione a Internet.</string>
+    <string name="preference_category_location">Posizione</string>
+    <string name="preference_gpsauto_title">Controllare la posizione</string>
+    <string name="preference_usegps_title">Utilizzare i servizi di localizzazione</string>
+    <string name="preference_gpsauto_summary">Verificare che la posizione sia corretta a ogni avvio.</string>
+    <string name="preference_gpsmanual_title">Manuale</string>
+    <string name="preference_gpsmanual_summary">Selezionare la stazione meteorologica da un elenco di stazioni più vicine.</string>
 </resources>
