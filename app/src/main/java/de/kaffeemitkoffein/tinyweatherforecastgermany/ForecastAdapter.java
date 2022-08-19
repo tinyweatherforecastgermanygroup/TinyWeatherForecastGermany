@@ -34,12 +34,15 @@ import android.widget.*;
 import org.astronomie.info.Astronomy;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 public class ForecastAdapter extends BaseAdapter {
+
+    private class ScreenWidthCategory{
+        public final static int NORMAL = 0;
+        public final static int DP320 = 1;
+        public final static int DP400 = 2;
+    }
 
 private final ArrayList<Weather.WeatherInfo> weatherForecasts;
 private final ArrayList<Weather.WeatherInfo> weatherForecasts_hourly;
@@ -59,7 +62,7 @@ private final boolean displaySimpleBar;
 private final boolean display_wind_arc;
 private final int display_wind_arc_perdiod;
 private final boolean warnings_disabled;
-private String viewModel;
+private final String viewModel;
 private final LayoutInflater layoutInflater;
 private int regularCellHeight=150;
 private ArrayList<WeatherWarning> warnings;
@@ -67,6 +70,10 @@ private ArrayList<WeatherWarning> warnings;
 private final String labelSunrise;
 private final String labelSunset;
 private final String labelTwilight;
+private DisplayMetrics displayMetrics;
+private final float screenWidthDP;
+private final int screenWidth;
+
 
 private final SparseArray<Bitmap> bitmapCache = new SparseArray<>();
 
@@ -95,6 +102,18 @@ public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherFo
     this.labelSunrise = context.getResources().getString(R.string.sunrise);
     this.labelSunset = context.getResources().getString(R.string.sunset);
     this.labelTwilight = context.getResources().getString(R.string.twilight);
+    // pd = px / (dpi/160)
+    this.displayMetrics = context.getResources().getDisplayMetrics();
+    this.screenWidthDP = displayMetrics.widthPixels / (displayMetrics.xdpi/160);
+    if (this.screenWidthDP>=400){
+        this.screenWidth = ScreenWidthCategory.DP400;
+    } else {
+        if (this.screenWidthDP>=320){
+            this.screenWidth = ScreenWidthCategory.DP320;
+        } else {
+            this.screenWidth = ScreenWidthCategory.NORMAL;
+        }
+    }
 }
 
 public void setWarnings(ArrayList<WeatherWarning> warnings){
@@ -651,7 +670,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         textView_templow.setText(weatherInfo.getMinTemperatureInCelsiusInt()+"°");
     }
     if (weatherInfo.hasPressure() && textView_pressure!=null){
-        textView_pressure.setText(weatherInfo.getPressure()/100+ " hPa");
+        textView_pressure.setText(String.valueOf(weatherInfo.getPressure()/100));
     }
     if (weatherInfo.hasRH() && textView_rh!=null){
         textView_rh.setText(weatherInfo.getRHInt()+" %");
@@ -891,7 +910,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     view.post(new Runnable() {
         @Override
         public void run() {
-            regularCellHeight = determineExpectedPixelHeightOfForecastElement(h,m,fcBv,eODv);
+            regularCellHeight = determineExpectedPixelHeightOfForecastElement();
             int height = view1.getHeight();
             // this is a hack to prevent a zero value of the height on some devices:
             // the height is always the maximum determinded up to now
@@ -901,7 +920,8 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             if (height<regularCellHeight){
                 height = regularCellHeight;
             }
-            ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
+            //ViewGroup.LayoutParams layoutParams = view1.getLayoutParams();
+            AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) view1.getLayoutParams();
             layoutParams.height = height;
             view1.setLayoutParams(layoutParams);
             // this is bacically a hack, so that this view only gets visible after everything else is layouted
@@ -1188,40 +1208,43 @@ public static float DPtoPX(int dp, DisplayMetrics displayMetrics){
     return  Math.max(a,b);
 }
 
-public int determineExpectedPixelHeightOfForecastElement(TextView textView_heading, TextView mediumSizeTextView, ImageView forecastBar, boolean isEndOfDayBarVisible){
-    DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-    float headingHight = textView_heading.getTextSize();
-    float weatherConditiontextHight = DPtoPX(12,displayMetrics)*2; // may be 2 lines
-    if (mediumSizeTextView!=null){
-        weatherConditiontextHight = mediumSizeTextView.getTextSize()*2;
-    }
-    // actually 3 rows, but we take 1 more to keep space below and above;
-    // however, additional spacing makes it up tp 6
-    float threeIconRowsHeightFont = mediumSizeTextView.getTextSize()*6;
-    float threeIconRowsHeight = DPtoPX(12,displayMetrics)*6;
-    if (threeIconRowsHeightFont>threeIconRowsHeight){
-        threeIconRowsHeight = threeIconRowsHeightFont;
-    }
-    float leftColumnHeight = threeIconRowsHeight + weatherConditiontextHight;
-    float fcBarHeight = DPtoPX(21,displayMetrics);
-    if (forecastBar!=null){
-        if (forecastBar.getHeight()>fcBarHeight){
-            fcBarHeight = forecastBar.getHeight();
+public float getDMax(float value){
+    float pxd = value * (displayMetrics.scaledDensity/displayMetrics.density);
+    return Math.max(value,pxd);
+}
+
+public int determineExpectedPixelHeightOfForecastElement(){
+    float total=0; // height in DP
+    total = total + 24; // top & bottom padding, optional end of day bar
+    if (viewModel==WeatherSettings.ViewModel.EXTENDED) {
+        float leftColumn = 0; float middleColumn = 0; float rightColumn = 0;
+        middleColumn = middleColumn + 0.33f*this.screenWidthDP;
+        if (screenWidth == ScreenWidthCategory.NORMAL) {
+            leftColumn   = leftColumn + 2 * getDMax(10) + 3 * getDMax(10);  // condition-text + iconrow * 3
+            rightColumn  = getDMax(28 + 14 + 2*10);                  // temperatureContainer + wind row + visiblity row
+        } else {
+            if (screenWidth == ScreenWidthCategory.DP320) {
+                leftColumn = leftColumn + 2 * getDMax(11) + 3 * getDMax(11);  // condition-text + iconrow * 3
+                rightColumn  = getDMax(28 + 16 + 2*11);                // temperatureContainer + wind row + visiblity row
+            } else {
+                leftColumn = leftColumn + 2 * getDMax(12) + 3 * getDMax(12);  // condition-text + iconrow * 3
+                rightColumn  = getDMax(28 + 18 + 2*12);                // temperatureContainer + wind row + visiblity row
+            }
+        }
+        total = total + Math.max(leftColumn,Math.max(middleColumn,rightColumn));
+    } else {
+        if (screenWidth == ScreenWidthCategory.NORMAL) {
+            total = total + getDMax(16) + 80 + 2*getDMax(14);
+        } else {
+            if (screenWidth == ScreenWidthCategory.DP320) {
+                total = total + getDMax(24) + 100 + 2*getDMax(16);
+            } else {
+                total = total + getDMax(28) + 105 + 2*getDMax(18);
+            }
         }
     }
-    float nxtDayBar = 0;
-    if (isEndOfDayBarVisible) {
-        nxtDayBar = DPtoPX(12,displayMetrics);
-    }
-    float paddingElements = DPtoPX(4,displayMetrics);
-    // Log.v("twfg","heading   : "+headingHight);
-    // Log.v("twfg","leftColumn: "+leftColumnHeight);
-    // Log.v("twfg","fcBar     : "+fcBarHeight);
-    // Log.v("twfg","nxtDayBar : "+nxtDayBar);
-    // Log.v("twfg","paddingEl : "+paddingElements*2);
-    int total = Math.round(headingHight+leftColumnHeight+fcBarHeight+nxtDayBar+paddingElements*2);
-    // Log.v("twfg","TOTAL     : "+total);
-    return total;
+    float result = total*(displayMetrics.xdpi/160f);
+    return Math.round(result);
 }
 
 public static int calculateInSampleSize(final BitmapFactory.Options options, final int widthRequired, final int heightRequired){

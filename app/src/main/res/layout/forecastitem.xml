@@ -431,9 +431,20 @@
                               android:gravity="left|top"
                               android:layout_alignParentTop="true"
                               android:layout_marginLeft="10dp"
+                              android:maxLines="1"
                               android:layout_toRightOf="@id/fcitem_temperature_bar"
                               android:layout_width="wrap_content"
                               android:layout_height="match_parent"/>
+
+                    <TextView android:id="@+id/fcitem_pressure_unit"
+                              android:textSize="@dimen/fcmain_textsize_small"
+                              android:textColor="?attr/colorText"
+                              android:layout_toRightOf="@id/fcitem_pressure"
+                              android:layout_alignBottom="@id/fcitem_pressure"
+                              android:layout_marginLeft="1dp"
+                              android:text="hPa"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"/>
 
                     <ImageView
                             android:id="@+id/fcitem_rh_label"
