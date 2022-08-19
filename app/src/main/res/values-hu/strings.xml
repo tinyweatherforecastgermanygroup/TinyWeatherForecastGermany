@@ -142,4 +142,7 @@
     <string name="weathercode_MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS">mérsékelt szitálás, folyamatos</string>
     <string name="preference_setalarm_notice">FIGYELMEZTETÉS: ez jelenleg nem érhető el, mivel az engedélyezett Gadgetbridge-támogatás mindenképpen kényszeríti az automatikus frissítéseket.</string>
     <string name="preference_gpsmanual_summary">Válassza ki az időjárási állomást a legközelebbi állomások listájából.</string>
+    <string name="overview_button">Áttekintés</string>
+    <string name="preference_display_rotation_title">Megjelenítés igazítás</string>
+    <string name="preference_display_rotation_summary">A kijelző beállítása</string>
 </resources>
