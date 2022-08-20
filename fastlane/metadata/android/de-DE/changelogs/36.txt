@@ -1,5 +1,3 @@
-Neu in dieser Version ([VERSION]):
-
 - neue Sprache: Ungarisch (Danke an eUgEntOptIc44 und Gőz Barnabás!)
 - neuer, scrollbarer Wetter-Überblick
 - verbessertes Design der Bedienoberfläche
