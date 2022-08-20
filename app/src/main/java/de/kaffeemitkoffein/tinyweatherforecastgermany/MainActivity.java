@@ -38,14 +38,18 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.*;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -399,7 +403,8 @@ public class MainActivity extends Activity {
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Preparing database failed on main thread.");
         }
         final WeatherSettings weatherSettings = new WeatherSettings(this);
-        if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
+        // !!! !=
+        if (weatherSettings.last_version_code == BuildConfig.VERSION_CODE){
             // remove old databases if previous version was older than 30
             if (weatherSettings.last_version_code<30){
                 // remove abandoned forecast database file
@@ -1231,6 +1236,45 @@ public class MainActivity extends Activity {
         }
     }
 
+    private SpannableStringBuilder readTextFileFromResources(String textfile){
+        try {
+            InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(textfile,"raw",getApplicationContext().getPackageName()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+            while ((line=bufferedReader.readLine())!=null){
+                line = line.replace("[VERSION]",BuildConfig.VERSION_NAME);
+                if (line.length()>0){
+                    if (line.charAt(0) == '-'){
+                        if (line.length()>1){
+                            line=line.substring(2);
+                        }
+                        int start = spannableStringBuilder.length();
+                        spannableStringBuilder.append(line+"\n");
+                        int end = spannableStringBuilder.length();
+                        Log.v("twfg","Line ("+start+","+end+"): "+line);
+                        BulletSpan bulletSpan = new BulletSpan(20);
+                        if (Build.VERSION.SDK_INT>28){
+                            bulletSpan = new BulletSpan(20, ThemePicker.getColor(getApplicationContext(),ThemePicker.ThemeColor.TEXTLIGHT),10);
+                        }
+                        spannableStringBuilder.setSpan(bulletSpan,start,end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        spannableStringBuilder.setSpan(new ForegroundColorSpan(ThemePicker.getColor(getApplicationContext(),ThemePicker.ThemeColor.TEXTLIGHT)),start,end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    } else {
+                        spannableStringBuilder.append(line+ "\n");
+                    }
+                } else {
+                    spannableStringBuilder.append("\n");
+                }
+            }
+            bufferedReader.close();
+            inputStream.close();
+            return spannableStringBuilder;
+        } catch (Exception e){
+            Log.v("twfg","Error: "+e.getMessage());
+            return null;
+        }
+    }
+
     public void showWhatsNewDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setCancelable(true);
@@ -1255,6 +1299,7 @@ public class MainActivity extends Activity {
         whatsNewDialogVisible=true;
 
         TextView textView = (TextView) whatsNewDialog.findViewById(R.id.whatsnew_textview);
+        /*
         String textfile = "whatsnew";
         InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(textfile,"raw",getApplicationContext().getPackageName()));
         try {
@@ -1269,6 +1314,8 @@ public class MainActivity extends Activity {
             textView.setText("Error.");
             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Showing the what-is-new dialog failed.");
         }
+         */
+        textView.setText(readTextFileFromResources("whatsnew"));
     }
 
     public static void deleteAreaDatabase(Context context){

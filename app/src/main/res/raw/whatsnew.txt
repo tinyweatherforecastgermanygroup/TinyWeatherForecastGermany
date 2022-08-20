@@ -6,7 +6,6 @@ New in version ([VERSION]):
 - improved support of the Solarized themes
 - new option to trigger a weather data update for all favorites
 - the app now optionally updates the location automatically upon app launch
-- improved handling of denied and/or revoked location permissions
 - added a setting to force landscape or portrait mode
 - simplified station search
 - updated translations

@@ -6,7 +6,6 @@ Neu in dieser Version ([VERSION]):
 - verbesserte Unterstützung der Solarized Themes
 - neue Option, um die Wetterdaten aller Favoriten zu aktualisieren
 - die App aktualisiert nun auf Wunsch automatisch den Standort bei jedem Start
-- verbesserte Handhabung abgelehnter und/oder entzogener Standort-Berechtigungen
 - neue Einstellung, um wahlweise das Quer- oder Hochkantformat zu erzwingen
 - vereinfachte Suche der Wetterstation
 - verbesserte Übersetzungen
