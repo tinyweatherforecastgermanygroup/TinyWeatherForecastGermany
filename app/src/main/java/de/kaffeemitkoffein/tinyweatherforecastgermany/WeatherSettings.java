@@ -152,7 +152,7 @@ public class WeatherSettings {
     public static final boolean PREF_WARNINGS_DISABLE_DEFAULT = false;
     public static final long PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final boolean PREF_IS_FIRST_APP_LAUNCH_DEFAULT = true;
-    public static final boolean PREF_USEGPS_DEFAULT = false;
+    public static final boolean PREF_USEGPS_DEFAULT = true;
     public static final boolean PREF_GPSAUTO_DEFAULT = false;
     public static final boolean PREF_GPSMANUAL_DEFAULT = false;
     public static final long PREF_LASTGPSFIX_DEFAULT = 0;

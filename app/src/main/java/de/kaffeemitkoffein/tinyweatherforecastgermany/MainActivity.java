@@ -27,7 +27,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -43,7 +42,6 @@ import android.text.Spanned;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -403,8 +401,7 @@ public class MainActivity extends Activity {
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Preparing database failed on main thread.");
         }
         final WeatherSettings weatherSettings = new WeatherSettings(this);
-        // !!! !=
-        if (weatherSettings.last_version_code == BuildConfig.VERSION_CODE){
+        if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
             // remove old databases if previous version was older than 30
             if (weatherSettings.last_version_code<30){
                 // remove abandoned forecast database file
@@ -1252,7 +1249,6 @@ public class MainActivity extends Activity {
                         int start = spannableStringBuilder.length();
                         spannableStringBuilder.append(line).append("\n");
                         int end = spannableStringBuilder.length();
-                        Log.v("twfg","Line ("+start+","+end+"): "+line);
                         BulletSpan bulletSpan = new BulletSpan(20);
                         if (Build.VERSION.SDK_INT>28){
                             bulletSpan = new BulletSpan(20, ThemePicker.getColor(getApplicationContext(),ThemePicker.ThemeColor.TEXTLIGHT),10);
@@ -1270,7 +1266,7 @@ public class MainActivity extends Activity {
             inputStream.close();
             return spannableStringBuilder;
         } catch (Exception e){
-            Log.v("twfg","Error: "+e.getMessage());
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error: "+e.getMessage());
             return null;
         }
     }
