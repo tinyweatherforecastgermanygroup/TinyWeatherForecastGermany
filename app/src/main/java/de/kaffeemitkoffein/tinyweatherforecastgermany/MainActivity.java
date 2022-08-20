@@ -1250,7 +1250,7 @@ public class MainActivity extends Activity {
                             line=line.substring(2);
                         }
                         int start = spannableStringBuilder.length();
-                        spannableStringBuilder.append(line+"\n");
+                        spannableStringBuilder.append(line).append("\n");
                         int end = spannableStringBuilder.length();
                         Log.v("twfg","Line ("+start+","+end+"): "+line);
                         BulletSpan bulletSpan = new BulletSpan(20);
@@ -1260,7 +1260,7 @@ public class MainActivity extends Activity {
                         spannableStringBuilder.setSpan(bulletSpan,start,end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         spannableStringBuilder.setSpan(new ForegroundColorSpan(ThemePicker.getColor(getApplicationContext(),ThemePicker.ThemeColor.TEXTLIGHT)),start,end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     } else {
-                        spannableStringBuilder.append(line+ "\n");
+                        spannableStringBuilder.append(line).append("\n");
                     }
                 } else {
                     spannableStringBuilder.append("\n");
