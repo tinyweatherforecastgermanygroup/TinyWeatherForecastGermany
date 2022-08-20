@@ -1,7 +1,7 @@
 Kleine Wettervorschau Deutschland
 =================================
 
-Copyright © 2020, 2021 Pawel Dube
+Copyright © 2020, 2021, 2022 Pawel Dube
 
 Version: [VERSION]
 
@@ -42,13 +42,13 @@ Folgende Personen haben zum Projekt beigetragen:
 * Dänisch: eUgEntOptIc44, mondstern
 * Deutsch: eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
 * Französisch: eUgEntOptIc44, mondstern, J. Lavoie
-* Finnisch: mondstern
+* Finnisch: eUgEntOptIc44, mondstern
 * Italienisch: mondstern, eUgEntOptIc44
 * Englisch: Allan Nordhøy
-* Niederländisch: mondstern
+* Niederländisch: eUgEntOptIc44, mondstern
 * Tschechisch: eUgEntOptIc44, mondstern
 * Norwegisch Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
-* Polnisch: mondstern
+* Polnisch: eUgEntOptIc44, mondstern
 * Spanisch: eUgEntOptIc44
 * Ukrainisch: eUgEntOptIc44, Andrij Mizyk
 * Ungarisch: eUgEntOptIc44, Gőz Barnabás

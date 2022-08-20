@@ -41,15 +41,15 @@ The following persons contributed to this project:
 Translations:
 * Czech: eUgEntOptIc44, mondstern
 * Danish: eUgEntOptIc44, mondstern
-* Dutch: mondstern
+* Dutch: eUgEntOptIc44, mondstern
 * English: Allan Nordhøy
 * French: eUgEntOptIc44, mondstern, J. Lavoie
-* Finnish: mondstern
+* Finnish: eUgEntOptIc44, mondstern
 * German: eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
 * Hungarian: eUgEntOptIc44, Gőz Barnabás
 * Italian: mondstern, eUgEntOptIc44
 * Norwegian Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
-* Polish: mondstern
+* Polish: eUgEntOptIc44, mondstern
 * Spanish: eUgEntOptIc44
 * Ukrainian: eUgEntOptIc44, Andrij Mizyk
 
