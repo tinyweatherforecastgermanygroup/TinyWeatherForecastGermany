@@ -447,8 +447,24 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     if (weatherInfo.hasProbPrecipitation()){
         precipitation_string = weatherInfo.getProbPrecipitation()+"% ";
     }
+    if (precipitation_unit_lower==null){
+        precipitation_unit_lower = (TextView) view.findViewById(R.id.fcitem_precipitation_unit_lower);
+        viewHolder.precipitation_unit_lower = precipitation_unit_lower;
+    }
+    if (precipitation_unit_upper==null) {
+        precipitation_unit_upper = (TextView) view.findViewById(R.id.fcitem_precipitation_unit_upper);
+        viewHolder.precipitation_unit_upper = precipitation_unit_upper;
+    }
     if (weatherInfo.hasPrecipitation()){
-        precipitation_string = precipitation_string +weatherInfo.getPrecipitation();
+        double precipitationAmount = weatherInfo.getPrecipitation();
+        if (precipitationAmount>0){
+            setVisibility(precipitation_unit_upper,View.VISIBLE);
+            setVisibility(precipitation_unit_lower, View.VISIBLE);
+            precipitation_string = precipitation_string +weatherInfo.getPrecipitation();
+        } else {
+            setVisibility(precipitation_unit_upper,View.GONE);
+            setVisibility(precipitation_unit_lower, View.GONE);
+        }
     }
     if (precipitation_string.equals("")){
         setVisibility(precipitation_symbol,View.GONE);
@@ -465,17 +481,11 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             ThemePicker.applyPrecipitationAccentColor(context,precipitation_textview);
         }
     }
-    if (precipitation_unit_lower==null){
-        precipitation_unit_lower = (TextView) view.findViewById(R.id.fcitem_precipitation_unit_lower);
-        viewHolder.precipitation_unit_lower = precipitation_unit_lower;
-    }
     if (precipitation_unit_lower!=null){
         precipitation_unit_lower.setText(weatherInfo.getPrecipitationUnitLower());
         ThemePicker.applyPrecipitationAccentColor(context,precipitation_unit_lower);
     }
-    if (precipitation_unit_upper==null){
-        precipitation_unit_upper = (TextView) view.findViewById(R.id.fcitem_precipitation_unit_upper);
-        viewHolder.precipitation_unit_upper = precipitation_unit_upper;
+    if (precipitation_unit_upper!=null){
         if (precipitation_unit_upper!=null){
             ThemePicker.applyPrecipitationAccentColor(context,precipitation_unit_upper);
         }
