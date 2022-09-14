@@ -1,17 +1,17 @@
 Version 0.54.0:
 - Geokoordinaten können nun an diese App geteilt werden
-- signifikante Verbesserung der Leistung der Hauptapp durch neues Bitmap-Chaching (Danke an Marc Nause!)
+- signifikante Verbesserung der Leistung der Haupt-App durch neues Bitmap-Caching (Danke an Marc Nause!)
 - Breitengrad wird nun vor Längengrad angegeben
 - neues Widget mit Uhr & Wetter
-- verbessertes Layout im Such-Dialog
+- verbessertes Layout im Suchdialog
 - verbessertes Layout des großen Widgets, vor allem behebt das ein Abschneiden von Informationen auf älteren Geräten
-- behoben: max. Temperatur wurde  im ersten Eintrag der 6-stündigen Vorhersage zu hoch angezeigt
-- behoben: Kommas wurden bei der Eingabe von Geo-Koordinaten nicht akzeptiert
+- behoben: Max. Temperatur wurde im ersten Eintrag der 6-stündigen Vorhersage zu hoch angezeigt
+- behoben: Kommas wurden bei der Eingabe von Geokoordinaten nicht akzeptiert
 - behoben: Nebel mit Reifansatz wurde als Wetterzustand nicht korrekt angezeigt
-- zahlreiche, weitere Fehlerkorrekturen
+- zahlreiche weitere Fehlerkorrekturen
 
 Version 0.54.1:
-- behoben: Überlagerungen im Such-Dialog
+- behoben: Überlagerungen im Suchdialog
 - behoben: mehrere Widget-Fehler
 - behoben: Intro startete manchmal mehr als einmal
 
