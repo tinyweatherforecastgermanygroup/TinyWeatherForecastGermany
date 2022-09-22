@@ -294,4 +294,7 @@
     <string name="preference_gpsmanual_title">Інструкція</string>
     <string name="preference_gpsauto_title">Перевірте місцезнаходження</string>
     <string name="preference_gpsmanual_summary">Самостійно виберіть метеостанцію зі списку найближчих станцій.</string>
+    <string name="overview_button">Огляд</string>
+    <string name="preference_display_rotation_title">Вирівнювання екрану</string>
+    <string name="preference_display_rotation_summary">Як вирівняти екран</string>
 </resources>
