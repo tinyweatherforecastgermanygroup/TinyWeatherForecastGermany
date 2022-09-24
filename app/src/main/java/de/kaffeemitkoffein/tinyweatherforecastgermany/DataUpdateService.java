@@ -12,7 +12,6 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
-
 import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

@@ -79,6 +79,8 @@ public class MainActivity extends Activity {
     StationSearchEngine stationSearchEngine;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
+    public final SimpleDateFormat hourMinuteSecondMilliSecDateFormat = new SimpleDateFormat("HH:mm:ss:SSS");
+
     CurrentWeatherInfo weatherCard;
 
     long last_updateweathercall = Calendar.getInstance().getTimeInMillis();
@@ -344,13 +346,6 @@ public class MainActivity extends Activity {
         } catch (Exception e){
             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when checking for warnings: "+e.getMessage());
         }
-        if (weatherCard!=null){
-            try {
-                displayWeatherForecast(weatherCard);
-            } catch (Exception e){
-                PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when displaying weather: "+e.getMessage());
-            }
-        }
         weatherLocationManager.checkLocation();
         super.onResume();
     }
@@ -481,13 +476,6 @@ public class MainActivity extends Activity {
                         // nothing to do, views will be updated after the update finished, and notifications will be
                         // launched, then
                     }
-                    // check if there is weather data (might be old) and display it while an update was launched above anyway
-                    CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
-                    if (weatherCard!=null){
-                        displayWeatherForecast(weatherCard);
-                    }
-                    // update warnings async, but only if database of areas is ready
-                    checkIfWarningsApply();
                     // notify GadgetBridge
                     GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
                     gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
@@ -560,7 +548,8 @@ public class MainActivity extends Activity {
         // get new data from api or display present data.
         if (!API_TESTING_ENABLED){
             if (weatherCard!=null){
-                displayWeatherForecast(weatherCard);
+                // Log.v("twfg","calling from API test");
+                // displayWeatherForecast(weatherCard);
                 UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
             } else {
                 UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
@@ -1011,7 +1000,9 @@ public class MainActivity extends Activity {
    }
 
     public void displayWeatherForecast(){
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(this);
+        if (weatherCard==null){
+            weatherCard = new Weather().getCurrentWeatherInfo(this);
+        }
         if (weatherCard==null){
             weatherCard = new CurrentWeatherInfo();
         }
@@ -1019,7 +1010,7 @@ public class MainActivity extends Activity {
     }
 
     public void getWeatherForecast(){
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(this);
+        weatherCard = new Weather().getCurrentWeatherInfo(this);
         if ((weatherCard == null) || (API_TESTING_ENABLED)){
             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE);
         } else {
@@ -1035,6 +1026,7 @@ public class MainActivity extends Activity {
     private void checkIfWarningsApply(){
         // abort if warnings disabled or area database not ready
         if (WeatherSettings.areWarningsDisabled(context) || !WeatherSettings.isAreaDatabaseReady(context)){
+            displayWeatherForecast();
             return;
         }
         // invalidate current warnings

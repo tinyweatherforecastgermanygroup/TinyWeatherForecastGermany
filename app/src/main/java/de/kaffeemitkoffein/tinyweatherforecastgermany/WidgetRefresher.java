@@ -33,7 +33,7 @@ public class WidgetRefresher {
         Intent intent2 = new Intent(context,LargeWidget.class);
         intent2.setAction(LargeWidget.WIDGET_CUSTOM_REFRESH_ACTION);
         context.sendBroadcast(intent2);
-        // update large widget
+        // update bold widget
         Intent intent3 = new Intent(context,BoldWidget.class);
         intent3.setAction(BoldWidget.WIDGET_CUSTOM_REFRESH_ACTION);
         context.sendBroadcast(intent3);

@@ -19,7 +19,6 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
-import android.util.Log;
 import org.astronomie.info.Astronomy;
 
 import java.text.SimpleDateFormat;
@@ -147,7 +146,6 @@ public class CurrentWeatherInfo{
     }
 
     public CurrentWeatherInfo(Context context, RawWeatherInfo rawWeatherInfo){
-        Log.v("TWFG","TIMETEXT: "+rawWeatherInfo.timetext);
         if (rawWeatherInfo==null){
             return;
         }
@@ -484,7 +482,7 @@ public class CurrentWeatherInfo{
      */
 
     public boolean isNewServerDataExpected(){
-        return (issue_time+MOSMIX_UPDATE_INTERVAL+MOSMIX_PUBLICATION_DELAY) < Calendar.getInstance().getTimeInMillis();
+        return (issue_time+MOSMIX_UPDATE_INTERVAL+MOSMIX_PUBLICATION_DELAY) > Calendar.getInstance().getTimeInMillis();
     }
 
     public String getHumanReadableIssueTime(Context context){
