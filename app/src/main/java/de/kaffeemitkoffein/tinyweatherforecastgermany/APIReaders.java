@@ -3,6 +3,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -467,6 +468,23 @@ public class APIReaders {
                         Element placemark_element = (Element) placemark_nodes.item(i);
                         String description = placemark_element.getFirstChild().getNodeValue();
                         rawWeatherInfo.weatherLocation.description = description;
+                    }
+
+                    // get the issue time; should be only one, but we take the latest
+                    NodeList issuetime_nodes = document.getElementsByTagName("dwd:IssueTime");
+                    for (int i=0;i<issuetime_nodes.getLength(); i++){
+                        // should be only one, but we take the latest
+                        Element issuetime_element = (Element) issuetime_nodes.item(i);
+                        String timetext = issuetime_element.getFirstChild().getNodeValue();
+                        timetext = timetext.replace("T"," ");
+                        rawWeatherInfo.timetext = timetext;
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        try {
+                            Date date = sdf.parse(timetext);
+                            rawWeatherInfo.timestamp = date.getTime();
+                        } catch (ParseException e){
+                            rawWeatherInfo.timestamp = 0;
+                        }
                     }
 
                     NodeList timesteps = document.getElementsByTagName("dwd:TimeStep");

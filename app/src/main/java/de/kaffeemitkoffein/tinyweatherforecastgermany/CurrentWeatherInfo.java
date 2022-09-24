@@ -19,6 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
+import android.util.Log;
 import org.astronomie.info.Astronomy;
 
 import java.util.ArrayList;
@@ -28,8 +29,10 @@ public class CurrentWeatherInfo{
 
     public static final String EMPTY_TAG = "-";
     public final static int MOSMIX_UPDATE_INTERVAL = 6*60*60*1000; // 6 hours in millis
+    public final static int MOSMIX_PUBLICATION_DELAY = 1*60*60*1000; // 1 hour in millis
     Weather.WeatherLocation weatherLocation;
     long polling_time;
+    long issue_time;
     Weather.WeatherInfo currentWeather;
     ArrayList<Weather.WeatherInfo> forecast1hourly;
     ArrayList<Weather.WeatherInfo> forecast6hourly;
@@ -141,6 +144,7 @@ public class CurrentWeatherInfo{
     }
 
     public CurrentWeatherInfo(Context context, RawWeatherInfo rawWeatherInfo){
+        Log.v("TWFG","TIMETEXT: "+rawWeatherInfo.timetext);
         if (rawWeatherInfo==null){
             return;
         }
@@ -150,6 +154,7 @@ public class CurrentWeatherInfo{
         boolean preferAlternativeIcons = WeatherSettings.preferAlternativeIcons(context);
         weatherLocation = rawWeatherInfo.weatherLocation;
         polling_time = rawWeatherInfo.polling_time;
+        issue_time = rawWeatherInfo.timestamp;
         currentWeather = new Weather.WeatherInfo();
         currentWeather.setForecastType(Weather.WeatherInfo.ForecastType.CURRENT);
         // get timesteps_long in long
@@ -476,7 +481,7 @@ public class CurrentWeatherInfo{
      */
 
     public boolean isNewServerDataExpected(){
-        return (polling_time+MOSMIX_UPDATE_INTERVAL) < Calendar.getInstance().getTimeInMillis();
+        return (issue_time+MOSMIX_UPDATE_INTERVAL+MOSMIX_PUBLICATION_DELAY) < Calendar.getInstance().getTimeInMillis();
     }
 
 }
