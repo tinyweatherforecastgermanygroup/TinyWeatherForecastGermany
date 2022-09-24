@@ -142,35 +142,47 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true">
 
-                <TextView
-                        android:id="@+id/main_update_time"
+                <RelativeLayout
+                        android:id="@+id/main_infotext_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right"
-                        android:textColor="?attr/colorText"
-                        android:textSize="@dimen/fcmain_textsize_medium_fixed"
-                        android:text="00:00:00">
-                </TextView>
+                >
 
-                <TextView
-                        android:id="@+id/main_station_geo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/main_update_time"
-                        android:layout_alignParentRight="true"
-                        android:layout_gravity="right"
-                        android:textColor="?attr/colorText"
-                        android:textSize="@dimen/fcmain_textsize_medium_fixed"
-                        android:text="">
-                </TextView>
+                    <TextView
+                            android:id="@+id/main_update_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="right"
+                            android:textColor="?attr/colorText"
+                            android:textSize="@dimen/fcmain_textsize_medium_fixed"
+                            android:text="00:00:00">
+                    </TextView>
+
+                    <TextView
+                            android:id="@+id/main_station_geo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/main_update_time"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="right"
+                            android:textColor="?attr/colorText"
+                            android:textSize="@dimen/fcmain_textsize_medium_fixed"
+                            android:text="">
+                    </TextView>
+
+                </RelativeLayout>
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/main_selectstation"
-                        android:layout_below="@id/main_update_time"
+                        android:layout_alignBottom="@id/main_infotext_layout"
+                        android:layout_alignParentLeft="true"
                         android:textColor="?attr/colorText"
                         android:layout_gravity="left"
                         android:textSize="@dimen/fcmain_textsize_large"
@@ -184,7 +196,7 @@
                         android:weightSum="20"
                         android:layout_marginLeft="6dp"
                         android:layout_marginRight="6dp"
-                        android:layout_below="@id/main_station_geo">
+                        android:layout_below="@id/main_infotext_layout">
 
                     <Spinner android:id="@+id/stations_spinner"
                              android:layout_width="0dp"
