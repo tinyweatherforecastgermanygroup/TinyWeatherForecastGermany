@@ -22,14 +22,17 @@ import android.content.Context;
 import android.util.Log;
 import org.astronomie.info.Astronomy;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class CurrentWeatherInfo{
 
     public static final String EMPTY_TAG = "-";
     public final static int MOSMIX_UPDATE_INTERVAL = 6*60*60*1000; // 6 hours in millis
     public final static int MOSMIX_PUBLICATION_DELAY = 1*60*60*1000; // 1 hour in millis
+    public final SimpleDateFormat dateAndHourDateFormat = new SimpleDateFormat("dd.MMM.yyyy HH:mm");
     Weather.WeatherLocation weatherLocation;
     long polling_time;
     long issue_time;
@@ -482,6 +485,11 @@ public class CurrentWeatherInfo{
 
     public boolean isNewServerDataExpected(){
         return (issue_time+MOSMIX_UPDATE_INTERVAL+MOSMIX_PUBLICATION_DELAY) < Calendar.getInstance().getTimeInMillis();
+    }
+
+    public String getHumanReadableIssueTime(Context context){
+        String s = context.getResources().getString(R.string.issued);
+        return s + ": "+dateAndHourDateFormat.format(new Date(issue_time));
     }
 
 }

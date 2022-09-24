@@ -314,4 +314,6 @@
     <string name="network_lost">internet connection lost.</string>
     <string name="network_nonetwork">no internet connection.</string>
     <string name="network_timeout">internet connection timed out.</string>
+    <string name="issued">issued</string>
+
 </resources>

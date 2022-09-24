@@ -239,6 +239,21 @@ public class MainActivity extends Activity {
         }
     };
 
+    final View.OnLongClickListener infoTextClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            if (weatherCard!=null){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, String.valueOf(weatherCard.getHumanReadableIssueTime(context)), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            return false;
+        }
+    };
+
     private void performTextSearch(){
     // weather settings must be read at the time of selection!
             WeatherSettings weatherSettings = new WeatherSettings(context);
@@ -516,6 +531,8 @@ public class MainActivity extends Activity {
                 }
             }
         };
+        RelativeLayout infoTextLayout = (RelativeLayout) findViewById(R.id.main_infotext_layout);
+        infoTextLayout.setOnLongClickListener(infoTextClickListener);
         // register the GPS methods
         // debug only WeatherSettings.saveGPSfixtime(context,0);
         weatherLocationManager = new WeatherLocationManager(context){
