@@ -659,6 +659,10 @@ public class WeatherSettings {
         return i;
     }
 
+    public boolean forecastUpdateIntervalIs6h(){
+        return (getForecastUpdateInterval()==6);
+    }
+
     public long getForecastUpdateIntervalInMillis() {
         return (long) getForecastUpdateInterval() * 60 * 60 * 1000;
     }

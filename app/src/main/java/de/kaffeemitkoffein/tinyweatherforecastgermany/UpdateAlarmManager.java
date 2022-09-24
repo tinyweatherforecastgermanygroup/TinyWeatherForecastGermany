@@ -44,13 +44,13 @@ public class UpdateAlarmManager {
     private static final int EARLY_ALARM_TIME = 1000*60*15; // 15 minutes in millis
 
     // time interval to loop the JobSheduler/Alarm manager
-    public static int VIEWS_UPDATE_INTERVAL_DEFAULT = 30*60*1000; // 10 minutes;
+    public static int VIEWS_UPDATE_INTERVAL_DEFAULT = 30*60*1000; // 30 minutes;
     public static int VIEWS_UPDATE_INTERVAL         = VIEWS_UPDATE_INTERVAL_DEFAULT;
     // suppress any view update actions if this time did not pass since last view update
     public static int VIEWS_MAXUPDATETIME_DEFAULT   = 10*60*1000; // 10 minutes;
     public static int VIEWS_MAXUPDATETIME   = VIEWS_MAXUPDATETIME_DEFAULT;
 
-    // used when no valid data available (any more) from MainActivity, when update triggered by user
+    // used when no valid data available (anymore) from MainActivity, when update triggered by user
     // or during API-testing
     // meaning: always update
     public static final int FORCE_UPDATE = 1;
@@ -109,7 +109,8 @@ public class UpdateAlarmManager {
                 ((weatherSettings.serve_gadgetbridge) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode==WIDGET_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
-                ((update_mode&FORCE_UPDATE)==FORCE_UPDATE)){
+                ((update_mode&FORCE_UPDATE)==FORCE_UPDATE) ||
+                 (weatherCard.isNewServerDataExpected() && weatherSettings.forecastUpdateIntervalIs6h())){
             // update now.
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.

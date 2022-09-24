@@ -22,10 +22,12 @@ import android.content.Context;
 import org.astronomie.info.Astronomy;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class CurrentWeatherInfo{
 
     public static final String EMPTY_TAG = "-";
+    public final static int MOSMIX_UPDATE_INTERVAL = 6*60*60*1000; // 6 hours in millis
     Weather.WeatherLocation weatherLocation;
     long polling_time;
     Weather.WeatherInfo currentWeather;
@@ -467,5 +469,14 @@ public class CurrentWeatherInfo{
         return null;
     }
 
+    /**
+     * Checks if new Mosmix data can be expected on the DWD server.
+     *
+     * @return true, if new data can be expected.
+     */
+
+    public boolean isNewServerDataExpected(){
+        return (polling_time+MOSMIX_UPDATE_INTERVAL) < Calendar.getInstance().getTimeInMillis();
+    }
 
 }
