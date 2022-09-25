@@ -515,6 +515,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             sunDuration_unit.setText("h");
         }
     }
+    /*
     if ((!weatherInfo.hasSunDuration()) ||
             ((weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.ONE_HOUR) && (weatherInfo.getSunDurationInMinutes()==0)) ||
             ((weatherInfo.getForecastType() != Weather.WeatherInfo.ForecastType.ONE_HOUR) && (weatherInfo.getSunDurationInHours()==0))){
@@ -525,6 +526,8 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             setVisibility(iconbar1_view, View.GONE);
         }
     }
+
+     */
     else {
     }
     // weather probabilities icons, sorted by priority

@@ -113,6 +113,7 @@ public class MainActivity extends Activity {
             }
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"received broadcast => custom refresh action");
+                weatherCard=null; // invalidate weather data in memory to force read from database
                 displayWeatherForecast();
                 forceWeatherUpdateFlag = false;
                 if (API_TESTING_ENABLED){

@@ -39,6 +39,7 @@
     <dimen name="fcmain_textsize_large_fixed">18dp</dimen>
     <dimen name="fcmain_textsize_medium">12sp</dimen>
     <dimen name="fcmain_textsize_medium_fixed">12dp</dimen>
+    <dimen name="fcmain_textsize_smaller">10sp</dimen>
     <dimen name="fcmain_textsize_small">7sp</dimen>
 
     <dimen name="fcmain_mediumdevice_fciconsize">100sp</dimen>
