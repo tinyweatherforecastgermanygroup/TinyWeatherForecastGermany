@@ -1,4 +1,3 @@
-
 /**
  *
  * Copyright (C) 2010-2012, Helmut Lehmeyer <helmut.lehmeyer@gmail.com>
@@ -23,7 +22,7 @@
  *
  * Astronomical Calculations and and helper Classes
  *
- * java Source code based on the javascript by Arnold Barmettler, www.astronomie.info / www.CalSky.com
+ * java source code based on the javascript by Arnold Barmettler, www.astronomie.info / www.CalSky.com
  * based on algorithms by Peter Duffett-Smith's great and easy book 'Practical Astronomy with your Calculator'.
  *
  * @author Helmut Lehmeyer
@@ -120,8 +119,8 @@ public class Astronomy
      * @return    the name <code>String</code> of a sign
      */
     public static String sign(double lon) {
-        String[] signs = {"Widder", "Stier", "Zwillinge", "Krebs", "LÃ¶we", "Jungfrau",
-                "Waage", "Skorpion", "SchÃ¼tze", "Steinbock", "Wassermann", "Fische"};
+        String[] signs = {"Widder", "Stier", "Zwillinge", "Krebs", "Loewe", "Jungfrau",
+                "Waage", "Skorpion", "Schuetze", "Steinbock", "Wassermann", "Fische"};
         return( signs[Int(Math.floor(lon*RAD/30))] );
     }
 

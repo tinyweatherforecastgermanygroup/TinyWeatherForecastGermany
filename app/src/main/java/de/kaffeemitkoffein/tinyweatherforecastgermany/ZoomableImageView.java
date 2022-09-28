@@ -281,7 +281,7 @@ public class ZoomableImageView {
      *
      * The focus is the visible center coordinate.<br>
      *
-     * * @return absolute x coordinate
+     * @return absolute x coordinate
      */
 
     public float getXFocus(){
@@ -293,7 +293,7 @@ public class ZoomableImageView {
      *
      * The focus is the visible center coordinate.
      *
-     * * @return absolute y coordinate
+     * @return absolute y coordinate
      */
 
     public float getYFocus(){
