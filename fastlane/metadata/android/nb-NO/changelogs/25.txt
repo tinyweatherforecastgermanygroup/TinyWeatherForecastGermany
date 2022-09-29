@@ -1,0 +1,6 @@
+- søk inkluderer nå byer, samfunn, føderale stater, innsjøer og havområder
+- søk er nå mildt med omlyd
+- korrigerte arealdata, fikse hull ved visning av havområder og kystområder
+- oppdateringer starter ikke lenger når ingen internettforbindelse er til stede
+- automatiske oppdateringer av værtekster kan deaktiveres i alternativene
+- Flere mindre feilrettinger og skjermforbedringer
