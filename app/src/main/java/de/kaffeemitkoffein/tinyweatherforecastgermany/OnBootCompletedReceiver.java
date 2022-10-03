@@ -33,7 +33,7 @@ public class OnBootCompletedReceiver extends BroadcastReceiver {
                 PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"+-> intent has action");
                 if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
                     PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"+-> action is ACTION_BOOT_COMPLETED, triggering alarm update.");
-                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.CHECK_FOR_UPDATE);
+                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.CHECK_FOR_UPDATE,null);
                     int i = WeatherWarnings.clearAllNotified(context);
                     PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"Cleared list of notified warnings: "+i+" warnings removed from list.");
                     if (WeatherSettings.notifyWarnings(context)){

@@ -1,0 +1,4 @@
+- improved translations and stability
+- fixed prolonged app launch time compared to version 0.68.3
+- 6-hourly updates are better synchronized with Mosmix data updates
+- minor improvements in the weather display

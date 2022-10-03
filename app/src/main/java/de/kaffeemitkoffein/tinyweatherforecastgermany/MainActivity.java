@@ -143,7 +143,7 @@ public class MainActivity extends Activity {
                             // re-launch the weather update via http
                             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"SSL disabled permanently due to errors.");
                             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"re-launching weather update.");
-                            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
+                            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,weatherCard);
                             dialogInterface.dismiss();
                         }
                     });
@@ -372,8 +372,11 @@ public class MainActivity extends Activity {
         }
     }
 
+    long launchTimer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        launchTimer = Calendar.getInstance().getTimeInMillis();
         context = getApplicationContext();
         ThemePicker.SetTheme(this);
         WeatherSettings.setRotationMode(this);
@@ -467,7 +470,7 @@ public class MainActivity extends Activity {
                 }
                 // reload weather data if necessary
                 if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
-                    boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
+                    boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
                     if (!updated){
                         // launch new warnings from present dataset only
                         ArrayList<String> tasks = new ArrayList<String>();
@@ -540,7 +543,7 @@ public class MainActivity extends Activity {
         }
         if (!API_TESTING_ENABLED){
             weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
         }
         try {
             weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
@@ -552,9 +555,9 @@ public class MainActivity extends Activity {
             if (weatherCard!=null){
                 // Log.v("twfg","calling from API test");
                 // displayWeatherForecast(weatherCard);
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
             } else {
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE);
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,weatherCard);
             }
         }
 
@@ -586,6 +589,7 @@ public class MainActivity extends Activity {
                 WidgetRefresher.refresh(context);
             }
         });
+        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
     }
 
 
@@ -996,6 +1000,9 @@ public class MainActivity extends Activity {
             forecastAdapter.setWarnings(localWarnings);
         }
         weatherList.setAdapter(forecastAdapter);
+        float time = (Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f;
+        DecimalFormat decimalFormat = new DecimalFormat("000.000");
+        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Timer: adapter set "+decimalFormat.format(time)+" sec from app launch.");
         // new
         weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
         //UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
@@ -1014,14 +1021,14 @@ public class MainActivity extends Activity {
     public void getWeatherForecast(){
         weatherCard = new Weather().getCurrentWeatherInfo(this);
         if ((weatherCard == null) || (API_TESTING_ENABLED)){
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE,weatherCard);
         } else {
             displayWeatherForecast(weatherCard);
         }
     }
 
     public void forcedWeatherUpdate(){
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE);
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE,weatherCard);
         forceWeatherUpdateFlag = true;
     }
 
@@ -1173,7 +1180,7 @@ public class MainActivity extends Activity {
             return true;
         }
         if (item_id == R.id.menu_travelupdate) {
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.FORCE_UPDATE|UpdateAlarmManager.TRAVEL_UPDATE);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.FORCE_UPDATE|UpdateAlarmManager.TRAVEL_UPDATE,weatherCard);
             return true;
         }
         if (item_id==R.id.menu_license) {

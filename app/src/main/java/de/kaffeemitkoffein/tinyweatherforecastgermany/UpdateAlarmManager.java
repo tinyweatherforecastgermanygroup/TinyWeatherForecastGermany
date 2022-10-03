@@ -75,10 +75,12 @@ public class UpdateAlarmManager {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static boolean updateAndSetAlarmsIfAppropriate(Context context, int update_mode){
+    public static boolean updateAndSetAlarmsIfAppropriate(Context context, int update_mode, CurrentWeatherInfo weatherCard){
         adaptUpdateIntervalsToSettings(context);
         WeatherSettings weatherSettings = new WeatherSettings(context);
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
+        if (weatherCard==null){
+            weatherCard = new Weather().getCurrentWeatherInfo(context);
+        }
         boolean travelUpdate = (update_mode&TRAVEL_UPDATE)==TRAVEL_UPDATE;
         /*
          * Create alarms to cancel notifications if applicable

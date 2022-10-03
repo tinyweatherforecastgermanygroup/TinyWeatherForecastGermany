@@ -84,7 +84,7 @@ public class ClassicWidget extends AppWidgetProvider {
         // refresh widgets, if no update was made.
         // in case of an update, the widgets are refreshed by a callback of WIDGET_CUSTOM_REFRESH_ACTION
         PrivateLog.log(c,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widget (system): "+getClass().toString());
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c,UpdateAlarmManager.WIDGET_UPDATE);
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c,UpdateAlarmManager.WIDGET_UPDATE,null);
         updateWidgetDisplay(c,awm,widget_instances);
     }
 
@@ -446,7 +446,7 @@ public class ClassicWidget extends AppWidgetProvider {
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         if (weatherCard==null){
             //UpdateAlarmManager.startDataUpdateService(c,true,true,false,false);
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c,UpdateAlarmManager.WIDGET_UPDATE);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c,UpdateAlarmManager.WIDGET_UPDATE,null);
         } else {
             WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i=0; i<widget_instances.length; i++){

@@ -36,7 +36,7 @@ public class LargeWidget extends ClassicWidget{
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         if (weatherCard==null){
             //UpdateAlarmManager.startDataUpdateService(c,true,true,false);
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c,UpdateAlarmManager.WIDGET_UPDATE);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c,UpdateAlarmManager.WIDGET_UPDATE,null);
         } else {
             WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i=0; i<widget_instances.length; i++) {

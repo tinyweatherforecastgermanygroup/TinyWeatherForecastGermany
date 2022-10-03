@@ -223,6 +223,8 @@ Tiny Weather Forecast Germany tries to be very conservative with your download v
 
 *Note* the currently selected region is also the region displayed in any widget added to the home screen.
 
+If you want all regions from the drop down menu to get updated, select *"Update everything"*.
+
 ### How do I set the region to be displayed at the home screen widget?
 
 Just select it as current region in the app. The region displayed in the app and in the widget stay in sync all the time. Any region change in the app is reflected in the widget(s) automatically.
@@ -230,6 +232,8 @@ Just select it as current region in the app. The region displayed in the app and
 ### How can I fetch weather for a different location if I go on travel?
 
 If you want to update a different location e.g. before travelling, select it first and update the data. (If `Always update` is not set you may do this manually.) You can then revert to your standard location. Tiny Weather Forecast Germany will remove data only once it got invalid over time, but keep all fetched data in it's internal cache.
+
+If you want all regions from the drop down menu to get updated, select *"Update everything"*.
 
 ### Why do some coloured polygons show up next to the coasts sometimes?
 
