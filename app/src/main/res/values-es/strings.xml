@@ -141,7 +141,7 @@
     <string name="preference_gadgetbridge_package_reset_toast">El nombre del paquete de Gadgetbridge vuelve a ser el predeterminado.</string>
     <string name="preference_loggingscreen_title">Debug</string>
     <string name="preference_loggingscreen_summary">Configura las opciones de registro para la depuración.</string>
-    <string name="preference_logging_title">Logging</string>
+    <string name="preference_logging_title">Registro</string>
     <string name="preference_logging_summary">Activar el registro. Los registros se guardan LOCALMENTE en tu dispositivo y NO se envían automáticamente.</string>
     <string name="preference_log_to_logcat_title">Registro en Logcat</string>
     <string name="preference_log_to_logcat_summary">Inserta los registros en el registro del sistema en el dispositivo. Precaución: esto puede suponer una fuga de privacidad, otras apps pueden acceder al registro del sistema.</string>
@@ -297,4 +297,5 @@
     <string name="preference_display_rotation_summary">Cómo alinear el display</string>
     <string name="preference_usegps_title">Utilizar los servicios de localización</string>
     <string name="travel_button">Actualizar todo</string>
+    <string name="issued">publicó</string>
 </resources>
