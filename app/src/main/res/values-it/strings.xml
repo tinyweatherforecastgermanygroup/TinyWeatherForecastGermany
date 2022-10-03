@@ -298,4 +298,5 @@
     <string name="preference_display_rotation_title">Allineamento del display</string>
     <string name="preference_display_rotation_summary">Come allineare il display</string>
     <string name="travel_button">Aggiornare tutto</string>
+    <string name="issued">pubblicato</string>
 </resources>
