@@ -376,6 +376,9 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (WeatherSettings.isFirstAppLaunch(this)){
+            startWelcomeActivity();
+        }
         launchTimer = Calendar.getInstance().getTimeInMillis();
         context = getApplicationContext();
         ThemePicker.SetTheme(this);
@@ -1888,6 +1891,13 @@ public class MainActivity extends Activity {
     public String standardizeGeo(final String s){
         return s.replace(",",".");
     }
+
+    private void startWelcomeActivity() {
+        Intent i = new Intent(this, WelcomeActivity.class);
+        startActivity(i);
+        finish();
+    }
+
 
 }
 
