@@ -30,8 +30,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -80,7 +78,6 @@ public class UpdateAlarmManager {
     public static boolean updateAndSetAlarmsIfAppropriate(Context context, int update_mode){
         adaptUpdateIntervalsToSettings(context);
         WeatherSettings weatherSettings = new WeatherSettings(context);
-        Log.v("twfg","Region is: "+weatherSettings.station_name);
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         boolean travelUpdate = (update_mode&TRAVEL_UPDATE)==TRAVEL_UPDATE;
         /*
