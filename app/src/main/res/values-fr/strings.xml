@@ -311,4 +311,5 @@
     <string name="overview_button">Vue d\'ensemble</string>
     <string name="preference_display_rotation_title">Alignement de l\'affichage</string>
     <string name="preference_display_rotation_summary">Comment aligner l\'écran</string>
+    <string name="issued">publié</string>
 </resources>
