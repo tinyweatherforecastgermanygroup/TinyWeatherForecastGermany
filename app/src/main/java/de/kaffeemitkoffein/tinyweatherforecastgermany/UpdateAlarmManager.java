@@ -30,9 +30,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class UpdateAlarmManager {
 
@@ -78,6 +80,7 @@ public class UpdateAlarmManager {
     public static boolean updateAndSetAlarmsIfAppropriate(Context context, int update_mode){
         adaptUpdateIntervalsToSettings(context);
         WeatherSettings weatherSettings = new WeatherSettings(context);
+        Log.v("twfg","Region is: "+weatherSettings.station_name);
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(context);
         boolean travelUpdate = (update_mode&TRAVEL_UPDATE)==TRAVEL_UPDATE;
         /*
@@ -104,13 +107,23 @@ public class UpdateAlarmManager {
         // note that realtime refers to device up time and not utc.
         long next_update_due_in_millis = VIEWS_UPDATE_INTERVAL;
         long next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
+        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Update interval: "+update_period/1000/60/60);
+        if (weatherCard!=null){
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Data issued: "+new Date(weatherCard.issue_time).toString());
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Last data poll: "+new Date(weatherCard.polling_time).toString());
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"New data expected: "+new Date(weatherCard.getWhenNewServerDataExpected()).toString());
+            //PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Is new expected: "+weatherCard.isNewServerDataExpected());
+            //PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"is 6h: "+weatherSettings.forecastUpdateIntervalIs6h());
+        }
+        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Next update due: "+new Date(update_time_utc).toString());
         boolean result = false;
         if (    ((weatherCard==null)) ||
                 ((weatherSettings.serve_gadgetbridge) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
+                ((update_mode==CHECK_FOR_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode==WIDGET_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode&FORCE_UPDATE)==FORCE_UPDATE) ||
-                 (weatherCard.isNewServerDataExpected() && weatherSettings.forecastUpdateIntervalIs6h())){
+                (!(update_time_utc <= Calendar.getInstance().getTimeInMillis()) && (weatherCard.isNewServerDataExpected() && weatherSettings.forecastUpdateIntervalIs6h()) && (weatherSettings.setalarm))){
             // update now.
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.

@@ -42,6 +42,7 @@ public class CurrentWeatherInfo{
 
     public CurrentWeatherInfo(){
         polling_time = 0;
+        issue_time = 0;
         weatherLocation = new Weather.WeatherLocation();
         currentWeather = new Weather.WeatherInfo();
         forecast1hourly = new ArrayList<Weather.WeatherInfo>();
@@ -482,12 +483,19 @@ public class CurrentWeatherInfo{
      */
 
     public boolean isNewServerDataExpected(){
-        return (issue_time+MOSMIX_UPDATE_INTERVAL+MOSMIX_PUBLICATION_DELAY) > Calendar.getInstance().getTimeInMillis();
+        return (getWhenNewServerDataExpected()) < Calendar.getInstance().getTimeInMillis();
     }
 
-    public String getHumanReadableIssueTime(Context context){
-        String s = context.getResources().getString(R.string.issued);
-        return s + ": "+dateAndHourDateFormat.format(new Date(issue_time));
+    public long getWhenNewServerDataExpected(){
+        return (issue_time+MOSMIX_UPDATE_INTERVAL+MOSMIX_PUBLICATION_DELAY);
+    }
+
+    public String getHumanReadableIssueTime(){
+        return dateAndHourDateFormat.format(new Date(issue_time));
+    }
+
+    public String getHumanReadablePollingTime(){
+        return dateAndHourDateFormat.format(new Date(issue_time));
     }
 
 }

@@ -249,7 +249,7 @@ public class MainActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(context, String.valueOf(weatherCard.getHumanReadableIssueTime(context)), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, String.valueOf(context.getResources().getString(R.string.issued)+": "+weatherCard.getHumanReadableIssueTime()), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -473,6 +473,7 @@ public class MainActivity extends Activity {
                         ArrayList<String> tasks = new ArrayList<String>();
                         tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS);
                         UpdateAlarmManager.startDataUpdateService(context,tasks);
+                        displayWeatherForecast();
                     } else {
                         // nothing to do, views will be updated after the update finished, and notifications will be
                         // launched, then
@@ -537,9 +538,9 @@ public class MainActivity extends Activity {
         if (WeatherSettings.GPSAuto(context) && (!hasLocationPermission())){
             requestLocationPermission();
         }
-
         if (!API_TESTING_ENABLED){
             weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
         }
         try {
             weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
