@@ -62,16 +62,6 @@ public class PrivateLog {
     public static final int ERR  = 2;
     public static final int FATAL = 3;
 
-    private static boolean loggingEnabled(Context context){
-        WeatherSettings weatherSettings = new WeatherSettings(context);
-        return weatherSettings.logging;
-    }
-
-    private static boolean logToLogcat(Context context){
-        WeatherSettings weatherSettings = new WeatherSettings(context);
-        return weatherSettings.log_to_logcat;
-    }
-
     public static String getLogs(Context context){
         try {
             FileInputStream fileInputStream = new FileInputStream(context.getFileStreamPath(LOGFILENAME));
@@ -117,8 +107,8 @@ public class PrivateLog {
     }
 
     private static boolean log(Context context, String s){
-        if (loggingEnabled(context)) {
-            if (logToLogcat(context)){
+        if (WeatherSettings.loggingEnabled(context)) {
+            if (WeatherSettings.loggingToLogcatEnabled(context)){
                 Log.v(LOGHANDLE,s);
             }
             File path = context.getFilesDir();

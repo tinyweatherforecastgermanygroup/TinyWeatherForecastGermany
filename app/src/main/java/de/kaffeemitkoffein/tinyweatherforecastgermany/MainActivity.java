@@ -1000,9 +1000,11 @@ public class MainActivity extends Activity {
             forecastAdapter.setWarnings(localWarnings);
         }
         weatherList.setAdapter(forecastAdapter);
-        float time = (Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f;
-        DecimalFormat decimalFormat = new DecimalFormat("000.000");
-        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Timer: adapter set "+decimalFormat.format(time)+" sec from app launch.");
+        if (WeatherSettings.loggingEnabled(this)){
+            float time = (Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f;
+            DecimalFormat decimalFormat = new DecimalFormat("000.000");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Timer: adapter set "+decimalFormat.format(time)+" sec from app launch.");
+        }
         // new
         weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
         //UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);

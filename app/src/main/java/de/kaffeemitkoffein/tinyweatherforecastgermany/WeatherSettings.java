@@ -1194,4 +1194,15 @@ public class WeatherSettings {
         }
     }
 
+    public static boolean loggingEnabled(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_LOGGING,PREF_LOGGING_DEFAULT);
+    }
+
+    public static boolean loggingToLogcatEnabled(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_LOG_TO_LOGCAT,PREF_LOG_TO_LOGCAT_DEFAULT);
+    }
+
+
 }
