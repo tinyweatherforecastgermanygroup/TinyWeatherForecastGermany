@@ -42,6 +42,7 @@ import android.text.Spanned;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -376,223 +377,226 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v("TWFG","Calling through on Create");
         if (WeatherSettings.isFirstAppLaunch(this)){
             startWelcomeActivity();
-        }
-        launchTimer = Calendar.getInstance().getTimeInMillis();
-        context = getApplicationContext();
-        ThemePicker.SetTheme(this);
-        WeatherSettings.setRotationMode(this);
-        super.onCreate(savedInstanceState);
-        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
-        setContentView(R.layout.activity_main);
-        stationsManager = new StationsManager(context);
-        autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
-        // disable log to logcat if release is not a userdebug
-        disableLogToLogcatIfNotUserDebug();
-        // force a database access at the beginning to check for a needed database upgrade
-        // debug code
-        // WeatherWarnings.clearAllNotified(context);
-        try {
-            WeatherContentManager.checkForDatabaseUpgrade(context);
-        } catch (Exception e){
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error checking/upgrading database!");
-        }
-        // action bar layout
-        // View actionBarView = getLayoutInflater().inflate(R.layout.actionbar,null);
-        // actionBar.setCustomView(actionBarView);
-        ActionBar actionBar = getActionBar();
-        actionBar.setCustomView(R.layout.actionbar);
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
-        // anchor long click update
+        } else {
+            launchTimer = Calendar.getInstance().getTimeInMillis();
+            context = getApplicationContext();
+            ThemePicker.SetTheme(this);
+            WeatherSettings.setRotationMode(this);
+            super.onCreate(savedInstanceState);
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
+            setContentView(R.layout.activity_main);
+            stationsManager = new StationsManager(context);
+            autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
+            // disable log to logcat if release is not a userdebug
+            disableLogToLogcatIfNotUserDebug();
+            // force a database access at the beginning to check for a needed database upgrade
+            // debug code
+            // WeatherWarnings.clearAllNotified(context);
+            try {
+                WeatherContentManager.checkForDatabaseUpgrade(context);
+            } catch (Exception e){
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error checking/upgrading database!");
+            }
+            // action bar layout
+            // View actionBarView = getLayoutInflater().inflate(R.layout.actionbar,null);
+            // actionBar.setCustomView(actionBarView);
+            ActionBar actionBar = getActionBar();
+            actionBar.setCustomView(R.layout.actionbar);
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
+            // anchor long click update
 
-        executor = Executors.newSingleThreadExecutor();
-        try {
-            loadStationsData();
-        } catch (Exception e){
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
-        }
-        try {
-            prepareAreaDatabase();
-        } catch (Exception e){
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Preparing database failed on main thread.");
-        }
-        final WeatherSettings weatherSettings = new WeatherSettings(this);
-        if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
-            // remove old databases if previous version was older than 30
-            if (weatherSettings.last_version_code<30){
-                // remove abandoned forecast database file
-                if (deleteDatabase("weatherforecast.db")) {
-                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned forecast database file");
-                } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned forecast database file to remove!");
-                // remove abandoned warnings database file
-                if (deleteDatabase("weatherwarnings.db")){
-                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned weather warnings database file");
-                } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned weather warnings database file to remove!");
-                // remove abandoned texts database file
-                if (deleteDatabase("textforecasts.db")){
-                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned texts database file");
-                } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned texts database file to remove!");
-                // remove abandoned areas database file
-                if (deleteDatabase("areas.db")){
-                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned areas database file");
-                } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned areas database file to remove!");
+            executor = Executors.newSingleThreadExecutor();
+            try {
+                loadStationsData();
+            } catch (Exception e){
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
             }
-            // remove shared preferences on app update if installed app is lower than build 20
-            if ((weatherSettings.last_version_code>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT) && (weatherSettings.last_version_code<20)){
-                WeatherSettings.resetStationToDefault(getApplicationContext());
-                WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
-                showWarning(R.mipmap.ic_warning_white_24dp,getResources().getString(R.string.warning_stationreset_title),getResources().getString(R.string.warning_stationreset_text));
+            try {
+                prepareAreaDatabase();
+            } catch (Exception e){
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Preparing database failed on main thread.");
             }
-            // the station name K2226 has been changed to 10522, effective from 25.04.2022 9:00
-            // the old name does not exist in stations4.txt any more.
-            if (weatherSettings.last_version_code<34){
-                Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(this);
-                if (currentStation.name.equals("K2226")){
-                    currentStation.name = "10522";
-                    WeatherSettings.setStation(this,currentStation);
+            final WeatherSettings weatherSettings = new WeatherSettings(this);
+            if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
+                // remove old databases if previous version was older than 30
+                if (weatherSettings.last_version_code<30){
+                    // remove abandoned forecast database file
+                    if (deleteDatabase("weatherforecast.db")) {
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned forecast database file");
+                    } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned forecast database file to remove!");
+                    // remove abandoned warnings database file
+                    if (deleteDatabase("weatherwarnings.db")){
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned weather warnings database file");
+                    } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned weather warnings database file to remove!");
+                    // remove abandoned texts database file
+                    if (deleteDatabase("textforecasts.db")){
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned texts database file");
+                    } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned texts database file to remove!");
+                    // remove abandoned areas database file
+                    if (deleteDatabase("areas.db")){
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned areas database file");
+                    } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned areas database file to remove!");
                 }
-            }
-            // fix possible (but very unlikely) unique notification ID in reserved area introduced in version 35
-            if (weatherSettings.last_version_code<35){
-                WeatherSettings.fixUniqueNotificationIdentifier(context);
-            }
-            showWhatsNewDialog();
-        }
-        try {
-            loadStationsSpinner();
-        } catch (Exception e){
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading StationSpinner!");
-        }
-        preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"preference change detected.");
-                if (key.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (key.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
-                    WidgetRefresher.refresh(context.getApplicationContext());
+                // remove shared preferences on app update if installed app is lower than build 20
+                if ((weatherSettings.last_version_code>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT) && (weatherSettings.last_version_code<20)){
+                    WeatherSettings.resetStationToDefault(getApplicationContext());
+                    WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
+                    showWarning(R.mipmap.ic_warning_white_24dp,getResources().getString(R.string.warning_stationreset_title),getResources().getString(R.string.warning_stationreset_text));
                 }
-                // reload weather data if necessary
-                if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
-                    boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
-                    if (!updated){
-                        // launch new warnings from present dataset only
-                        ArrayList<String> tasks = new ArrayList<String>();
-                        tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS);
-                        UpdateAlarmManager.startDataUpdateService(context,tasks);
-                        displayWeatherForecast();
-                    } else {
-                        // nothing to do, views will be updated after the update finished, and notifications will be
-                        // launched, then
-                    }
-                    // notify GadgetBridge
-                    GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-                    gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-                    // update widgets unconditonally
-                    WidgetRefresher.refresh(getApplicationContext());
-                }
-                // show geo
-                if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
-                    if (weatherCard != null){
-                        displayUpdateTime(weatherCard);
+                // the station name K2226 has been changed to 10522, effective from 25.04.2022 9:00
+                // the old name does not exist in stations4.txt any more.
+                if (weatherSettings.last_version_code<34){
+                    Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(this);
+                    if (currentStation.name.equals("K2226")){
+                        currentStation.name = "10522";
+                        WeatherSettings.setStation(this,currentStation);
                     }
                 }
-                // invalidate menu if warnings visibility has changed
-                if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
-                    invalidateOptionsMenu();
+                // fix possible (but very unlikely) unique notification ID in reserved area introduced in version 35
+                if (weatherSettings.last_version_code<35){
+                    WeatherSettings.fixUniqueNotificationIdentifier(context);
                 }
-                // invalidate weather display because the display options have changed
-                if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
-                    (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT)) ||
-                    key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART)){
-                    // on 1st app call, weatherCard can be still null
-                    if (weatherCard!=null){
-                        displayWeatherForecast(weatherCard);
+                showWhatsNewDialog();
+            }
+            try {
+                loadStationsSpinner();
+            } catch (Exception e){
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading StationSpinner!");
+            }
+            preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"preference change detected.");
+                    if (key.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (key.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
+                        WidgetRefresher.refresh(context.getApplicationContext());
                     }
-                }
-                // invalidate weather display and widgets
-                if ((key.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (key.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
-                    // on 1st app call, weatherCard can be still null
-                    if (weatherCard!=null){
-                        displayWeatherForecast(weatherCard);
-                        // refreshing widgets only makes sense when there is weather data
+                    // reload weather data if necessary
+                    if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
+                        boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
+                        if (!updated){
+                            // launch new warnings from present dataset only
+                            ArrayList<String> tasks = new ArrayList<String>();
+                            tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS);
+                            UpdateAlarmManager.startDataUpdateService(context,tasks);
+                            displayWeatherForecast();
+                        } else {
+                            // nothing to do, views will be updated after the update finished, and notifications will be
+                            // launched, then
+                        }
+                        // notify GadgetBridge
+                        GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+                        gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+                        // update widgets unconditonally
                         WidgetRefresher.refresh(getApplicationContext());
                     }
+                    // show geo
+                    if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
+                        if (weatherCard != null){
+                            displayUpdateTime(weatherCard);
+                        }
+                    }
+                    // invalidate menu if warnings visibility has changed
+                    if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
+                        invalidateOptionsMenu();
+                    }
+                    // invalidate weather display because the display options have changed
+                    if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
+                            (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT)) ||
+                            key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART)){
+                        // on 1st app call, weatherCard can be still null
+                        if (weatherCard!=null){
+                            displayWeatherForecast(weatherCard);
+                        }
+                    }
+                    // invalidate weather display and widgets
+                    if ((key.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (key.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
+                        // on 1st app call, weatherCard can be still null
+                        if (weatherCard!=null){
+                            displayWeatherForecast(weatherCard);
+                            // refreshing widgets only makes sense when there is weather data
+                            WidgetRefresher.refresh(getApplicationContext());
+                        }
+                    }
+                    if (key.equals(WeatherSettings.PREF_THEME)){
+                        recreate();
+                        WidgetRefresher.refresh(context);
+                    }
+                    if (key.equals(WeatherSettings.PREF_ROTATIONMODE)){
+                        recreate();
+                    }
                 }
-                if (key.equals(WeatherSettings.PREF_THEME)){
-                    recreate();
+            };
+            RelativeLayout infoTextLayout = (RelativeLayout) findViewById(R.id.main_infotext_layout);
+            infoTextLayout.setOnLongClickListener(infoTextClickListener);
+            // register the GPS methods
+            // debug only WeatherSettings.saveGPSfixtime(context,0);
+            weatherLocationManager = new WeatherLocationManager(context){
+                @Override
+                public void newLocation(Location location){
+                    launchStationSearchByLocation(location);
+                    super.newLocation(location);
+                }
+            };
+            getApplication().registerActivityLifecycleCallbacks(weatherLocationManager);
+            weatherLocationManager.setView((RelativeLayout) findViewById(R.id.gps_progress_holder));
+            weatherLocationManager.registerCancelButton((Button) findViewById(R.id.cancel_gps));
+            if (WeatherSettings.GPSAuto(context) && (!hasLocationPermission())){
+                requestLocationPermission();
+            }
+            if (!API_TESTING_ENABLED){
+                weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
+            }
+            try {
+                weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
+            } catch (Exception e){
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
+            }
+            // get new data from api or display present data.
+            if (!API_TESTING_ENABLED){
+                if (weatherCard!=null){
+                    // Log.v("twfg","calling from API test");
+                    // displayWeatherForecast(weatherCard);
+                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
+                } else {
+                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,weatherCard);
+                }
+            }
+
+            // test API
+            if (API_TESTING_ENABLED){
+                testAPI_Init();
+            }
+            // register view to clear favorites
+            ImageView reset_favorites_imageview = (ImageView) findViewById(R.id.main_reset_favorites);
+            if (reset_favorites_imageview!=null){
+                reset_favorites_imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        clearFavorites();
+                        Toast.makeText(context,getApplicationContext().getResources().getString(R.string.favorites_cleared),Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+            // check if a geo intent was sent
+
+            Location intentLocation = getLocationForGeoIntent(getIntent());
+
+            if (intentLocation!=null){
+                launchStationSearchByLocation(intentLocation);
+            }
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
                     WidgetRefresher.refresh(context);
                 }
-                if (key.equals(WeatherSettings.PREF_ROTATIONMODE)){
-                    recreate();
-                }
-            }
-        };
-        RelativeLayout infoTextLayout = (RelativeLayout) findViewById(R.id.main_infotext_layout);
-        infoTextLayout.setOnLongClickListener(infoTextClickListener);
-        // register the GPS methods
-        // debug only WeatherSettings.saveGPSfixtime(context,0);
-        weatherLocationManager = new WeatherLocationManager(context){
-            @Override
-            public void newLocation(Location location){
-                launchStationSearchByLocation(location);
-                super.newLocation(location);
-            }
-        };
-        getApplication().registerActivityLifecycleCallbacks(weatherLocationManager);
-        weatherLocationManager.setView((RelativeLayout) findViewById(R.id.gps_progress_holder));
-        weatherLocationManager.registerCancelButton((Button) findViewById(R.id.cancel_gps));
-        if (WeatherSettings.GPSAuto(context) && (!hasLocationPermission())){
-            requestLocationPermission();
-        }
-        if (!API_TESTING_ENABLED){
-            weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
-        }
-        try {
-            weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
-        } catch (Exception e){
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
-        }
-        // get new data from api or display present data.
-        if (!API_TESTING_ENABLED){
-            if (weatherCard!=null){
-                // Log.v("twfg","calling from API test");
-                // displayWeatherForecast(weatherCard);
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
-            } else {
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,weatherCard);
-            }
-        }
-
-        // test API
-        if (API_TESTING_ENABLED){
-            testAPI_Init();
-        }
-        // register view to clear favorites
-        ImageView reset_favorites_imageview = (ImageView) findViewById(R.id.main_reset_favorites);
-        if (reset_favorites_imageview!=null){
-            reset_favorites_imageview.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clearFavorites();
-                    Toast.makeText(context,getApplicationContext().getResources().getString(R.string.favorites_cleared),Toast.LENGTH_LONG).show();
-                }
             });
-        }
-        // check if a geo intent was sent
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
 
-        Location intentLocation = getLocationForGeoIntent(getIntent());
-
-        if (intentLocation!=null){
-            launchStationSearchByLocation(intentLocation);
         }
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                WidgetRefresher.refresh(context);
-            }
-        });
-        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
     }
 
 
