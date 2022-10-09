@@ -1,11 +1,7 @@
 Neu in dieser Version ([VERSION]):
 
-- neue Sprache: Ungarisch (Danke an eUgEntOptIc44 und Gőz Barnabás!)
-- neuer, scrollbarer Wetter-Überblick
-- verbessertes Design der Bedienoberfläche
-- verbesserte Unterstützung der Solarized Themes
-- neue Option, um die Wetterdaten aller Favoriten zu aktualisieren
-- die App aktualisiert auf Wunsch automatisch den Standort
-- neue Einstellung, um das Quer- oder Hochkantformat zu erzwingen
-- vereinfachte Suche der Wetterstation
+- schnellerer Start der App
+- Niederschlagsmenge wird ausgeblendet, wenn sie null ist
 - verbesserte Übersetzungen
+- 6-stündige Updates werden besser mit den Mosmix-Daten-Updates synchronisiert
+- kleinere Verbesserungen in der Wetteranzeige

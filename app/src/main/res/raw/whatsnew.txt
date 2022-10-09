@@ -1,12 +1,8 @@
 New in version ([VERSION]):
 
-- new language: Hungarian (thanks to eUgEntOptIc44 and Gőz Barnabás!)
-- new, scrollable weather overview
-- improved design of the user interface
-- improved support of the Solarized themes
-- new option to trigger a weather data update for all favorites
-- the app now optionally updates the location automatically upon app launch
-- added a setting to force landscape or portrait mode
-- simplified station search
-- updated translations
+- faster start of the app
+- precipitation amount is hidden when it is zero
+- improved translations
+- 6-hourly updates are better synchronized with Mosmix data updates
+- minor improvements in the weather display
 
