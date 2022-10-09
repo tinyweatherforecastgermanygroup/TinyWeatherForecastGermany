@@ -42,7 +42,6 @@ import android.text.Spanned;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -377,7 +376,6 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v("TWFG","Calling through on Create");
         if (WeatherSettings.isFirstAppLaunch(this)){
             startWelcomeActivity();
         } else {

@@ -31,7 +31,7 @@ public class CurrentWeatherInfo{
     public static final String EMPTY_TAG = "-";
     public final static int MOSMIX_UPDATE_INTERVAL = 6*60*60*1000; // 6 hours in millis
     public final static int MOSMIX_PUBLICATION_DELAY = 1*60*60*1000; // 1 hour in millis
-    public final SimpleDateFormat dateAndHourDateFormat = new SimpleDateFormat("dd.MMM.yyyy HH:mm");
+    public final SimpleDateFormat dateAndHourDateFormat = new SimpleDateFormat("dd. MMM yyyy HH:mm");
     Weather.WeatherLocation weatherLocation;
     long polling_time;
     long issue_time;
