@@ -128,11 +128,22 @@ public class ClassicWidget extends AppWidgetProvider {
         if (weatherInfo.currentWeather.hasProbPrecipitation()){
             preciptitation = weatherInfo.currentWeather.getProbPrecipitation()+"%";
         }
-        if (weatherInfo.currentWeather.hasProbPrecipitation() && weatherInfo.currentWeather.hasPrecipitation()){
-            preciptitation = preciptitation +", ";
-        }
         if (weatherInfo.currentWeather.hasPrecipitation()){
-            preciptitation = preciptitation + weatherInfo.currentWeather.getPrecipitation();
+            double precipitationAmount = weatherInfo.currentWeather.getPrecipitation();
+            if (precipitationAmount>0){
+                remoteViews.setViewVisibility(R.id.clockwidget_precipitation_unit1,View.VISIBLE);
+                remoteViews.setViewVisibility(R.id.clockwidget_precipitation_unit2,View.VISIBLE);
+                if (weatherInfo.currentWeather.hasProbPrecipitation() && weatherInfo.currentWeather.hasPrecipitation()){
+                    preciptitation = preciptitation +", ";
+                }
+                preciptitation = preciptitation + weatherInfo.currentWeather.getPrecipitation();
+            } else {
+                remoteViews.setViewVisibility(R.id.clockwidget_precipitation_unit1,View.GONE);
+                remoteViews.setViewVisibility(R.id.clockwidget_precipitation_unit2,View.GONE);
+            }
+        } else {
+            remoteViews.setViewVisibility(R.id.clockwidget_precipitation_unit1,View.GONE);
+            remoteViews.setViewVisibility(R.id.clockwidget_precipitation_unit2,View.GONE);
         }
         if (preciptitation.equals("")){
             remoteViews.setViewVisibility(R.id.widget_precipitation_container, View.INVISIBLE);
