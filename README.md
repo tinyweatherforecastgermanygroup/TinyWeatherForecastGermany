@@ -164,12 +164,23 @@ You may get a hint about their functionality if you just _long-press_ them.
 The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do. 
  
 ### How often does the app update the weather forecast?
- 
-The Deutscher Wetterdienst updates the forecast data that is used every 6 hours. Therefore, it does not make sense to pull weather data more frequently than this from the DWD API. However, a manual data update triggered by the user's selection in the main app always forces an update of forecast data. The forecast data covers the next ten days. So it is pretty feasible to present a weather forecast for some time without polling new data.
+
+This mainly depends on your setup. In the settings, you can set up the update interval. This interval can be between 6 and 24 hours. The Deutscher Wetterdienst updates the forecast data that is used every 6 hours. Therefore, it does not make sense to pull weather data more frequently than every 6 hours. 
+
+The app updates the forecast data regulary, when one of the following conditions is met:
+- you placed a widget on your home screen
+- you enabled "always update" in the settings
+- you enabled Gadgetbridge support
+
+A manual data update triggered by the user's selection in the main app always forces an update of forecast data. The forecast data covers the next ten days. So it is pretty feasible to present a weather forecast for some time without polling new data.
+
+You see the last update time in the main app. *Long pressing* this text makes the app display the time the weather forecast was *issued* by the DWD.
+
+When you select to automatically update every 6 hours, the app tries to guess when it is best to poll for new data to get in sync with the time the forecasts are made available by the DWD.
  
 ### How often does the GadgetBridge app gets updated (when this feature is enabled)?
  
-When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called for this. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in *doze mode*, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
+When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called every time to perform this task. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in *doze mode*, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
   
 If you encounter problems with GadgetBridge not updating, placing a widget on the home screen may help, since the widget will try to also update GadgetBridge every time the widget itself gets updated by the system.
   
@@ -211,7 +222,7 @@ This also works from a web browser, provided the page in question offers a `geo:
 
 The delete icon works the other way around: it does not remove the currently displayed region but _all other_ regions that were selected at some point in the past. The idea of Tiny Weather Forecast Germany is centred around the idea of your usual location and not so much on a list of bookmarks.
 
-It is also implemented this way to quickly delete a presumptive travel history.
+It is also implemented this way to quickly delete a presumptive travel history. Think of it as a privacy feature.
 
 ### How do I delete a location?
 
