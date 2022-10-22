@@ -103,7 +103,7 @@ Translations:
 
 Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://weblate.bubu1.eu/engage/tiny-weather-forecast-germany/).
 
-<img src="https://weblate.bubu1.eu/widgets/tiny-weather-forecast-germany/-/multi-blue.svg" alt="Weblate translation live status" title="Live status of Tiny Weather Forecast Germany's translations.">
+[<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/)
 
 Privacy
 -------
