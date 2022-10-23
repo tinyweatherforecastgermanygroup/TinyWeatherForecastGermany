@@ -314,4 +314,5 @@
     <string name="overview_button">Übersicht</string>
     <string name="preference_display_rotation_title">Anzeige ausrichten</string>
     <string name="preference_display_rotation_summary">Ausrichten der Anzeige</string>
+    <string name="issued">veröffentlicht</string>
 </resources>
