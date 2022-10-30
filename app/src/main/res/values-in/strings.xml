@@ -1,2 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="main_selectstation">Wilayah:</string>
+    <string name="main_wait_for_gps_fix">Lokasi sedang ditentukan…</string>
+    <string name="dwd_notice_app">Basis data: Deutscher Wetterdienst, elemen yang dimiliki ditambahkan, beberapa data diratakan pada nilai individu. Peringatan disingkatkan.</string>
+    <string name="dwd_textforecast_notice">Basis data: Deutscher Wetterdienst, elemen yang dimiliki ditambahkan, tata letak diubah.</string>
+    <string name="license_button">Lisensi</string>
+    <string name="update_button">Perbarui</string>
+    <string name="geoinput_button">Cari berdasarkan lokasi</string>
+    <string name="travel_button">Perbarui semua</string>
+    <string name="about_button">Privasi/Tentang</string>
+    <string name="warnings_button">Peringatan cuaca</string>
+    <string name="texts_button">Teks</string>
+    <string name="overview_button">Ikhtisar</string>
+    <string name="today">Hari ini</string>
+    <string name="station">Stasiun</string>
+    <string name="whatsnew_button">Apa yang baru</string>
+    <string name="classicwidget_description">Klasik</string>
+    <string name="largewidget_description">Besar</string>
+    <string name="clockwidget_description">Jam &amp; Cuaca</string>
+    <string name="favorites_cleared">Favorit dihapus.</string>
+    <string name="actionbar_textinput_hint">Coba notasi spesifik negara</string>
+    <string name="weathercode_UNKNOWN">tidak diketahui</string>
+    <string name="app_name">Prakiraan Cuaca Kecil Jerman</string>
+    <string name="main_updatetime">Pembaruan Terakhir:</string>
+    <string name="dwd_notice">Basis data: Deutscher Wetterdienst, elemen yang dimiliki ditambahkan, beberapa data diratakan pada nilai individu.</string>
+    <string name="dwd_warnings_notice">Basis data: Deutscher Wetterdienst, menampilkan peringatan yang dikecilkan.</string>
+    <string name="new_station">Wilayah diubah ke</string>
+    <string name="settings_button">Pengaturan</string>
+    <string name="boldwidget_description">Banyak</string>
+    <string name="station_does_not_exist">Stasiun yang Anda masukkan tidak ada. Silakan pilih dari stasiun yang disarankan dari daftar.</string>
+    <string name="actionbar_textinput_title">Masukkan tempat di sini:</string>
+</resources>
