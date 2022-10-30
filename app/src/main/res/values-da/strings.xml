@@ -297,4 +297,5 @@
     <string name="travel_button">Opdater alt</string>
     <string name="preference_display_rotation_title">Visning af justering</string>
     <string name="preference_display_rotation_summary">Sådan justeres skærmen</string>
+    <string name="issued">udstedt</string>
 </resources>
