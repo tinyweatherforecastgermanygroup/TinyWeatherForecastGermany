@@ -1,0 +1,2 @@
+- interval perkiraan sekarang dapat diatur: sejam, 6 jam, campuran (24 jam pertama setiap jam, 6 jam setelahnya)
+- bilah opsional yang menampilkan detail prakiraan per jam dalam prakiraan 6 jam

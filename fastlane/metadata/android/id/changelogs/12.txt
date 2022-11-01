@@ -1,0 +1,12 @@
+- peringatan cuaca sekarang juga diperbarui dengan benar saat aplikasi kembali ke latar depan
+- diperbaiki nama stasiun tetap tidak diperbarui setelah atur ulang favorit
+- ditambahkan perhitungan siang / malam yang tepat dan tampilan matahari terbit & terbenam
+- diperbaiki kerusakan setelah pembaruan dari versi aplikasi yang lebih lama
+- tekanan udara permukaan tambahan
+- ditambahkan keterlihatan
+- bilah dengan perkiraan per jam sekarang ditampilkan secara bawaan
+- opsi yang diperluas untuk menyesuaikan tampilan
+
+- Catatan perubahan versi 0.50.3 tidak ditampilkan dengan benar di dalam aplikasi:
+   - interval perkiraan sekarang dapat diatur: sejam, 6 jam, campuran (24 jam pertama setiap jam, 6 jam setelahnya)
+   - bilah opsional yang menampilkan detail prakiraan per jam dalam prakiraan 6 jam

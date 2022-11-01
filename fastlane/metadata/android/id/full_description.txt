@@ -1,0 +1,9 @@
+Prakiraan cuaca terperinci hingga 10 hari, berdasarkan data terbuka Layanan Cuaca Jerman (DWD). Peringatan cuaca dari DWD juga ditampilkan.
+
+Prakiraan cuaca dari stasiun cuaca yang diinginkan ditampilkan. Stasiun dapat dicari berdasarkan nama, koordinat geografis, atau lokasinya sendiri. Prakiraan cuaca tersedia untuk lebih dari 5000 stasiun cuaca di Jerman dan di seluruh dunia.
+
+Aplikasi ini memiliki desain yang ramping. Secara opsional mendukung perangkat yang dapat digunakan melalui Gadgetbridge, sehingga data cuaca juga dapat ditampilkan pada perangkat yang dapat digunakan.
+
+Selain itu, ada berbagai kemungkinan untuk menyesuaikan tampilan data cuaca dengan kebutuhan Anda sendiri. Waktu matahari terbit, terbenam dan senja dapat ditampilkan untuk lokasi yang dipilih juga.
+
+Aplikasi ini juga memiliki daftar favorit, yang dapat digunakan untuk beralih cepat di antara beberapa stasiun cuaca. Ini juga menawarkan beberapa widget berukuran berbeda dengan ramalan cuaca yang dapat ditempatkan di layar beranda dan diperbarui secara otomatis.

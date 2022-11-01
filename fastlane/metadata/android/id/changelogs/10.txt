@@ -1,0 +1,6 @@
+Versi 0.50.2:
+
+- atur ketinggian widget minimum yang disesuaikan untuk integrasi yang lebih baik ke dalam ukuran kisi khusus di layar beranda
+- widget tetap tidak segera memperbarui ke lokasi baru dalam beberapa keadaan
+- diperbaiki opsi gadgetbridge yang rusak "kirim waktu saat ini"
+- layanan pembaruan tetap tidak dimulai karena aktivitas tidak di latar depan pada perangkat dengan API>25
