@@ -15,9 +15,7 @@ How to get the app
 
 Tiny Weather Forecast Germany is available from the F-Droid main repository. You can download it here:
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" 
-    alt="Get it on F-Droid"
-    height="80px">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="80px">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
 **Alternative sources:**
 
@@ -50,24 +48,24 @@ along with Tiny Weather Forecast Germany. If not, see <http://www.gnu.org/licens
 Credits
 -------
 
-The Material Design icons are Copyright (c) Google Inc., licensed 
+The Material Design icons are Copyright (c) Google Inc., licensed
 under the Apache License Version 2.0.
- 
+
 This app uses gradle and the gradle wrapper, Copyright Gradle Inc,
 licensed under the Apache 2.0 license.
- 
-Data source: Deutscher Wetterdienst, own elements added, some data 
+
+Data source: Deutscher Wetterdienst, own elements added, some data
 averaged over individual values. Weather warnings are abbreviated. Source for geo-data: Deutscher Wetterdienst.
- 
+
 This program uses the WeatherSpec class of Gadgetbridge,
 Copyright (C) 2016-2020 Andreas Shimokawa, Carsten Pfeiffer,
 Daniele Gobbetti, licensed under the GNU AFFRERO GENERAL PUBLIC LICENSE,
-Version 3, 19 November 2007. 
- 
+Version 3, 19 November 2007.
+
 This program uses PNPOLY - Point Inclusion in Polygon Test by W. Randolph Franklin (WRF), Copyright (c) 1970-2003, Wm. Randolph Franklin
- 
+
 This program uses the Astronomy class, Copyright (C) 2010-2012, Helmut Lehmeyer, licensed under the GNU General Public License version 3.
- 
+
 PAT maps by Ian Macky <http://ian.macky.net/pat>. Images of the "Lange Anna" (Helgoland) and the Pellworm lighthouse by arwanger.
 
 Calculation of relative humidity from temperature and dew point is done using a simplified formula example from the DWD (Deutscher Wetterdienst), see <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
@@ -101,25 +99,25 @@ Translations:
 * Spanish: eUgEntOptIc44
 * Ukrainian: eUgEntOptIc44, Andrij Mizyk
 
-Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://weblate.bubu1.eu/engage/tiny-weather-forecast-germany/).
+Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
 
 [<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/)
 
 Privacy
 -------
- 
+
 For the privacy statement, see [here](https://codeberg.org/Starfish/TinyWeatherForecastGermany/wiki/Home).
 
 Concept
 -------
- 
+
 The idea is to create a simple, floss and light-weight weather forecast app with a focus on home screen widgets that uses open data from the Deutscher Wetterdienst (DWD) and that does not track the users.
- 
+
 Permissions
 -----------
 
 The app uses the following permissions:
- 
+
 * Internet: needed to get forecast data from the DWD.
 * Access network state: query network state before getting data.
 * foreground service: a foreground service is used to reliably get the forecast data. The service does not run all the time but only when a weather forecast update from the DWD needs to be done, and it runs until it is finished.
@@ -130,19 +128,19 @@ FAQ
 ---
 
 ### For locations in a different time zone the day/night icons seem incorrect.
- 
-The app always displays the date & time of your device (and locale). Example: you are in Berlin and have selected the weather for Cuba. The app shows you the weather in Cuba at the corresponding Berlin time and uses the day/night-icons corresponding to the Berlin time. Once you have travelled to Cuba and your device switched to the local time in Cuba, the app will display the weather in Cuba at the Cuba time.   
- 
+
+The app always displays the date & time of your device (and locale). Example: you are in Berlin and have selected the weather for Cuba. The app shows you the weather in Cuba at the corresponding Berlin time and uses the day/night-icons corresponding to the Berlin time. Once you have travelled to Cuba and your device switched to the local time in Cuba, the app will display the weather in Cuba at the Cuba time.
+
 ### How to read the widget?
- 
+
 The widget icon, the weather description and the current temperature refer to the weather forecast that can be expected until the next full hour. The low and high temperatures refer to the values that can be expected to occur from now to midnight.
 
 When showing more days (bold widget, large widget), the min and max values and the weather symbol refer to the whole day.
 
 Since version 0.58.0 onward, this app can display weather warnings in widgets. To display weather warnings in widgets, you need to enable this feature in the settings. When a warning is issued for your chosen location, the classic widget and the large widget display a warning symbol. The clock widget and the bold widget also display a small text indicating the warning category of the *most severe* weather warning issued for your location. When there are multiple warnings issued, this is indicated by three dots ("...") and a plus ("+"). You have to go to the app to see them all.  
- 
+
 ### What do the symbols in the main app mean?
- 
+
 Symbols used:
 <img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_precipitation.png" height="16" width="16"/> precipitation
 <img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_cloud_black.png" height="16" width="16"/> clouds
@@ -157,29 +155,30 @@ Symbols used:
 
 ### What do the icons shown do?
 
-You may get a hint about their functionality if you just _long-press_ them.
- 
+You may get a hint about their functionality if you just *long-press* them.
+
 ### My widgets don't get updated (unless I open the app).
 
-The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do. 
- 
+The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
+
 ### How often does the app update the weather forecast?
 
-This mainly depends on your setup. In the settings, you can set up the update interval. This interval can be between 6 and 24 hours. The Deutscher Wetterdienst updates the forecast data that is used every 6 hours. Therefore, it does not make sense to pull weather data more frequently than every 6 hours. 
+This mainly depends on your setup. In the settings, you can set up the update interval. This interval can be between 6 and 24 hours. The Deutscher Wetterdienst updates the forecast data that is used every 6 hours. Therefore, it does not make sense to pull weather data more frequently than every 6 hours.
 
 The app updates the forecast data regulary, when one of the following conditions is met:
-- you placed a widget on your home screen
-- you enabled "always update" in the settings
-- you enabled Gadgetbridge support
+
+* you placed a widget on your home screen
+* you enabled "always update" in the settings
+* you enabled Gadgetbridge support
 
 A manual data update triggered by the user's selection in the main app always forces an update of forecast data. The forecast data covers the next ten days. So it is pretty feasible to present a weather forecast for some time without polling new data.
 
 You see the last update time in the main app. *Long pressing* this text makes the app display the time the weather forecast was *issued* by the DWD.
 
 When you select to automatically update every 6 hours, the app tries to guess when it is best to poll for new data to get in sync with the time the forecasts are made available by the DWD.
- 
+
 ### How often does the GadgetBridge app gets updated (when this feature is enabled)?
- 
+
 When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called every time to perform this task. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in *doze mode*, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
   
 If you encounter problems with GadgetBridge not updating, placing a widget on the home screen may help, since the widget will try to also update GadgetBridge every time the widget itself gets updated by the system.
@@ -196,17 +195,17 @@ Sunrise and sunset cannot be reliably calculated with the formulas used for lati
 
 Icons refer to *significant weather conditions*. The idea is to show you the most important (significant) weather condition that you can expect to occur within the given time period. For example, thunderstorms have a higher priority than rain and rain/fog have a higher priority than clouds. If such a significant weather condition is likely to occur, it will be preferred over others.
 
-Usually, the weather conditions are _calculated by the DWD_. If a weather condition is not available in the forecast data, the app tries to calculate it from other items. If you are interested how this app calculates icons in this case, see [here](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/app/src/main/java/de/kaffeemitkoffein/tinyweatherforecastgermany/WeatherCodeContract.java) in the source code.
+Usually, the weather conditions are *calculated by the DWD*. If a weather condition is not available in the forecast data, the app tries to calculate it from other items. If you are interested how this app calculates icons in this case, see [here](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/app/src/main/java/de/kaffeemitkoffein/tinyweatherforecastgermany/WeatherCodeContract.java) in the source code.
 
 Thresholds for significant weather conditions are subjective and perhaps debatable, but weather conditions calculated by the DWD have priority and always remain unmodified, if available. If you are interested in the priorities, see [this DWD document](https://www.dwd.de/DE/leistungen/opendata/help/schluessel_datenformate/kml/mosmix_element_weather_xls.xlsx?__blob=publicationFile&v=6).
 
 ### Why does the app give a different value for some parameter (e.g. temperature) than the official station reading?
 
-Tiny Weather Forecast Germany gives _forecasts_, not the current reading at some weather station. If the displayed value in Tiny Weather Forecast Germany differs from an official reading at some spot, the forecast was just off.
+Tiny Weather Forecast Germany gives *forecasts*, not the current reading at some weather station. If the displayed value in Tiny Weather Forecast Germany differs from an official reading at some spot, the forecast was just off.
 
 ### Where do the names come from that are offered in searches?
 
-Tiny Weather Forecast Germany uses _WarncellIDs_ for the regions offered. These are closely related to the [Amtlicher Gemeindeschlüssel](https://www.destatis.de/DE/Themen/Laender-Regionen/Regionales/Gemeindeverzeichnis/_inhalt.html) (AGS) provided by destatis. Basically, the WarncellIDs are an extension of the AGS. WarncellIDs also feature human-readable names (e.g. "Landkreis Göttingen"). These names can be used while looking for a weather station. They _do not_ refer to the names of weather stations. Once you select a name  the app will give you a list of close by stations including their distance to choose from. This distance is derived from the center of the area polygon(s) associated with a given region. It may happen, that a WarncellID has more than one search key associated. E.g. searching for `Insel Helgoland` or `Gemeinde Helgoland` will show a list starting with `Helgoland` at an approximate distance of 0.4 km. Hence the weather station is actually just called `Helgoland`.
+Tiny Weather Forecast Germany uses *WarncellIDs* for the regions offered. These are closely related to the [Amtlicher Gemeindeschlüssel](https://www.destatis.de/DE/Themen/Laender-Regionen/Regionales/Gemeindeverzeichnis/_inhalt.html) (AGS) provided by destatis. Basically, the WarncellIDs are an extension of the AGS. WarncellIDs also feature human-readable names (e.g. "Landkreis Göttingen"). These names can be used while looking for a weather station. They *do not* refer to the names of weather stations. Once you select a name  the app will give you a list of close by stations including their distance to choose from. This distance is derived from the center of the area polygon(s) associated with a given region. It may happen, that a WarncellID has more than one search key associated. E.g. searching for `Insel Helgoland` or `Gemeinde Helgoland` will show a list starting with `Helgoland` at an approximate distance of 0.4 km. Hence the weather station is actually just called `Helgoland`.
 
 *Note* more than one station will be shown if your search matches a search key. These stations are sorted by increasing distance from the initially searched entity. E.g. searching for `Insel Helgoland` in the above example will also show `Elbmuendung` (a sea area next to Cuxhaven) which is 23.4 km away, `UFS Deutsche Bucht` (an automatized weather station aboard a light vessel in the middle of the German Bight) already 29.3 km away, or `Wangerooge` (one of the East Frisian islands) at a distance of 29.4 km. (And of course many others even further away.) If `Helgoland` is searched however, it matches the station right away, and the app jumps to it immediately without a further selection.
 
@@ -220,13 +219,13 @@ This also works from a web browser, provided the page in question offers a `geo:
 
 ### Why does the delete icon next to the location not remove the selected location?
 
-The delete icon works the other way around: it does not remove the currently displayed region but _all other_ regions that were selected at some point in the past. The idea of Tiny Weather Forecast Germany is centred around the idea of your usual location and not so much on a list of bookmarks.
+The delete icon works the other way around: it does not remove the currently displayed region but *all other* regions that were selected at some point in the past. The idea of Tiny Weather Forecast Germany is centred around the idea of your usual location and not so much on a list of bookmarks.
 
 It is also implemented this way to quickly delete a presumptive travel history. Think of it as a privacy feature.
 
 ### How do I delete a location?
 
-Select your new region and hit the clean button next to the regions title. Mind that this will clean _all other_ regions, except the one currently displayed.
+Select your new region and hit the clean button next to the regions title. Mind that this will clean *all other* regions, except the one currently displayed.
 
 ### Why does the app not update a location? It is in my bookmarks.
 
@@ -292,33 +291,32 @@ To get an immediate and current weather warning status, go to the app and hit "u
 
 ### How do I provide a crash log?
 
-Please keep in mind: device logs may include and/or compromise sensitive information, consider reviewing the logs before sending.   
+Please keep in mind: device logs may include and/or compromise sensitive information, consider reviewing the logs before sending.
 
 If you pose yourself this question one can assume that you don't shy away from some more technical stuff. It is not enormously complex, though, so just read on, even though it requires you to install some developer tools. The idea is to provide a really detailed log of what Tiny Weather Forecast Germany actually did till the point where it died or did something unpredictable. All this is logged by your device, however, usually you can not see those logs.
 
 The key to access those extensive logs is to hook up your device to your PC via USB and use a tool called Android Debug Bridge (`adb`) to access the system log.
 
-The following steps need to be done _only once_:
+The following steps need to be done *only once*:
 
-1. Install `adb`. Most Linux distributions package it. If you use another operating system or it is not packaged in your distribution you can download it from https://developer.android.com/studio/releases/platform-tools for various platforms as ZIP-files to unpack and use the usual means to install software there. You will also find a very extensive discussion of `adb` itself [here](https://developer.android.com/studio/command-line/adb). For the purposes at hand it is enough to just get it installed, though.
-2. Enable the developer options on your device. Extensive instructions can also be found here: https://developer.android.com/studio/debug/dev-options. The short form:
+1. Install `adb`. Most Linux distributions package it. If you use another operating system or it is not packaged in your distribution you can download it from [https://developer.android.com/studio/releases/**platform-tools**](https://developer.android.com/studio/releases/platform-tools) for various platforms as ZIP-files to unpack and use the usual means to install software there. You will also find a very extensive discussion of `adb` itself [here](https://developer.android.com/studio/command-line/adb). For the purposes at hand it is enough to just get it installed, though.
+2. Enable the developer options on your device. Extensive instructions can also be found here: [https://developer.android.com/studio/**debug/dev-options**](https://developer.android.com/studio/debug/dev-options). The short form:
     1. Find the build number of your phone.
         - Open `Settings` (Searching for `Build number` might guide you directly to it)
         - Go to `System`
         - Go to `About phone`
     2. Tap the `Build number` several times.
     3. A dialogue informs you how many taps you are a way from being a developer
-    4. Keep tapping on `Build number` until you see _You Are Now a Developer_
+    4. Keep tapping on `Build number` until you see *You Are Now a Developer*
 3. Enable USB debugging in the developer options of your device:
     1. Open `Settings`
     2. Search for `USB debugging`
     3. Make sure it is switched on
 
-
 After this initial setup, you are ready to access the system log.
 
 1. Connect your device to the PC via USB
-2. Open a terminal/command line/shell and start `adb logcat`. This will display the devices log on the shell. Beware, this is a _lot of_ scroll. You may want to redirect it to a file or use some shell extension that allows searches in the text output (like `screen` or `tmux`). To redirect `adb logcat > android.log` should do the trick. It will create a file `android.log` which is a plain text file that can be viewed in any text editor.
+2. Open a terminal/command line/shell and start `adb logcat`. This will display the devices **log** on the shell. Beware, this is a *lot of* scroll. You may want to redirect it to a file or use some shell extension that allows searches in the text output (like `screen` or `tmux`). To redirect `adb logcat > android.log` should do the trick. It will create a file `android.log` which is a plain text file that can be viewed in any text editor.
 3. Watch out for stuff related to the app. A typical log start similar to this:
 ```
 08-20 13:16:33.114  1529  3193 I ActivityManager: START u0 {act=android.intent.action.VIEW flg=0x1000c000 cmp=de.kaffeemitkoffein.tinyweatherforecastgermany/.TextForecastListActivity bnds=[290,534][430,692]} from uid 10477
@@ -330,22 +328,21 @@ After this initial setup, you are ready to access the system log.
 08-20 13:16:33.245 11798 11798 E AndroidRuntime: Process: de.kaffeemitkoffein.tinyweatherforecastgermany, PID: 11798
 ```
     Read: fatal exception in `de.kaffeemitkoffein.tinyweatherforecastgermany` (PID will show another number.) So, Tiny Weather Forecast Germany died unexpectedly.
-6. Copy all the blurb from the start mentioned in 3. above till you reach a line that holds
+6. Copy all the blurb from the start mentioned in step 3 till you reach a line that holds
 ```
 ActivityManager:   Force finishing activity de.kaffeemitkoffein.tinyweatherforecastgermany/.TextForecastListActivity
 ```
 7. Log in to [`codeberg.org`](https://codeberg.org)
 8. Navigate to the issue tracker [`https://codeberg.org/Starfish/TinyWeatherForecastGermany/issues`](https://codeberg.org/Starfish/TinyWeatherForecastGermany/issues)
-10. Create an **issue** describing what you did and add the log just created (copy&paste will do).
-
+10. Create an **issue** describing what you did and add the log just created (copy & paste will do).
 
 Contributing
 ------------
 
 Please leave comments, bug reports, issues and feature requests at the app repository at [codeberg.org](https://codeberg.org/Starfish/TinyWeatherForecastGermany):
- 
-<https://codeberg.org/Starfish/TinyWeatherForecastGermany>
- 
-Alternatively, for suggestions and bug reports, you can contact me by email: weather (at) kaffeemitkoffein.de 
 
-Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://weblate.bubu1.eu/engage/tiny-weather-forecast-germany/).
+<https://codeberg.org/Starfish/TinyWeatherForecastGermany>
+
+Alternatively, for suggestions and bug reports, you can contact the maintainer by email: weather (at) kaffeemitkoffein.de
+
+Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
