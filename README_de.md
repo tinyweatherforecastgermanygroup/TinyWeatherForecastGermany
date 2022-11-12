@@ -15,9 +15,7 @@ Download
 
 Die App ist im F-Droid-Hauptrepository verfügbar:
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-alt="Vom F-Droid app store herunterladen"
-height="80">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Vom F-Droid app store herunterladen" height="80px">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
 **Alternative Quellen:**
 
@@ -71,13 +69,34 @@ Uses the Solarized Precision colors for machines and people theme, Copyright (c)
 
 Mitwirkende:
 
-* Andreas Shimokawa (Fehlerbehebungen & Unterstützung für die Gadgetbridge-API)
-* Izzy (Verbesserungen der Metadaten)
-* Janis Bitta (neues App-Symbol)
-* Jonas Lochmann (.gitignore)
-* Marc Nause (Code-Verbesserungen, Bitmap-Caching)
-* Mondstern (niederländische Übersetzung)
-* Jean-Luc (französische Übersetzung, Fehlerbehebungen, javadoc, Übersetzung der Datei README.md)
+* Andreas Shimokawa (Bugfixes & Support für die Gadgetbridge API)
+* Izzy (Metadaten-Verbesserungen)
+* Janis Bitta (neues App-Icon)
+* Jonas Lochmann (.gitignore-Datei)
+* Marc Nause (Codeverbesserungen, Bitmap-Caching)
+* Jean-Luc Tibaux (Französische Übersetzung, Bugfixes, Javadoc-Verbesserungen, Übersetzungen dieser README.md-Datei)
+* arwanger (README.md)
+* maximilianovermeyer (Fehlerbehebung beim Geo-Intent-Handling)
+
+Übersetzungen:
+
+* Tschechisch: eUgEntOptIc44, mondstern
+* Dänisch: eUgEntOptIc44, mondstern
+* Niederländisch: mondstern
+* Englisch: Allan Nordhøy
+* Französisch: eUgEntOptIc44, Mondstern, J. Lavoie
+* Finnisch: Mondstern
+* Deutsch: eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
+* Ungarisch: eUgEntOptIc44, Gőz Barnabás
+* Italienisch: mondstern, eUgEntOptIc44
+* Norwegischer Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
+* Polnisch: mondstern
+* Spanisch: eUgEntOptIc44
+* Ukrainisch: eUgEntOptIc44, Andrij Mizyk
+
+Beteiligen Sie sich gerne an *Tiny Weather Forecast Germany* und [helfen Sie mit, die App in weitere Sprachen zu übersetzen oder bestehende Übersetzungen zu vervollständigen](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
+
+[<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-deutschland/)
 
 Datenschutz
 -----------
@@ -127,7 +146,7 @@ Verwendete Symbole:
 
 *Meine Widgets werden nicht aktualisiert (außer ich öffne die App).*
 
-Die Widgets werden alle 15-30 Minuten aktualisiert. Wenn dies überhaupt nicht oder nur beim Öffnen der App passiert, dann haben Sie wahrscheinlich ein Gerät, das die Batterielebensdauer über die richtige Funktionalität stellt. Wahrscheinlich schaltet eine sogenannte *Batteriesparfunktion* die Komponenten der App ab und unterbricht die Aktualisierungen. Sehen Sie auf [dieser Seite] (https://dontkillmyapp.com/) nach, um zu prüfen, ob Sie ein solches Gerät besitzen und was Sie tun können.
+Die Widgets werden alle 15-30 Minuten aktualisiert. Wenn dies überhaupt nicht oder nur beim Öffnen der App passiert, dann haben Sie wahrscheinlich ein Gerät, das die Batterielebensdauer über die richtige Funktionalität stellt. Wahrscheinlich schaltet eine sogenannte *Batteriesparfunktion* die Komponenten der App ab und unterbricht die Aktualisierungen. Sehen Sie auf [dieser Seite](https://dontkillmyapp.com/) nach, um zu prüfen, ob Sie ein solches Gerät besitzen und was Sie tun können.
 
 *Wie oft aktualisiert die App die Wettervorhersage?*
 

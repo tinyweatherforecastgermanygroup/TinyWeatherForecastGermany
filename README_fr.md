@@ -15,9 +15,7 @@ Comment obtenir l'application
 
 Tiny Weather Forecast Germany est disponible depuis le dépôt principal de F-Droid. Vous pouvez la télécharger ici:
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-alt="Obtenez-le sur store d'applis F-Droid"
-height="80">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Obtenez-le sur store d'applis F-Droid" height="80px">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
 **Sources alternatives:**
 
@@ -72,19 +70,39 @@ Uses the Solarized Precision colors for machines and people theme, Copyright (c)
 
 Contributeurs :
 
-* Andreas Shimokawa (corrections de bogues et support de l'API Gadgetbridge)
+* Andreas Shimokawa (corrections de bogues et prise en charge de l'API Gadgetbridge)
 * Izzy (améliorations des métadonnées)
-* Janis Bitta (nouvelle icône de l'application)
+* Janis Bitta (nouvelle icône d'application)
 * Jonas Lochmann (.gitignore)
 * Marc Nause (améliorations du code, mise en cache des bitmaps)
-* Mondstern (traduction néerlandaise)
-* Jean-Luc (traduction française, améliorations du code, utilisation du javadoc, traduction du fichier README.md)
+* Jean-Luc Tibaux (traduction française, corrections de bugs, améliorations javadoc, traductions de ce fichier README.md)
 * arwanger (README.md)
+* maximilianovermeyer (correction de la gestion de l'intention géographique)
+
+Traductions :
+
+* Tchèque : eUgEntOptIc44, mondstern
+* Danois : eUgEntOptIc44, mondstern
+* Néerlandais : mondstern
+* Anglais : Allan Nordhøy
+* Français : eUgEntOptIc44, mondstern, J. Lavoie
+* finnois : mondstern
+* Allemand : eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
+* Hongrois : eUgEntOptIc44, Gőz Barnabás
+* Italien : mondstern, eUgEntOptIc44
+* Bokmål norvégien : Allan Nordhøy, eUgEntOptIc44, mondstern
+* Polonais : mondstern
+* Espagnol : eUgEntOptIc44
+* Ukrainien : eUgEntOptIc44, Andrij Mizyk
+
+Participez à *Tiny Weather Forecast Germany* et [aidez à le traduire dans d'autres langues ou complétez les traductions existantes](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
+
+[<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/)
 
 Vie privée
 -------
 
-Pour la déclaration de confidentialité, voir [ici] (https://codeberg.org/Starfish/TinyWeatherForecastGermany/wiki/Home).
+Pour la déclaration de confidentialité, voir [ici](https://codeberg.org/Starfish/TinyWeatherForecastGermany/wiki/Home).
 
 Concept
 -------
@@ -129,7 +147,7 @@ Icônes utilisées:
 
 *Mes widgets ne sont pas mis à jour (sauf si j'ouvre l'application).*
 
-Les widgets sont mis à jour toutes les 15 à 30 minutes. Si cela ne se produit pas du tout ou seulement lorsque vous ouvrez l'application, il est probable que votre appareil privilégie l'autonomie de la batterie plutôt que les fonctionnalités. Il est probable qu'une soi-disant *fonction d'économie de batterie* tue les composants de l'application et interrompt les mises à jour. Consultez [cette page] (https://dontkillmyapp.com/) pour savoir si vous possédez un tel appareil et ce que vous pouvez faire.
+Les widgets sont mis à jour toutes les 15 à 30 minutes. Si cela ne se produit pas du tout ou seulement lorsque vous ouvrez l'application, il est probable que votre appareil privilégie l'autonomie de la batterie plutôt que les fonctionnalités. Il est probable qu'une soi-disant *fonction d'économie de batterie* tue les composants de l'application et interrompt les mises à jour. Consultez [cette page](https://dontkillmyapp.com/) pour savoir si vous possédez un tel appareil et ce que vous pouvez faire.
 
 *À quelle fréquence l'application met-elle à jour les prévisions météorologiques ?*
 
@@ -153,10 +171,9 @@ Le lever et le coucher du soleil ne peuvent être calculés de manière fiable a
 
 Les icônes font référence aux *conditions météorologiques significatives*. L'idée est de vous montrer la condition météorologique la plus importante (significative) à laquelle vous pouvez vous attendre au cours de la période donnée. Par exemple, les orages ont une priorité plus élevée que la pluie et la pluie/brouillard ont une priorité plus élevée que les nuages. Si une telle condition météorologique significative est susceptible de se produire, elle sera préférée aux autres.
 
-En général, les conditions météorologiques sont calculées par le DWD. Si une condition météorologique n'est pas disponible dans les données de prévision, l'application tente de la calculer à partir d'autres éléments. Si vous souhaitez savoir comment l'application calcule les icônes dans ce cas, consultez le code source [ici] (https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/app/src/main/java/de/kaffeemitkoffein/tinyweatherforecastgermany/WeatherCodeContract.java).
+En général, les conditions météorologiques sont calculées par le DWD. Si une condition météorologique n'est pas disponible dans les données de prévision, l'application tente de la calculer à partir d'autres éléments. Si vous souhaitez savoir comment l'application calcule les icônes dans ce cas, consultez le code source [ici](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/app/src/main/java/de/kaffeemitkoffein/tinyweatherforecastgermany/WeatherCodeContract.java).
 
-Les seuils pour les conditions météorologiques importantes sont subjectifs et peut-être discutables, mais les conditions météorologiques calculées par le DWD sont prioritaires et restent toujours non modifiées, si elles sont disponibles. Si vous êtes intéressé par les priorités, consultez [ce document du DWD] (https://www.dwd.de/DE/leistungen/opendata/help/schluessel_datenformate/kml/mosmix_element_weather_xls.xlsx?__blob=publicationFile&v=6).
-
+Les seuils pour les conditions météorologiques importantes sont subjectifs et peut-être discutables, mais les conditions météorologiques calculées par le DWD sont prioritaires et restent toujours non modifiées, si elles sont disponibles. Si vous êtes intéressé par les priorités, consultez [ce document du DWD](https://www.dwd.de/DE/leistungen/opendata/help/schluessel_datenformate/kml/mosmix_element_weather_xls.xlsx?__blob=publicationFile&v=6).
 
 Contribuer
 ----------
