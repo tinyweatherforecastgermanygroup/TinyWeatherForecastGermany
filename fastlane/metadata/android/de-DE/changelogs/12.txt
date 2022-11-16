@@ -1,9 +1,9 @@
 - Wetterwarnungen werden nun regelkonform aktualisiert, wenn die App wieder in den Vordergrund geht
 - behoben: Name der Wetterstation wurde nach einem Zurücksetzen der Favoriten nicht korrekt dargestellt
-- prezise Tag-/Nachtberechnung und Anzeige des Sonnenauf- und untergangs hinzu gefügt
+- hinzugefügt: präzise Tag-/Nachtberechnung und Anzeige von Sonnenauf- und untergang
 - behoben: Abstürze nach einer Aktualisierung von einer älteren App-Version
-- Luftdruck in Bodennähe in der Anzeige hinzugefügt
-- Sichtweite in der Anzeige hinzugefügt
+- hinzugefügt: Luftdruck in Bodennähe in der Anzeige
+- hinzugefügt: Sichtweite in der Anzeige
 - Balken mit stündlicher Vorhersage wird nun standardmäßig angezeigt
 - erweiterte Optionen zur Anpassung der Darstellung
 
