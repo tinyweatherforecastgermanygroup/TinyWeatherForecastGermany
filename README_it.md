@@ -15,9 +15,7 @@ Come ottenere l'app
 
 Tiny Weather Forecast Germany è disponibile dal repository principale di F-Droid. Puoi scaricarla qui:
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-alt="Get it on F-Droid"
-height="80">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Scaricalo su F-Droid" height="80px">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
 **Fonti alternative:**
 
@@ -47,7 +45,6 @@ General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Tiny Weather Forecast Germany. If not, see <http://www.gnu.org/licenses/>.
 
-
 Referenze
 -------
 
@@ -75,13 +72,33 @@ Uses the Solarized Precision colors for machines and people theme, Copyright (c)
 Collaboratori:
 
 * Andreas Shimokawa (correzioni di bug e supporto per l'API Gadgetbridge)
-* Izzy (miglioramenti ai metadati)
+* Izzy (miglioramenti dei metadati)
 * Janis Bitta (nuova icona dell'app)
 * Jonas Lochmann (.gitignore)
-* Marc Nause (miglioramenti al codice, caching delle bitmap)
-* Mondstern (traduzione olandese)
-* Jean-Luc (traduzione francese, correzioni di bug, miglioramenti al javadoc, traduzioni di questo file README.md)
+* Marc Nause (miglioramenti del codice, memorizzazione nella cache delle bitmap)
+* Jean-Luc Tibaux (traduzione francese, correzioni di bug, miglioramenti javadoc, traduzioni di questo file README.md)
 * arwanger (README.md)
+* maximilianovermeyer (correzione della gestione delle intenzioni geografiche)
+
+Traduzioni:
+
+* Ceco: eUgEntOptIc44, mondstern
+* Danese: eUgEntOptIc44, mondstern
+* Olandese: mondstern
+* Inglese: Allan Nordhoy
+* Francese: eUgEntOptIc44, mondstern, J. Lavoie
+* Finlandese: mondstern
+* Tedesco: eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
+* Ungherese: eUgEntOptIc44, Gőz Barnabás
+* Italiano: mondstern, eUgEntOptIc44
+* Norvegese Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
+* Polacco: mondstern
+* Spagnolo: eUgEntOptIc44
+* Ucraino: eUgEntOptIc44, Andrij Mizyk
+
+Partecipa a *Tiny Weather Forecast Germany* e [aiuta a tradurlo in più lingue o a completare le traduzioni esistenti](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
+
+[<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/)
 
 Privacy
 -------
@@ -104,7 +121,6 @@ L'app utilizza i seguenti permessi:
 * Ricevere l'avvio completato: l'app ha bisogno di sapere di un riavvio per riavviare i controlli periodici se un aggiornamento è dovuto, per aggiornare i widget e per inviare dati a Gadgetbridge quando abilitato.
 * Accesso alla posizione fine: utilizzato per determinare i sensori deep L più vicini alla tua posizione. Questo permesso non deve essere concesso se questa funzione non viene utilizzata o se la ricerca viene eseguita sulla base di coordinate geografiche inserite manualmente.
 
-
 FAQ
 ---
 
@@ -118,7 +134,6 @@ L'icona del widget, la descrizione del tempo e la temperatura attuale si riferis
 
 Quando si mostrano più giorni (widget in grassetto, widget grande), i valori minimi e massimi e il simbolo del tempo si riferiscono all'intera giornata.
 
-
 *Cosa significano i simboli nell'applicazione principale?*
 
 Icone utilizzate:
@@ -130,7 +145,6 @@ Icone utilizzate:
 <img alt="icona per la nebbia" title="icona per la nebbia" src="app/src/main/res/mipmap-mdpi/symbol_fog.png" height="16" width="16"/> nebbia
 <img alt="icona per drizzle" title="icona per drizzle" src="app/src/main/res/mipmap-mdpi/symbol_drizzle.png" height="16" width="16"/> Drizzle
 <img alt="icona per la direzione del vento" title="icona per la direzione del vento" src="app/src/main/res/mipmap-mdpi/arrow.png" height="16" width="16"/> Direzione del vento
-
 
 *I miei widget non vengono aggiornati (a meno che non apra l'app).*
 

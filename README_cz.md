@@ -15,9 +15,7 @@ Jak získat aplikaci
 
 Aplikace Tiny Weather Forecast Germany je k dispozici v hlavním úložišti F-Droid. Stáhnout si ji můžete zde:
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-alt="Získat na F-Droid"
-height="80">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Získat na F-Droid" height="80px">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
 **Alternativní zdroje:**
 
@@ -79,9 +77,29 @@ Přispěvatelé:
 * Janis Bitta (nová ikona aplikace)
 * Jonas Lochmann (.gitignore)
 * Marc Nause (vylepšení kódu, ukládání bitmap do mezipaměti)
-* Mondstern (překlad do nizozemštiny)
-* Jean-Luc (francouzský překlad, opravy chyb, javadoc, překlad souboru README.md)
+* Jean-Luc Tibaux (francouzský překlad, opravy chyb, vylepšení javadocu, překlady tohoto souboru README.md)
 * arwanger (README.md)
+* maximilianovermeyer (oprava manipulace s geo-záměry)
+
+Překlady:
+
+* česky: eUgEntOptIc44, mondstern
+* dánština: eUgEntOptIc44, mondstern
+* Holandský: mondstern
+* Anglicky: Allan Nordhøy
+* Francouzsky: eUgEntOptIc44, mondstern, J. Lavoie
+* Finština: mondstern
+* Německy: eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
+* maďarsky: eUgEntOptIc44, Gőz Barnabás
+* Italsky: mondstern, eUgEntOptIc44
+* Norský bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
+* polsky: mondstern
+* Španělsky: eUgEntOptIc44
+* Ukrajinština: eUgEntOptIc44, Andrij Mizyk
+
+Zapojte se do *Tiny Weather Forecast Germany* a [pomozte ji přeložit do více jazyků nebo dokončit stávající překlady](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
+
+[<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/)
 
 Ochrana osobních údajů
 ----------------------
@@ -129,7 +147,6 @@ Použité symboly:
 <img alt="ikona pro drizzle" title="ikona pro drizzle" src="app/src/main/res/mipmap-mdpi/symbol_drizzle.png" height="16" width="16"/> Drizzle
 <img alt="ikona pro směr větru" title="ikona pro směr větru" src="app/src/main/res/mipmap-mdpi/arrow.png" height="16" width="16"/> Směr větru
 
-
 *Moje widgety se neaktualizují (pokud neotevřu aplikaci).*
 
 Widgety se aktualizují každých 15-30 minut. Pokud se tak neděje vůbec nebo jen při otevření aplikace, pak máte pravděpodobně zařízení, které upřednostňuje výdrž baterie před správnou funkčností. Pravděpodobně nějaká takzvaná *funkce pro úsporu baterie* zabíjí součásti aplikace a přerušuje aktualizace. Podívejte se na [tuto stránku](https://dontkillmyapp.com/) a zjistěte, zda takové zařízení vlastníte a co s tím můžete dělat.
@@ -143,7 +160,6 @@ Deutscher Wetterdienst aktualizuje data předpovědi, která se používají, ka
 Když je podpora GadgetBridge **povolena**, aplikace bude v nejlepším případě aktualizovat GadgetBridge každých 30 minut pomocí již existujících dat předpovědi, což znamená, že rozhraní DWD API nebude kvůli tomu voláno. Na zařízeních s API 23 nebo vyšším však k takovým aktualizacím nemusí docházet tak pravidelně, když zařízení přejde do režimu *doze*, ale měly by se spouštět v takzvaném "okně údržby", a těžko říci, co to skutečně znamená v časových mantinelech. V závislosti na zařízení a/nebo ROM to bude pravděpodobně znamenat velmi různé věci.
 
 Pokud se setkáte s problémy s neaktualizací widgetu GadgetBridge, může pomoci umístění widgetu na domovskou obrazovku, protože widget se bude snažit aktualizovat také GadgetBridge pokaždé, když systém aktualizuje samotný widget.
-
 
 *Proč se srážky zobrazují v kg/m² místo v cm?*
 
