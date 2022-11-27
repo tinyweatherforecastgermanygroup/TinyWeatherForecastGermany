@@ -22,7 +22,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.*;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.WindowManager;
 import android.util.SparseArray;
 import java.text.SimpleDateFormat;
@@ -687,13 +686,6 @@ public class ForecastBitmap{
         }
         // calculate endPosition from the value in the settings
         endPosition=startPosition+24*WeatherSettings.getDisplayOverviewChartDays(context);
-        Log.v("TWFG","span : "+WeatherSettings.getDisplayOverviewChartDays(context));
-        Log.v("TWFG","start: "+startPosition);
-        Log.v("TWFG","end  : "+endPosition);
-        Log.v("TWFG","days : "+endPosition);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        Log.v("TWFG","Datestamp start: "+sdf.format(new Date(weatherInfos.get(startPosition).getTimestamp())));
-        Log.v("TWFG","width: "+width);
         if (endPosition>=weatherInfos.size()){
             endPosition=weatherInfos.size()-1;
         }

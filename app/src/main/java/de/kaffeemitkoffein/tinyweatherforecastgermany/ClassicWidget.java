@@ -539,10 +539,10 @@ public class ClassicWidget extends AppWidgetProvider {
         public WidgetDimensionManager(Context c, AppWidgetManager awm, int widget_instance){
             this.context = c;
             Bundle bundle = awm.getAppWidgetOptions(widget_instance);
-            widget_width_portrait_dp = bundle.getInt(awm.OPTION_APPWIDGET_MIN_WIDTH);
-            widget_width_landscape_dp = bundle.getInt(awm.OPTION_APPWIDGET_MAX_WIDTH);
-            widget_height_landscape_dp= bundle.getInt(awm.OPTION_APPWIDGET_MIN_HEIGHT);
-            widget_height_portrait_dp = bundle.getInt(awm.OPTION_APPWIDGET_MAX_HEIGHT);
+            widget_width_portrait_dp = bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+            widget_width_landscape_dp = bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+            widget_height_landscape_dp= bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+            widget_height_portrait_dp = bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
             DisplayMetrics metrics = c.getResources().getDisplayMetrics();
             this.xdpi = metrics.xdpi;
             this.ydpi = metrics.ydpi;

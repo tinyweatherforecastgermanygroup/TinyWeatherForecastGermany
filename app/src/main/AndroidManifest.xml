@@ -118,6 +118,14 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/clockwidget"/>
         </receiver>
 
+        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ChartWidget" android:icon="@drawable/widget_preview_chart"
+                  android:label="@string/chartwidget_description">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/chartwidget" />
+        </receiver>
+
         <receiver android:name=".WeatherUpdateBroadcastReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="de.kaffeemitkoffein.broadcast.REQUEST_UPDATE" />

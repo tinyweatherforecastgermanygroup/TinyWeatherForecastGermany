@@ -39,6 +39,8 @@ public class WidgetRefresher {
         context.sendBroadcast(intent3);
         // update clock widget
         refreshClockWidget(context);
+        // update chart widget
+        refreshChartWidget(context);
     }
 
     public static void refreshClockWidget(Context context){
@@ -46,6 +48,13 @@ public class WidgetRefresher {
         Intent intent4 = new Intent(context,ClockWidget.class);
         intent4.setAction(ClockWidget.WIDGET_CUSTOM_REFRESH_ACTION);
         context.sendBroadcast(intent4);
+    }
+
+    public static void refreshChartWidget(Context context){
+        // update clock widget
+        Intent intent5 = new Intent(context,ChartWidget.class);
+        intent5.setAction(ClockWidget.WIDGET_CUSTOM_REFRESH_ACTION);
+        context.sendBroadcast(intent5);
     }
 
 }
