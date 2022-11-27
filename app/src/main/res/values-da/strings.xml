@@ -298,4 +298,8 @@
     <string name="preference_display_rotation_title">Visning af justering</string>
     <string name="preference_display_rotation_summary">Sådan justeres skærmen</string>
     <string name="issued">udstedt</string>
+    <string name="preference_screen_overviewchart_summary">Tilpas oversigtsdiagrammet.</string>
+    <string name="preference_display_overviewchart_days_title">Dage</string>
+    <string name="preference_display_overviewchart_days_summary">Det maksimale antal dage, der vises i oversigtsdiagrammet.</string>
+    <string name="chartwidget_description">diagram</string>
 </resources>
