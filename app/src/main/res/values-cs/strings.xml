@@ -297,4 +297,8 @@
     <string name="preference_display_rotation_summary">Jak zarovnat displej</string>
     <string name="preference_gpsauto_summary">Při každém spuštění zkontrolujte, zda je umístění správné.</string>
     <string name="travel_button">Aktualizovat vše</string>
+    <string name="preference_display_overviewchart_days_title">Dny</string>
+    <string name="chartwidget_description">diagram</string>
+    <string name="preference_screen_overviewchart_summary">Přizpůsobení přehledového grafu.</string>
+    <string name="preference_display_overviewchart_days_summary">Maximální počet dnů zobrazených v přehledovém grafu.</string>
 </resources>
