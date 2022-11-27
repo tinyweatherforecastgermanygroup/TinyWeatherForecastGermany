@@ -298,4 +298,6 @@
     <string name="connerror_message">Aplikasi tidak dapat membuat koneksi terenkripsi dengan server data terbuka DWD pada HTTPS. Nonaktifkan enkripsi\?</string>
     <string name="service_notification_text0">Mendapatkan prakiraan cuaca baru…</string>
     <string name="welcome_s3_text4">Bilah prakiraan menampilkan awan dalam abu-abu dan hujan dalam biru.</string>
+    <string name="preference_display_overviewchart_days_title">Hari</string>
+    <string name="preference_display_overviewchart_days_summary">Jumlah maksimum hari yang ditampilkan dalam bagan ikhtisar.</string>
 </resources>
