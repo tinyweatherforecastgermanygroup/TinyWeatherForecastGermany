@@ -145,6 +145,9 @@
     <string name="preference_display_show_radar_by_default_summary">Always display automatically.</string>
     <string name="preference_display_overviewchart_title">Overview chart</string>
     <string name="preference_display_overviewchart_summary">Always show the chart indicating temperature, clouds and rain for the next days. When disabled, the chart will only be visible in landscape mode, and only if there is enough space.</string>
+    <string name="preference_screen_overviewchart_summary">Customize the overview chart.</string>
+    <string name="preference_display_overviewchart_days_title">Days</string>
+    <string name="preference_display_overviewchart_days_summary">Maximum number of days displayed in the overview chart.</string>
     <string name="preference_display_rotation_title">Display align</string>
     <string name="preference_display_rotation_summary">How to align the display</string>
     <string name="preference_setalarm_title">Always update</string>

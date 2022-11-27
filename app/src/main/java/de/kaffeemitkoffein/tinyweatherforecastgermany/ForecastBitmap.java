@@ -22,6 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.*;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 import android.util.SparseArray;
 import java.text.SimpleDateFormat;
@@ -640,6 +641,9 @@ public class ForecastBitmap{
         if ((!hasTemperature)&&(!hasClouds)&&(!hasPrecipitation)){
             return null;
         }
+        // default width is all available data
+        int endPosition = weatherInfos.size();
+        // draw the stuff
         Bitmap bitmap = Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         int lineWidth = 4;
@@ -681,10 +685,22 @@ public class ForecastBitmap{
         while ((weatherInfos.get(startPosition).getTimestamp()> Calendar.getInstance().getTimeInMillis()) && (startPosition>0)){
             startPosition--;
         }
-        int itemCount = Math.abs(startPosition-weatherInfos.size());
+        // calculate endPosition from the value in the settings
+        endPosition=startPosition+24*WeatherSettings.getDisplayOverviewChartDays(context);
+        Log.v("TWFG","span : "+WeatherSettings.getDisplayOverviewChartDays(context));
+        Log.v("TWFG","start: "+startPosition);
+        Log.v("TWFG","end  : "+endPosition);
+        Log.v("TWFG","days : "+endPosition);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Log.v("TWFG","Datestamp start: "+sdf.format(new Date(weatherInfos.get(startPosition).getTimestamp())));
+        Log.v("TWFG","width: "+width);
+        if (endPosition>=weatherInfos.size()){
+            endPosition=weatherInfos.size()-1;
+        }
+        int itemCount = Math.abs(endPosition-startPosition);
         int minTemp=weatherInfos.get(startPosition).getTemperatureInCelsiusInt();
         int maxTemp=weatherInfos.get(startPosition).getTemperatureInCelsiusInt();
-        for (int i=startPosition; i<weatherInfos.size(); i++){
+        for (int i=startPosition; i<endPosition; i++){
             if (weatherInfos.get(i).getTemperatureInCelsiusInt()<minTemp){
                 minTemp=weatherInfos.get(i).getTemperatureInCelsiusInt();
             }
@@ -744,18 +760,18 @@ public class ForecastBitmap{
         // which warnings apply to the location. The warnings arraylist only includes warnings that apply to the
         // selected location. We need to only check here if time applies.
         long chartTimeStart = weatherInfos.get(0).getTimestamp();
-        long chartTimeStop  = weatherInfos.get(weatherInfos.size()-1).getTimestamp();
+        long chartTimeStop  = weatherInfos.get(endPosition-1).getTimestamp();
         float chartWidth = width-xChartOffset;
         if (warnings!=null){
              for (int i=0; i<warnings.size(); i++){
                  WeatherWarning warning = warnings.get(i);
                  // omit already expired warnings
                  if (warning.expires>=chartTimeStart){
-                     float x1 = xChartOffset + (warning.onset-chartTimeStart)*(((float)width)/((float)(chartTimeStop-chartTimeStart)));
+                     float x1 = xChartOffset + (warning.onset-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
                      if (x1<xChartOffset){
                          x1 = xChartOffset;
                      }
-                     float x2 = xChartOffset + (warning.expires-chartTimeStart)*(((float)width)/((float)(chartTimeStop-chartTimeStart)));
+                     float x2 = xChartOffset + (warning.expires-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
                      int color = warning.getWarningColor();
                      float[] warningPolygonX = new float[5];
                      float[] warningPolygonY = new float[5];
@@ -775,10 +791,10 @@ public class ForecastBitmap{
         float[] rainPolygonY = new float[itemCount+4];
         float[] cloudPolygonX = new float[itemCount+4];
         float[] cloudPolygonY = new float[itemCount+4];
-        for (int i=startPosition; i<weatherInfos.size(); i++) {
+        for (int i=startPosition; i<endPosition; i++) {
             int pos = i - startPosition;
             Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
-            float x1 = xChartOffset+ ((float) width/(float) itemCount)*pos;
+            float x1 = xChartOffset+ ((float) chartWidth/(float) itemCount)*pos;
             if (hasPrecipitation){
                 rainPolygonX[pos]=x1;
                 rainPolygonY[pos]=chartHeight - (weatherInfo1.getProbPrecipitation()/100f) * chartHeight;
@@ -811,14 +827,14 @@ public class ForecastBitmap{
             drawPolygon(canvas,rainPolygonX,rainPolygonY,ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE),alphaRain);
         }
         if (hasTemperature){
-            for (int i=startPosition; i<weatherInfos.size()-1; i++){
+            for (int i=startPosition; i<endPosition-1; i++){
                 int pos = i - startPosition;
                 Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
                 Weather.WeatherInfo weatherInfo2 = weatherInfos.get(i+1);
                 float y1_t = zeroline_position - weatherInfo1.getTemperatureInCelsiusInt() / temp_graphscale;
                 float y2_t = zeroline_position - weatherInfo2.getTemperatureInCelsiusInt() / temp_graphscale;
-                float x1 = xChartOffset+ ((float) width/(float) itemCount)*pos;
-                float x2 = xChartOffset+ ((float) width/(float) itemCount)*(pos+1);
+                float x1 = xChartOffset+ ((float) chartWidth/(float) itemCount)*pos;
+                float x2 = xChartOffset+ ((float) chartWidth/(float) itemCount)*(pos+1);
                 if (weatherInfo2.getTemperatureInCelsiusInt()>0){
                     temperaturePaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.ORANGE));
                 } else {
@@ -832,9 +848,10 @@ public class ForecastBitmap{
                 // is noon?
                 if ((weatherInfo1.getTimestamp()%43200000==0) && (weatherInfo1.getTimestamp()%86400000!=0)){
                     String dayOfWeek = Weather.GetDateString(Weather.SIMPLEDATEFORMATS.DAYOFWEEK,weatherInfo1.getTimestamp());
-                    float startDOWX = x1 - textPaint.measureText(dayOfWeek)/2;
-                    // do not draw text if it starts left of the y-axis
-                    if (startDOWX>xChartOffset){
+                    float DOWWidth = textPaint.measureText(dayOfWeek);
+                    float startDOWX = x1 - DOWWidth/2;
+                    // do not draw text if it starts left of the y-axis or if it is trimmed at the right bitmap border
+                    if ((startDOWX>xChartOffset) && (startDOWX+DOWWidth<width)){
                         canvas.drawText(dayOfWeek,startDOWX,textPaint.getTextSize(),textPaint);
                     }
                 }

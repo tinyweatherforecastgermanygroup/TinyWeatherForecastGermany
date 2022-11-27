@@ -80,12 +80,6 @@
             -->
 
             <CheckBoxPreference
-                    android:key="PREF_display_overviewchart"
-                    android:title="@string/preference_display_overviewchart_title"
-                    android:summary="@string/preference_display_overviewchart_summary"
-                    android:defaultValue="false"/>
-
-            <CheckBoxPreference
                     android:key="PREF_display_sunrise"
                     android:title="@string/preference_displaysunrise_title"
                     android:summary="@string/preference_displaysunrise_summary"
@@ -102,6 +96,26 @@
                     android:title="@string/preference_display_gradient_title"
                     android:summary="@string/preference_display_gradient_summary"
                     android:defaultValue="false"/>
+
+        <PreferenceScreen
+                android:key="PREF_screen_display_overviewchart"
+                android:title="@string/preference_display_overviewchart_title"
+                android:summary="@string/preference_screen_overviewchart_summary">
+
+            <CheckBoxPreference
+                    android:key="PREF_display_overviewchart"
+                    android:title="@string/preference_display_overviewchart_title"
+                    android:summary="@string/preference_display_overviewchart_summary"
+                    android:defaultValue="false"/>
+
+            <de.kaffeemitkoffein.tinyweatherforecastgermany.NumberPickerPreference
+                    android:key="PREF_display_overviewchart_days"
+                    android:title="@string/preference_display_overviewchart_days_title"
+                    android:summary="@string/preference_display_overviewchart_days_summary"
+            />
+
+
+        </PreferenceScreen>
 
             <PreferenceScreen
                     android:key="PREF_screen_display_wind"

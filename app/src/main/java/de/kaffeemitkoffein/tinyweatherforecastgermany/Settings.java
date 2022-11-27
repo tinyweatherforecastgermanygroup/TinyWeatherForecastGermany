@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.*;
+import android.util.Log;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
@@ -98,6 +99,9 @@ public class Settings extends PreferenceActivity{
             }
             if (s.equals(WeatherSettings.PREF_ROTATIONMODE)){
                 recreate();
+            }
+            if (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS)){
+                // do nothing
             }
         }
     };

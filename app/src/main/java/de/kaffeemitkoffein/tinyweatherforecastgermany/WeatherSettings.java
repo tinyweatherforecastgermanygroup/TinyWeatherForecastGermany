@@ -68,6 +68,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_DISTANCE_UNIT = "PREF_display_distance_unit";
     public static final String PREF_DISPLAY_CROP_PRECIPITATIONCHART = "PREF_crop_precipchart";
     public static final String PREF_DISPLAY_OVERVIEWCHART = "PREF_display_overviewchart";
+    public static final String PREF_DISPLAY_OVERVIEWCHART_DAYS="PREF_display_overviewchart_days";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_UPDATE_WARNINGS = "PREF_update_warnings";
@@ -132,6 +133,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_DISTANCE_UNIT_DEFAULT = "0";
     public static final boolean PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT = false;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_DEFAULT = false;
+    public static final int PREF_DISPLAY_OVERVIEWCHART_DAYS_DEFAULT = 10;
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
     public static final boolean PREF_UPDATE_TEXTFORECASTS_DEFAULT = true;
@@ -195,6 +197,7 @@ public class WeatherSettings {
     public String display_distance_unit = PREF_DISPLAY_DISTANCE_UNIT_DEFAULT;
     public boolean cropPrecipitationChart = PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT;
     public boolean displayOverviewChart = PREF_DISPLAY_OVERVIEWCHART_DEFAULT;
+    public int displayOverviewChartDays = PREF_DISPLAY_OVERVIEWCHART_DAYS_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
     public boolean update_warnings = PREF_UPDATE_WARNINGS_DEFAULT;
@@ -269,6 +272,7 @@ public class WeatherSettings {
         this.display_distance_unit = readPreference(PREF_DISPLAY_DISTANCE_UNIT,PREF_DISPLAY_DISTANCE_UNIT_DEFAULT);
         this.cropPrecipitationChart = readPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT);
         this.displayOverviewChart = readPreference(PREF_DISPLAY_OVERVIEWCHART,PREF_DISPLAY_OVERVIEWCHART_DEFAULT);
+        this.displayOverviewChartDays = readPreference(PREF_DISPLAY_OVERVIEWCHART_DAYS,PREF_DISPLAY_OVERVIEWCHART_DAYS_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT);
         this.update_warnings = readPreference(PREF_UPDATE_WARNINGS,PREF_UPDATE_WARNINGS_DEFAULT);
         this.update_textforecasts = readPreference(PREF_UPDATE_TEXTFORECASTS,PREF_UPDATE_TEXTFORECASTS_DEFAULT);
@@ -331,6 +335,7 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
         applyPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,this.cropPrecipitationChart);
         applyPreference(PREF_DISPLAY_OVERVIEWCHART,this.displayOverviewChart);
+        applyPreference(PREF_DISPLAY_OVERVIEWCHART_DAYS,this.displayOverviewChartDays);
         applyPreference(PREF_SETALARM, this.setalarm);
         applyPreference(PREF_UPDATEINTERVAL, this.updateinterval);
         applyPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
@@ -393,6 +398,7 @@ public class WeatherSettings {
         commitPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
         commitPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,this.cropPrecipitationChart);
         commitPreference(PREF_DISPLAY_OVERVIEWCHART,this.displayOverviewChart);
+        commitPreference(PREF_DISPLAY_OVERVIEWCHART_DAYS,this.displayOverviewChartDays);
         commitPreference(PREF_SETALARM, this.setalarm);
         commitPreference(PREF_UPDATEINTERVAL, this.updateinterval);
         commitPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
@@ -1143,6 +1149,18 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_DISPLAY_OVERVIEWCHART,value);
+        pref_editor.apply();
+    }
+
+    public static int getDisplayOverviewChartDays(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_DISPLAY_OVERVIEWCHART_DAYS,PREF_DISPLAY_OVERVIEWCHART_DAYS_DEFAULT);
+    }
+
+    public static void setDisplayOverviewChartDays(Context context, int value){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putInt(PREF_DISPLAY_OVERVIEWCHART_DAYS,value);
         pref_editor.apply();
     }
 

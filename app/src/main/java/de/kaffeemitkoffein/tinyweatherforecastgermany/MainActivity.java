@@ -503,7 +503,7 @@ public class MainActivity extends Activity {
                     // invalidate weather display because the display options have changed
                     if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
                             (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT)) ||
-                            key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART)){
+                            key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART) || key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS)){
                         // on 1st app call, weatherCard can be still null
                         if (weatherCard!=null){
                             displayWeatherForecast(weatherCard);
