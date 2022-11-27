@@ -315,4 +315,8 @@
     <string name="preference_display_rotation_title">Anzeige ausrichten</string>
     <string name="preference_display_rotation_summary">Ausrichten der Anzeige</string>
     <string name="issued">veröffentlicht</string>
+    <string name="preference_screen_overviewchart_summary">Passen Sie das Übersichtsdiagramm an.</string>
+    <string name="preference_display_overviewchart_days_title">Tage</string>
+    <string name="preference_display_overviewchart_days_summary">Maximale Anzahl der Tage, die im Übersichtsdiagramm angezeigt werden.</string>
+    <string name="chartwidget_description">Diagramm</string>
 </resources>
