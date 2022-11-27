@@ -73,6 +73,7 @@ private final String labelTwilight;
 private DisplayMetrics displayMetrics;
 private final float screenWidthDP;
 private final int screenWidth;
+private final float fontScale;
 
 
 private final SparseArray<Bitmap> bitmapCache = new SparseArray<>();
@@ -114,6 +115,7 @@ public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherFo
             this.screenWidth = ScreenWidthCategory.NORMAL;
         }
     }
+    this.fontScale = context.getResources().getConfiguration().fontScale;
 }
 
 public void setWarnings(ArrayList<WeatherWarning> warnings){
@@ -1223,7 +1225,49 @@ public float getDMax(float value){
     return Math.max(value,pxd);
 }
 
+public float SPtoDP(float value){
+    return value*fontScale;
+}
+
+
 public int determineExpectedPixelHeightOfForecastElement(){
+    float total=0; // height in DP
+    total = total + 24; // top & bottom padding, optional end of day bar
+    if (viewModel==WeatherSettings.ViewModel.EXTENDED) {
+        float leftColumn = 0; float middleColumn = 0; float rightColumn = 0;
+        middleColumn = middleColumn + 0.33f*this.screenWidthDP;
+        if (screenWidth == ScreenWidthCategory.NORMAL) {
+            leftColumn   = leftColumn + 2 * SPtoDP(10) + 3 * SPtoDP(10);  // condition-text + iconrow * 3
+            rightColumn  = SPtoDP(28 + 14 + 2*10);                  // temperatureContainer + wind row + visiblity row
+        } else {
+            if (screenWidth == ScreenWidthCategory.DP320) {
+                leftColumn = leftColumn + 2 * SPtoDP(11) + 3 * SPtoDP(11);  // condition-text + iconrow * 3
+                rightColumn  = SPtoDP(28 + 16 + 2*11);                // temperatureContainer + wind row + visiblity row
+            } else {
+                leftColumn = leftColumn + 2 * SPtoDP(12) + 3 * SPtoDP(12);  // condition-text + iconrow * 3
+                rightColumn  = SPtoDP(28 + 18 + 2*12);                // temperatureContainer + wind row + visiblity row
+            }
+        }
+        total = total + Math.max(leftColumn,Math.max(middleColumn,rightColumn));
+    } else {
+        if (screenWidth == ScreenWidthCategory.NORMAL) {
+            total = total + SPtoDP(16) + 80 + 2*SPtoDP(14);
+        } else {
+            if (screenWidth == ScreenWidthCategory.DP320) {
+                total = total + SPtoDP(24) + 100 + 2*SPtoDP(16);
+            } else {
+                total = total + SPtoDP(28) + 105 + 2*SPtoDP(18);
+            }
+        }
+    }
+    float result = total*(displayMetrics.xdpi/160f);
+    return Math.round(result);
+}
+
+/*
+ Old version takes max value from SP or DP.
+ */
+public int determineExpectedPixelHeightOfForecastElementOld(){
     float total=0; // height in DP
     total = total + 24; // top & bottom padding, optional end of day bar
     if (viewModel==WeatherSettings.ViewModel.EXTENDED) {
