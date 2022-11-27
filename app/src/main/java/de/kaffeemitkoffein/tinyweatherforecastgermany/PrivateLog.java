@@ -25,6 +25,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -246,6 +247,8 @@ public class PrivateLog {
         stringBuilder.append("x-dpi: "+displayMetrics.xdpi);
         stringBuilder.append(lineBreak);
         stringBuilder.append("y-dpi: "+displayMetrics.ydpi);
+        stringBuilder.append(lineBreak);
+        stringBuilder.append("User-set fontScale: "+context.getResources().getConfiguration().fontScale);
         stringBuilder.append(lineBreak);
         stringBuilder.append("calculated physical metrics:");
         stringBuilder.append(lineBreak);
