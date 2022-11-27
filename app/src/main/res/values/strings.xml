@@ -42,7 +42,6 @@
     <string name="classicwidget_description">Classic</string>
     <string name="largewidget_description">Large</string>
     <string name="clockwidget_description">Clock &amp; Weather</string>
-    <string name="chartwidget_description">chart</string>
     <string name="station_does_not_exist">The station you have entered does not exist. Please select from the suggested stations in the list.</string>
     <string name="favorites_cleared">Favorites are deleted.</string>
     <string name="actionbar_textinput_title">Enter place here:</string>
