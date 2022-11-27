@@ -297,4 +297,8 @@
     <string name="preference_display_rotation_summary">Jak wyrównać ekran</string>
     <string name="preference_gpsmanual_summary">Samodzielnie wybierz stację pogodową z listy najbliższych stacji.</string>
     <string name="travel_button">Zaktualizuj wszystko</string>
+    <string name="chartwidget_description">wykres</string>
+    <string name="preference_screen_overviewchart_summary">Dostosuj wykres przeglądowy.</string>
+    <string name="preference_display_overviewchart_days_title">Dni</string>
+    <string name="preference_display_overviewchart_days_summary">Maksymalna liczba dni wyświetlanych na wykresie przeglądowym.</string>
 </resources>
