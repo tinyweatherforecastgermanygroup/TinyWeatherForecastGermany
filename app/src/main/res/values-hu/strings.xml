@@ -145,4 +145,8 @@
     <string name="overview_button">Áttekintés</string>
     <string name="preference_display_rotation_title">Megjelenítés igazítás</string>
     <string name="preference_display_rotation_summary">A kijelző beállítása</string>
+    <string name="preference_display_overviewchart_days_title">Napok</string>
+    <string name="preference_display_overviewchart_days_summary">Az áttekintő diagramban megjelenített napok maximális száma.</string>
+    <string name="chartwidget_description">chart</string>
+    <string name="preference_screen_overviewchart_summary">Az áttekintő diagram testreszabása.</string>
 </resources>
