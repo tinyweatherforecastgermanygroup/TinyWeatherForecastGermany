@@ -297,4 +297,8 @@
     <string name="overview_button">Overzicht</string>
     <string name="preference_display_rotation_title">Weergave uitlijnen</string>
     <string name="preference_display_rotation_summary">Uitlijnen van het scherm</string>
+    <string name="preference_display_overviewchart_days_title">Dagen</string>
+    <string name="preference_display_overviewchart_days_summary">Maximum aantal dagen dat in de overzichtsgrafiek wordt weergegeven.</string>
+    <string name="chartwidget_description">diagram</string>
+    <string name="preference_screen_overviewchart_summary">Pas de overzichtskaart aan.</string>
 </resources>
