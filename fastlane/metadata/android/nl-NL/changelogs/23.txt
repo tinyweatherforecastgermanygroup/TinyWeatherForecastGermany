@@ -1,0 +1,2 @@
+- nieuwe buienradar
+- voor de berekening van zonsondergang en zonsopgang wordt de zomertijdafwijking van de weergegeven tijd gebruikt in plaats van de huidige tijd

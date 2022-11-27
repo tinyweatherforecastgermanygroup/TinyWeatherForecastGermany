@@ -1,0 +1,9 @@
+Gedetailleerde weersverwachting voor maximaal 10 dagen, gebaseerd op open data van de Deutscher Wetterdienst (DWD). Weerwaarschuwingen van de DWD worden ook weergegeven.
+
+De weersvoorspelling van het gewenste weerstation wordt weergegeven. Stations kunnen worden gezocht op naam, op geo-coördinaten of op de eigen locatie. Er is een weersvoorspelling beschikbaar voor meer dan 5000 weerstations in Duitsland en wereldwijd.
+
+De app heeft een slank design. Het ondersteunt optioneel wearables via Gadgetbridge, zodat weergegevens ook op wearables kunnen worden weergegeven.
+
+Bovendien zijn er verschillende mogelijkheden om de weergave van weergegevens aan te passen aan uw eigen wensen. Ook de tijd van zonsopgang, zonsondergang en schemering kan voor de gekozen locatie worden weergegeven.
+
+De app heeft ook een lijst met favorieten, waarmee snel kan worden geschakeld tussen meerdere weerstations. Het biedt ook meerdere widgets van verschillende grootte met een weersvoorspelling die op het startscherm kunnen worden geplaatst en die automatisch worden bijgewerkt.

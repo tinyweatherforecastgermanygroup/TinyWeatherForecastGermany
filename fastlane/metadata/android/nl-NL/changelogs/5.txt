@@ -1,0 +1,3 @@
+Versie 0.32:
+- repareert temperatuurconversiefout (celsius naar kelvin) in de Gadgetbridge-api
+- lichte lay-outcorrectie in widget (weersymbool is nu groter)

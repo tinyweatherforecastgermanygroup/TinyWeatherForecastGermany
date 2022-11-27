@@ -1,0 +1,4 @@
+- bijgewerkte stationsgegevens en waarschuwingsgebieden
+- verbeterde logica wanneer dag/nacht-pictogrammen moeten worden weergegeven
+- corrigeert verkeerde standaard widgetdekking
+- verbeterde vertalingen

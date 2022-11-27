@@ -1,0 +1,2 @@
+- voorspellingsintervallen kunnen nu worden ingesteld: per uur, 6 uur, gemengd (eerste 24 uur per uur, daarna 6 uur)
+- optionele balk die de voorspellingsdetails per uur weergeeft in de 6-uurs voorspelling
