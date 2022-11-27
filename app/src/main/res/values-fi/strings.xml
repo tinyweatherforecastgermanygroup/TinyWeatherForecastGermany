@@ -297,4 +297,8 @@
     <string name="preference_category_location">Sijainti</string>
     <string name="preference_usegps_title">Käytä sijaintipalveluja</string>
     <string name="preference_gpsauto_title">Tarkista sijainti</string>
+    <string name="chartwidget_description">kaavio</string>
+    <string name="preference_display_overviewchart_days_title">Päivät</string>
+    <string name="preference_display_overviewchart_days_summary">Yleiskaaviossa näytettävien päivien enimmäismäärä.</string>
+    <string name="preference_screen_overviewchart_summary">Mukauta yleiskatsausta.</string>
 </resources>
