@@ -312,4 +312,8 @@
     <string name="preference_display_rotation_title">Alignement de l\'affichage</string>
     <string name="preference_display_rotation_summary">Comment aligner l\'écran</string>
     <string name="issued">publié</string>
+    <string name="chartwidget_description">diagramme</string>
+    <string name="preference_display_overviewchart_days_title">Jours</string>
+    <string name="preference_display_overviewchart_days_summary">Nombre maximal de jours affichés dans le graphique de synthèse.</string>
+    <string name="preference_screen_overviewchart_summary">Personnalisez le graphique de synthèse.</string>
 </resources>
