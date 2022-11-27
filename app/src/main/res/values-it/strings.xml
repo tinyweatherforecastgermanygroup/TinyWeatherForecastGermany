@@ -299,4 +299,8 @@
     <string name="preference_display_rotation_summary">Come allineare il display</string>
     <string name="travel_button">Aggiornare tutto</string>
     <string name="issued">pubblicato</string>
+    <string name="chartwidget_description">grafico</string>
+    <string name="preference_display_overviewchart_days_title">Giorni</string>
+    <string name="preference_display_overviewchart_days_summary">Numero massimo di giorni visualizzati nel grafico d\'insieme.</string>
+    <string name="preference_screen_overviewchart_summary">Personalizzare il grafico d\'insieme.</string>
 </resources>
