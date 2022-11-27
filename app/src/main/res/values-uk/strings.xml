@@ -297,4 +297,8 @@
     <string name="overview_button">Огляд</string>
     <string name="preference_display_rotation_title">Вирівнювання екрану</string>
     <string name="preference_display_rotation_summary">Як вирівняти екран</string>
+    <string name="chartwidget_description">діаграма</string>
+    <string name="preference_display_overviewchart_days_title">Дні</string>
+    <string name="preference_display_overviewchart_days_summary">Максимальна кількість днів, що відображається на оглядовому графіку.</string>
+    <string name="preference_screen_overviewchart_summary">Налаштуйте оглядову діаграму.</string>
 </resources>
