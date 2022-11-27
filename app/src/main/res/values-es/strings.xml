@@ -298,4 +298,8 @@
     <string name="preference_usegps_title">Utilizar los servicios de localización</string>
     <string name="travel_button">Actualizar todo</string>
     <string name="issued">publicó</string>
+    <string name="chartwidget_description">gráfico</string>
+    <string name="preference_screen_overviewchart_summary">Personalice el gráfico general.</string>
+    <string name="preference_display_overviewchart_days_title">Días</string>
+    <string name="preference_display_overviewchart_days_summary">Número máximo de días mostrados en el gráfico general.</string>
 </resources>
