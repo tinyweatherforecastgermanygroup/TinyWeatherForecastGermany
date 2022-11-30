@@ -215,7 +215,7 @@
     <string name="radar_rain1">laag</string>
     <string name="radar_rain2">luchtig</string>
     <string name="radar_rain3">sterk</string>
-    <string name="radar_rain4">extreen</string>
+    <string name="radar_rain4">extreem</string>
     <string name="hide_rain">Verberg regen</string>
     <string name="texts_button">Teksten</string>
     <string name="preference_screen_wind_title">Windscherm</string>
