@@ -300,4 +300,6 @@
     <string name="welcome_s3_text4">Bilah prakiraan menampilkan awan dalam abu-abu dan hujan dalam biru.</string>
     <string name="preference_display_overviewchart_days_title">Hari</string>
     <string name="preference_display_overviewchart_days_summary">Jumlah maksimum hari yang ditampilkan dalam bagan ikhtisar.</string>
+    <string name="chartwidget_description">Bagan</string>
+    <string name="preference_screen_overviewchart_summary">Ubah bagan ikhtisar.</string>
 </resources>
