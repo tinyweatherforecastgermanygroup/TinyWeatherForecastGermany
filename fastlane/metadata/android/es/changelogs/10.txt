@@ -1,0 +1,6 @@
+Versión 0.50.2:
+
+- altura mínima del widget ajustada para una mejor integración en tamaños personalizados de cuadrícula en la pantalla de inicio
+- arreglado los widgets no se actualizaban correctamente a nuevas localizaciones en algunas circunstancias
+- arreglada la opción del gadgetbridge rota "enviar tiempo actual"
+- arreglado el servicio de actualización no empezaba porque no se encontraba en primer plano en dispositivos con API>25

@@ -1,0 +1,12 @@
+- las alertas meteorológicas ahora se actualizan correctamente cuando la aplicación se visualiza en primer plano de nuevo
+- arreglado el nombre de estación no se actualizaba después del reseteo de favoritos
+- añadidos cálculo preciso de día/noche y visualización de amanecer y atardecer
+- arreglados los crashes después de actualizar desde versiones anteriores de la app
+- añadida presión del aire en la superficie
+- añadida visibilidad
+- la barra con la previsión por horas ahora se muestra por defecto
+- ampliadas las opciones para personalizar la pantalla
+
+- El log de cambios de la versión 0.50.3 no se mostraba correctamente en la app:
+   - los intervalos de previsión ahora pueden ser configurados: por horas, cada 6 horas, mezclado (primeras 24h por horas, posteriormente cada 6 horas)
+   - barra opcional que muestra los detalles de la previsión por horas en la previsión cada 6 horas
