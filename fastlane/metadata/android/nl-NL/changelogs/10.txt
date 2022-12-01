@@ -1,0 +1,5 @@
+Versie 0.52.2: 
+
+- aangepaste minimumhoogte van het widget voor een betere integratie in aangepaste rasterformatie op het home scherm
+- het in bepaalde omstandigheden niet onmiddellijk updaten van widgets naar een nieuwe locatie werd gerepareerd
+- de niet-werkende optie "verzend het huidige tijdstip" in de gadgetbridge werd gerepareerd
