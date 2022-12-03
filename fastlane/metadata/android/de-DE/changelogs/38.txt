@@ -1,3 +1,5 @@
+- neue Sprache: Indonesisch (Danke an Linerly!)
+- neue Sprache: Irisch (Danke an mondstern!)
 - verbesserte Übersetzungen
 - die Übersichts-Grafik ist nun auch als Widget verfügbar
 - die Anzahl der angezeigten Tage in der Übersichts-Grafik kann nun angepasst werden

@@ -87,16 +87,18 @@ Translations:
 
 * Czech: eUgEntOptIc44, mondstern
 * Danish: eUgEntOptIc44, mondstern
-* Dutch: mondstern
+* Dutch: Allan Nordhøy, alternative_be, eUgEntOptIc44, jwildeboer, mondstern
 * English: Allan Nordhøy
-* French: eUgEntOptIc44, mondstern, J. Lavoie
-* Finnish: mondstern
-* German: eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
+* French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, lejun, mondstern
+* Finnish: eUgEntOptIc44, mondstern
+* German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, mondstern, silmaril, w4ts0n
 * Hungarian: eUgEntOptIc44, Gőz Barnabás
+* Indonesian: Linerly
 * Italian: mondstern, eUgEntOptIc44
+* Irish: mondstern
 * Norwegian Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
-* Polish: mondstern
-* Spanish: eUgEntOptIc44
+* Polish: eUgEntOptIc44, ewm, mondstern
+* Spanish: eUgEntOptIc44, hegondev
 * Ukrainian: eUgEntOptIc44, Andrij Mizyk
 
 Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
