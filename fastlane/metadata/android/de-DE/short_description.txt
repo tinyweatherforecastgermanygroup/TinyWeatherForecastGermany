@@ -1,1 +1,1 @@
-Wettervorschau, basierend auf Open Data des Deutschen Wetterdienstes.
+Wettervorschau, basierend auf frei zugänglichen Daten des Deutschen Wetterdienstes.

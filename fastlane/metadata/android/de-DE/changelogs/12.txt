@@ -8,5 +8,5 @@
 - erweiterte Optionen zur Anpassung der Darstellung
 
 - Neuerungen der Version 0.50.3 wurden in der App nicht korrekt dargestellt:
-   - die Vorhersageintervalle können nun frei gewählt werden: stündlich, 6-stündlich, gemischt (erste 24 Stunden stündlich, danach 6-stündlich).
-   - bei 6-stündiger Vorhersage optionaler Balken, der eine stundengenaue Vorhersage anzeigt
+- die Vorhersageintervalle können nun frei gewählt werden: stündlich, 6-stündlich, gemischt (erste 24 Stunden stündlich, danach 6-stündlich).
+- bei 6-stündiger Vorhersage optionaler Balken, der eine stundengenaue Vorhersage anzeigt

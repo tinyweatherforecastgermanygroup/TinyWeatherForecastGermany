@@ -1,9 +1,9 @@
-Detaillierte Wettervorschau für bis zu 10 Tage, basierend auf Open Data des Deutschen Wetterdienstes (DWD). Es werden auch die Wetterwarnungen des DWD für Deutschland angezeigt.
+Detaillierte Wettervorschau für bis zu 10 Tage, basierend auf frei zugänglichen Daten des Deutschen Wetterdienstes (DWD). Es werden auch die Wetterwarnungen des DWD für Deutschland angezeigt.
 
-Dargestellt wird die Vorschau für die gewünschte Wetterstation, die man anhand des Namens, der Geo-Koordinaten oder des eigenen Standorts suchen kann. Eine Wetter-Vorhersage ist für über 5000 Wetterstationen in Deutschland und weltweit verfügbar.
+Dargestellt wird die Vorschau für die ausgewählte Wetterstation, die man anhand des Namens, der Geo-Koordinaten oder des eigenen Standorts suchen kann. Eine Wettervorhersage ist für über 5000 deutsche und weltweite Wetterstationen verfügbar.
 
-Die App verfügt über ein schlankes Design. Ferner unterstützt sie optional auch Wearables über Gadgetbridge, so dass die Wetterdaten auch auf Wearables angezeigt werden können.
+Die App verfügt über ein schlankes Design. Optional unterstützt sie auch Wearables über Gadgetbridge, so dass die Wetterdaten auch auf Wearables angezeigt werden können.
 
 Darüber hinaus bestehen vielfältige Möglichkeiten, die App in der Darstellung der Wetterdaten an die eigenen Bedürfnisse anzupassen. Es können auch die Zeiten von Sonnenaufgang, Sonnenuntergang und Dämmerung für den ausgewählten Standort angezeigt werden.
 
-Ebenso verfügt die App über eine Favoriten-Liste, mit der zwischen verschiedenen Wetterstationen schnell gewechselt werden kann. Sie bietet auch mehrere, verschieden große Widgets mit Wettervorhersage an, die auf dem Homescreen plaziert werden können und automatisch aktualisiert werden.
+Ebenso verfügt die App über eine Favoriten-Liste, mit der zwischen verschiedenen Wetterstationen schnell gewechselt werden kann. Sie bietet auch mehrere, verschieden große Widgets mit Wettervorhersage an, die auf dem Homescreen platziert werden können und automatisch aktualisiert werden.

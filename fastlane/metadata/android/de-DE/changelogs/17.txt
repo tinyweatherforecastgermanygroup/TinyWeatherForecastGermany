@@ -2,4 +2,4 @@
 - die App fällt nun auf http ohne SSL zurück, falls eine verschlüsselte Verbindung auf sehr alten Geräten (z.B. 4.x.x) nicht aufgebaut werden kann, weil Cipher-Suites fehlen
 - Inkomplette Zeitfenster (6h, 24h) beachten vergangene Wetterdaten nicht mehr, soweit möglich
 - Fehler behoben in der Berechnung der min. und max. Temperatur (diese wurde eventuell zu hoch & zu niedrig angezeigt)
-- zahlreiche, kleinere Fehlerverbesserungen
+- zahlreiche, kleinere Verbesserungen
