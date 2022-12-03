@@ -1,0 +1,4 @@
+- improved translations
+- the overview chart is now also available as a home screen widget
+- the number of days displayed in the overview chart is customizable
+- the height of a forecast item in the app now respects the user-set font scaling

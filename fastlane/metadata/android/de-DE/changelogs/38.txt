@@ -1,0 +1,4 @@
+- verbesserte Übersetzungen
+- die Übersichts-Grafik ist nun auch als Widget verfügbar
+- die Anzahl der angezeigten Tage in der Übersichts-Grafik kann nun angepasst werden
+- die Höhe eines Vorhersage-Items berücksichtigt nun die individuelle Schrift-Skalierung
