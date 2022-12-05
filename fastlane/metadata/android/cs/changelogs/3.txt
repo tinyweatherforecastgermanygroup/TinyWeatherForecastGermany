@@ -1,0 +1,15 @@
+- Byla přidána možnost načítat údaje o počasí v pravidelných intervalech, kterou lze zapnout nebo vypnout v nastavení.
+- V aplikaci byl přidán viditelný čas poslední aktualizace.
+- Aplikace a widget nyní zobrazují také směr větru.
+- opraveno: Údaje o větru ztratily informace o směru
+- opraveno: chyba parsování pole FDAT (část ID senzoru)
+- opraveno: neplatná výchozí hodnota pro interval aktualizace
+- opraveno: chyba, která způsobovala velmi zřídkavé aktualizace
+- Podpora Gadgetbridge: opraveno: Časové razítko Unixu bylo naplněno nesmysly
+- Podpora Gadgetbridge: opraveno: Směr větru byl vždy 0°
+- Podpora Gadgetbridge: opraveno: Teplota byla odeslána ve stupních Celsia místo v Kelvinech.
+- Podpora Gadgetbridge: opraveno: Údaje o počasí nebyly vždy kompatibilní se standardem Lineageos.
+- Podpora Gadgetbridge: opraveno: údaj o počasí nyní zobrazuje aktuální počasí namísto předpovědi na daný den.
+- Podpora Gadgetbridge je stále experimentální, ale měla by fungovat!
+
+- Přidána němčina

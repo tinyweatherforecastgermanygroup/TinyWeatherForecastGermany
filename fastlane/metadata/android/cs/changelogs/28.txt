@@ -1,0 +1,10 @@
+* podporuje různé designy (témata)
+* nová, jednodušší předpověď
+* změna zdroje dešťového radaru z MX composite na MN composite
+* nové zkratky aplikací
+* zavádí zobrazení relativní vlhkosti
+
+Nové jazyky:
+* italština (díky eUgEntOptIc44, mondstern!)
+* čeština (díky eUgEntOptIc44, mondstern!)
+* norská bokmål (díky Allanu Nordhøyovi, mondstern!)

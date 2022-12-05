@@ -1,0 +1,3 @@
+* nový jazyk: (díky mondstern!)
+* opravuje špatnou ikonu pro jasnou noc
+* opravuje možnost pádu při spuštění aplikace

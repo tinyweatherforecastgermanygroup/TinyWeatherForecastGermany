@@ -1,0 +1,5 @@
+- lepší výkon při otáčení zařízení
+- opravuje několik chyb:
+- některé potenciální pády aplikace při spuštění
+- nebylo možné vybrat některé meteorologické stanice
+- některé meteorologické stanice byly v návrzích zdvojené

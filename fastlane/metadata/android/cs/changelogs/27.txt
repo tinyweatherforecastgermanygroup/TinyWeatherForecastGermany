@@ -1,0 +1,9 @@
+- zásadní oprava chyby řešící pády po spuštění aplikace na některých zařízeních/romech
+- změna zdroje dešťového radaru z MX composite na MN composite
+- nové zkratky aplikace
+- zavádí zobrazení relativní vlhkosti
+
+nové jazyky:
+* italština (díky eUgEntOptIc44, mondstern!)
+* čeština (díky eUgEntOptIc44, mondstern!)
+* norská bokmål (díky Allanu Nordhøyovi, mondstern!)
