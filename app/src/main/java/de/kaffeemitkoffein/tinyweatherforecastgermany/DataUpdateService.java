@@ -432,15 +432,19 @@ public class DataUpdateService extends Service {
         boolean notified = false;
         for (int i=0; i<locationWarnings.size(); i++){
             WeatherWarning warning = locationWarnings.get(i);
-            if (discardAlreadyNotified || !WeatherWarnings.alreadyNotified(this,warning)){
-                int id = WeatherSettings.getUniqueNotificationIdentifier(this);
-                Notification notification = getWarningNotification(this,notificationManager,warning,Integer.toString(i));
-                notificationManager.notify(id,notification);
-                notified = true;
-                WeatherWarnings.addToNotified(this,warning,id);
-                PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"Notifying "+warning.identifier+" "+warning.headline);
+            if (warning.getSeverity()>=WeatherSettings.getWarningsNotifySeverity(this)){
+                if (discardAlreadyNotified || !WeatherWarnings.alreadyNotified(this,warning)){
+                    int id = WeatherSettings.getUniqueNotificationIdentifier(this);
+                    Notification notification = getWarningNotification(this,notificationManager,warning,Integer.toString(i));
+                    notificationManager.notify(id,notification);
+                    notified = true;
+                    WeatherWarnings.addToNotified(this,warning,id);
+                    PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"Notifying "+warning.identifier+" "+warning.headline);
+                } else {
+                    PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"already notified "+locationWarnings.get(i).headline);
+                }
             } else {
-                PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"already notified "+locationWarnings.get(i).headline);
+                PrivateLog.log(this,PrivateLog.ALERTS,PrivateLog.INFO,"Severity too low to notify "+locationWarnings.get(i).headline);
             }
         }
         if (notified){

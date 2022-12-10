@@ -187,4 +187,18 @@
         <item>Landscape</item>
     </string-array>
 
+    <string-array name="display_notifySeverity_text">
+        <item>minor</item>
+        <item>moderate</item>
+        <item>severe</item>
+        <item>extreme</item>
+    </string-array>
+
+    <string-array name="display_notifySeverity_value">
+        <item>Minor</item>
+        <item>Moderate</item>
+        <item>Severe</item>
+        <item>Extreme</item>
+    </string-array>
+
 </resources>

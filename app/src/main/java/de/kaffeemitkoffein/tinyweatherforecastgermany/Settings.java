@@ -85,6 +85,7 @@ public class Settings extends PreferenceActivity{
             if (s.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
                 setShowWarningsInWidgetAllowed();
                 setNotifyWarnings();
+                setNotifySeverity();
             }
             if (s.equals(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS)){
                 setShowWarningsInWidgetAllowed();
@@ -92,6 +93,7 @@ public class Settings extends PreferenceActivity{
             }
             if (s.equals(WeatherSettings.PREF_NOTIFY_WARNINGS)){
                 setNotifyWarnings();
+                setNotifySeverity();
             }
             if (s.equals(WeatherSettings.PREF_THEME)){
                 recreate();
@@ -128,6 +130,7 @@ public class Settings extends PreferenceActivity{
         // allow warinings in widget setting?
         setShowWarningsInWidgetAllowed();
         setNotifyWarnings();
+        setNotifySeverity();
         updateValuesDisplay();
         // reset notifications option
         Preference resetNotifications = (Preference) findPreference(WeatherSettings.PREF_CLEARNOTIFICATIONS);
@@ -209,6 +212,35 @@ public class Settings extends PreferenceActivity{
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_NOTIFY_WARNINGS);
         checkBoxPreference.setEnabled(!weatherSettings.warnings_disabled);
         checkBoxPreference.setShouldDisableView(true);
+    }
+
+    public void setNotifySeverity(){
+        WeatherSettings weatherSettings = new WeatherSettings(context);
+        ListPreference listPreference = (ListPreference) findPreference(WeatherSettings.PREF_WARNINGS_NOTIFY_SEVERITY);
+        if ((weatherSettings.warnings_disabled) || (!weatherSettings.notify_warnings)){
+            listPreference.setEnabled(false);
+            listPreference.setShouldDisableView(true);
+        } else {
+            listPreference.setEnabled(true);
+            listPreference.setShouldDisableView(false);
+        }
+        /*
+        // String[] severities = getResources().getStringArray(R.array.display_notifySeverity_text);
+        int minSeverity = WeatherWarning.Severity.toInt(weatherSettings.notifySeverity);
+        int severityColor = WeatherWarning.Severity.getColor(this,minSeverity);
+        String text = getResources().getString(R.string.preference_notifySeverity_summary);
+        int position1 = text.indexOf("\"");
+        int position2 = text.lastIndexOf("\"");
+        Log.v("twfg","POS1 "+position1);
+        Log.v("twfg","POS2 "+position2);
+        if ((position1>0) && (position2>0)){
+            SpannableString spannableString = new SpannableString(text);
+            spannableString.setSpan(new ForegroundColorSpan(severityColor),position1,position2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            listPreference.setSummary(spannableString);
+        } else {
+            listPreference.setSummary(text);
+        }
+        */
     }
 
     @Override

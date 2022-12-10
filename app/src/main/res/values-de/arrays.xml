@@ -108,4 +108,11 @@
         <item>detailliert</item>
     </string-array>
 
+    <string-array name="display_notifySeverity_text">
+        <item>Wetterwarnung</item>
+        <item>markante Warnung</item>
+        <item>Unwetterwarnung</item>
+        <item>extreme Unwetterwarnung</item>
+    </string-array>
+
 </resources>

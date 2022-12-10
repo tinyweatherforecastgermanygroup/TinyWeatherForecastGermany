@@ -241,6 +241,14 @@
                 android:summary="@string/preference_notify_warnings_summary"
                 android:defaultValue="true"/>
 
+        <ListPreference
+                android:key="PREF_warnings_notify_severity"
+                android:title="@string/preference_notifySeverity_title"
+                android:summary="@string/preference_notifySeverity_summary"
+                android:entries="@array/display_notifySeverity_text"
+                android:entryValues="@array/display_notifySeverity_value"
+                android:defaultValue="Minor"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

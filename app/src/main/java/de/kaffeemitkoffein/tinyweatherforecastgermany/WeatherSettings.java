@@ -88,6 +88,7 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_CACHETIME = "PREF_warnings_cachetime";
     public static final String PREF_WARNINGS_DISABLE = "PREF_warnings_diable";
     public static final String PREF_WARNINGS_LAST_UPDATE_TIME = "PREF_warnings_last_update_time";
+    public static final String PREF_WARNINGS_NOTIFY_SEVERITY = "PREF_warnings_notify_severity";
     public static final String PREF_IS_FIRST_APP_LAUNCH = "PREF_is_first_app_launch";
     public static final String PREF_USEGPS = "PREF_usegps";
     public static final String PREF_GPSAUTO = "PREF_gpsauto";
@@ -153,6 +154,7 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_CACHETIME_DEFAULT = "30";
     public static final boolean PREF_WARNINGS_DISABLE_DEFAULT = false;
     public static final long PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT = 0;
+    public static final String PREF_WARNINGS_NOTIFY_SEVERITY_DEFAULT = WeatherWarning.Severity.MINOR;
     public static final boolean PREF_IS_FIRST_APP_LAUNCH_DEFAULT = true;
     public static final boolean PREF_USEGPS_DEFAULT = true;
     public static final boolean PREF_GPSAUTO_DEFAULT = false;
@@ -210,6 +212,7 @@ public class WeatherSettings {
     public boolean serve_gadgetbridge = PREF_SERVE_GADGETBRIDGE_DEFAULT;
     public long views_last_update_time = PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT;
     public long warnings_last_update_time = PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT;
+    public String notifySeverity = PREF_WARNINGS_NOTIFY_SEVERITY_DEFAULT;
     public String gadgetbridge_packagename = PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;
     public boolean gadgetbridge_fake_timestamp = PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT;
     public boolean logging = PREF_LOGGING_DEFAULT;
@@ -291,6 +294,7 @@ public class WeatherSettings {
         this.warnings_cache_time = readPreference(PREF_WARNINGS_CACHETIME, PREF_WARNINGS_CACHETIME_DEFAULT);
         this.warnings_disabled = readPreference(PREF_WARNINGS_DISABLE, PREF_WARNINGS_DISABLE_DEFAULT);
         this.warnings_last_update_time = readPreference(PREF_WARNINGS_LAST_UPDATE_TIME, PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
+        this.notifySeverity = readPreference(PREF_WARNINGS_NOTIFY_SEVERITY,PREF_WARNINGS_NOTIFY_SEVERITY_DEFAULT);
         this.is_first_app_launch = readPreference(PREF_IS_FIRST_APP_LAUNCH, PREF_IS_FIRST_APP_LAUNCH_DEFAULT);
         this.usegps = readPreference(PREF_USEGPS,PREF_USEGPS_DEFAULT);
         this.gpsauto = readPreference(PREF_GPSAUTO,PREF_GPSAUTO_DEFAULT);
@@ -354,6 +358,7 @@ public class WeatherSettings {
         applyPreference(PREF_WARNINGS_CACHETIME, this.warnings_cache_time);
         applyPreference(PREF_WARNINGS_DISABLE, this.warnings_disabled);
         applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME, this.warnings_last_update_time);
+        applyPreference(PREF_WARNINGS_NOTIFY_SEVERITY,this.notifySeverity);
         applyPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
         applyPreference(PREF_USEGPS,this.usegps);
         applyPreference(PREF_GPSAUTO,this.gpsauto);
@@ -417,6 +422,7 @@ public class WeatherSettings {
         commitPreference(PREF_WARNINGS_CACHETIME, this.warnings_cache_time);
         commitPreference(PREF_WARNINGS_DISABLE, this.warnings_disabled);
         commitPreference(PREF_WARNINGS_LAST_UPDATE_TIME, this.warnings_last_update_time);
+        commitPreference(PREF_WARNINGS_NOTIFY_SEVERITY,this.notifySeverity);
         commitPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
         commitPreference(PREF_USEGPS,this.usegps);
         commitPreference(PREF_GPSAUTO,this.gpsauto);
@@ -733,6 +739,12 @@ public class WeatherSettings {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_WIDGET_DISPLAYWARNINGS, b);
         pref_editor.apply();
+    }
+
+    public static int getWarningsNotifySeverity(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String result = sharedPreferences.getString(PREF_WARNINGS_NOTIFY_SEVERITY,PREF_WARNINGS_NOTIFY_SEVERITY_DEFAULT);
+        return WeatherWarning.Severity.toInt(result);
     }
 
     public static long getTextForecastLastUpdateTimeInMillis(Context context){

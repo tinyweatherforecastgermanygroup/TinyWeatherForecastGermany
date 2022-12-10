@@ -21,7 +21,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.graphics.Color;
-
 import java.util.ArrayList;
 
 public class WeatherWarning implements Comparable<WeatherWarning> {
@@ -52,6 +51,17 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
             }
             return 0;
         }
+
+        public static int getColor(Context context, int severity){
+            switch (severity){
+                case MINOR_INT: return Color.YELLOW;
+                case MODERATE_INT: return 0xe6700b;
+                case SEVERE_INT: return Color.RED;
+                case EXTREME_INT: return 0xb629cd;
+                default: return ThemePicker.getColorTextLight(context);
+            }
+        }
+
     }
 
     public final static String ID_UPDATE="Update";
@@ -183,6 +193,13 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
             }
         }
         return false;
+    }
+
+    public int getSeverity(){
+        if (severity!=null){
+            return Severity.toInt(severity);
+        }
+        return 0;
     }
 
     /*
