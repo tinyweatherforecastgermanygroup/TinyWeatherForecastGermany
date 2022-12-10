@@ -319,4 +319,6 @@
     <string name="preference_display_overviewchart_days_title">Tage</string>
     <string name="preference_display_overviewchart_days_summary">Maximale Anzahl der Tage, die im Übersichtsdiagramm angezeigt werden.</string>
     <string name="chartwidget_description">Diagramm</string>
+    <string name="preference_notifySeverity_title">Warnkategorie</string>
+    <string name="preference_notifySeverity_summary">Benachrichtigung über Warnungen der Kategorie \"%1$s\" oder höher.</string>
 </resources>
