@@ -301,4 +301,6 @@
     <string name="preference_display_overviewchart_days_summary">Maximum aantal dagen dat in de overzichtsgrafiek wordt weergegeven.</string>
     <string name="chartwidget_description">diagram</string>
     <string name="preference_screen_overviewchart_summary">Pas de overzichtskaart aan.</string>
+    <string name="preference_notifySeverity_title">Waarschuwingscategorie</string>
+    <string name="preference_notifySeverity_summary">Waarschuwingen van categorie \"%1$s\" of hoger.</string>
 </resources>
