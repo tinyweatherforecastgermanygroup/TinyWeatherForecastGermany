@@ -303,4 +303,6 @@
     <string name="preference_display_overviewchart_days_title">Giorni</string>
     <string name="preference_display_overviewchart_days_summary">Numero massimo di giorni visualizzati nel grafico d\'insieme.</string>
     <string name="preference_screen_overviewchart_summary">Personalizzare il grafico d\'insieme.</string>
+    <string name="preference_notifySeverity_title">Categoria di avviso</string>
+    <string name="preference_notifySeverity_summary">Notifica gli avvisi di categoria \"%1$s\" o superiore.</string>
 </resources>
