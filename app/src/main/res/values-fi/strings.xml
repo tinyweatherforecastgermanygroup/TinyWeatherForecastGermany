@@ -301,4 +301,6 @@
     <string name="preference_display_overviewchart_days_title">Päivät</string>
     <string name="preference_display_overviewchart_days_summary">Yleiskaaviossa näytettävien päivien enimmäismäärä.</string>
     <string name="preference_screen_overviewchart_summary">Mukauta yleiskatsausta.</string>
+    <string name="preference_notifySeverity_title">Varoituskategoria</string>
+    <string name="preference_notifySeverity_summary">lmoita varoituksista, jotka kuuluvat luokkaan \"%1$s\" tai korkeampaan luokkaan.</string>
 </resources>
