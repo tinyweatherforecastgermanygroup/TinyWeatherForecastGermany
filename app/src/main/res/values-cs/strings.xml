@@ -301,4 +301,6 @@
     <string name="chartwidget_description">diagram</string>
     <string name="preference_screen_overviewchart_summary">Přizpůsobení přehledového grafu.</string>
     <string name="preference_display_overviewchart_days_summary">Maximální počet dnů zobrazených v přehledovém grafu.</string>
+    <string name="preference_notifySeverity_title">Kategorie varování</string>
+    <string name="preference_notifySeverity_summary">Upozornění na varování kategorie \"%1$s\" nebo vyšší.</string>
 </resources>
