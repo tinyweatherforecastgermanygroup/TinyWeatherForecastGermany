@@ -302,4 +302,6 @@
     <string name="preference_screen_overviewchart_summary">Personalice el gráfico general.</string>
     <string name="preference_display_overviewchart_days_title">Días</string>
     <string name="preference_display_overviewchart_days_summary">Número máximo de días mostrados en el gráfico general.</string>
+    <string name="preference_notifySeverity_summary">Notificar sobre avisos de categoría \"%1$s\" o superior.</string>
+    <string name="preference_notifySeverity_title">Categoría de alerta</string>
 </resources>
