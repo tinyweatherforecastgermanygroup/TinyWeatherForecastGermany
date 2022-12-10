@@ -302,4 +302,6 @@
     <string name="preference_display_overviewchart_days_title">Dage</string>
     <string name="preference_display_overviewchart_days_summary">Det maksimale antal dage, der vises i oversigtsdiagrammet.</string>
     <string name="chartwidget_description">diagram</string>
+    <string name="preference_notifySeverity_title">Kategori advarsel</string>
+    <string name="preference_notifySeverity_summary">Meddelelse om advarsler af kategori \"%1$s\" eller højere.</string>
 </resources>
