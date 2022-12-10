@@ -301,4 +301,6 @@
     <string name="preference_display_overviewchart_days_title">Дні</string>
     <string name="preference_display_overviewchart_days_summary">Максимальна кількість днів, що відображається на оглядовому графіку.</string>
     <string name="preference_screen_overviewchart_summary">Налаштуйте оглядову діаграму.</string>
+    <string name="preference_notifySeverity_title">Категорія попередження</string>
+    <string name="preference_notifySeverity_summary">Повідомляти про попередження категорії \"%1$s\" або вище.</string>
 </resources>
