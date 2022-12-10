@@ -302,4 +302,6 @@
     <string name="preference_display_overviewchart_days_summary">Jumlah maksimum hari yang ditampilkan dalam bagan ikhtisar.</string>
     <string name="chartwidget_description">Bagan</string>
     <string name="preference_screen_overviewchart_summary">Ubah bagan ikhtisar.</string>
+    <string name="preference_notifySeverity_title">Kategori peringatan</string>
+    <string name="preference_notifySeverity_summary">Memberitahukan tentang peringatan kategori \"%1$s\" atau lebih tinggi.</string>
 </resources>
