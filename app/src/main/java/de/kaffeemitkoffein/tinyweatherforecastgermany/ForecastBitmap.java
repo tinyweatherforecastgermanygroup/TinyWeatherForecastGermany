@@ -700,6 +700,7 @@ public class ForecastBitmap{
                 maxTemp=weatherInfos.get(i).getTemperatureInCelsiusInt();
             }
         }
+        //minTemp = -5; maxTemp = 25;
         int deltaTemp = maxTemp - minTemp;
         if (minTemp>=0){
             deltaTemp = maxTemp;
