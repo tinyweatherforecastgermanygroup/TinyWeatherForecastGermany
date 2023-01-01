@@ -1,7 +1,7 @@
 /**
  * This file is part of TinyWeatherForecastGermany.
  *
- * Copyright (c) 2020, 2021 Pawel Dube
+ * Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -700,29 +700,39 @@ public class ForecastBitmap{
                 maxTemp=weatherInfos.get(i).getTemperatureInCelsiusInt();
             }
         }
+        if (WeatherSettings.useOverviewChartMinMax(context)){
+            if (WeatherSettings.getOverviewChartMin(context)<minTemp){
+                minTemp = WeatherSettings.getOverviewChartMin(context);
+            }
+            if (WeatherSettings.getOverviewChartMax(context)>maxTemp){
+                maxTemp = WeatherSettings.getOverviewChartMax(context);
+            }
+        }
         //minTemp = -5; maxTemp = 25;
         int deltaTemp = maxTemp - minTemp;
         if (minTemp>=0){
             deltaTemp = maxTemp;
         }
-        //int display_steps = 5;
         int display_steps = deltaTemp / 5 + 2;
+        if (WeatherSettings.useOverviewChartMinMax(context)){
+            display_steps = deltaTemp / 5 + 1;
+            if (deltaTemp%10==0){
+                display_steps = deltaTemp / 10 + 1;
+            }
+        }
         if (chartHeight < 100)
             display_steps = 3;
         float temp_scale_step_value = 20;
-        if (deltaTemp / display_steps < 10)
+        if (deltaTemp / display_steps <= 10)
             temp_scale_step_value = 10;
-        if (deltaTemp / display_steps < 5)
+        if (deltaTemp / display_steps <= 5)
             temp_scale_step_value = 5;
         float temp_bottom_offset_value = 0;
         if (minTemp < 0){
             temp_bottom_offset_value = -((Math.abs(minTemp)/temp_scale_step_value)+1)*temp_scale_step_value;
         }
         float temp_graphscale = temp_scale_step_value * display_steps / chartHeight;
-        float zeroline_position = chartHeight;
-        if (temp_bottom_offset_value != 0){
-            zeroline_position = chartHeight + temp_bottom_offset_value / temp_graphscale;
-        }
+        float zeroline_position = chartHeight + temp_bottom_offset_value / temp_graphscale;
         // paint chart outline
         canvas.drawLine(xChartOffset,0,xChartOffset,chartHeight,chartPaint);
         canvas.drawLine(xChartOffset,zeroline_position,width,zeroline_position,chartPaint);
@@ -735,11 +745,6 @@ public class ForecastBitmap{
             textPaint.setFakeBoldText(false);
             if ((i==1) || (i == display_steps)){
                 s2 = s2 + "°C";
-                //float f1 = labelTextSize*yAxisFontSizeScaleFactor;
-                //if (f1>((float)chartHeight)/((float)display_steps)){
-                //    f1 = ((float)chartHeight)/((float)display_steps)-3;
-                //}
-                //textPaint.setTextSize(f1);
                 textPaint.setFakeBoldText(true);
             }
             float x1 = 0;

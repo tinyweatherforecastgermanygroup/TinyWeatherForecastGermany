@@ -2,7 +2,7 @@
 <!--
  This file is part of TinyWeatherForecastGermany.
 
- Copyright (c) 2020, 2021 Pawel Dube
+ Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,9 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
---><resources>
+-->
+
+<resources>
     <string name="app_name">Kleine Wettervorschau Deutschland</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Letzte Aktualisierung:</string>
@@ -299,6 +301,13 @@
     <string name="preference_clearnotifications_message">Benachrichtigungsspeicher gelöscht.</string>
     <string name="preference_display_overviewchart_title">Übersichtsgrafik</string>
     <string name="preference_display_overviewchart_summary">Zeigt immer die Karte mit der Temperatur, den Wolken und dem Regen für die nächsten Tage an. Wenn diese Funktion deaktiviert ist, wird die Karte nur im Querformat angezeigt, und auch nur, wenn genügend Platz vorhanden ist.</string>
+    <string name="preference_category_overviewchart_scale">Skalenwerte</string>
+    <string name="preference_screen_overviewchart_usemm_title">Feste Skala</string>
+    <string name="preference_screen_overviewchart_usemm_summary">Die Temperatur-Skala bleibt gleich, wenn die Werte im festgelegten Bereich liegen.</string>
+    <string name="preference_screen_overviewchart_max_title">Maximum</string>
+    <string name="preference_screen_overviewchart_max_summary">Oberer Wert der Temperaturskala:</string>
+    <string name="preference_screen_overviewchart_min_title">Minimum</string>
+    <string name="preference_screen_overviewchart_min_summary">Unterer Wert der Temperaturskala:</string>
     <string name="update_failed">Aktualisierung fehlgeschlagen:</string>
     <string name="network_lost">Internetverbindung verloren.</string>
     <string name="network_nonetwork">keine Internetverbindung.</string>

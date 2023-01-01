@@ -1,7 +1,7 @@
 <!--
  This file is part of TinyWeatherForecastGermany.
 
- Copyright (c) 2020, 2021 Pawel Dube
+ Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -113,6 +113,29 @@
                     android:title="@string/preference_display_overviewchart_days_title"
                     android:summary="@string/preference_display_overviewchart_days_summary"
             />
+
+            <PreferenceCategory
+                    android:title="@string/preference_category_overviewchart_scale">
+
+                <CheckBoxPreference
+                        android:key="PREF_display_overviewchart_mmu"
+                        android:title="@string/preference_screen_overviewchart_usemm_title"
+                        android:summary="@string/preference_screen_overviewchart_usemm_summary"
+                        android:defaultValue="false"/>
+
+                <de.kaffeemitkoffein.tinyweatherforecastgermany.NumberPickerPreference
+                        android:key="PREF_display_overviewchart_min"
+                        android:title="@string/preference_screen_overviewchart_min_title"
+                        android:summary="@string/preference_screen_overviewchart_min_summary"
+                />
+
+                <de.kaffeemitkoffein.tinyweatherforecastgermany.NumberPickerPreference
+                        android:key="PREF_display_overviewchart_max"
+                        android:title="@string/preference_screen_overviewchart_max_title"
+                        android:summary="@string/preference_screen_overviewchart_max_summary"
+                />
+
+            </PreferenceCategory>
 
 
         </PreferenceScreen>

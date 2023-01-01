@@ -95,6 +95,12 @@ public class Settings extends PreferenceActivity{
                 setNotifyWarnings();
                 setNotifySeverity();
             }
+            if (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE) ||
+                    (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN)) ||
+                    (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX))){
+                setUseMinMax();
+                WidgetRefresher.refreshChartWidget(context);
+            }
             if (s.equals(WeatherSettings.PREF_THEME)){
                 recreate();
             }
@@ -131,6 +137,7 @@ public class Settings extends PreferenceActivity{
         setShowWarningsInWidgetAllowed();
         setNotifyWarnings();
         setNotifySeverity();
+        setUseMinMax();
         updateValuesDisplay();
         // reset notifications option
         Preference resetNotifications = (Preference) findPreference(WeatherSettings.PREF_CLEARNOTIFICATIONS);
@@ -243,6 +250,27 @@ public class Settings extends PreferenceActivity{
         */
     }
 
+    public void setUseMinMax(){
+        CheckBoxPreference checkBoxPreferenceChartUseMinMax = (CheckBoxPreference) findPreference(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE);
+        NumberPickerPreference numberPickerPreferenceChartRangeMin = (NumberPickerPreference) findPreference(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN);
+        NumberPickerPreference numberPickerPreferenceChartRangeMax = (NumberPickerPreference) findPreference(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX);
+        if (!checkBoxPreferenceChartUseMinMax.isChecked()){
+            numberPickerPreferenceChartRangeMin.setEnabled(false);
+            numberPickerPreferenceChartRangeMin.setShouldDisableView(true);
+            numberPickerPreferenceChartRangeMax.setEnabled(false);
+            numberPickerPreferenceChartRangeMax.setShouldDisableView(true);
+            numberPickerPreferenceChartRangeMin.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_min_summary)+" -");
+            numberPickerPreferenceChartRangeMax.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_max_summary)+" -");
+        } else {
+            numberPickerPreferenceChartRangeMin.setEnabled(true);
+            numberPickerPreferenceChartRangeMin.setShouldDisableView(false);
+            numberPickerPreferenceChartRangeMax.setEnabled(true);
+            numberPickerPreferenceChartRangeMax.setShouldDisableView(false);
+            numberPickerPreferenceChartRangeMin.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_min_summary)+" "+WeatherSettings.getOverviewChartMin(context));
+            numberPickerPreferenceChartRangeMax.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_max_summary)+" "+WeatherSettings.getOverviewChartMax(context));
+        }
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     protected void onResume(){
@@ -278,6 +306,7 @@ public class Settings extends PreferenceActivity{
         notifyWarnings.setSummary(getResources().getString(R.string.preference_notify_warnings_summary)+" "+getResources().getString(R.string.battery_and_data_hint));
         ListPreference displayRotation = (ListPreference) findPreference(WeatherSettings.PREF_ROTATIONMODE);
         displayRotation.setSummary(WeatherSettings.getDeviceRotationString(this));
+
      }
 
 }

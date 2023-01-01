@@ -2,7 +2,7 @@
 <!--
  This file is part of TinyWeatherForecastGermany.
 
- Copyright (c) 2020, 2021 Pawel Dube
+ Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,9 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
---><resources>
+-->
+
+<resources>
     <string name="app_name">Tiny Weather Forecast Germany</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Last Update:</string>
@@ -151,6 +153,13 @@
     <string name="preference_screen_overviewchart_summary">Customize the overview chart.</string>
     <string name="preference_display_overviewchart_days_title">Days</string>
     <string name="preference_display_overviewchart_days_summary">Maximum number of days displayed in the overview chart.</string>
+    <string name="preference_category_overviewchart_scale">Scale values</string>
+    <string name="preference_screen_overviewchart_usemm_title">Fixed Scale</string>
+    <string name="preference_screen_overviewchart_usemm_summary">The temperature scale remains the same if the values are within the specified range.</string>
+    <string name="preference_screen_overviewchart_max_title">Maximum</string>
+    <string name="preference_screen_overviewchart_max_summary">Upper value of the temperature scale:</string>
+    <string name="preference_screen_overviewchart_min_title">Minimum</string>
+    <string name="preference_screen_overviewchart_min_summary">Lower value of the temperature scale:</string>
     <string name="preference_display_rotation_title">Display align</string>
     <string name="preference_display_rotation_summary">How to align the display</string>
     <string name="preference_setalarm_title">Always update</string>

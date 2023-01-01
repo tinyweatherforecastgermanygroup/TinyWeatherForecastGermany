@@ -1,7 +1,7 @@
-/**
+/*
  * This file is part of TinyWeatherForecastGermany.
  *
- * Copyright (c) 2020, 2021 Pawel Dube
+ * Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,6 +69,9 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_CROP_PRECIPITATIONCHART = "PREF_crop_precipchart";
     public static final String PREF_DISPLAY_OVERVIEWCHART = "PREF_display_overviewchart";
     public static final String PREF_DISPLAY_OVERVIEWCHART_DAYS="PREF_display_overviewchart_days";
+    public static final String PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE = "PREF_display_overviewchart_mmu";
+    public static final String PREF_DISPLAY_OVERVIEWCHART_MIN = "PREF_display_overviewchart_min";
+    public static final String PREF_DISPLAY_OVERVIEWCHART_MAX = "PREF_display_overviewchart_max";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_UPDATE_WARNINGS = "PREF_update_warnings";
@@ -135,6 +138,9 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT = false;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_DEFAULT = false;
     public static final int PREF_DISPLAY_OVERVIEWCHART_DAYS_DEFAULT = 10;
+    public static final boolean PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT = false;
+    public static final int PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT = 0;
+    public static final int PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT = 0;
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
     public static final boolean PREF_UPDATE_TEXTFORECASTS_DEFAULT = true;
@@ -200,6 +206,9 @@ public class WeatherSettings {
     public boolean cropPrecipitationChart = PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT;
     public boolean displayOverviewChart = PREF_DISPLAY_OVERVIEWCHART_DEFAULT;
     public int displayOverviewChartDays = PREF_DISPLAY_OVERVIEWCHART_DAYS_DEFAULT;
+    public boolean displayOverviewChartUseMinMax = PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT;
+    public int displayOverviewChartMin = PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT;
+    public int displayOverviewChartMax = PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
     public boolean update_warnings = PREF_UPDATE_WARNINGS_DEFAULT;
@@ -276,6 +285,9 @@ public class WeatherSettings {
         this.cropPrecipitationChart = readPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT);
         this.displayOverviewChart = readPreference(PREF_DISPLAY_OVERVIEWCHART,PREF_DISPLAY_OVERVIEWCHART_DEFAULT);
         this.displayOverviewChartDays = readPreference(PREF_DISPLAY_OVERVIEWCHART_DAYS,PREF_DISPLAY_OVERVIEWCHART_DAYS_DEFAULT);
+        this.displayOverviewChartUseMinMax = readPreference(PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT);
+        this.displayOverviewChartMin = readPreference(PREF_DISPLAY_OVERVIEWCHART_MIN,PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT);
+        this.displayOverviewChartMax = readPreference(PREF_DISPLAY_OVERVIEWCHART_MAX,PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT);
         this.updateinterval = readPreference(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT);
         this.update_warnings = readPreference(PREF_UPDATE_WARNINGS,PREF_UPDATE_WARNINGS_DEFAULT);
         this.update_textforecasts = readPreference(PREF_UPDATE_TEXTFORECASTS,PREF_UPDATE_TEXTFORECASTS_DEFAULT);
@@ -340,6 +352,9 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,this.cropPrecipitationChart);
         applyPreference(PREF_DISPLAY_OVERVIEWCHART,this.displayOverviewChart);
         applyPreference(PREF_DISPLAY_OVERVIEWCHART_DAYS,this.displayOverviewChartDays);
+        applyPreference(PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,this.displayOverviewChartUseMinMax);
+        applyPreference(PREF_DISPLAY_OVERVIEWCHART_MIN,this.displayOverviewChartMin);
+        applyPreference(PREF_DISPLAY_OVERVIEWCHART_MAX,this.displayOverviewChartMax);
         applyPreference(PREF_SETALARM, this.setalarm);
         applyPreference(PREF_UPDATEINTERVAL, this.updateinterval);
         applyPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
@@ -404,6 +419,9 @@ public class WeatherSettings {
         commitPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,this.cropPrecipitationChart);
         commitPreference(PREF_DISPLAY_OVERVIEWCHART,this.displayOverviewChart);
         commitPreference(PREF_DISPLAY_OVERVIEWCHART_DAYS,this.displayOverviewChartDays);
+        commitPreference(PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,this.displayOverviewChartUseMinMax);
+        commitPreference(PREF_DISPLAY_OVERVIEWCHART_MIN,this.displayOverviewChartMin);
+        commitPreference(PREF_DISPLAY_OVERVIEWCHART_MAX,this.displayOverviewChartMax);
         commitPreference(PREF_SETALARM, this.setalarm);
         commitPreference(PREF_UPDATEINTERVAL, this.updateinterval);
         commitPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
@@ -1234,5 +1252,19 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_LOG_TO_LOGCAT,PREF_LOG_TO_LOGCAT_DEFAULT);
     }
 
+    public static boolean useOverviewChartMinMax(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT);
+    }
+
+    public static int getOverviewChartMin(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return Integer.parseInt(NumberPickerPreference.minValues[sharedPreferences.getInt(PREF_DISPLAY_OVERVIEWCHART_MIN,PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT)]);
+    }
+
+    public static int getOverviewChartMax(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return Integer.parseInt(NumberPickerPreference.maxValues[sharedPreferences.getInt(PREF_DISPLAY_OVERVIEWCHART_MAX,PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT)]);
+    }
 
 }
