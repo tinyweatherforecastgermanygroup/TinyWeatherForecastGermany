@@ -56,6 +56,7 @@ public class WeatherWarningActivity extends Activity {
     Bitmap germanyBitmap;
     Bitmap warningsBitmap;
     Bitmap radarBitmap;
+    Bitmap administrativeBitmap;
     Bitmap visibleBitmap;
     ZoomableImageView mapZoomable;
     RelativeLayout map_collapsed_container;
@@ -66,7 +67,8 @@ public class WeatherWarningActivity extends Activity {
     Context context;
     ActionBar actionBar;
     Executor executor;
-    Boolean hide_rain = null;
+    boolean hide_rain = false;
+    boolean hide_admin = true;
     // Radarmap radarmap;
     WeatherLocationManager weatherLocationManager;
     RelativeLayout gpsProgressHolder;
@@ -83,6 +85,7 @@ public class WeatherWarningActivity extends Activity {
 
     public final static String SIS_ZOOMMAPSTATEBUNDLE="ZOOMMAPSTATEBUNDLE";
     public final static String SIS_HIDERAIN="HIDERAIN";
+    public final static String SIS_HIDEADMIN="HIDEADMIN";
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -125,6 +128,7 @@ public class WeatherWarningActivity extends Activity {
             state.putBundle(SIS_ZOOMMAPSTATEBUNDLE,zoomMapState);
         }
         state.putBoolean(SIS_HIDERAIN,hide_rain);
+        state.putBoolean(SIS_HIDEADMIN,hide_admin);
         super.onSaveInstanceState(state);
     }
 
@@ -172,8 +176,10 @@ public class WeatherWarningActivity extends Activity {
                 zoomMapState = bundle;
             }
             hide_rain = savedInstanceState.getBoolean(SIS_HIDERAIN,!WeatherSettings.showRadarByDefault(getApplicationContext()));
+            hide_admin = savedInstanceState.getBoolean(SIS_HIDEADMIN,!WeatherSettings.showAdminMapByDefault(getApplicationContext()));
         } else {
             hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
+            hide_admin = !WeatherSettings.showAdminMapByDefault(getApplicationContext());
         }
         executor = Executors.newSingleThreadExecutor();
         // action bar layout
@@ -272,7 +278,19 @@ public class WeatherWarningActivity extends Activity {
             return true;
         }
         if (item_id==R.id.hide_rain) {
-            hide_rain = !hide_rain;
+            if ((hide_rain) && (hide_admin)){
+                hide_rain = false;
+            } else
+            if ((!hide_rain) && (hide_admin)){
+                hide_admin = false;
+            } else
+            if (!hide_rain) {
+                hide_rain = true;
+            }
+            else {
+                hide_rain = true; hide_admin = true;
+            }
+            // hide_rain = !hide_rain;
             drawMapBitmap();
             return true;
         }
@@ -353,7 +371,7 @@ public class WeatherWarningActivity extends Activity {
         }
     }
 
-    public class PlotPoint{
+    public static class PlotPoint{
         float x;
         float y;
     }
@@ -373,8 +391,10 @@ public class WeatherWarningActivity extends Activity {
     private static final float MAP_GEO_WIDTH_BOTTOM= MAP_GEO_ENDX_BOTTOM - MAP_GEO_OFFSETX_BOTTOM;
     private static final float MAP_GEO_WIDTH_DELTA = MAP_GEO_WIDTH_TOP - MAP_GEO_WIDTH_BOTTOM;
 
-    private static final float[] MAP_THRESHOLD ={0,0.16f,0.20f,0.23f,0.30f,0.38f,0.45f,0.62f,0.70f,0.77f,0.80f,0.84f};
-    private static final float[] MAP_CORRECTION={7,6    ,5    ,4    ,3    ,1    ,0    ,1    ,2    ,3    ,6    ,7    };
+    //private static final float[] MAP_THRESHOLD ={0,0.16f,0.20f,0.23f,0.30f,0.38f,0.45f,0.62f,0.70f,0.77f,0.80f,0.84f};
+    //private static final float[] MAP_CORRECTION={7,6    ,5    ,4    ,3    ,1    ,0    ,1    ,2    ,3    ,6    ,7    };
+    private static final float[] MAP_THRESHOLD ={0 ,0.025f,0.05f,0.75f,0.11f, 0.16f,0.20f,0.23f,0.30f,0.38f,0.45f,0.62f,0.70f,0.77f,0.80f,0.84f,0.88f, 0.91f,0.96f};
+    private static final float[] MAP_CORRECTION={17,16    ,15   ,10   ,10   ,5    ,4    ,3    ,1    ,0    ,1    ,2    ,3    ,5    ,6      ,9   ,11   ,12    ,17};
 
     private static float yCorrectionPixels(float lon, float lat){
         float p = (lon - getXOffsetGeo(lat))/getGeoWidth(lat);
@@ -398,7 +418,7 @@ public class WeatherWarningActivity extends Activity {
         return xOffsetGeo;
     }
 
-    private PlotPoint getPlotPoint(float lon, float lat){
+    private static PlotPoint getPlotPoint(float lon, float lat){
         float x = (lon - getXOffsetGeo(lat)) * (MAP_PIXEL_WIDTH/getGeoWidth(lat));
         float y = (lat - MAP_GEO_BOTTOM)*(MAP_PIXEL_HEIGHT/MAP_GEO_HEIGHT) + yCorrectionPixels(lon,lat);
         PlotPoint plotPoint = new PlotPoint();
@@ -503,16 +523,26 @@ public class WeatherWarningActivity extends Activity {
     }
 
     private void drawMapBitmap(){
-        visibleBitmap = warningsBitmap.copy(Bitmap.Config.ARGB_8888,true);
+        visibleBitmap = germanyBitmap.copy(Bitmap.Config.ARGB_8888,true);
         Canvas canvas = new Canvas(visibleBitmap);
+        final Paint cp = new Paint();
+        cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+        canvas.drawBitmap(warningsBitmap,0,0,cp);
+        if ((!hide_admin)){
+            if (administrativeBitmap==null){
+                administrativeBitmap = getAdministrativeBitmap(WeatherSettings.getAreaTypeArray(context));
+            }
+            cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+            canvas.drawBitmap(administrativeBitmap,0,0,cp);
+        }
         if ((!hide_rain) && (radarBitmap!=null)){
-            final Paint cp = new Paint();
             cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
             canvas.drawBitmap(radarBitmap, 0,0,cp);
             showRainDescription();
         } else {
             clearRainDescription();
         }
+        //drawDebugGrid(canvas);
         mapZoomable.updateBitmap(visibleBitmap);
         visibleBitmap.recycle();
     }
@@ -571,6 +601,38 @@ public class WeatherWarningActivity extends Activity {
         ArrayList<WeatherWarning> drawWarnings = (ArrayList<WeatherWarning>) weatherWarnings.clone();
         Collections.sort(drawWarnings);
         Collections.reverse(drawWarnings);
+        /*
+        // testing draw all "Kreise"
+        ArrayList<Areas.Area> allAreas = Areas.getAreas(context, Areas.Area.Type.KREIS); // get ALL areas
+        Log.v("twfg","Areas = "+allAreas.size());
+        Paint areaPaintF = new Paint();
+        areaPaintF.setColor(Color.GREEN);
+        areaPaintF.setAlpha(128);
+        areaPaintF.setStyle(Paint.Style.FILL);
+        Paint areaPaint = new Paint();
+        areaPaint.setColor(Color.BLACK);
+        areaPaint.setAlpha(128);
+        areaPaint.setStyle(Paint.Style.STROKE);
+        for (int i=0; i<allAreas.size(); i++){
+            Areas.Area cellArea = allAreas.get(i);
+            String cellType = cellArea.warncellID.substring(0,2);
+            ArrayList<Polygon> areaPolygons = cellArea.polygons;
+            for (int p=0; p<areaPolygons.size(); p++){
+                Polygon areaPolygon = areaPolygons.get(p);
+                Path path = new Path();
+                PlotPoint plotPoint = getPlotPoint(areaPolygon.polygonX[0],areaPolygon.polygonY[0]);
+                path.moveTo(plotPoint.x, plotPoint.y);
+                for (int v=0; v<areaPolygon.polygonX.length; v++){
+                    plotPoint = getPlotPoint(areaPolygon.polygonX[v],areaPolygon.polygonY[v]);
+                    path.lineTo(plotPoint.x, plotPoint.y);
+                }
+                canvas.drawPath(path,areaPaint);
+                canvas.drawPath(path,areaPaintF);
+            }
+        }
+        // end test
+         */
+
         for (int warning_counter=0; warning_counter<drawWarnings.size(); warning_counter++){
             WeatherWarning warning = drawWarnings.get(warning_counter);
             for (int polygon_counter=0; polygon_counter<warning.polygonlist.size(); polygon_counter++){
@@ -615,9 +677,16 @@ public class WeatherWarningActivity extends Activity {
                 }
             }
         }
+        // warnings need to be drawn to take effect on the leave-outs on the admin bitmap
+
+        /*
+        administrativeBitmap = getAdministrativeBitmap(new int[] {Areas.Area.Type.KREIS,Areas.Area.Type.SEE, Areas.Area.Type.KUESTE}, warningsBitmap);
         final Paint cp = new Paint();
         cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
+        canvas.drawBitmap(administrativeBitmap,0,0,cp);
         canvas.drawBitmap(germanyBitmap, 0,0,cp);
+         */
+
         // old rain radar
         /*
         APIReaders.RadarmapRunnable radarmapRunnable = new APIReaders.RadarmapRunnable(getApplicationContext()){
@@ -691,7 +760,6 @@ public class WeatherWarningActivity extends Activity {
 
                 }
             }
-
         };
         executor.execute(radarMNGeoserverRunnable);
         // set close listener
@@ -720,7 +788,6 @@ public class WeatherWarningActivity extends Activity {
         germany = (ImageView) findViewById(R.id.warningactivity_map);
         gestureDetector = new GestureDetector(this,new MapGestureListener());
         //mapZoomable = new ZoomableImageView(getApplicationContext(),germany,germanyBitmap) {
-
         mapZoomable = new ZoomableImageView(getApplicationContext(),germany,warningsBitmap){
             @Override
             public void onGestureFinished(float scaleFactor, float lastXtouch, float lastYtouch, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
@@ -744,6 +811,7 @@ public class WeatherWarningActivity extends Activity {
         if (zoomMapState!=null){
             mapZoomable.restoreZoomViewState(zoomMapState);
         }
+        drawMapBitmap();
         // add the pin sprite
         int pinsize = Math.round(18*this.getApplicationContext().getResources().getDisplayMetrics().density);
         PlotPoint pinPoint = getPlotPoint((float) ownLocation.longitude, (float) ownLocation.latitude);
@@ -958,4 +1026,59 @@ public class WeatherWarningActivity extends Activity {
     private void showLocationPermissionsRationale(){
         showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_rationale));
     }
+
+    private void drawDebugGrid(final Canvas canvas){
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2f);
+        //canvas.drawLine(0,0,MAP_PIXEL_WIDTH,MAP_PIXEL_HEIGHT,paint);
+        for (int x=1; x<MAP_THRESHOLD.length; x++){
+            canvas.drawLine(MAP_PIXEL_WIDTH*MAP_THRESHOLD[x],0,MAP_PIXEL_WIDTH*MAP_THRESHOLD[x],MAP_PIXEL_HEIGHT,paint);
+        }
+    }
+
+    private Bitmap getAdministrativeBitmap(int[] types){
+        Bitmap resultBitmap = Bitmap.createBitmap(germanyBitmap.getWidth(),germanyBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        resultBitmap.eraseColor(Color.TRANSPARENT);
+        Canvas canvas = new Canvas(resultBitmap);
+        for (int type=0; type<types.length; type++){
+            ArrayList<Areas.Area> allAreas = Areas.getAreas(context, types[type]);
+            Paint areaPaint = new Paint();
+            areaPaint.setColor(Color.BLACK);
+            areaPaint.setAlpha(96);
+            areaPaint.setStyle(Paint.Style.STROKE);
+            if (types[type]==Areas.Area.Type.SEE){
+                areaPaint.setColor(Color.CYAN);
+            }
+            if (types[type]==Areas.Area.Type.KUESTE){
+                areaPaint.setColor(Color.YELLOW);
+            }
+            if (types[type]==Areas.Area.Type.GEMEINDE){
+                areaPaint.setColor(Color.GRAY);
+            }
+            if (types[type]==Areas.Area.Type.BUNDESLAND){
+                areaPaint.setColor(Color.BLUE);
+                areaPaint.setStrokeWidth(2);
+            }
+            for (int i=0; i<allAreas.size(); i++){
+                Areas.Area cellArea = allAreas.get(i);
+                ArrayList<Polygon> areaPolygons = cellArea.polygons;
+                for (int p=0; p<areaPolygons.size(); p++){
+                    Polygon areaPolygon = areaPolygons.get(p);
+                    Path path = new Path();
+                     PlotPoint plotPoint = getPlotPoint(areaPolygon.polygonX[0],areaPolygon.polygonY[0]);
+                    path.moveTo(plotPoint.x, plotPoint.y);
+                    for (int v=0; v<areaPolygon.polygonX.length; v++){
+                        plotPoint = getPlotPoint(areaPolygon.polygonX[v],areaPolygon.polygonY[v]);
+                        path.lineTo(plotPoint.x, plotPoint.y);
+                    }
+                    canvas.drawPath(path,areaPaint);
+                }
+            }
+
+        }
+        return resultBitmap;
+    }
+
 }

@@ -26,6 +26,7 @@ import android.content.pm.ActivityInfo;
 import android.preference.PreferenceManager;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class WeatherSettings {
 
@@ -102,6 +103,12 @@ public class WeatherSettings {
     public static final String PREF_TEXTFORECAST_FILTER = "PREF_textforecast_filter";
     public static final String PREF_RADAR_LASTDATAPOLL = "PREF_radar_lastdatapoll";
     public static final String PREF_RADAR_SHOW = "PREF_radar_show";
+    public static final String PREF_ADMINMAP_SHOW="PREF_adminmap_show";
+    public static final String PREF_MAP_DISPLAY_MUNICIPALITIES ="PREF_map_display_municipalities";
+    public static final String PREF_MAP_DISPLAY_COUNTIES = "PREF_map_display_counties";
+    public static final String PREF_MAP_DISPLAY_STATES = "PREF_map_display_states";
+    public static final String PREF_MAP_DISPLAY_SEA_AREAS = "PREF_map_display_sea_areas";
+    public static final String PREF_MAP_DISPLAY_COAST_AREAS = "PREF_map_display_coast_areas";
     public static final String PREF_FORCE_NO_MENU_ICONS = "PREF_force_nomenuicons";
     public static final String PREF_DISPLAY_WIND_IN_RADAR = "PREF_display_wind_in_radar";
     public static final String PREF_AREA_DATABASE_READY = "PREF_area_database_ready";
@@ -171,6 +178,12 @@ public class WeatherSettings {
     public static final boolean PREF_TEXTFORECAST_FILTER_DEFAULT = false;
     public static final long PREF_RADAR_LASTDATAPOLL_DEFAULT = 0;
     public static final boolean PREF_RADAR_SHOW_DEFAULT = true;
+    public static final boolean PREF_ADMINMAP_SHOW_DEFAULT=false;
+    public static final boolean PREF_MAP_DISPLAY_MUNICIPALITIES_DEFAULT = false;
+    public static final boolean PREF_MAP_DISPLAY_COUNTIES_DEFAULT = true;
+    public static final boolean PREF_MAP_DISPLAY_STATES_DEFAULT = false;
+    public static final boolean PREF_MAP_DISPLAY_SEA_AREAS_DEFAULT = false;
+    public static final boolean PREF_MAP_DISPLAY_COAST_AREAS_DEFAULT = false;
     public static final boolean PREF_FORCE_NO_MENU_ICONS_DEFAULT = false;
     public static final boolean PREF_DISPLAY_WIND_IN_RADAR_DEFAULT = true;
     public static final boolean PREF_AREA_DATABASE_READY_DEFAULT = false;
@@ -239,6 +252,12 @@ public class WeatherSettings {
     public boolean textforecast_filter = PREF_TEXTFORECAST_FILTER_DEFAULT;
     public long radar_lastdatapoll = PREF_RADAR_LASTDATAPOLL_DEFAULT;
     public boolean radar_show = PREF_RADAR_SHOW_DEFAULT;
+    public boolean adminmap_show = PREF_ADMINMAP_SHOW_DEFAULT;
+    public boolean mapDisplayMunicipalities = PREF_MAP_DISPLAY_MUNICIPALITIES_DEFAULT;
+    public boolean mapDisplayCounties = PREF_MAP_DISPLAY_COUNTIES_DEFAULT;
+    public boolean mapDisplayStates = PREF_MAP_DISPLAY_STATES_DEFAULT;
+    public boolean mapDisplaySeaAreas = PREF_MAP_DISPLAY_SEA_AREAS_DEFAULT;
+    public boolean mapDisplayCoastAreas = PREF_MAP_DISPLAY_COAST_AREAS_DEFAULT;
     public boolean forceNoMenuIcons = PREF_FORCE_NO_MENU_ICONS_DEFAULT;
     public boolean display_wind_in_radar = PREF_DISPLAY_WIND_IN_RADAR_DEFAULT;
     public boolean area_database_ready = PREF_AREA_DATABASE_READY_DEFAULT;
@@ -316,6 +335,12 @@ public class WeatherSettings {
         this.textforecast_filter = readPreference(PREF_TEXTFORECAST_FILTER,PREF_TEXTFORECAST_FILTER_DEFAULT);
         this.radar_lastdatapoll = readPreference(PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
         this.radar_show = readPreference(PREF_RADAR_SHOW,PREF_RADAR_SHOW_DEFAULT);
+        this.adminmap_show = readPreference(PREF_ADMINMAP_SHOW,PREF_ADMINMAP_SHOW_DEFAULT);
+        this.mapDisplayMunicipalities = PREF_MAP_DISPLAY_MUNICIPALITIES_DEFAULT;
+        this.mapDisplayCounties = PREF_MAP_DISPLAY_COUNTIES_DEFAULT;
+        this.mapDisplayStates = PREF_MAP_DISPLAY_STATES_DEFAULT;
+        this.mapDisplaySeaAreas = PREF_MAP_DISPLAY_SEA_AREAS_DEFAULT;
+        this.mapDisplayCoastAreas = PREF_MAP_DISPLAY_COAST_AREAS_DEFAULT;
         this.forceNoMenuIcons = readPreference(PREF_FORCE_NO_MENU_ICONS,PREF_FORCE_NO_MENU_ICONS_DEFAULT);
         this.display_wind_in_radar = readPreference(PREF_DISPLAY_WIND_IN_RADAR,PREF_DISPLAY_WIND_IN_RADAR_DEFAULT);
         this.area_database_ready = readPreference(PREF_AREA_DATABASE_READY,PREF_AREA_DATABASE_READY_DEFAULT);
@@ -383,6 +408,12 @@ public class WeatherSettings {
         applyPreference(PREF_TEXTFORECAST_FILTER,this.textforecast_filter);
         applyPreference(PREF_RADAR_LASTDATAPOLL,this.radar_lastdatapoll);
         applyPreference(PREF_RADAR_SHOW,this.radar_show);
+        applyPreference(PREF_ADMINMAP_SHOW,this.adminmap_show);
+        applyPreference(PREF_MAP_DISPLAY_MUNICIPALITIES,this.mapDisplayMunicipalities);
+        applyPreference(PREF_MAP_DISPLAY_COUNTIES,this.mapDisplayCounties);
+        applyPreference(PREF_MAP_DISPLAY_STATES,this.mapDisplayStates);
+        applyPreference(PREF_MAP_DISPLAY_SEA_AREAS,this.mapDisplaySeaAreas);
+        applyPreference(PREF_MAP_DISPLAY_COAST_AREAS,this.mapDisplayCoastAreas);
         applyPreference(PREF_FORCE_NO_MENU_ICONS,this.forceNoMenuIcons);
         applyPreference(PREF_DISPLAY_WIND_IN_RADAR,this.display_wind_in_radar);
         applyPreference(PREF_AREA_DATABASE_READY,this.area_database_ready);
@@ -450,6 +481,12 @@ public class WeatherSettings {
         commitPreference(PREF_TEXTFORECAST_FILTER,this.textforecast_filter);
         commitPreference(PREF_RADAR_LASTDATAPOLL,this.radar_lastdatapoll);
         commitPreference(PREF_RADAR_SHOW,this.radar_show);
+        commitPreference(PREF_ADMINMAP_SHOW,this.adminmap_show);
+        commitPreference(PREF_MAP_DISPLAY_MUNICIPALITIES,this.mapDisplayMunicipalities);
+        commitPreference(PREF_MAP_DISPLAY_COUNTIES,this.mapDisplayCounties);
+        commitPreference(PREF_MAP_DISPLAY_STATES,this.mapDisplayStates);
+        commitPreference(PREF_MAP_DISPLAY_SEA_AREAS,this.mapDisplaySeaAreas);
+        commitPreference(PREF_MAP_DISPLAY_COAST_AREAS,this.mapDisplayCoastAreas);
         commitPreference(PREF_FORCE_NO_MENU_ICONS,this.forceNoMenuIcons);
         commitPreference(PREF_DISPLAY_WIND_IN_RADAR,this.display_wind_in_radar);
         commitPreference(PREF_AREA_DATABASE_READY,this.area_database_ready);
@@ -460,6 +497,13 @@ public class WeatherSettings {
         commitPreference(PREF_USE_METERED_NETWORKS,this.useMeteredNetworks);
         commitPreference(PREF_NOTIFICATION_IDENTIFIER,this.notificationIdentifier);
         commitPreference(PREF_ROTATIONMODE,rotationMode);
+    }
+
+    public static void resetPreferencesToDefault(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.clear();
+        pref_editor.commit();
     }
 
     public String readPreference(String p, String d) {
@@ -788,6 +832,13 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    public static void resetAppLaunchedFlag(Context c) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_IS_FIRST_APP_LAUNCH, true);
+        pref_editor.apply();
+    }
+
     public static void setCurrentAppVersionFlag(Context c){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
@@ -1003,6 +1054,61 @@ public class WeatherSettings {
     public static boolean showRadarByDefault(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_RADAR_SHOW,PREF_RADAR_SHOW_DEFAULT);
+    }
+
+    public static boolean showAdminMapByDefault(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_ADMINMAP_SHOW,PREF_ADMINMAP_SHOW_DEFAULT);
+    }
+
+    public static boolean getDisplayMunicipalities(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_MAP_DISPLAY_MUNICIPALITIES,PREF_MAP_DISPLAY_MUNICIPALITIES_DEFAULT);
+    }
+
+    public static boolean getDisplayCounties(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_MAP_DISPLAY_COUNTIES,PREF_MAP_DISPLAY_COUNTIES_DEFAULT);
+    }
+
+    public static boolean getDisplayStates(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_MAP_DISPLAY_STATES,PREF_MAP_DISPLAY_STATES_DEFAULT);
+    }
+
+    public static boolean getDisplaySeaAreas(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_MAP_DISPLAY_SEA_AREAS,PREF_MAP_DISPLAY_SEA_AREAS_DEFAULT);
+    }
+
+    public static boolean getDisplayCoastAreas(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_MAP_DISPLAY_COAST_AREAS,PREF_MAP_DISPLAY_COAST_AREAS_DEFAULT);
+    }
+
+    public static int[] getAreaTypeArray(Context context){
+        ArrayList<Integer> resultArrayList = new ArrayList<Integer>();
+        if (getDisplayMunicipalities(context)){
+            resultArrayList.add(Areas.Area.Type.GEMEINDE);
+        }
+        if (getDisplayCounties(context)){
+            resultArrayList.add(Areas.Area.Type.KREIS);
+        }
+        if (getDisplayStates(context)){
+            resultArrayList.add(Areas.Area.Type.BUNDESLAND);
+        }
+        if (getDisplaySeaAreas(context)){
+            resultArrayList.add(Areas.Area.Type.SEE);
+        }
+        if (getDisplayCoastAreas(context)){
+            resultArrayList.add(Areas.Area.Type.KUESTE);
+        }
+        Object[] o = resultArrayList.toArray();
+        int[] result = new int[o.length];
+        for (int i=0; i<o.length; i++){
+            result[i] = (int) o [i];
+        }
+        return result;
     }
 
     public static boolean forceNoMenuIcons(Context context){

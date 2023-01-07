@@ -37,78 +37,80 @@ public class Settings extends PreferenceActivity{
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-            updateValuesDisplay();
-            if (s.equals(WeatherSettings.PREF_LOG_TO_LOGCAT)){
-                WeatherSettings ws = new WeatherSettings(context);
-                if (ws.log_to_logcat){
+            if ((sharedPreferences!=null) && (s!=null)){
+                updateValuesDisplay();
+                if (s.equals(WeatherSettings.PREF_LOG_TO_LOGCAT)){
+                    WeatherSettings ws = new WeatherSettings(context);
+                    if (ws.log_to_logcat){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle(context.getResources().getString(R.string.alertdialog_1_title));
+                        builder.setMessage(context.getResources().getString(R.string.alertdialog_1_text));
+                        builder.setIcon(R.mipmap.ic_warning_white_24dp);
+                        builder.setPositiveButton(context.getResources().getString(R.string.alertdialog_yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        builder.setNegativeButton(context.getResources().getString(R.string.alertdialog_no), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                WeatherSettings weatherSettings = new WeatherSettings(context);
+                                weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT,false);
+                                SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(context);
+                                CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_LOG_TO_LOGCAT);
+                                checkBoxPreference.setChecked(false);
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                }
+                if (s.equals(WeatherSettings.PREF_USE_METERED_NETWORKS) && (!WeatherSettings.useMeteredNetworks(context)) && (WeatherSettings.notifyWarnings(context) || WeatherSettings.displayWarningsInWidget(context))){
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle(context.getResources().getString(R.string.alertdialog_1_title));
-                    builder.setMessage(context.getResources().getString(R.string.alertdialog_1_text));
-                    builder.setIcon(R.mipmap.ic_warning_white_24dp);
-                    builder.setPositiveButton(context.getResources().getString(R.string.alertdialog_yes), new DialogInterface.OnClickListener() {
+                    builder.setMessage(context.getResources().getString(R.string.preference_meterednetwork_notice));
+                    builder.setIcon(R.mipmap.warning_icon);
+                    builder.setPositiveButton(context.getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    builder.setNegativeButton(context.getResources().getString(R.string.alertdialog_no), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            WeatherSettings weatherSettings = new WeatherSettings(context);
-                            weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT,false);
-                            SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(context);
-                            CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_LOG_TO_LOGCAT);
-                            checkBoxPreference.setChecked(false);
                             dialogInterface.dismiss();
                         }
                     });
                     AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
+                    alertDialog.show();           }
+                if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)){
+                    setAlarmSettingAllowed();
                 }
-            }
-            if (s.equals(WeatherSettings.PREF_USE_METERED_NETWORKS) && (!WeatherSettings.useMeteredNetworks(context)) && (WeatherSettings.notifyWarnings(context) || WeatherSettings.displayWarningsInWidget(context))){
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle(context.getResources().getString(R.string.alertdialog_1_title));
-                builder.setMessage(context.getResources().getString(R.string.preference_meterednetwork_notice));
-                builder.setIcon(R.mipmap.warning_icon);
-                builder.setPositiveButton(context.getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();           }
-            if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)){
-                setAlarmSettingAllowed();
-            }
-            if (s.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
-                setShowWarningsInWidgetAllowed();
-                setNotifyWarnings();
-                setNotifySeverity();
-            }
-            if (s.equals(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS)){
-                setShowWarningsInWidgetAllowed();
-                WidgetRefresher.refresh(context);
-            }
-            if (s.equals(WeatherSettings.PREF_NOTIFY_WARNINGS)){
-                setNotifyWarnings();
-                setNotifySeverity();
-            }
-            if (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE) ||
-                    (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN)) ||
-                    (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX))){
-                setUseMinMax();
-                WidgetRefresher.refreshChartWidget(context);
-            }
-            if (s.equals(WeatherSettings.PREF_THEME)){
-                recreate();
-            }
-            if (s.equals(WeatherSettings.PREF_ROTATIONMODE)){
-                recreate();
-            }
-            if (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS)){
-                WidgetRefresher.refreshChartWidget(context);
+                if (s.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
+                    setShowWarningsInWidgetAllowed();
+                    setNotifyWarnings();
+                    setNotifySeverity();
+                }
+                if (s.equals(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS)){
+                    setShowWarningsInWidgetAllowed();
+                    WidgetRefresher.refresh(context);
+                }
+                if (s.equals(WeatherSettings.PREF_NOTIFY_WARNINGS)){
+                    setNotifyWarnings();
+                    setNotifySeverity();
+                }
+                if (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE) ||
+                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN)) ||
+                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX))){
+                    setUseMinMax();
+                    WidgetRefresher.refreshChartWidget(context);
+                }
+                if (s.equals(WeatherSettings.PREF_THEME)){
+                    recreate();
+                }
+                if (s.equals(WeatherSettings.PREF_ROTATIONMODE)){
+                    recreate();
+                }
+                if (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS)){
+                    WidgetRefresher.refreshChartWidget(context);
+                }
             }
         }
     };
@@ -306,7 +308,28 @@ public class Settings extends PreferenceActivity{
         notifyWarnings.setSummary(getResources().getString(R.string.preference_notify_warnings_summary)+" "+getResources().getString(R.string.battery_and_data_hint));
         ListPreference displayRotation = (ListPreference) findPreference(WeatherSettings.PREF_ROTATIONMODE);
         displayRotation.setSummary(WeatherSettings.getDeviceRotationString(this));
-
+        Preference resetPreferences = (Preference) findPreference("PREF_reset");
+        resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                MainActivity.askDialog(context,null,getResources().getString(R.string.alertdialog_3_title),
+                        new String[] {getResources().getString(R.string.alertdialog_3_text1),"",getResources().getString(R.string.alertdialog_3_text2)},
+                        new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        WeatherSettings.resetPreferencesToDefault(context);
+                        Intent intent = new Intent(context, WelcomeActivity.class);
+                        Toast.makeText(context,getResources().getString(R.string.alertdialog_3_toast),Toast.LENGTH_LONG).show();
+                        // need to set this, because otherwise the WelcomeActivity might get called also from
+                        // a re-launched MainActivity.
+                        WeatherSettings.setAppLaunchedFlag(context);
+                        // force a replay
+                        intent.putExtra("mode","replay");
+                        startActivity(intent);
+                    }
+                });
+                return true;
+            };
+        });
      }
-
 }

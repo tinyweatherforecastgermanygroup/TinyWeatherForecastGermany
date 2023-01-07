@@ -31,6 +31,15 @@ import java.util.concurrent.Executor;
 
 public class Areas {
 
+    /* type:
+     * 12 = Bundesland
+     * 1, 10 = Kreis
+     * 7,8 = Gemeinden
+     * 2 = Binnensee
+     * 5 = Küste
+     * 4 = See
+     */
+
     public static class Area{
         public String warncellID;
         public String warncenter;
@@ -38,6 +47,39 @@ public class Areas {
         public String name;
         public ArrayList<Polygon> polygons;
         public String polygonString;
+
+        final static class Type{
+            final static int BUNDESLAND = 12;
+            final static int KREIS = 1;
+            final static int GEMEINDE = 6;
+            final static int BINNENSEE = 2;
+            final static int SEE = 4;
+            final static int KUESTE = 5;
+            final static int UNKNOWN = -1;
+        }
+
+        public int getType(){
+            if (type==12){
+                return Type.BUNDESLAND;
+            }
+            if ((type==1) || (type==10)){
+                return Type.KREIS;
+            }
+            if ((type==7) || (type==8)){
+                return Type.GEMEINDE;
+            }
+            if (type==2){
+                return Type.BINNENSEE;
+            }
+            if (type==5){
+                return Type.KUESTE;
+            }
+            if (type==4){
+                return Type.SEE;
+            }
+            return Type.UNKNOWN;
+        }
+
     }
 
     public static class AreaDatabaseCreator{
@@ -194,19 +236,61 @@ public class Areas {
         return null;
     }
 
+    /**
+     * Gets Areas with initialized polygons.
+     *
+     * @param context
+     * @param warincellIDs the warncellIDs to get the polygons for. When null, the whole database will be returned.
+     * @return an arraylist of areas.
+     */
+
     public static ArrayList<Area> getAreas(Context context, ArrayList<String> warincellIDs){
         ArrayList<Area> areas = new ArrayList<Area>();
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        String s = "";
-        for (int i=0; i<warincellIDs.size(); i++){
-            s=s+"?";
-            if (i<warincellIDs.size()-1){
-                s=s+",";
+        String selection = null;
+        String[] selectionArg = null;
+        if (warincellIDs!=null){
+            String s = "";
+            for (int i=0; i<warincellIDs.size(); i++){
+                s=s+"?";
+                if (i<warincellIDs.size()-1){
+                    s=s+",";
+                }
             }
+            selection = WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_warncellid + " IN("+s+")";
+            selectionArg = warincellIDs.toArray(new String[warincellIDs.size()]);
         }
-        String selection = WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_warncellid + " IN("+s+")";
-        String[] selectionArg = warincellIDs.toArray(new String[warincellIDs.size()]);
         Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,null,selection,selectionArg,null);
+        int i = 0;
+        if (cursor!=null){
+            if (cursor.moveToFirst()){
+                do {
+                    Area area = WeatherContentManager.getAreaFromCursor(cursor);
+                    area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
+                    areas.add(area); i++;
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return areas;
+    }
+
+    public static ArrayList<Area> getAreas(Context context, int type){
+        ArrayList<Area> areas = new ArrayList<Area>();
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        String s = "?";
+        String[] selectionArg = {String.valueOf(type)};
+        if (type== Area.Type.KREIS){
+            s="?,?";
+            selectionArg= new String[]{"1","10"};
+        }
+        if (type== Area.Type.GEMEINDE){
+            s="?,?";
+            selectionArg= new String[]{"7","8"};
+        }
+        String selection = WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_type + " IN("+s+")";
+        Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,null,selection,selectionArg,null);
+        //Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,null,"type=?","selectionArg",null);
         int i = 0;
         if (cursor!=null){
             if (cursor.moveToFirst()){
@@ -300,6 +384,29 @@ public class Areas {
             ArrayList<String> areanames = Areas.getAllAreaNames(context);
             onFinished(areanames);
         }
+    }
+
+    public static class AreaReader implements Runnable{
+
+        private ArrayList<Area> areas;
+        private ArrayList<String> warincellIDs;
+        private Context context;
+
+        public AreaReader(Context context, ArrayList<String> warincellIDs){
+            this.context = context;
+            this.warincellIDs = warincellIDs;
+        }
+
+        public void onFinished(ArrayList<Area> areas){
+
+        }
+
+        @Override
+        public void run() {
+            areas = getAreas(context,warincellIDs);
+            onFinished(areas);
+        }
+
     }
 
     public static int test(Context context){

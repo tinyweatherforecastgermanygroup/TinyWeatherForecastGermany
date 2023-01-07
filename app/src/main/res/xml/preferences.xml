@@ -137,8 +137,67 @@
 
             </PreferenceCategory>
 
-
         </PreferenceScreen>
+
+            <PreferenceScreen
+                    android:key="PREF_screen_map"
+                    android:title="@string/preference_screen_map_title"
+                    android:summary="@string/preference_screen_map_summary">
+
+                <CheckBoxPreference
+                        android:key="PREF_radar_show"
+                        android:title="@string/preference_display_show_radar_by_default_title"
+                        android:summary="@string/preference_display_show_radar_by_default_summary"
+                        android:defaultValue="true"/>
+
+                <CheckBoxPreference
+                        android:key="PREF_adminmap_show"
+                        android:title="@string/preference_map_show_admin_by_default_title"
+                        android:summary="@string/preference_map_show_admin_by_default_summary"
+                        android:defaultValue="false"/>
+
+                <PreferenceCategory
+                        android:title="@string/preference_category_admin">
+
+                    <!--
+
+                    <CheckBoxPreference
+                            android:key="PREF_map_display_municipalities"
+                            android:title="@string/preference_map_display_municipalities_title"
+                            android:summary="@string/preference_map_display_municipalities_summary"
+                            android:defaultValue="false"/>
+
+                     -->
+
+                    <CheckBoxPreference
+                            android:key="PREF_map_display_counties"
+                            android:title="@string/preference_map_display_counties_title"
+                            android:summary="@string/preference_map_display_counties_summary"
+                            android:defaultValue="true"/>
+
+                    <CheckBoxPreference
+                            android:key="PREF_map_display_states"
+                            android:title="@string/preference_map_display_states_title"
+                            android:summary="@string/preference_map_display_states_summary"
+                            android:defaultValue="false"/>
+
+                    <CheckBoxPreference
+                            android:key="PREF_map_display_sea_areas"
+                            android:title="@string/preference_map_display_sea_title"
+                            android:summary="@string/preference_map_display_sea_summary"
+                            android:defaultValue="false"/>
+
+                    <CheckBoxPreference
+                            android:key="PREF_map_display_coast_areas"
+                            android:title="@string/preference_map_display_coast_title"
+                            android:summary="@string/preference_map_display_coast_summary"
+                            android:defaultValue="false"/>
+
+                </PreferenceCategory>
+
+
+            </PreferenceScreen>
+
 
             <PreferenceScreen
                     android:key="PREF_screen_display_wind"
@@ -195,12 +254,6 @@
                     android:key="PREF_display_station_geo"
                     android:title="@string/preference_display_station_geo_title"
                     android:summary="@string/preference_display_station_geo_summary"
-                    android:defaultValue="true"/>
-
-            <CheckBoxPreference
-                    android:key="PREF_radar_show"
-                    android:title="@string/preference_display_show_radar_by_default_title"
-                    android:summary="@string/preference_display_show_radar_by_default_summary"
                     android:defaultValue="true"/>
 
             <ListPreference
@@ -365,6 +418,13 @@
                 android:summary="@string/preference_gadgetbridge_notice_summary" />
 
         </PreferenceScreen>
+
+        <Preference
+                android:key="PREF_reset"
+                android:title="@string/preference_reset_title"
+                android:summary="@string/preference_reset_summary">
+        </Preference>
+
 
         <PreferenceScreen
             android:key="PREF_screen_logging"

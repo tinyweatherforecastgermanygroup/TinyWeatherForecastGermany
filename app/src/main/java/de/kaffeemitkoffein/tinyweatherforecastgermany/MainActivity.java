@@ -29,6 +29,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.icu.lang.UCharacter;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -377,6 +378,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (WeatherSettings.isFirstAppLaunch(this)){
+            super.onCreate(savedInstanceState);
             startWelcomeActivity();
         } else {
             launchTimer = Calendar.getInstance().getTimeInMillis();
@@ -467,63 +469,65 @@ public class MainActivity extends Activity {
             preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
                 @Override
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"preference change detected.");
-                    if (key.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (key.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
-                        WidgetRefresher.refresh(context.getApplicationContext());
-                    }
-                    // reload weather data if necessary
-                    if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
-                        boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
-                        if (!updated){
-                            // launch new warnings from present dataset only
-                            ArrayList<String> tasks = new ArrayList<String>();
-                            tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS);
-                            UpdateAlarmManager.startDataUpdateService(context,tasks);
-                            displayWeatherForecast();
-                        } else {
-                            // nothing to do, views will be updated after the update finished, and notifications will be
-                            // launched, then
+                    if ((sharedPreferences!=null) && (key!=null)){
+                        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"preference change detected.");
+                        if (key.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (key.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
+                            WidgetRefresher.refresh(context.getApplicationContext());
                         }
-                        // notify GadgetBridge
-                        GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-                        gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-                        // update widgets unconditonally
-                        WidgetRefresher.refresh(getApplicationContext());
-                    }
-                    // show geo
-                    if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
-                        if (weatherCard != null){
-                            displayUpdateTime(weatherCard);
-                        }
-                    }
-                    // invalidate menu if warnings visibility has changed
-                    if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
-                        invalidateOptionsMenu();
-                    }
-                    // invalidate weather display because the display options have changed
-                    if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
-                            (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT)) ||
-                            key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART) || key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS)){
-                        // on 1st app call, weatherCard can be still null
-                        if (weatherCard!=null){
-                            displayWeatherForecast(weatherCard);
-                        }
-                    }
-                    // invalidate weather display and widgets
-                    if ((key.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (key.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
-                        // on 1st app call, weatherCard can be still null
-                        if (weatherCard!=null){
-                            displayWeatherForecast(weatherCard);
-                            // refreshing widgets only makes sense when there is weather data
+                        // reload weather data if necessary
+                        if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
+                            boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
+                            if (!updated){
+                                // launch new warnings from present dataset only
+                                ArrayList<String> tasks = new ArrayList<String>();
+                                tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS);
+                                UpdateAlarmManager.startDataUpdateService(context,tasks);
+                                displayWeatherForecast();
+                            } else {
+                                // nothing to do, views will be updated after the update finished, and notifications will be
+                                // launched, then
+                            }
+                            // notify GadgetBridge
+                            GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
+                            gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
+                            // update widgets unconditonally
                             WidgetRefresher.refresh(getApplicationContext());
                         }
-                    }
-                    if (key.equals(WeatherSettings.PREF_THEME)){
-                        recreate();
-                        WidgetRefresher.refresh(context);
-                    }
-                    if (key.equals(WeatherSettings.PREF_ROTATIONMODE)){
-                        recreate();
+                        // show geo
+                        if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
+                            if (weatherCard != null){
+                                displayUpdateTime(weatherCard);
+                            }
+                        }
+                        // invalidate menu if warnings visibility has changed
+                        if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
+                            invalidateOptionsMenu();
+                        }
+                        // invalidate weather display because the display options have changed
+                        if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
+                                (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT)) ||
+                                key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART) || key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS)){
+                            // on 1st app call, weatherCard can be still null
+                            if (weatherCard!=null){
+                                displayWeatherForecast(weatherCard);
+                            }
+                        }
+                        // invalidate weather display and widgets
+                        if ((key.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (key.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
+                            // on 1st app call, weatherCard can be still null
+                            if (weatherCard!=null){
+                                displayWeatherForecast(weatherCard);
+                                // refreshing widgets only makes sense when there is weather data
+                                WidgetRefresher.refresh(getApplicationContext());
+                            }
+                        }
+                        if (key.equals(WeatherSettings.PREF_THEME)){
+                            recreate();
+                            WidgetRefresher.refresh(context);
+                        }
+                        if (key.equals(WeatherSettings.PREF_ROTATIONMODE)){
+                            recreate();
+                        }
                     }
                 }
             };
@@ -1416,6 +1420,42 @@ public class MainActivity extends Activity {
                 dialogInterface.dismiss();
             }
         });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public static void askDialog(Context context, Integer icon, String title, String[] text,  DialogInterface.OnClickListener positiveListener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context,0);
+        if (icon!=null){
+            builder.setIcon(icon);
+        }
+        if (title!=null){
+            builder.setTitle(title);
+        }
+        if (text!=null){
+            StringBuilder stringBuilder= new StringBuilder();
+            for (int i=0; i<text.length; i++){
+                stringBuilder.append(text[i]);
+                stringBuilder.append(System.getProperty("line.separator"));;
+            }
+            builder.setMessage(stringBuilder.toString());
+        }
+        if (positiveListener!=null){
+            builder.setPositiveButton(context.getResources().getString(R.string.alertdialog_yes), positiveListener);
+            builder.setNegativeButton(context.getResources().getString(R.string.alertdialog_no), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+        } else {
+            builder.setNeutralButton(context.getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+        }
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
