@@ -16,9 +16,7 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<resources>
+--><resources>
     <string name="app_name">Kleine Wettervorschau Deutschland</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Letzte Aktualisierung:</string>
@@ -330,4 +328,25 @@
     <string name="chartwidget_description">Diagramm</string>
     <string name="preference_notifySeverity_title">Warnkategorie</string>
     <string name="preference_notifySeverity_summary">Benachrichtigung über Warnungen der Kategorie \"%1$s\" oder höher.</string>
+    <string name="preference_map_show_admin_by_default_title">Verwaltungskarte</string>
+    <string name="preference_map_show_admin_by_default_summary">Automatische Anzeige von Verwaltungsgrenzen.</string>
+    <string name="preference_category_admin">Administrative Grenzen</string>
+    <string name="preference_map_display_municipalities_title">Gemeinden</string>
+    <string name="preference_map_display_municipalities_summary">Gemeinden anzeigen.</string>
+    <string name="preference_map_display_counties_title">Kreise</string>
+    <string name="preference_map_display_counties_summary">Kreise anzeigen.</string>
+    <string name="preference_map_display_states_title">Bundesländer</string>
+    <string name="preference_map_display_sea_title">See</string>
+    <string name="preference_map_display_sea_summary">Warngebiete auf See anzeigen.</string>
+    <string name="preference_map_display_coast_title">Küste</string>
+    <string name="preference_map_display_coast_summary">Warngebiete an der Küste anzeigen.</string>
+    <string name="alertdialog_3_title">Einstellungen zurücksetzen</string>
+    <string name="alertdialog_3_text2">Sind Sie sicher, dass Sie die Einstellungen zurücksetzen wollen\?</string>
+    <string name="alertdialog_3_toast">Die Einstellungen wurden zurückgesetzt.</string>
+    <string name="preference_screen_map_title">Karte</string>
+    <string name="preference_screen_map_summary">Passen Sie die Anzeige der Karte an.</string>
+    <string name="preference_map_display_states_summary">Bundesländer einblenden.</string>
+    <string name="preference_reset_title">Zurücksetzen</string>
+    <string name="preference_reset_summary">Alle Einstellungen auf die Standardwerte zurück setzen.</string>
+    <string name="alertdialog_3_text1">Alle Einstellungen werden auf die Standardwerte zurückgesetzt, und anschließend wird das Intro erneut angezeigt, um die wichtigsten Einstellungen vorzunehmen zu können.</string>
 </resources>
