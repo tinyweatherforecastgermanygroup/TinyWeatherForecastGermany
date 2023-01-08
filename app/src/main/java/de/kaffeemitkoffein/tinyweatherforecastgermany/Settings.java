@@ -233,23 +233,6 @@ public class Settings extends PreferenceActivity{
             listPreference.setEnabled(true);
             listPreference.setShouldDisableView(false);
         }
-        /*
-        // String[] severities = getResources().getStringArray(R.array.display_notifySeverity_text);
-        int minSeverity = WeatherWarning.Severity.toInt(weatherSettings.notifySeverity);
-        int severityColor = WeatherWarning.Severity.getColor(this,minSeverity);
-        String text = getResources().getString(R.string.preference_notifySeverity_summary);
-        int position1 = text.indexOf("\"");
-        int position2 = text.lastIndexOf("\"");
-        Log.v("twfg","POS1 "+position1);
-        Log.v("twfg","POS2 "+position2);
-        if ((position1>0) && (position2>0)){
-            SpannableString spannableString = new SpannableString(text);
-            spannableString.setSpan(new ForegroundColorSpan(severityColor),position1,position2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            listPreference.setSummary(spannableString);
-        } else {
-            listPreference.setSummary(text);
-        }
-        */
     }
 
     public void setUseMinMax(){
@@ -271,6 +254,20 @@ public class Settings extends PreferenceActivity{
             numberPickerPreferenceChartRangeMin.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_min_summary)+" "+WeatherSettings.getOverviewChartMin(context));
             numberPickerPreferenceChartRangeMax.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_max_summary)+" "+WeatherSettings.getOverviewChartMax(context));
         }
+    }
+
+    public boolean disableIfUnchecked(Preference target, final CheckBoxPreference source){
+        if ((target!=null) && (source!=null)){
+            if (source.isChecked()){
+                target.setEnabled(true);
+                target.setShouldDisableView(false);
+            } else {
+                target.setEnabled(false);
+                target.setShouldDisableView(true);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override

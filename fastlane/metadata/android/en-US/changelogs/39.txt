@@ -1,8 +1,5 @@
-New in version ([VERSION]):
-
 - new filter, which warnings should be notified
 - map shows counties, federal states, warning areas at sea and on coasts if desired
 - scaling of temperature in overview chart (app & widgets) can be set to fixed values
 - new option to reset all settings to default values
 - improved translations
-
