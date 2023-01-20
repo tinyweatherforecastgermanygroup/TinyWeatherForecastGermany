@@ -53,20 +53,21 @@ public class RawWeatherInfo{
     String[] FX625;          // %, probability of wind gusts >= 25 km/h within last 6h
     String[] FX640;          // %, probability of wind gusts >= 40 km/h within last 6h
     String[] FX655;          // %, probability of wind gusts >= 55 km/h within last 6h
-    String[] RR1c;        // kg/m², total precipitation during last hour consistent with significant weather
-    String[] RRL1c;       // kg/m², total liquid during the last hour consistent with significant weather
-    String[] RR3;         // kg/m², total precipitation during last 3h
-    String[] RR6;         // kg/m², total precipitation during last 6h
-    String[] RR3c;        // kg/m², total precipitation during last 3h consistent with significant weather
-    String[] RR6c;        // kg/m², total precipitation during last 6h consistent with significant weather
-    String[] RRhc;        // kg/m², total precipitation during last 12h consistent with significant weather
-    String[] RRdc;        // kg/m², total precipitation during last 24h consistent with significant weather
-    String[] RRS1c;       // kg/m², snow-rain equivalent during last hour
-    String[] RRS3c;       // kg/m², snow-rain equivalent during last 3h
-    String[]  R101;           // %, probability of precipitation > 0.1 mm during the last hour
-    String[]  R102;           // %, probability of precipitation > 0.2 mm during the last hour
-    String[]  R103;           // %, probability of precipitation > 0.3 mm during the last hour
-    String[]  R105;           // %, probability of precipitation > 0.5 mm during the last hour
+    String[] RR1;            // total precipitation during the last hour
+    String[] RR1c;           // kg/m², total precipitation during last hour consistent with significant weather
+    String[] RRL1c;          // kg/m², total liquid during the last hour consistent with significant weather
+    String[] RR3;            // kg/m², total precipitation during last 3h
+    String[] RR6;            // kg/m², total precipitation during last 6h
+    String[] RR3c;           // kg/m², total precipitation during last 3h consistent with significant weather
+    String[] RR6c;           // kg/m², total precipitation during last 6h consistent with significant weather
+    String[] RRhc;           // kg/m², total precipitation during last 12h consistent with significant weather
+    String[] RRdc;           // kg/m², total precipitation during last 24h consistent with significant weather
+    String[] RRS1c;          // kg/m², snow-rain equivalent during last hour
+    String[] RRS3c;          // kg/m², snow-rain equivalent during last 3h
+    String[] R101;           // %, probability of precipitation > 0.1 mm during the last hour
+    String[] R102;           // %, probability of precipitation > 0.2 mm during the last hour
+    String[] R103;           // %, probability of precipitation > 0.3 mm during the last hour
+    String[] R105;           // %, probability of precipitation > 0.5 mm during the last hour
     String[] R107;           // %, probability of precipitation > 0.7 mm during the last hour
     String[] R110;           // %, probability of precipitation > 1.0 mm during the last hour
     String[] R120;           // %, probability of precipitation > 2.0 mm during the last hour
@@ -124,22 +125,24 @@ public class RawWeatherInfo{
     String[] WPch1;          // optional significant weather (highest priority) during last 12h
     String[] WPcd1;          // optional significant weather (highest priority) during last 24h (?)
     String[] N;              // 0-100% total cloud cover
+    String[] Neff;           // %; Effective cloud cover
     String[] N05;            // % cloud cover below 500ft.
     String[] Nl;             // % low cloud cover (lower than 2 km)
     String[] Nm;             // % midlevel cloud cover (2-7 km)
     String[] Nh;             // % high cloud cover (>7 km)
     String[] Nlm;            // % cloud cover low and mid level clouds below  7 km
-    String[] H_BsC;       // m; cloud base of convective clouds
-    String[] PPPP;        // Pa, surface pressure reduced
-    String[] E_PPP;       // Pa, absolute error of PPPP
-    String[] RadS3;       // kJ/m²; short wave radiation balance during last 3h
-    String[] RRad1;       // kJ/m²; global irradiance within the last hour
-    String[] Rad1h;       // kJ/m²; global irradiance
-    String[] RadL3;       // kJ/m²; long wave radiation balance during last 3h
-    String[] VV;          // m; visibility
-    String[] D1;          // s; sunshine duration during last hour
-    String[] SunD;        // s; sunshine duration during last day
-    String[] SunD3;       // s; sunshine duration during last 3h
+    String[] H_BsC;          // m; cloud base of convective clouds
+    String[] PPPP;           // Pa, surface pressure reduced
+    String[] E_PPP;          // Pa, absolute error of PPPP
+    String[] RadS1;          // (?undocumented?) kJ/m² ? Short wave radiation balance during the last hour
+    String[] RadS3;          // kJ/m²; short wave radiation balance during last 3h
+    String[] RRad1;          // kJ/m²; global irradiance within the last hour
+    String[] Rad1h;          // kJ/m²; global irradiance
+    String[] RadL3;          // kJ/m²; long wave radiation balance during last 3h
+    String[] VV;             // m; visibility
+    String[] D1;             // s; sunshine duration during last hour
+    String[] SunD;           // s; sunshine duration during last day
+    String[] SunD3;          // s; sunshine duration during last 3h
     String[] RSunD;          // %; relative sunshine duration last 24h
     String[] PSd00;          // %; probability relative sunshine duration >0% within 24h
     String[] PSd30;          // %; probability relative sunshine duration >30% within 24h
@@ -150,6 +153,8 @@ public class RawWeatherInfo{
     String[] wwMd;           // %; occurrence of fog within the last 24h
     String[] PEvap;       // kg/m²; potential evapotranspiration within the last 24h
 
+    // new xml mosmix elements 2023-01-20: Neff, RadS1, RR1
+
     public RawWeatherInfo(){
         initEmptyValues();
     }
@@ -157,35 +162,35 @@ public class RawWeatherInfo{
     public RawWeatherInfo(long polling_time, int elements, Weather.WeatherLocation weatherLocation,
                           String timetext, String[] timesteps, String[] TTT, String[] E_TTT, String[] T5cm, String[] Td, String[] E_Td, String[] Tx, String[] Tn, String[] TM, String[] TG,
                           String[] DD, String[] E_DD, String[] FF, String[] E_FF, String[] FX1, String[] FX3, String[] FXh, String[] FXh25, String[] FXh40, String[] FXh55, String[] FX625, String[] FX640,
-                          String[] FX655, String[] RR1c, String[] RRL1c, String[] RR3, String[] RR6, String[] RR3c, String[] RR6c, String[] RRhc, String[] RRdc, String[] RRS1c, String[] RRS3c,
+                          String[] FX655, String[] RR1, String[] RR1c, String[] RRL1c, String[] RR3, String[] RR6, String[] RR3c, String[] RR6c, String[] RRhc, String[] RRdc, String[] RRS1c, String[] RRS3c,
                           String[] R101, String[]  R102, String[]  R103, String[]  R105, String[] R107, String[] R110, String[] R120, String[] R130, String[] R150, String[] RR1o1, String[] RR1w1,
                           String[] RR1u1, String[] R600, String[] Rh00, String[] R602, String[] Rh02, String[] Rd02, String[] R610, String[] Rh10, String[] R650, String[] Rh50, String[] Rd00,
                           String[] Rd10, String[] Rd50, String[] wwPd, String[] DRR1, String[] wwZ, String[] wwZ6, String[] wwZh, String[] wwD, String[] wwD6, String[] wwDh, String[] wwC, String[] wwC6,
                           String[] wwCh, String[] wwT, String[] wwT6, String[] wwTh, String[] wwTd, String[] wwL, String[] wwL6, String[] wwLh, String[] wwS, String[] wwS6, String[] wwSh,
                           String[] wwF, String[] wwF6, String[] wwFh, String[] wwP, String[] wwP6, String[] wwPh, String[] VV10, String[] ww, String[] ww3, String[] W1W2, String[] WPc11, String[] WPc31,
-                          String[] WPc61, String[] WPch1, String[] WPcd1, String[] N, String[] N05, String[] Nl, String[] Nm, String[] Nh, String[] Nlm, String[] H_BsC, String[] PPPP, String[] E_PPP,
-                          String[] RadS3, String[] RRad1, String[] Rad1h, String[] RadL3, String[] VV, String[] D1, String[] SunD, String[] SunD3, String[] RSunD, String[] PSd00, String[] PSd30, String[] PSd60,
+                          String[] WPc61, String[] WPch1, String[] WPcd1, String[] N, String[] Neff, String[] N05, String[] Nl, String[] Nm, String[] Nh, String[] Nlm, String[] H_BsC, String[] PPPP, String[] E_PPP,
+                          String[] RadS1, String[] RadS3, String[] RRad1, String[] Rad1h, String[] RadL3, String[] VV, String[] D1, String[] SunD, String[] SunD3, String[] RSunD, String[] PSd00, String[] PSd30, String[] PSd60,
                           String[] wwM, String[] wwM6, String[] wwMh, String[] wwMd, String[] PEvap){
         this.polling_time = polling_time;
         this.elements = elements;
         this.weatherLocation = weatherLocation;
         this.timetext=timetext; this.timesteps=timesteps; this.TTT=TTT; this.E_TTT=E_TTT; this.T5cm=T5cm;this.Td=Td; this.E_Td=E_Td; this.Tx=Tx; this.Tn=Tn; this.TM=TM; this.TG=TG;
         this.DD=DD; this.E_DD=E_DD; this.FF=FF; this.E_FF=E_FF; this.FX1=FX1; this.FX3=FX3; this.FXh=FXh; this.FXh25=FXh25; this.FXh40=FXh40; this.FXh55=FXh55; this.FX625=FX625; this.FX640=FX640;
-        this.FX655=FX655; this.RR1c=RR1c; this.RRL1c=RRL1c; this.RR3=RR3; this.RR6=RR6; this.RR3c=RR3c; this.RR6c=RR6c; this.RRhc=RRhc; this.RRdc=RRdc; this.RRS1c=RRS1c; this.RRS3c=RRS3c;
+        this.FX655=FX655; this.RR1=RR1; this.RR1c=RR1c; this.RRL1c=RRL1c; this.RR3=RR3; this.RR6=RR6; this.RR3c=RR3c; this.RR6c=RR6c; this.RRhc=RRhc; this.RRdc=RRdc; this.RRS1c=RRS1c; this.RRS3c=RRS3c;
         this.R101=R101; this.R102=R102; this.R103=R103; this.R105=R105; this.R107=R107; this.R110=R110; this.R120=R120; this.R130=R130; this.R150=R150; this.RR1o1=RR1o1; this.RR1w1=RR1w1;
         this.RR1u1=RR1u1; this.R600=R600;this.Rh00=Rh00;this.R602=R602;this.Rh02=Rh02;this.Rd02=Rd02;this.R610=R610;this.Rh10=Rh10;this.R650=R650;this.Rh50=Rh50;this.Rd00=Rd00;
         this.Rd10=Rd10;this.Rd50=Rd50;this.wwPd=wwPd;this.DRR1=DRR1;this.wwZ=wwZ;this.wwZ6=wwZ6;this.wwZh=wwZh;this.wwD=wwD;this.wwD6=wwD6;this.wwDh=wwDh;this.wwC=wwC;this.wwC6=wwC6;this.wwCh=wwCh;
         this.wwT=wwT;this.wwT6=wwT6;this.wwTh=wwTh;this.wwTd=wwTd;this.wwL=wwL;this.wwL6=wwL6;this.wwLh=wwLh;this.wwS=wwS;this.wwS6=wwS6;this.wwSh=wwSh;this.wwF=wwF;this.wwF6=wwF6;
         this.wwFh=wwFh;this.wwP=wwP;this.wwP6=wwP6;this.wwPh=wwPh;this.VV10=VV10;this.ww=ww;this.ww3=ww3;this.W1W2=W1W2; this.WPc11=WPc11; this.WPc31=WPc31;this.WPc61=WPc61;this.WPch1=WPch1;this.WPcd1=WPcd1;
-        this.N=N;this.N05=N05;this.Nl=Nl;this.Nm=Nm;this.Nh=Nh;this.Nlm=Nlm;this.H_BsC=H_BsC;this.PPPP=PPPP;this.E_PPP=E_PPP;this.RadS3=RadS3;this.RRad1=RRad1;this.Rad1h=Rad1h;this.RadL3=RadL3;
+        this.N=N; this.Neff=Neff; this.N05=N05;this.Nl=Nl;this.Nm=Nm;this.Nh=Nh;this.Nlm=Nlm;this.H_BsC=H_BsC;this.PPPP=PPPP;this.E_PPP=E_PPP; this.RadS1=RadS1; this.RadS3=RadS3;this.RRad1=RRad1;this.Rad1h=Rad1h;this.RadL3=RadL3;
         this.VV=VV;this.D1=D1;this.SunD=SunD;this.SunD3=SunD3;this.RSunD=RSunD;this.PSd00=PSd00;this.PSd30=PSd30;this.PSd60=PSd60;this.wwM=wwM;this.wwM6=wwM6;this.wwMh=wwMh;this.wwMd=wwMd;this.PEvap=PEvap;
     }
 
     public RawWeatherInfo copy(){
-        return new RawWeatherInfo(polling_time,elements,weatherLocation,timetext, timesteps, TTT, E_TTT, T5cm, Td, E_Td, Tx, Tn, TM, TG, DD, E_DD, FF, E_FF, FX1, FX3, FXh, FXh25, FXh40, FXh55, FX625, FX640, FX655, RR1c,
+        return new RawWeatherInfo(polling_time,elements,weatherLocation,timetext, timesteps, TTT, E_TTT, T5cm, Td, E_Td, Tx, Tn, TM, TG, DD, E_DD, FF, E_FF, FX1, FX3, FXh, FXh25, FXh40, FXh55, FX625, FX640, FX655, RR1, RR1c,
                 RRL1c, RR3, RR6, RR3c, RR6c, RRhc, RRdc, RRS1c, RRS3c, R101, R102, R103, R105, R107, R110, R120, R130, R150, RR1o1, RR1w1, RR1u1, R600, Rh00, R602, Rh02, Rd02, R610,
                 Rh10, R650, Rh50, Rd00, Rd10, Rd50, wwPd, DRR1, wwZ, wwZ6, wwZh, wwD, wwD6, wwDh, wwC, wwC6, wwCh, wwT, wwT6, wwTh, wwTd, wwL, wwL6, wwLh, wwS, wwS6, wwSh, wwF, wwF6,
-                wwFh, wwP, wwP6, wwPh, VV10, ww, ww3, W1W2, WPc11, WPc31, WPc61, WPch1, WPcd1, N, N05, Nl, Nm, Nh, Nlm, H_BsC, PPPP, E_PPP, RadS3, RRad1, Rad1h, RadL3, VV, D1, SunD, SunD3,
+                wwFh, wwP, wwP6, wwPh, VV10, ww, ww3, W1W2, WPc11, WPc31, WPc61, WPch1, WPcd1, N, Neff, N05, Nl, Nm, Nh, Nlm, H_BsC, PPPP, E_PPP, RadS1, RadS3, RRad1, Rad1h, RadL3, VV, D1, SunD, SunD3,
                 RSunD, PSd00, PSd30, PSd60, wwM, wwM6, wwMh, wwMd, PEvap);
     }
 

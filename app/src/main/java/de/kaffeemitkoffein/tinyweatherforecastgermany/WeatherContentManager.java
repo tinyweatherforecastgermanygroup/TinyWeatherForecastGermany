@@ -84,6 +84,7 @@ public class WeatherContentManager {
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_FX625,serializeString(rawWeatherInfo.FX625));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_FX640,serializeString(rawWeatherInfo.FX640));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_FX655,serializeString(rawWeatherInfo.FX655));
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RR1,serializeString(rawWeatherInfo.RR1));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RR1c,serializeString(rawWeatherInfo.RR1c));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RRL1c,serializeString(rawWeatherInfo.RRL1c));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RR3,serializeString(rawWeatherInfo.RR3));
@@ -155,6 +156,7 @@ public class WeatherContentManager {
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_WPch1,serializeString(rawWeatherInfo.WPch1));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_WPcd1,serializeString(rawWeatherInfo.WPcd1));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_N,serializeString(rawWeatherInfo.N));
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_Neff,serializeString(rawWeatherInfo.Neff));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_N05,serializeString(rawWeatherInfo.N05));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_Nl,serializeString(rawWeatherInfo.Nl));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_Nm,serializeString(rawWeatherInfo.Nm));
@@ -163,6 +165,7 @@ public class WeatherContentManager {
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_H_BsC,serializeString(rawWeatherInfo.H_BsC));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_PPPP,serializeString(rawWeatherInfo.PPPP));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_E_PPP,serializeString(rawWeatherInfo.E_PPP));
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RadS1,serializeString(rawWeatherInfo.RadS1));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RadS3,serializeString(rawWeatherInfo.RadS3));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RRad1,serializeString(rawWeatherInfo.RRad1));
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_Rad1h,serializeString(rawWeatherInfo.Rad1h));
@@ -221,6 +224,7 @@ public class WeatherContentManager {
                 rawWeatherInfo.FX625 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_FX625)));
                 rawWeatherInfo.FX640 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_FX640)));
                 rawWeatherInfo.FX655 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_FX655)));
+                rawWeatherInfo.RR1 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RR1)));
                 rawWeatherInfo.RR1c = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RR1c)));
                 rawWeatherInfo.RRL1c = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RRL1c)));
                 rawWeatherInfo.RR3 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RR3)));
@@ -292,6 +296,7 @@ public class WeatherContentManager {
                 rawWeatherInfo.WPch1 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_WPch1)));
                 rawWeatherInfo.WPcd1 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_WPcd1)));
                 rawWeatherInfo.N = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_N)));
+                rawWeatherInfo.Neff = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_Neff)));
                 rawWeatherInfo.N05 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_N05)));
                 rawWeatherInfo.Nl = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_Nl)));
                 rawWeatherInfo.Nm = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_Nm)));
@@ -300,6 +305,7 @@ public class WeatherContentManager {
                 rawWeatherInfo.H_BsC = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_H_BsC)));
                 rawWeatherInfo.PPPP = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_PPPP)));
                 rawWeatherInfo.E_PPP = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_E_PPP)));
+                rawWeatherInfo.RadS1 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RadS1)));
                 rawWeatherInfo.RadS3 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RadS3)));
                 rawWeatherInfo.RRad1 = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_RRad1)));
                 rawWeatherInfo.Rad1h = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_Rad1h)));

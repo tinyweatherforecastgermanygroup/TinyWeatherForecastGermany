@@ -519,6 +519,7 @@ public class APIReaders {
                             case "FX625": rawWeatherInfo.FX625 = assigntoRaw(element); break;
                             case "FX640": rawWeatherInfo.FX640 = assigntoRaw(element); break;
                             case "FX655": rawWeatherInfo.FX655 = assigntoRaw(element); break;
+                            case "RR1": rawWeatherInfo.RR1 = assigntoRaw(element); break;
                             case "RR1c": rawWeatherInfo.RR1c = assigntoRaw(element); break;
                             case "RRL1c": rawWeatherInfo.RRL1c = assigntoRaw(element); break;
                             case "RR3": rawWeatherInfo.RR3 = assigntoRaw(element); break;
@@ -590,6 +591,7 @@ public class APIReaders {
                             case "WPch1": rawWeatherInfo.WPch1 = assigntoRaw(element); break;
                             case "WPcd1": rawWeatherInfo.WPcd1 = assigntoRaw(element); break;
                             case "N": rawWeatherInfo.N = assigntoRaw(element); break;
+                            case "Neff": rawWeatherInfo.Neff = assigntoRaw(element); break;
                             case "N05": rawWeatherInfo.N05 = assigntoRaw(element); break;
                             case "Nl": rawWeatherInfo.Nl = assigntoRaw(element); break;
                             case "Nm": rawWeatherInfo.Nm = assigntoRaw(element); break;
@@ -598,6 +600,7 @@ public class APIReaders {
                             case "H_BsC": rawWeatherInfo.H_BsC = assigntoRaw(element); break;
                             case "PPPP": rawWeatherInfo.PPPP = assigntoRaw(element); break;
                             case "E_PPP": rawWeatherInfo.E_PPP = assigntoRaw(element); break;
+                            case "RadS1": rawWeatherInfo.RadS1 = assigntoRaw(element); break;
                             case "RadS3": rawWeatherInfo.RadS3 = assigntoRaw(element); break;
                             case "RRad1": rawWeatherInfo.RRad1 = assigntoRaw(element); break;
                             case "Rad1h": rawWeatherInfo.Rad1h = assigntoRaw(element); break;

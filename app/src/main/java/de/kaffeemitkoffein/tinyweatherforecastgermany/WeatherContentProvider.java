@@ -1,9 +1,5 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-/**
- * IMPORTANT NOTE: this class is work in progress and not used yet. It will unify all the single ContentProviders.
- */
-
 import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,7 +11,7 @@ public class WeatherContentProvider extends ContentProvider {
 
     static final String AUTHORITY = "de.kaffeemitkoffein.tinyweatherforecastgermany";
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "weather";
     private SQLiteDatabase database;
 
@@ -176,6 +172,7 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_FORECASTS_FX625="FX625";
         public static final String KEY_FORECASTS_FX640="FX640";
         public static final String KEY_FORECASTS_FX655="FX655";
+        public static final String KEY_FORECASTS_RR1="RR1";
         public static final String KEY_FORECASTS_RR1c="RR1c";
         public static final String KEY_FORECASTS_RRL1c="RRL1c";
         public static final String KEY_FORECASTS_RR3="RR3";
@@ -247,6 +244,7 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_FORECASTS_WPch1="WPch1";
         public static final String KEY_FORECASTS_WPcd1="WPcd1";
         public static final String KEY_FORECASTS_N="N";
+        public static final String KEY_FORECASTS_Neff="Neff";
         public static final String KEY_FORECASTS_N05="N05";
         public static final String KEY_FORECASTS_Nl="Nl";
         public static final String KEY_FORECASTS_Nm="Nm";
@@ -255,6 +253,7 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_FORECASTS_H_BsC="H_BsC";
         public static final String KEY_FORECASTS_PPPP="PPPP";
         public static final String KEY_FORECASTS_E_PPP="E_PPP";
+        public static final String KEY_FORECASTS_RadS1="RadS1";
         public static final String KEY_FORECASTS_RadS3="RadS3";
         public static final String KEY_FORECASTS_RRad1="RRad1";
         public static final String KEY_FORECASTS_Rad1h="Rad1h";
@@ -304,6 +303,7 @@ public class WeatherContentProvider extends ContentProvider {
                 + KEY_FORECASTS_FX625 + " TEXT,"
                 + KEY_FORECASTS_FX640 + " TEXT,"
                 + KEY_FORECASTS_FX655 + " TEXT,"
+                + KEY_FORECASTS_RR1 + " TEXT,"
                 + KEY_FORECASTS_RR1c + " TEXT,"
                 + KEY_FORECASTS_RRL1c + " TEXT,"
                 + KEY_FORECASTS_RR3 + " TEXT,"
@@ -375,6 +375,7 @@ public class WeatherContentProvider extends ContentProvider {
                 + KEY_FORECASTS_WPch1 + " TEXT,"
                 + KEY_FORECASTS_WPcd1 + " TEXT,"
                 + KEY_FORECASTS_N + " TEXT,"
+                + KEY_FORECASTS_Neff + " TEXT,"
                 + KEY_FORECASTS_N05 + " TEXT,"
                 + KEY_FORECASTS_Nl + " TEXT,"
                 + KEY_FORECASTS_Nm + " TEXT,"
@@ -383,6 +384,7 @@ public class WeatherContentProvider extends ContentProvider {
                 + KEY_FORECASTS_H_BsC + " TEXT,"
                 + KEY_FORECASTS_PPPP + " TEXT,"
                 + KEY_FORECASTS_E_PPP + " TEXT,"
+                + KEY_FORECASTS_RadS1 + " TEXT,"
                 + KEY_FORECASTS_RadS3 + " TEXT,"
                 + KEY_FORECASTS_RRad1 + " TEXT,"
                 + KEY_FORECASTS_Rad1h + " TEXT,"
