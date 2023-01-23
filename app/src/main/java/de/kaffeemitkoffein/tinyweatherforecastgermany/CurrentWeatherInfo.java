@@ -19,6 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
+import android.util.Log;
 import org.astronomie.info.Astronomy;
 
 import java.text.SimpleDateFormat;
@@ -51,7 +52,7 @@ public class CurrentWeatherInfo{
     }
 
     public void setToEmpty(){
-        weatherLocation = new Weather.WeatherLocation("","",0,0,0);
+        weatherLocation = new Weather.WeatherLocation("","",RawWeatherInfo.Source.UNKNOWN,0,0,0);
         currentWeather = new Weather.WeatherInfo();
         forecast1hourly = new ArrayList<Weather.WeatherInfo>();
         forecast6hourly = new ArrayList<Weather.WeatherInfo>();
@@ -177,6 +178,7 @@ public class CurrentWeatherInfo{
         currentWeather.setClouds_Nh(getIntItem(rawWeatherInfo.Nh[current_weather_position]));
         currentWeather.setClouds_Nlm(getIntItem(rawWeatherInfo.Nlm[current_weather_position]));
         currentWeather.setClouds_H_BsC(getDoubleItem(rawWeatherInfo.H_BsC[current_weather_position]));
+        currentWeather.setClouds_Neff(getIntItem(rawWeatherInfo.Nlm[current_weather_position]));
         currentWeather.setTemperature(getDoubleItem(rawWeatherInfo.TTT[current_weather_position]));
         currentWeather.setTemperature5cm(getDoubleItem(rawWeatherInfo.T5cm[current_weather_position]));
         currentWeather.setLowTemperature(rawWeatherInfo.getMinTemperature(current_weather_position,next_midnight_position));
@@ -184,6 +186,7 @@ public class CurrentWeatherInfo{
         currentWeather.setWindSpeed(getDoubleItem(rawWeatherInfo.FF[current_weather_position]));
         currentWeather.setWindDirection(getDoubleItem(rawWeatherInfo.DD[current_weather_position]));
         currentWeather.setFlurries(getDoubleItem(rawWeatherInfo.FX1[current_weather_position]));
+        currentWeather.setPrecipitationTotal1h(getDoubleItem(rawWeatherInfo.RR1[current_weather_position]));
         currentWeather.setPrecipitation(getDoubleItem(rawWeatherInfo.RR1c[current_weather_position]));
         currentWeather.setProbPrecipitation(getIntItem(rawWeatherInfo.wwP[current_weather_position]));
         currentWeather.setProbDrizzle(getIntItem(rawWeatherInfo.wwZ[current_weather_position]));
@@ -197,10 +200,14 @@ public class CurrentWeatherInfo{
         currentWeather.setUV(getDoubleItem(rawWeatherInfo.RRad1[current_weather_position]));
         currentWeather.setTd(getDoubleItem(rawWeatherInfo.Td[current_weather_position]));
         currentWeather.setPrecipitationDetails(getProbOfPrecipitation(rawWeatherInfo,current_weather_position));
+        // if calculating fails, interpolate condition from higher time intervals
+        if (!currentWeather.hasCondition()){
+            currentWeather.setConditionCode(getIntItem(interpolateConditionFromHigherIntervals(current_weather_position,rawWeatherInfo)));
+        }
+        // try to calculate the condition
         if (!currentWeather.hasCondition()){
             currentWeather.calculateMissingCondition();
         }
-
         // fill 1h forecast arraylist
         forecast1hourly = new ArrayList<Weather.WeatherInfo>();
         int startPosition1h = rawWeatherInfo.getCurrentForecastPosition();
@@ -221,6 +228,7 @@ public class CurrentWeatherInfo{
             wi.setClouds_Nh(getIntItem(rawWeatherInfo.Nh[index]));
             wi.setClouds_Nlm(getIntItem(rawWeatherInfo.Nlm[index]));
             wi.setClouds_H_BsC(getDoubleItem(rawWeatherInfo.H_BsC[index]));
+            wi.setClouds_Neff(getIntItem(rawWeatherInfo.Neff[index]));
             wi.setTemperature(getDoubleItem(rawWeatherInfo.TTT[index]));
             wi.setTemperature5cm(getDoubleItem(rawWeatherInfo.TTT[index]));
             if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
@@ -232,6 +240,7 @@ public class CurrentWeatherInfo{
             wi.setWindSpeed(getDoubleItem(rawWeatherInfo.FF[index]));
             wi.setWindDirection(getDoubleItem(rawWeatherInfo.DD[index]));
             wi.setFlurries(getDoubleItem(rawWeatherInfo.FX1[index]));
+            wi.setPrecipitationTotal1h(getDoubleItem(rawWeatherInfo.RR1[index]));
             wi.setPrecipitation(getDoubleItem(rawWeatherInfo.RR1c[index]));
             wi.setProbPrecipitation(getIntItem(rawWeatherInfo.wwP[index]));
             wi.setProbDrizzle(getIntItem(rawWeatherInfo.wwZ[index]));
@@ -245,6 +254,10 @@ public class CurrentWeatherInfo{
             wi.setUV(getDoubleItem(rawWeatherInfo.RRad1[index]));
             wi.setTd(getDoubleItem(rawWeatherInfo.Td[index]));
             wi.setPrecipitationDetails(getProbOfPrecipitation(rawWeatherInfo,index));
+            // if calculating fails, interpolate condition from higher time intervals
+            if (!wi.hasCondition()){
+                wi.setConditionCode(getIntItem(interpolateConditionFromHigherIntervals(current_weather_position,rawWeatherInfo)));
+            }
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
@@ -292,6 +305,7 @@ public class CurrentWeatherInfo{
             wi.setClouds_Nh(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nh, start, index));
             wi.setClouds_Nlm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nlm, start, index));
             wi.setClouds_H_BsC(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.H_BsC, start, index));
+            wi.setClouds_Neff(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Neff, start, index));
             wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT, start, index));
             wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm, start, index));
             wi.setLowTemperature(rawWeatherInfo.getMinTemperature(start, index));
@@ -378,6 +392,7 @@ public class CurrentWeatherInfo{
             wi.setClouds_Nh(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nh,start,index));
             wi.setClouds_Nlm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nlm,start,index));
             wi.setClouds_H_BsC(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.H_BsC,start,index));
+            wi.setClouds_Neff(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Neff,start,index));
             wi.setTemperature(rawWeatherInfo.getAverageTemperature(start,index));
             wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start,index));
             wi.setLowTemperature(rawWeatherInfo.getMinTemperature(start,index));
@@ -474,6 +489,47 @@ public class CurrentWeatherInfo{
         }
         weatherInfo.setSunDuration(null);
         return null;
+    }
+
+    public static String iteratePositions(String[] stringArray, int position, int limit){
+        if (stringArray[position]!=null){
+            return stringArray[position];
+        }
+        if ((position<limit) && (position<stringArray.length)){
+            return iteratePositions(stringArray,position+1,limit);
+        }
+        return null;
+    }
+
+    public static String interpolateConditionFromHigherIntervals(int position, RawWeatherInfo rawWeatherInfo){
+        // WPc11: optional significant weather (highest priority) during last hour
+        // WPc31: optional significant weather (highest priority) during last 3h
+        // WPc61: optional significant weather (highest priority) during last 6h
+        // WPch1: optional significant weather (highest priority) during last 12h
+        // WPcd1: optional significant weather (highest priority) during last 24h (?)
+        // ww   : significant weather
+        // ww3  : significant weather at last 3h
+        // W1W2 : weather during last 6h
+        String result = iteratePositions(rawWeatherInfo.ww,position,position);
+        if (result==null){
+            result = iteratePositions(rawWeatherInfo.WPc31, position,position+3);
+        }
+        if (result==null){
+            result = iteratePositions(rawWeatherInfo.ww3, position,position+3);
+        }
+        if (result==null){
+            result = iteratePositions(rawWeatherInfo.WPc61,position,position+6);
+        }
+        if (result==null){
+            result = iteratePositions(rawWeatherInfo.W1W2,position,position+6);
+        }
+        if (result==null){
+            result = iteratePositions(rawWeatherInfo.WPch1,position,position+12);
+        }
+        if (result==null){
+            result = iteratePositions(rawWeatherInfo.WPcd1,position,position+24);
+        }
+        return result;
     }
 
     /**

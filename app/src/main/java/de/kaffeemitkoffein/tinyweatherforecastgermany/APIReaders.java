@@ -3,6 +3,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -408,11 +409,70 @@ public class APIReaders {
             this.weatherLocations = weatherLocations;
         }
 
-        private InputStream getWeatherInputStream(String stationName) throws IOException {
+        public String getLastestDMOUrl(Context context, String stationName) throws IOException {
+            String basicUrl        = "https://opendata.dwd.de/weather/local_forecasts/dmo/icon-eu/single_stations/" + stationName + "/kmz/";
+            String basicUrlLegacy = "http://opendata.dwd.de/weather/local_forecasts/dmo/icon-eu/single_stations/" + stationName + "/kmz/";
+            URL url;
+            URL url_legacy;
+            InputStream inputStream = null;
+            try {
+                url = new URL(basicUrl);
+                url_legacy = new URL(basicUrlLegacy);
+            } catch (MalformedURLException e){
+                return null;
+            }
+            try {
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                inputStream = httpsURLConnection.getInputStream();
+            } catch (SSLException e) {
+                ssl_exception = true;
+                if (WeatherSettings.isTLSdisabled(context)) {
+                    // try fallback to http
+                    try {
+                        HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
+                        inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
+                        PrivateLog.log(context, PrivateLog.DATA, PrivateLog.WARN, "weather data is polled over http without encryption.");
+                    } catch (IOException e2) {
+                        throw e2;
+                    }
+                }
+            } catch (IOException e) {
+                throw e;
+            } catch (Exception e){
+                return null;
+            }
+            if (inputStream!=null){
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String l; (l=bufferedReader.readLine())!=null;){
+                    stringBuilder.append(l);
+                }
+                bufferedReader.close();
+                String s = stringBuilder.toString();
+                s = s.substring(s.lastIndexOf("<a href="),s.lastIndexOf("\""));
+                s = s.substring(s.indexOf("\"")+1);
+                return s;
+            } else {
+            }
+            return null;
+        }
+
+
+        private InputStream getWeatherInputStream(Weather.WeatherLocation weatherLocation) throws IOException {
+            String stationName = weatherLocation.name.replace("*","");
+            // stationType MOS is default
             String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+stationName+"/kml/MOSMIX_L_LATEST_"+stationName+".kmz";
             String weather_url_legacy = "http://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+stationName+"/kml/MOSMIX_L_LATEST_"+stationName+".kmz";
+            // change to DMO if applicable
+            if (weatherLocation.type==RawWeatherInfo.Source.DMO){
+                //weather_url = "https://opendata.dwd.de/weather/local_forecasts/dmo/icon-eu/single_stations/"+stationName+"/kmz/MOSMIX_L_LATEST_"+stationName+".kmz";
+                String fileName = "opendata.dwd.de/weather/local_forecasts/dmo/icon-eu/single_stations/"+stationName+"/kmz/"+getLastestDMOUrl(context,stationName);
+                weather_url = "https://"+fileName;
+                weather_url_legacy = "http://"+fileName;
+            }
             // PrivateLog.log(context,Tag.SERVICE2,"URL: "+weather_url);
             URL url;
+            Log.v("TWFG","URL: "+weather_url);
             URL url_legacy;
             try {
                 url = new URL(weather_url);
@@ -447,11 +507,13 @@ public class APIReaders {
 
         private RawWeatherInfo updateWeatherLocationData(Weather.WeatherLocation weatherLocation) {
             try{
-                InputStream inputStream = new BufferedInputStream(getWeatherInputStream(weatherLocation.name));
+                InputStream inputStream = new BufferedInputStream(getWeatherInputStream(weatherLocation));
                 ZipInputStream zipInputStream = new ZipInputStream(inputStream);
                 zipInputStream.getNextEntry();
                 // init new RawWeatherInfo instance to fill with data
                 RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
+                // set data source
+                rawWeatherInfo.source = RawWeatherInfo.Source.MOS;   // MOSMIX data
                 // populate name from settings, as name is file-name in API but not repeated in the content
                 rawWeatherInfo.weatherLocation = weatherLocation;
                 try {

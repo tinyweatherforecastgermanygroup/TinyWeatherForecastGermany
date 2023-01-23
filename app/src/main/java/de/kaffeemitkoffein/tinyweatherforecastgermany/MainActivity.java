@@ -43,6 +43,7 @@ import android.text.Spanned;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -396,7 +397,8 @@ public class MainActivity extends Activity {
             // debug code
             // WeatherWarnings.clearAllNotified(context);
             try {
-                WeatherContentManager.checkForDatabaseUpgrade(context);
+                int v = WeatherContentManager.checkForDatabaseUpgrade(context);
+                Log.v("TWFG","DATABASE UPGRADE CHECK PASSED. V IS "+v);
             } catch (Exception e){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error checking/upgrading database!");
             }
@@ -913,11 +915,16 @@ public class MainActivity extends Activity {
         TextView textView_station_geo = (TextView) findViewById(R.id.main_station_geo);
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         if (weatherSettings.display_station_geo){
-            String s = "Lat.: "+weatherSettings.latitude+" Long.: "+weatherSettings.longitude+" Alt.: "+weatherSettings.altitude;
             try {
-                textView_station_geo.setText(getApplicationContext().getResources().getString(R.string.station)+" Lat.: "+new DecimalFormat("0.00").format(weatherSettings.latitude)+
+                Log.v("TWFG","STATION TYPE: "+weatherSettings.stationType);
+                String stationInfoString = getApplicationContext().getResources().getString(R.string.station)+
+                        " Lat.: "+new DecimalFormat("0.00").format(weatherSettings.latitude)+
                         " Long.: "+new DecimalFormat("0.00").format(weatherSettings.longitude)+
-                        " Alt.: "+new DecimalFormat("0.00").format(weatherSettings.altitude));
+                        " Alt.: "+new DecimalFormat("0.00").format(weatherSettings.altitude);
+                if (weatherSettings.stationType==RawWeatherInfo.Source.DMO){
+                    stationInfoString=stationInfoString+ " (DMO)";
+                }
+                textView_station_geo.setText(stationInfoString);
             } catch (Exception e){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"parsing geo coordinates of station failed: "+e.getMessage());
                 textView_station_geo.setText("-");
@@ -1002,11 +1009,13 @@ public class MainActivity extends Activity {
 
     public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
         displayUpdateTime(weatherCard);
-        //PrivateLog.log(getApplicationContext(),Tag.MAIN,"displaying: "+weatherCard.getCity()+" sensor: "+weatherCard.weatherLocation.name);
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
         if (localWarnings!=null){
             forecastAdapter.setWarnings(localWarnings);
+        } else {
+            // fetch warnings async if necessary
+            checkIfWarningsApply();
         }
         weatherList.setAdapter(forecastAdapter);
         if (WeatherSettings.loggingEnabled(this)){
@@ -1014,9 +1023,7 @@ public class MainActivity extends Activity {
             DecimalFormat decimalFormat = new DecimalFormat("000.000");
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Timer: adapter set "+decimalFormat.format(time)+" sec from app launch.");
         }
-        // new
         weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
-        //UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE);
    }
 
     public void displayWeatherForecast(){
@@ -1768,7 +1775,12 @@ public class MainActivity extends Activity {
         if (WeatherSettings.GPSManual(context)){
             ArrayList<String> stationDistanceList = new ArrayList<String>();
             for (int i=0; (i<stations.size()) && (i<items_count); i++) {
-                stationDistanceList.add(stations.get(i).description+" ["+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]");
+                String areaString="";
+                if (stations.get(i).type==RawWeatherInfo.Source.DMO){
+                    areaString="Area ";
+                }
+                String s = stations.get(i).description+" ["+areaString+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]";
+                stationDistanceList.add(s);
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
             builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));

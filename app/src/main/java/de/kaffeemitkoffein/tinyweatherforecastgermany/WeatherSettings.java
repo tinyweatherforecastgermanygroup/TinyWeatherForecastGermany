@@ -24,6 +24,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
@@ -50,8 +52,9 @@ public class WeatherSettings {
     public static final String PREF_STATION_NAME = "PREF_station_name";
     public static final String PREF_LOCATION_DESCRIPTION = "PREF_station_description";
     public static final String PREF_LONGITUDE = "PREF_longitude";
-    public static final String PREF_LATIDTUDE = "PREF_latitude";
+    public static final String PREF_LATITUDE = "PREF_latitude";
     public static final String PREF_ALTITUDE = "PREF_altitude";
+    public static final String PREF_STATIONTYPE = "PREF_stationtype";
     public static final String PREF_DISPLAY_STATION_GEO = "PREF_display_station_geo";
     public static final String PREF_DISPLAY_TYPE = "PREF_display_type";
     public static final String PREF_DISPLAY_LAYOUT = "PREF_display_layout";
@@ -127,6 +130,7 @@ public class WeatherSettings {
     public static final double PREF_LATITUDE_DEFAULT = 53.55;
     public static final double PREF_LONGITUDE_DEFAULT = 9.98;
     public static final double PREF_ALTITUDE_DEFAULT = 8.0;
+    public static final int PREF_STATIONTYPE_DEFAULT = RawWeatherInfo.Source.MOS;
     public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
     public static final String PREF_DISPLAY_TYPE_DEFAULT = "3";
     public static final String PREF_DISPLAY_LAYOUT_DEFAULT = "0";
@@ -201,6 +205,7 @@ public class WeatherSettings {
     public double longitude = PREF_LONGITUDE_DEFAULT;
     public double latitude = PREF_LATITUDE_DEFAULT;
     public double altitude = PREF_ALTITUDE_DEFAULT;
+    public int stationType = PREF_STATIONTYPE_DEFAULT;
     public boolean display_station_geo = PREF_DISPLAY_STATION_GEO_DEFAULT;
     public String display_type = PREF_DISPLAY_TYPE_DEFAULT;
     public String display_layout = PREF_DISPLAY_LAYOUT_DEFAULT;
@@ -283,8 +288,9 @@ public class WeatherSettings {
         this.location_description = readPreference(PREF_LOCATION_DESCRIPTION, PREF_LOCATION_DESCRIPTION_DEFAULT);
         this.station_name = readPreference(PREF_STATION_NAME, PREF_STATION_NAME_DEFAULT);
         this.longitude = readPreference(PREF_LONGITUDE, PREF_LONGITUDE_DEFAULT);
-        this.latitude = readPreference(PREF_LATIDTUDE, PREF_LATITUDE_DEFAULT);
+        this.latitude = readPreference(PREF_LATITUDE, PREF_LATITUDE_DEFAULT);
         this.altitude = readPreference(PREF_ALTITUDE, PREF_ALTITUDE_DEFAULT);
+        this.stationType = readPreference(PREF_STATIONTYPE,PREF_STATIONTYPE_DEFAULT);
         this.setalarm = readPreference(PREF_SETALARM, PREF_SETALARM_DEFAULT);
         this.display_station_geo = readPreference(PREF_DISPLAY_STATION_GEO, PREF_DISPLAY_STATION_GEO_DEFAULT);
         this.display_type = readPreference(PREF_DISPLAY_TYPE, PREF_DISPLAY_TYPE_DEFAULT);
@@ -357,8 +363,9 @@ public class WeatherSettings {
         applyPreference(PREF_LOCATION_DESCRIPTION, this.location_description);
         applyPreference(PREF_STATION_NAME, this.station_name);
         applyPreference(PREF_LONGITUDE, this.longitude);
-        applyPreference(PREF_LATIDTUDE, this.latitude);
+        applyPreference(PREF_LATITUDE, this.latitude);
         applyPreference(PREF_ALTITUDE, this.altitude);
+        applyPreference(PREF_STATIONTYPE,this.stationType);
         applyPreference(PREF_DISPLAY_STATION_GEO, this.display_station_geo);
         applyPreference(PREF_DISPLAY_TYPE, this.display_type);
         applyPreference(PREF_DISPLAY_LAYOUT,this.display_layout);
@@ -430,8 +437,9 @@ public class WeatherSettings {
         commitPreference(PREF_LOCATION_DESCRIPTION, this.location_description);
         commitPreference(PREF_STATION_NAME, this.station_name);
         commitPreference(PREF_LONGITUDE, this.longitude);
-        commitPreference(PREF_LATIDTUDE, this.latitude);
+        commitPreference(PREF_LATITUDE, this.latitude);
         commitPreference(PREF_ALTITUDE, this.altitude);
+        commitPreference(PREF_STATIONTYPE,this.stationType);
         commitPreference(PREF_DISPLAY_STATION_GEO, this.display_station_geo);
         commitPreference(PREF_DISPLAY_TYPE, this.display_type);
         commitPreference(PREF_DISPLAY_LAYOUT,this.display_layout);
@@ -607,9 +615,10 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         weatherLocation.description = sharedPreferences.getString(PREF_LOCATION_DESCRIPTION,PREF_LOCATION_DESCRIPTION_DEFAULT);
         weatherLocation.name = sharedPreferences.getString(PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT);
-        weatherLocation.latitude = sharedPreferences.getFloat(PREF_LATIDTUDE,(float) PREF_LATITUDE_DEFAULT);
+        weatherLocation.latitude = sharedPreferences.getFloat(PREF_LATITUDE,(float) PREF_LATITUDE_DEFAULT);
         weatherLocation.longitude = sharedPreferences.getFloat(PREF_LONGITUDE,(float) PREF_LONGITUDE_DEFAULT);
         weatherLocation.altitude = sharedPreferences.getFloat(PREF_ALTITUDE,(float) PREF_ALTITUDE_DEFAULT);
+        weatherLocation.type = sharedPreferences.getInt(PREF_STATIONTYPE, PREF_STATIONTYPE_DEFAULT);
         return weatherLocation;
     }
 
@@ -618,9 +627,11 @@ public class WeatherSettings {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putString(PREF_LOCATION_DESCRIPTION, weatherLocation.description);
         pref_editor.putString(PREF_STATION_NAME,weatherLocation.name);
-        pref_editor.putFloat(PREF_LATIDTUDE,(float) weatherLocation.latitude);
+        pref_editor.putFloat(PREF_LATITUDE,(float) weatherLocation.latitude);
         pref_editor.putFloat(PREF_LONGITUDE,(float) weatherLocation.longitude);
         pref_editor.putFloat(PREF_ALTITUDE,(float) weatherLocation.altitude);
+        Log.v("TWFG","TO SETTINGS TYPE = "+weatherLocation.type);
+        pref_editor.putInt(PREF_STATIONTYPE, weatherLocation.type);
         pref_editor.apply();
     }
 
@@ -628,9 +639,10 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putString(PREF_STATION_NAME, PREF_STATION_NAME_DEFAULT);
-        pref_editor.putFloat(PREF_LATIDTUDE, (float) PREF_LATITUDE_DEFAULT);
+        pref_editor.putFloat(PREF_LATITUDE, (float) PREF_LATITUDE_DEFAULT);
         pref_editor.putFloat(PREF_LONGITUDE, (float) PREF_LONGITUDE_DEFAULT);
         pref_editor.putFloat(PREF_ALTITUDE, (float) PREF_ALTITUDE_DEFAULT);
+        pref_editor.putInt(PREF_STATIONTYPE,PREF_STATIONTYPE_DEFAULT);
         pref_editor.putString(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
         pref_editor.apply();
     }

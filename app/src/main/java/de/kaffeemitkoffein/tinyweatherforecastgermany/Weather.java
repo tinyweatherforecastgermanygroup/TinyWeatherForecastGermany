@@ -53,6 +53,7 @@ public final class Weather {
         double longitude;
         double altitude;
         float distance;
+        int type;
 
         public WeatherLocation(){
             description="";
@@ -61,11 +62,13 @@ public final class Weather {
             longitude=0;
             altitude=0;
             distance=0;
+            type=RawWeatherInfo.Source.UNKNOWN;
         }
 
-        public WeatherLocation(String description, String name, long latitude, long longitude, long altitude){
+        public WeatherLocation(String description, String name, int type, long latitude, long longitude, long altitude){
             this.description = description;
             this.name = name;
+            this.type = type;
             this.latitude = latitude;
             this.longitude = longitude;
             this.altitude = altitude;
@@ -74,6 +77,7 @@ public final class Weather {
         protected WeatherLocation(Parcel in) {
             description = in.readString();
             name = in.readString();
+            type = in.readInt();
             latitude = in.readDouble();
             longitude = in.readDouble();
             altitude = in.readDouble();
@@ -106,6 +110,7 @@ public final class Weather {
         public void writeToParcel(Parcel parcel, int flags) {
             parcel.writeString(description);
             parcel.writeString(name);
+            parcel.writeInt(type);
             parcel.writeDouble(latitude);
             parcel.writeDouble(longitude);
             parcel.writeDouble(altitude);
@@ -160,6 +165,7 @@ public final class Weather {
                     newWeatherLocation.longitude = ownLocation.getLongitude();
                     newWeatherLocation.name = new_stations.get(0).name;
                     newWeatherLocation.description = new_stations.get(0).description;
+                    newWeatherLocation.type = new_stations.get(0).type;
                     newWeatherLocation(newWeatherLocation);
                 }
             };
@@ -314,9 +320,10 @@ public final class Weather {
         private Integer Nh;         // % high cloud cover (>7 km)
         private Integer Nlm;        // % cloud cover low and mid level clouds below 7 km
         private Double H_BsC;       // m; cloud base of convective clouds
+        private Integer Neff;       // 0-100% effective cloud cover
 
         public Integer[] getIntArray(){
-            Integer[] result = new Integer[7];
+            Integer[] result = new Integer[8];
             result[0] = this.N;
             result[1] = this.N05;
             result[2] = this.Nl;
@@ -328,6 +335,7 @@ public final class Weather {
             } else {
                 result[6] = (int) Math.round(this.H_BsC);
             }
+            result[7] = this.Neff;
             return result;
         }
 
@@ -348,6 +356,7 @@ public final class Weather {
         private Double wind_speed;
         private Double wind_direction;
         private Double flurries;
+        private Double precipitationTotal1h;
         private Double precipitation;
         private Integer prob_thunderstorms;
         private Integer prob_precipitation;
@@ -423,6 +432,10 @@ public final class Weather {
             this.flurries = flurries;
         }
 
+        public void setPrecipitationTotal1h(Double precipitationTotal1h){
+            this.precipitationTotal1h = precipitationTotal1h;
+        }
+
         public void setPrecipitation(Double precipitation){
             this.precipitation = precipitation;
         }
@@ -453,6 +466,10 @@ public final class Weather {
 
         public void setClouds_H_BsC(Double clouds){
             this.clouds.H_BsC = clouds;
+        }
+
+        public void setClouds_Neff(Integer clouds){
+            this.clouds.Neff = clouds;
         }
 
         public void setProbThunderstorms(Integer thunderstorms){
@@ -875,6 +892,10 @@ public final class Weather {
             return false;
         }
 
+        public double getPrecipitationTotal1h(Double precipitationTotal1h){
+            return precipitationTotal1h;
+        }
+
         public double getPrecipitation(){
             return precipitation;
         }
@@ -1103,6 +1124,10 @@ public final class Weather {
 
         public double getClouds_H_BsC(){
             return clouds.H_BsC;
+        }
+
+        public int getClouds_Neff(){
+            return clouds.Neff;
         }
 
         public boolean hasProbThunderstorms(){

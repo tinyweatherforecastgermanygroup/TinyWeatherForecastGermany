@@ -25,9 +25,31 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class RawWeatherInfo{
+
+    public final static class Source{
+        public static final int UNKNOWN = -1;
+        public static final int MOS = 0;
+        public static final int DMO = 1;
+        public static final int SWSMOS = 2;
+        public static final int WARNMOS = 3;
+
+        public String getSourceString(int i){
+            switch (i){
+                case MOS: return "MOS";
+                case DMO: return "DMO";
+                case SWSMOS: return "SWSMOS";
+                case WARNMOS: return "WARNMOS";
+                default: return "?";
+            }
+        }
+    }
+
+
+
     long polling_time;       // polling time from API in millis UTC
     long timestamp;         // currently not used.
     int elements;            // # of elements read
+    int source;             // API data source
     Weather.WeatherLocation weatherLocation;
     String timetext;    // text; original timestamp
     String[] timesteps; // millis; UTC stamp for forecast
@@ -53,7 +75,7 @@ public class RawWeatherInfo{
     String[] FX625;          // %, probability of wind gusts >= 25 km/h within last 6h
     String[] FX640;          // %, probability of wind gusts >= 40 km/h within last 6h
     String[] FX655;          // %, probability of wind gusts >= 55 km/h within last 6h
-    String[] RR1;            // total precipitation during the last hour
+    String[] RR1;            // kg/m² total precipitation during the last hour
     String[] RR1c;           // kg/m², total precipitation during last hour consistent with significant weather
     String[] RRL1c;          // kg/m², total liquid during the last hour consistent with significant weather
     String[] RR3;            // kg/m², total precipitation during last 3h
@@ -202,7 +224,7 @@ public class RawWeatherInfo{
         timesteps = new String[DATA_SIZE];TTT = new String[DATA_SIZE];E_TTT = new String[DATA_SIZE];T5cm = new String[DATA_SIZE];Td = new String[DATA_SIZE];E_Td = new String[DATA_SIZE];Tx = new String[DATA_SIZE];
         Tn = new String[DATA_SIZE];TM = new String[DATA_SIZE];TG = new String[DATA_SIZE];DD = new String[DATA_SIZE];E_DD = new String[DATA_SIZE];FF = new String[DATA_SIZE];E_FF = new String[DATA_SIZE];
         FX1 = new String[DATA_SIZE];FX3 = new String[DATA_SIZE];FXh = new String[DATA_SIZE];FXh25 = new String[DATA_SIZE];FXh40 = new String[DATA_SIZE];FXh55 = new String[DATA_SIZE];FX625 = new String[DATA_SIZE];
-        FX640 = new String[DATA_SIZE];FX655 = new String[DATA_SIZE];RR1c = new String[DATA_SIZE];RRL1c = new String[DATA_SIZE];RR3 = new String[DATA_SIZE];RR6 = new String[DATA_SIZE];
+        FX640 = new String[DATA_SIZE];FX655 = new String[DATA_SIZE];  RR1 = new String[DATA_SIZE]; RR1c = new String[DATA_SIZE]; RRL1c = new String[DATA_SIZE];RR3 = new String[DATA_SIZE];RR6 = new String[DATA_SIZE];
         RR3c = new String[DATA_SIZE];RR6c = new String[DATA_SIZE];RRhc = new String[DATA_SIZE];RRdc = new String[DATA_SIZE];RRS1c = new String[DATA_SIZE];RRS3c = new String[DATA_SIZE];
         R101 = new String[DATA_SIZE];R102 = new String[DATA_SIZE];R103 = new String[DATA_SIZE];R105 = new String[DATA_SIZE];R107 = new String[DATA_SIZE];R110 = new String[DATA_SIZE];
         R120 = new String[DATA_SIZE];R130 = new String[DATA_SIZE];R150 = new String[DATA_SIZE];RR1o1 = new String[DATA_SIZE];RR1w1 = new String[DATA_SIZE];RR1u1 = new String[DATA_SIZE];R600 = new String[DATA_SIZE];
@@ -214,9 +236,9 @@ public class RawWeatherInfo{
         wwSh = new String[DATA_SIZE];wwF = new String[DATA_SIZE];wwF6 = new String[DATA_SIZE];wwFh = new String[DATA_SIZE];wwP = new String[DATA_SIZE];wwP6 = new String[DATA_SIZE];
         wwPh = new String[DATA_SIZE];VV10 = new String[DATA_SIZE];ww = new String[DATA_SIZE];ww3 = new String[DATA_SIZE];W1W2 = new String[DATA_SIZE];
         WPc11 = new String[DATA_SIZE]; WPc31 = new String[DATA_SIZE];
-        WPc61 = new String[DATA_SIZE];WPch1 = new String[DATA_SIZE];WPcd1 = new String[DATA_SIZE];N = new String[DATA_SIZE];N05 = new String[DATA_SIZE];Nl = new String[DATA_SIZE];
+        WPc61 = new String[DATA_SIZE];WPch1 = new String[DATA_SIZE];WPcd1 = new String[DATA_SIZE]; Neff = new String[DATA_SIZE]; N = new String[DATA_SIZE]; N05 = new String[DATA_SIZE];Nl = new String[DATA_SIZE];
         Nm = new String[DATA_SIZE];Nh = new String[DATA_SIZE];Nlm = new String[DATA_SIZE];H_BsC = new String[DATA_SIZE];PPPP = new String[DATA_SIZE];E_PPP = new String[DATA_SIZE];
-        RadS3 = new String[DATA_SIZE];RRad1 = new String[DATA_SIZE];Rad1h = new String[DATA_SIZE];RadL3 = new String[DATA_SIZE];VV = new String[DATA_SIZE];D1 = new String[DATA_SIZE];
+        RadS1 = new String[DATA_SIZE]; RadS3 = new String[DATA_SIZE]; RRad1 = new String[DATA_SIZE];Rad1h = new String[DATA_SIZE];RadL3 = new String[DATA_SIZE];VV = new String[DATA_SIZE];D1 = new String[DATA_SIZE];
         SunD = new String[DATA_SIZE];SunD3 = new String[DATA_SIZE];RSunD = new String[DATA_SIZE];PSd00 = new String[DATA_SIZE];PSd30 = new String[DATA_SIZE];PSd60 = new String[DATA_SIZE];
         wwM = new String[DATA_SIZE];wwM6 = new String[DATA_SIZE];wwMh = new String[DATA_SIZE];wwMd = new String[DATA_SIZE];PEvap = new String[DATA_SIZE];
     }

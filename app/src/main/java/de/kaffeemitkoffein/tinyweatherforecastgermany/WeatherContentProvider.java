@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 public class WeatherContentProvider extends ContentProvider {
 
@@ -557,13 +558,21 @@ public class WeatherContentProvider extends ContentProvider {
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-            // drop data & re-create tables
-            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_FORECASTS);
-            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_WARNINGS);
-            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_TEXTS);
-            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_AREAS);
-            onCreate(sqLiteDatabase);
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+            Log.v("TWFG","OLD VERSION: "+oldVersion+" NEW VERSION: "+newVersion);
+            // change from version 2 to 3: only forecast data needs to be dropped because of new fields in data set
+            if ((oldVersion==2) && (newVersion==3)){
+                sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_FORECASTS);
+                onCreate(sqLiteDatabase);
+            } else {
+                // all other database upgrades require complete reset
+                // drop data & re-create tables
+                sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_FORECASTS);
+                sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_WARNINGS);
+                sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_TEXTS);
+                sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_AREAS);
+                onCreate(sqLiteDatabase);
+            }
         }
     }
 
