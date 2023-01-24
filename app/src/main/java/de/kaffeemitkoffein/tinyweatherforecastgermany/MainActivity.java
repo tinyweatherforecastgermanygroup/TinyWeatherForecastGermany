@@ -1012,18 +1012,20 @@ public class MainActivity extends Activity {
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
         if (localWarnings!=null){
+            // warnings present, display immediately
             forecastAdapter.setWarnings(localWarnings);
+            weatherList.setAdapter(forecastAdapter);
+            if (WeatherSettings.loggingEnabled(this)){
+                float time = (Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f;
+                DecimalFormat decimalFormat = new DecimalFormat("000.000");
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Timer: adapter set "+decimalFormat.format(time)+" sec from app launch.");
+            }
+            weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
         } else {
             // fetch warnings async if necessary
+            // will call this sub again after warnings were loaded
             checkIfWarningsApply();
         }
-        weatherList.setAdapter(forecastAdapter);
-        if (WeatherSettings.loggingEnabled(this)){
-            float time = (Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f;
-            DecimalFormat decimalFormat = new DecimalFormat("000.000");
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Timer: adapter set "+decimalFormat.format(time)+" sec from app launch.");
-        }
-        weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
    }
 
     public void displayWeatherForecast(){
