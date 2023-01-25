@@ -21,8 +21,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -327,7 +325,6 @@ public class StationsManager {
         Integer position = getPositionFromDescription(description);
         if (position!=null){
             Weather.WeatherLocation weatherLocation = stations.get(position);
-            Log.v("TWFG","found, is "+weatherLocation.description + " type "+weatherLocation.type);
             return weatherLocation;
         }
         return null;

@@ -43,7 +43,6 @@ import android.text.Spanned;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -398,7 +397,6 @@ public class MainActivity extends Activity {
             // WeatherWarnings.clearAllNotified(context);
             try {
                 int v = WeatherContentManager.checkForDatabaseUpgrade(context);
-                Log.v("TWFG","DATABASE UPGRADE CHECK PASSED. V IS "+v);
             } catch (Exception e){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error checking/upgrading database!");
             }
@@ -916,7 +914,6 @@ public class MainActivity extends Activity {
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         if (weatherSettings.display_station_geo){
             try {
-                Log.v("TWFG","STATION TYPE: "+weatherSettings.stationType);
                 String stationInfoString = getApplicationContext().getResources().getString(R.string.station)+
                         " Lat.: "+new DecimalFormat("0.00").format(weatherSettings.latitude)+
                         " Long.: "+new DecimalFormat("0.00").format(weatherSettings.longitude)+

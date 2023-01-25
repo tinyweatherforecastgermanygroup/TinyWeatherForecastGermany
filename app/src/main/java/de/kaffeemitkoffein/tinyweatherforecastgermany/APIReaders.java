@@ -3,7 +3,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -472,7 +471,6 @@ public class APIReaders {
             }
             // PrivateLog.log(context,Tag.SERVICE2,"URL: "+weather_url);
             URL url;
-            Log.v("TWFG","URL: "+weather_url);
             URL url_legacy;
             try {
                 url = new URL(weather_url);

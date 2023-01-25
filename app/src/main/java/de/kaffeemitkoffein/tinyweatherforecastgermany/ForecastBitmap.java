@@ -729,8 +729,7 @@ public class ForecastBitmap{
             temp_scale_step_value = 5;
         float temp_bottom_offset_value = 0;
         if (minTemp < 0){
-            //temp_bottom_offset_value = -((Math.abs(minTemp)/temp_scale_step_value)+1)*temp_scale_step_value;
-            temp_bottom_offset_value = minTemp;
+            temp_bottom_offset_value = -((Math.abs(minTemp)/(int) temp_scale_step_value)+1)*temp_scale_step_value;
         }
         float temp_graphscale = temp_scale_step_value * display_steps / chartHeight;
         float zeroline_position = chartHeight + temp_bottom_offset_value / temp_graphscale;

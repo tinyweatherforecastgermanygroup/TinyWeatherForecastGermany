@@ -24,11 +24,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.preference.PreferenceManager;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Objects;
 
 public class WeatherSettings {
 
@@ -630,7 +627,6 @@ public class WeatherSettings {
         pref_editor.putFloat(PREF_LATITUDE,(float) weatherLocation.latitude);
         pref_editor.putFloat(PREF_LONGITUDE,(float) weatherLocation.longitude);
         pref_editor.putFloat(PREF_ALTITUDE,(float) weatherLocation.altitude);
-        Log.v("TWFG","TO SETTINGS TYPE = "+weatherLocation.type);
         pref_editor.putInt(PREF_STATIONTYPE, weatherLocation.type);
         pref_editor.apply();
     }
