@@ -314,7 +314,7 @@ public final class ThemePicker {
     }
 
     public static int getTemperatureAccentColor(Context context, Weather.WeatherInfo weatherInfo){
-        if (weatherInfo.getTemperature()>0){
+        if (weatherInfo.getTemperatureInCelsius()>0){
             return ThemePicker.getColor(context,ThemePicker.ThemeColor.RED);
         } else {
             return ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN);
