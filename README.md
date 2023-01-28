@@ -167,11 +167,9 @@ Since version 0.59.4, Tiny Weather Forecast Germany also includes [some of the D
 
 Therefore, Tiny Weather Forecast Germany currently only includes a small subset of available *DMO* locations and limits it to locations not already well-represented by the Mosmix data. In particular, *DMO* locations with the same name already present in the Mosmix data and/or within +/- 0.02 longitude and latitude are ignored.
 
-Currently (version 0.59.4), Tiny Weather Forecast Germany uses only 195 of the 3541 DMO locations in total, since all other locations meet the criteria above having a much better Mosmix forecast point available instead. 
+Currently (version 0.59.4), Tiny Weather Forecast Germany uses only 195 of the 3541 *DMO* locations in total, since all other locations meet the criteria above having a much better Mosmix forecast point available instead. 
 
 Should you have *"Geographic coordinates"* enabled (geographic coordinates of the weather station are displayed in the app), *DMO* stations are indicated by "*(DMO)*" in the app.
-
-[this page](https://dontkillmyapp.com/)
 
 ### My widgets don't get updated (unless I open the app).
 
