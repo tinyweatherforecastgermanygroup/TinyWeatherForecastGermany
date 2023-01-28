@@ -139,6 +139,23 @@ public final class Weather {
             return null;
         }
 
+        public int getType(){
+            return type;
+        }
+
+        public boolean isDMO(){
+            if (getType()==RawWeatherInfo.Source.DMO){
+                return true;
+            }
+            return false;
+        }
+
+        public boolean isMOS(){
+            if (getType()==RawWeatherInfo.Source.MOS){
+                return true;
+            }
+            return false;
+        }
     }
 
     public static class WeatherLocationFinder implements Runnable{

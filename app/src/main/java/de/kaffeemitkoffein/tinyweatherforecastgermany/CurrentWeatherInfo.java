@@ -31,6 +31,8 @@ public class CurrentWeatherInfo{
     public static final String EMPTY_TAG = "-";
     public final static int MOSMIX_UPDATE_INTERVAL = 6*60*60*1000; // 6 hours in millis
     public final static int MOSMIX_PUBLICATION_DELAY = 1*60*60*1000; // 1 hour in millis
+    public final static int DMO_UPDATE_INTERVAL = 12*60*60*1000; // 12 hours in millis
+    public final static int DMO_PUBLICATION_DELAY = 1*60*60*1000; // 1 hour in millis
     public final SimpleDateFormat dateAndHourDateFormat = new SimpleDateFormat("dd. MMM yyyy HH:mm");
     Weather.WeatherLocation weatherLocation;
     long polling_time;
@@ -537,12 +539,17 @@ public class CurrentWeatherInfo{
      * @return true, if new data can be expected.
      */
 
-    public boolean isNewServerDataExpected(){
-        return (getWhenNewServerDataExpected()) < Calendar.getInstance().getTimeInMillis();
+    public boolean isNewServerDataExpected(Context context){
+        return (getWhenNewServerDataExpected(context)) < Calendar.getInstance().getTimeInMillis();
     }
 
-    public long getWhenNewServerDataExpected(){
-        return (issue_time+MOSMIX_UPDATE_INTERVAL+MOSMIX_PUBLICATION_DELAY);
+    public long getWhenNewServerDataExpected(Context context){
+        Weather.WeatherLocation station = WeatherSettings.getSetStationLocation(context);
+        if (station.getType()==RawWeatherInfo.Source.DMO){
+            return (issue_time+DMO_UPDATE_INTERVAL+DMO_PUBLICATION_DELAY);
+        } else {
+            return (issue_time+MOSMIX_UPDATE_INTERVAL+MOSMIX_PUBLICATION_DELAY);
+        }
     }
 
     public String getHumanReadableIssueTime(){

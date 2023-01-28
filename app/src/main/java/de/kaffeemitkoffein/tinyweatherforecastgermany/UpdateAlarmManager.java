@@ -110,7 +110,7 @@ public class UpdateAlarmManager {
         if (weatherCard!=null){
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Data issued: "+new Date(weatherCard.issue_time).toString());
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Last data poll: "+new Date(weatherCard.polling_time).toString());
-            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"New data expected: "+new Date(weatherCard.getWhenNewServerDataExpected()).toString());
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"New data expected: "+new Date(weatherCard.getWhenNewServerDataExpected(context)).toString());
             //PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Is new expected: "+weatherCard.isNewServerDataExpected());
             //PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"is 6h: "+weatherSettings.forecastUpdateIntervalIs6h());
         }
@@ -122,7 +122,7 @@ public class UpdateAlarmManager {
                 ((update_mode==CHECK_FOR_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode==WIDGET_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode&FORCE_UPDATE)==FORCE_UPDATE) ||
-                (!(update_time_utc <= Calendar.getInstance().getTimeInMillis()) && (weatherCard.isNewServerDataExpected() && weatherSettings.forecastUpdateIntervalIs6h()) && (weatherSettings.setalarm))){
+                (!(update_time_utc <= Calendar.getInstance().getTimeInMillis()) && (weatherCard.isNewServerDataExpected(context) && weatherSettings.forecastUpdateIntervalIs6h()) && (weatherSettings.setalarm))){
             // update now.
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.

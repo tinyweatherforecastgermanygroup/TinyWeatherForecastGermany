@@ -154,6 +154,7 @@ Symbols used:
 <img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/arrow_black.png" height="16" width="16"/> wind direction
 <img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_temperature5cm_black.png" height="16" width="16"/> temperature 5 cm above ground level
 <img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/symbol_rh_black.png" height="16" width="16"/> relative humidity
+<img src="https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/app/src/main/res/mipmap-mdpi/biocular_black.png" height="16" width="16"/> visibility
 
 ### What do the icons shown do?
 
@@ -170,6 +171,8 @@ Therefore, Tiny Weather Forecast Germany currently only includes a small subset 
 Currently (version 0.59.4), Tiny Weather Forecast Germany uses only 195 of the 3541 *DMO* locations in total, since all other locations meet the criteria above having a much better Mosmix forecast point available instead. 
 
 Should you have *"Geographic coordinates"* enabled (geographic coordinates of the weather station are displayed in the app), *DMO* stations are indicated by "*(DMO)*" in the app.
+
+Since *DMO* forecasts get updated every 12 hours only, periodic updates automatically get postponed should you have set a 6-hourly update cycle and did choose a *DMO* location.
 
 ### My widgets don't get updated (unless I open the app).
 
