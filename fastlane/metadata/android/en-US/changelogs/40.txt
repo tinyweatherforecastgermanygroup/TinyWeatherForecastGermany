@@ -1,0 +1,3 @@
+- updated list of weather stations
+- new support for additional forecast locations (DMO; Direct Model Output) besides the existing weather stations
+- minor bug fixes

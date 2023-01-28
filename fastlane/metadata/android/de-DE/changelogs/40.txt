@@ -1,1 +1,3 @@
--
+- aktualisierte Liste der Wetterstationen
+- neue Unterstützung für weitere Vorhersage-Orte (DMO; Direct Model Output) neben den bisherigen Wetterstationen
+- kleinere Fehlerverbesserungen
