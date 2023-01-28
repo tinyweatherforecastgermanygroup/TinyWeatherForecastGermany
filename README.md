@@ -180,7 +180,9 @@ The widgets get updated every 15-30 minutes. If this does not happen at all or o
 
 ### How often does the app update the weather forecast?
 
-This mainly depends on your setup. In the settings, you can set up the update interval. This interval can be between 6 and 24 hours. The Deutscher Wetterdienst updates the forecast data that is used every 6 hours. Therefore, it does not make sense to pull weather data more frequently than every 6 hours.
+This mainly depends on your setup. In the settings, you can set up the update interval. This interval can be between 6 and 24 hours. The Deutscher Wetterdienst updates the forecast data that is used every 6 hours for *Mosmix* locations (most of the locations available), and every 12 hours for *DMO* locations. Therefore, it does not make sense to pull weather data more frequently than every 6 or 12 hours, depending on your chosen location.
+
+Since *DMO* forecasts get updated every 12 hours only, periodic updates automatically get postponed should you have set a 6-hourly update cycle and did choose a *DMO* location.
 
 The app updates the forecast data regulary, when one of the following conditions is met:
 
@@ -222,7 +224,7 @@ Tiny Weather Forecast Germany gives *forecasts*, not the current reading at some
 
 ### Where do the names come from that are offered in searches?
 
-Tiny Weather Forecast Germany uses *WarncellIDs* for the regions offered. These are closely related to the [Amtlicher Gemeindeschlüssel](https://www.destatis.de/DE/Themen/Laender-Regionen/Regionales/Gemeindeverzeichnis/_inhalt.html) (AGS) provided by destatis. Basically, the WarncellIDs are an extension of the AGS. WarncellIDs also feature human-readable names (e.g. "Landkreis Göttingen"). These names can be used while looking for a weather station. They *do not* refer to the names of weather stations. Once you select a name  the app will give you a list of close by stations including their distance to choose from. This distance is derived from the center of the area polygon(s) associated with a given region. It may happen, that a WarncellID has more than one search key associated. E.g. searching for `Insel Helgoland` or `Gemeinde Helgoland` will show a list starting with `Helgoland` at an approximate distance of 0.4 km. Hence the weather station is actually just called `Helgoland`.
+Tiny Weather Forecast Germany uses *WarncellIDs* for the regions offered. These are closely related to the [Amtlicher Gemeindeschlüssel](https://www.destatis.de/DE/Themen/Laender-Regionen/Regionales/Gemeindeverzeichnis/_inhalt.html) (AGS) provided by destatis. Basically, the WarncellIDs are an extension of the AGS. WarncellIDs also feature human-readable names (e.g. "Landkreis Göttingen"). These names can be used while looking for a weather station. They *do not* refer to the names of weather stations. Once you select a name the app, depending on your setting, automatically determine the closest weather station or will give you a list of close by stations including their distance to choose from. This distance is derived from the center of the area polygon(s) associated with a given region. It may happen, that a WarncellID has more than one search key associated. E.g. searching for `Insel Helgoland` or `Gemeinde Helgoland` will show a list starting with `Helgoland` at an approximate distance of 0.4 km. Hence the weather station is actually just called `Helgoland`.
 
 *Note* more than one station will be shown if your search matches a search key. These stations are sorted by increasing distance from the initially searched entity. E.g. searching for `Insel Helgoland` in the above example will also show `Elbmuendung` (a sea area next to Cuxhaven) which is 23.4 km away, `UFS Deutsche Bucht` (an automatized weather station aboard a light vessel in the middle of the German Bight) already 29.3 km away, or `Wangerooge` (one of the East Frisian islands) at a distance of 29.4 km. (And of course many others even further away.) If `Helgoland` is searched however, it matches the station right away, and the app jumps to it immediately without a further selection.
 
@@ -270,7 +272,9 @@ Those stem from coastal or sea area warnings issued by DWD in their shipping for
 
 ### Which weather model is the app using?
 
-The app uses the *MOSMIX* model provided by Deutscher Wetterdienst (DWD). "The MOSMIX System of Deutscher Wetterdienst optimizes and interprets the computations of the numerical models ICON and IFS (ECMWF) and combines them to statistically optimal weather forecasts." (DWD). This model provides data for almost all common meteorological parameters and uses statistical methods to derive parameters not available in the numerical models. More details can be found at [the MOSMIX page at Deutscher Wetterdienst (DWD)](https://www.dwd.de/EN/research/weatherforecasting/met_applications/nwp_applications/mosmix_application_node.html)
+The app uses the *MOSMIX* model provided by Deutscher Wetterdienst (DWD). "The MOSMIX System of Deutscher Wetterdienst optimizes and interprets the computations of the numerical models ICON and IFS (ECMWF) and combines them to statistically optimal weather forecasts." (DWD). This model provides data for almost all common meteorological parameters and uses statistical methods to derive parameters not available in the numerical models. More details can be found at [the MOSMIX page at Deutscher Wetterdienst (DWD)](https://www.dwd.de/EN/research/weatherforecasting/met_applications/nwp_applications/mosmix_application_node.html).
+
+Additionally, Tiny Weather Forecast Germany also includes some of the *DMO* forecast locations available. *DMO* (Direct Model Output) locations provide forecasts based on the numeric ICON13 and ICON6-NEST weather forecast models.
 
 ### Can I access textual/specialized weather reports?
 
@@ -299,6 +303,8 @@ You may get weather warnings of a similiar type, e.g. when gusts change into a s
 Once you have been notified about a warning, you will also get notified about an update regarding this warning. Should the initial warning still be visible in the notification area, it will be canceled in favour of the update. A notification will be also canceled once the warning expires. Already expired weather warnings won't pop up at all.
 
 To remind you about a persistent weather warning, the notification about this weather warning will be repeated after 12 hours.
+
+To be kept aware about current warnings, simply don't swipe them away. They wil automatically disappear from your notifications drawer once they expire.
 
 ### How quickly do I get a weather warning?
 
