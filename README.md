@@ -159,6 +159,20 @@ Symbols used:
 
 You may get a hint about their functionality if you just *long-press* them.
 
+### Why are some locations labelled "DMO" and show a forecast for about three days only?
+
+Since version 0.59.4, Tiny Weather Forecast Germany also includes [some of the DMO forecasts available from the Deutscher Wetterdienst (DWD) since 17.01.2023](https://www.dwd.de/DE/fachnutzer/forschung_lehre/meteorologische_fachverfahren/mosmix_aenderungen/downloads/2023_0117_mosmix_aenderung.pdf) in the open data.
+
+*DMO* (Direct Model Output) locations provide forecasts based on the numeric ICON13 and ICON6-NEST weather forecast models. *DMO* locations usually provide a more limited data set with a shorter forecast period than MOSMIX stations. Since the *DMO* data is not post-processed using *MOS (Model Output Statistics)*, MOSMIX stations are preferred over *DMO* locations.
+
+Therefore, Tiny Weather Forecast Germany currently only includes a small subset of available *DMO* locations and limits it to locations not already well-represented by the Mosmix data. In particular, *DMO* locations with the same name already present in the Mosmix data and/or within +/- 0.02 longitude and latitude are ignored.
+
+Currently (version 0.59.4), Tiny Weather Forecast Germany uses only 195 of the 3541 DMO locations in total, since all other locations meet the criteria above having a much better Mosmix forecast point available instead. 
+
+Should you have *"Geographic coordinates"* enabled (geographic coordinates of the weather station are displayed in the app), *DMO* stations are indicated by "*(DMO)*" in the app.
+
+[this page](https://dontkillmyapp.com/)
+
 ### My widgets don't get updated (unless I open the app).
 
 The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
