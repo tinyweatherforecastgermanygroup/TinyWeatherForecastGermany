@@ -32,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/geo_globe"
+            android:scaleType="fitXY"
             android:layout_marginTop="@dimen/slider_margin"
             android:layout_marginBottom="@dimen/slider_margin"
             android:layout_marginLeft="@dimen/slider_margin"

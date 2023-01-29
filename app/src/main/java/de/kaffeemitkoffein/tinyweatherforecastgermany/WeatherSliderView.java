@@ -487,7 +487,8 @@ public class WeatherSliderView extends HorizontalScrollView {
         ImageView imageView = mainLayout.findViewById(R.id.sliderview_image);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) imageView.getLayoutParams();
         layoutParams.setMargins(popUpWidth/2,0,popUpWidth/2,0);
-        Bitmap bitmap = Bitmap.createBitmap(valueSet.imageWidth,valueSet.imageHeight, Bitmap.Config.ARGB_8888);
+        layoutParams.width=valueSet.popupWidth*weatherInfos.size()/12;
+        Bitmap bitmap = Bitmap.createBitmap(valueSet.imageWidth,valueSet.imageHeight, Bitmap.Config.RGB_565);
         bitmap.eraseColor(ValueSet.COLOR.Sky);
         Canvas canvas = new Canvas(bitmap);
         // paints

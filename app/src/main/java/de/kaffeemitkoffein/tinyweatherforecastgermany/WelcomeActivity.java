@@ -62,6 +62,18 @@ public class WelcomeActivity extends Activity {
 
     private final static String SIS_PAGENUMBER = "PAGENUMBER";
 
+    private final View.OnClickListener pagerClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (page < 5) {
+                page++;
+                setPage(page);
+            } else {
+                //startMainActivityAndShowCircle();
+            }
+        }
+    };
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putInt(SIS_PAGENUMBER,page);
@@ -151,17 +163,7 @@ public class WelcomeActivity extends Activity {
                     setPage(page);
                 }
             });
-            pager.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (page < 5) {
-                        page++;
-                        setPage(page);
-                    } else {
-                        //startMainActivityAndShowCircle();
-                    }
-                }
-            });
+            pager.setOnClickListener(pagerClickListener);
             setPage(page);
             arrow_right.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -196,6 +198,7 @@ public class WelcomeActivity extends Activity {
 
     private View setPage(int page) {
         if (result_view!=null){
+            pager.setOnClickListener(null);
             pager.removeView(result_view);
             result_view = null;
         }
