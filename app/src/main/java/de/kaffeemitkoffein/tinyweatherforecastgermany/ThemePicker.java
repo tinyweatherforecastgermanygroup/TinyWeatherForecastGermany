@@ -1,3 +1,22 @@
+/**
+ * This file is part of TinyWeatherForecastGermany.
+ *
+ * Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
@@ -60,113 +79,14 @@ public final class ThemePicker {
     }
 
     public static int getWidgetTextColor(Context context){
-        /*
-        if (isDarkTheme(context)){
-            return Color.WHITE;
-        } else {
-            return Color.BLACK;
-        }
-
-        int c;
-        String themePreference = WeatherSettings.getThemePreference(context);
-        if (!isDarkTheme(context)){
-            c = R.color.colorText_Solarized;
-        } else {
-            c = R.color.colorText_SolarizedDark;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.DARK)){
-            c = R.color.colorText_DarkTheme;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.LIGHT)){
-            c = R.color.colorText_LightTheme;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED)){
-            c = R.color.colorText_Solarized;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED_DARK)){
-            c = R.color.colorText_SolarizedDark;
-        }
-        int color;
-        if (android.os.Build.VERSION.SDK_INT>22){
-            color = context.getResources().getColor(c,context.getTheme());
-        } else {
-            color= context.getResources().getColor(c);
-        }
-        float[] hsv = new float[3];
-        Color.colorToHSV(color,hsv);
-        int c2 = Color.HSVToColor(255,hsv);
-        return  c2;
-         */
         return getColor(context,ThemeColor.TEXT);
     }
 
     public static int getColorTextLight(Context context){
-        /*
-        int c;
-        String themePreference = WeatherSettings.getThemePreference(context);
-        if (!isDarkTheme(context)){
-            c = R.color.colorTextLight_Solarized;
-        } else {
-            c = R.color.colorTextLight_SolarizedDark;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.DARK)){
-            c = R.color.colorTextLight_DarkTheme;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.LIGHT)){
-            c = R.color.colorTextLight_LightTheme;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED)){
-            c = R.color.colorTextLight_Solarized;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED_DARK)){
-            c = R.color.colorTextLight_SolarizedDark;
-        }
-        int color;
-        if (android.os.Build.VERSION.SDK_INT>22){
-            color = context.getResources().getColor(c,context.getTheme());
-        } else {
-            color= context.getResources().getColor(c);
-        }
-        float[] hsv = new float[3];
-        Color.colorToHSV(color,hsv);
-        int c2 = Color.HSVToColor(255,hsv);
-        return  c2;
-         */
-        return getColor(context,ThemeColor.TEXTLIGHT);
+         return getColor(context,ThemeColor.TEXTLIGHT);
     }
 
     public static int getColorPrimary(Context context){
-        /*
-        int c;
-        String themePreference = WeatherSettings.getThemePreference(context);
-        if (!isDarkTheme(context)){
-            c = R.color.colorPrimary_Solarized;
-        } else {
-            c = R.color.colorPrimary_SolarizedDark;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.DARK)){
-            c = R.color.colorPrimary_DarkTheme;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.LIGHT)){
-            c = R.color.colorPrimary_LightTheme;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED)){
-            c = R.color.colorPrimary_Solarized;
-        }
-        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED_DARK)){
-            c = R.color.colorPrimary_SolarizedDark;
-        }
-        int color;
-        if (android.os.Build.VERSION.SDK_INT>22){
-            color = context.getResources().getColor(c,context.getTheme());
-        } else {
-            color= context.getResources().getColor(c);
-        }
-        float[] hsv = new float[3];
-        Color.colorToHSV(color,hsv);
-        int c2 = Color.HSVToColor(255,hsv);
-        return  c2;
-         */
         return getColor(context,ThemeColor.PRIMARY);
     }
 
@@ -285,19 +205,6 @@ public final class ThemePicker {
 
     public static void applyColor(final Bitmap bitmap, int color){
         Canvas canvas = new Canvas(bitmap);
-        /*
-            final Paint pTR = new Paint();
-            pTR.setColor(color);
-            pTR.setStyle(Paint.Style.FILL_AND_STROKE);
-            for (int x=0; x<bitmap.getWidth();x++){
-                for (int y=0; y<bitmap.getHeight(); y++){
-                    if (bitmap.getPixel(x,y)==Color.WHITE){
-                        canvas.drawPoint(x,y,pTR);
-                    }
-                }
-            }
-
-         */
         Paint paint = new Paint();
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         paint.setColor(color);

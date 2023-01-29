@@ -1,7 +1,7 @@
 /**
  * This file is part of TinyWeatherForecastGermany.
  *
- * Copyright (c) 2020, 2021 Pawel Dube
+ * Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1008,7 +1008,11 @@ public class MainActivity extends Activity {
         displayUpdateTime(weatherCard);
         ListView weatherList = (ListView) findViewById(R.id.main_listview);
         forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
-        if (localWarnings!=null){
+        // display immediately if:
+        // a) warnings already loaded in memory, OR
+        // b) area database not ready yet, OR
+        // c) warnings are disabled.
+        if ((localWarnings!=null) || !WeatherSettings.isAreaDatabaseReady(context) || WeatherSettings.areWarningsDisabled(context)){
             // warnings present, display immediately
             forecastAdapter.setWarnings(localWarnings);
             weatherList.setAdapter(forecastAdapter);
@@ -1021,7 +1025,10 @@ public class MainActivity extends Activity {
         } else {
             // fetch warnings async if necessary
             // will call this sub again after warnings were loaded
-            checkIfWarningsApply();
+            // only do it once the area database is in place
+            if (WeatherSettings.isAreaDatabaseReady(context)){
+                checkIfWarningsApply();
+            }
         }
    }
 
@@ -1029,9 +1036,11 @@ public class MainActivity extends Activity {
         if (weatherCard==null){
             weatherCard = new Weather().getCurrentWeatherInfo(this);
         }
+        /*
         if (weatherCard==null){
             weatherCard = new CurrentWeatherInfo();
         }
+         */
         displayWeatherForecast(weatherCard);
     }
 

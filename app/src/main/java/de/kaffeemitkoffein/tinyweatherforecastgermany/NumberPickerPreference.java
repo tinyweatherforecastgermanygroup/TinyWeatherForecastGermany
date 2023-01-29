@@ -30,10 +30,10 @@ public class NumberPickerPreference extends DialogPreference {
     private NumberPicker numberPicker;
     private int resultNumber;
     private Context context;
-    private int minValue = 3;
-    private int maxValue = 10;
-    public final static String[] maxValues = {"5","10","15","20","25","30","35","40"};
+    private int minValue = 7;
+    private int maxValue = 4;
     public final static String[] minValues = {"-35","-30","-25","-20","-15","-10","-5","0"};
+    public final static String[] maxValues = {"5","10","15","20","25","30","35","40"};
 
     public NumberPickerPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);

@@ -147,7 +147,7 @@ public class ForecastBitmap{
             } else {
                 // portrait mode
                 layoutParams.width = displayMetrics.widthPixels;
-                layoutParams.height = (displayMetrics.heightPixels / 20);
+                layoutParams.height = Math.round(getForecastBarHeight(displayMetrics));
             }
         }
         return layoutParams;
@@ -183,11 +183,19 @@ public class ForecastBitmap{
                 } else {
                     // portrait mode
                     bitmapWidth = displayMetrics.widthPixels;
-                    bitmapHeight = (displayMetrics.heightPixels / 20);
+                    bitmapHeight = Math.round(getForecastBarHeight(displayMetrics));
                 }
             }
         }
         TEXT_PAINT.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
+    }
+
+    public float getForecastBarHeight(){
+        return bitmapHeight;
+    }
+
+    public static float getForecastBarHeight(DisplayMetrics displayMetrics) {
+        return (displayMetrics.heightPixels / 20f);
     }
 
     private Bitmap getIconBitmap(Context context, Weather.WeatherInfo weatherInfo, int bitmapWidth, int bitmapHeight){
@@ -715,9 +723,9 @@ public class ForecastBitmap{
         }
         int display_steps = deltaTemp / 5 + 2;
         if (WeatherSettings.useOverviewChartMinMax(context)){
-            display_steps = deltaTemp / 5 + 1;
+            display_steps = deltaTemp / 5 + 0;
             if (deltaTemp%10==0){
-                display_steps = deltaTemp / 10 + 1;
+                display_steps = deltaTemp / 10 + 0;
             }
         }
         if (chartHeight < 100)

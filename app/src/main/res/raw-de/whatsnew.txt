@@ -1,7 +1,5 @@
 Neu in dieser Version ([VERSION]):
 
-- neuer Filter, welche Warnungen benachrichtigt werden sollen
-- Karte zeigt auf Wunsch Kreise, Bundesländer, Warngebiete auf See und an den Küsten an
-- die Skalierung der Temperatur in der Übersichtsgrafik (App & Widgets) kann auf feste Werte gesetzt werden
-- neue Option, um alle Einstellungen auf Standard-Werte zurückzusetzen
-- verbesserte Übersetzungen
+- aktualisierte Liste der Wetterstationen
+- neue Unterstützung für weitere Vorhersage-Orte (DMO; Direct Model Output) neben den bisherigen Wetterstationen
+- kleinere Fehlerverbesserungen

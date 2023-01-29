@@ -1,7 +1,7 @@
 /**
  * This file is part of TinyWeatherForecastGermany.
  *
- * Copyright (c) 2020, 2021 Pawel Dube
+ * Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -926,9 +926,6 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             int height = view1.getHeight();
             // this is a hack to prevent a zero value of the height on some devices:
             // the height is always the maximum determinded up to now
-            if (height>regularCellHeight){
-                // nothing to do
-            }
             if (height<regularCellHeight){
                 height = regularCellHeight;
             }
@@ -936,6 +933,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             AbsListView.LayoutParams layoutParams = (AbsListView.LayoutParams) view1.getLayoutParams();
             layoutParams.height = height;
             view1.setLayoutParams(layoutParams);
+            view1.invalidate();
             // this is bacically a hack, so that this view only gets visible after everything else is layouted
             if (eodBar!=null){
                 if ((display_endofday_bar) && (eODv)){
@@ -1233,9 +1231,9 @@ public float SPtoDP(float value){
 public int determineExpectedPixelHeightOfForecastElement(){
     float total=0; // height in DP
     total = total + 24; // top & bottom padding, optional end of day bar
-    if (viewModel==WeatherSettings.ViewModel.EXTENDED) {
+    if (viewModel.equals(WeatherSettings.ViewModel.EXTENDED)) {
         float leftColumn = 0; float middleColumn = 0; float rightColumn = 0;
-        middleColumn = middleColumn + 0.33f*this.screenWidthDP;
+        middleColumn = middleColumn + 0.33f*(this.screenWidthDP-6); // padding 3 dp on both sides
         if (screenWidth == ScreenWidthCategory.NORMAL) {
             leftColumn   = leftColumn + 2 * SPtoDP(10) + 3 * SPtoDP(10);  // condition-text + iconrow * 3
             rightColumn  = SPtoDP(28 + 14 + 2*10);                  // temperatureContainer + wind row + visiblity row
@@ -1260,7 +1258,7 @@ public int determineExpectedPixelHeightOfForecastElement(){
             }
         }
     }
-    float result = total*(displayMetrics.xdpi/160f);
+    float result = total*(displayMetrics.xdpi/160f)+ForecastBitmap.getForecastBarHeight(displayMetrics);
     return Math.round(result);
 }
 
