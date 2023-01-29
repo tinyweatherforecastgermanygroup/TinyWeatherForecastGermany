@@ -475,6 +475,10 @@ public class MainActivity extends Activity {
                             WidgetRefresher.refresh(context.getApplicationContext());
                         }
                         // reload weather data if necessary
+                        if (key.equals(WeatherSettings.PREF_STATION_NAME)){
+                            // invalidate local warnings when station changes
+                            localWarnings = null;
+                        }
                         if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
                             boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
                             if (!updated){

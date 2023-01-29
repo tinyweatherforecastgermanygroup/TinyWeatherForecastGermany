@@ -147,8 +147,8 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_DEFAULT = false;
     public static final int PREF_DISPLAY_OVERVIEWCHART_DAYS_DEFAULT = 10;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT = false;
-    public static final int PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT = -5;
-    public static final int PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT = 25;
+    public static final int PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT = 7;
+    public static final int PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT = 4;
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
     public static final boolean PREF_UPDATE_TEXTFORECASTS_DEFAULT = true;

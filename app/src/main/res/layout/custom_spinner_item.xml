@@ -26,6 +26,7 @@
     android:layout_height="match_parent"
     android:textSize="18dp"
     android:textColor="?attr/colorAccent"
+    android:background="?attr/colorPrimary"
     android:gravity="left"
     android:padding="2dp">
 </TextView>

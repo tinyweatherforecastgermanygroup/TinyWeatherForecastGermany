@@ -129,7 +129,6 @@
           to be set there again.
     -->
 
-
     <style name="AppTheme_Dark" parent="android:Theme.Holo">
         <item name="colorPrimary">@color/colorPrimary_DarkTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_DarkTheme</item>
@@ -261,6 +260,7 @@
         <item name="android:textColorSecondary">@color/colorTextDark_Solarized</item>
         <!-- unknown -->
         <item name="android:textColorTertiary">@color/colorText_Solarized</item>
+
     </style>
 
     <style name="ActionBar_Solarized" parent="@android:style/Widget.Holo.ActionBar">

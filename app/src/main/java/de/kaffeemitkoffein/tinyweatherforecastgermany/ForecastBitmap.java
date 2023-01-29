@@ -721,25 +721,20 @@ public class ForecastBitmap{
         if (minTemp>=0){
             deltaTemp = maxTemp;
         }
-        int display_steps = deltaTemp / 5 + 2;
-        if (WeatherSettings.useOverviewChartMinMax(context)){
-            display_steps = deltaTemp / 5 + 0;
-            if (deltaTemp%10==0){
-                display_steps = deltaTemp / 10 + 0;
-            }
-        }
-        if (chartHeight < 100)
-            display_steps = 3;
-        float temp_scale_step_value = 20;
-        if (deltaTemp / display_steps <= 10)
+        int temp_scale_step_value = 5;
+        // if screen to narrow or deltaTemp too high, increase scale to 10°n
+        if ((chartHeight<100) || (deltaTemp>25)){
             temp_scale_step_value = 10;
-        if (deltaTemp / display_steps <= 5)
-            temp_scale_step_value = 5;
+        }
+        int display_steps = deltaTemp / temp_scale_step_value;
         float temp_bottom_offset_value = 0;
         if (minTemp < 0){
-            temp_bottom_offset_value = -((Math.abs(minTemp)/(int) temp_scale_step_value)+1)*temp_scale_step_value;
+            temp_bottom_offset_value = -(((float) (Math.abs(minTemp)/temp_scale_step_value))+1)*temp_scale_step_value;
         }
-        float temp_graphscale = temp_scale_step_value * display_steps / chartHeight;
+        while (maxTemp>temp_bottom_offset_value+display_steps*temp_scale_step_value){
+            display_steps++;
+        }
+        float temp_graphscale = (float) temp_scale_step_value * display_steps / chartHeight;
         float zeroline_position = chartHeight + temp_bottom_offset_value / temp_graphscale;
         // paint chart outline
         canvas.drawLine(xChartOffset,0,xChartOffset,chartHeight,chartPaint);
