@@ -591,6 +591,18 @@ public class WeatherContentProvider extends ContentProvider {
                 onCreate(sqLiteDatabase);
             }
         }
+
+        @Override
+        public void onDowngrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+            // all other database upgrades require complete reset
+            // drop data & re-create tables
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_FORECASTS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_WARNINGS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_TEXTS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_AREAS);
+            onCreate(sqLiteDatabase);
+            //super.onDowngrade(db, oldVersion, newVersion);
+        }
     }
 
 }
