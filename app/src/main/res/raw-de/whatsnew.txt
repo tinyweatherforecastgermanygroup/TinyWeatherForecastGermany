@@ -1,5 +1,5 @@
 Neu in dieser Version ([VERSION]):
 
 - aktualisierte Liste der Wetterstationen
-- neue Unterstützung für weitere Vorhersage-Orte (DMO; Direct Model Output) neben den bisherigen Wetterstationen
-- kleinere Fehlerverbesserungen
+- neue Vorhersage-Orte (DMO; Direct Model Output) neben den bisherigen Wetterstationen
+- kleinere Fehlerverbesserungen, insbesondere der Benutzeroberfläche
