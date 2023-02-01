@@ -39,6 +39,8 @@ public class WeatherContentProvider extends ContentProvider {
     public static final String TABLE_NAME_TEXTS     = "texts";
     public static final String TABLE_NAME_AREAS     = "areas";
 
+    public static final String EXISTCLAUSE = " IF NOT EXISTS ";
+
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     private static final int URICODE_FORECAST_SINGLE = 10;
@@ -291,7 +293,7 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_FORECASTS_wwMd="wwMd";
         public static final String KEY_FORECASTS_PEvap="PEvap";
 
-        public static final String SQL_COMMAND_CREATE_TABLE_FORECASTS = "CREATE TABLE " + TABLE_NAME_FORECASTS + "("
+        public static final String SQL_COMMAND_CREATE_TABLE_FORECASTS = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_FORECASTS + "("
                 + KEY_FORECASTS_id + " INTEGER PRIMARY KEY ASC,"
                 + KEY_FORECASTS_timetext + " TEXT,"
                 + KEY_FORECASTS_name + " TEXT,"
@@ -468,7 +470,7 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_WARNINGS_area_names = "area_names";
         public static final String KEY_WARNINGS_area_warncellIDs = "area_warncellIDs";
 
-        public static final String SQL_COMMAND_CREATE_TABLE_WARNINGS = "CREATE TABLE " + TABLE_NAME_WARNINGS + "("
+        public static final String SQL_COMMAND_CREATE_TABLE_WARNINGS = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_WARNINGS + "("
                 + KEY_WARNINGS_id + " INTEGER PRIMARY KEY ASC,"
                 + KEY_WARNINGS_polling_time + " INTEGER,"
                 + KEY_WARNINGS_identifier + " TEXT,"
@@ -523,7 +525,7 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_TEXTS_polled = "polled";
         public static final String KEY_TEXTS_outdated = "outdated";
 
-        public static final String SQL_COMMAND_CREATE_TABLE_TEXTS = "CREATE TABLE " + TABLE_NAME_TEXTS + "("
+        public static final String SQL_COMMAND_CREATE_TABLE_TEXTS = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_TEXTS + "("
                 + KEY_TEXTS_id + " INTEGER PRIMARY KEY ASC,"
                 + KEY_TEXTS_identifier + " TEXT,"
                 + KEY_TEXTS_weburl + " TEXT,"
@@ -548,7 +550,7 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_AREAS_name = "name";
         public static final String KEY_AREAS_polygonstring = "polygonstring";
 
-        public static final String SQL_COMMAND_CREATE_TABLE_AREAS = "CREATE TABLE " + TABLE_NAME_AREAS + "("
+        public static final String SQL_COMMAND_CREATE_TABLE_AREAS = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_AREAS + "("
                 + KEY_AREAS_id + " INTEGER PRIMARY KEY ASC,"
                 + KEY_AREAS_warncellid + " TEXT,"
                 + KEY_AREAS_warncenter + " TEXT,"
