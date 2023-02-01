@@ -386,6 +386,10 @@ public class WelcomeActivity extends Activity {
             arrow_right.setVisibility(View.GONE);
             skip.setVisibility(View.GONE);
         }
+        pager = (RelativeLayout) findViewById(R.id.welcome_pager);
+        if (pager!=null){
+            pager.setOnClickListener(pagerClickListener);
+        }
         return result_view;
     }
 
