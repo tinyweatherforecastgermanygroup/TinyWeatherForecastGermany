@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="preference_notify_LED_title">LED-meddelanden</string>
+    <string name="preference_notify_LED_summary">Använd LED-anmälan om den finns tillgänglig.</string>
+    <string name="preference_screen_notifications_title">Meddelanden</string>
+    <string name="preference_screen_notifications_summary">Anpassa meddelanden om vädervarningar.</string>
+</resources>
