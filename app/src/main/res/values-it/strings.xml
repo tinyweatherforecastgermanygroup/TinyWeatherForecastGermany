@@ -333,4 +333,8 @@
     <string name="preference_reset_summary">Impostare tutte le impostazioni sui valori predefiniti.</string>
     <string name="alertdialog_3_text1">Tutte le impostazioni verranno ripristinate ai valori predefiniti, quindi verrà visualizzata nuovamente l\'introduzione per effettuare le impostazioni più importanti.</string>
     <string name="preference_screen_overviewchart_max_title">Massimo</string>
+    <string name="preference_screen_notifications_title">Notifiche</string>
+    <string name="preference_notify_LED_title">Notifiche a LED</string>
+    <string name="preference_notify_LED_summary">Utilizzare il LED di notifica, se disponibile.</string>
+    <string name="preference_screen_notifications_summary">Personalizzare le notifiche sulle allerte meteo.</string>
 </resources>
