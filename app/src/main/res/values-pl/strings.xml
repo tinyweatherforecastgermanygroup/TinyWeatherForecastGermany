@@ -336,4 +336,9 @@
     <string name="preference_notify_LED_summary">Użyj diody powiadamiającej, jeśli jest dostępna.</string>
     <string name="preference_screen_notifications_title">Powiadomienia</string>
     <string name="preference_screen_notifications_summary">Dostosuj powiadomienia o ostrzeżeniach pogodowych.</string>
+    <string name="preference_notify_LEDcolor_title">Kolor powiadomienia</string>
+    <string name="preference_notify_LEDcolor_summary">Wybierz kolor diody LED powiadomienia.</string>
+    <string name="preference_notify_LEDcolor_current">Aktualny kolor:</string>
+    <string name="preference_led_notice_title">Uwaga</string>
+    <string name="preference_led_notice_summary">Tylko niektóre urządzenia mają diodę powiadomień. Na innych urządzeniach opcje te nie mają żadnego wpływu. Inne ustawienia urządzenia mogą uniemożliwiać miganie diody LED powiadomienia.</string>
 </resources>
