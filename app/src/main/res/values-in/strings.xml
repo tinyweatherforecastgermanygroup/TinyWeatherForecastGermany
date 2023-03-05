@@ -336,4 +336,9 @@
     <string name="preference_notify_LED_summary">Gunakan LED notifikasi jika tersedia.</string>
     <string name="preference_screen_notifications_summary">Menyesuaikan pemberitahuan tentang peringatan cuaca.</string>
     <string name="preference_notify_LED_title">Pemberitahuan LED</string>
+    <string name="preference_notify_LEDcolor_title">Warna pemberitahuan</string>
+    <string name="preference_notify_LEDcolor_summary">Pilih warna LED notifikasi.</string>
+    <string name="preference_notify_LEDcolor_current">Warna saat ini:</string>
+    <string name="preference_led_notice_title">Pemberitahuan</string>
+    <string name="preference_led_notice_summary">Hanya beberapa perangkat yang memiliki LED notifikasi. Pada perangkat lain, opsi ini tidak berpengaruh. Pengaturan perangkat lain dapat mencegah LED notifikasi berkedip.</string>
 </resources>
