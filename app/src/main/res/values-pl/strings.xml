@@ -332,4 +332,8 @@
     <string name="preference_category_overviewchart_scale">Wartości skalowania</string>
     <string name="preference_screen_overviewchart_usemm_summary">Skala temperatury pozostaje taka sama, jeśli wartości mieszczą się w określonym zakresie.</string>
     <string name="preference_screen_overviewchart_min_title">Minimum</string>
+    <string name="preference_notify_LED_title">Powiadomienia LED</string>
+    <string name="preference_notify_LED_summary">Użyj diody powiadamiającej, jeśli jest dostępna.</string>
+    <string name="preference_screen_notifications_title">Powiadomienia</string>
+    <string name="preference_screen_notifications_summary">Dostosuj powiadomienia o ostrzeżeniach pogodowych.</string>
 </resources>
