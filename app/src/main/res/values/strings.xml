@@ -108,11 +108,11 @@
     <string name="preference_notifySeverity_summary">Notify about warnings of category \"%1$s\" or higher.</string>
     <string name="preference_notify_LED_title">LED notifications</string>
     <string name="preference_notify_LED_summary">Use notification LED if available.</string>
-    <string name="preference_notify_LEDcolor_title">LED color</string>
+    <string name="preference_notify_LEDcolor_title">Notification color</string>
     <string name="preference_notify_LEDcolor_summary">Select the notification LED color.</string>
-    <string name="preference_notify_LEDcolor_current">Color: </string>
+    <string name="preference_notify_LEDcolor_current">Current color: </string>
     <string name="preference_led_notice_title">Notice</string>
-    <string name="preference_led_notice_summary">Only some devices have a notification LED. On other devices, these options have no effect.</string>
+    <string name="preference_led_notice_summary">Only some devices have a notification LED. On other devices, these options have no effect. Other device settings may prevent the notification LED from blinking.</string>
     <string name="preference_displaynoteinwidget_title">Display DWD note</string>
     <string name="preference_displaynoteinwidget_summary">Show the data source string.</string>
     <string name="preference_cache_warnings_title">Cache warnings</string>
