@@ -332,4 +332,8 @@
     <string name="alertdialog_3_text1">Kaikki asetukset palautetaan oletusarvoihin, minkä jälkeen intro näytetään uudelleen tärkeimpien asetusten tekemistä varten.</string>
     <string name="preference_category_overviewchart_scale">Asteikkoarvot</string>
     <string name="preference_screen_overviewchart_usemm_title">Kiinteä asteikko</string>
+    <string name="preference_screen_notifications_title">Ilmoitukset</string>
+    <string name="preference_notify_LED_title">LED-ilmoitukset</string>
+    <string name="preference_notify_LED_summary">Käytä ilmoitus-LEDiä, jos se on käytettävissä.</string>
+    <string name="preference_screen_notifications_summary">Mukauta ilmoituksia säävaroituksista.</string>
 </resources>
