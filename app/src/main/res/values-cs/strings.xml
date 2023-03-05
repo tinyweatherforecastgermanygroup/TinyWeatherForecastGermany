@@ -332,4 +332,8 @@
     <string name="preference_reset_title">Obnovení</string>
     <string name="alertdialog_3_text1">Všechna nastavení se obnoví na výchozí hodnoty a poté se znovu zobrazí úvodní okno, ve kterém můžete provést nejdůležitější nastavení.</string>
     <string name="preference_screen_overviewchart_min_summary">Dolní hodnota teplotní stupnice:</string>
+    <string name="preference_notify_LED_title">Oznámení LED</string>
+    <string name="preference_notify_LED_summary">Pokud je k dispozici, použijte oznamovací LED diodu.</string>
+    <string name="preference_screen_notifications_title">Oznámení</string>
+    <string name="preference_screen_notifications_summary">Přizpůsobení upozornění na výstrahy před počasím.</string>
 </resources>
