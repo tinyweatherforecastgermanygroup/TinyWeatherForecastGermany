@@ -350,4 +350,9 @@
     <string name="preference_notify_LED_summary">Utilisez la LED de notification si elle est disponible.</string>
     <string name="preference_screen_notifications_title">Notifications</string>
     <string name="preference_screen_notifications_summary">Personnalisez les notifications relatives aux alertes météorologiques.</string>
+    <string name="preference_notify_LEDcolor_title">Couleur de la notification</string>
+    <string name="preference_notify_LEDcolor_summary">Sélectionnez la couleur du voyant de notification.</string>
+    <string name="preference_notify_LEDcolor_current">Couleur actuelle :</string>
+    <string name="preference_led_notice_title">Avis</string>
+    <string name="preference_led_notice_summary">Seuls certains appareils disposent d\'un voyant de notification. Sur les autres appareils, ces options n\'ont aucun effet. D\'autres paramètres de l\'appareil peuvent empêcher le clignotement du voyant de notification.</string>
 </resources>
