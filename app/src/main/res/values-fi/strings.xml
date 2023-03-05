@@ -336,4 +336,9 @@
     <string name="preference_notify_LED_title">LED-ilmoitukset</string>
     <string name="preference_notify_LED_summary">Käytä ilmoitus-LEDiä, jos se on käytettävissä.</string>
     <string name="preference_screen_notifications_summary">Mukauta ilmoituksia säävaroituksista.</string>
+    <string name="preference_notify_LEDcolor_title">Ilmoituksen väri</string>
+    <string name="preference_notify_LEDcolor_summary">Valitse ilmoituksen LED-väri.</string>
+    <string name="preference_notify_LEDcolor_current">Nykyinen väri:</string>
+    <string name="preference_led_notice_title">Ilmoitus</string>
+    <string name="preference_led_notice_summary">Vain joissakin laitteissa on ilmoitus-LED. Muissa laitteissa näillä vaihtoehdoilla ei ole vaikutusta. Muut laiteasetukset saattavat estää ilmoitus-LEDin vilkkumisen.</string>
 </resources>
