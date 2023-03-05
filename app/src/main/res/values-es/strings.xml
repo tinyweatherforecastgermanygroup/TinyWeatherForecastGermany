@@ -332,4 +332,8 @@
     <string name="preference_screen_overviewchart_max_title">Máximo</string>
     <string name="preference_screen_overviewchart_min_title">Mínimo</string>
     <string name="preference_screen_overviewchart_min_summary">Valor inferior de la escala de temperatura:</string>
+    <string name="preference_notify_LED_title">Notificaciones LED</string>
+    <string name="preference_notify_LED_summary">Utilice el LED de notificación si está disponible.</string>
+    <string name="preference_screen_notifications_title">Notificaciones</string>
+    <string name="preference_screen_notifications_summary">Personaliza las notificaciones sobre avisos meteorológicos.</string>
 </resources>
