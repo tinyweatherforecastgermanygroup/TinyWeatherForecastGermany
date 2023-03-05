@@ -332,4 +332,8 @@
     <string name="preference_category_overviewchart_scale">Nilai skala</string>
     <string name="preference_screen_overviewchart_max_title">Maksimum</string>
     <string name="preference_screen_overviewchart_max_summary">Nilai atas skala suhu:</string>
+    <string name="preference_screen_notifications_title">Pemberitahuan</string>
+    <string name="preference_notify_LED_summary">Gunakan LED notifikasi jika tersedia.</string>
+    <string name="preference_screen_notifications_summary">Menyesuaikan pemberitahuan tentang peringatan cuaca.</string>
+    <string name="preference_notify_LED_title">Pemberitahuan LED</string>
 </resources>
