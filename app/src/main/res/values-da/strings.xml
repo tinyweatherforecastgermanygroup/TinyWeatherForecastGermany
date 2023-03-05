@@ -332,4 +332,8 @@
     <string name="preference_reset_summary">Indstil alle indstillinger til standardværdierne.</string>
     <string name="alertdialog_3_text1">Alle indstillinger vil blive nulstillet til standardværdierne, og derefter vises introen igen, så du kan foretage de vigtigste indstillinger.</string>
     <string name="preference_screen_overviewchart_usemm_summary">Temperaturskalaen forbliver den samme, hvis værdierne ligger inden for det angivne område.</string>
+    <string name="preference_notify_LED_title">LED-meddelelser</string>
+    <string name="preference_notify_LED_summary">Brug notifikations-LED, hvis den er tilgængelig.</string>
+    <string name="preference_screen_notifications_title">Meddelelser</string>
+    <string name="preference_screen_notifications_summary">Tilpas meddelelser om vejrvarsler.</string>
 </resources>
