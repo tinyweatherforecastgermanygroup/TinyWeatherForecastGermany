@@ -346,4 +346,8 @@
     <string name="preference_category_overviewchart_scale">Valeurs de l\'échelle</string>
     <string name="preference_screen_overviewchart_usemm_summary">L\'échelle de température reste la même si les valeurs sont comprises dans la plage spécifiée.</string>
     <string name="preference_screen_overviewchart_min_summary">Valeur inférieure de l\'échelle de température :</string>
+    <string name="preference_notify_LED_title">Notifications par LED</string>
+    <string name="preference_notify_LED_summary">Utilisez la LED de notification si elle est disponible.</string>
+    <string name="preference_screen_notifications_title">Notifications</string>
+    <string name="preference_screen_notifications_summary">Personnalisez les notifications relatives aux alertes météorologiques.</string>
 </resources>
