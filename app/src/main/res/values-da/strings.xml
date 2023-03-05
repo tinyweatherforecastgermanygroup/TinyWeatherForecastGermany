@@ -336,4 +336,9 @@
     <string name="preference_notify_LED_summary">Brug notifikations-LED, hvis den er tilgængelig.</string>
     <string name="preference_screen_notifications_title">Meddelelser</string>
     <string name="preference_screen_notifications_summary">Tilpas meddelelser om vejrvarsler.</string>
+    <string name="preference_notify_LEDcolor_title">Farve på notifikationen</string>
+    <string name="preference_notify_LEDcolor_summary">Vælg farven på meddelelses-LED\'en.</string>
+    <string name="preference_notify_LEDcolor_current">Nuværende farve:</string>
+    <string name="preference_led_notice_title">Meddelelse</string>
+    <string name="preference_led_notice_summary">Kun nogle enheder har en notifikations-LED. På andre enheder har disse indstillinger ingen effekt. Andre enhedsindstillinger kan forhindre, at notifikations-LED\'en blinker.</string>
 </resources>
