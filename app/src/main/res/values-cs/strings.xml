@@ -336,4 +336,9 @@
     <string name="preference_notify_LED_summary">Pokud je k dispozici, použijte oznamovací LED diodu.</string>
     <string name="preference_screen_notifications_title">Oznámení</string>
     <string name="preference_screen_notifications_summary">Přizpůsobení upozornění na výstrahy před počasím.</string>
+    <string name="preference_notify_LEDcolor_title">Barva oznámení</string>
+    <string name="preference_notify_LEDcolor_summary">Vyberte barvu oznamovací diody LED.</string>
+    <string name="preference_notify_LEDcolor_current">Aktuální barva:</string>
+    <string name="preference_led_notice_title">Oznámení</string>
+    <string name="preference_led_notice_summary">Pouze některá zařízení mají oznamovací diodu LED. Na ostatních zařízeních nemají tyto možnosti žádný vliv. Jiná nastavení zařízení mohou blikání oznamovací diody zabránit.</string>
 </resources>
