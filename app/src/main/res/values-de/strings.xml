@@ -349,4 +349,8 @@
     <string name="preference_reset_title">Zurücksetzen</string>
     <string name="preference_reset_summary">Alle Einstellungen auf die Standardwerte zurück setzen.</string>
     <string name="alertdialog_3_text1">Alle Einstellungen werden auf die Standardwerte zurückgesetzt, und anschließend wird das Intro erneut angezeigt, um die wichtigsten Einstellungen vorzunehmen zu können.</string>
+    <string name="preference_notify_LED_title">LED-Benachrichtigungen</string>
+    <string name="preference_notify_LED_summary">Verwende die Benachrichtigungs-LED, falls vorhanden.</string>
+    <string name="preference_screen_notifications_title">Benachrichtigungen</string>
+    <string name="preference_screen_notifications_summary">Passen Sie Benachrichtigungen über Wetterwarnungen an.</string>
 </resources>
