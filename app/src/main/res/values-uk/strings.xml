@@ -336,4 +336,9 @@
     <string name="preference_screen_notifications_title">Сповіщення</string>
     <string name="preference_screen_notifications_summary">Налаштуйте сповіщення про погодні попередження.</string>
     <string name="preference_notify_LED_summary">Використовуйте світлодіодний індикатор, якщо він доступний.</string>
+    <string name="preference_notify_LEDcolor_title">Колір сповіщення</string>
+    <string name="preference_notify_LEDcolor_summary">Виберіть колір світлодіода сповіщення.</string>
+    <string name="preference_notify_LEDcolor_current">Поточний колір:</string>
+    <string name="preference_led_notice_title">Зауважте</string>
+    <string name="preference_led_notice_summary">Лише на деяких пристроях є світлодіодний індикатор сповіщень. На інших пристроях ці параметри не впливають. Інші налаштування пристрою можуть перешкоджати блиманню індикатора сповіщень.</string>
 </resources>
