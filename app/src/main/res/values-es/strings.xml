@@ -336,4 +336,9 @@
     <string name="preference_notify_LED_summary">Utilice el LED de notificación si está disponible.</string>
     <string name="preference_screen_notifications_title">Notificaciones</string>
     <string name="preference_screen_notifications_summary">Personaliza las notificaciones sobre avisos meteorológicos.</string>
+    <string name="preference_notify_LEDcolor_title">Color de la notificación</string>
+    <string name="preference_notify_LEDcolor_summary">Seleccione el color del LED de notificación.</string>
+    <string name="preference_notify_LEDcolor_current">Color actual:</string>
+    <string name="preference_led_notice_title">Aviso</string>
+    <string name="preference_led_notice_summary">Sólo algunos dispositivos tienen un LED de notificación. En otros dispositivos, estas opciones no tienen ningún efecto. Otros ajustes del dispositivo pueden impedir que el LED de notificación parpadee.</string>
 </resources>
