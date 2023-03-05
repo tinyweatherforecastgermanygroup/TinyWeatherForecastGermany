@@ -353,4 +353,9 @@
     <string name="preference_notify_LED_summary">Verwende die Benachrichtigungs-LED, falls vorhanden.</string>
     <string name="preference_screen_notifications_title">Benachrichtigungen</string>
     <string name="preference_screen_notifications_summary">Passen Sie Benachrichtigungen über Wetterwarnungen an.</string>
+    <string name="preference_notify_LEDcolor_title">Farbe der Benachrichtigung</string>
+    <string name="preference_notify_LEDcolor_summary">Wählen Sie die Farbe der Benachrichtigungs-LED.</string>
+    <string name="preference_notify_LEDcolor_current">Aktuelle Farbe:</string>
+    <string name="preference_led_notice_title">Hinweis</string>
+    <string name="preference_led_notice_summary">Nur einige Geräte haben eine Benachrichtigungs-LED. Auf anderen Geräten haben diese Optionen keine Wirkung. Andere Geräteeinstellungen können das Blinken der Benachrichtigungs-LED verhindern.</string>
 </resources>
