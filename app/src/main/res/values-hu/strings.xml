@@ -229,4 +229,8 @@
     <string name="alertdialog_1_text">A logcatbe történő naplózás más alkalmazások számára szivárogtathat ki személyes információkat. Biztos vagy benne, és tudod, hogy mit csinálsz\?</string>
     <string name="alertdialog_2_text">Ez az alkalmazás jelenleg a logcat-be naplóz. A logcat-be történő naplózás le lesz tiltva, mivel ezt a funkciót nem a hivatalos kiadásokhoz tervezik.</string>
     <string name="service_notification_text1">Időjárás-előrejelzés…</string>
+    <string name="preference_notify_LED_title">LED értesítések</string>
+    <string name="preference_notify_LED_summary">Használja az értesítési LED-et, ha van.</string>
+    <string name="preference_screen_notifications_title">Értesítések</string>
+    <string name="preference_screen_notifications_summary">Az időjárási figyelmeztetésekről szóló értesítések testreszabása.</string>
 </resources>
