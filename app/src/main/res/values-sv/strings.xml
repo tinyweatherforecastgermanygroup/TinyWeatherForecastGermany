@@ -4,4 +4,9 @@
     <string name="preference_notify_LED_summary">Använd LED-anmälan om den finns tillgänglig.</string>
     <string name="preference_screen_notifications_title">Meddelanden</string>
     <string name="preference_screen_notifications_summary">Anpassa meddelanden om vädervarningar.</string>
+    <string name="preference_notify_LEDcolor_title">Färg för anmälan</string>
+    <string name="preference_notify_LEDcolor_summary">Välj färg på LED-indikatorn för meddelanden.</string>
+    <string name="preference_notify_LEDcolor_current">Nuvarande färg:</string>
+    <string name="preference_led_notice_title">Meddelande</string>
+    <string name="preference_led_notice_summary">Endast vissa enheter har en lysdiod för meddelanden. På andra enheter har dessa alternativ ingen effekt. Andra enhetsinställningar kan förhindra att notifierings-LED:n blinkar.</string>
 </resources>
