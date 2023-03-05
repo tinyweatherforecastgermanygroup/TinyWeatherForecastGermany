@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -50,7 +51,7 @@ public class DataUpdateService extends Service {
     public static String IC_ID = "WEATHER_NOTIFICATION";
     public static int    IC_IMPORTANCE = NotificationManager.IMPORTANCE_LOW;
 
-    public static String WARNING_NC_ID = "WEATHER_WARNING";
+    public static String WARNING_NC_ID_SKELETON = "WEATHER_WARNING";
     public static int    WARNING_NC_IMPORTANCE = NotificationManager.IMPORTANCE_HIGH;
     public static String WARNING_NC_GROUP = "de.kaffeemitkoffein.tinyweatherforecastgermany.WARNINGS";
 
@@ -392,9 +393,12 @@ public class DataUpdateService extends Service {
     }
 
     public static Notification getWarningNotification(Context context, NotificationManager notificationManager, WeatherWarning weatherWarning, String sortKey){
+        final String notificationChannelID = WeatherSettings.getNotificationChannelID(context);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel nc = new NotificationChannel(WARNING_NC_ID,context.getResources().getString(R.string.service_warning_categoryname),WARNING_NC_IMPORTANCE);
+            NotificationChannel nc = new NotificationChannel(notificationChannelID,context.getResources().getString(R.string.service_warning_categoryname),WARNING_NC_IMPORTANCE);
             nc.setDescription(context.getResources().getString(R.string.service_warning_categoryname));
+            nc.enableLights(true);
+            nc.setLightColor(WeatherSettings.getLEDColor(context));
             nc.setShowBadge(true);
             notificationManager.createNotificationChannel(nc);
         }
@@ -410,7 +414,7 @@ public class DataUpdateService extends Service {
         Notification n;
         Notification.Builder notificationBuilder;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            notificationBuilder = new Notification.Builder(context.getApplicationContext(),WARNING_NC_ID);
+            notificationBuilder = new Notification.Builder(context.getApplicationContext(),notificationChannelID);
         } else {
             notificationBuilder = new Notification.Builder(context.getApplicationContext());
         }
@@ -421,7 +425,7 @@ public class DataUpdateService extends Service {
                     .setStyle(new Notification.BigTextStyle().bigText(notificationBody))
                     .setLargeIcon(iconMutable)
                     .setOngoing(false)
-                    .setChannelId(WARNING_NC_ID)
+                    .setChannelId(notificationChannelID)
                     .setContentIntent(pendingIntent)
                     .setShowWhen(true)
                     .setWhen(weatherWarning.onset)
@@ -433,6 +437,8 @@ public class DataUpdateService extends Service {
                     .setContentTitle(weatherWarning.headline)
                     .setSmallIcon(WeatherIcons.getIconResource(context,WeatherIcons.WARNING_ICON))
                     .setStyle(new Notification.BigTextStyle().bigText(notificationBody))
+                    .setLights(WeatherSettings.getLEDColor(context),1000,1000)
+//                    .setLights(WARNING_NC_COLOR,1000,1000)
                     .setContentIntent(pendingIntent)
                     .setShowWhen(true)
                     .setWhen(weatherWarning.onset)

@@ -27,10 +27,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.*;
+import android.util.Log;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
-public class Settings extends PreferenceActivity{
+public class Settings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private Context context;
 
@@ -123,23 +124,6 @@ public class Settings extends PreferenceActivity{
         context = this;
         WeatherSettings.setRotationMode(this);
         addPreferencesFromResource(R.xml.preferences);
-        if (!WeatherSettings.appReleaseIsUserdebug()){
-            disableLogCatLogging();
-            //disableClearNotifications();
-        }
-        if (!WeatherSettings.isTLSdisabled(context)){
-            disableTLSOption();
-        }
-        if (WeatherSettings.getViewModel(context).equals(WeatherSettings.ViewModel.EXTENDED)){
-            // do something
-        }
-        // allow changing alarm state?
-        setAlarmSettingAllowed();
-        // allow warinings in widget setting?
-        setShowWarningsInWidgetAllowed();
-        setNotifyWarnings();
-        setNotifySeverity();
-        setUseMinMax();
         updateValuesDisplay();
         // reset notifications option
         Preference resetNotifications = (Preference) findPreference(WeatherSettings.PREF_CLEARNOTIFICATIONS);
@@ -188,23 +172,29 @@ public class Settings extends PreferenceActivity{
     @SuppressWarnings("deprecation")
     public void disableTLSOption(){
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_DISABLE_TLS);
-        checkBoxPreference.setChecked(false);
-        checkBoxPreference.setEnabled(false);
-        checkBoxPreference.setShouldDisableView(true);
-        PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
-        preferenceScreen.removePreference(checkBoxPreference);
+        if (checkBoxPreference!=null){
+            checkBoxPreference.setChecked(false);
+            checkBoxPreference.setEnabled(false);
+            checkBoxPreference.setShouldDisableView(true);
+            PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
+            if (preferenceScreen!=null){
+                preferenceScreen.removePreference(checkBoxPreference);
+            }
+        }
     }
 
     @SuppressWarnings("deprecation")
     public void setAlarmSettingAllowed(){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_SETALARM);
-        checkBoxPreference.setEnabled(!weatherSettings.serve_gadgetbridge);
-        checkBoxPreference.setShouldDisableView(true);
-        if (weatherSettings.serve_gadgetbridge){
-            checkBoxPreference.setSummary(context.getResources().getString(R.string.preference_setalarm_summary)+System.getProperty("line.separator")+context.getResources().getString(R.string.preference_setalarm_notice));
-        } else {
-            checkBoxPreference.setSummary(context.getResources().getString(R.string.preference_setalarm_summary));
+        if (checkBoxPreference!=null){
+            checkBoxPreference.setEnabled(!weatherSettings.serve_gadgetbridge);
+            checkBoxPreference.setShouldDisableView(true);
+            if (weatherSettings.serve_gadgetbridge){
+                checkBoxPreference.setSummary(context.getResources().getString(R.string.preference_setalarm_summary)+System.getProperty("line.separator")+context.getResources().getString(R.string.preference_setalarm_notice));
+            } else {
+                checkBoxPreference.setSummary(context.getResources().getString(R.string.preference_setalarm_summary));
+            }
         }
     }
 
@@ -212,26 +202,56 @@ public class Settings extends PreferenceActivity{
     public void setShowWarningsInWidgetAllowed(){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS);
-        checkBoxPreference.setEnabled(!weatherSettings.warnings_disabled);
-        checkBoxPreference.setShouldDisableView(true);
+        if (checkBoxPreference!=null){
+            checkBoxPreference.setEnabled(!weatherSettings.warnings_disabled);
+            checkBoxPreference.setShouldDisableView(true);
+        }
     }
 
     public void setNotifyWarnings(){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_NOTIFY_WARNINGS);
-        checkBoxPreference.setEnabled(!weatherSettings.warnings_disabled);
-        checkBoxPreference.setShouldDisableView(true);
+        if (checkBoxPreference!=null){
+            checkBoxPreference.setEnabled(!weatherSettings.warnings_disabled);
+            checkBoxPreference.setShouldDisableView(true);
+        }
     }
 
     public void setNotifySeverity(){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         ListPreference listPreference = (ListPreference) findPreference(WeatherSettings.PREF_WARNINGS_NOTIFY_SEVERITY);
-        if ((weatherSettings.warnings_disabled) || (!weatherSettings.notify_warnings)){
-            listPreference.setEnabled(false);
-            listPreference.setShouldDisableView(true);
-        } else {
-            listPreference.setEnabled(true);
-            listPreference.setShouldDisableView(false);
+        if (listPreference!=null){
+            if ((weatherSettings.warnings_disabled) || (!weatherSettings.notify_warnings)){
+                listPreference.setEnabled(false);
+                listPreference.setShouldDisableView(true);
+            } else {
+                listPreference.setEnabled(true);
+                listPreference.setShouldDisableView(false);
+            }
+        }
+    }
+
+    public void setNotifyLED(){
+        Log.v("twfg","TEST");
+        CheckBoxPreference ledNotifications = (CheckBoxPreference) findPreference(WeatherSettings.PREF_WARNINGS_NOTIFY_LED);
+        LEDColorPreference ledColorPreference = (LEDColorPreference) findPreference(WeatherSettings.PREF_LED_COLOR);
+        if ((ledNotifications!=null) && (ledColorPreference!=null)){
+            if (!WeatherSettings.notifyWarnings(context) || (WeatherSettings.areWarningsDisabled(context))){
+                Log.v("twfg","no notify or WD");
+                ledNotifications.setEnabled(false);
+                ledNotifications.setShouldDisableView(true);
+            } else {
+                Log.v("twfg","else");
+                ledNotifications.setEnabled(true);
+                ledNotifications.setShouldDisableView(false);
+            }
+            if ((!WeatherSettings.LEDEnabled(context)) || (WeatherSettings.areWarningsDisabled(context)) || (!WeatherSettings.notifyWarnings(context))){
+                ledColorPreference.setEnabled(false);
+                ledColorPreference.setShouldDisableView(true);
+            } else {
+                ledColorPreference.setEnabled(true);
+                ledColorPreference.setShouldDisableView(false);
+            }
         }
     }
 
@@ -239,20 +259,22 @@ public class Settings extends PreferenceActivity{
         CheckBoxPreference checkBoxPreferenceChartUseMinMax = (CheckBoxPreference) findPreference(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE);
         NumberPickerPreference numberPickerPreferenceChartRangeMin = (NumberPickerPreference) findPreference(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN);
         NumberPickerPreference numberPickerPreferenceChartRangeMax = (NumberPickerPreference) findPreference(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX);
-        if (!checkBoxPreferenceChartUseMinMax.isChecked()){
-            numberPickerPreferenceChartRangeMin.setEnabled(false);
-            numberPickerPreferenceChartRangeMin.setShouldDisableView(true);
-            numberPickerPreferenceChartRangeMax.setEnabled(false);
-            numberPickerPreferenceChartRangeMax.setShouldDisableView(true);
-            numberPickerPreferenceChartRangeMin.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_min_summary)+" -");
-            numberPickerPreferenceChartRangeMax.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_max_summary)+" -");
-        } else {
-            numberPickerPreferenceChartRangeMin.setEnabled(true);
-            numberPickerPreferenceChartRangeMin.setShouldDisableView(false);
-            numberPickerPreferenceChartRangeMax.setEnabled(true);
-            numberPickerPreferenceChartRangeMax.setShouldDisableView(false);
-            numberPickerPreferenceChartRangeMin.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_min_summary)+" "+WeatherSettings.getOverviewChartMin(context));
-            numberPickerPreferenceChartRangeMax.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_max_summary)+" "+WeatherSettings.getOverviewChartMax(context));
+        if ((checkBoxPreferenceChartUseMinMax!=null) && (numberPickerPreferenceChartRangeMin!=null) && (numberPickerPreferenceChartRangeMax!=null)){
+            if (!checkBoxPreferenceChartUseMinMax.isChecked()){
+                numberPickerPreferenceChartRangeMin.setEnabled(false);
+                numberPickerPreferenceChartRangeMin.setShouldDisableView(true);
+                numberPickerPreferenceChartRangeMax.setEnabled(false);
+                numberPickerPreferenceChartRangeMax.setShouldDisableView(true);
+                numberPickerPreferenceChartRangeMin.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_min_summary)+" -");
+                numberPickerPreferenceChartRangeMax.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_max_summary)+" -");
+            } else {
+                numberPickerPreferenceChartRangeMin.setEnabled(true);
+                numberPickerPreferenceChartRangeMin.setShouldDisableView(false);
+                numberPickerPreferenceChartRangeMax.setEnabled(true);
+                numberPickerPreferenceChartRangeMax.setShouldDisableView(false);
+                numberPickerPreferenceChartRangeMin.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_min_summary)+" "+WeatherSettings.getOverviewChartMin(context));
+                numberPickerPreferenceChartRangeMax.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_max_summary)+" "+WeatherSettings.getOverviewChartMax(context));
+            }
         }
     }
 
@@ -289,6 +311,24 @@ public class Settings extends PreferenceActivity{
 
     @SuppressWarnings("deprecation")
     private void updateValuesDisplay(){
+        if (!WeatherSettings.appReleaseIsUserdebug()){
+            disableLogCatLogging();
+            //disableClearNotifications();
+        }
+        if (!WeatherSettings.isTLSdisabled(context)){
+            disableTLSOption();
+        }
+        if (WeatherSettings.getViewModel(context).equals(WeatherSettings.ViewModel.EXTENDED)){
+            // do something
+        }
+        // allow changing alarm state?
+        setAlarmSettingAllowed();
+        // allow warinings in widget setting?
+        setShowWarningsInWidgetAllowed();
+        setNotifyWarnings();
+        setNotifySeverity();
+        setUseMinMax();
+        setNotifyLED();
         SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(this);
         String gadgetbridge_packagename = sp.getString(WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME,WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT);
         if (gadgetbridge_packagename.equals("")){
@@ -328,5 +368,26 @@ public class Settings extends PreferenceActivity{
                 return true;
             };
         });
+        LEDColorPreference ledColorPreference = (LEDColorPreference) findPreference(WeatherSettings.PREF_LED_COLOR);
+        ledColorPreference.setColorItem(WeatherSettings.getLEDColorItem(context));
+        ledColorPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                LEDColorPicker ledColorPicker = new LEDColorPicker(context);
+                ledColorPicker.setOnColorPickedListener(new LEDColorPicker.OnColorPickedListener() {
+                    @Override
+                    public void onColorSelected(int colorItem) {
+                        WeatherSettings.setLEDColorItem(context,colorItem);
+                    }
+                });
+                ledColorPicker.show();
+                return true;
+            }
+        });
      }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        updateValuesDisplay();
+    }
 }

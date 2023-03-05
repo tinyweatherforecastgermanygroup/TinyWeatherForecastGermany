@@ -29,7 +29,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.icu.lang.UCharacter;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -554,7 +553,6 @@ public class MainActivity extends Activity {
             }
             if (!API_TESTING_ENABLED){
                 weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
             }
             try {
                 weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
@@ -601,7 +599,6 @@ public class MainActivity extends Activity {
                 }
             });
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
-
         }
     }
 
@@ -1962,7 +1959,6 @@ public class MainActivity extends Activity {
         startActivity(i);
         finish();
     }
-
 
 }
 

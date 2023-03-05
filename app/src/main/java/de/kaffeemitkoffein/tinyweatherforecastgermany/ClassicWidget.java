@@ -78,7 +78,10 @@ public class ClassicWidget extends AppWidgetProvider {
         // refresh widgets, if no update was made.
         // in case of an update, the widgets are refreshed by a callback of WIDGET_CUSTOM_REFRESH_ACTION
         PrivateLog.log(c,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widget (system): "+getClass().toString());
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c,UpdateAlarmManager.WIDGET_UPDATE,null);
+        // to make app launch faster, check if it is really needed to check for an update
+        if (WeatherSettings.isWidgetForecastCheckDue(c)) {
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c, UpdateAlarmManager.WIDGET_UPDATE, null);
+        }
         updateWidgetDisplay(c,awm,widget_instances);
     }
 

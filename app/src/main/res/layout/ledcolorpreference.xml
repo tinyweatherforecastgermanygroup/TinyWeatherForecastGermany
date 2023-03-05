@@ -1,0 +1,67 @@
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:gravity="center_vertical"
+        android:paddingRight="?android:attr/scrollbarSize"
+        android:paddingEnd="?android:attr/scrollbarSize"
+        android:orientation="vertical">
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="6dp"
+    >
+
+        <TextView
+                android:id="@android:id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+        />
+
+        <TextView
+                android:id="@android:id/summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@android:id/title"
+                android:layout_gravity="start"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?attr/colorText"/>
+
+        <TextView
+                android:id="@+id/currentLEDColorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@android:id/summary"
+                android:layout_gravity="start"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/preference_notify_LEDcolor_current"
+                android:textColor="?attr/colorText"/>
+
+
+        <ImageView
+                android:id="@+id/preferenceLEDColor"
+                android:layout_width="32dp"
+                android:layout_height="18dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_alignTop="@id/currentLEDColorText"
+                android:layout_toRightOf="@id/currentLEDColorText"
+                android:layout_toEndOf="@id/currentLEDColorText"/>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

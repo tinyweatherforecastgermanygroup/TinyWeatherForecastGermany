@@ -20,12 +20,18 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.os.Build;
 import android.preference.PreferenceManager;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class WeatherSettings {
 
@@ -38,6 +44,12 @@ public class WeatherSettings {
     final static class StaticNotifationIDs {
         public static final int SERVICE_NOTIFICATION_IDENTIFIER = 2147483601;
     }
+
+    final public static int[] NotificationLEDcolors =
+                   {0xfff0e800,0xffffb300,0xffff5100,0xffff0000,
+                    0xffa1ff00,0xff26ff00,0xff06ad00,0xff00ad9c,
+                    0xff4dffed,0xff4daaff,0xff0073d1,0xff000899,
+                    0xffff1f71,0xffd100a0,0xff8800a3,0xffdddddd};
 
     final static String FAVORITES_SEPERATOR = ";";
 
@@ -75,6 +87,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_OVERVIEWCHART_MAX = "PREF_display_overviewchart_max";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
+    public static final String PREF_LASTWIDGETUPDATETIME = "PREF_lastwidgetupdatetime";
     public static final String PREF_UPDATE_WARNINGS = "PREF_update_warnings";
     public static final String PREF_UPDATE_TEXTFORECASTS = "PREF_update_textforecasts";
     public static final String PREF_WIDGET_OPACITY = "PREF_widget_opacity";
@@ -121,6 +134,9 @@ public class WeatherSettings {
     public static final String PREF_CLEARNOTIFICATIONS = "PREF_clearnotifications";
     public static final String PREF_ASKEDFORLOCATIONPERMISSION = "PREF_askedlocpermission";
     public static final String PREF_ROTATIONMODE = "PREF_rotationmode";
+    public static final String PREF_NC_CHANNEL_DETAIL = "PREF_channel_detail";
+    public static final String PREF_LED_COLOR = "PREF_led_color";
+    public static final String PREF_WARNINGS_NOTIFY_LED = "PREF_warnings_notify_LED";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -153,6 +169,7 @@ public class WeatherSettings {
     public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
     public static final boolean PREF_UPDATE_TEXTFORECASTS_DEFAULT = true;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
+    public static final long PREF_LASTWIDGETUPDATETIME_DEFAULT = 0;
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "90";
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
     public static final boolean PREF_WIDGET_DISPLAYWARNINGS_DEFAULT = true;
@@ -196,6 +213,9 @@ public class WeatherSettings {
     public static final int PREF_NOTIFICATION_IDENTIFIER_DEFAULT = -2147483640;
     public static final boolean PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT = false;
     public static final String PREF_ROTATIONMODE_DEFAULT = DeviceRotation.DEVICE;
+    public static final long PREF_NC_CHANNEL_DETAIL_DEFAULT = 0;
+    public static final int PREF_LED_COLOR_DEFAULT = 0;
+    public static final boolean PREF_WARNINGS_NOTIFY_LED_DEFAULT = true;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -226,6 +246,7 @@ public class WeatherSettings {
     public int displayOverviewChartMax = PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
+    public long lastWidgetUpdateTime = PREF_LASTWIDGETUPDATETIME_DEFAULT;
     public boolean update_warnings = PREF_UPDATE_WARNINGS_DEFAULT;
     public boolean update_textforecasts = PREF_UPDATE_TEXTFORECASTS_DEFAULT;
     public String widget_opacity = PREF_WIDGET_OPACITY_DEFAULT;
@@ -271,6 +292,9 @@ public class WeatherSettings {
     public int notificationIdentifier = PREF_NOTIFICATION_IDENTIFIER_DEFAULT;
     private boolean askedforlocationpermission = PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT;
     public String rotationMode = PREF_ROTATIONMODE_DEFAULT;
+    public long ncChannelDetail = PREF_NC_CHANNEL_DETAIL_DEFAULT;
+    public int ledColor = PREF_LED_COLOR_DEFAULT;
+    public boolean useLED = PREF_WARNINGS_NOTIFY_LED_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -354,6 +378,8 @@ public class WeatherSettings {
         this.useMeteredNetworks = readPreference(PREF_USE_METERED_NETWORKS,PREF_USE_METERED_NETWORKS_DEFAULT);
         this.notificationIdentifier = readPreference(PREF_NOTIFICATION_IDENTIFIER,PREF_NOTIFICATION_IDENTIFIER_DEFAULT);
         this.rotationMode = readPreference(PREF_ROTATIONMODE,PREF_ROTATIONMODE_DEFAULT);
+        this.ncChannelDetail = readPreference(PREF_NC_CHANNEL_DETAIL,PREF_NC_CHANNEL_DETAIL_DEFAULT);
+        this.useLED = readPreference(PREF_WARNINGS_NOTIFY_LED,PREF_WARNINGS_NOTIFY_LED_DEFAULT);
     }
 
     public void savePreferences() {
@@ -428,6 +454,8 @@ public class WeatherSettings {
         applyPreference(PREF_USE_METERED_NETWORKS,this.useMeteredNetworks);
         applyPreference(PREF_NOTIFICATION_IDENTIFIER,this.notificationIdentifier);
         applyPreference(PREF_ROTATIONMODE,rotationMode);
+        applyPreference(PREF_NC_CHANNEL_DETAIL,ncChannelDetail);
+        applyPreference(PREF_WARNINGS_NOTIFY_LED,useLED);
     }
 
     public void commitPreferences() {
@@ -502,6 +530,9 @@ public class WeatherSettings {
         commitPreference(PREF_USE_METERED_NETWORKS,this.useMeteredNetworks);
         commitPreference(PREF_NOTIFICATION_IDENTIFIER,this.notificationIdentifier);
         commitPreference(PREF_ROTATIONMODE,rotationMode);
+        commitPreference(PREF_NC_CHANNEL_DETAIL,ncChannelDetail);
+        commitPreference(PREF_WARNINGS_NOTIFY_LED,useLED);
+
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -747,6 +778,29 @@ public class WeatherSettings {
 
     public long getForecastUpdateIntervalInMillis() {
         return (long) getForecastUpdateInterval() * 60 * 60 * 1000;
+    }
+
+    public static void setLastWidgetUpdateTime(Context context, long time){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_LASTWIDGETUPDATETIME,time);
+        pref_editor.apply();
+    }
+
+    public static boolean isWidgetForecastCheckDue(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        try {
+            int interval = Integer.parseInt(sharedPreferences.getString(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT));
+            long lastWidgetUpdateTime = sharedPreferences.getLong(PREF_LASTWIDGETUPDATETIME,PREF_LASTWIDGETUPDATETIME_DEFAULT);
+            long time = Calendar.getInstance().getTimeInMillis();
+            if (lastWidgetUpdateTime+interval > time) {
+                setLastWidgetUpdateTime(context,time);
+                return true;
+            }
+        } catch (NumberFormatException e){
+            return true;
+        }
+        return false;
     }
 
     public static int getWarningsUpdateIntervalInMillis(Context context) {
@@ -1380,5 +1434,69 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return Integer.parseInt(NumberPickerPreference.maxValues[sharedPreferences.getInt(PREF_DISPLAY_OVERVIEWCHART_MAX,PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT)]);
     }
+
+    public static String getNotificationChannelID(long identifier){
+        return DataUpdateService.WARNING_NC_ID_SKELETON + String.valueOf(identifier);
+    }
+
+    public static String getNotificationChannelID(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        long current = sharedPreferences.getLong(PREF_NC_CHANNEL_DETAIL, 0);
+        String nc = getNotificationChannelID(current);
+        return nc;
+    }
+
+    public static String setNewNotificationChannelID(Context context){
+        long time = Calendar.getInstance().getTimeInMillis();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_NC_CHANNEL_DETAIL,time);
+        pref_editor.apply();
+        return getNotificationChannelID(time);
+    }
+
+    /**
+     * Removes the old notification channel and creates a new one on API >= 26. On older versions, it simply
+     * returns the channel.
+     * @param context
+     * @return
+     */
+
+    public static String newNotificationChannel(Context context){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String oldChannelID = getNotificationChannelID(context);
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.deleteNotificationChannel(oldChannelID);
+            String newChannelID = setNewNotificationChannelID(context);
+            return newChannelID;
+        }
+        return getNotificationChannelID(context);
+    }
+
+    public static boolean LEDEnabled(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_WARNINGS_NOTIFY_LED,PREF_WARNINGS_NOTIFY_LED_DEFAULT);
+    }
+
+    public static int getLEDColorItem(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_LED_COLOR,PREF_LED_COLOR_DEFAULT);
+    }
+
+    public static void setLEDColorItem(Context context, int newColor){
+        int oldColor = getLEDColorItem(context);
+        if (newColor!=oldColor){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+            pref_editor.putInt(PREF_LED_COLOR,newColor);
+            pref_editor.apply();
+            newNotificationChannel(context);
+        }
+    }
+
+    public static int getLEDColor(Context context){
+        return NotificationLEDcolors[getLEDColorItem(context)];
+    }
+
 
 }
