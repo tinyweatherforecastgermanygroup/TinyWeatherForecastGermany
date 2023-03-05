@@ -332,4 +332,8 @@
     <string name="alertdialog_3_text1">Всі налаштування будуть скинуті до значень за замовчуванням, а потім знову буде показано вступне відео для виконання найбільш важливих налаштувань.</string>
     <string name="preference_screen_overviewchart_usemm_summary">Температурна шкала залишається незмінною, якщо значення знаходяться в зазначеному діапазоні.</string>
     <string name="preference_screen_overviewchart_max_title">Максимальний</string>
+    <string name="preference_notify_LED_title">Світлодіодні сповіщення</string>
+    <string name="preference_screen_notifications_title">Сповіщення</string>
+    <string name="preference_screen_notifications_summary">Налаштуйте сповіщення про погодні попередження.</string>
+    <string name="preference_notify_LED_summary">Використовуйте світлодіодний індикатор, якщо він доступний.</string>
 </resources>
