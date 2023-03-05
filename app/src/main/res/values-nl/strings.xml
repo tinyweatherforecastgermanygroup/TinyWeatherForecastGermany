@@ -336,4 +336,9 @@
     <string name="preference_notify_LED_summary">Gebruik notificatie-LED indien beschikbaar.</string>
     <string name="preference_screen_notifications_title">Meldingen</string>
     <string name="preference_screen_notifications_summary">Meldingen over weerswaarschuwingen aanpassen.</string>
+    <string name="preference_notify_LEDcolor_title">Kleur van de melding</string>
+    <string name="preference_notify_LEDcolor_summary">Selecteer de kleur van de meldings-LED.</string>
+    <string name="preference_notify_LEDcolor_current">Huidige kleur:</string>
+    <string name="preference_led_notice_title">Bericht</string>
+    <string name="preference_led_notice_summary">Alleen sommige apparaten hebben een meldings-LED. Op andere apparaten hebben deze opties geen effect. Andere apparaatinstellingen kunnen voorkomen dat de meldings-LED knippert.</string>
 </resources>
