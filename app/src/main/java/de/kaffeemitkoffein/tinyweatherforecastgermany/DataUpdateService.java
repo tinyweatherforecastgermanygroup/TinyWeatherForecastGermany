@@ -397,8 +397,10 @@ public class DataUpdateService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel nc = new NotificationChannel(notificationChannelID,context.getResources().getString(R.string.service_warning_categoryname),WARNING_NC_IMPORTANCE);
             nc.setDescription(context.getResources().getString(R.string.service_warning_categoryname));
-            nc.enableLights(true);
-            nc.setLightColor(WeatherSettings.getLEDColor(context));
+            if (WeatherSettings.LEDEnabled(context)){
+                nc.enableLights(true);
+                nc.setLightColor(WeatherSettings.getLEDColor(context));
+            }
             nc.setShowBadge(true);
             notificationManager.createNotificationChannel(nc);
         }
@@ -419,7 +421,7 @@ public class DataUpdateService extends Service {
             notificationBuilder = new Notification.Builder(context.getApplicationContext());
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            n = notificationBuilder
+            notificationBuilder
                     .setContentTitle(weatherWarning.headline)
                     .setSmallIcon(WeatherIcons.getIconResource(context,WeatherIcons.WARNING_ICON))
                     .setStyle(new Notification.BigTextStyle().bigText(notificationBody))
@@ -430,20 +432,20 @@ public class DataUpdateService extends Service {
                     .setShowWhen(true)
                     .setWhen(weatherWarning.onset)
                     .setGroup(WARNING_NC_GROUP)
-                    .setSortKey(sortKey)
-                    .build();
+                    .setSortKey(sortKey);
         } else {
-            n = notificationBuilder
+            notificationBuilder
                     .setContentTitle(weatherWarning.headline)
                     .setSmallIcon(WeatherIcons.getIconResource(context,WeatherIcons.WARNING_ICON))
                     .setStyle(new Notification.BigTextStyle().bigText(notificationBody))
-                    .setLights(WeatherSettings.getLEDColor(context),1000,1000)
-//                    .setLights(WARNING_NC_COLOR,1000,1000)
                     .setContentIntent(pendingIntent)
                     .setShowWhen(true)
-                    .setWhen(weatherWarning.onset)
-                    .build();
+                    .setWhen(weatherWarning.onset);
+            if (WeatherSettings.LEDEnabled(context)){
+                notificationBuilder.setLights(WeatherSettings.getLEDColor(context),200,1000);
+            }
         }
+        n = notificationBuilder.build();
         return n;
     }
 

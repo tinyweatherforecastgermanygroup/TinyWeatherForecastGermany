@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.*;
-import android.util.Log;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
@@ -232,16 +231,13 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     }
 
     public void setNotifyLED(){
-        Log.v("twfg","TEST");
         CheckBoxPreference ledNotifications = (CheckBoxPreference) findPreference(WeatherSettings.PREF_WARNINGS_NOTIFY_LED);
         LEDColorPreference ledColorPreference = (LEDColorPreference) findPreference(WeatherSettings.PREF_LED_COLOR);
         if ((ledNotifications!=null) && (ledColorPreference!=null)){
             if (!WeatherSettings.notifyWarnings(context) || (WeatherSettings.areWarningsDisabled(context))){
-                Log.v("twfg","no notify or WD");
                 ledNotifications.setEnabled(false);
                 ledNotifications.setShouldDisableView(true);
             } else {
-                Log.v("twfg","else");
                 ledNotifications.setEnabled(true);
                 ledNotifications.setShouldDisableView(false);
             }

@@ -1,7 +1,4 @@
-New in version ([VERSION]):
-
 - notification LEDs are now supported, including color selection
 - slight performance improvements on older devices when launching the app
 - improved translations
 - slightly revised settings
-

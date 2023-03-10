@@ -1,5 +1,3 @@
-Neu in dieser Version ([VERSION]):
-
 - Benachrichtigungs-LEDs werden nun unterstützt, inklusive Farbauswahl
 - leichte Performance-Verbesserungen auf älteren Geräten beim Start der App
 - verbesserte Übersetzungen
