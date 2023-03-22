@@ -57,10 +57,11 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 WeatherSettings weatherSettings = new WeatherSettings(context);
                                 weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT,false);
-                                SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(context);
                                 CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_LOG_TO_LOGCAT);
-                                checkBoxPreference.setChecked(false);
-                                dialogInterface.dismiss();
+                                if (checkBoxPreference!=null){
+                                    checkBoxPreference.setChecked(false);
+                                    dialogInterface.dismiss();
+                                }
                             }
                         });
                         AlertDialog alertDialog = builder.create();
@@ -151,20 +152,28 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     @SuppressWarnings("deprecation")
     public void disableLogCatLogging(){
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_LOG_TO_LOGCAT);
-        checkBoxPreference.setChecked(false);
-        checkBoxPreference.setEnabled(false);
-        checkBoxPreference.setShouldDisableView(true);
-        PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
-        preferenceScreen.removePreference(checkBoxPreference);
+        if (checkBoxPreference!=null){
+            checkBoxPreference.setChecked(false);
+            checkBoxPreference.setEnabled(false);
+            checkBoxPreference.setShouldDisableView(true);
+            PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
+            if (preferenceScreen!=null){
+                preferenceScreen.removePreference(checkBoxPreference);
+            }
+        }
     }
 
     @SuppressWarnings("deprecation")
     public void disableClearNotifications(){
         Preference preference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_CLEARNOTIFICATIONS);
-        preference.setEnabled(false);
-        preference.setShouldDisableView(true);
-        PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
-        preferenceScreen.removePreference(preference);
+        if (preference!=null){
+            preference.setEnabled(false);
+            preference.setShouldDisableView(true);
+            PreferenceScreen preferenceScreen = (PreferenceScreen) findPreference("PREF_screen_logging");
+            if (preferenceScreen!=null){
+                preferenceScreen.removePreference(preference);
+            }
+        }
     }
 
 
@@ -336,50 +345,60 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             finish();
         }
         CheckBoxPreference warningsInWidget = (CheckBoxPreference) findPreference(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS);
-        warningsInWidget.setSummary(getResources().getString(R.string.preference_displaywarninginwidget_summary)+" "+getResources().getString(R.string.battery_and_data_hint));
+        if (warningsInWidget!=null){
+            warningsInWidget.setSummary(getResources().getString(R.string.preference_displaywarninginwidget_summary)+" "+getResources().getString(R.string.battery_and_data_hint));
+        }
         CheckBoxPreference notifyWarnings = (CheckBoxPreference) findPreference(WeatherSettings.PREF_NOTIFY_WARNINGS);
-        notifyWarnings.setSummary(getResources().getString(R.string.preference_notify_warnings_summary)+" "+getResources().getString(R.string.battery_and_data_hint));
+        if (notifyWarnings!=null){
+            notifyWarnings.setSummary(getResources().getString(R.string.preference_notify_warnings_summary)+" "+getResources().getString(R.string.battery_and_data_hint));
+        }
         ListPreference displayRotation = (ListPreference) findPreference(WeatherSettings.PREF_ROTATIONMODE);
-        displayRotation.setSummary(WeatherSettings.getDeviceRotationString(this));
+        if (displayRotation!=null){
+            displayRotation.setSummary(WeatherSettings.getDeviceRotationString(this));
+        }
         Preference resetPreferences = (Preference) findPreference("PREF_reset");
-        resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                MainActivity.askDialog(context,null,getResources().getString(R.string.alertdialog_3_title),
-                        new String[] {getResources().getString(R.string.alertdialog_3_text1),"",getResources().getString(R.string.alertdialog_3_text2)},
-                        new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        WeatherSettings.resetPreferencesToDefault(context);
-                        Intent intent = new Intent(context, WelcomeActivity.class);
-                        Toast.makeText(context,getResources().getString(R.string.alertdialog_3_toast),Toast.LENGTH_LONG).show();
-                        // need to set this, because otherwise the WelcomeActivity might get called also from
-                        // a re-launched MainActivity.
-                        WeatherSettings.setAppLaunchedFlag(context);
-                        // force a replay
-                        intent.putExtra("mode","replay");
-                        startActivity(intent);
-                    }
-                });
-                return true;
-            };
-        });
+        if (resetPreferences!=null){
+            resetPreferences.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    MainActivity.askDialog(context,null,getResources().getString(R.string.alertdialog_3_title),
+                            new String[] {getResources().getString(R.string.alertdialog_3_text1),"",getResources().getString(R.string.alertdialog_3_text2)},
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    WeatherSettings.resetPreferencesToDefault(context);
+                                    Intent intent = new Intent(context, WelcomeActivity.class);
+                                    Toast.makeText(context,getResources().getString(R.string.alertdialog_3_toast),Toast.LENGTH_LONG).show();
+                                    // need to set this, because otherwise the WelcomeActivity might get called also from
+                                    // a re-launched MainActivity.
+                                    WeatherSettings.setAppLaunchedFlag(context);
+                                    // force a replay
+                                    intent.putExtra("mode","replay");
+                                    startActivity(intent);
+                                }
+                            });
+                    return true;
+                };
+            });
+        }
         LEDColorPreference ledColorPreference = (LEDColorPreference) findPreference(WeatherSettings.PREF_LED_COLOR);
-        ledColorPreference.setColorItem(WeatherSettings.getLEDColorItem(context));
-        ledColorPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                LEDColorPicker ledColorPicker = new LEDColorPicker(context);
-                ledColorPicker.setOnColorPickedListener(new LEDColorPicker.OnColorPickedListener() {
-                    @Override
-                    public void onColorSelected(int colorItem) {
-                        WeatherSettings.setLEDColorItem(context,colorItem);
-                    }
-                });
-                ledColorPicker.show();
-                return true;
-            }
-        });
+        if (ledColorPreference!=null){
+            ledColorPreference.setColorItem(WeatherSettings.getLEDColorItem(context));
+            ledColorPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    LEDColorPicker ledColorPicker = new LEDColorPicker(context);
+                    ledColorPicker.setOnColorPickedListener(new LEDColorPicker.OnColorPickedListener() {
+                        @Override
+                        public void onColorSelected(int colorItem) {
+                            WeatherSettings.setLEDColorItem(context,colorItem);
+                        }
+                    });
+                    ledColorPicker.show();
+                    return true;
+                }
+            });
+        }
      }
 
     @Override
