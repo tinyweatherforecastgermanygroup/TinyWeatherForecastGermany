@@ -37,9 +37,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 public class ClassicWidget extends AppWidgetProvider {
 
@@ -227,7 +225,8 @@ public class ClassicWidget extends AppWidgetProvider {
                 AlarmManager.AlarmClockInfo alarmClockInfo = alarmManager.getNextAlarmClock();
                 if (alarmClockInfo != null) {
                     long l = alarmClockInfo.getTriggerTime();
-                    final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, HH:mm");
+                    final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, HH:mm",context.getResources().getConfiguration().locale);
+                    simpleDateFormat.setTimeZone(TimeZone.getDefault());
                     alarm_string = simpleDateFormat.format(new Date(l));
                 }
             }
