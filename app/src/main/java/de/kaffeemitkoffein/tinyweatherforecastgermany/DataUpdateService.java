@@ -266,7 +266,7 @@ public class DataUpdateService extends Service {
                             intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,true);
                             sendBroadcast(intent);
                             if (WeatherSettings.notifyWarnings(context)){
-                                WidgetRefresher.refresh(context);
+                                UpdateAlarmManager.updateAppViews(context);
                                 launchWeatherWarningNotifications(warnings,false);
                             }
                         }

@@ -92,7 +92,7 @@ public class UpdateAlarmManager {
          * update_period: this is the update interval from the settings. It means how often
          * data should be polled from the DWD API.
          */
-        long update_period = weatherSettings.getForecastUpdateIntervalInMillis();
+        long update_period = WeatherSettings.getForecastUpdateIntervalInMillis(context);
         // set time for timer to equal next interval as set up by user
         // weatherCard can be null on first app launch or after clearing memory or if station
         // was not used before.
@@ -122,7 +122,7 @@ public class UpdateAlarmManager {
                 ((update_mode==CHECK_FOR_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode==WIDGET_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode&FORCE_UPDATE)==FORCE_UPDATE) ||
-                (!(update_time_utc <= Calendar.getInstance().getTimeInMillis()) && (weatherCard.isNewServerDataExpected(context) && weatherSettings.forecastUpdateIntervalIs6h()) && (weatherSettings.setalarm))){
+                (!(update_time_utc <= Calendar.getInstance().getTimeInMillis()) && (weatherCard.isNewServerDataExpected(context) && WeatherSettings.forecastUpdateIntervalIs6h(context)) && (weatherSettings.setalarm))){
             // update now.
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.
@@ -248,16 +248,11 @@ public class UpdateAlarmManager {
             GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
             gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
         }
-        updateWarningsViews(context);
+        WidgetRefresher.refresh(context);
         // save the last update time
         weatherSettings.views_last_update_time = Calendar.getInstance().getTimeInMillis();
-        weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,weatherSettings.views_last_update_time);
-    }
-
-    public static void updateWarningsViews(Context context){
-        // update widgets unconditionally
-        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"updating widgets.");
-        WidgetRefresher.refresh(context);
+        //weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,weatherSettings.views_last_update_time);
+        weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,Calendar.getInstance().getTimeInMillis());
     }
 
     public static boolean startDataUpdateService(final Context context, final ArrayList<String> tasks){

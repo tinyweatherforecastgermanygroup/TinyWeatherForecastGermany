@@ -22,7 +22,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.content.Intent;
 import nodomain.freeyourgadget.gadgetbridge.model.WeatherSpec;
-
 import java.util.Calendar;
 
 public class GadgetbridgeAPI {
@@ -39,7 +38,6 @@ public class GadgetbridgeAPI {
     }
 
     private void setWeatherData(){
-        WeatherSettings weatherSettings = new WeatherSettings(context);
         if (weatherCard==null){
             weatherCard = new Weather().getCurrentWeatherInfo(context);
         }
@@ -49,7 +47,7 @@ public class GadgetbridgeAPI {
             weatherSpec.location             = weatherCard.getCity();
             // fake timestamp for current weather if desired by user; some wearables do not accept a forecast
             // for current weather.
-            if (weatherSettings.gadgetbridge_fake_timestamp){
+            if (WeatherSettings.fakeTimestampForGadgetBridge(context)){
                 weatherSpec.timestamp            = (int) (Calendar.getInstance().getTimeInMillis()/1000);
             } else {
                 weatherSpec.timestamp            = (int) (weatherCard.currentWeather.getTimestamp() / 1000);
@@ -92,9 +90,15 @@ public class GadgetbridgeAPI {
                         weatherCard.forecast24hourly.get(i).getRHInt());
                 weatherSpec.forecasts.add(forecast);
             }
+            String timestampHumanReadable = "";
+            try {
+                timestampHumanReadable = MainActivity.hourMinuteSecondMilliSecDateFormat.format((long) weatherSpec.timestamp*1000);
+            } catch (IllegalArgumentException e){
+                // do nothing
+            }
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Values served to Gadgetbridge:");
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Current weather:");
-            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Timestamp          : "+weatherSpec.timestamp);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Timestamp          : "+weatherSpec.timestamp+" ("+timestampHumanReadable+")");
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Condition Code     : "+weatherSpec.currentConditionCode);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Condition          : "+weatherSpec.currentCondition);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Temperature current: "+weatherSpec.currentTemp);
@@ -109,7 +113,7 @@ public class GadgetbridgeAPI {
         }
     }
 
-    private final void sendWeatherBroadcast(){
+    private void sendWeatherBroadcast(){
         WeatherSettings weatherSettings = new WeatherSettings(context);
         setWeatherData();
         if (weatherSpec!=null){

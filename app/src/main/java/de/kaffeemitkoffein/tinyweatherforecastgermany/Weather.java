@@ -1335,12 +1335,10 @@ public final class Weather {
         // Should there be more, take the most recent by polling time. The most recent entry is at position 1.
         if (cursor.moveToFirst()){
             CurrentWeatherInfo currentWeatherInfo = WeatherContentManager.getWeatherInfo(context,cursor);
-            // check if local weather data is outdated
-            if (currentWeatherInfo.polling_time<Calendar.getInstance().getTimeInMillis()+weatherSettings.getForecastUpdateIntervalInMillis()){
-                return currentWeatherInfo;
-            } else {
-                return null;
+            if (currentWeatherInfo.isOutdated(context)){
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.WIDGET_UPDATE,currentWeatherInfo);
             }
+            return currentWeatherInfo;
         }
         cursor.close();
         return null;

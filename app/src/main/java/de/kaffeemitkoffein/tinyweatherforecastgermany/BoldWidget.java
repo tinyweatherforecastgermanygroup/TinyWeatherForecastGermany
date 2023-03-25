@@ -34,10 +34,7 @@ public class BoldWidget extends ClassicWidget {
     @Override
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances) {
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
-        if (weatherCard==null){
-            //UpdateAlarmManager.startDataUpdateService(c,true,true,false);
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c,UpdateAlarmManager.WIDGET_UPDATE,weatherCard);
-        } else {
+        if (weatherCard!=null){
             WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i = 0; i < widget_instances.length; i++) {
                 // sets up a pending intent to launch main activity when the widget is touched.

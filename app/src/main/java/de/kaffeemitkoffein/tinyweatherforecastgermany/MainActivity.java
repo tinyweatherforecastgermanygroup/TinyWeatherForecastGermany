@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
     StationSearchEngine stationSearchEngine;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
-    public final SimpleDateFormat hourMinuteSecondMilliSecDateFormat = new SimpleDateFormat("HH:mm:ss:SSS");
+    public static final SimpleDateFormat hourMinuteSecondMilliSecDateFormat = new SimpleDateFormat("HH:mm:ss:SSS");
 
     CurrentWeatherInfo weatherCard;
 
@@ -490,11 +490,7 @@ public class MainActivity extends Activity {
                                 // nothing to do, views will be updated after the update finished, and notifications will be
                                 // launched, then
                             }
-                            // notify GadgetBridge
-                            GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-                            gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-                            // update widgets unconditonally
-                            WidgetRefresher.refresh(getApplicationContext());
+                            UpdateAlarmManager.updateAppViews(context);
                         }
                         // show geo
                         if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
@@ -595,7 +591,7 @@ public class MainActivity extends Activity {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    WidgetRefresher.refresh(context);
+                    UpdateAlarmManager.updateAppViews(context);
                 }
             });
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");

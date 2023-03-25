@@ -20,7 +20,6 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import org.astronomie.info.Astronomy;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -558,6 +557,15 @@ public class CurrentWeatherInfo{
 
     public String getHumanReadablePollingTime(){
         return dateAndHourDateFormat.format(new Date(issue_time));
+    }
+
+
+    public boolean isOutdated(Context context){
+        if (polling_time<Calendar.getInstance().getTimeInMillis()+WeatherSettings.getForecastUpdateIntervalInMillis(context)){
+                return false;
+            } else {
+                return true;
+            }
     }
 
 }

@@ -755,6 +755,16 @@ public class WeatherSettings {
         }
     }
 
+    public static boolean serveGadgetBridge(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_SERVE_GADGETBRIDGE,PREF_SERVE_GADGETBRIDGE_DEFAULT);
+    }
+
+    public static boolean fakeTimestampForGadgetBridge(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT);
+    }
+
     public static boolean getUpdateForecastRegularly(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_SETALARM,PREF_SETALARM_DEFAULT);
@@ -767,17 +777,18 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
-    public int getForecastUpdateInterval() {
-        int i = Integer.parseInt(this.updateinterval);
+    public static int getForecastUpdateInterval(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int i = Integer.parseInt(sharedPreferences.getString(PREF_UPDATEINTERVAL,PREF_UPDATEINTERVAL_DEFAULT));
         return i;
     }
 
-    public boolean forecastUpdateIntervalIs6h(){
-        return (getForecastUpdateInterval()==6);
+    public static boolean forecastUpdateIntervalIs6h(Context context){
+        return (getForecastUpdateInterval(context)==6);
     }
 
-    public long getForecastUpdateIntervalInMillis() {
-        return (long) getForecastUpdateInterval() * 60 * 60 * 1000;
+    public static long getForecastUpdateIntervalInMillis(Context context) {
+        return (long) getForecastUpdateInterval(context) * 60 * 60 * 1000;
     }
 
     public static void setLastWidgetUpdateTime(Context context, long time){
