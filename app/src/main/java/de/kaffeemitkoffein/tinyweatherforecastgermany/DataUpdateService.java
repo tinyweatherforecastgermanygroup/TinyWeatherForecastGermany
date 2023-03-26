@@ -308,6 +308,8 @@ public class DataUpdateService extends Service {
                     i.putExtra(StopReason.STOPREASON_EXTRA,StopReason.NONETWORK);
                     sendBroadcast(i);
                 }
+                // update app views with old data
+                UpdateAlarmManager.updateAppViews(context);
             }
             // this is for tasks without internet connection
             if (updateNotifications){
