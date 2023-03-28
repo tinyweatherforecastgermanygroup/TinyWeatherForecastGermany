@@ -1,6 +1,6 @@
 Neu in dieser Version ([VERSION]):
 
 - Behebung eines Absturzes beim Ändern von Einstellungen
-- verbesserte Anzeige von Prognosen, wenn diese vorhanden, aber veraltet sind
+- verbesserte Anzeige von Vorhersagen, wenn diese vorhanden, aber veraltet sind
 - Die Häufigkeit der Gadgetbridge-Updates ist nun besser auf die Widgets abgestimmt
-- Anzeige der Weckzeit im Uhr-Widget berücksichtigt nun die Zeitzone korrekt
+- Anzeige der Weckzeit im Uhr-Widget berücksichtigt nun die Zeitzone
