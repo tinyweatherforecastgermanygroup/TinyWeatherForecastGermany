@@ -1628,8 +1628,7 @@ public final class Weather {
         final static SimpleDateFormat DAYOFWEEK             = new SimpleDateFormat("EE");
     }
 
-
-    final static String GetDateString(SimpleDateFormat simpleDateFormat, long time){
+    public static String GetDateString(SimpleDateFormat simpleDateFormat, long time){
         return simpleDateFormat.format(time);
     }
 
