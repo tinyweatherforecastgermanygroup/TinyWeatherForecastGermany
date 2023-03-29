@@ -1,0 +1,5 @@
+- nouveau filtre, quels avertissements doivent être notifiés
+- la carte montre les comtés, les États fédéraux, les zones d'avertissement en mer et sur les côtes si vous le souhaitez
+- la mise à l'échelle de la température dans le tableau de synthèse (application et widgets) peut être définie sur des valeurs fixes
+- nouvelle option pour réinitialiser tous les paramètres aux valeurs par défaut
+- traductions améliorées

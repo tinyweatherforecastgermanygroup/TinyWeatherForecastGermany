@@ -1,0 +1,3 @@
+- liste mise à jour des stations météo
+- de nouveaux emplacements de prévisions (DMO ; Direct Model Output) en plus des stations météorologiques existantes
+- corrections de bugs mineurs, en particulier de l'interface utilisateur

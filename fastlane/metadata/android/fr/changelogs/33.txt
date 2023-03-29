@@ -1,0 +1,4 @@
+- données des stations mises à jour et zones d'avertissement
+- amélioration de la logique d'affichage des icônes jour/nuit
+- corrige la mauvaise opacité du widget par défaut
+- traductions améliorées
