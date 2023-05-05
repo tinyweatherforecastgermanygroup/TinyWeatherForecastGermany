@@ -69,7 +69,7 @@ public class TextForecastListActivity extends Activity {
                 hideProgressBar();
                 showList();
             }
-            if (intent.getAction().equals(DataUpdateService.HIDE_PROGRESS)){
+            if (intent.getAction().equals(MainActivity.MAINAPP_HIDE_PROGRESS)){
                 hideProgressBar();
                 forceWeatherUpdateFlag = false;
             }
@@ -217,7 +217,7 @@ public class TextForecastListActivity extends Activity {
     private void registerForBroadcast(){
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_UPDATE_TEXTS);
-        filter.addAction(DataUpdateService.HIDE_PROGRESS);
+        filter.addAction(MainActivity.MAINAPP_HIDE_PROGRESS);
         registerReceiver(broadcastReceiver,filter);
     }
 

@@ -36,11 +36,8 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class WeatherWarningActivity extends Activity {
 
@@ -53,6 +50,10 @@ public class WeatherWarningActivity extends Activity {
     ImageView germany;
     ImageView warningactivity_map_collapsed;
     RelativeLayout mapcontainer;
+    ProgressBar rainSlideProgressBar;
+    TextView rainSlideProgressBarText;
+    TextView rainSlideTime;
+    ImageView rainDescription;
     Bitmap germanyBitmap;
     Bitmap warningsBitmap;
     Bitmap radarBitmap;
@@ -66,10 +67,9 @@ public class WeatherWarningActivity extends Activity {
     WeatherWarningAdapter weatherWarningAdapter;
     Context context;
     ActionBar actionBar;
-    Executor executor;
+    ScheduledExecutorService scheduledExecutorService;
     boolean hide_rain = false;
     boolean hide_admin = true;
-    // Radarmap radarmap;
     WeatherLocationManager weatherLocationManager;
     RelativeLayout gpsProgressHolder;
 
@@ -111,11 +111,53 @@ public class WeatherWarningActivity extends Activity {
                     // gets result if update was successful, currently not used
                     boolean updateResult = intent.getBooleanExtra(WEATHER_WARNINGS_UPDATE_RESULT,false);
                 }
-                if (intent.getAction().equals(DataUpdateService.HIDE_PROGRESS)){
+                if (intent.getAction().equals(MainActivity.MAINAPP_HIDE_PROGRESS)){
                     forceWeatherUpdateFlag = false;
                     hideProgressBar();
                 }
             }
+        }
+    };
+
+    private int nextRainSlide = 0;
+    private long rainSlidesStartTime = 0;
+    private long lastTimeSlideDrawn = 0;
+    private boolean cancelRainSlides = false;
+    private boolean validSlideSetObtained = false;
+    public final static int RAINSLIDEDELAY=750;
+    private int[] rainRadarData;
+
+    private final Runnable showNextRainSlide = new Runnable() {
+        @Override
+        public void run() {
+            long startTime = Calendar.getInstance().getTimeInMillis();
+            drawRadarSlide(nextRainSlide);
+            long finishedTime = Calendar.getInstance().getTimeInMillis();
+            long duration = finishedTime - startTime;
+            //Log.v("twfg","Slide: "+nextRainSlide+" duration="+duration);
+            nextRainSlide++;
+            if (nextRainSlide>APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE){
+                nextRainSlide=0;
+            }
+            if ((!cancelRainSlides) && (validSlideSetObtained)){
+                if (RAINSLIDEDELAY-duration>0){
+                    scheduledExecutorService.schedule(showNextRainSlide,RAINSLIDEDELAY-duration,TimeUnit.MILLISECONDS);
+                } else {
+                    scheduledExecutorService.execute(showNextRainSlide);
+                }
+            }
+            cancelRainSlides = false;
+        }
+    };
+
+    APIReaders.RadarMNSetGeoserverRunnable radarMNSetGeoserverRunnable;
+
+    View.OnTouchListener forwardRainSlidesOnTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            float position = motionEvent.getX()/ view.getWidth();
+            nextRainSlide = Math.round(position * 24f);
+            return true;
         }
     };
 
@@ -146,11 +188,15 @@ public class WeatherWarningActivity extends Activity {
         }
         PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"app resumed.");
         weatherLocationManager.checkLocation();
+        if ((!hide_rain) && (!cancelRainSlides) && (validSlideSetObtained)){
+            scheduledExecutorService.execute(showNextRainSlide);
+        }
         super.onResume();
     }
 
     @Override
     protected void onPause(){
+        cancelRainSlides = true;
         unregisterReceiver(receiver);
         super.onPause();
         PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"app paused.");
@@ -166,6 +212,7 @@ public class WeatherWarningActivity extends Activity {
             PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Error setting theme in WeatherWarnings activity.");
         }
         super.onCreate(savedInstanceState);
+        rainSlidesStartTime = WeatherSettings.getPrefRadarLastdatapoll(context);
         WeatherSettings.setRotationMode(this);
         setContentView(R.layout.activity_weatherwarning);
         registerForBroadcast();
@@ -181,7 +228,7 @@ public class WeatherWarningActivity extends Activity {
             hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
             hide_admin = !WeatherSettings.showAdminMapByDefault(getApplicationContext());
         }
-        executor = Executors.newSingleThreadExecutor();
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         // action bar layout
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
@@ -216,8 +263,48 @@ public class WeatherWarningActivity extends Activity {
         } else {
             deviceIsLandscape = true;
         }
+        rainSlideProgressBar = (ProgressBar) findViewById(R.id.warningactivity_rainslideprogressbar);
+        rainSlideProgressBarText = (TextView) findViewById(R.id.warningactivity_rainslideprogressbartext);
+        rainSlideTime = (TextView) findViewById(R.id.warningactivity_rainslidetime);
+        rainSlideTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextRainSlide=0;
+            }
+        });
+        rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
+        rainDescription.setOnTouchListener(forwardRainSlidesOnTouchListener);
         updateWarningsIfNeeded();
         gpsProgressHolder = (RelativeLayout) findViewById(R.id.gps_progress_holder);
+        radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(getApplicationContext()){
+            @Override
+            public void onProgress(long startTime, final int progress) {
+                if (progress==0){
+                    rainSlidesStartTime = startTime;
+                    drawRadarSlide(0);
+                }
+                updateRainSlideProgressBar(progress);
+            }
+            @Override
+            public void onFinished(long startTime, boolean success){
+                super.onFinished(startTime,success);
+                nextRainSlide = 0;
+                rainSlidesStartTime = startTime;
+                if (success){
+                    validSlideSetObtained = true;
+                    scheduledExecutorService.execute(showNextRainSlide);
+                } else {
+                    validSlideSetObtained = false;
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        rainSlideProgressBar.setVisibility(View.INVISIBLE);
+                        rainSlideProgressBarText.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
+        };
         weatherLocationManager = new WeatherLocationManager(context){
           @Override
           public void newLocation(Location location){
@@ -254,26 +341,15 @@ public class WeatherWarningActivity extends Activity {
             if (mapZoomable!=null){
                 zoomMapState = mapZoomable.saveZoomViewState();
             }
-            // force update or rain radar if shown
-            if (!hide_rain){
-                APIReaders.RadarMNGeoserverRunnable radarMNGeoserverRunnable = new APIReaders.RadarMNGeoserverRunnable(getApplicationContext(),true){
-                    public void onFinished(RadarMN radarMN){
-                        // refresh map display with new data
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                displayMap();
-                            }
-                        });
-                    }
-                };
-                executor.execute(radarMNGeoserverRunnable);
-            }
             PrivateLog.log(this, PrivateLog.WARNINGS,PrivateLog.INFO, "starting update of weather warnings");
             if (UpdateAlarmManager.updateWarnings(getApplicationContext(),true)){
                 // returns true if update service was launched successfully
                 forceWeatherUpdateFlag = true;
                showProgressBar();
+            }
+            // force update or rain radar if shown
+            if (!hide_rain){
+                    cancelRainSlides=true;
             }
             return true;
         }
@@ -333,7 +409,7 @@ public class WeatherWarningActivity extends Activity {
                     @Override
                     public void run() {
                         weatherList = (ListView) findViewById(R.id.warningactivity_listview);
-                        weatherWarningAdapter = new WeatherWarningAdapter(getBaseContext(),weatherWarnings,executor);
+                        weatherWarningAdapter = new WeatherWarningAdapter(getBaseContext(),weatherWarnings,scheduledExecutorService);
                         weatherWarningAdapter.setLocalWarnings(localWarnings);
                         weatherList.setAdapter(weatherWarningAdapter);
                         weatherList.setSelection(WeatherWarnings.getFirstWarningPosition(weatherWarnings,localWarnings));
@@ -341,7 +417,7 @@ public class WeatherWarningActivity extends Activity {
                 });
             }
         };
-        executor.execute(getWarningsForLocationRunnable);
+        scheduledExecutorService.execute(getWarningsForLocationRunnable);
         if (weatherWarnings!=null){
             displayMap();
         }
@@ -487,13 +563,20 @@ public class WeatherWarningActivity extends Activity {
         int textsize = radarinfobarResourceBitmap.getHeight();
         radarTextPaint.setTextSize(textsize);
         radarTextPaint.setColor(Color.WHITE);
-        if (WeatherSettings.isRadarDataOutdated(getApplicationContext())){
-            radarTextPaint.setColor(Color.RED);
-        }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        String radartime = simpleDateFormat.format(new Date(WeatherSettings.getPrefRadarLastdatapoll(getApplicationContext())));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        Date rainSlideDate = new Date(rainSlidesStartTime+(nextRainSlide)*APIReaders.RadarMNSetGeoserverRunnable.TIMESTEP_5MINUTES);
+        String radartime = simpleDateFormat.format(rainSlideDate);
         float ff=1.1f;
-        drawStrokedText(canvas,radartime,MAP_PIXEL_WIDTH/100,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff*2,radarTextPaint);
+        //drawStrokedText(canvas,radartime,MAP_PIXEL_WIDTH/100,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff*2,radarTextPaint);
+        if (validSlideSetObtained) {
+            rainSlideTime.setTextColor(Color.WHITE);
+            if (Calendar.getInstance().getTimeInMillis() > rainSlidesStartTime + +1000*60*60*1.5f){
+                rainSlideTime.setTextColor(0xfffa7712);
+            }
+        } else {
+            rainSlideTime.setTextColor(Color.YELLOW);
+        }
+        rainSlideTime.setText(radartime);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[2]);
         drawStrokedText(canvas,getResources().getString(R.string.radar_rain1),MAP_PIXEL_WIDTH*0.1f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff,radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[7]);
@@ -502,7 +585,6 @@ public class WeatherWarningActivity extends Activity {
         drawStrokedText(canvas,getResources().getString(R.string.radar_rain3),MAP_PIXEL_WIDTH*0.6f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[16]);
         drawStrokedText(canvas,getResources().getString(R.string.radar_rain4),MAP_PIXEL_WIDTH*0.8f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
-        ImageView rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
         if (rainDescription!=null){
             rainDescription.setImageBitmap(infoBitmap);
         }
@@ -520,6 +602,48 @@ public class WeatherWarningActivity extends Activity {
         options.inJustDecodeBounds = true;
         Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),res_id),MAP_PIXEL_FIXEDWIDTH,MAP_PIXEL_FIXEDHEIGHT,false);
         return bitmap;
+    }
+
+    private void updateRainSlideProgressBar(final int progress){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rainSlideProgressBar.setVisibility(View.VISIBLE);
+                rainSlideProgressBar.setProgress(progress);
+                rainSlideProgressBar.invalidate();
+                rainSlideProgressBarText.setVisibility(View.VISIBLE);
+                rainSlideProgressBarText.setText(Math.round((float) progress/(float) (APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE-1)*100f)+"%");
+                rainSlideProgressBarText.invalidate();
+            }
+        });
+    }
+
+    private void drawRadarSlide(final int count){
+        if (APIReaders.RadarMNSetGeoserverRunnable.radarCacheFileValid(context,count)) {
+            rainRadarData = RadarMN.getData(context, count);
+            int[] target = new int[radarBitmap.getHeight()*radarBitmap.getWidth()];
+            float yPS = (MAP_PIXEL_HEIGHT / RadarMN.RADARMAP_PIXEL_FIXEDHEIGHT) / 2f + 1;
+            float xPS = (MAP_PIXEL_WIDTH / RadarMN.RADARMAP_PIXEL_FIXEDWIDTH) / 2f + 1;
+            radarBitmap.eraseColor(Color.TRANSPARENT);
+            Canvas radarCanvas = new Canvas(radarBitmap);
+            Paint rpaint = new Paint();
+            rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            for (int y = 0; y < RadarMN.RADARMAP_PIXEL_FIXEDHEIGHT; y++) {
+                for (int x = 0; x < RadarMN.RADARMAP_PIXEL_FIXEDWIDTH; x++) {
+                    if (rainRadarData[x + y * RadarMN.RADARMAP_PIXEL_FIXEDWIDTH]!=Color.TRANSPARENT){
+                        rpaint.setColor(rainRadarData[x + y * RadarMN.RADARMAP_PIXEL_FIXEDWIDTH]);
+                        PlotPoint plotPoint = getPlotPoint(RadarMN.getGeoX(x,y),RadarMN.getGeoY(x,y));
+                        radarCanvas.drawRect(plotPoint.x-xPS,plotPoint.y-yPS,plotPoint.x+xPS,plotPoint.y+yPS,rpaint);
+                    }
+                }
+            }
+            if (!hide_rain) {
+                drawMapBitmap();
+            }
+        } else {
+            // nothing to do
+        }
+
     }
 
     private void drawMapBitmap(){
@@ -550,7 +674,6 @@ public class WeatherWarningActivity extends Activity {
     private void drawWindIcon(){
         final Context context = getApplicationContext();
         final ImageView windicon = (ImageView) findViewById(R.id.warningactivity_windicon);
-
         Runnable windRunnable = new Runnable() {
             @Override
             public void run() {
@@ -584,7 +707,7 @@ public class WeatherWarningActivity extends Activity {
                 }
             }
         };
-        executor.execute(windRunnable);
+        scheduledExecutorService.execute(windRunnable);
     }
     
     private void displayMap(){
@@ -601,38 +724,6 @@ public class WeatherWarningActivity extends Activity {
         ArrayList<WeatherWarning> drawWarnings = (ArrayList<WeatherWarning>) weatherWarnings.clone();
         Collections.sort(drawWarnings);
         Collections.reverse(drawWarnings);
-        /*
-        // testing draw all "Kreise"
-        ArrayList<Areas.Area> allAreas = Areas.getAreas(context, Areas.Area.Type.KREIS); // get ALL areas
-        Log.v("twfg","Areas = "+allAreas.size());
-        Paint areaPaintF = new Paint();
-        areaPaintF.setColor(Color.GREEN);
-        areaPaintF.setAlpha(128);
-        areaPaintF.setStyle(Paint.Style.FILL);
-        Paint areaPaint = new Paint();
-        areaPaint.setColor(Color.BLACK);
-        areaPaint.setAlpha(128);
-        areaPaint.setStyle(Paint.Style.STROKE);
-        for (int i=0; i<allAreas.size(); i++){
-            Areas.Area cellArea = allAreas.get(i);
-            String cellType = cellArea.warncellID.substring(0,2);
-            ArrayList<Polygon> areaPolygons = cellArea.polygons;
-            for (int p=0; p<areaPolygons.size(); p++){
-                Polygon areaPolygon = areaPolygons.get(p);
-                Path path = new Path();
-                PlotPoint plotPoint = getPlotPoint(areaPolygon.polygonX[0],areaPolygon.polygonY[0]);
-                path.moveTo(plotPoint.x, plotPoint.y);
-                for (int v=0; v<areaPolygon.polygonX.length; v++){
-                    plotPoint = getPlotPoint(areaPolygon.polygonX[v],areaPolygon.polygonY[v]);
-                    path.lineTo(plotPoint.x, plotPoint.y);
-                }
-                canvas.drawPath(path,areaPaint);
-                canvas.drawPath(path,areaPaintF);
-            }
-        }
-        // end test
-         */
-
         for (int warning_counter=0; warning_counter<drawWarnings.size(); warning_counter++){
             WeatherWarning warning = drawWarnings.get(warning_counter);
             for (int polygon_counter=0; polygon_counter<warning.polygonlist.size(); polygon_counter++){
@@ -677,59 +768,8 @@ public class WeatherWarningActivity extends Activity {
                 }
             }
         }
-        // warnings need to be drawn to take effect on the leave-outs on the admin bitmap
 
-        /*
-        administrativeBitmap = getAdministrativeBitmap(new int[] {Areas.Area.Type.KREIS,Areas.Area.Type.SEE, Areas.Area.Type.KUESTE}, warningsBitmap);
-        final Paint cp = new Paint();
-        cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OVER));
-        canvas.drawBitmap(administrativeBitmap,0,0,cp);
-        canvas.drawBitmap(germanyBitmap, 0,0,cp);
-         */
-
-        // old rain radar
-        /*
-        APIReaders.RadarmapRunnable radarmapRunnable = new APIReaders.RadarmapRunnable(getApplicationContext()){
-            @Override
-            public void onFinished(final Radarmap rm){
-                if (rm!=null){
-                    radarmap = rm;
-                    Canvas radarCanvas = new Canvas(radarBitmap);
-                    float yPS = (MAP_PIXEL_HEIGHT/radarmap.height)/2f+1;
-                    float xPS = (MAP_PIXEL_WIDTH/radarmap.width)/2f+1;
-                    Paint rpaint = new Paint();
-                    rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
-                    for (int y=0; y<radarmap.height; y++){
-                        float delta = (1.60985f/radarmap.height)*y;
-                        float xoffset = 4.6759f - delta;
-                        float widthLine = 2*delta + (15.4801f-4.6759f);
-                        float yGeo = 46.1878f + y * (9.3534f/radarmap.height);
-                        for (int x=0; x<radarmap.width; x++){
-                            float xGeo = xoffset + x * widthLine/radarmap.width;
-                            PlotPoint plotPoint = getPlotPoint(xGeo,yGeo);
-                            int color = radarmap.getRadarMapColor(radarmap.map[x][y]);
-                            if (color!=0){
-                                rpaint.setColor(color);
-                                radarCanvas.drawRect(plotPoint.x-xPS,plotPoint.y-yPS,plotPoint.x+xPS,plotPoint.y+yPS,rpaint);
-                            }
-                        }
-                    }
-                    // Log.v(Tag.RADAR,"Max dbZ: "+radarmap.highestDBZ+" Max byte: "+radarmap.highestByte);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!hide_rain){
-                                drawMapBitmap(radarmap);
-                            }
-                        }
-                    });
-                }
-            }
-        };
-        executor.execute(radarmapRunnable);
-
-         */
-        // new rain radar
+        /* old rain radar
         APIReaders.RadarMNGeoserverRunnable radarMNGeoserverRunnable = new APIReaders.RadarMNGeoserverRunnable(getApplicationContext()){
             @Override
             public void onFinished(final RadarMN radarMN){
@@ -762,6 +802,9 @@ public class WeatherWarningActivity extends Activity {
             }
         };
         executor.execute(radarMNGeoserverRunnable);
+        */
+        drawWindIcon();
+        scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
         // set close listener
         ImageView closeImageview = (ImageView) findViewById(R.id.closeicon_map);
         if (closeImageview != null){
@@ -805,7 +848,7 @@ public class WeatherWarningActivity extends Activity {
                         checkForTapInPolygonWarning(getXGeo(plotPoint),getYGeo(plotPoint));
                     }
                 };
-                executor.execute(tapRunnable);
+                scheduledExecutorService.execute(tapRunnable);
             }
         };
         if (zoomMapState!=null){
@@ -825,7 +868,6 @@ public class WeatherWarningActivity extends Activity {
                 return true;
             };
         };
-        drawWindIcon();
         germany.setOnTouchListener(mapTouchListener);
 
     }
@@ -981,7 +1023,7 @@ public class WeatherWarningActivity extends Activity {
     private void registerForBroadcast(){
         IntentFilter filter = new IntentFilter();
         filter.addAction(WEATHER_WARNINGS_UPDATE);
-        filter.addAction(DataUpdateService.HIDE_PROGRESS);
+        filter.addAction(MainActivity.MAINAPP_HIDE_PROGRESS);
         registerReceiver(receiver,filter);
     }
 

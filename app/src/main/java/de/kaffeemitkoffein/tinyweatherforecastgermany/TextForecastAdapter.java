@@ -98,7 +98,7 @@ public class TextForecastAdapter extends BaseAdapter {
         viewHolder.image.setImageDrawable(TextForecasts.getTextForecastDrawable(context,textForecast.type));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Drawable drawable = context.getDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
+            Drawable drawable = context.getDrawable(ThemePicker.getWidgetBackgroundDrawableRessource(context));
             viewHolder.maincontainer.setBackground(drawable);
         } else {
             viewHolder.maincontainer.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.WIDGETBACKGROUND));

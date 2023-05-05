@@ -97,7 +97,7 @@ public class ChartWidget extends ClassicWidget{
         remoteViews.setImageViewBitmap(R.id.chartwidget_chart,bitmap);
         // set opacity
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
-        remoteViews.setImageViewResource(R.id.widget_backgroundimage,ThemePicker.getWidgetBackgroundDrawable(context));
+        remoteViews.setImageViewResource(R.id.widget_backgroundimage,ThemePicker.getWidgetBackgroundDrawableRessource(context));
         remoteViews.setInt(R.id.widget_backgroundimage,"setImageAlpha",Math.round(opacity*2.55f));
     }
 

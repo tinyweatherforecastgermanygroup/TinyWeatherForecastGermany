@@ -22,6 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.*;
+import android.graphics.drawable.Drawable;
 import android.widget.TextView;
 
 public final class ThemePicker {
@@ -171,7 +172,7 @@ public final class ThemePicker {
         return  c2;
     }
 
-    public static int getWidgetBackgroundDrawable(Context context){
+    public static int getWidgetBackgroundDrawableRessource(Context context){
         String themePreference = WeatherSettings.getThemePreference(context);
         if (themePreference.equals(WeatherSettings.Theme.DARK)){
             return R.drawable.roundedbox_dark;
@@ -190,6 +191,38 @@ public final class ThemePicker {
         } else {
             return R.drawable.roundedbox_solarizeddark;
         }
+    }
+
+    public static int getRaingridDrawableRessource(Context context){
+        String themePreference = WeatherSettings.getThemePreference(context);
+        if (themePreference.equals(WeatherSettings.Theme.DARK)){
+            return R.drawable.raingrid_dark;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.LIGHT)){
+            return R.drawable.raingrid_light;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED)){
+            return R.drawable.raingrid_solarized;
+        }
+        if (themePreference.equals(WeatherSettings.Theme.SOLARIZED_DARK)){
+            return R.drawable.raingrid_solarizeddark;
+        }
+        if (!isDarkTheme(context)){
+            return R.drawable.raingrid_solarized;
+        } else {
+            return R.drawable.raingrid_solarizeddark;
+        }
+    }
+
+    public static Drawable getWidgetBackgroundDrawable(Context context){
+        int resource = getWidgetBackgroundDrawableRessource(context);
+        Drawable drawable;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+             drawable = context.getResources().getDrawable(resource, context.getTheme());
+        } else {
+            drawable = context.getResources().getDrawable(resource);
+        }
+        return drawable;
     }
 
     public static int adaptColorToTheme(Context context, int color){
@@ -239,6 +272,5 @@ public final class ThemePicker {
     public static void applyPrecipitationAccentColor(Context context, TextView textView){
         textView.setTextColor(getPrecipitationAccentColor(context));
     }
-
 
 }

@@ -80,6 +80,11 @@
                   android:screenOrientation="locked"
                   android:parentActivityName=".TextForecastListActivity">
         </activity>
+        <activity android:name=".WeatherDetailsActivity"
+                  android:label="@string/app_name"
+                  android:screenOrientation="locked"
+                  android:parentActivityName=".TextForecastListActivity">
+        </activity>
 
         <provider android:name=".WeatherContentProvider"
                   android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany" android:enabled="true"

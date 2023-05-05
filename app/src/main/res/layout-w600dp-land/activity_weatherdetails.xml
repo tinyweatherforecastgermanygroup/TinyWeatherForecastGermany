@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020, 2021 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/weatherdetails_maincontainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:background="?attr/colorPrimary">
+
+    <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3">
+
+        <TextView android:id="@+id/weatherdetails_reference_text"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentBottom="true"
+                  android:layout_marginRight="2dp"
+                  android:textColor="?attr/colorText"
+                  android:textSize="@dimen/fcmain_textsize_medium"
+                  android:visibility="visible"
+                  android:layout_centerHorizontal="true"
+                  android:text="@string/dwd_notice"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="10"
+                android:orientation="vertical"
+                android:layout_above="@id/weatherdetails_reference_text">
+
+            <RelativeLayout
+                    android:id="@+id/weatherdetails_forecastcontainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:padding="3dp">
+
+                <ImageView android:id="@+id/weatherdetails_backgroundimage"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"/>
+
+                <RelativeLayout
+                        android:id="@+id/weatherdetails_weather_container"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="center_horizontal|top"
+                        android:layout_gravity="center_horizontal|top"
+                        android:layout_marginLeft="@dimen/widget_margin"
+                        android:layout_marginRight="@dimen/widget_margin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <ImageView android:id="@+id/weatherdetails_weatherconditionicon"
+                               android:layout_width="@dimen/widget_weathericon_size"
+                               android:layout_height="@dimen/widget_weathericon_size"
+                               android:layout_alignParentLeft="true"
+                               android:layout_centerVertical="true"
+                               android:layout_gravity="left"
+                               android:src="@mipmap/not_available" />
+
+                    <TextView android:id="@+id/weatherdetails_temperature"
+                              android:textSize="@dimen/widget_textsize_double"
+                              android:textColor="@color/colorTextWidget"
+                              android:gravity="left"
+                              android:layout_centerVertical="true"
+                              android:layout_centerHorizontal="true"
+                              android:fontFamily="sans-serif-condensed-medium"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_marginLeft="2dp"
+                              android:layout_marginRight="4dp"
+                              android:text="-°"/>
+
+                    <TextView android:id="@+id/weatherdetails_temperature_highlow"
+                              android:textSize="@dimen/widget_textsize_medium"
+                              android:textColor="?attr/colorText"
+                              android:gravity="left"
+                              android:layout_alignTop="@id/weatherdetails_temperature"
+                              android:layout_toRightOf="@id/weatherdetails_temperature"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="-° | -°"/>
+
+                    <TextView android:id="@+id/weatherdetails_pressure"
+                              android:textSize="@dimen/widget_textsize_medium"
+                              android:textColor="?attr/colorText"
+                              android:layout_gravity="right"
+                              android:layout_toRightOf="@id/weatherdetails_temperature"
+                              android:layout_below="@id/weatherdetails_temperature_highlow"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="- hPa"/>
+
+                    <LinearLayout
+                            android:id="@+id/weatherdetails_bottom_text_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@id/weatherdetails_weatherconditionicon"
+                            android:weightSum="2">
+
+                        <TextView android:id="@+id/weatherdetails_weatherconditiontext"
+                                  android:textSize="@dimen/widget_textsize_medium"
+                                  android:textColor="?attr/colorText"
+                                  android:layout_weight="1"
+                                  android:layout_width="0dp"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginRight="2dp"
+                                  android:textAlignment="textStart"
+                                  android:layout_gravity="left"
+                                  android:text="-"/>
+
+                        <TextView
+                                android:id="@+id/weatherdetails_locationtext"
+                                android:textSize="@dimen/widget_textsize_medium"
+                                android:textColor="?attr/colorText"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2dp"
+                                android:textAlignment="textEnd"
+                                android:gravity="right"
+                                android:text="-"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="6">
+
+                <LinearLayout
+                        android:id="@+id/weatherdetails_precipitation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_alignParentTop="true"
+                        android:layout_margin="3dp"
+                        android:padding="0dp">
+                </LinearLayout>
+
+                <FrameLayout
+                        android:id="@+id/weatherdetails_precipitationchartframe"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3dp"
+                        android:layout_below="@id/weatherdetails_precipitation"
+                        android:layout_centerInParent="true"
+                        android:padding="3dp">
+
+                    <ImageView
+                            android:id="@+id/weatherdetails_precipitationchart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_margin="3dp"
+                            android:padding="3dp"/>
+
+                </FrameLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:layout_above="@id/weatherdetails_reference_text">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <LinearLayout
+                    android:id="@+id/weatherdetails_warnings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="3dp"
+                    android:padding="3dp">
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/weatherdetails_clouds"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/weatherdetails_warnings"
+                    android:layout_margin="3dp"
+                    android:padding="3dp">
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/weatherdetails_wind"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/weatherdetails_clouds"
+                    android:layout_margin="3dp"
+                    android:padding="3dp">
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/weatherdetails_valuelist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/weatherdetails_wind"
+                    android:layout_margin="3dp"
+                    android:padding="3dp">
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/weatherdetails_visibility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/weatherdetails_valuelist"
+                    android:layout_margin="3dp"
+                    android:padding="3dp">
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/weatherdetails_incidents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/weatherdetails_visibility"
+                    android:layout_margin="3dp"
+                    android:padding="3dp">
+            </LinearLayout>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/weatherdetails_incidents"
+                    />
+
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

@@ -81,7 +81,7 @@ public class ClockWidget extends ClassicWidget {
     private void fillClockWeatherItems(Context context, final RemoteViews remoteViews, CurrentWeatherInfo weatherInfo, WeatherSettings weatherSettings) {
         setPrecipitation(context, remoteViews, weatherInfo);
         setPressure(context, remoteViews, weatherInfo);
-        setVisibility(context, remoteViews,weatherInfo,weatherSettings.getDistanceDisplayUnit());
+        setVisibility(context, remoteViews,weatherInfo,weatherSettings.getDistanceDisplayUnit(context));
         setClouds(context, remoteViews,weatherInfo);
         setTemperature5cm(context, remoteViews,weatherInfo);
         setHumidity(context,remoteViews,weatherInfo);

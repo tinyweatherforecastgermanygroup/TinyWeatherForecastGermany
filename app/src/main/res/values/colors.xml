@@ -28,7 +28,7 @@
     <color name="colorTextDark_DarkTheme">#999999</color>
     <color name="colorTextLight_DarkTheme">#ffffff</color>
     <color name="colorWelcomeBackground_DarkTheme">#2222ff</color>
-    <color name="colorWidgetBackground_DarkTheme">#353535</color>
+    <color name="colorWidgetBackground_DarkTheme">#464646</color>
     <color name="colorSecondary_DarkTheme">#1aad4e</color>
     <color name="colorChartTemperatureCold_DarkTheme">#960d0d</color>
     <color name="colorChartTemperatureWarm_DarkTheme">#157cc8</color>
@@ -41,7 +41,7 @@
     <color name="colorTextDark_LightTheme">#333333</color>
     <color name="colorTextLight_LightTheme">#000000</color>
     <color name="colorWelcomeBackground_LightTheme">#04a3f6</color>
-    <color name="colorWidgetBackground_LightTheme">#dfdfdf</color>
+    <color name="colorWidgetBackground_LightTheme">#eeeeee</color>
     <color name="colorSecondary_LightTheme">#04a3f6</color>
     <color name="colorChartTemperatureCold_LightTheme">#f8c41c</color>
     <color name="colorChartTemperatureWarm_LightTheme">#889ff8</color>

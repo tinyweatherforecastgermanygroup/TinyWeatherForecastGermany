@@ -407,6 +407,7 @@ public final class Weather {
 
         public WeatherInfo(int forecast_type){
             this.forecast_type = forecast_type;
+            this.clouds = new Clouds();
         }
 
         public void setTimestamp(long timestamp){
@@ -755,32 +756,51 @@ public final class Weather {
             return getArrowBitmap(context,fromWidget);
         }
 
+        public String getWindUnitString(Context context){
+            String unit = "km/h";
+            if (WeatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.METERS_PER_SECOND){
+                unit = "m/s";
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.KNOTS){
+                unit = "kn";
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.BEAUFORT){
+                unit = "bf";
+            }
+            return unit;
+
+        }
+
         public String getWindSpeedString(Context context, boolean unit){
-            WeatherSettings weatherSettings = new WeatherSettings(context);
-            if (weatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.KNOTS){
-                String windspeedstring = String.valueOf(getWindSpeedInKnotsInt());
-                if (unit){
-                    windspeedstring = windspeedstring + "kn";
-                }
-                return windspeedstring;
-            }
-            if (weatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.BEAUFORT){
-                String windspeedstring = String.valueOf(getWindSpeedInBeaufortInt());
-                if (unit){
-                    windspeedstring = windspeedstring + "bf";
-                }
-                return windspeedstring;
-            }
-            if (weatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.METERS_PER_SECOND){
-                String windspeedstring = String.valueOf(getWindSpeedInMsInt());
-                if (unit){
-                    windspeedstring = windspeedstring + "m/s";
-                }
-                return windspeedstring;
-            }
             String windspeedstring = String.valueOf(getWindSpeedInKmhInt());
+            if (WeatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.KNOTS){
+                windspeedstring = String.valueOf(getWindSpeedInKnotsInt());
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.BEAUFORT){
+                windspeedstring = String.valueOf(getWindSpeedInBeaufortInt());
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.METERS_PER_SECOND){
+                windspeedstring = String.valueOf(getWindSpeedInMsInt());
+            }
             if (unit){
-                windspeedstring = windspeedstring + "km/h";
+                windspeedstring = windspeedstring + getWindUnitString(context);
+            }
+            return windspeedstring;
+        }
+
+        public String getFlurriesString(Context context, boolean unit){
+            String windspeedstring = String.valueOf(getFlurriesInKmhInt());
+            if (WeatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.KNOTS){
+                windspeedstring = String.valueOf(getFlurriesInKnotsInt());
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.BEAUFORT){
+                windspeedstring = String.valueOf(getFlurriesInBeaufortInt());
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==WindDisplayUnit.METERS_PER_SECOND){
+                windspeedstring = String.valueOf(getFlurriesInMsInt());
+            }
+            if (unit){
+                windspeedstring = windspeedstring + getWindUnitString(context);
             }
             return windspeedstring;
         }
@@ -900,6 +920,30 @@ public final class Weather {
             Double d = temperature_low - KelvinConstant;
             int j = (int) Math.round(d);
             return j;
+        }
+
+        public String getMinMaxTemperatureInCelsiusIntString(boolean useSpaces){
+            StringBuilder result = new StringBuilder();
+            if (hasMinTemperature()){
+                result.append(getMinTemperatureInCelsiusInt());
+                result.append("°");
+            } else {
+                result.append("-");
+            }
+            if (useSpaces){
+                result.append(" ");
+            }
+            result.append("|");
+            if (useSpaces){
+                result.append(" ");
+            }
+            if (hasMaxTemperature()){
+                result.append(getMaxTemperatureInCelsiusInt());
+                result.append("°");
+            } else {
+                result.append("-");
+            }
+            return result.toString();
         }
 
         public boolean hasPrecipitation(){
@@ -1315,11 +1359,6 @@ public final class Weather {
             return Math.round(getSunDurationInSeconds()/(60f*60f));
         }
 
-        public String getSunDurationInHoursString(){
-            int i = getSunDurationInSeconds()*1000;
-            DecimalFormat decimalFormat = new DecimalFormat("0.0");
-            return decimalFormat.format((i/60f/60f));
-        }
     }
 
     public CurrentWeatherInfo getCurrentWeatherInfo(Context context){

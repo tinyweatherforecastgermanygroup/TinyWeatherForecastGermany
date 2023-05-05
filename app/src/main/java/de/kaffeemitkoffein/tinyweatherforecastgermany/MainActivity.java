@@ -99,6 +99,8 @@ public class MainActivity extends Activity {
 
     WeatherLocationManager weatherLocationManager;
 
+    long foreCastAdapterLastClickOnItem = 0;
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent intent) {
@@ -151,13 +153,13 @@ public class MainActivity extends Activity {
                     alertDialog.show();
                 }
             }
-            if (intent.getAction().equals(DataUpdateService.SHOW_PROGRESS)){
+            if (intent.getAction().equals(MainActivity.MAINAPP_SHOW_PROGRESS)){
                 ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
                 if (progressBar!=null){
                     progressBar.setVisibility(View.VISIBLE);
                 }
             }
-            if (intent.getAction().equals(DataUpdateService.HIDE_PROGRESS)){
+            if (intent.getAction().equals(MainActivity.MAINAPP_HIDE_PROGRESS)){
                 ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
                 if (progressBar!=null){
                     progressBar.setVisibility(View.INVISIBLE);
@@ -222,23 +224,38 @@ public class MainActivity extends Activity {
     final AdapterView.OnItemLongClickListener weatherItemLongClickListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Weather.WeatherInfo weatherInfo = (Weather.WeatherInfo) adapterView.getItemAtPosition(i);
-            // determine position in 1h array
-            int position = 0;
-            if (weatherCard!=null){
-                position = weatherCard.forecast1hourly.size()-1;
-                long targetTime = weatherInfo.getTimestamp();
-                if (weatherInfo.getForecastType()== Weather.WeatherInfo.ForecastType.HOURS_6){
-                    targetTime = targetTime - 1000*60*60*6;
+            startDetailsActivity(adapterView,view,i,l);
+            return true;
+        }
+    };
+
+    final AdapterView.OnItemClickListener weatherItemDoubleClickListener = new AdapterView.OnItemClickListener() {
+        boolean isDoubleClick=false;
+        @Override
+        public void onItemClick(final AdapterView<?> adapterView, final View view, final int i, final long l) {
+            long currentTime = Calendar.getInstance().getTimeInMillis();
+            if (currentTime<foreCastAdapterLastClickOnItem+ViewConfiguration.getDoubleTapTimeout()){
+                isDoubleClick=true;
+                onDoubleClick(adapterView, view, i, l);
+            } else view.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onSingleClick(adapterView, view, i, l);
                 }
-                if (weatherInfo.getForecastType()== Weather.WeatherInfo.ForecastType.HOURS_24){
-                    targetTime = targetTime - 1000*60*60*24;
-                }
-                while (position>0 && weatherCard.forecast1hourly.get(position).getTimestamp()>targetTime){
-                    position--;
-                }
+            }, Math.round(ViewConfiguration.getDoubleTapTimeout()*1.2f));
+            foreCastAdapterLastClickOnItem = Calendar.getInstance().getTimeInMillis();
+        }
+
+        public void onSingleClick(AdapterView<?> adapterView, View view, int i, long l){
+            if (!isDoubleClick){
+              // do something
             }
-            return showOverviewPopUp(position);
+            // reset for next use
+            isDoubleClick = false;
+        }
+
+        public void onDoubleClick(AdapterView<?> adapterView, View view, int i, long l){
+            startDetailsActivity(adapterView,view,i,l);
         }
     };
 
@@ -1018,6 +1035,7 @@ public class MainActivity extends Activity {
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Timer: adapter set "+decimalFormat.format(time)+" sec from app launch.");
             }
             weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
+            weatherList.setOnItemClickListener(weatherItemDoubleClickListener);
         } else {
             // fetch warnings async if necessary
             // will call this sub again after warnings were loaded
@@ -1148,7 +1166,6 @@ public class MainActivity extends Activity {
             //setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.attr.colorText);
             //setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.attr.colorText);
             setOverflowMenuItemColor(this,menu,R.id.menu_texts,R.string.texts_button);
-            setOverflowMenuItemColor(this,menu,R.id.menu_overview,R.string.overview_button);
             setOverflowMenuItemColor(this,menu,R.id.menu_settings,R.string.settings_button);
             setOverflowMenuItemColor(this,menu,R.id.menu_geoinput,R.string.geoinput_button);
             setOverflowMenuItemColor(this,menu,R.id.menu_travelupdate,R.string.travel_button);
@@ -1224,9 +1241,6 @@ public class MainActivity extends Activity {
         if (item_id == R.id.menu_texts) {
             Intent i = new Intent(this, TextForecastListActivity.class);
             startActivity(i);
-        }
-        if (item_id == R.id.menu_overview){
-            showOverviewPopUp(0);
         }
         return super.onOptionsItemSelected(mi);
     }
@@ -1506,7 +1520,30 @@ public class MainActivity extends Activity {
         }
     }
 
-    private boolean showOverviewPopUp(final int targetPosition){
+    private void startDetailsActivity(AdapterView<?> adapterView, View view, int i, long l){
+        Weather.WeatherInfo weatherInfo = (Weather.WeatherInfo) adapterView.getItemAtPosition(i);
+        // determine position in 1h array
+        int position = 0;
+        if (weatherCard!=null){
+            position = weatherCard.forecast1hourly.size()-1;
+            long targetTime = weatherInfo.getTimestamp();
+            if (weatherInfo.getForecastType()== Weather.WeatherInfo.ForecastType.HOURS_6){
+                targetTime = targetTime - 1000*60*60*6;
+            }
+            if (weatherInfo.getForecastType()== Weather.WeatherInfo.ForecastType.HOURS_24){
+                targetTime = targetTime - 1000*60*60*24;
+            }
+            while (position>0 && weatherCard.forecast1hourly.get(position).getTimestamp()>targetTime){
+                position--;
+            }
+        }
+        Intent intent = new Intent(this, WeatherDetailsActivity.class);
+        intent.putExtra(WeatherDetailsActivity.INTENT_EXTRA_POSITION,position);
+        startActivity(intent);
+    }
+
+
+        private boolean showOverviewPopUp_Old(final int targetPosition){
         try {
             if (weatherCard==null){
                 weatherCard = new Weather().getCurrentWeatherInfo(context);

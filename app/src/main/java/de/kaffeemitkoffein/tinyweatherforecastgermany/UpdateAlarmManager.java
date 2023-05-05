@@ -288,6 +288,12 @@ public class UpdateAlarmManager {
             } else {
                 context.startForegroundService(intent);
             }
+            // animation progress disabled because too slow on legacy devices
+            /*
+            Intent mainAppProgressIntent = new Intent();
+            mainAppProgressIntent.setAction(MainActivity.MAINAPP_SHOW_PROGRESS);
+            context.sendBroadcast(mainAppProgressIntent);
+             */
             return true;
         }
         return false;

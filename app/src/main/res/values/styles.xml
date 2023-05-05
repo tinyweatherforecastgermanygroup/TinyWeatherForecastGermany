@@ -66,7 +66,6 @@
         <item name="ic_share">@mipmap/ic_share_black_24dp</item>
         <item name="ic_content_copy">@mipmap/ic_content_copy_black_24dp</item>
         <item name="ic_add">@mipmap/ic_add_black_24dp</item>
-        <item name="ic_stay_current_landscape">@mipmap/ic_stay_current_landscape_black_24dp</item>
         <item name="ic_access_alarm">@mipmap/ic_access_alarm_black_24dp</item>
         <item name="ic_check">@mipmap/ic_check_black_24dp</item>
 
@@ -171,7 +170,6 @@
         <item name="ic_share">@mipmap/ic_share_white_24dp</item>
         <item name="ic_content_copy">@mipmap/ic_content_copy_white_24dp</item>
         <item name="ic_add">@mipmap/ic_add_white_24dp</item>
-        <item name="ic_stay_current_landscape">@mipmap/ic_stay_current_landscape_white_24dp</item>
         <item name="ic_access_alarm">@mipmap/ic_access_alarm_white_24dp</item>
         <item name="ic_check">@mipmap/ic_check_white_24dp</item>
 

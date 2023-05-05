@@ -60,7 +60,6 @@
     <attr name="ic_share" format="reference"/>
     <attr name="ic_content_copy" format="reference"/>
     <attr name="ic_add" format="reference"/>
-    <attr name="ic_stay_current_landscape" format="reference"/>
     <attr name="ic_access_alarm" format="reference"/>
     <attr name="ic_check" format="reference"/>
 

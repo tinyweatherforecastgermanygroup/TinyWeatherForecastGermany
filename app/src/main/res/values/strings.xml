@@ -360,4 +360,26 @@
     <string name="network_nonetwork">no internet connection.</string>
     <string name="network_timeout">internet connection timed out.</string>
     <string name="issued">issued</string>
+    <string name="back">back</string>
+    <string name="next">next</string>
+    <string name="wd_cc">Cloud cover</string>
+    <string name="wd_hcc">High cloud cover (higher than 7km)</string>
+    <string name="wd_mcc">Medium cloud cover (2 to 7 km)</string>
+    <string name="wd_lcc">Low cloud cover (below 2km)</string>
+    <string name="wd_ccb500">Cloud cover below 500ft (152.4m)</string>
+    <string name="wd_bcc">Base height of convective clouds</string>
+    <string name="wd_gusts">Gusts</string>
+    <string name="wd_sun">Sunshine duration</string>
+    <string name="wd_t5">Temperature 5cm above the ground level</string>
+    <string name="wd_pp">Probability of precipitation</string>
+    <string name="wd_pa">Precipitation amount</string>
+    <string name="wd_wevents">Weather events</string>
+    <string name="wd_pv1">Probability of visibility below one kilometer</string>
+    <string name="wd_pt">Probability of thunderstorms</string>
+    <string name="wd_ph">Probability of hail</string>
+    <string name="wd_pfr">Probability of freezing rain</string>
+    <string name="wd_pf">Probability of fog</string>
+    <string name="wd_pd">Probability of drizzle</string>
+    <string name="wd_wind">Wind</string>
+    <string name="wd_general">General data</string>
 </resources>

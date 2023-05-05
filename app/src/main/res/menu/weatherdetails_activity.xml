@@ -21,18 +21,18 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/textforecastview_back"
-        android:title="@string/back"
-        android:icon="?attr/ic_chevron_left"
-        android:showAsAction="always"
-        android:orderInCategory="1">
+    <item android:id="@+id/weatherdetails_back"
+          android:title="@string/back"
+          android:icon="?attr/ic_chevron_left"
+          android:showAsAction="always"
+          android:orderInCategory="1">
     </item>
 
-    <item android:id="@+id/textforecastview_next"
-        android:title="@string/next"
-        android:icon="?attr/ic_chevron_right"
-        android:showAsAction="always"
-        android:orderInCategory="1">
+    <item android:id="@+id/weatherdetails_next"
+          android:title="@string/next"
+          android:icon="?attr/ic_chevron_right"
+          android:showAsAction="always"
+          android:orderInCategory="1">
     </item>
 
 </menu>

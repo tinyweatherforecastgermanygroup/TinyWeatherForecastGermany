@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020, 2021 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/actionbar_weatherdetails_maincontainer"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+    <ImageView
+            android:id="@+id/actionbar_weatherdetails_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="8dp"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:layout_alignParentLeft="true" />
+
+    <LinearLayout
+            android:id="@+id/actionbar_weatherdetails_linearcontainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_toRightOf="@id/actionbar_weatherdetails_icon">
+
+        <TextView
+                android:id="@+id/actionbar_weatherdetails_heading"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_gravity="left"
+                android:textSize="@dimen/fcmain_textsize_medium_fixed"
+                android:textColor="?attr/colorText" />
+
+        <TextView
+                android:id="@+id/actionbar_weatherdetails_issued"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_gravity="left"
+                android:textSize="@dimen/fcmain_textsize_medium_fixed"
+                android:textColor="?attr/colorText" />
+
+    </LinearLayout>
+
+</RelativeLayout>

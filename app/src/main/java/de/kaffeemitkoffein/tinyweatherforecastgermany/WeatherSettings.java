@@ -1024,14 +1024,16 @@ public class WeatherSettings {
         }
     }
 
-    public int getDistanceDisplayUnit(){
+    public static int getDistanceDisplayUnit(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         try {
-            int i = Integer.parseInt(this.display_distance_unit);
+            int i = Integer.parseInt(sharedPreferences.getString(PREF_DISPLAY_DISTANCE_UNIT,PREF_DISPLAY_DISTANCE_UNIT_DEFAULT));
             return i;
         } catch (NumberFormatException e) {
             // return to default if entry is corrupted (not a number)
-            this.display_distance_unit = PREF_DISPLAY_DISTANCE_UNIT_DEFAULT;
-            applyPreference(PREF_DISPLAY_DISTANCE_UNIT, display_distance_unit);
+            SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+            pref_editor.putString(PREF_DISPLAY_DISTANCE_UNIT,PREF_DISPLAY_DISTANCE_UNIT_DEFAULT);
+            pref_editor.apply();
             // return default
             return Weather.DistanceDisplayUnit.METRIC;
         }

@@ -92,7 +92,7 @@ public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherFo
     this.display_gradient = weatherSettings.display_gradient;
     this.display_wind_type = weatherSettings.getWindDisplayType();
     this.display_wind_unit = WeatherSettings.getWindDisplayUnit(context);
-    this.display_distance_unit = weatherSettings.getDistanceDisplayUnit();
+    this.display_distance_unit = weatherSettings.getDistanceDisplayUnit(context);
     this.display_layout = weatherSettings.getDisplayLayout();
     this.displaySimpleBar = weatherSettings.display_simple_bar;
     this.display_wind_arc = weatherSettings.display_wind_arc;
@@ -187,7 +187,7 @@ private static void switchVisibility(final View view) {
 }
 
 
-static class ViewHolder {
+private static class ViewHolder {
     RelativeLayout supermaincontainer;
     RelativeLayout main_container;
     TextView textView_heading;
@@ -341,7 +341,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     // set the background drawable depending on theme and apply gradient if applicable
     int gradient = getColorGradient(i);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        Drawable drawable = context.getDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
+        Drawable drawable = context.getDrawable(ThemePicker.getWidgetBackgroundDrawableRessource(context));
         if ((display_gradient) && (main_container!=null)){
             if (Build.VERSION.SDK_INT < 29) {
                 drawable.setColorFilter(Color.argb(96,gradient,gradient,gradient),PorterDuff.Mode.SRC_IN);

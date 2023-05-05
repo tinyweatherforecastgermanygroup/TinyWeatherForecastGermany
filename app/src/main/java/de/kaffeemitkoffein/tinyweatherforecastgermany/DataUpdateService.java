@@ -38,9 +38,6 @@ import java.util.concurrent.Executors;
 
 public class DataUpdateService extends Service {
 
-    public final static String SHOW_PROGRESS = "SHOW_PROGRESS";
-    public final static String HIDE_PROGRESS = "HIDE_PROGRESS";
-
     private NotificationManager notificationManager;
     int notification_id;
     Notification notification;
@@ -128,7 +125,7 @@ public class DataUpdateService extends Service {
     private void stopThisService(int cause){
         PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Shutting down service...");
         Intent intent = new Intent();
-        intent.setAction(HIDE_PROGRESS);
+        intent.setAction(MainActivity.MAINAPP_HIDE_PROGRESS);
         intent.putExtra(StopReason.STOPREASON_EXTRA,cause);
         sendBroadcast(intent);
         notificationManager.cancel(notification_id);
@@ -186,7 +183,7 @@ public class DataUpdateService extends Service {
             // 1) intent supplied telling what to do, AND
             // 2) internet connection is present
             boolean hasNetwork = false;
-            if (isConnectedToInternet()){
+            if (isConnectedToInternet(context)){
                 hasNetwork = true;
                 // put
                 if ((Build.VERSION.SDK_INT > 23) && (connectivityManager!=null)){
@@ -533,10 +530,6 @@ public class DataUpdateService extends Service {
             PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.WARN,"Error(s) occured when checking for a valid network: "+e.getMessage()+" => assuming there is a valid network connection.");
        }
         return true;
-    }
-
-    private boolean isConnectedToInternet(){
-        return isConnectedToInternet(this);
     }
 
 }

@@ -40,9 +40,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.zip.ZipInputStream;
 
 public class APIReaders {
@@ -1017,6 +1017,7 @@ public class APIReaders {
         }
     }
 
+    /*
     public static class RadarMNGeoserverRunnable implements Runnable{
 
         private static final String WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AWN-Produkt&bbox=-543.462%2C-4808.645%2C556.538%2C-3608.645&width=1100&height=1200&srs=EPSG%3A1000001&styles=&format=image%2Fpng";
@@ -1126,6 +1127,290 @@ public class APIReaders {
             }
         }
     }
+
+    */
+
+    public static class RadarMNSetGeoserverRunnable implements Runnable{
+
+        private static final String WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AWN-Produkt&bbox=-543.462%2C-4808.645%2C556.538%2C-3608.645&TIMESTAMP&width=1100&height=1200&srs=EPSG%3A1000001&styles=&format=image%2Fpng";
+        public static final String RADAR_CACHE_FILENAME_PREFIX    = "radarMN-";
+        public static final String RADAR_CACHE_FILENAME_SUFFIX    = ".png";
+        public final static int TIMESTEP_5MINUTES = 1000*60*5; // 5 minutes
+        public final static int DATASET_SIZE = 24; // there are 23 OR 24 future images available at the GeoServer
+
+        private Context context;
+        long startTime = 0;
+        private boolean forceUpdate = false;
+        public boolean ssl_exception = false;
+        int progress = 0;
+        int errors = 0;
+
+        public RadarMNSetGeoserverRunnable(Context context){
+            this.context = context;
+        }
+
+        public RadarMNSetGeoserverRunnable(Context context, boolean forceUpdate){
+            this.context = context;
+            this.forceUpdate = forceUpdate;
+        }
+
+        public void setForceUpdate(boolean forceUpdate){
+            this.forceUpdate = forceUpdate;
+        }
+
+        public long roundUTCUpToNextFiveMinutes(long time){
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            calendar.setTimeInMillis(time);
+            calendar.set(Calendar.MILLISECOND,0);
+            calendar.set(Calendar.SECOND,0);
+            int minutes = calendar.get(Calendar.MINUTE);
+            while (minutes%5!=0){
+                minutes++;
+            }
+            calendar.set(Calendar.MINUTE,minutes);
+            return calendar.getTimeInMillis();
+        }
+
+        public static URL getUrlStringForTime(long time, boolean ssl){
+            /*
+            The forecast is available at the Geoserver for every five minutes, eg 10:00, 10:05, 10:10
+            Other timestamps give an error. Format is:
+            time=2023-03-20T11:00:00.000Z
+             */
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            calendar.setTimeInMillis(time);
+            calendar.set(Calendar.MILLISECOND,0);
+            calendar.set(Calendar.SECOND,0);
+            int minutes = calendar.get(Calendar.MINUTE);
+            while (minutes%5!=0){
+                minutes++;
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("time=");
+            stringBuilder.append(calendar.get(Calendar.YEAR));
+            stringBuilder.append("-");
+            int monthOfYear = calendar.get(Calendar.MONTH)+1;
+            if (monthOfYear<10){
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(monthOfYear);
+            stringBuilder.append("-");
+            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+            if (dayOfMonth<10){
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(dayOfMonth);
+            stringBuilder.append("T");
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            if (hour<10){
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(hour);
+            stringBuilder.append(":");
+            if (minutes<10){
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(minutes);
+            stringBuilder.append(":00.000Z");
+            String result = String.copyValueOf(WN_RADAR_URL.toCharArray());
+            result = result.replace("TIMESTAMP",stringBuilder.toString());
+            if (ssl) {
+                result = "https:" + result;
+            } else {
+                result = "http:"+result;
+            }
+            URL url = null;
+            try {
+                url = new URL(result);
+            } catch (MalformedURLException e){
+                // do nothing
+            }
+            return url;
+        }
+
+        private InputStream getRadarInputStream(long time) throws IOException {
+            URL url = getUrlStringForTime(time,true);
+            URL url_legacy = getUrlStringForTime(time,false);
+            //Log.v("twfg","URL "+url.toString());
+            try {
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+                return inputStream;
+            } catch (SSLException e){
+                ssl_exception = true;
+                if (WeatherSettings.isTLSdisabled(context)){
+                    // try fallback to http
+                    try {
+                        HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
+                        InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
+                        PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"MN radar data is polled over http without encryption.");
+                        return inputStream;
+                    } catch (IOException e2){
+                        throw e2;
+                    }
+                } else {
+                    PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Error: ssl connection could not be established, but http is not allowed.");
+                    throw e;
+                }
+            } catch (Exception e){
+                throw e;
+            }
+        }
+
+        public static File getRadarMNFile(Context context, int count){
+            File cacheDir = context.getCacheDir();
+            return new File(cacheDir,RADAR_CACHE_FILENAME_PREFIX+count+RADAR_CACHE_FILENAME_SUFFIX);
+        }
+
+        public static boolean radarCacheFileExists(Context context, int count){
+            File cacheFile = getRadarMNFile(context,count);
+            return cacheFile.exists();
+        }
+
+        public static boolean radarCacheFileValid(Context context, int count){
+            File cacheFile = getRadarMNFile(context,count);
+            if (cacheFile.exists()){
+                if (cacheFile.length()>5000){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static boolean fullRadarDataSet(Context context){
+            int count = 0;
+            for (int i=0; i<DATASET_SIZE; i++){
+                if (radarCacheFileExists(context,i)){
+                    if (radarCacheFileValid(context,i)){
+                        count++;
+                    }
+                }
+            }
+            // a full set consists of 23 OR 24 images, one less is tolerated.
+            return count >= DATASET_SIZE-2;
+        }
+
+        public static boolean deleteCacheFile(Context context, int count){
+            File cacheFile=getRadarMNFile(context,count);
+            return cacheFile.delete();
+        }
+
+        public static void deleteCacheFiles(Context context){
+            for (int i=0; i<DATASET_SIZE; i++){
+                deleteCacheFile(context,i);
+            }
+        }
+
+        private boolean putRadarMapToCache(InputStream inputStream, int count){
+            File cacheFile = getRadarMNFile(context,count);
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(cacheFile);
+                int filesize=0;
+                int i;
+                byte[] cache = new byte[8192];
+                while ((i=inputStream.read(cache))!=-1){
+                    fileOutputStream.write(cache,0,i);
+                    filesize=filesize+i;
+                }
+                fileOutputStream.close();
+                inputStream.close();
+            } catch (Exception e){
+                return false;
+            }
+            return true;
+        }
+
+        public void fetchRadarSet(int start, int stop){
+            // data available for 2h with 5 min steps => 24 data sets at max
+            for (int i=start; i<=stop; i++){
+                try {
+                    putRadarMapToCache(getRadarInputStream(startTime+i*TIMESTEP_5MINUTES),i);
+                    incrementProgress();
+                } catch (IOException e){
+                    incrementErrors();
+                    incrementProgress();
+                }
+            }
+        }
+
+        public void incrementProgress(){
+            progress++;
+            if (progress>=24){
+                if (errors>3){
+                    startTime = WeatherSettings.getPrefRadarLastdatapoll(context);
+                    onFinished(startTime,false);
+                } else {
+                    WeatherSettings.setPrefRadarLastdatapoll(context,startTime);
+                    onFinished(startTime,true);
+                }
+            } else {
+                onProgress(startTime,progress);
+            }
+        }
+
+        public void incrementErrors(){
+            errors++;
+        }
+
+        private void multiFetchRadarSet(){
+            // use 0 to 24 for full set
+            startTime = roundUTCUpToNextFiveMinutes(Calendar.getInstance().getTimeInMillis());
+            // need to delete if read is incomplete
+            deleteCacheFiles(context);
+            errors = 0;
+            Executor executor = Executors.newFixedThreadPool(4);
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    fetchRadarSet(0, 5);
+                }
+            });
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    fetchRadarSet(6, 11);
+                }
+            });
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    fetchRadarSet(12, 18);
+                }
+            });
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    fetchRadarSet(19, 24);
+                }
+            });
+        }
+
+        public void onFinished(long startTime, boolean success){
+            // override to do something with the map
+        }
+
+        public void onProgress(long startTime, int progress){
+            // override to do something once the 1st image was loaded from the geoserver
+        }
+
+        @Override
+        public void run() {
+            forceUpdate = false;
+            boolean success = true;
+            /* either update or return immediately to reuse present data
+             * conditions for update:
+             * corrupted / incomplete dataset, OR outdated data, OR forced update (currently not used in production) AND there is internet access.
+             */
+            if ((!fullRadarDataSet(context) || (WeatherSettings.isRadarDataOutdated(context)) || (forceUpdate)) && (DataUpdateService.isConnectedToInternet(context))){
+                multiFetchRadarSet();
+            } else {
+                // when re-using data, the startTime needs to be loaded from settings
+                startTime = WeatherSettings.getPrefRadarLastdatapoll(context);
+                onFinished(startTime,true);
+            }
+        }
+    }
+
 
 
 }

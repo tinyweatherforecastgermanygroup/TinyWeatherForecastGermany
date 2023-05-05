@@ -505,11 +505,16 @@ public class ForecastBitmap{
         for (int i=0;i<maxValueX;i++){
             if (precipitation_values[i]>maxValueY){
                 maxValueY=precipitation_values[i];
-                maxScaleY=i;
+                maxScaleY=maxValueY/10;
             }
         }
-        float chartWidth=Math.round(width*0.9f);
-        float chartHeight=Math.round(height*0.9f);
+        // round y-scaling up to next 10
+        maxScaleY++;
+        if (maxScaleY>10){
+            maxScaleY=10;
+        }
+        float chartWidth=Math.round(width*0.7f);
+        float chartHeight=Math.round(height*0.7f);
         float shiftX=(float) ((chartWidth/maxValueX)/2);
         float stepX = chartWidth/maxValueX;
         int s = 100;
@@ -517,7 +522,7 @@ public class ForecastBitmap{
         textPaint.setAntiAlias(true);
         textPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTLIGHT));
         textPaint.setTextSize(s);
-        while (textPaint.measureText("XX.0")>stepX*0.9f){
+        while (textPaint.measureText("XX.0")>stepX*0.7f){
             s=s-1;
             textPaint.setTextSize(s);
         }
@@ -548,10 +553,52 @@ public class ForecastBitmap{
             canvas.drawLine(chartOffsetX,ypos,chartOffsetX-width*0.02f,ypos,linePaint);
             canvas.drawLine(chartOffsetX,ypos,width,ypos,lineStrokePaint);
             if (((isLandscape) && (y%2==0)) | (!isLandscape)){
-                canvas.drawText(y*10+"%",0,ypos+s/2,textPaint);
+                canvas.drawText(y*10+"%",0,ypos+s/2f,textPaint);
             }
         }
+        canvas.drawText("mm",width-textPaint.measureText("mm")*1.1f,chartOffsetY+chartHeight-textPaint.getTextSize()/10,textPaint);
         return bitmap;
+    }
+
+    final static Paint barFill = new Paint();
+    final static Paint barStroke = new Paint();
+
+    private static void drawBar(Canvas canvas, final int x, final int barWidth, final int y0, final int y1){
+        canvas.drawRect(x-barWidth/2,y0,x+barWidth/2,y1,barFill);
+        canvas.drawRect(x-barWidth/2,y0,x+barWidth/2,y1,barStroke);
+    }
+
+    public static Bitmap getPrecipitationChart2(Context context, Weather.WeatherInfo weatherInfo){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.outWidth = 1038;
+        options.outHeight = 792;
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),ThemePicker.getRaingridDrawableRessource(context),options);
+        if (!bitmap.isMutable()){
+            bitmap = bitmap.copy(Bitmap.Config.ARGB_8888,true);
+        }
+        final int baseY = 711;
+        final int baseX = 191;
+        final int stepY = 7;
+        final int stepX = 70;
+        final int stepsY = 10;
+        final int stepsX = 12;
+        final int barWidth = 45;
+        barFill.setColor(ThemePicker.getPrecipitationAccentColor(context));
+        barFill.setStyle(Paint.Style.FILL);
+        barStroke.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTDARK));
+        barStroke.setStyle(Paint.Style.STROKE);
+        barStroke.setAntiAlias(true);
+        if (weatherInfo.hasPrecipitationDetails()){
+            Canvas canvas = new Canvas(bitmap);
+            Integer[] rain = weatherInfo.getPrecipitationDetails();
+            for (int x=0; x<stepsX; x++){
+                if (rain[x]>0){
+                    drawBar(canvas,baseX+x*stepX,barWidth,baseY,baseY-rain[x]*stepY);
+                }
+            }
+            return bitmap;
+        }
+        return null;
     }
 
     public static Bitmap getCloudCoverChart(Context context, Weather.WeatherInfo weatherInfo, int width, int height){
