@@ -383,6 +383,6 @@
     <string name="wd_wind">Wind</string>
     <string name="wd_general">General data</string>
     <string name="hint_no">Do not show hints</string>
-    <string name="hint_1">Press the time indicator at the bottom left to set the rain radar to the beginning. Press on the legend to rewind. If the radar fails to load, the timing is yellow. If an outdated image can be displayed, the time is orange.</string>
+    <string name="hint_1">Press the time indicator at the bottom left to set the rain radar to the beginning. Press on the legend to rewind. If the radar fails to load, the time display is yellow. If at least an outdated image can be displayed, the time display is orange.</string>
 
 </resources>
