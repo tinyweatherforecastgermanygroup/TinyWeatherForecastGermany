@@ -137,6 +137,8 @@ public class WeatherSettings {
     public static final String PREF_NC_CHANNEL_DETAIL = "PREF_channel_detail";
     public static final String PREF_LED_COLOR = "PREF_led_color";
     public static final String PREF_WARNINGS_NOTIFY_LED = "PREF_warnings_notify_LED";
+    public static final String PREF_HINTCOUNTER1 = "PREF_hintcounter1";
+    public static final String PREF_HINTCOUNTER2 = "PREF_hintcounter2";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -216,6 +218,9 @@ public class WeatherSettings {
     public static final long PREF_NC_CHANNEL_DETAIL_DEFAULT = 0;
     public static final int PREF_LED_COLOR_DEFAULT = 0;
     public static final boolean PREF_WARNINGS_NOTIFY_LED_DEFAULT = true;
+    public static final int PREF_HINTCOUNTER1_DEFAULT = 0;
+    public static final int PREF_HINTCOUNTER2_DEFAULT = 0;
+
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -295,6 +300,8 @@ public class WeatherSettings {
     public long ncChannelDetail = PREF_NC_CHANNEL_DETAIL_DEFAULT;
     public int ledColor = PREF_LED_COLOR_DEFAULT;
     public boolean useLED = PREF_WARNINGS_NOTIFY_LED_DEFAULT;
+    public int hintCounter1 = PREF_HINTCOUNTER1_DEFAULT;
+    public int hintCounter2 = PREF_HINTCOUNTER2_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -380,6 +387,8 @@ public class WeatherSettings {
         this.rotationMode = readPreference(PREF_ROTATIONMODE,PREF_ROTATIONMODE_DEFAULT);
         this.ncChannelDetail = readPreference(PREF_NC_CHANNEL_DETAIL,PREF_NC_CHANNEL_DETAIL_DEFAULT);
         this.useLED = readPreference(PREF_WARNINGS_NOTIFY_LED,PREF_WARNINGS_NOTIFY_LED_DEFAULT);
+        this.hintCounter1 = readPreference(PREF_HINTCOUNTER1,PREF_HINTCOUNTER1_DEFAULT);
+        this.hintCounter2 = readPreference(PREF_HINTCOUNTER2,PREF_HINTCOUNTER2_DEFAULT);
     }
 
     public void savePreferences() {
@@ -456,6 +465,8 @@ public class WeatherSettings {
         applyPreference(PREF_ROTATIONMODE,rotationMode);
         applyPreference(PREF_NC_CHANNEL_DETAIL,ncChannelDetail);
         applyPreference(PREF_WARNINGS_NOTIFY_LED,useLED);
+        applyPreference(PREF_HINTCOUNTER1,hintCounter1);
+        applyPreference(PREF_HINTCOUNTER2,hintCounter2);
     }
 
     public void commitPreferences() {
@@ -532,7 +543,8 @@ public class WeatherSettings {
         commitPreference(PREF_ROTATIONMODE,rotationMode);
         commitPreference(PREF_NC_CHANNEL_DETAIL,ncChannelDetail);
         commitPreference(PREF_WARNINGS_NOTIFY_LED,useLED);
-
+        commitPreference(PREF_HINTCOUNTER1,hintCounter1);
+        commitPreference(PREF_HINTCOUNTER2,hintCounter2);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -1511,5 +1523,28 @@ public class WeatherSettings {
         return NotificationLEDcolors[getLEDColorItem(context)];
     }
 
+    public static int getHintCounter1(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_HINTCOUNTER1,PREF_HINTCOUNTER1_DEFAULT);
+    }
+
+    public static void setHintCounter1(Context context, int value){
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+    SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+            pref_editor.putInt(PREF_HINTCOUNTER1,value);
+            pref_editor.apply();
+    }
+
+    public static int getHintCounter2(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_HINTCOUNTER2,PREF_HINTCOUNTER2_DEFAULT);
+    }
+
+    public static void setHintCounter2(Context context, int value){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putInt(PREF_HINTCOUNTER2,value);
+        pref_editor.apply();
+    }
 
 }

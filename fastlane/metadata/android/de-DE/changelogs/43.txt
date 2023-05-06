@@ -1,0 +1,6 @@
+- neue Sprache: Russisch (Danke an Wirdi51 !)
+- verbessertes Regenradar
+- neue Detail-Übersicht über die Vorhersage
+- kleinere Layout-Verbesserungen
+- Farbfehler im hellen & dunklen Theme behoben
+

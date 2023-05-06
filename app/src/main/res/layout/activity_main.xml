@@ -213,18 +213,20 @@
         </RelativeLayout>
 
         <ListView android:id="@+id/main_listview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="?attr/colorPrimaryLight"
-            android:dividerHeight="0dp"
-            android:layout_below="@id/main_top_container"
-            android:layout_above="@id/main_dwd_notice_text"
-            android:scrollbars="vertical"
-            android:scrollbarThumbVertical="?attr/colorTextDark"
-            android:verticalScrollbarPosition="right"
-            android:scrollbarSize="6dp"
-                  android:layout_margin="@dimen/slider_marginDouble"
-                  android:footerDividersEnabled="true"/>
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:divider="?attr/colorPrimaryLight"
+                  android:dividerHeight="0dp"
+                  android:layout_below="@id/main_top_container"
+                  android:layout_above="@id/main_dwd_notice_text"
+                  android:scrollbars="vertical"
+                  android:scrollbarThumbVertical="?attr/colorTextDark"
+                  android:verticalScrollbarPosition="right"
+                  android:scrollbarSize="6dp"
+                  android:footerDividersEnabled="true" android:layout_marginTop="@dimen/slider_marginDouble"
+                  android:layout_marginStart="@dimen/slider_marginDouble"
+                  android:layout_marginEnd="@dimen/slider_marginDouble"
+                  android:layout_marginBottom="@dimen/slider_marginDouble"/>
 
         <ProgressBar
             android:id="@+id/main_progressbar"

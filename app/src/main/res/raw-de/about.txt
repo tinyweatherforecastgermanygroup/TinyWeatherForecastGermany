@@ -18,7 +18,7 @@ Dieses Programm benutzt die WeatherSpec Klasse von Gadgetbridge, Copyright © 20
 
 Dieses Programm benutzt PNPOLY - Point Inclusion in Polygon Test by W. Randolph Franklin (WRF), Copyright © 1970-2003, Wm. Randolph Franklin
 
-Dieses Programm benutzt die Astronomy Klasse, Copyright (C) 2010-2012, Helmut Lehmeyer <helmut.lehmeyer@gmail.com>, lizenziert unter der GNU General Public License Version 3.
+Dieses Programm benutzt die Astronomy Klasse, Copyright (C) 2010-2012, Helmut Lehmeyer, lizenziert unter der GNU General Public License Version 3.
 
 PAT maps by Ian Macky <http://ian.macky.net/pat>. Images of the "Lange Anna" (Helgoland) and the Pellworm lighthouse by arwanger.
 
@@ -39,19 +39,22 @@ Folgende Personen haben zum Projekt beigetragen:
   - eUgEntOptIc44 (javadoc improvements)
 
 Übersetzungen:
-* Dänisch: eUgEntOptIc44, mondstern
-* Deutsch: Allan Nordhøy. eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
-* Französisch: Allan Nordhøy, eUgEntOptIc44, mondstern, J. Lavoie
-* Finnisch: eUgEntOptIc44, mondstern
-* Italienisch: mondstern, eUgEntOptIc44
-* Englisch: Allan Nordhøy
-* Niederländisch: Allan Nordhøy, eUgEntOptIc44, mondstern
-* Tschechisch: eUgEntOptIc44, mondstern
-* Norwegisch Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
-* Polnisch: eUgEntOptIc44, mondstern
-* Spanisch: eUgEntOptIc44
-* Ukrainisch: eUgEntOptIc44, Andrij Mizyk
-* Ungarisch: eUgEntOptIc44, Gőz Barnabás
+* Czech: eUgEntOptIc44, mondstern
+* Danish: eUgEntOptIc44, mondstern
+* Dutch: Allan Nordhøy, alternative_be, eUgEntOptIc44, jwildeboer, mondstern
+* English: Allan Nordhøy
+* French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
+* Finnish: eUgEntOptIc44, mondstern
+* German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, mondstern, silmaril, w4ts0n
+* Hungarian: eUgEntOptIc44, Gőz Barnabás
+* Indonesian: Linerly
+* Italian: mondstern, eUgEntOptIc44
+* Irish: mondstern
+* Norwegian Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
+* Polish: eUgEntOptIc44, ewm, mondstern
+* Russian: Wirdi51
+* Spanish: eUgEntOptIc44, hegondev
+* Ukrainian: eUgEntOptIc44, Andrij Mizyk
 
 Lizenz:
 --------

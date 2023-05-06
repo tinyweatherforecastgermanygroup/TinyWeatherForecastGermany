@@ -89,7 +89,7 @@ Translations:
 * Danish: eUgEntOptIc44, mondstern
 * Dutch: Allan Nordhøy, alternative_be, eUgEntOptIc44, jwildeboer, mondstern
 * English: Allan Nordhøy
-* French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, lejun, mondstern
+* French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
 * Finnish: eUgEntOptIc44, mondstern
 * German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, mondstern, silmaril, w4ts0n
 * Hungarian: eUgEntOptIc44, Gőz Barnabás
@@ -98,6 +98,7 @@ Translations:
 * Irish: mondstern
 * Norwegian Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
 * Polish: eUgEntOptIc44, ewm, mondstern
+* Russian: Wirdi51
 * Spanish: eUgEntOptIc44, hegondev
 * Ukrainian: eUgEntOptIc44, Andrij Mizyk
 
