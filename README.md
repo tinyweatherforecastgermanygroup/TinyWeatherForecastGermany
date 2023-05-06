@@ -97,7 +97,7 @@ Translations:
 * Italian: mondstern, eUgEntOptIc44
 * Irish: mondstern
 * Norwegian Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
-* Polish: eUgEntOptIc44, ewm, mondstern
+* Polish: eUgEntOptIc44, Eryk Michalak, ewm, mondstern
 * Russian: Wirdi51
 * Spanish: eUgEntOptIc44, hegondev
 * Ukrainian: eUgEntOptIc44, Andrij Mizyk
