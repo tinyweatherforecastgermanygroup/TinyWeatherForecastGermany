@@ -341,4 +341,27 @@
     <string name="preference_notify_LEDcolor_current">Aktualny kolor:</string>
     <string name="preference_led_notice_title">Uwaga</string>
     <string name="preference_led_notice_summary">Tylko niektóre urządzenia mają diodę powiadomień. Na innych urządzeniach opcje te nie mają żadnego wpływu. Inne ustawienia urządzenia mogą uniemożliwiać miganie diody LED powiadomienia.</string>
+    <string name="back">z powrotem</string>
+    <string name="next">następnie</string>
+    <string name="wd_cc">Zachmurzenie</string>
+    <string name="wd_mcc">Zachmurzenie średnie (od 2 do 7 km)</string>
+    <string name="wd_ccb500">Zachmurzenie poniżej 500 stóp (152,4 m)</string>
+    <string name="wd_bcc">Wysokość podstawowa chmur konwekcyjnych</string>
+    <string name="wd_gusts">Podmuchy</string>
+    <string name="wd_sun">Czas trwania słońca</string>
+    <string name="wd_t5">Temperatura 5 cm nad poziomem gruntu</string>
+    <string name="wd_pa">Ilość opadów</string>
+    <string name="wd_wevents">Wydarzenia pogodowe</string>
+    <string name="wd_pv1">Prawdopodobieństwo widoczności poniżej jednego kilometra</string>
+    <string name="wd_pt">Prawdopodobieństwo burzy</string>
+    <string name="wd_ph">Prawdopodobieństwo wystąpienia gradu</string>
+    <string name="wd_pfr">Prawdopodobieństwo wystąpienia marznącego deszczu</string>
+    <string name="wd_pf">Prawdopodobieństwo wystąpienia mgły</string>
+    <string name="wd_wind">Wiatr</string>
+    <string name="wd_general">Dane ogólne</string>
+    <string name="hint_1">Naciśnij na wskaźnik czasu u dołu po lewej stronie, aby ustawić radar deszczowy na początek. Naciśnij na legendę, aby przewinąć. Jeśli radar nie zdoła się załadować, wskaźnik czasu jest żółty. Jeśli można wyświetlić przynajmniej nieaktualny obraz, wyświetlacz czasu jest pomarańczowy.</string>
+    <string name="wd_hcc">Wysokie zachmurzenie (powyżej 7km)</string>
+    <string name="wd_lcc">Niskie zachmurzenie (poniżej 2 km)</string>
+    <string name="wd_pp">Prawdopodobieństwo wystąpienia opadów</string>
+    <string name="wd_pd">Prawdopodobieństwo mżawki</string>
 </resources>
