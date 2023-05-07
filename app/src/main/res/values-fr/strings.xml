@@ -218,7 +218,7 @@
     <string name="welcome_s2_text10">Temp. au sol</string>
     <string name="welcome_s3_text1">Cliquez/touchez l\'icône dans le coin supérieur gauche pour réduire la carte.</string>
     <string name="welcome_s3_text2">Cliquez/Touchez la liste des villes/localisations dans l\'avertissement pour la développer !</string>
-    <string name="welcome_s3_text3">Ajoutez quelques widgets à votre écran d\'accueil :</string>
+    <string name="welcome_s3_text3">Ajoutez quelques widgets à votre écran d\'accueil.</string>
     <string name="geoinput_title">Trouver la station météo la plus proche</string>.
     <string name="geoinput_hint_longitude">par ex. 10.1, -10:01.22342, 10:01:12345</string>
     <string name="geoinput_hint_latitude">par ex. 53.575, -33:12.32, 21:43:12</string>
