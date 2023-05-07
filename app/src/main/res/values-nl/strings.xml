@@ -186,7 +186,7 @@
     <string name="geoinput_hint_latitude">b.v. 53.575, -33:12.32, 21:43:12</string>
     <string name="geoinput_hint_longitude">b.v. 10.1, -10:01.22342, 10:01:12345</string>
     <string name="geoinput_title">Zoek dichtstbijzijnde weerstation</string>
-    <string name="welcome_s3_text3">Voeg wat widgets toe aan je startscherm:</string>
+    <string name="welcome_s3_text3">Voeg wat widgets toe aan je startscherm.</string>
     <string name="welcome_s3_text2">Klik/raak op de lijst van steden/locaties in de waarschuwing om deze uit te vouwen!</string>
     <string name="welcome_s2_text10">Temp. bij grond</string>
     <string name="welcome_s2_text9">zicht</string>
