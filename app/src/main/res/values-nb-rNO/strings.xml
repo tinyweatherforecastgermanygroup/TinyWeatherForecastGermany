@@ -214,7 +214,7 @@
     <string name="welcome_s1_text1">fri, gratis, åpen kildekode</string>
     <string name="warnings_none">Foreløpig er det ingen væradvarsler for Tyskland.</string>
     <string name="welcome_s3_text1">Klikk/Trykk på ikonet i øvre venstre hjørne til å kollapse kartet.</string>
-    <string name="welcome_s3_text3">Legg til noen widgets på startskjermen:</string>
+    <string name="welcome_s3_text3">Legg til noen widgets på startskjermen.</string>
     <string name="geoinput_gps">Bruke posisjonstjenester av enheten for å avgjøre din gjeldende posisjon.</string>
     <string name="geoinput_select">Velg ett av følgende værstasjoner:</string>
     <string name="geoinput_wrongvalue">Lengdegraden må være mellom 180 og +180, breddegrad må være mellom -90 og +90. Vennligst prøv igjen.</string>
