@@ -224,7 +224,7 @@
     <string name="welcome_s2_text10">Temp. al suolo</string>
     <string name="welcome_s3_text1">Clicca/Tocca l\'icona in alto a sinistra per far collassare la mappa.</string>
     <string name="welcome_s3_text2">Clicca/Tocca la lista delle città/località nell\'avviso per espanderla!</string>
-    <string name="welcome_s3_text3">Aggiungi alcuni widget alla tua schermata iniziale:</string>
+    <string name="welcome_s3_text3">Aggiungi alcuni widget alla tua schermata iniziale.</string>
     <string name="geoinput_hint_longitude">e.g. 10.1, -10:01.22342, 10:01:12345</string>
     <string name="geoinput_hint_latitude">e.g. 53.575, -33:12.32, 21:43:12</string>
     <string name="geoinput_intro">Inserire manualmente longitudine e latitudine per determinare le prossime stazioni meteorologiche o usare i servizi di localizzazione del tuo dispositivo per trovarle.</string>
