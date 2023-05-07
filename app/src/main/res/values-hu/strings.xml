@@ -279,7 +279,7 @@
     <string name="welcome_s2_text10">Földi hőmérséklet</string>
     <string name="welcome_s2_text11">Relatív páratartalom</string>
     <string name="welcome_s3_text2">Kattintson/érintse meg a városok/helyszínek listáját a figyelmeztetésben a bővítéshez!</string>
-    <string name="welcome_s3_text3">Adjon hozzá néhány widgetet a kezdőképernyőjéhez:</string>
+    <string name="welcome_s3_text3">Adjon hozzá néhány widgetet a kezdőképernyőjéhez.</string>
     <string name="geoinput_title">A legközelebbi meteorológiai állomás keresése</string>
     <string name="preference_led_notice_summary">Csak néhány készülék rendelkezik értesítési LED-del. Más eszközökön ezek a beállítások nem hatnak. Más készülékbeállítások megakadályozhatják, hogy az értesítési LED villogjon.</string>
     <string name="service_warning_categoryname">Időjárási figyelmeztetések</string>
