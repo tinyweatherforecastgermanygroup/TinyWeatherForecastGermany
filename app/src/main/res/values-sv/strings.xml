@@ -33,4 +33,5 @@
     <string name="wd_pd">Sannolikhet för duggregn</string>
     <string name="wd_wind">Vind</string>
     <string name="wd_general">Allmänna uppgifter</string>
+    <string name="welcome_s3_text3">Lägg till några widgetar på startskärmen.</string>
 </resources>
