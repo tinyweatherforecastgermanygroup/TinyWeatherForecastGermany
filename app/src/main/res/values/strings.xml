@@ -16,9 +16,7 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<resources>
+--><resources>
     <string name="app_name">Tiny Weather Forecast Germany</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Last Update:</string>
@@ -384,5 +382,4 @@
     <string name="wd_general">General data</string>
     <string name="hint_no">Do not show hints</string>
     <string name="hint_1">Press the time indicator at the bottom left to set the rain radar to the beginning. Press on the legend to rewind. If the radar fails to load, the time display is yellow. If at least an outdated image can be displayed, the time display is orange.</string>
-
 </resources>
