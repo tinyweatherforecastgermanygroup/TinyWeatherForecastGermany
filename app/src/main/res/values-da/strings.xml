@@ -185,7 +185,7 @@
     <string name="welcome_s1_text5">widgets på startskærmen</string>
     <string name="welcome_s3_text1">Klik på/rør ved ikonet i øverste venstre hjørne for at lukke kortet sammen.</string>
     <string name="welcome_s3_text2">Klik på/rør ved listen over byer/lokaliteter i advarslen for at udvide den!</string>
-    <string name="welcome_s3_text3">Tilføj nogle widgets til din startskærm:</string>
+    <string name="welcome_s3_text3">Tilføj nogle widgets til din startskærm.</string>
     <string name="welcome_s3_text4">Prognoselinjen viser skyer i gråtoner og regn i blåtoner.</string>
     <string name="geoinput_select">Vælg en af følgende vejrstationer:</string>
     <string name="geoinput_cancel">Annuller</string>
