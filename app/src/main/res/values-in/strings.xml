@@ -199,7 +199,7 @@
     <string name="welcome_s2_text9">keterlihatan</string>
     <string name="welcome_s2_text10">Suhu di tanah</string>
     <string name="welcome_s2_text11">Kelembapan relatif</string>
-    <string name="welcome_s3_text3">Tambahkan beberapa widget di layar beranda Anda:</string>
+    <string name="welcome_s3_text3">Tambahkan beberapa widget di layar beranda Anda.</string>
     <string name="geoinput_title">Cari stasiun cuaca terdekat</string>
     <string name="geoinput_hint_longitude">mis. 10.1, -10:01.22342, 10:01:12345</string>
     <string name="geoinput_known_note">Ini lokasi Anda dari:</string>
