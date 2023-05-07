@@ -227,7 +227,7 @@
     <string name="welcome_s2_text10">Temp. am Boden</string>
     <string name="welcome_s3_text1">Icon in der linken, oberen Ecke klappt die Karte zu.</string>
     <string name="welcome_s3_text2">Ein Klick/Berührung der Ortsliste in der Warnung klappt sie aus!</string>
-    <string name="welcome_s3_text3">Plaziere Widgets auf dem Home Screen:</string>
+    <string name="welcome_s3_text3">Plaziere Widgets auf dem Home Screen.</string>
     <string name="geoinput_title">Finde die nächste Wetterstation</string>
     <string name="geoinput_hint_longitude">z. B. 10.1, -10:01.22342, 10:01:12345</string>
     <string name="geoinput_hint_latitude">z. B. 53.575, -33:12.32, 21:43:12</string>
