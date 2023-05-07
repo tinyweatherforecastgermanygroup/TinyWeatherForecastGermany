@@ -217,7 +217,7 @@
     <string name="welcome_s2_text11">Humedad relativa</string>
     <string name="welcome_s3_text1">Pulsa/Toca el icono de la esquina superior izquierda para contraer el mapa.</string>
     <string name="welcome_s3_text2">¡Haz clic/Toca la lista de ciudades/lugares en el aviso para ampliarla!</string>
-    <string name="welcome_s3_text3">Añade algunos widgets a tu pantalla de inicio:</string>
+    <string name="welcome_s3_text3">Añade algunos widgets a tu pantalla de inicio.</string>
     <string name="geoinput_title">Buscar la estación meteorológica más cercana</string>
     <string name="geoinput_hint_longitude">por ejemplo, 10.1, -10:01.22342, 10:01:12345</string>
     <string name="geoinput_hint_latitude">por ejemplo, 53.575, -33:12.32, 21:43:12</string>
