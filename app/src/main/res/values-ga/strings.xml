@@ -182,7 +182,7 @@
     <string name="service_notification_title">Tiny Weather Forecast Germany</string>
     <string name="warnings_none">Faoi láthair, níl aon rabhadh aimsire ann don Ghearmáin.</string>
     <string name="welcome_s3_text2">Cliceáil / Déan Teagmháil leis an liosta cathracha / suíomhanna sa rabhadh chun é a leathnú!</string>
-    <string name="welcome_s3_text3">Cuir roinnt giuirléidí le do scáileán baile:</string>
+    <string name="welcome_s3_text3">Cuir roinnt giuirléidí le do scáileán baile.</string>
     <string name="welcome_s3_text4">Taispeánann an barra réamhaisnéise scamaill i liath agus báisteach i gorm.</string>
     <string name="geoinput_title">Aimsigh an stáisiún aimsire is gaire</string>
     <string name="geoinput_hint_latitude">m. sh. 53.575, -33:12.32, 21:43:12</string>
