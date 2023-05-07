@@ -109,7 +109,7 @@
     <string name="welcome_s2_text9">видимість</string>
     <string name="welcome_s2_text11">Відносна вологість</string>
     <string name="welcome_s3_text2">Клацніть/Торкніться списку міст/розташувань у попередженні, щоб розгорнути його!</string>
-    <string name="welcome_s3_text3">Додайте деякі віджети на свій головний екран:</string>
+    <string name="welcome_s3_text3">Додайте деякі віджети на свій головний екран.</string>
     <string name="geoinput_cancel">Скасувати</string>
     <string name="geoinput_reflocation_latitude">Широта:</string>
     <string name="geoinput_reflocation_longitude">Довгота:</string>
