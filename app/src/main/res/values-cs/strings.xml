@@ -10,7 +10,7 @@
     <string name="license_title">Licence</string>
     <string name="direction_south">J</string>
     <string name="direction_west">Z</string>
-    <string name="welcome_s3_text3">Přidejte na domovskou obrazovku některé widgety:</string>
+    <string name="welcome_s3_text3">Přidejte na domovskou obrazovku některé widgety.</string>
     <string name="textforecasttype_short_term">Krátkodobé počasí</string>
     <string name="geoinput_reflocation_title">Referenční poloha je:</string>
     <string name="geoinput_reflocation_longitude">Délka:</string>
