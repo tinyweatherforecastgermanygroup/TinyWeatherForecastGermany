@@ -106,7 +106,7 @@
     <string name="welcome_s2_text8">tuulen suunta</string>
     <string name="welcome_s2_text6">sumu</string>
     <string name="geoinput_title">Etsi lähin sääasema</string>
-    <string name="welcome_s3_text3">Lisää kotinäyttöön widgettejä:</string>
+    <string name="welcome_s3_text3">Lisää kotinäyttöön widgettejä.</string>
     <string name="welcome_s3_text2">Laajenna varoituksessa olevaa kaupunkien/paikkakuntien luetteloa klikkaamalla/koskettamalla sitä!</string>
     <string name="welcome_s3_text1">Napsauta/kosketa vasemmassa yläkulmassa olevaa kuvaketta sulkeaksesi kartan.</string>
     <string name="welcome_s2_text11">Relatiivinen kosteus</string>
