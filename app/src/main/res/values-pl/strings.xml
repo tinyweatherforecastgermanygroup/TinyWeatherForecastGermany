@@ -187,7 +187,7 @@
     <string name="welcome_s2_text8">kierunek wiatru</string>
     <string name="welcome_s2_text9">widoczność</string>
     <string name="welcome_s3_text2">Kliknij/dotknij listę miast/lokalizacji w ostrzeżeniu, aby ją rozwinąć!</string>
-    <string name="welcome_s3_text3">Dodaj kilka widżetów do swojego ekranu głównego:</string>
+    <string name="welcome_s3_text3">Dodaj kilka widżetów do swojego ekranu głównego.</string>
     <string name="welcome_s2_text10">Temp. przy gruncie</string>
     <string name="welcome_s2_text11">Wilgotność względna</string>
     <string name="geoinput_title">Znajdź najbliższą stację meteo</string>
