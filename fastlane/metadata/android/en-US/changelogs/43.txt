@@ -1,5 +1,6 @@
-- new language: Russian (thanks to Wirdi51 !)
 - improved rain radar
 - new detailed forecast overview
+- new language: Russian (thanks to Wirdi51 !)
+- improved translations
 - minor layout improvements
 - fixed color errors in light & dark theme

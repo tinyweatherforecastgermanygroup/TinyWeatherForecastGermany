@@ -403,13 +403,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         if (WeatherSettings.isFirstAppLaunch(this)){
             super.onCreate(savedInstanceState);
+            context = getApplicationContext();
             startWelcomeActivity();
         } else {
             launchTimer = Calendar.getInstance().getTimeInMillis();
-            context = getApplicationContext();
             ThemePicker.SetTheme(this);
             WeatherSettings.setRotationMode(this);
             super.onCreate(savedInstanceState);
+            context = getApplicationContext();
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
             setContentView(R.layout.activity_main);
             stationsManager = new StationsManager(context);
@@ -621,7 +622,6 @@ public class MainActivity extends Activity {
             });
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
         }
-
         popupHint();
     }
 
@@ -1552,10 +1552,9 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-    private void popupHint(){
-        int count = WeatherSettings.getHintCounter1(context);
-        count=2;
-        if ((count==2) || (count==10) || (count==18)){
+    public void popupHint(){
+        final int count = WeatherSettings.getHintCounter1(context);
+        if ((count==2) || (count==6) || (count==9)){
             final RelativeLayout anchorView = (RelativeLayout) findViewById(R.id.main_layout);
             if (anchorView!=null){
                 anchorView.post(new Runnable() {
@@ -1599,6 +1598,15 @@ public class MainActivity extends Activity {
                                         }
                                     }
                                 });
+                                ImageView imageView = (ImageView) popupView.findViewById(R.id.hint1_image);
+                                if (count==6){
+                                    textView1.setText(context.getResources().getString(R.string.welcome_s3_text4));
+                                    imageView.setImageResource(R.drawable.bar_hint);
+                                }
+                                if (count==9){
+                                    textView1.setText(context.getResources().getString(R.string.welcome_s3_text3));
+                                    imageView.setImageResource(R.drawable.widget_preview);
+                                }
                                 int width  = Math.round(displayWidth * 0.8f);
                                 int height = Math.round(displayHeight * 0.26f);
                                 if (isLandscape){
@@ -1612,155 +1620,10 @@ public class MainActivity extends Activity {
                 });
             }
         }
-        if (count<20){
-            count++;
-            WeatherSettings.setHintCounter1(context,count);
+        if (count<10){
+            int newCount = count + 1;
+            WeatherSettings.setHintCounter1(context,newCount);
         }
-    }
-
-        private boolean showOverviewPopUp_Old(final int targetPosition){
-        try {
-            if (weatherCard==null){
-                weatherCard = new Weather().getCurrentWeatherInfo(context);
-            }
-            // display PopUp
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int displayWidth  = Math.round(displayMetrics.widthPixels);
-            int displayHeight = Math.round(displayMetrics.heightPixels);
-            final boolean isLandscape = displayWidth>displayHeight;
-            int width  = Math.round(displayWidth * 0.66f);
-            int height = Math.round(displayHeight * 0.66f);
-            int borderLeft = Math.round(displayMetrics.widthPixels * 0.165f);
-            int borderTop  = Math.round(displayMetrics.heightPixels * 0.165f);
-            if (isLandscape){
-                width  = Math.round(displayWidth * 0.85f);
-                height = Math.round(displayHeight * 0.85f);
-                borderLeft = Math.round(displayMetrics.widthPixels * 0.075f);
-                borderTop  = Math.round(displayMetrics.heightPixels * 0.075f);
-            }
-            int xoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderLeft,displayMetrics));
-            int yoffset = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,borderTop,displayMetrics));
-            // this view is solely used to get the windowToken by popupWindow. It can therefore be any view within the layout.
-            View parentView = (View) findViewById(R.id.gps_progress_holder);
-            final WeatherSliderView weatherSliderView = new WeatherSliderView(getApplicationContext(),getWindowManager(),weatherCard,width,height);
-            weatherSliderView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View popupView = layoutInflater.inflate(R.layout.popupwindow,null);
-            final PopupWindow popupWindow = new PopupWindow(popupView,width,height,true);
-            RelativeLayout hookUp = (RelativeLayout) popupView.findViewById(R.id.popupwindow_relativelayout);
-            hookUp.addView(weatherSliderView);
-            ImageView labelImageView = new ImageView(context); labelImageView.setId(View.generateViewId());
-            RelativeLayout.LayoutParams labelImageViewLAP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.MATCH_PARENT);
-            labelImageViewLAP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            labelImageViewLAP.addRule(RelativeLayout.CENTER_VERTICAL);
-            labelImageView.setLayoutParams(labelImageViewLAP);
-            TextView sliderDay = new TextView(getApplicationContext()); sliderDay.setId(View.generateViewId());
-            RelativeLayout.LayoutParams sliderDayLAP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-            sliderDayLAP.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            sliderDayLAP.addRule(RelativeLayout.RIGHT_OF,labelImageView.getId());
-            sliderDayLAP.setMargins(Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)),Math.round(ForecastAdapter.DPtoPX(20,displayMetrics)),0,Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)));
-            sliderDay.setText("Montag");
-            sliderDay.setTextSize(ForecastAdapter.DPtoPX(6,displayMetrics));
-            sliderDay.setTextColor(Color.WHITE);
-            sliderDay.setLayoutParams(sliderDayLAP);
-            TextView sliderTemperature = new TextView(getApplicationContext()); sliderTemperature.setId(View.generateViewId());
-            RelativeLayout.LayoutParams sliderTemperatureLAP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-            sliderTemperatureLAP.addRule(RelativeLayout.BELOW,sliderDay.getId());
-            sliderTemperatureLAP.addRule(RelativeLayout.RIGHT_OF,labelImageView.getId());
-            sliderTemperatureLAP.setMargins(Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)),0,0,Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)));
-            sliderTemperature.setTextSize(ForecastAdapter.DPtoPX(12,displayMetrics));
-            sliderTemperature.setTextColor(Color.WHITE);
-            sliderTemperature.setLayoutParams(sliderTemperatureLAP);
-            ImageView sliderWindImage = new ImageView(getApplicationContext()); sliderWindImage.setId(View.generateViewId());
-            RelativeLayout.LayoutParams sliderWindImageLAP = new RelativeLayout.LayoutParams((int) ForecastAdapter.DPtoPX(42,displayMetrics),(int) ForecastAdapter.DPtoPX(42,displayMetrics));
-            sliderWindImageLAP.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            sliderWindImageLAP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            sliderWindImageLAP.setMargins(0,Math.round(ForecastAdapter.DPtoPX(20,displayMetrics)),Math.round(ForecastAdapter.DPtoPX(20,displayMetrics)),Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)));
-            sliderWindImage.setLayoutParams(sliderWindImageLAP);
-            TextView sliderWindText = new TextView(getApplicationContext()); sliderWindText.setId(View.generateViewId());
-            RelativeLayout.LayoutParams sliderWindTextLAP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-            sliderWindTextLAP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            sliderWindTextLAP.addRule(RelativeLayout.BELOW,sliderWindImage.getId());
-            sliderWindTextLAP.setMargins(0,0,Math.round(ForecastAdapter.DPtoPX(20,displayMetrics)),Math.round(ForecastAdapter.DPtoPX(4,displayMetrics)));
-            sliderWindText.setTextColor(Color.WHITE);
-            sliderWindText.setTextSize(ForecastAdapter.DPtoPX(6,displayMetrics));
-            sliderWindText.setLayoutParams(sliderWindTextLAP);
-            // clouds fields
-            RelativeLayout sliderCTRelativeFrame = new RelativeLayout(getApplicationContext()); sliderCTRelativeFrame.setId(View.generateViewId());
-            RelativeLayout.LayoutParams sliderCTRelativeFrameLAP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            sliderCTRelativeFrameLAP.addRule(RelativeLayout.BELOW,sliderWindText.getId());
-            sliderCTRelativeFrameLAP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            sliderCTRelativeFrame.setLayoutParams(sliderCTRelativeFrameLAP);
-            LinearLayout sliderCTLinearLayout = new LinearLayout(getApplicationContext()); sliderCTLinearLayout.setId(View.generateViewId());
-            LinearLayout.LayoutParams sliderCTLinearLayoutLAP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            sliderCTLinearLayout.setOrientation(LinearLayout.VERTICAL);
-            sliderCTLinearLayoutLAP.gravity = Gravity.CENTER;
-            sliderCTLinearLayout.setLayoutParams(sliderCTLinearLayoutLAP);
-            sliderCTLinearLayout.setGravity(Gravity.CENTER_VERTICAL);
-            sliderCTLinearLayout.setWeightSum(3);
-            TextView clouds1 = new TextView(getApplicationContext()); clouds1.setId(View.generateViewId());
-            LinearLayout.LayoutParams clouds1LAP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,0);
-            clouds1LAP.weight=1;
-            clouds1LAP.gravity=Gravity.CENTER;
-            clouds1LAP.rightMargin = 2;
-            clouds1.setShadowLayer(3,3,3,Color.BLACK);
-            clouds1.setLayoutParams(clouds1LAP);
-            clouds1.setText("-");
-            clouds1.setGravity(Gravity.CENTER_VERTICAL);
-            clouds1.setTextSize(ForecastAdapter.DPtoPX(5,displayMetrics));
-            clouds1.setTextColor(Color.WHITE);
-            TextView clouds2 = new TextView(getApplicationContext()); clouds2.setId(View.generateViewId());
-            LinearLayout.LayoutParams clouds2LAP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,0);
-            clouds2LAP.weight=1;
-            clouds2LAP.gravity=Gravity.CENTER;
-            clouds2LAP.rightMargin = 2;
-            clouds2.setShadowLayer(3,3,3,Color.BLACK);
-            clouds2.setLayoutParams(clouds2LAP);
-            clouds2.setText("-");
-            clouds2.setGravity(Gravity.CENTER_VERTICAL);
-            clouds2.setTextSize(ForecastAdapter.DPtoPX(5,displayMetrics));
-            clouds2.setTextColor(Color.WHITE);
-            TextView clouds3 = new TextView(getApplicationContext()); clouds3.setId(View.generateViewId());
-            LinearLayout.LayoutParams clouds3LAP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,0);
-            clouds3LAP.weight=1;
-            clouds3LAP.gravity=Gravity.CENTER;
-            clouds3LAP.rightMargin = 2;
-            clouds3.setShadowLayer(3,3,3,Color.BLACK);
-            clouds3.setLayoutParams(clouds3LAP);
-            clouds3.setText("-");
-            clouds3.setGravity(Gravity.CENTER_VERTICAL);
-            clouds3.setTextSize(ForecastAdapter.DPtoPX(5,displayMetrics));
-            clouds3.setTextColor(Color.WHITE);
-            sliderCTLinearLayout.addView(clouds1); sliderCTLinearLayout.addView(clouds2); sliderCTLinearLayout.addView(clouds3);
-            sliderCTRelativeFrame.addView(sliderCTLinearLayout);
-            hookUp.addView(sliderDay); hookUp.addView(sliderTemperature); hookUp.addView(sliderWindImage); hookUp.addView(sliderWindText); hookUp.addView(labelImageView);
-            hookUp.addView(sliderCTRelativeFrame);
-            weatherSliderView.setViews(sliderDay,sliderTemperature,sliderWindImage,sliderWindText,labelImageView,clouds1,clouds2,clouds3);
-            weatherSliderView.setLabelImage();
-            weatherSliderView.upateViews(0);
-            // if items do not fill the window and no scrolling is present, add a touch listener to cancel the window upon touch, as
-            // touch events are not handled by the underlying HorizontalScrollView
-            if (weatherSliderView.isScrollable()){
-                popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        popupWindow.dismiss();
-                        return true;
-                    }
-                });
-            }
-            popupWindow.showAtLocation(parentView, Gravity.NO_GRAVITY, xoffset,yoffset);
-            weatherSliderView.post(new Runnable() {
-                @Override
-                public void run() {
-                    weatherSliderView.setScrollPosition(targetPosition);
-                }
-            });
-        } catch (Exception e){
-            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Displaying the overview chart failed: "+e.getMessage());
-        }
-        return true;
     }
 
     private void startGeoinput(){

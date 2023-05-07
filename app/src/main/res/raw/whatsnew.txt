@@ -1,7 +1,9 @@
 New in version ([VERSION]):
 
-- fix crash when modifying settings
-- improved display of forecasts when present but outdated
-- frequency of Gadgetbridge updates is now better aligned with widgets
-- display of alarm time in clock widget now correctly takes time zone into account
+- improved rain radar
+- new detailed forecast overview
+- new language: Russian (thanks to Wirdi51 !)
+- improved translations
+- minor layout improvements
+- fixed color errors in light & dark theme
 

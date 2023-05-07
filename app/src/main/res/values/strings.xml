@@ -306,7 +306,7 @@
     <string name="welcome_s2_text11">Relative humidity</string>
     <string name="welcome_s3_text1">Click/Touch the icon in the upper left corner to collapse the map.</string>
     <string name="welcome_s3_text2">Click/Touch the list of cities/locations in the warning to expand it!</string>
-    <string name="welcome_s3_text3">Add some widgets to your home screen:</string>
+    <string name="welcome_s3_text3">Add some widgets to your home screen</string>
     <string name="welcome_s3_text4">The forecast bar shows clouds in grey and rain in blue.</string>
     <string name="welcome_s3_text5">Long press forecast to open a more detailed view.</string>
     <string name="geoinput_title">Find closest weather station</string>

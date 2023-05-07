@@ -22,8 +22,13 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.*;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
 import android.util.SparseArray;
+import android.widget.*;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

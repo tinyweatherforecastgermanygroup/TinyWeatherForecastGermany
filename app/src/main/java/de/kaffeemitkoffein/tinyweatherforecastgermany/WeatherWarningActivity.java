@@ -1137,7 +1137,90 @@ public class WeatherWarningActivity extends Activity {
         return resultBitmap;
     }
 
-    private void popupHint(){
+    public void popupHint(){
+        final int count = WeatherSettings.getHintCounter2(context);
+        if ((count==2) || (count==6) || (count==9)){
+            final RelativeLayout anchorView = (RelativeLayout) findViewById(R.id.warningactivity_main_relative_container);
+            if (anchorView!=null){
+                anchorView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                DisplayMetrics displayMetrics = new DisplayMetrics();
+                                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                                int displayWidth  = Math.round(displayMetrics.widthPixels);
+                                int displayHeight = Math.round(displayMetrics.heightPixels);
+                                final boolean isLandscape = displayWidth>displayHeight;
+                                LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                final View popupView = layoutInflater.inflate(R.layout.popup_hint1,null);
+                                // set correct theme textcolors
+                                TextView textView1 = (TextView) popupView.findViewById(R.id.hint1_text);
+                                textView1.setTextColor(Color.WHITE);
+                                // register click callbacks
+                                Button bottonOk = (Button) popupView.findViewById(R.id.hint1_button);
+                                bottonOk.setTextColor(Color.WHITE);
+                                bottonOk.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (hintPopupWindow!=null){
+                                            hintPopupWindow.dismiss();
+                                        }
+                                    }
+                                });
+                                CheckBox checkNo = (CheckBox) popupView.findViewById(R.id.hint1_checkbox);
+                                checkNo.setTextColor(Color.WHITE);
+                                checkNo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                    @Override
+                                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                                        if (checked){
+                                            WeatherSettings.setHintCounter1(context,20);
+                                            WeatherSettings.setHintCounter2(context,20);
+                                        } else {
+                                            WeatherSettings.setHintCounter1(context,0);
+                                            WeatherSettings.setHintCounter2(context,0);
+                                        }
+                                    }
+                                });
+                                int width  = Math.round(displayWidth * 0.8f);
+                                int height = Math.round(displayHeight * 0.26f);
+                                if (isLandscape){
+                                    height = Math.round(displayHeight * 0.4f);
+                                }
+                                ImageView imageView = (ImageView) popupView.findViewById(R.id.hint1_image);
+                                if (count==2){
+                                    textView1.setText(context.getResources().getString(R.string.hint_1));
+                                    imageView.setImageResource(R.drawable.radar_hint);
+                                    height = Math.round(displayHeight * 0.47f);
+                                    if (isLandscape){
+                                        height = Math.round(displayHeight * 0.6f);
+                                    }
+                                }
+                                if (count==6){
+                                    textView1.setText(context.getResources().getString(R.string.welcome_s3_text1));
+                                    imageView.setImageResource(R.drawable.collapse_hint);
+                                }
+                                if (count==9){
+                                    textView1.setText(context.getResources().getString(R.string.welcome_s3_text2));
+                                    imageView.setImageResource(R.drawable.expand_hint);
+                                }
+                                hintPopupWindow = new PopupWindow(popupView,width,height,true);
+                                hintPopupWindow.showAtLocation(anchorView,Gravity.CENTER,0,0);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+        if (count<10){
+            int newCount = count + 1;
+            WeatherSettings.setHintCounter2(context,newCount);
+        }
+    }
+
+
+    private void popupHint_Old(){
         int count = WeatherSettings.getHintCounter2(context);
         if ((count==2) || (count==10) || (count==18)){
             final RelativeLayout anchorView = (RelativeLayout) findViewById(R.id.warningactivity_main_relative_container);
