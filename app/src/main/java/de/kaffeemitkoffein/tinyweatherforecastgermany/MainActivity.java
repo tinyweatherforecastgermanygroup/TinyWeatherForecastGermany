@@ -621,8 +621,8 @@ public class MainActivity extends Activity {
                 }
             });
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
+            popupHint();
         }
-        popupHint();
     }
 
 
@@ -1553,8 +1553,9 @@ public class MainActivity extends Activity {
     }
 
     public void popupHint(){
+        final int[] hintTimes = {20,3,6,9};
         final int count = WeatherSettings.getHintCounter1(context);
-        if ((count==2) || (count==6) || (count==9)){
+        if ((count==hintTimes[1]) || (count==hintTimes[2]) || (count==hintTimes[3])){
             final RelativeLayout anchorView = (RelativeLayout) findViewById(R.id.main_layout);
             if (anchorView!=null){
                 anchorView.post(new Runnable() {
@@ -1590,8 +1591,8 @@ public class MainActivity extends Activity {
                                     @Override
                                     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                                         if (checked){
-                                            WeatherSettings.setHintCounter1(context,20);
-                                            WeatherSettings.setHintCounter2(context,20);
+                                            WeatherSettings.setHintCounter1(context,hintTimes[0]);
+                                            WeatherSettings.setHintCounter2(context,hintTimes[0]);
                                         } else {
                                             WeatherSettings.setHintCounter1(context,0);
                                             WeatherSettings.setHintCounter2(context,0);
@@ -1599,11 +1600,11 @@ public class MainActivity extends Activity {
                                     }
                                 });
                                 ImageView imageView = (ImageView) popupView.findViewById(R.id.hint1_image);
-                                if (count==6){
+                                if (count==hintTimes[2]){
                                     textView1.setText(context.getResources().getString(R.string.welcome_s3_text4));
                                     imageView.setImageResource(R.drawable.bar_hint);
                                 }
-                                if (count==9){
+                                if (count==hintTimes[3]){
                                     textView1.setText(context.getResources().getString(R.string.welcome_s3_text3));
                                     imageView.setImageResource(R.drawable.widget_preview);
                                 }
@@ -1620,7 +1621,7 @@ public class MainActivity extends Activity {
                 });
             }
         }
-        if (count<10){
+        if (count<hintTimes[0]){
             int newCount = count + 1;
             WeatherSettings.setHintCounter1(context,newCount);
         }
