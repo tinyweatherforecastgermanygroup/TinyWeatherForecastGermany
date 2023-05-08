@@ -2,6 +2,6 @@
 - neue Detail-Übersicht über die Vorhersage
 - neue Sprache: Russisch (Danke an Wirdi51 !)
 - verbesserte Übersetzungen
-- kleinere Layout-Verbesserungen
+- kleinere Layout- & Fehler-Verbesserungen
 - Farbfehler im hellen & dunklen Theme behoben
 
