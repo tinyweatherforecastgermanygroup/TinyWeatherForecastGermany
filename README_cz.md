@@ -1,17 +1,14 @@
-Drobná předpověď počasí Německo
-=================================
+# Drobná předpověď počasí Německo
 
 Předpověď počasí s widgety až na 10 dní na základě otevřených dat z Deutscher Wetterdienst (DWD).
 
-Snímky obrazovky
-----------------
+## Snímky obrazovky
 
 ![Screenshot #1](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
 ![Screenshot #2](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
 ![Screenshot #3](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
 
-Jak získat aplikaci
--------------------
+## Jak získat aplikaci
 
 Aplikace Tiny Weather Forecast Germany je k dispozici v hlavním úložišti F-Droid. Stáhnout si ji můžete zde:
 
@@ -27,8 +24,7 @@ Uživatelská sestavení pro testování získáte zde: <https://kaffeemitkoffei
 
 Upozorňujeme, že zde odkazovaná sestavení nejsou podepsána klíčem fdroid, takže před jejich instalací musíte v podstatě odinstalovat verze fdroid a naopak.
 
-Licence
--------
+## Licence
 
 Copyright (c) 2020, 2021 Pawel Dube
 
@@ -45,8 +41,7 @@ General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Tiny Weather Forecast Germany. If not, see <http://www.gnu.org/licenses/>.
 
-Kredity
--------
+## Kredity
 
 Ikony Material Designu jsou chráněny autorskými právy (c) Google Inc. a jsou licencovány pod licencí Apache License Version 2.0.
 
@@ -77,7 +72,7 @@ Přispěvatelé:
 * Janis Bitta (nová ikona aplikace)
 * Jonas Lochmann (.gitignore)
 * Marc Nause (vylepšení kódu, ukládání bitmap do mezipaměti)
-* Jean-Luc Tibaux (francouzský překlad, opravy chyb, vylepšení javadocu, překlady tohoto souboru README.md)
+* eUgEntOptIc44 (francouzský překlad, opravy chyb, vylepšení javadocu, překlady tohoto souboru README.md)
 * arwanger (README.md)
 * maximilianovermeyer (oprava manipulace s geo-záměry)
 
@@ -85,34 +80,34 @@ Překlady:
 
 * česky: eUgEntOptIc44, mondstern
 * dánština: eUgEntOptIc44, mondstern
-* Holandský: mondstern
+* nizozemština: Allan Nordhøy, alternative_be, eUgEntOptIc44, jwildeboer, mondstern
 * Anglicky: Allan Nordhøy
-* Francouzsky: eUgEntOptIc44, mondstern, J. Lavoie
-* Finština: mondstern
-* Německy: eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
+* Francouzsky: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
+* Finština: eUgEntOptIc44, mondstern
+* Německy: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, mondstern, silmaril, w4ts0n
 * maďarsky: eUgEntOptIc44, Gőz Barnabás
+* Indonéština: Linerly
 * Italsky: mondstern, eUgEntOptIc44
+* Irština: mondstern
 * Norský bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
-* polsky: mondstern
-* Španělsky: eUgEntOptIc44
+* polština: eUgEntOptIc44, Eryk Michalak, ewm, mondstern
+* rusky: Wirdi51
+* Španělsky: eUgEntOptIc44, hegondev
 * Ukrajinština: eUgEntOptIc44, Andrij Mizyk
 
 Zapojte se do *Tiny Weather Forecast Germany* a [pomozte ji přeložit do více jazyků nebo dokončit stávající překlady](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
 
 [<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/)
 
-Ochrana osobních údajů
-----------------------
+## Ochrana osobních údajů
 
 Prohlášení o ochraně osobních údajů naleznete na adrese [zde](https://codeberg.org/Starfish/TinyWeatherForecastGermany/wiki/Home).
 
-Koncepce
---------
+## Koncepce
 
 Myšlenkou je vytvořit jednoduchou, nenáročnou a lehkou aplikaci pro předpověď počasí se zaměřením na widgety na domovské obrazovce, která využívá otevřená data z Deutscher Wetterdienst (DWD) a která nesleduje uživatele.
 
-Oprávnění
----------
+## Oprávnění
 
 Aplikace používá následující oprávnění:
 
@@ -122,8 +117,7 @@ Aplikace používá následující oprávnění:
 * Přijímání dokončeného spuštění: aplikace potřebuje vědět o restartu, aby mohla znovu spustit pravidelné kontroly, zda je třeba provést aktualizaci, aktualizovat widgety a odesílat data do Gadgetbridge, pokud je to povoleno.
 * Přístup k jemné poloze: slouží k určení nejbližších senzorů deep L k vaší poloze. Toto oprávnění nemusí být uděleno, pokud se tato funkce nepoužívá nebo pokud se vyhledávání provádí na základě ručně zadaných zeměpisných souřadnic.
 
-ČASTO KLADENÉ DOTAZY
---------------------
+## ČASTO KLADENÉ DOTAZY
 
 *Pro místa v jiném časovém pásmu se ikony dne a noci zdají být nesprávné.*
 
@@ -177,10 +171,9 @@ Povětrnostní podmínky obvykle vypočítává DWD. Pokud není podmínka poča
 
 Prahové hodnoty pro významné povětrnostní podmínky jsou subjektivní a možná diskutabilní, ale povětrnostní podmínky vypočítané pomocí DWD mají přednost a vždy zůstávají nezměněny, pokud jsou k dispozici. Pokud vás zajímají priority, podívejte se na [tento dokument DWD](https://www.dwd.de/DE/leistungen/opendata/help/schluessel_datenformate/kml/mosmix_element_weather_xls.xlsx?__blob=publicationFile&v=6).
 
-Příspěvek
----------
+## Příspěvek
 
-Zanechávejte prosím komentáře, hlášení chyb, problémy a požadavky na funkce v úložišti aplikací na codeberg.org:
+Zanechávejte prosím komentáře, hlášení chyb, problémy a požadavky na funkce v úložišti aplikací na [codeberg.org](https://codeberg.org/Starfish/TinyWeatherForecastGermany):
 
 <https://codeberg.org/Starfish/TinyWeatherForecastGermany>
 

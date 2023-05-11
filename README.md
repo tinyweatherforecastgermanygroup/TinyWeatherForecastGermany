@@ -1,17 +1,14 @@
-﻿Tiny Weather Forecast Germany
-=================================
+﻿# Tiny Weather Forecast Germany
 
 Weather forecast with widgets for up to 10 days, based on open data from the Deutscher Wetterdienst (DWD).
 
-Screenshots
---------
+## Screenshots
 
 ![Screenshot #1](https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
 ![Screenshot #2](https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
 ![Screenshot #3](https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
 
-How to get the app
-------------------
+## How to get the app
 
 Tiny Weather Forecast Germany is available from the F-Droid main repository. You can download it here:
 
@@ -27,8 +24,7 @@ You get userdebug builds for testing here: <https://kaffeemitkoffein.de/nextclou
 
 Please note that the builds linked here are not signed by the F-Droid key, so you basically need to uninstall the F-Droid versions before installing them and vice versa.
 
-License
--------
+## License
 
 Copyright (c) 2020, 2021, 2022 Pawel Dube
 
@@ -45,8 +41,7 @@ General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Tiny Weather Forecast Germany. If not, see <http://www.gnu.org/licenses/>.
 
-Credits
--------
+## Credits
 
 The Material Design icons are Copyright (c) Google Inc., licensed
 under the Apache License Version 2.0.
@@ -106,18 +101,15 @@ Get involved in *Tiny Weather Forecast Germany* and [help to translate it into m
 
 [<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/)
 
-Privacy
--------
+## Privacy
 
 For the privacy statement, see [here](https://codeberg.org/Starfish/TinyWeatherForecastGermany/wiki/Home).
 
-Concept
--------
+## Concept
 
 The idea is to create a simple, floss and light-weight weather forecast app with a focus on home screen widgets that uses open data from the Deutscher Wetterdienst (DWD) and that does not track the users.
 
-Permissions
------------
+## Permissions
 
 The app uses the following permissions:
 
@@ -127,8 +119,7 @@ The app uses the following permissions:
 * Receive boot completed: the app needs to know about a reboot to restart periodic checks if an update is due, to update widgets and to send data to Gadgetbridge when enabled.
 * Access fine location: used to determine the closest weather sensors to your position. This permission needs not to be granted if this feature is not used or if the search is performed based on manually entered geo-coordinates.
 
-FAQ
----
+## FAQ
 
 ### For locations in a different time zone the day/night icons seem incorrect.
 
@@ -169,7 +160,7 @@ Since version 0.59.4, Tiny Weather Forecast Germany also includes [some of the D
 
 Therefore, Tiny Weather Forecast Germany currently only includes a small subset of available *DMO* locations and limits it to locations not already well-represented by the Mosmix data. In particular, *DMO* locations with the same name already present in the Mosmix data and/or within +/- 0.02 longitude and latitude are ignored.
 
-Currently (version 0.59.4), Tiny Weather Forecast Germany uses only 195 of the 3541 *DMO* locations in total, since all other locations meet the criteria above having a much better Mosmix forecast point available instead. 
+Currently (version 0.59.4), Tiny Weather Forecast Germany uses only 195 of the 3541 *DMO* locations in total, since all other locations meet the criteria above having a much better Mosmix forecast point available instead.
 
 Should you have *"Geographic coordinates"* enabled (geographic coordinates of the weather station are displayed in the app), *DMO* stations are indicated by "*(DMO)*" in the app.
 
@@ -326,9 +317,11 @@ The following steps need to be done *only once*:
 1. Install `adb`. Most Linux distributions package it. If you use another operating system or it is not packaged in your distribution you can download it from [https://developer.android.com/studio/releases/**platform-tools**](https://developer.android.com/studio/releases/platform-tools) for various platforms as ZIP-files to unpack and use the usual means to install software there. You will also find a very extensive discussion of `adb` itself [here](https://developer.android.com/studio/command-line/adb). For the purposes at hand it is enough to just get it installed, though.
 2. Enable the developer options on your device. Extensive instructions can also be found here: [https://developer.android.com/studio/**debug/dev-options**](https://developer.android.com/studio/debug/dev-options). The short form:
     1. Find the build number of your phone.
+
         - Open `Settings` (Searching for `Build number` might guide you directly to it)
         - Go to `System`
         - Go to `About phone`
+
     2. Tap the `Build number` several times.
     3. A dialogue informs you how many taps you are a way from being a developer
     4. Keep tapping on `Build number` until you see *You Are Now a Developer*
@@ -342,26 +335,32 @@ After this initial setup, you are ready to access the system log.
 1. Connect your device to the PC via USB
 2. Open a terminal/command line/shell and start `adb logcat`. This will display the devices **log** on the shell. Beware, this is a *lot of* scroll. You may want to redirect it to a file or use some shell extension that allows searches in the text output (like `screen` or `tmux`). To redirect `adb logcat > android.log` should do the trick. It will create a file `android.log` which is a plain text file that can be viewed in any text editor.
 3. Watch out for stuff related to the app. A typical log start similar to this:
-```
-08-20 13:16:33.114  1529  3193 I ActivityManager: START u0 {act=android.intent.action.VIEW flg=0x1000c000 cmp=de.kaffeemitkoffein.tinyweatherforecastgermany/.TextForecastListActivity bnds=[290,534][430,692]} from uid 10477
-```
-   `de.kaffeemitkoffein.tinyweatherforecastgermany` is the apps key and signifies that the interesting parts will follow. You'll get the crash information further down. It starts like this:
-```
-08-20 13:16:33.244 11798 11798 D AndroidRuntime: Shutting down VM
-08-20 13:16:33.245 11798 11798 E AndroidRuntime: FATAL EXCEPTION: main
-08-20 13:16:33.245 11798 11798 E AndroidRuntime: Process: de.kaffeemitkoffein.tinyweatherforecastgermany, PID: 11798
-```
-    Read: fatal exception in `de.kaffeemitkoffein.tinyweatherforecastgermany` (PID will show another number.) So, Tiny Weather Forecast Germany died unexpectedly.
-6. Copy all the blurb from the start mentioned in step 3 till you reach a line that holds
-```
-ActivityManager:   Force finishing activity de.kaffeemitkoffein.tinyweatherforecastgermany/.TextForecastListActivity
-```
-7. Log in to [`codeberg.org`](https://codeberg.org)
-8. Navigate to the issue tracker [`https://codeberg.org/Starfish/TinyWeatherForecastGermany/issues`](https://codeberg.org/Starfish/TinyWeatherForecastGermany/issues)
-10. Create an **issue** describing what you did and add the log just created (copy & paste will do).
 
-Contributing
-------------
+    ```logcat
+    08-20 13:16:33.114  1529  3193 I ActivityManager: START u0 {act=android.intent.action.VIEW flg=0x1000c000 cmp=de.kaffeemitkoffein.tinyweatherforecastgermany/.TextForecastListActivity bnds=[290,534][430,692]} from uid 10477
+    ```
+
+    `de.kaffeemitkoffein.tinyweatherforecastgermany` is the apps key and signifies that the interesting parts will follow. You'll get the crash information further down. It starts like this:
+
+    ```logcat
+    08-20 13:16:33.244 11798 11798 D AndroidRuntime: Shutting down VM
+    08-20 13:16:33.245 11798 11798 E AndroidRuntime: FATAL EXCEPTION: main
+    08-20 13:16:33.245 11798 11798 E AndroidRuntime: Process: de.kaffeemitkoffein.tinyweatherforecastgermany, PID: 11798
+    ```
+
+    Read: fatal exception in `de.kaffeemitkoffein.tinyweatherforecastgermany` (PID will show another number.) So, Tiny Weather Forecast Germany died unexpectedly.
+
+4. Copy all the blurb from the start mentioned in step 3. till you reach a line that holds
+
+    ```logcat
+    ActivityManager:   Force finishing activity de.kaffeemitkoffein.tinyweatherforecastgermany/.TextForecastListActivity
+    ```
+
+5. Log in to [`codeberg.org`](https://codeberg.org)
+6. Navigate to the issue tracker [`https://codeberg.org/Starfish/TinyWeatherForecastGermany/issues`](https://codeberg.org/Starfish/TinyWeatherForecastGermany/issues)
+7. Create an **issue** describing what you did and add the log just created (copy & paste will do).
+
+## Contributing
 
 Please leave comments, bug reports, issues and feature requests at the app repository at [codeberg.org](https://codeberg.org/Starfish/TinyWeatherForecastGermany):
 
