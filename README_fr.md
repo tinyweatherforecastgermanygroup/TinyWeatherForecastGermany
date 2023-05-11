@@ -63,7 +63,7 @@ Calculation of relative humidity from temperature and dew point is done using a 
 
 Uses the Solarized Precision colors for machines and people theme, Copyright (c) 2011 Ethan Schoonover
 
-Contributeurs :
+Contributeurs :
 
 * Andreas Shimokawa (corrections de bogues et prise en charge de l'API Gadgetbridge)
 * Izzy (améliorations des métadonnées)
@@ -74,7 +74,7 @@ Contributeurs :
 * arwanger (README.md)
 * maximilianovermeyer (correction de la gestion de l'intention géographique)
 
-Traductions :
+Traductions :
 
 * Tchèque : eUgEntOptIc44, mondstern
 * Danois : eUgEntOptIc44, mondstern
