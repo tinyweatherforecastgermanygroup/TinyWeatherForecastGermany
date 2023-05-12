@@ -1,17 +1,14 @@
-Tiny Weather Forecast Germany
-=================================
+# Tiny Weather Forecast Germany
 
 Prévisions météorologiques avec widgets pour un maximum de 10 jours, basées sur les données ouvertes du Deutscher Wetterdienst (DWD).
 
-Captures d'écran
----------------
+## Captures d'écran
 
 ![Capture d'écran 1](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
 ![Capture d'écran 2](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
 ![Capture d'écran 3](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
 
-Comment obtenir l'application
----------------------------
+## Comment obtenir l'application
 
 Tiny Weather Forecast Germany est disponible depuis le dépôt principal de F-Droid. Vous pouvez la télécharger ici:
 
@@ -27,8 +24,7 @@ Vous obtenez des builds userdebug pour les tests ici: <https://kaffeemitkoffein.
 
 Veuillez noter que les builds liés ici ne sont pas signés par la clé F-Droid, donc vous devez fondamentalement désinstaller les versions fdroid avant de les installer et vice versa.
 
-Licence
--------
+## Licence
 
 Copyright (c) 2020, 2021 Pawel Dube
 
@@ -45,8 +41,7 @@ General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Tiny Weather Forecast Germany. If not, see <http://www.gnu.org/licenses/>.
 
-Crédits
--------
+## Crédits
 
 Les icônes Material Design sont protégées par le droit d'auteur (c) de Google Inc, sous licence Apache License Version 2.0.
 
@@ -75,7 +70,7 @@ Contributeurs :
 * Janis Bitta (nouvelle icône d'application)
 * Jonas Lochmann (.gitignore)
 * Marc Nause (améliorations du code, mise en cache des bitmaps)
-* Jean-Luc Tibaux (traduction française, corrections de bugs, améliorations javadoc, traductions de ce fichier README.md)
+* eUgEntOptIc44 (traduction française, corrections de bugs, améliorations javadoc, traductions de ce fichier README.md)
 * arwanger (README.md)
 * maximilianovermeyer (correction de la gestion de l'intention géographique)
 
@@ -83,34 +78,34 @@ Traductions :
 
 * Tchèque : eUgEntOptIc44, mondstern
 * Danois : eUgEntOptIc44, mondstern
-* Néerlandais : mondstern
+* Néerlandais : Allan Nordhøy, alternative_be, eUgEntOptIc44, jwildeboer, mondstern
 * Anglais : Allan Nordhøy
-* Français : eUgEntOptIc44, mondstern, J. Lavoie
-* finnois : mondstern
-* Allemand : eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
+* Français : Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
+* Finnois : eUgEntOptIc44, mondstern
+* Allemand : Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, mondstern, silmaril, w4ts0n
 * Hongrois : eUgEntOptIc44, Gőz Barnabás
+* Indonésien : Linerly
 * Italien : mondstern, eUgEntOptIc44
+* Irlandais : mondstern
 * Bokmål norvégien : Allan Nordhøy, eUgEntOptIc44, mondstern
-* Polonais : mondstern
-* Espagnol : eUgEntOptIc44
+* Polonais : eUgEntOptIc44, Eryk Michalak, ewm, mondstern
+* Russe : Wirdi51
+* Espagnol : eUgEntOptIc44, hegondev
 * Ukrainien : eUgEntOptIc44, Andrij Mizyk
 
 Participez à *Tiny Weather Forecast Germany* et [aidez à le traduire dans d'autres langues ou complétez les traductions existantes](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
 
 [<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/)
 
-Vie privée
--------
+## Vie privée
 
 Pour la déclaration de confidentialité, voir [ici](https://codeberg.org/Starfish/TinyWeatherForecastGermany/wiki/Home).
 
-Concept
--------
+## Concept
 
 L'idée est de créer une application de prévisions météorologiques simple, fluide et légère, axée sur les widgets de l'écran d'accueil, qui utilise les données ouvertes du Deutscher Wetterdienst (DWD) et ne suit pas les utilisateurs.
 
-Permissions
------------
+## Permissions
 
 L'application utilise les permissions suivantes :
 
@@ -120,8 +115,7 @@ L'application utilise les permissions suivantes :
 * Recevoir le démarrage terminé: l'application a besoin de savoir qu'il y a eu un redémarrage pour relancer les vérifications périodiques si une mise à jour est due, pour mettre à jour les widgets et pour envoyer des données à Gadgetbridge lorsqu'il est activé.
 * Accès à la localisation fine: utilisé pour déterminer les capteurs L profonds les plus proches de votre position. Cette permission ne doit pas être accordée si cette fonction n'est pas utilisée ou si la recherche est effectuée sur la base de coordonnées géographiques saisies manuellement.
 
-Questions et résponses
----------------------
+## Questions et résponses
 
 *Pour les lieux situés dans un fuseau horaire différent, les icônes jour/nuit semblent incorrectes.*
 
@@ -175,10 +169,9 @@ En général, les conditions météorologiques sont calculées par le DWD. Si un
 
 Les seuils pour les conditions météorologiques importantes sont subjectifs et peut-être discutables, mais les conditions météorologiques calculées par le DWD sont prioritaires et restent toujours non modifiées, si elles sont disponibles. Si vous êtes intéressé par les priorités, consultez [ce document du DWD](https://www.dwd.de/DE/leistungen/opendata/help/schluessel_datenformate/kml/mosmix_element_weather_xls.xlsx?__blob=publicationFile&v=6).
 
-Contribuer
-----------
+## Contribuer
 
-Veuillez laisser des commentaires, des rapports de bogues, des problèmes et des demandes de fonctionnalités à l'adresse suivante du dépôt d'applications à codeberg.org:
+Veuillez laisser des commentaires, des rapports de bogues, des problèmes et des demandes de fonctionnalités à l'adresse suivante du dépôt d'applications à [codeberg.org](https://codeberg.org/Starfish/TinyWeatherForecastGermany):
 
 <https://codeberg.org/Starfish/TinyWeatherForecastGermany>
 

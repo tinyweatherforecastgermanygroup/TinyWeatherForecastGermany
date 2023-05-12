@@ -1,17 +1,14 @@
-Kleine Wettervorschau Deutschland
-=================================
+# Kleine Wettervorschau Deutschland
 
 Wettervorhersage mit Widgets für bis zu 10 Tage, basierend auf offenen Daten des Deutschen Wetterdiensts (DWD).
 
-Bildschirmfotos
----------------
+## Bildschirmfotos
 
 ![Screenshot #1](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
 ![Screenshot #2](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
 ![Screenshot #3](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
 
-Download
---------
+## Download
 
 Die App ist im F-Droid-Hauptrepository verfügbar:
 
@@ -27,8 +24,7 @@ Userdebug-Builds zum Testen erhalten Sie hier: <https://kaffeemitkoffein.de/next
 
 Bitte beachten Sie, dass die hier verlinkten Builds nicht mit dem F-Droid-Schlüssel signiert sind, so dass Sie grundsätzlich die F-Droid-Versionen deinstallieren müssen, bevor Sie sie installieren und umgekehrt.
 
-Lizenz
--------
+## Lizenz
 
 Copyright (c) 2020, 2021 Pawel Dube
 
@@ -45,8 +41,7 @@ General Public License für weitere Details.
 Sie sollten ein Exemplar der GNU General Public License
 zusammen mit dieser App erhalten haben. Falls nicht, finden sie sie hier: <http://www.gnu.org/licenses/>.
 
-Quellenangaben
---------------
+## Quellenangaben
 
 Die Material-Design-Symbole stehen unter dem Copyright (c) von Google Inc. und unter der Apache-Lizenz Version 2.0 lizenziert.
 
@@ -71,45 +66,45 @@ Mitwirkende:
 
 * Andreas Shimokawa (Bugfixes & Support für die Gadgetbridge API)
 * Izzy (Metadaten-Verbesserungen)
-* Janis Bitta (neues App-Icon)
-* Jonas Lochmann (.gitignore-Datei)
-* Marc Nause (Codeverbesserungen, Bitmap-Caching)
-* Jean-Luc Tibaux (Französische Übersetzung, Bugfixes, Javadoc-Verbesserungen, Übersetzungen dieser README.md-Datei)
+* Janis Bitta (neues App-Symbol)
+* Jonas Lochmann (.gitignore)
+* Marc Nause (Code-Verbesserungen, Bitmap-Caching)
+* eUgEntOptIc44 (Französische Übersetzung, Bugfixes, Javadoc-Verbesserungen, Übersetzungen dieser README.md-Datei)
 * arwanger (README.md)
-* maximilianovermeyer (Fehlerbehebung beim Geo-Intent-Handling)
+* maximilianovermeyer (Korrektur der Geo-Intent-Behandlung)
 
 Übersetzungen:
 
 * Tschechisch: eUgEntOptIc44, mondstern
-* Dänisch: eUgEntOptIc44, mondstern
-* Niederländisch: mondstern
+* Dänisch: eUgEntOptic44, mondstern
+* Niederländisch: Allan Nordhøy, alternative_be, eUgEntOptIc44, jwildeboer, mondstern
 * Englisch: Allan Nordhøy
-* Französisch: eUgEntOptIc44, Mondstern, J. Lavoie
-* Finnisch: Mondstern
-* Deutsch: eUgEntOptIc44, Hiajen, J. Lavoie, mondstern, w4ts0n
-* Ungarisch: eUgEntOptIc44, Gőz Barnabás
-* Italienisch: mondstern, eUgEntOptIc44
-* Norwegischer Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
-* Polnisch: mondstern
-* Spanisch: eUgEntOptIc44
+* Französisch: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
+* Finnisch: eUgEntOptic44, mondstern
+* Deutsch: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, mondstern, silmaril, w4ts0n
+* Ungarisch: eUgEntOptic44, Gőz Barnabás
+* Indonesisch: Linerly
+* Italienisch: mondstern, eUgEntOptic44
+* Irisch: mondstern
+* Norwegisches Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
+* Polnisch: eUgEntOptIc44, Eryk Michalak, ewm, mondstern
+* Russisch: Wirdi51
+* Spanisch: eUgEntOptIc44, hegondev
 * Ukrainisch: eUgEntOptIc44, Andrij Mizyk
 
 Beteiligen Sie sich gerne an *Tiny Weather Forecast Germany* und [helfen Sie mit, die App in weitere Sprachen zu übersetzen oder bestehende Übersetzungen zu vervollständigen](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
 
-[<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-deutschland/)
+[<img src="https://translate.codeberg.org/widgets/tiny-weather-forecast-germany/-/multi-blue.svg">](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/)
 
-Datenschutz
------------
+## Datenschutz
 
 Für die Datenschutzerklärung siehe [hier](https://codeberg.org/Starfish/TinyWeatherForecastGermany/wiki/Home).
 
-Konzept
--------
+## Konzept
 
 Die Idee ist es, eine einfache, schnelle und leichtgewichtige Wettervorhersage-App mit Fokus auf Home-Screen-Widgets zu erstellen, die offene Daten des Deutschen Wetterdienstes (DWD) nutzt und die Nutzer nicht trackt.
 
-Berechtigungen
---------------
+## Berechtigungen
 
 Die App verwendet die folgenden Berechtigungen:
 
@@ -119,8 +114,7 @@ Die App verwendet die folgenden Berechtigungen:
 * Receive boot completed: die App muss von einem Neustart wissen, um periodisch zu prüfen, ob ein Update fällig ist, um Widgets zu aktualisieren und um Daten an Gadgetbridge zu senden, wenn dies aktiviert ist.
 * Zugriff auf Feinortung: wird verwendet, um die nächstgelegenen Wetter-Sensoren zu Ihrer Position zu ermitteln. Diese Berechtigung muss nicht erteilt werden, wenn diese Funktion nicht verwendet wird oder wenn die Suche basierend auf manuell eingegebenen Geokoordinaten durchgeführt wird.
 
-FAQ
----
+## FAQ
 
 *Für Standorte in einer anderen Zeitzone scheinen die Tag/Nacht-Symbole falsch zu sein.*
 
@@ -174,11 +168,10 @@ In der Regel werden die Wetterbedingungen vom DWD berechnet. Wenn eine Wetterbed
 
 Schwellenwerte für signifikante Wetterbedingungen sind subjektiv und vielleicht diskutabel, aber die vom DWD berechneten Wetterbedingungen haben Priorität und bleiben immer unverändert, wenn sie verfügbar sind. Wenn Sie sich für die Prioritäten interessieren, lesen Sie [dieses DWD-Dokument](https://www.dwd.de/DE/leistungen/opendata/help/schluessel_datenformate/kml/mosmix_element_weather_xls.xlsx?__blob=publicationFile&v=6).
 
-Bei der Weiterentwicklung mithelfen
------------------------------------
+## Bei der Weiterentwicklung mithelfen
 
-Bitte hinterlassen Sie Kommentare, Fehlerberichte, Probleme und Funktionswünsche im App-Repository auf codeberg.org:
+Bitte hinterlassen Sie Kommentare, Fehlerberichte, Probleme und Funktionswünsche im App-Repository auf [codeberg.org](https://codeberg.org/Starfish/TinyWeatherForecastGermany):
 
 <https://codeberg.org/Starfish/TinyWeatherForecastGermany>.
 
-Alternativ können Sie **Pawel Dube** (Starfish) für Vorschläge und Fehlerberichte per E-Mail kontaktieren: *wetter (at) kaffeemitkoffein.de*
+Alternativ können Sie **Pawel Dube** (Starfish) für Vorschläge und Fehlerberichte per E-Mail kontaktieren: *weather (at) kaffeemitkoffein.de*
