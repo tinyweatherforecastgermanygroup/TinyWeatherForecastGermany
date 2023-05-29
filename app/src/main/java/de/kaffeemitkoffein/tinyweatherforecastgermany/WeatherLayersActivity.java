@@ -182,17 +182,6 @@ public class WeatherLayersActivity extends Activity {
     }
 
     public void getViewIDs(){
-        /*
-        imageView_1_1 = (ImageView) findViewById(R.id.wm_image_1_1);
-        textViewTitle_1_1 = (TextView) findViewById(R.id.wm_heading_1_1);
-        textViewDate_1_1 = (TextView) findViewById(R.id.wm_date_1_1);
-        imageView_1_2 = (ImageView) findViewById(R.id.wm_image_1_2);
-        textViewTitle_1_2 = (TextView) findViewById(R.id.wm_heading_1_2);
-        textViewDate_1_2 = (TextView) findViewById(R.id.wm_date_1_2);
-        imageView_1_3 = (ImageView) findViewById(R.id.wm_image_1_3);
-        textViewTitle_1_3 = (TextView) findViewById(R.id.wm_heading_1_3);
-        textViewDate_1_3 = (TextView) findViewById(R.id.wm_date_1_3);
-         */
         displayLayers = new ArrayList<DisplayLayer>();
         displayLayers.add(new DisplayLayer(WeatherLayer.Layers.UVI_CLOUDS_0,
                 getWeatherLayerByID(WeatherLayer.Layers.UVI_CLOUDS_0),
@@ -260,6 +249,42 @@ public class WeatherLayersActivity extends Activity {
                 (ImageView) findViewById(R.id.wm_image_5_1),
                 (TextView) findViewById(R.id.wm_heading_5_1),
                 (TextView) findViewById(R.id.wm_date_5_1)));
+        displayLayers.add(new DisplayLayer(WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_0,
+                getWeatherLayerByID(WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_0),
+                (RelativeLayout) findViewById(R.id.wm_element_8_1),
+                (ImageView) findViewById(R.id.wm_image_8_1),
+                (TextView) findViewById(R.id.wm_heading_8_1),
+                (TextView) findViewById(R.id.wm_date_8_1)));
+        displayLayers.add(new DisplayLayer(WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_1,
+                getWeatherLayerByID(WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_1),
+                (RelativeLayout) findViewById(R.id.wm_element_9_1),
+                (ImageView) findViewById(R.id.wm_image_9_1),
+                (TextView) findViewById(R.id.wm_heading_9_1),
+                (TextView) findViewById(R.id.wm_date_9_1)));
+        displayLayers.add(new DisplayLayer(WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_2,
+                getWeatherLayerByID(WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_2),
+                (RelativeLayout) findViewById(R.id.wm_element_10_1),
+                (ImageView) findViewById(R.id.wm_image_10_1),
+                (TextView) findViewById(R.id.wm_heading_10_1),
+                (TextView) findViewById(R.id.wm_date_10_1)));
+        displayLayers.add(new DisplayLayer(WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0,
+                getWeatherLayerByID(WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0),
+                (RelativeLayout) findViewById(R.id.wm_element_11_1),
+                (ImageView) findViewById(R.id.wm_image_11_1),
+                (TextView) findViewById(R.id.wm_heading_11_1),
+                (TextView) findViewById(R.id.wm_date_11_1)));
+        displayLayers.add(new DisplayLayer(WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_1,
+                getWeatherLayerByID(WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_1),
+                (RelativeLayout) findViewById(R.id.wm_element_12_1),
+                (ImageView) findViewById(R.id.wm_image_12_1),
+                (TextView) findViewById(R.id.wm_heading_12_1),
+                (TextView) findViewById(R.id.wm_date_12_1)));
+        displayLayers.add(new DisplayLayer(WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_2,
+                getWeatherLayerByID(WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_2),
+                (RelativeLayout) findViewById(R.id.wm_element_13_1),
+                (ImageView) findViewById(R.id.wm_image_13_1),
+                (TextView) findViewById(R.id.wm_heading_13_1),
+                (TextView) findViewById(R.id.wm_date_13_1)));
     }
 
     public WeatherLayer getWeatherLayerByID(int id){

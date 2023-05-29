@@ -82,6 +82,12 @@ public class WeatherLayer {
         public final static int SENSED_TEMPERATURE_1M_2 = 11;
         public final static int UVI_CLOUDS_EUROPE_0 = 12;
         public final static int UVI_CLOUDLESS_EUROPE_0 = 13;
+        public final static int SENSED_TEMPERATURE_MAX_0 = 14;
+        public final static int SENSED_TEMPERATURE_MAX_1 = 15;
+        public final static int SENSED_TEMPERATURE_MAX_2 = 16;
+        public final static int SENSED_TEMPERATURE_MIN_0 = 17;
+        public final static int SENSED_TEMPERATURE_MIN_1 = 18;
+        public final static int SENSED_TEMPERATURE_MIN_2 = 19;
     }
 
     public final static int LAYERCOUNT = 12;
@@ -102,15 +108,19 @@ public class WeatherLayer {
     public static final String[] CacheFileNames = {"warngebiete_de", "uvi_cl_0", "uvi_cl_1", "uvi_cl_2",
             "uvi_cs_0", "uvi_cs_1", "uvi_cs_2","brd_orte","europe_borders_large",
             "sensed_temperature_0","sensed_temperature_1","sensed_temperature_2",
-            "uvi_cl_eu_0","uvi_cs_eu_0"};
+            "uvi_cl_eu_0","uvi_cs_eu_0",
+            "st_max_0","st_max_1","st_max_2","st_min_0","st_min_1","st_min_2"};
     public static final String[] LayerIDs = {"Warngebiete_Bundeslaender", "UVI_Global_CL", "UVI_Global_CL", "UVI_Global_CL",
             "UVI_CS", "UVI_CS", "UVI_CS","BRD_Orte","Laender",
             "GefuehlteTemp","GefuehlteTemp","GefuehlteTemp",
-            "UVI_Global_CL", "UVI_CS"};
+            "UVI_Global_CL", "UVI_CS",
+            "GefuehlteTempMax","GefuehlteTempMax","GefuehlteTempMax","GefuehlteTempMin","GefuehlteTempMin","GefuehlteTempMin"};
     public final static int[] browseItemsOrder={Layers.UVI_CLOUDS_0,Layers.UVI_CLOUDS_1,Layers.UVI_CLOUDS_2,
             Layers.UVI_CLOUDLESS_0,Layers.UVI_CLOUDLESS_1,Layers.UVI_CLOUDLESS_2,
             Layers.UVI_CLOUDS_EUROPE_0, Layers.UVI_CLOUDLESS_EUROPE_0,
-            Layers.SENSED_TEMPERATURE_1M_0,Layers.SENSED_TEMPERATURE_1M_1,Layers.SENSED_TEMPERATURE_1M_2};
+            Layers.SENSED_TEMPERATURE_1M_0,Layers.SENSED_TEMPERATURE_1M_1,Layers.SENSED_TEMPERATURE_1M_2,
+            Layers.SENSED_TEMPERATURE_MIN_0,Layers.SENSED_TEMPERATURE_MIN_1,Layers.SENSED_TEMPERATURE_MIN_2,
+            Layers.SENSED_TEMPERATURE_MAX_0,Layers.SENSED_TEMPERATURE_MAX_1,Layers.SENSED_TEMPERATURE_MAX_2};
 
     public static class UpdateMode{
         public final static int NEVER = 0;
@@ -194,6 +204,12 @@ public class WeatherLayer {
             case Layers.SENSED_TEMPERATURE_1M_0:
             case Layers.SENSED_TEMPERATURE_1M_1:
             case Layers.SENSED_TEMPERATURE_1M_2:
+            case Layers.SENSED_TEMPERATURE_MAX_0:
+            case Layers.SENSED_TEMPERATURE_MAX_1:
+            case Layers.SENSED_TEMPERATURE_MAX_2:
+            case Layers.SENSED_TEMPERATURE_MIN_0:
+            case Layers.SENSED_TEMPERATURE_MIN_1:
+            case Layers.SENSED_TEMPERATURE_MIN_2:
                 return context.getResources().getString(R.string.layerlabel_short_ts);
         }
         return null;
@@ -284,6 +300,12 @@ public class WeatherLayer {
         list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_1M_2,EuropeLargeGeo,getFullHourTime(time,18,0,TZ.LOCAL),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.DAY, new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
         list.add(new WeatherLayer(Layers.UVI_CLOUDS_EUROPE_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.UVI));
         list.add(new WeatherLayer(Layers.UVI_CLOUDLESS_EUROPE_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.UVI));
+        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MAX_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
+        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MAX_1,EuropeLargeGeo,getMidnightTime(time,1),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
+        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MAX_2,EuropeLargeGeo,getMidnightTime(time,2),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
+        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
+        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_1,EuropeLargeGeo,getMidnightTime(time,1),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
+        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_2,EuropeLargeGeo,getMidnightTime(time,2),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
         return list;
     }
 
