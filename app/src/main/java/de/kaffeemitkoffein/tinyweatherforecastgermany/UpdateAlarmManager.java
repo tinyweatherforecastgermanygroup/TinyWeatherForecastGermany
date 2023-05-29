@@ -267,6 +267,12 @@ public class UpdateAlarmManager {
         if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS)){
             intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS,true);
         }
+        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS)){
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS,true);
+        }
+        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_RAINRADAR)){
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_RAINRADAR,true);
+        }
         if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST)){
             ArrayList<Weather.WeatherLocation> weatherLocations = WeatherSettings.getFavoritesWeatherLocations(context);
             if (weatherLocations.size()>0){

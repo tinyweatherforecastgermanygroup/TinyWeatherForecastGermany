@@ -22,10 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import javax.net.ssl.HttpsURLConnection;
@@ -1385,6 +1382,10 @@ public class APIReaders {
             });
         }
 
+        public void onStart(){
+            // override to do something once update started
+        }
+
         public void onFinished(long startTime, boolean success){
             // override to do something with the map
         }
@@ -1395,6 +1396,7 @@ public class APIReaders {
 
         @Override
         public void run() {
+            onStart();
             forceUpdate = false;
             boolean success = true;
             /* either update or return immediately to reuse present data
@@ -1408,6 +1410,197 @@ public class APIReaders {
                 startTime = WeatherSettings.getPrefRadarLastdatapoll(context);
                 onFinished(startTime,true);
             }
+        }
+    }
+
+    public static class getLayerImages implements Runnable{
+
+        private Context context;
+        ArrayList<WeatherLayer> layers;
+        public boolean ssl_exception = false;
+
+        public getLayerImages(Context context, ArrayList<WeatherLayer> layers){
+            this.context = context;
+            this.layers = layers;
+        }
+
+
+        public static URL getGeoServerURL(boolean ssl, WeatherLayer weatherLayer){
+            float x0 = weatherLayer.mapGeo[0]; float y0 = weatherLayer.mapGeo[1]; float x1 = weatherLayer.mapGeo[2]; float y1 = weatherLayer.mapGeo[3];
+            StringBuilder stringBuilder = new StringBuilder();
+            if (ssl){
+                stringBuilder.append("https://");
+            } else {
+                stringBuilder.append("http://");
+            }
+            stringBuilder.append("maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3A");
+            stringBuilder.append(WeatherLayer.getLayerID(weatherLayer.layer));
+            stringBuilder.append("&bbox=");
+            stringBuilder.append(x0); stringBuilder.append("%2C"); stringBuilder.append(y0); stringBuilder.append("%2C");
+            stringBuilder.append(x1); stringBuilder.append("%2C"); stringBuilder.append(y1); stringBuilder.append("&");
+            if (weatherLayer.timestamp!=null){
+                stringBuilder.append(getTimeStamp(weatherLayer.timestamp));
+                stringBuilder.append("&");
+            }
+            stringBuilder.append("width="); stringBuilder.append(weatherLayer.width); stringBuilder.append("&");
+            stringBuilder.append("height="); stringBuilder.append(weatherLayer.height); stringBuilder.append("&");
+            if (weatherLayer.srs!=null){
+                stringBuilder.append("srs=EPSG%3A"); stringBuilder.append(weatherLayer.srs); stringBuilder.append("&");
+            }
+            stringBuilder.append("styles=&format=image%2Fpng");
+            String strResult = stringBuilder.toString();
+            //Log.v("twfg","URL: "+strResult);
+            try {
+                return new URL(strResult);
+            } catch (MalformedURLException e){
+                return null;
+            }
+        }
+
+        public static String getTimeStamp(long timestamp){
+            /*
+            Format is:
+            time=2023-03-20T11:00:00.000Z
+             */
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            calendar.setTimeInMillis(timestamp);
+            calendar.set(Calendar.MILLISECOND,0);
+            calendar.set(Calendar.SECOND,0);
+            int minutes = calendar.get(Calendar.MINUTE);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("time=");
+            stringBuilder.append(calendar.get(Calendar.YEAR));
+            stringBuilder.append("-");
+            int monthOfYear = calendar.get(Calendar.MONTH)+1;
+            if (monthOfYear<10){
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(monthOfYear);
+            stringBuilder.append("-");
+            int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+            if (dayOfMonth<10){
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(dayOfMonth);
+            stringBuilder.append("T");
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            if (hour<10){
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(hour);
+            stringBuilder.append(":");
+            if (minutes<10){
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(minutes);
+            stringBuilder.append(":00.000Z");
+            return stringBuilder.toString();
+        }
+
+        private InputStream getLayerInputStream(WeatherLayer weatherLayer) throws IOException {
+            URL url = getGeoServerURL(true,weatherLayer);
+            URL url_legacy = getGeoServerURL(false,weatherLayer);
+            // Log.v("twfg","URL "+url.toString());
+            try {
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
+                return inputStream;
+            } catch (SSLException e){
+                ssl_exception = true;
+                if (WeatherSettings.isTLSdisabled(context)){
+                    // try fallback to http
+                    try {
+                        HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
+                        InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
+                        PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"Layer data ("+weatherLayer.layer+") is polled over http without encryption.");
+                        return inputStream;
+                    } catch (IOException e2){
+                        throw e2;
+                    }
+                } else {
+                    PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Error: ssl connection could not be established, but http is not allowed.");
+                    throw e;
+                }
+            } catch (Exception e){
+                throw e;
+            }
+        }
+
+        public boolean readImage(InputStream inputStream, File targetFile){
+            try {
+                FileOutputStream fileOutputStream = new FileOutputStream(targetFile);
+                int filesize=0;
+                int i;
+                byte[] cache = new byte[8192];
+                while ((i=inputStream.read(cache))!=-1){
+                    fileOutputStream.write(cache,0,i);
+                    filesize=filesize+i;
+                }
+                fileOutputStream.close();
+                inputStream.close();
+                //Log.v("twfg","Read "+filesize+" bytes.");
+            } catch (Exception e){
+                return false;
+            }
+            return true;
+        }
+
+        public boolean readLayer(WeatherLayer weatherLayer){
+            if (weatherLayer.isOutdated(context)){
+                try {
+                    File cacheDir = context.getCacheDir();
+                    File targetFile = new File(cacheDir,weatherLayer.getCacheFilename());
+                    InputStream layerInputStream = getLayerInputStream(weatherLayer);
+                    //Log.v("twfg","Layer "+weatherLayer.layer+" fetching from GeoServer. File is "+targetFile.toString());
+                    boolean result = readImage(layerInputStream,targetFile);
+                    if (result) {
+                        // save the layer "midnight" time (this is the requested time)
+                        WeatherSettings.setLayerTime(context,weatherLayer.layer,weatherLayer.timestamp);
+                    }
+                } catch (Exception e){
+                    return false;
+                }
+                // recurively iternate through dependant atop-layers, in case any of them is missing.
+                // Reason: this class may also be initiated with a layer-subset or a single layer.
+                if (weatherLayer.atop!=null){
+                    for (int i=0; i<weatherLayer.atop.length; i++){
+                        readLayer(new WeatherLayer(context,weatherLayer.atop[i]));
+                    }
+                }
+            }
+            //Log.v("twfg","Layer "+weatherLayer.layer+" already in place.");
+            return true;
+        }
+
+        public void onStart(){
+            // override to do something once update started
+        }
+
+
+        public void onFinished(boolean success){
+
+        }
+
+        @Override
+        public void run() {
+            onStart();
+            boolean success = true;
+            if (DataUpdateService.isConnectedToInternet(context)){
+                if (layers!=null){
+                    for (int i=0; i<layers.size(); i++){
+                        if (!readLayer(layers.get(i))){
+                            success = false;
+                        }
+                    }
+                    if (success){
+                        WeatherSettings.setMapLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
+                    }
+                }
+            } else {
+                // success is false when no internet connection
+                success = false;
+            }
+            onFinished(success);
         }
     }
 

@@ -139,6 +139,8 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_NOTIFY_LED = "PREF_warnings_notify_LED";
     public static final String PREF_HINTCOUNTER1 = "PREF_hintcounter1";
     public static final String PREF_HINTCOUNTER2 = "PREF_hintcounter2";
+    public static final String PREF_MAPLASTUPDATETIME = "PREF_maplastupdatetime";
+    public static final String PREF_LASTMAPDISPLAYED = "PREF_lastmapdisplayed";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -220,7 +222,9 @@ public class WeatherSettings {
     public static final boolean PREF_WARNINGS_NOTIFY_LED_DEFAULT = true;
     public static final int PREF_HINTCOUNTER1_DEFAULT = 0;
     public static final int PREF_HINTCOUNTER2_DEFAULT = 0;
-
+    public static final long PREF_UVIMAPLASTUPDATETIME_DEFAULT = 0;
+    public static final long PREF_LAYERTIME_DEFAULT = 0;
+    public static final int PREF_LASTMAPDISPLAYED_DEFAULT = WeatherLayer.Layers.UVI_CLOUDS_0;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -302,6 +306,7 @@ public class WeatherSettings {
     public boolean useLED = PREF_WARNINGS_NOTIFY_LED_DEFAULT;
     public int hintCounter1 = PREF_HINTCOUNTER1_DEFAULT;
     public int hintCounter2 = PREF_HINTCOUNTER2_DEFAULT;
+    public long uviLastUpdateTime = PREF_UVIMAPLASTUPDATETIME_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -389,6 +394,7 @@ public class WeatherSettings {
         this.useLED = readPreference(PREF_WARNINGS_NOTIFY_LED,PREF_WARNINGS_NOTIFY_LED_DEFAULT);
         this.hintCounter1 = readPreference(PREF_HINTCOUNTER1,PREF_HINTCOUNTER1_DEFAULT);
         this.hintCounter2 = readPreference(PREF_HINTCOUNTER2,PREF_HINTCOUNTER2_DEFAULT);
+        this.uviLastUpdateTime = readPreference(PREF_MAPLASTUPDATETIME,PREF_UVIMAPLASTUPDATETIME_DEFAULT);
     }
 
     public void savePreferences() {
@@ -467,6 +473,7 @@ public class WeatherSettings {
         applyPreference(PREF_WARNINGS_NOTIFY_LED,useLED);
         applyPreference(PREF_HINTCOUNTER1,hintCounter1);
         applyPreference(PREF_HINTCOUNTER2,hintCounter2);
+        applyPreference(PREF_MAPLASTUPDATETIME,uviLastUpdateTime);
     }
 
     public void commitPreferences() {
@@ -545,6 +552,7 @@ public class WeatherSettings {
         commitPreference(PREF_WARNINGS_NOTIFY_LED,useLED);
         commitPreference(PREF_HINTCOUNTER1,hintCounter1);
         commitPreference(PREF_HINTCOUNTER2,hintCounter2);
+        commitPreference(PREF_MAPLASTUPDATETIME,uviLastUpdateTime);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -1547,4 +1555,48 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    public static long getMapLastUpdateTime(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getLong(PREF_MAPLASTUPDATETIME,PREF_UVIMAPLASTUPDATETIME_DEFAULT);
+    }
+
+    public static boolean isLayerUpdateAllowed(Context context){
+        long lastUpdateTime = getMapLastUpdateTime(context);
+        // the DWD kindly asks not to update layers more often than every 5 minutes. We comply with that.
+        // Source: https://www.dwd.de/DE/wetter/warnungen_aktuell/objekt_einbindung/einbindung_karten_geodienste.pdf?__blob=publicationFile&v=14
+        return (Calendar.getInstance().getTimeInMillis() + 1000*60*5 > lastUpdateTime);
+    }
+
+    public static void setMapLastUpdateTime(Context context, long value){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_MAPLASTUPDATETIME,value);
+        pref_editor.apply();
+    }
+
+    public static long getLayerTime(Context context, int position){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String key = "PREF_LAYERTIME_"+position;
+        return sharedPreferences.getLong(key,PREF_LAYERTIME_DEFAULT);
+    }
+
+    public static void setLayerTime(Context context, int position, long time){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        String key = "PREF_LAYERTIME_"+position;
+        pref_editor.putLong(key,time);
+        pref_editor.apply();
+    }
+
+    public static int getLastDisplayedLayer(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_LASTMAPDISPLAYED,PREF_LASTMAPDISPLAYED_DEFAULT);
+    }
+
+    public static void setLastDisplayedLayer(Context context, int layer){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putInt(PREF_LASTMAPDISPLAYED,layer);
+        pref_editor.apply();
+    }
 }

@@ -273,4 +273,11 @@ public final class ThemePicker {
         textView.setTextColor(getPrecipitationAccentColor(context));
     }
 
+    public static int getGermanyResource(Context context){
+        if (isDarkTheme(context)){
+            return R.drawable.germany;
+        }
+        return R.drawable.germany_black;
+    }
+
 }

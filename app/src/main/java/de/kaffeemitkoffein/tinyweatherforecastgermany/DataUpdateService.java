@@ -55,6 +55,8 @@ public class DataUpdateService extends Service {
     public static String SERVICEEXTRAS_UPDATE_WEATHER="SERVICEEXTRAS_UPDATE_WEATHER";
     public static String SERVICEEXTRAS_UPDATE_WARNINGS="SERVICEEXTRAS_UPDATE_WARNINGS";
     public static String SERVICEEXTRAS_UPDATE_TEXTFORECASTS="SERVICEEXTRAS_UPDATE_TEXTFORECASTS";
+    public static String SERVICEEXTRAS_UPDATE_LAYERS="SERVICEEXTRAS_UPDATE_LAYERS";
+    public static String SERVICEEXTRAS_UPDATE_RAINRADAR="SERVICEEXTRAS_UPDATE_RAINRADAR";
     public static String SERVICEEXTRAS_CANCEL_NOTIFICATIONS="SERVICEEXTRAS_CANCEL_NF";
     public static String SERVICEEXTRAS_UPDATE_NOTIFICATIONS="SERVICEEXTRAS_UPDATE_NF";
     public static String SERVICEEXTRAS_UPDATE_LOCATIONSLIST="SERVICEEXTRAS_LOCATIONS";
@@ -101,7 +103,7 @@ public class DataUpdateService extends Service {
     private Runnable cleanUpRunnable = new Runnable() {
         @Override
         public void run() {
-            updateNotification(3);
+            updateNotification(5);
             Weather.sanitizeDatabase(getApplicationContext());
             TextForecasts.cleanTextForecastDatabase(getApplicationContext());
         }
@@ -162,12 +164,16 @@ public class DataUpdateService extends Service {
             boolean updateWeather = false;
             boolean updateWarnings = false;
             boolean updateTextForecasts = false;
+            boolean updateLayers = false;
+            boolean updateRainRadar = false;
             boolean updateNotifications = false;
             ArrayList<Weather.WeatherLocation> weatherLocations = null;
             if (intent!=null){
                 updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
                 updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
                 updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
+                updateLayers = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_LAYERS,false);
+                updateRainRadar = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_RAINRADAR,false);
                 // update warnings from existing data only allowed when warnings are not updated
                 if (!updateWarnings){
                     updateNotifications = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_NOTIFICATIONS, false);
@@ -295,6 +301,40 @@ public class DataUpdateService extends Service {
                     };
                     executor.execute(textForecastRunnable);
                 }
+                if (updateLayers){
+                    APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,WeatherLayer.getLayers()){
+                        @Override
+                        public void onStart() {
+                            updateNotification(3);
+                        }
+                        @Override
+                        public void onFinished(boolean success) {
+                            Intent intent = new Intent();
+                            intent.setAction(WeatherLayersActivity.ACTION_UPDATE_LAYERS);
+                            intent.putExtra(WeatherLayersActivity.UPDATE_LAYERS_RESULT,true);
+                            sendBroadcast(intent);
+                        }
+                    };
+                    executor.execute(getLayerImages);
+                }
+                if (updateRainRadar){
+                    APIReaders.RadarMNSetGeoserverRunnable radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(context){
+                        @Override
+                        public void onStart() {
+                            updateNotification(4);
+                        }
+                        @Override
+                        public void onFinished(long startTime, boolean success) {
+                            if (success){
+                                Intent intent = new Intent();
+                                intent.setAction(WeatherWarningActivity.ACTION_RAINRADAR_UPDATE);
+                                intent.putExtra(WeatherWarningActivity.RAINRADAR_UPDATE_RESULT,true);
+                                sendBroadcast(intent);
+                            }
+                        }
+                    };
+                    executor.execute(radarMNSetGeoserverRunnable);
+                }
                 executor.execute(cleanUpRunnable);
             } else {
                 if (updateWarnings){
@@ -381,12 +421,14 @@ public class DataUpdateService extends Service {
     }
 
     private void updateNotification(int state){
-        notificationBuilder.setProgress(4,state,false);
+        notificationBuilder.setProgress(6,state,false);
         switch (state){
             case 0: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text0))); break;
             case 1: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text1))); break;
             case 2: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text2))); break;
-            case 3: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text3)));
+            case 3: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text4)));
+            case 4: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text5)));
+            case 5: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text3)));
         }
         notificationManager.notify(notification_id,notificationBuilder.build());
     }

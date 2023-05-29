@@ -29,4 +29,19 @@
         <categories android:name="android.shortcut.conversation"/>
         <capability-binding android:key="actions.intent.CREATE_MESSAGE"/>
     </shortcut>
+    <shortcut
+            android:shortcutId="maps"
+            android:enabled="true"
+            android:icon="@drawable/germany_black"
+            android:shortcutShortLabel="@string/wm_maps"
+            android:shortcutLongLabel="@string/wm_maps">
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="de.kaffeemitkoffein.tinyweatherforecastgermany"
+                android:targetClass="de.kaffeemitkoffein.tinyweatherforecastgermany.WeatherLayersActivity"/>
+
+        <categories android:name="android.shortcut.conversation"/>
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE"/>
+    </shortcut>
+
 </shortcuts>

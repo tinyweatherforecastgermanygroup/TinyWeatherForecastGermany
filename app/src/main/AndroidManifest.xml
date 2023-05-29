@@ -31,7 +31,8 @@
     <application android:allowBackup="true" android:icon="@mipmap/ic_launcher"
                  android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher" android:supportsRtl="false">
         <activity android:name=".MainActivity"
-                  android:screenOrientation="locked">
+                  android:screenOrientation="locked"
+                  android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -83,7 +84,15 @@
         <activity android:name=".WeatherDetailsActivity"
                   android:label="@string/app_name"
                   android:screenOrientation="locked"
-                  android:parentActivityName=".TextForecastListActivity">
+                  android:parentActivityName=".MainActivity">
+        </activity>
+        <activity android:name=".WeatherLayersActivity"
+                  android:label="@string/app_name"
+                  android:parentActivityName=".MainActivity">
+        </activity>
+        <activity android:name=".WeatherLayerMapActivity"
+                  android:label="@string/app_name"
+                  android:parentActivityName=".WeatherLayersActivity">
         </activity>
 
         <provider android:name=".WeatherContentProvider"

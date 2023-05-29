@@ -83,6 +83,8 @@ public class WeatherWarningActivity extends Activity {
 
     public final static String WEATHER_WARNINGS_UPDATE="WEATHER_WARNINGS_UPDATE";
     public final static String WEATHER_WARNINGS_UPDATE_RESULT="WEATHER_WARNINGS_UPDATE_RESULT";
+    public final static String ACTION_RAINRADAR_UPDATE="ACTION_RAINRADAR_UPDATE";
+    public final static String RAINRADAR_UPDATE_RESULT="RAINRADAR_UPDATE_RESULT";
 
     public final static String SIS_ZOOMMAPSTATEBUNDLE="ZOOMMAPSTATEBUNDLE";
     public final static String SIS_HIDERAIN="HIDERAIN";
@@ -467,8 +469,8 @@ public class WeatherWarningActivity extends Activity {
         float y;
     }
 
-    private static final int MAP_PIXEL_FIXEDWIDTH  = 824;
-    private static final int MAP_PIXEL_FIXEDHEIGHT = 956;
+    public static final int MAP_PIXEL_FIXEDWIDTH  = 824;
+    public static final int MAP_PIXEL_FIXEDHEIGHT = 956;
 
     private static final float MAP_GEO_TOP = 55.80f;
     private static final float MAP_GEO_BOTTOM = 46.96f;
@@ -509,7 +511,7 @@ public class WeatherWarningActivity extends Activity {
         return xOffsetGeo;
     }
 
-    private static PlotPoint getPlotPoint(float lon, float lat){
+    public static PlotPoint getPlotPoint(float lon, float lat){
         float x = (lon - getXOffsetGeo(lat)) * (MAP_PIXEL_WIDTH/getGeoWidth(lat));
         float y = (lat - MAP_GEO_BOTTOM)*(MAP_PIXEL_HEIGHT/MAP_GEO_HEIGHT) + yCorrectionPixels(lon,lat);
         PlotPoint plotPoint = new PlotPoint();
@@ -669,7 +671,7 @@ public class WeatherWarningActivity extends Activity {
         canvas.drawBitmap(warningsBitmap,0,0,cp);
         if ((!hide_admin)){
             if (administrativeBitmap==null){
-                administrativeBitmap = getAdministrativeBitmap(WeatherSettings.getAreaTypeArray(context));
+                administrativeBitmap = getAdministrativeBitmap(context,germanyBitmap.getWidth(),germanyBitmap.getHeight(),WeatherSettings.getAreaTypeArray(context));
             }
             cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
             canvas.drawBitmap(administrativeBitmap,0,0,cp);
@@ -874,7 +876,7 @@ public class WeatherWarningActivity extends Activity {
         int pinsize = Math.round(18*this.getApplicationContext().getResources().getDisplayMetrics().density);
         PlotPoint pinPoint = getPlotPoint((float) ownLocation.longitude, (float) ownLocation.latitude);
         Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinsize,pinsize,false);
-        mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT);
+        mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT,null);
         mapZoomable.redrawBitmap();
         mapTouchListener = new View.OnTouchListener() {
             @Override
@@ -1039,6 +1041,7 @@ public class WeatherWarningActivity extends Activity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(WEATHER_WARNINGS_UPDATE);
         filter.addAction(MainActivity.MAINAPP_HIDE_PROGRESS);
+        filter.addAction(ACTION_RAINRADAR_UPDATE);
         registerReceiver(receiver,filter);
     }
 
@@ -1095,8 +1098,8 @@ public class WeatherWarningActivity extends Activity {
         }
     }
 
-    private Bitmap getAdministrativeBitmap(int[] types){
-        Bitmap resultBitmap = Bitmap.createBitmap(germanyBitmap.getWidth(),germanyBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+    public static Bitmap getAdministrativeBitmap(Context context, int targetWidth, int targetHeight, int[] types){
+        Bitmap resultBitmap = Bitmap.createBitmap(targetWidth,targetHeight, Bitmap.Config.ARGB_8888);
         resultBitmap.eraseColor(Color.TRANSPARENT);
         Canvas canvas = new Canvas(resultBitmap);
         for (int type=0; type<types.length; type++){

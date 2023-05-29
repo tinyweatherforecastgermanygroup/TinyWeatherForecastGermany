@@ -46,7 +46,6 @@ import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-
 import java.io.*;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
@@ -1175,6 +1174,7 @@ public class MainActivity extends Activity {
             // omit the first two, as they are not in the menu
             //setOverflowMenuItemColor(menu,R.id.menu_refresh,R.string.warnings_update, R.attr.colorText);
             //setOverflowMenuItemColor(menu,R.id.menu_warnings,R.string.warnings_button, R.attr.colorText);
+            setOverflowMenuItemColor(this,menu,R.id.menu_maps,R.string.wm_maps);
             setOverflowMenuItemColor(this,menu,R.id.menu_texts,R.string.texts_button);
             setOverflowMenuItemColor(this,menu,R.id.menu_settings,R.string.settings_button);
             setOverflowMenuItemColor(this,menu,R.id.menu_geoinput,R.string.geoinput_button);
@@ -1250,6 +1250,10 @@ public class MainActivity extends Activity {
         }
         if (item_id == R.id.menu_texts) {
             Intent i = new Intent(this, TextForecastListActivity.class);
+            startActivity(i);
+        }
+        if (item_id == R.id.menu_maps) {
+            Intent i = new Intent(this, WeatherLayersActivity.class);
             startActivity(i);
         }
         return super.onOptionsItemSelected(mi);

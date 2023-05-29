@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020, 2021 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!--
+
+-->
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/wlm_maincontainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorPrimary">
+
+    <TextView android:id="@+id/wlm_reference_text"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentBottom="true"
+              android:layout_marginRight="2dp"
+              android:textColor="?attr/colorText"
+              android:textSize="@dimen/widget_textsize_medium"
+              android:visibility="visible"
+              android:layout_centerHorizontal="true"
+              android:text="@string/dwd_notice"/>
+
+    <TextView android:id="@+id/wlm_title"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentTop="true"
+              android:layout_marginRight="2dp"
+              android:layout_marginLeft="2dp"
+              android:layout_marginTop="4dp"
+              android:layout_marginBottom="4dp"
+              android:textColor="?attr/colorText"
+              android:textSize="@dimen/fcmain_textsize_large"
+              android:visibility="visible"
+              android:layout_centerHorizontal="true"/>
+
+    <ImageView
+            android:id="@+id/wlm_legend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uvi_legend_horizontal"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_above="@id/wlm_reference_text"/>
+
+    <ImageView
+            android:id="@+id/wlm_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/germany_black"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_below="@id/wlm_title"
+            android:layout_above="@id/wlm_legend">
+    </ImageView>
+
+</RelativeLayout>
