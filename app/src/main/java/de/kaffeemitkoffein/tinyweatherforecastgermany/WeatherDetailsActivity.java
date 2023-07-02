@@ -2,8 +2,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.view.*;
 import android.widget.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -22,14 +22,23 @@ public class WeatherDetailsActivity extends Activity {
     public static String INTENT_EXTRA_POSITION = "POSITION";
     public static String SIS_POSITION = "POSITION";
 
+    public static class ListItemType{
+        public static final int Label = 0;
+        public static final int Chart = 1;
+    }
+
     Weather.WeatherInfo weatherInfo;
     Context context;
     Handler mainHandler;
     ScheduledExecutorService scheduledExecutorService;
     LayoutInflater layoutInflater;
     ActionBar actionBar;
+    Executor executor;
 
     CurrentWeatherInfo currentWeatherInfo;
+    Pollen pollen;
+    PollenArea pollenArea;
+    ScrollView scrollView;
     RelativeLayout currentWeatherElements;
     LinearLayout valuesListWarnings;
     LinearLayout valuesListClouds;
@@ -39,6 +48,7 @@ public class WeatherDetailsActivity extends Activity {
     LinearLayout valuesListIncidents;
     LinearLayout valuesListPrecipitation;
     FrameLayout precipitationChartFrame;
+    LinearLayout valuesListPollen;
 
     ImageView weatherConditionIcon;
     TextView weatherConditionText;
@@ -47,8 +57,102 @@ public class WeatherDetailsActivity extends Activity {
     TextView temperatureHighLow;
     TextView pressure;
     ImageView precipitationChart;
+    ProgressBar progressBar;
 
     int weatherPosition;
+
+    private SwipeGestureDetector swipeGestureDetector;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context c, Intent intent) {
+            progressBar.setVisibility(View.INVISIBLE);
+            if (intent != null) {
+                final String errorText = DataUpdateService.StopReason.getStopReasonErrorText(context, intent);
+                if ((errorText != null)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+               if (((intent.getAction().equals(Pollen.ACTION_UPDATE_POLLEN)) && (intent.getBooleanExtra(Pollen.ACTION_UPDATE_POLLEN,true)))
+                       || (intent.getAction().equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE))
+                       || (intent.getAction().equals(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION)))
+                {
+                   displayValues();
+               }
+            }
+        }
+    };
+
+    public static class SwipeGestureDetector implements View.OnTouchListener{
+
+        private float downX;
+        private float downY;
+        private float upX;
+        private float upY;
+        private int threshold = 80;
+
+        public void setThreshold(int i){
+            this.threshold = i;
+        }
+
+        public boolean onLeftSwipe(View view, MotionEvent motionEvent){
+            return false;
+        }
+
+        public boolean onRightSwipe(View view, MotionEvent motionEvent){
+            return false;
+        }
+
+        public boolean onUpSwipe(View view, MotionEvent motionEvent){
+            return false;
+        }
+
+        public boolean onDownSwipe(View view, MotionEvent motionEvent){
+            return false;
+        }
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction()==MotionEvent.ACTION_DOWN){
+                downX = motionEvent.getX();
+                downY = motionEvent.getY();
+            }
+            if (motionEvent.getAction()==MotionEvent.ACTION_UP){
+                upX = motionEvent.getX();
+                upY = motionEvent.getY();
+                float deltaX = downX-upX;
+                float deltaY = downY-upY;
+                if (Math.abs(deltaX)>Math.abs(deltaY)){
+                    // this is a horizontal move
+                    if (Math.abs(deltaX)>threshold){
+                        if (deltaX>0){
+                            // right-to-left swipe
+                            return onLeftSwipe(view,motionEvent);
+                        } else {
+                            // left-to-right swipe
+                            return onRightSwipe(view,motionEvent);
+                        }
+                    }
+                } else {
+                    // this is a vertical swipe
+                    if (Math.abs(deltaY)>threshold){
+                        if (deltaY>0){
+                            // this is a bottom-to-top swipe
+                            return onUpSwipe(view,motionEvent);
+                        } else {
+                            // this is a top-to-bottom swipe
+                            return onDownSwipe(view,motionEvent);
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+    }
 
     public class DetailsElement{
         String heading;
@@ -108,6 +212,7 @@ public class WeatherDetailsActivity extends Activity {
         actionBar = getActionBar();
         actionBar.setCustomView(R.layout.actionbar_textforecastview);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
+        executor = Executors.newSingleThreadExecutor();
         if (savedInstanceState!=null){
             weatherPosition = savedInstanceState.getInt(SIS_POSITION);
         } else {
@@ -121,18 +226,8 @@ public class WeatherDetailsActivity extends Activity {
         mainHandler = new Handler(Looper.getMainLooper());
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        // Load weather data, fetch from DWD if necessary, establish alarm cycles
-        try {
-            currentWeatherInfo = new Weather().getCurrentWeatherInfo(getApplicationContext());
-        } catch (Exception e){
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
-        }
-        if (currentWeatherInfo!=null){
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,currentWeatherInfo);
-        } else {
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,null);
-        }
         currentWeatherElements = (RelativeLayout) findViewById(R.id.weatherdetails_forecastcontainer);
+        scrollView = (ScrollView) findViewById(R.id.weatherdetails_scrollview);
         valuesListWarnings = (LinearLayout) findViewById(R.id.weatherdetails_warnings);
         valuesListClouds = (LinearLayout) findViewById(R.id.weatherdetails_clouds);
         valuesListWind = (LinearLayout) findViewById(R.id.weatherdetails_wind);
@@ -148,12 +243,49 @@ public class WeatherDetailsActivity extends Activity {
         valuesListPrecipitation = (LinearLayout) findViewById(R.id.weatherdetails_precipitation);
         precipitationChartFrame = (FrameLayout) findViewById(R.id.weatherdetails_precipitationchartframe);
         precipitationChart = (ImageView) findViewById(R.id.weatherdetails_precipitationchart);
+        valuesListPollen = (LinearLayout) findViewById(R.id.weatherdetails_pollenvalues);
+        progressBar = (ProgressBar) findViewById(R.id.weatherdetails_progressbar);
+        // make a list what do update
+        ArrayList<String> updateTasks = new ArrayList<String>();
+        // Load weather data, fetch from DWD if necessary, establish alarm cycles
+        try {
+            currentWeatherInfo = new Weather().getCurrentWeatherInfo(getApplicationContext());
+        } catch (Exception e){
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
+        }
+        if (currentWeatherInfo!=null){
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,currentWeatherInfo);
+        } else {
+            //UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,null);
+            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
+        }
+        pollenArea = WeatherSettings.getPollenRegion(context);
+        pollen = Pollen.GetPollenData(context,pollenArea);
+        if ((pollen==null) || (Pollen.isUpdateDue(context))){
+            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN);
+        }
+        updateData(updateTasks);
+        // result will be received by a broadcast event
         displayValues();
         TextView textViewNotice = (TextView) findViewById(R.id.weatherdetails_reference_text);
         if ((textViewNotice!=null) && (ForecastBitmap.getDisplayOrientation(context)== Configuration.ORIENTATION_LANDSCAPE)){
             float textSize = context.getResources().getDimension(R.dimen.fcmain_textsize_smaller);
             textViewNotice.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
         }
+        swipeGestureDetector = new SwipeGestureDetector(){
+            @Override
+            public boolean onLeftSwipe(View view, MotionEvent motionEvent) {
+                moveOneItemForward();
+                return super.onLeftSwipe(view, motionEvent);
+            }
+
+            @Override
+            public boolean onRightSwipe(View view, MotionEvent motionEvent) {
+                moveOneItemBack();
+                return super.onRightSwipe(view, motionEvent);
+            }
+        };
+        scrollView.setOnTouchListener(swipeGestureDetector);
     }
 
     @Override
@@ -163,21 +295,29 @@ public class WeatherDetailsActivity extends Activity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void moveOneItemBack(){
+        if (weatherPosition>0){
+            weatherPosition--;
+            displayValues();
+        }
+    }
+
+    private void moveOneItemForward(){
+        if (weatherPosition<currentWeatherInfo.forecast1hourly.size()-1){
+            weatherPosition++;
+            displayValues();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem mi) {
         int item_id = mi.getItemId();
         if (item_id == R.id.weatherdetails_back) {
-            if (weatherPosition>0){
-                weatherPosition--;
-                displayValues();
-            }
+            moveOneItemBack();
             return true;
         }
         if (item_id == R.id.weatherdetails_next) {
-            if (weatherPosition<currentWeatherInfo.forecast1hourly.size()-1){
-                weatherPosition++;
-                displayValues();
-            }
+            moveOneItemForward();
             return true;
         }
         return super.onOptionsItemSelected(mi);
@@ -193,6 +333,7 @@ public class WeatherDetailsActivity extends Activity {
         valuesListElements.removeAllViews();
         valuesListVisibility.removeAllViews();
         valuesListIncidents.removeAllViews();
+        valuesListPollen.removeAllViews();
         if (valuesListPrecipitation!=null){
             valuesListPrecipitation.removeAllViews();
         }
@@ -217,7 +358,7 @@ public class WeatherDetailsActivity extends Activity {
                     }
                 }
                 if (applicableWarnings.size()>0){
-                    setDetail(valuesListWarnings,newDetail("Wetterwarnungen",null,null,null));
+                    setDetail(valuesListWarnings,newDetail("Wetterwarnungen",null,null,null),ListItemType.Label);
                     for (int i=0; i<warnings.size(); i++){
                         final RelativeLayout relativeLayout = (RelativeLayout) WeatherWarningAdapter.setWarningViewElements(context,layoutInflater,null,null,warnings.get(i),true,mainHandler,scheduledExecutorService);
                         runOnUiThread(new Runnable() {
@@ -242,7 +383,7 @@ public class WeatherDetailsActivity extends Activity {
                 if (ForecastBitmap.getDisplayOrientation(context)== Configuration.ORIENTATION_LANDSCAPE){
                     precipitationChartHeading.smallHeading = true;
                 }
-                setDetail(valuesListPrecipitation,precipitationChartHeading);
+                setDetail(valuesListPrecipitation,precipitationChartHeading,ListItemType.Label);
             }
             Bitmap bitmap = ForecastBitmap.getPrecipitationChart2(context,weatherInfo);
             precipitationChart.setImageBitmap(bitmap);
@@ -272,10 +413,40 @@ public class WeatherDetailsActivity extends Activity {
         }
     }
 
-    private void setDetail(LinearLayout targetView, DetailsElement detailsElement){
-        if (detailsElement!=null){
-            View view = layoutInflater.inflate(R.layout.detailslistitem,null);
-            TextView heading = (TextView) view.findViewById(R.id.dl_heading);
+    private void setDetail(LinearLayout targetView, DetailsElement detailsElement, int listItemType){
+        int resourceID = R.layout.detailslistitem;
+        if (listItemType == ListItemType.Chart){
+            resourceID = R.layout.detailslistitem2;
+        }
+        View view = layoutInflater.inflate(resourceID,null);
+        TextView heading = (TextView) view.findViewById(R.id.dl_heading);
+        TextView label = (TextView) view.findViewById(R.id.dl_label);
+        ImageView icon = (ImageView) view.findViewById(R.id.dl_icon);
+        LinearLayout lineContainer = (LinearLayout) view.findViewById(R.id.dl_linearlayout);
+        TextView value = null;
+        ImageView chart = null;
+        boolean hideLineContainer = false;
+        if (listItemType==ListItemType.Label){
+            /* Label is detailsitem.xml, and has the following views:
+               dl_heading
+               dl_icon, dl_value, dl_label
+             */
+            value = (TextView) view.findViewById(R.id.dl_value);
+            if ((detailsElement.icon==null) && (detailsElement.value==null) && (detailsElement.label==null)) {
+                hideLineContainer = true; // means line with data is empty
+            }
+        }
+        if (listItemType == ListItemType.Chart){
+            /* Chart is detailsitem2.xml, and has the following views:
+               dl_heading
+               dl_icon, dl_label, d_chart
+             */
+            chart = (ImageView) view.findViewById(R.id.dl_chart);
+            if ((detailsElement.icon==null) && (detailsElement.label==null) && (detailsElement.bitmap==null)){
+                hideLineContainer = true;
+            }
+        }
+        if (heading!=null) {
             if (detailsElement.smallHeading){
                 heading.setTextSize(TypedValue.COMPLEX_UNIT_PX,context.getResources().getDimension(R.dimen.fcmain_textsize_smaller));
             }
@@ -285,43 +456,58 @@ public class WeatherDetailsActivity extends Activity {
                 heading.setVisibility(View.VISIBLE);
                 heading.setText(detailsElement.heading);
             }
-            TextView value = (TextView) view.findViewById(R.id.dl_value);
+        }
+        if (value!=null){
             if (detailsElement.value==null){
                 value.setVisibility(View.GONE);
             } else {
                 value.setVisibility(View.VISIBLE);
                 value.setText(detailsElement.value);
             }
-            TextView label = (TextView) view.findViewById(R.id.dl_label);
+        }
+        if (label!=null){
             if (detailsElement.label==null){
                 label.setVisibility(View.GONE);
             } else {
                 label.setVisibility(View.VISIBLE);
                 label.setText(detailsElement.label);
             }
-            ImageView icon = (ImageView) view.findViewById(R.id.dl_icon);
+        }
+        if (chart!=null){
+            if (detailsElement.bitmap!=null){
+                chart.setVisibility(View.VISIBLE);
+                chart.setImageBitmap(detailsElement.bitmap);
+            } else {
+                chart.setVisibility(View.GONE);
+            }
+        }
+        if (icon!=null){
             if ((detailsElement.icon==null) && (detailsElement.bitmap==null)){
                 icon.setVisibility(View.INVISIBLE);
             } else {
-                if (detailsElement.bitmap!=null){
+                if ((detailsElement.bitmap!=null) && (listItemType==ListItemType.Label)){
                     icon.setVisibility(View.VISIBLE);
                     icon.setImageBitmap(detailsElement.bitmap);
                 }
                 else {
-                    icon.setVisibility(View.VISIBLE);
-                    icon.setImageBitmap(WeatherIcons.getIconBitmap(context,detailsElement.icon,false,detailsElement.applyFilter));
+                    // check if an icon is present
+                    if (detailsElement.icon==null){
+                        icon.setVisibility(View.GONE);
+                    } else {
+                        icon.setVisibility(View.VISIBLE);
+                        icon.setImageBitmap(WeatherIcons.getIconBitmap(context,detailsElement.icon,false,detailsElement.applyFilter));
+                    }
                 }
             }
-            LinearLayout lineContainer = (LinearLayout) view.findViewById(R.id.dl_linearlayout);
-            if ((value.getVisibility()==View.GONE) && (label.getVisibility()==View.GONE) && (icon.getVisibility()==View.INVISIBLE)){
-                lineContainer.setVisibility(View.GONE);
-            } else {
-                lineContainer.setVisibility(View.VISIBLE);
-            }
-            if ((detailsElement.heading!=null) || (detailsElement.value!=null) || (detailsElement.icon!=null) || (detailsElement.label!=null)){
-                targetView.addView(view);
-            }
         }
+        // lineContainer is the horizontal (value) line below the heading. This needs to be hidden when no items
+        // present but the heading itself.
+        if (hideLineContainer){
+            lineContainer.setVisibility(View.GONE);
+        } else {
+            lineContainer.setVisibility(View.VISIBLE);
+        }
+        targetView.addView(view);
     }
 
     private DetailsElement newDetail(String title, int icon, String value, String label){
@@ -340,8 +526,30 @@ public class WeatherDetailsActivity extends Activity {
         return detailsElement;
     }
 
+    public static void setPollenLegendColorBoxes(Context context, View view){
+        ImageView box0 = (ImageView) view.findViewById(R.id.pl_box0);
+        box0.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,0));
+        ImageView box1 = (ImageView) view.findViewById(R.id.pl_box1);
+        box1.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,1));
+        ImageView box2 = (ImageView) view.findViewById(R.id.pl_box2);
+        box2.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,2));
+        ImageView box3 = (ImageView) view.findViewById(R.id.pl_box3);
+        box3.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,3));
+        ImageView box4 = (ImageView) view.findViewById(R.id.pl_box4);
+        box4.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,4));
+        ImageView box5 = (ImageView) view.findViewById(R.id.pl_box5);
+        box5.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,5));
+        ImageView box6 = (ImageView) view.findViewById(R.id.pl_box6);
+        box6.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,6));
+    }
 
-    private void setDetails(Weather.WeatherInfo weatherInfo){
+    private void setPollenLegend(LinearLayout targetView){
+        View view = layoutInflater.inflate(R.layout.pollenlegend_horizontal,null);
+        setPollenLegendColorBoxes(context,view);
+        targetView.addView(view);
+    }
+
+    private void setDetails(final Weather.WeatherInfo weatherInfo){
         ArrayList<DetailsElement> list = new ArrayList<DetailsElement>();
         if (weatherInfo.hasClouds()){
             valuesListClouds.setVisibility(View.VISIBLE);
@@ -364,7 +572,7 @@ public class WeatherDetailsActivity extends Activity {
                 list.add(newDetail(null,null,weatherInfo.getClouds_H_BsC()+"%",getResources().getString(R.string.wd_ccb500)));
             }
             for (int i=0; i<list.size(); i++){
-                setDetail(valuesListClouds,list.get(i));
+                setDetail(valuesListClouds,list.get(i),ListItemType.Label);
             }
         } else {
             valuesListClouds.setVisibility(View.GONE);
@@ -384,7 +592,7 @@ public class WeatherDetailsActivity extends Activity {
                 list.add(newDetail(null,null,weatherInfo.getFlurriesString(context,true),getResources().getString(R.string.wd_gusts)));
             }
             for (int i=0; i<list.size(); i++){
-                setDetail(valuesListWind,list.get(i));
+                setDetail(valuesListWind,list.get(i),ListItemType.Label);
             }
         } else {
             valuesListWind.setVisibility(View.GONE);
@@ -410,7 +618,7 @@ public class WeatherDetailsActivity extends Activity {
                 list.add(newDetail(null,WeatherIcons.SYMBOL_PRECIPITATION,weatherInfo.getPrecipitationString(),getResources().getString(R.string.wd_pa),false));
             }
             for (int i=0; i<list.size(); i++){
-                setDetail(valuesListElements,list.get(i));
+                setDetail(valuesListElements,list.get(i),ListItemType.Label);
             }
         } else {
             valuesListElements.setVisibility(View.GONE);
@@ -432,7 +640,7 @@ public class WeatherDetailsActivity extends Activity {
             double RadL3;       // kJ/m²; long wave radiation balance during last 3h
 
             for (int i=0; i<list.size(); i++){
-                setDetail(valuesListVisibility,list.get(i));
+                setDetail(valuesListVisibility,list.get(i),ListItemType.Label);
             }
         } else {
             valuesListVisibility.setVisibility(View.GONE);
@@ -458,22 +666,95 @@ public class WeatherDetailsActivity extends Activity {
                 list.add(newDetail(null,WeatherIcons.SYMBOL_DRIZZLE,weatherInfo.getProbDrizzle()+"%",getResources().getString(R.string.wd_pd),false));
             }
             for (int i=0; i<list.size(); i++){
-                setDetail(valuesListIncidents,list.get(i));
+                setDetail(valuesListIncidents,list.get(i),ListItemType.Label);
             }
         } else {
             valuesListIncidents.setVisibility(View.GONE);
         }
-
+        int relativeDay = weatherInfo.getRelativeDay();
+        if ((pollen!=null) && (relativeDay>=Pollen.Today) && (relativeDay<=Pollen.DayAfterTomorrow) && (WeatherSettings.anyPollenActive(context))){
+            final int BAR_WIDTH = 1024; final int BAR_HEIGHT = 256;
+            list = new ArrayList<DetailsElement>();
+            list.add(newDetail(context.getResources().getString(R.string.pollen_title),null,null,null));
+            int loadAmbrosia = pollen.getPollenLoad(context,Pollen.Ambrosia,relativeDay);
+            int loadBeifuss = pollen.getPollenLoad(context,Pollen.Beifuss,relativeDay);
+            int loadRoggen = pollen.getPollenLoad(context,Pollen.Roggen,relativeDay);
+            int loadEsche = pollen.getPollenLoad(context,Pollen.Esche,relativeDay);
+            int loadBirke = pollen.getPollenLoad(context,Pollen.Birke,relativeDay);
+            int loadHasel = pollen.getPollenLoad(context,Pollen.Hasel,relativeDay);
+            int loadErle = pollen.getPollenLoad(context,Pollen.Erle,relativeDay);
+            int loadGraeser = pollen.getPollenLoad(context,Pollen.Graeser,relativeDay);
+            if ((loadAmbrosia>=0) && (WeatherSettings.getPollenActiveAmbrosia(context))){
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadAmbrosia,6,Pollen.PollenLoadColors[loadAmbrosia],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_ambrosia)));
+            }
+            if ((loadBeifuss>=0) && (WeatherSettings.getPollenActiveBeifuss(context))){
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadBeifuss,6,Pollen.PollenLoadColors[loadBeifuss],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_mugwort)));
+            }
+            if ((loadRoggen>=0) && (WeatherSettings.getPollenActiveRoggen(context))){
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadRoggen,6,Pollen.PollenLoadColors[loadRoggen],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_rye)));
+            }
+            if ((loadEsche>=0) && (WeatherSettings.getPollenActiveEsche(context))){
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadEsche,6,Pollen.PollenLoadColors[loadEsche],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_ash)));
+            }
+            if ((loadBirke>=0) && (WeatherSettings.getPollenActiveBirke(context))){
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadBirke,6,Pollen.PollenLoadColors[loadBirke],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_birch)));
+            }
+            if ((loadHasel>=0) && (WeatherSettings.getPollenActiveHasel(context))){
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadHasel,6,Pollen.PollenLoadColors[loadHasel],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_hazel)));
+            }
+            if ((loadErle>=0) && (WeatherSettings.getPollenActiveErle(context))){
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadErle,6,Pollen.PollenLoadColors[loadErle],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_alder)));
+            }
+            if ((loadGraeser>=0) && (WeatherSettings.getPollenActiveGraeser(context))){
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadGraeser,6,Pollen.PollenLoadColors[loadGraeser],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_grasses)));
+            }
+            valuesListPollen.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
+            for (int i=0; i<list.size(); i++){
+                setDetail(valuesListPollen,list.get(i),ListItemType.Chart);
+            }
+            setPollenLegend(valuesListPollen);
+        } else {
+            valuesListPollen.setVisibility(View.GONE);
+        }
     }
 
+    private void updateData(ArrayList<String> updateTasks){
+        if (updateTasks!=null){
+            if (updateTasks.size()>0){
+                UpdateAlarmManager.startDataUpdateService(context,updateTasks);
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+        registerForBroadcast();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        unRegisterForBroadcast();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private void registerForBroadcast(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Pollen.ACTION_UPDATE_POLLEN);
+        filter.addAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
+        filter.addAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+        registerReceiver(receiver,filter);
+    }
+
+    private void unRegisterForBroadcast(){
+        unregisterReceiver(receiver);
+    }
+
+
 }

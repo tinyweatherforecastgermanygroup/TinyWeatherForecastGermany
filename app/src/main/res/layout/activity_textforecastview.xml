@@ -21,6 +21,7 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textforecastview_scrollview"
     android:fillViewport="true"
     android:background="?attr/colorPrimary"
     android:layout_width="match_parent"

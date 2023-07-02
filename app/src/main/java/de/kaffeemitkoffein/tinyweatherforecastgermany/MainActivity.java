@@ -431,7 +431,6 @@ public class MainActivity extends Activity {
             actionBar.setCustomView(R.layout.actionbar);
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
             // anchor long click update
-
             executor = Executors.newSingleThreadExecutor();
             try {
                 loadStationsData();
@@ -621,6 +620,24 @@ public class MainActivity extends Activity {
             });
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
             popupHint();
+        }
+        if (!PollenArea.IsPollenAreaDatabaseComplete(context)){
+            APIReaders.PollenAreaReader pollenAreaReader = new APIReaders.PollenAreaReader(context){
+                @Override
+                public void onFinished() {
+                    Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+                    PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
+                    // todo: refresh view for pollen
+                    super.onFinished();
+                }
+            };
+            executor.execute(pollenAreaReader);
+        } else {
+            /*
+            long start = Calendar.getInstance().getTimeInMillis();
+            Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+            final PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
+             */
         }
     }
 

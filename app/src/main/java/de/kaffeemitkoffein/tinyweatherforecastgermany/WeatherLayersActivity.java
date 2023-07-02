@@ -27,14 +27,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +48,8 @@ public class WeatherLayersActivity extends Activity {
     private Context context;
     Executor executor;
     ActionBar actionBar;
+    TableRow tableRowAmbrosia; TableRow tableRowBeifuss; TableRow tableRowRoggen; TableRow tableRowEsche;
+    TableRow tableRowBirke; TableRow tableRowHazel; TableRow tableRowErle; TableRow tableRowGraeser;
 
     public class DisplayLayer{
         WeatherLayer weatherLayer;
@@ -58,14 +58,6 @@ public class WeatherLayersActivity extends Activity {
         TextView textViewDate;
         RelativeLayout frame;
         int id;
-
-        public final class BlendMode{
-            public final static int NONE = 0;
-            public final static int GERMANY = 1;
-            public final static int EUROPE = 2;
-            public final static int WORLD = 3;
-        }
-
         public DisplayLayer(int id, WeatherLayer weatherLayer, RelativeLayout frame, ImageView imageView, TextView textViewTitle, TextView textViewDate){
             this.id=id;
             this.frame = frame;
@@ -85,10 +77,13 @@ public class WeatherLayersActivity extends Activity {
         @Override
         public void onReceive(Context c, Intent intent) {
             if (intent!=null){
-                if (intent.getAction().equals(ACTION_UPDATE_LAYERS)){
+                if (intent.getAction().equals(ACTION_UPDATE_LAYERS) || (intent.getAction().equals(Pollen.ACTION_UPDATE_POLLEN))){
                     boolean result = false;
                     if (intent.hasExtra(UPDATE_LAYERS_RESULT)){
                         result = intent.getBooleanExtra(UPDATE_LAYERS_RESULT,false);
+                    }
+                    if (intent.hasExtra(Pollen.UPDATE_POLLEN_RESULT)){
+                        result = intent.getBooleanExtra(Pollen.UPDATE_POLLEN_RESULT,false);
                     }
                     if (result){
                         updateDisplay();
@@ -137,6 +132,16 @@ public class WeatherLayersActivity extends Activity {
         getViewIDs();
         APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,weatherLayers){
             @Override
+            public void onProgress(final WeatherLayer weatherLayer) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateLayer(weatherLayer);
+                    }
+                });
+            }
+
+            @Override
             public void onFinished(boolean result){
                 runOnUiThread(new Runnable() {
                     @Override
@@ -147,6 +152,7 @@ public class WeatherLayersActivity extends Activity {
             }
         };
         executor.execute(getLayerImages);
+        setRowBackgrounds();
     }
 
     @Override
@@ -163,6 +169,7 @@ public class WeatherLayersActivity extends Activity {
             if (WeatherSettings.isLayerUpdateAllowed(context)){
                 ArrayList<String> updateTasks = new ArrayList<String>();
                 updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS);
+                updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN);
                 UpdateAlarmManager.startDataUpdateService(context,updateTasks);
             } else {
                 long lastUpdateTime = WeatherSettings.getMapLastUpdateTime(context);
@@ -182,6 +189,15 @@ public class WeatherLayersActivity extends Activity {
     }
 
     public void getViewIDs(){
+        TableLayout tableLayout = (TableLayout) findViewById(R.id.wm_table);
+        tableRowAmbrosia = (TableRow) findViewById(R.id.wm_row14);
+        tableRowBeifuss = (TableRow) findViewById(R.id.wm_row15);
+        tableRowRoggen = (TableRow) findViewById(R.id.wm_row16);
+        tableRowEsche = (TableRow) findViewById(R.id.wm_row17);
+        tableRowBirke = (TableRow) findViewById(R.id.wm_row18);
+        tableRowHazel = (TableRow) findViewById(R.id.wm_row19);
+        tableRowErle = (TableRow) findViewById(R.id.wm_row20);
+        tableRowGraeser = (TableRow) findViewById(R.id.wm_row21);
         displayLayers = new ArrayList<DisplayLayer>();
         displayLayers.add(new DisplayLayer(WeatherLayer.Layers.UVI_CLOUDS_0,
                 getWeatherLayerByID(WeatherLayer.Layers.UVI_CLOUDS_0),
@@ -285,6 +301,182 @@ public class WeatherLayersActivity extends Activity {
                 (ImageView) findViewById(R.id.wm_image_13_1),
                 (TextView) findViewById(R.id.wm_heading_13_1),
                 (TextView) findViewById(R.id.wm_date_13_1)));
+        if (WeatherSettings.getPollenActiveAmbrosia(context)){
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0),
+                    (RelativeLayout) findViewById(R.id.wm_element_14_1),
+                    (ImageView) findViewById(R.id.wm_image_14_1),
+                    (TextView) findViewById(R.id.wm_heading_14_1),
+                    (TextView) findViewById(R.id.wm_date_14_1)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_1,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_1),
+                    (RelativeLayout) findViewById(R.id.wm_element_14_2),
+                    (ImageView) findViewById(R.id.wm_image_14_2),
+                    (TextView) findViewById(R.id.wm_heading_14_2),
+                    (TextView) findViewById(R.id.wm_date_14_2)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_2,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_2),
+                    (RelativeLayout) findViewById(R.id.wm_element_14_3),
+                    (ImageView) findViewById(R.id.wm_image_14_3),
+                    (TextView) findViewById(R.id.wm_heading_14_3),
+                    (TextView) findViewById(R.id.wm_date_14_3)));
+        } else {
+            tableLayout.removeView(tableRowAmbrosia);
+        }
+        if (WeatherSettings.getPollenActiveBeifuss(context)){
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_0,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_0),
+                    (RelativeLayout) findViewById(R.id.wm_element_15_1),
+                    (ImageView) findViewById(R.id.wm_image_15_1),
+                    (TextView) findViewById(R.id.wm_heading_15_1),
+                    (TextView) findViewById(R.id.wm_date_15_1)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_1,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_1),
+                    (RelativeLayout) findViewById(R.id.wm_element_15_2),
+                    (ImageView) findViewById(R.id.wm_image_15_2),
+                    (TextView) findViewById(R.id.wm_heading_15_2),
+                    (TextView) findViewById(R.id.wm_date_15_2)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_2,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_2),
+                    (RelativeLayout) findViewById(R.id.wm_element_15_3),
+                    (ImageView) findViewById(R.id.wm_image_15_3),
+                    (TextView) findViewById(R.id.wm_heading_15_3),
+                    (TextView) findViewById(R.id.wm_date_15_3)));
+        } else {
+            tableLayout.removeView(tableRowBeifuss);
+        }
+        if (WeatherSettings.getPollenActiveRoggen(context)){
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_0,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_0),
+                    (RelativeLayout) findViewById(R.id.wm_element_16_1),
+                    (ImageView) findViewById(R.id.wm_image_16_1),
+                    (TextView) findViewById(R.id.wm_heading_16_1),
+                    (TextView) findViewById(R.id.wm_date_16_1)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_1,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_1),
+                    (RelativeLayout) findViewById(R.id.wm_element_16_2),
+                    (ImageView) findViewById(R.id.wm_image_16_2),
+                    (TextView) findViewById(R.id.wm_heading_16_2),
+                    (TextView) findViewById(R.id.wm_date_16_2)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_2,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_2),
+                    (RelativeLayout) findViewById(R.id.wm_element_15_3),
+                    (ImageView) findViewById(R.id.wm_image_16_3),
+                    (TextView) findViewById(R.id.wm_heading_16_3),
+                    (TextView) findViewById(R.id.wm_date_16_3)));
+        } else {
+            tableLayout.removeView(tableRowRoggen);
+        }
+        if (WeatherSettings.getPollenActiveEsche(context)){
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_0,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_0),
+                    (RelativeLayout) findViewById(R.id.wm_element_17_1),
+                    (ImageView) findViewById(R.id.wm_image_17_1),
+                    (TextView) findViewById(R.id.wm_heading_17_1),
+                    (TextView) findViewById(R.id.wm_date_17_1)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_1,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_1),
+                    (RelativeLayout) findViewById(R.id.wm_element_17_2),
+                    (ImageView) findViewById(R.id.wm_image_17_2),
+                    (TextView) findViewById(R.id.wm_heading_17_2),
+                    (TextView) findViewById(R.id.wm_date_17_2)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_2,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_2),
+                    (RelativeLayout) findViewById(R.id.wm_element_17_3),
+                    (ImageView) findViewById(R.id.wm_image_17_3),
+                    (TextView) findViewById(R.id.wm_heading_17_3),
+                    (TextView) findViewById(R.id.wm_date_17_3)));
+        } else {
+            tableLayout.removeView(tableRowEsche);
+        }
+        if (WeatherSettings.getPollenActiveBirke(context)){
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_0,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_0),
+                    (RelativeLayout) findViewById(R.id.wm_element_18_1),
+                    (ImageView) findViewById(R.id.wm_image_18_1),
+                    (TextView) findViewById(R.id.wm_heading_18_1),
+                    (TextView) findViewById(R.id.wm_date_18_1)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_1,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_1),
+                    (RelativeLayout) findViewById(R.id.wm_element_18_2),
+                    (ImageView) findViewById(R.id.wm_image_18_2),
+                    (TextView) findViewById(R.id.wm_heading_18_2),
+                    (TextView) findViewById(R.id.wm_date_18_2)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_2,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_2),
+                    (RelativeLayout) findViewById(R.id.wm_element_18_3),
+                    (ImageView) findViewById(R.id.wm_image_18_3),
+                    (TextView) findViewById(R.id.wm_heading_18_3),
+                    (TextView) findViewById(R.id.wm_date_18_3)));
+        } else {
+            tableLayout.removeView(tableRowBirke);
+        }
+        if (WeatherSettings.getPollenActiveHasel(context)){
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_0,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_0),
+                    (RelativeLayout) findViewById(R.id.wm_element_19_1),
+                    (ImageView) findViewById(R.id.wm_image_19_1),
+                    (TextView) findViewById(R.id.wm_heading_19_1),
+                    (TextView) findViewById(R.id.wm_date_19_1)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_1,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_1),
+                    (RelativeLayout) findViewById(R.id.wm_element_19_2),
+                    (ImageView) findViewById(R.id.wm_image_19_2),
+                    (TextView) findViewById(R.id.wm_heading_19_2),
+                    (TextView) findViewById(R.id.wm_date_19_2)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_2,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_2),
+                    (RelativeLayout) findViewById(R.id.wm_element_19_3),
+                    (ImageView) findViewById(R.id.wm_image_19_3),
+                    (TextView) findViewById(R.id.wm_heading_19_3),
+                    (TextView) findViewById(R.id.wm_date_19_3)));
+        } else {
+            tableLayout.removeView(tableRowBirke);
+        }
+        if (WeatherSettings.getPollenActiveHasel(context)){
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_0,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_0),
+                    (RelativeLayout) findViewById(R.id.wm_element_20_1),
+                    (ImageView) findViewById(R.id.wm_image_20_1),
+                    (TextView) findViewById(R.id.wm_heading_20_1),
+                    (TextView) findViewById(R.id.wm_date_20_1)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_1,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_1),
+                    (RelativeLayout) findViewById(R.id.wm_element_20_2),
+                    (ImageView) findViewById(R.id.wm_image_20_2),
+                    (TextView) findViewById(R.id.wm_heading_20_2),
+                    (TextView) findViewById(R.id.wm_date_20_2)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_2,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_2),
+                    (RelativeLayout) findViewById(R.id.wm_element_20_3),
+                    (ImageView) findViewById(R.id.wm_image_20_3),
+                    (TextView) findViewById(R.id.wm_heading_20_3),
+                    (TextView) findViewById(R.id.wm_date_20_3)));
+        } else {
+            tableLayout.removeView(tableRowHazel);
+        }
+        if (WeatherSettings.getPollenActiveGraeser(context)){
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_0,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_0),
+                    (RelativeLayout) findViewById(R.id.wm_element_21_1),
+                    (ImageView) findViewById(R.id.wm_image_21_1),
+                    (TextView) findViewById(R.id.wm_heading_21_1),
+                    (TextView) findViewById(R.id.wm_date_21_1)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_1,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_1),
+                    (RelativeLayout) findViewById(R.id.wm_element_21_2),
+                    (ImageView) findViewById(R.id.wm_image_21_2),
+                    (TextView) findViewById(R.id.wm_heading_21_2),
+                    (TextView) findViewById(R.id.wm_date_21_2)));
+            displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_2,
+                    getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_2),
+                    (RelativeLayout) findViewById(R.id.wm_element_21_3),
+                    (ImageView) findViewById(R.id.wm_image_21_3),
+                    (TextView) findViewById(R.id.wm_heading_21_3),
+                    (TextView) findViewById(R.id.wm_date_21_3)));
+        } else {
+            tableLayout.removeView(tableRowHazel);
+        }
     }
 
     public WeatherLayer getWeatherLayerByID(int id){
@@ -293,6 +485,18 @@ public class WeatherLayersActivity extends Activity {
                 WeatherLayer weatherLayer = weatherLayers.get(i);
                 if (weatherLayer.layer==id){
                     return weatherLayer;
+                }
+            }
+        }
+        return null;
+    }
+
+    public DisplayLayer getDisplayLayerByID(int id){
+        if (displayLayers!=null){
+            for (int i=0; i<displayLayers.size(); i++){
+                DisplayLayer displayLayer = displayLayers.get(i);
+                if (displayLayer.weatherLayer.layer == id){
+                    return displayLayer;
                 }
             }
         }
@@ -308,9 +512,33 @@ public class WeatherLayersActivity extends Activity {
         }
     }
 
+    public void updateLayer(WeatherLayer updateLayer){
+        if (updateLayer!=null){
+            DisplayLayer displayLayer = getDisplayLayerByID(updateLayer.layer);
+            if (displayLayer!=null){
+                Bitmap bitmap = updateLayer.getLayerBitmap(context);
+                if (bitmap!=null){
+                    displayLayer.imageView.setImageBitmap(bitmap);
+                    displayLayer.textViewDate.setText(displayLayer.weatherLayer.getTimestampString());
+                }
+            }
+        }
+    }
+
+    private void setRowBackgrounds(){
+        for (int i=1; i<=21; i++){
+            int id = getResources().getIdentifier("wm_row"+i,"id",context.getPackageName());
+            TableRow tableRow1 = (TableRow) findViewById(id);
+            if (tableRow1!=null){
+                tableRow1.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
+            }
+        }
+    }
+
     private void registerForBroadcast(){
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_UPDATE_LAYERS);
+        filter.addAction(Pollen.ACTION_UPDATE_POLLEN);
         registerReceiver(receiver,filter);
     }
 

@@ -56,6 +56,7 @@ public class DataUpdateService extends Service {
     public static String SERVICEEXTRAS_UPDATE_WARNINGS="SERVICEEXTRAS_UPDATE_WARNINGS";
     public static String SERVICEEXTRAS_UPDATE_TEXTFORECASTS="SERVICEEXTRAS_UPDATE_TEXTFORECASTS";
     public static String SERVICEEXTRAS_UPDATE_LAYERS="SERVICEEXTRAS_UPDATE_LAYERS";
+    public static String SERVICEEXTRAS_UPDATE_POLLEN="SERVICEEXTRAS_UPDATE_POLLEN";
     public static String SERVICEEXTRAS_UPDATE_RAINRADAR="SERVICEEXTRAS_UPDATE_RAINRADAR";
     public static String SERVICEEXTRAS_CANCEL_NOTIFICATIONS="SERVICEEXTRAS_CANCEL_NF";
     public static String SERVICEEXTRAS_UPDATE_NOTIFICATIONS="SERVICEEXTRAS_UPDATE_NF";
@@ -103,7 +104,7 @@ public class DataUpdateService extends Service {
     private Runnable cleanUpRunnable = new Runnable() {
         @Override
         public void run() {
-            updateNotification(5);
+            updateNotification(6);
             Weather.sanitizeDatabase(getApplicationContext());
             TextForecasts.cleanTextForecastDatabase(getApplicationContext());
         }
@@ -165,6 +166,7 @@ public class DataUpdateService extends Service {
             boolean updateWarnings = false;
             boolean updateTextForecasts = false;
             boolean updateLayers = false;
+            boolean updatePollen = false;
             boolean updateRainRadar = false;
             boolean updateNotifications = false;
             ArrayList<Weather.WeatherLocation> weatherLocations = null;
@@ -173,6 +175,7 @@ public class DataUpdateService extends Service {
                 updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
                 updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
                 updateLayers = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_LAYERS,false);
+                updatePollen = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_POLLEN,false);
                 updateRainRadar = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_RAINRADAR,false);
                 // update warnings from existing data only allowed when warnings are not updated
                 if (!updateWarnings){
@@ -311,17 +314,33 @@ public class DataUpdateService extends Service {
                         public void onFinished(boolean success) {
                             Intent intent = new Intent();
                             intent.setAction(WeatherLayersActivity.ACTION_UPDATE_LAYERS);
-                            intent.putExtra(WeatherLayersActivity.UPDATE_LAYERS_RESULT,true);
+                            intent.putExtra(WeatherLayersActivity.UPDATE_LAYERS_RESULT,success);
                             sendBroadcast(intent);
                         }
                     };
                     executor.execute(getLayerImages);
                 }
+                if (updatePollen){
+                    APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context){
+                        @Override
+                        public void onStart() {
+                            updateNotification(4);
+                        }
+                        @Override
+                        public void onFinished(boolean success) {
+                            Intent intent = new Intent();
+                            intent.setAction(Pollen.ACTION_UPDATE_POLLEN);
+                            intent.putExtra(Pollen.UPDATE_POLLEN_RESULT,success);
+                            sendBroadcast(intent);
+                        }
+                    };
+                    executor.execute(pollenReader);
+                }
                 if (updateRainRadar){
                     APIReaders.RadarMNSetGeoserverRunnable radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(context){
                         @Override
                         public void onStart() {
-                            updateNotification(4);
+                            updateNotification(5);
                         }
                         @Override
                         public void onFinished(long startTime, boolean success) {
@@ -421,7 +440,7 @@ public class DataUpdateService extends Service {
     }
 
     private void updateNotification(int state){
-        notificationBuilder.setProgress(6,state,false);
+        notificationBuilder.setProgress(7,state,false);
         switch (state){
             case 0: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text0))); break;
             case 1: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text1))); break;

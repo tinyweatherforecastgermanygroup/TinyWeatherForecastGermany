@@ -19,6 +19,8 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import java.util.ArrayList;
 
 public class Polygon{
@@ -50,6 +52,32 @@ public class Polygon{
         this.polygonX = polygonX;
         this.polygonY = polygonY;
         this.nvert = polygonX.length;
+        this.identifier_link = identifier_link;
+    }
+
+    public Polygon(JSONArray jsonArray, String identifier_link){
+        ArrayList<Float> longValues = new ArrayList<Float>();
+        ArrayList<Float> latValues = new ArrayList<Float>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONArray coordinatePair = null;
+            try {
+                coordinatePair = jsonArray.getJSONArray(i);
+                float longitude = (float) coordinatePair.getDouble(0);
+                float latitude = (float) coordinatePair.getDouble(1);
+                latValues.add(latitude); longValues.add(longitude);
+            } catch (JSONException e) {
+                // fails
+            }
+        }
+        float[] x = new float[longValues.size()];
+        float[] y = new float[latValues.size()];
+        for (int i=0; i<longValues.size(); i++){
+            x[i]=longValues.get(i);
+            y[i]=latValues.get(i);
+        }
+        this.nvert = longValues.size();
+        this.polygonX = x;
+        this.polygonY = y;
         this.identifier_link = identifier_link;
     }
 
@@ -107,6 +135,10 @@ public class Polygon{
 
     public boolean isInPolygon(float testx, float testy){
         return isInPolygon(nvert,polygonX,polygonY,testx,testy);
+    }
+
+    public boolean isInPolygon(Weather.WeatherLocation weatherLocation){
+        return isInPolygon((float) weatherLocation.longitude, (float) weatherLocation.latitude);
     }
 
     public static ArrayList<Polygon> getPolygonArraylistFromString(String source){

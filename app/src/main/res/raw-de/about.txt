@@ -12,7 +12,7 @@ Material Design Icons Copyright © Google Inc., lizenziert unter der Apache 2.0 
 
 Diese App benutzt Gradle und den Gradle Wrapper, Copyright © Gradle Inc, lizenziert unter der Apache 2.0 Lizenz.
 
-Datenquelle: Deutscher Wetterdienst, eigene Elemente ergänzt, einige Einzelwerte gemittelt. Wetter-Warnungen werden gekürzt. Quelle für Geo-Daten: Deutscher Wetterdienst.
+Datenquelle: Deutscher Wetterdienst, eigene Elemente ergänzt, einige Einzelwerte gemittelt. Wetter-Warnungen werden gekürzt. Quelle für Geo-Daten: Deutscher Wetterdienst
 
 Dieses Programm benutzt die WeatherSpec Klasse von Gadgetbridge, Copyright © 2016-2020 Andreas Shimokawa, Carsten Pfeiffer, Daniele Gobbetti, lizenziert unter der GNU AFFRERO GENERAL PUBLIC LICENSE, Version 3, 19 November 2007.
 

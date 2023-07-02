@@ -35,7 +35,9 @@
     <string name="warnings_button">Weather warnings</string>
     <string name="texts_button">Texts</string>
     <string name="overview_button">Overview</string>
-    <string name="today">Today</string>
+    <string name="today">today</string>
+    <string name="tomorrow">tomorrow</string>
+    <string name="dayaftertomorrow">day after tomorrow</string>
     <string name="station">Station</string>
     <string name="whatsnew_button">What\'s new</string>
     <string name="boldwidget_description">Bold</string>
@@ -153,6 +155,18 @@
     <string name="preference_display_wind_in_radar_summary">Display wind direction in the rain radar</string>
     <string name="preference_display_distance_unit_title">Distance</string>
     <string name="preference_display_distance_unit_summary">Select the unit for distances.</string>
+    <string name="preference_screen_pollen_title">Pollen display</string>
+    <string name="preference_screen_pollen_summary">Customize the pollen count display.</string>
+    <string name="preference_screen_pollen_ambrosia_summary">Display the ambrosia pollen count forecast.</string>
+    <string name="preference_screen_pollen_mugwort_summary">Display the mugwort pollen count forecast.</string>
+    <string name="preference_screen_pollen_rye_summary">Display the rye pollen count forecast.</string>
+    <string name="preference_screen_pollen_ash_summary">Display the ash pollen count forecast.</string>
+    <string name="preference_screen_pollen_birch_summary">Display the birch pollen count forecast.</string>
+    <string name="preference_screen_pollen_hazel_summary">Display the hazel pollen count forecast.</string>
+    <string name="preference_screen_pollen_alder_summary">Display the alder pollen count forecast.</string>
+    <string name="preference_screen_pollen_grasses_summary">Display the grasses pollen count forecast.</string>
+    <string name="preference_screen_pollen_hint_title">Hint</string>
+    <string name="preference_screen_pollen_hint_summary">Disabling certain pollen will hide them in the detailed forecast, the maps list and the detailed map view.</string>
     <string name="preference_display_overviewchart_title">Overview chart</string>
     <string name="preference_display_overviewchart_summary">Always show the chart indicating temperature, clouds and rain for the next days. When disabled, the chart will only be visible in landscape mode, and only if there is enough space.</string>
     <string name="preference_screen_overviewchart_summary">Customize the overview chart.</string>
@@ -398,13 +412,44 @@
     <string name="layerlabel_ts_0">Temperature sensed at 6:00 local time</string>
     <string name="layerlabel_ts_1">Temperature sensed at 12:00 local time</string>
     <string name="layerlabel_ts_2">Temperature sensed at 18:00 local time</string>
-    <string name="layerlabel_ts_max_0">Maximum temperature sensed today</string>
-    <string name="layerlabel_ts_max_1">Maximum temperature sensed tomorrow</string>
-    <string name="layerlabel_ts_max_2">Maximum temperature sensed the day after tomorrow</string>
+    <string name="local_time_6">6:00 local time</string>
+    <string name="local_time_12">12:00 local time</string>
+    <string name="local_time_18">18:00 local time</string>
+    <string name="temp_max">Maximum temperature</string>
+    <string name="temp_min">Minimum temperature</string>
     <string name="layerlabel_ts_min_0">Minimum temperature sensed today</string>
     <string name="layerlabel_ts_min_1">Minimum temperature sensed tomorrow</string>
     <string name="layerlabel_ts_min_2">Minimum temperature sensed the day after tomorrow</string>
+    <string name="layerlabel_ts_max_0">Maximum temperature sensed today</string>
+    <string name="layerlabel_ts_max_1">Maximum temperature sensed tomorrow</string>
+    <string name="layerlabel_ts_max_2">Maximum temperature sensed the day after tomorrow</string>
     <string name="wm_maps">Weather maps</string>
     <string name="wm_update_not_allowed_yet">Next update is possible in %1$s.</string>
+    <string name="pollen_title">Pollen count forecast</string>
+    <string name="pollen_ambrosia">Ambrosia</string>
+    <string name="pollen_mugwort">Mugwort</string> <!-- Beifuss -->
+    <string name="pollen_rye">Rye</string> <!-- Roggen -->
+    <string name="pollen_ash">Ash</string> <!-- Esche -->
+    <string name="pollen_birch">Birch</string> <!-- Birke -->
+    <string name="pollen_hazel">Hazel</string> <!-- Hasel -->
+    <string name="pollen_alder">Alder</string> <!-- Erle -->
+    <string name="pollen_grasses">Grasses</string> <!-- Gräser -->
+    <string name="pollen_load0">none</string>
+    <string name="pollen_load1">none to low</string>
+    <string name="pollen_load2">low</string>
+    <string name="pollen_load3">low to medium</string>
+    <string name="pollen_load4">medium</string>
+    <string name="pollen_load5">medium to high</string>
+    <string name="pollen_load6">high</string>
+    <string name="clear_sky">clear sky</string>
+
+
+
+
+
+
+
+
+
 
 </resources>

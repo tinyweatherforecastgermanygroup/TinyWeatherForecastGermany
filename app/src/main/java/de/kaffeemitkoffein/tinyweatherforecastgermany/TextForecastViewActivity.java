@@ -26,12 +26,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -46,6 +44,7 @@ public class TextForecastViewActivity extends Activity {
     Context context;
     ActionBar actionBar;
     RelativeLayout mainContainer;
+    ScrollView mainScrollView;
     TextView title;
     TextView date;
     TextView subtitle;
@@ -121,6 +120,36 @@ public class TextForecastViewActivity extends Activity {
         }
     }
 
+    WeatherDetailsActivity.SwipeGestureDetector swipeGestureDetector = new WeatherDetailsActivity.SwipeGestureDetector() {
+        @Override
+        public boolean onLeftSwipe(View view, MotionEvent motionEvent) {
+            if (itemIndex<textForecasts.size()-1){
+                itemIndex++;
+                displayTextForecast(itemIndex);
+            }
+            return super.onLeftSwipe(view, motionEvent);
+        }
+
+        @Override
+        public boolean onRightSwipe(View view, MotionEvent motionEvent) {
+            if (itemIndex>0){
+                itemIndex--;
+                displayTextForecast(itemIndex);
+            }
+            return super.onRightSwipe(view, motionEvent);
+        }
+
+        @Override
+        public boolean onUpSwipe(View view, MotionEvent motionEvent) {
+            return super.onUpSwipe(view, motionEvent);
+        }
+
+        @Override
+        public boolean onDownSwipe(View view, MotionEvent motionEvent) {
+            return super.onDownSwipe(view, motionEvent);
+        }
+    };
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -164,6 +193,8 @@ public class TextForecastViewActivity extends Activity {
                 finish();
             }
         });
+        mainScrollView = (ScrollView) findViewById(R.id.textforecastview_scrollview);
+        mainScrollView.setOnTouchListener(swipeGestureDetector);
         Intent intent = getIntent();
         if (WeatherSettings.isTextForecastFilterEnabled(this)){
             textForecasts = TextForecasts.getLatestTextForecastsOnly(this);

@@ -30,27 +30,33 @@ public class WeatherContentProvider extends ContentProvider {
 
     static final String AUTHORITY = "de.kaffeemitkoffein.tinyweatherforecastgermany";
 
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "weather";
     private SQLiteDatabase database;
 
-    public static final String TABLE_NAME_FORECASTS = "forecasts";
-    public static final String TABLE_NAME_WARNINGS  = "warnings";
-    public static final String TABLE_NAME_TEXTS     = "texts";
-    public static final String TABLE_NAME_AREAS     = "areas";
+    public static final String TABLE_NAME_FORECASTS   = "forecasts";
+    public static final String TABLE_NAME_WARNINGS    = "warnings";
+    public static final String TABLE_NAME_TEXTS       = "texts";
+    public static final String TABLE_NAME_AREAS       = "areas";
+    public static final String TABLE_NAME_POLLENAREAS = "pollenareas";
+    public static final String TABLE_NAME_POLLEN      = "pollen";
 
     public static final String EXISTCLAUSE = " IF NOT EXISTS ";
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-    private static final int URICODE_FORECAST_SINGLE = 10;
-    private static final int URICODE_FORECAST_ALL    = 11;
-    private static final int URICODE_WARNING_SINGLE  = 20;
-    private static final int URICODE_WARNING_ALL     = 21;
-    private static final int URICODE_TEXT_SINGLE     = 30;
-    private static final int URICODE_TEXT_ALL        = 31;
-    private static final int URICODE_AREA_SINGLE     = 40;
-    private static final int URICODE_AREA_ALL        = 41;
+    private static final int URICODE_FORECAST_SINGLE   = 10;
+    private static final int URICODE_FORECAST_ALL      = 11;
+    private static final int URICODE_WARNING_SINGLE    = 20;
+    private static final int URICODE_WARNING_ALL       = 21;
+    private static final int URICODE_TEXT_SINGLE       = 30;
+    private static final int URICODE_TEXT_ALL          = 31;
+    private static final int URICODE_AREA_SINGLE       = 40;
+    private static final int URICODE_AREA_ALL          = 41;
+    private static final int URICODE_POLLENAREA_SINGLE = 50;
+    private static final int URICODE_POLLENAREA_ALL    = 51;
+    private static final int URICODE_POLLEN_SINGLE     = 60;
+    private static final int URICODE_POLLEN_ALL        = 61;
 
     static {
         uriMatcher.addURI(AUTHORITY, TABLE_NAME_FORECASTS, URICODE_FORECAST_SINGLE);
@@ -61,6 +67,10 @@ public class WeatherContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, TABLE_NAME_TEXTS+"/*", URICODE_TEXT_ALL);
         uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS, URICODE_AREA_SINGLE);
         uriMatcher.addURI(AUTHORITY, TABLE_NAME_AREAS+"/*", URICODE_AREA_ALL);
+        uriMatcher.addURI(AUTHORITY,TABLE_NAME_POLLENAREAS,URICODE_POLLENAREA_SINGLE);
+        uriMatcher.addURI(AUTHORITY,TABLE_NAME_POLLENAREAS+"/*",URICODE_POLLENAREA_ALL);
+        uriMatcher.addURI(AUTHORITY,TABLE_NAME_POLLEN,URICODE_POLLEN_SINGLE);
+        uriMatcher.addURI(AUTHORITY,TABLE_NAME_POLLEN+"/*",URICODE_POLLEN_ALL);
     }
 
 
@@ -90,6 +100,12 @@ public class WeatherContentProvider extends ContentProvider {
             case URICODE_AREA_SINGLE    :
             case URICODE_AREA_ALL       :
                 tableName=TABLE_NAME_AREAS; break;
+            case URICODE_POLLENAREA_SINGLE:
+            case URICODE_POLLENAREA_ALL   :
+                tableName=TABLE_NAME_POLLENAREAS; break;
+            case URICODE_POLLEN_SINGLE:
+            case URICODE_POLLEN_ALL  :
+                tableName=TABLE_NAME_POLLEN; break;
             default: throw new IllegalArgumentException("Unknown Uri: "+uri);
         }
         return tableName;
@@ -98,7 +114,8 @@ public class WeatherContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) throws IllegalArgumentException{
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(getTablenameFromUri(uri));
+        String tableTame = getTablenameFromUri(uri);
+        qb.setTables(tableTame);
         Cursor c = qb.query(database,projection,selection,selectionArgs,null,null,sortOrder);
         return c;
     }
@@ -128,6 +145,12 @@ public class WeatherContentProvider extends ContentProvider {
             case URICODE_AREA_SINGLE    :
             case URICODE_AREA_ALL       :
                 uriBuilder.appendPath(TABLE_NAME_AREAS); break;
+            case URICODE_POLLENAREA_SINGLE:
+            case URICODE_POLLENAREA_ALL:
+                uriBuilder.appendPath(TABLE_NAME_POLLENAREAS); break;
+            case URICODE_POLLEN_SINGLE:
+            case URICODE_POLLEN_ALL:
+                uriBuilder.appendPath(TABLE_NAME_POLLEN); break;
             default: throw new IllegalArgumentException("Unknown Uri: "+uri);
         }
         Uri uriResult = uriBuilder.build();
@@ -151,10 +174,12 @@ public class WeatherContentProvider extends ContentProvider {
 
     public static class WeatherDatabaseHelper extends SQLiteOpenHelper {
 
-        public static final String SQL_COMMAND_DROP_TABLE_FORECASTS = "DROP TABLE IF EXISTS " + TABLE_NAME_FORECASTS;
-        public static final String SQL_COMMAND_DROP_TABLE_WARNINGS  = "DROP TABLE IF EXISTS " + TABLE_NAME_WARNINGS;
-        public static final String SQL_COMMAND_DROP_TABLE_TEXTS     = "DROP TABLE IF EXISTS " + TABLE_NAME_TEXTS;
-        public static final String SQL_COMMAND_DROP_TABLE_AREAS     = "DROP TABLE IF EXISTS " + TABLE_NAME_AREAS;
+        public static final String SQL_COMMAND_DROP_TABLE_FORECASTS   = "DROP TABLE IF EXISTS " + TABLE_NAME_FORECASTS;
+        public static final String SQL_COMMAND_DROP_TABLE_WARNINGS    = "DROP TABLE IF EXISTS " + TABLE_NAME_WARNINGS;
+        public static final String SQL_COMMAND_DROP_TABLE_TEXTS       = "DROP TABLE IF EXISTS " + TABLE_NAME_TEXTS;
+        public static final String SQL_COMMAND_DROP_TABLE_AREAS       = "DROP TABLE IF EXISTS " + TABLE_NAME_AREAS;
+        public static final String SQL_COMMAND_DROP_TABLE_POLLENAREAS = "DROP TABLE IF EXISTS " + TABLE_NAME_POLLENAREAS;
+        public static final String SQL_COMMAND_DROP_TABLE_POLLEN      = "DROP TABLE IF EXISTS " + TABLE_NAME_POLLEN;
 
         /*
          * SQL Data for the Forecasts
@@ -559,6 +584,152 @@ public class WeatherContentProvider extends ContentProvider {
                 + KEY_AREAS_polygonstring + " TEXT"
                 + ");";
 
+        /*
+         * SQL Data for the PollenAreas
+         */
+
+        public static final String KEY_POLLENAREA_id = "id";
+        public static final String KEY_POLLENAREA_region_id = "region_id";
+        public static final String KEY_POLLENAREA_partregion_id = "partregion_id";
+        public static final String KEY_POLLENAREA_polygonstring = "polygonstring";
+
+        public static final String SQL_COMMAND_CREATE_TABLE_POLLENAREAS = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_POLLENAREAS + "("
+                + KEY_POLLENAREA_id + " INTEGER PRIMARY KEY ASC,"
+                + KEY_POLLENAREA_region_id + " INTEGER,"
+                + KEY_POLLENAREA_partregion_id + " INTEGER,"
+                + KEY_POLLENAREA_polygonstring + " TEXT"
+                + ");";
+
+        /*
+         * SQL Data for pollen
+         */
+
+        public static final String KEY_POLLEN_id = "id";
+        public static final String KEY_POLLEN_timestamp = "timestamp";
+        public static final String KEY_POLLEN_partregion_id = "partregion_id";
+        public static final String KEY_POLLEN_region_id = "region_id";
+        public static final String KEY_POLLEN_ambrosia0 = "ambrosia0";
+        public static final String KEY_POLLEN_beifuss0 = "beifuss0";
+        public static final String KEY_POLLEN_roggen0 = "roggen0";
+        public static final String KEY_POLLEN_esche0 = "esche0";
+        public static final String KEY_POLLEN_birke0 = "birke0";
+        public static final String KEY_POLLEN_hasel0 = "hasel0";
+        public static final String KEY_POLLEN_erle0 = "erle0";
+        public static final String KEY_POLLEN_graeser0 = "graeser0";
+        public static final String KEY_POLLEN_ambrosia1 = "ambrosia1";
+        public static final String KEY_POLLEN_beifuss1 = "beifuss1";
+        public static final String KEY_POLLEN_roggen1 = "roggen1";
+        public static final String KEY_POLLEN_esche1 = "esche1";
+        public static final String KEY_POLLEN_birke1 = "birke1";
+        public static final String KEY_POLLEN_hasel1 = "hasel1";
+        public static final String KEY_POLLEN_erle1 = "erle1";
+        public static final String KEY_POLLEN_graeser1 = "graeser1";
+        public static final String KEY_POLLEN_ambrosia2 = "ambrosia2";
+        public static final String KEY_POLLEN_beifuss2 = "beifuss2";
+        public static final String KEY_POLLEN_roggen2 = "roggen2";
+        public static final String KEY_POLLEN_esche2 = "esche2";
+        public static final String KEY_POLLEN_birke2 = "birke2";
+        public static final String KEY_POLLEN_hasel2 = "hasel2";
+        public static final String KEY_POLLEN_erle2 = "erle2";
+        public static final String KEY_POLLEN_graeser2 = "graeser2";
+        public static final String KEY_POLLEN_ambrosia3 = "ambrosia3";
+        public static final String KEY_POLLEN_beifuss3 = "beifuss3";
+        public static final String KEY_POLLEN_roggen3 = "roggen3";
+        public static final String KEY_POLLEN_esche3 = "esche3";
+        public static final String KEY_POLLEN_birke3 = "birke3";
+        public static final String KEY_POLLEN_hasel3 = "hasel3";
+        public static final String KEY_POLLEN_erle3 = "erle3";
+        public static final String KEY_POLLEN_graeser3 = "graeser3";
+        public static final String KEY_POLLEN_ambrosia4 = "ambrosia4";
+        public static final String KEY_POLLEN_beifuss4 = "beifuss4";
+        public static final String KEY_POLLEN_roggen4 = "roggen4";
+        public static final String KEY_POLLEN_esche4 = "esche4";
+        public static final String KEY_POLLEN_birke4 = "birke4";
+        public static final String KEY_POLLEN_hasel4 = "hasel4";
+        public static final String KEY_POLLEN_erle4 = "erle4";
+        public static final String KEY_POLLEN_graeser4 = "graeser4";
+        public static final String KEY_POLLEN_ambrosia5 = "ambrosia5";
+        public static final String KEY_POLLEN_beifuss5 = "beifuss5";
+        public static final String KEY_POLLEN_roggen5 = "roggen5";
+        public static final String KEY_POLLEN_esche5 = "esche5";
+        public static final String KEY_POLLEN_birke5 = "birke5";
+        public static final String KEY_POLLEN_hasel5 = "hasel5";
+        public static final String KEY_POLLEN_erle5 = "erle5";
+        public static final String KEY_POLLEN_graeser5 = "graeser5";
+        public static final String KEY_POLLEN_partregion_name = "partregion_name";
+        public static final String KEY_POLLEN_region_name = "region_name";
+        public static final String KEY_POLLEN_last_update = "last_update";
+        public static final String KEY_POLLEN_next_update = "next_update";
+        public static final String KEY_POLLEN_last_updateUTC = "last_updateUTC";
+        public static final String KEY_POLLEN_next_updateUTC = "next_updateUTC";
+        public static final String KEY_POLLEN_todayMin = "todayMin";
+        public static final String KEY_POLLEN_todayMax = "todayMax";
+        public static final String KEY_POLLEN_tomorrowMin = "tomorrowMin";
+        public static final String KEY_POLLEN_tomorrowMax = "tomorrowMax";
+        public static final String KEY_POLLEN_dayAfterTomorrowMin = "dayAfterTomorrowMin";
+        public static final String KEY_POLLEN_dayAfterTomorrowMax = "dayAfterTomorrowMax";
+
+        public static final String SQL_COMMAND_CREATE_TABLE_POLLEN = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_POLLEN + "("
+            + KEY_POLLEN_id + " INTEGER,"
+            + KEY_POLLEN_timestamp + " INTEGER,"
+            + KEY_POLLEN_region_id + " INTEGER,"
+            + KEY_POLLEN_region_name + " TEXT,"
+            + KEY_POLLEN_partregion_id + " INTEGER,"
+            + KEY_POLLEN_partregion_name + " TEXT,"
+            + KEY_POLLEN_last_update + " TEXT,"
+            + KEY_POLLEN_next_update + " TEXT,"
+            + KEY_POLLEN_last_updateUTC + " INTEGER,"
+            + KEY_POLLEN_next_updateUTC + " INTEGER,"
+            + KEY_POLLEN_ambrosia0 + " INTEGER,"
+            + KEY_POLLEN_beifuss0 + " INTEGER,"
+            + KEY_POLLEN_roggen0 + " INTEGER,"
+            + KEY_POLLEN_esche0 + " INTEGER,"
+            + KEY_POLLEN_birke0 + " INTEGER,"
+            + KEY_POLLEN_hasel0 + " INTEGER,"
+            + KEY_POLLEN_erle0 + " INTEGER,"
+            + KEY_POLLEN_graeser0 + " INTEGER,"
+            + KEY_POLLEN_ambrosia1 + " INTEGER,"
+            + KEY_POLLEN_beifuss1 + " INTEGER,"
+            + KEY_POLLEN_roggen1 + " INTEGER,"
+            + KEY_POLLEN_esche1 + " INTEGER,"
+            + KEY_POLLEN_birke1 + " INTEGER,"
+            + KEY_POLLEN_hasel1 + " INTEGER,"
+            + KEY_POLLEN_erle1 + " INTEGER,"
+            + KEY_POLLEN_graeser1 + " INTEGER,"
+            + KEY_POLLEN_ambrosia2 + " INTEGER,"
+            + KEY_POLLEN_beifuss2 + " INTEGER,"
+            + KEY_POLLEN_roggen2 + " INTEGER,"
+            + KEY_POLLEN_esche2 + " INTEGER,"
+            + KEY_POLLEN_birke2 + " INTEGER,"
+            + KEY_POLLEN_hasel2 + " INTEGER,"
+            + KEY_POLLEN_erle2 + " INTEGER,"
+            + KEY_POLLEN_graeser2 + " INTEGER,"
+            + KEY_POLLEN_ambrosia3 + " INTEGER,"
+            + KEY_POLLEN_beifuss3 + " INTEGER,"
+            + KEY_POLLEN_roggen3 + " INTEGER,"
+            + KEY_POLLEN_esche3 + " INTEGER,"
+            + KEY_POLLEN_birke3 + " INTEGER,"
+            + KEY_POLLEN_hasel3 + " INTEGER,"
+            + KEY_POLLEN_erle3 + " INTEGER,"
+            + KEY_POLLEN_graeser3 + " INTEGER,"
+            + KEY_POLLEN_ambrosia4 + " INTEGER,"
+            + KEY_POLLEN_beifuss4 + " INTEGER,"
+            + KEY_POLLEN_roggen4 + " INTEGER,"
+            + KEY_POLLEN_esche4 + " INTEGER,"
+            + KEY_POLLEN_birke4 + " INTEGER,"
+            + KEY_POLLEN_hasel4 + " INTEGER,"
+            + KEY_POLLEN_erle4 + " INTEGER,"
+            + KEY_POLLEN_graeser4 + " INTEGER,"
+            + KEY_POLLEN_ambrosia5 + " INTEGER,"
+            + KEY_POLLEN_beifuss5 + " INTEGER,"
+            + KEY_POLLEN_roggen5 + " INTEGER,"
+            + KEY_POLLEN_esche5 + " INTEGER,"
+            + KEY_POLLEN_birke5 + " INTEGER,"
+            + KEY_POLLEN_hasel5 + " INTEGER,"
+            + KEY_POLLEN_erle5 + " INTEGER,"
+            + KEY_POLLEN_graeser5 + " INTEGER"
+            + ");";
+
         public WeatherDatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
@@ -569,6 +740,8 @@ public class WeatherContentProvider extends ContentProvider {
             sqLiteDatabase.execSQL(SQL_COMMAND_CREATE_TABLE_WARNINGS);
             sqLiteDatabase.execSQL(SQL_COMMAND_CREATE_TABLE_TEXTS);
             sqLiteDatabase.execSQL(SQL_COMMAND_CREATE_TABLE_AREAS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_CREATE_TABLE_POLLENAREAS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_CREATE_TABLE_POLLEN);
         }
 
         @Override
@@ -579,29 +752,25 @@ public class WeatherContentProvider extends ContentProvider {
 
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-            // change from version 2 to 3: only forecast data needs to be dropped because of new fields in data set
-            if ((oldVersion==2) && (newVersion==3)){
-                sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_FORECASTS);
-                onCreate(sqLiteDatabase);
-            } else {
-                // all other database upgrades require complete reset
-                // drop data & re-create tables
-                sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_FORECASTS);
-                sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_WARNINGS);
-                sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_TEXTS);
-                sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_AREAS);
-                onCreate(sqLiteDatabase);
-            }
-        }
-
-        @Override
-        public void onDowngrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-            // all other database upgrades require complete reset
             // drop data & re-create tables
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_FORECASTS);
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_WARNINGS);
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_TEXTS);
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_AREAS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_POLLENAREAS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_POLLEN);
+            onCreate(sqLiteDatabase);
+        }
+
+        @Override
+        public void onDowngrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+            // drop data & re-create tables
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_FORECASTS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_WARNINGS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_TEXTS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_AREAS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_POLLENAREAS);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_POLLEN);
             onCreate(sqLiteDatabase);
             //super.onDowngrade(db, oldVersion, newVersion);
         }

@@ -139,7 +139,6 @@ public class WeatherWarningActivity extends Activity {
             drawRadarSlide(nextRainSlide);
             long finishedTime = Calendar.getInstance().getTimeInMillis();
             long duration = finishedTime - startTime;
-            //Log.v("twfg","Slide: "+nextRainSlide+" duration="+duration);
             nextRainSlide++;
             if (nextRainSlide>APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE){
                 nextRainSlide=0;
@@ -851,11 +850,6 @@ public class WeatherWarningActivity extends Activity {
         mapZoomable = new ZoomableImageView(getApplicationContext(),germany,warningsBitmap){
             @Override
             public void onGestureFinished(float scaleFactor, float lastXtouch, float lastYtouch, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
-                //Log.v("ZT","-------------------------------------");
-                //Log.v("ZT","The scale factor is "+scaleFactor);
-                //Log.v("ZT","Last pointer/touch at: "+lastXtouch+"/"+lastYtouch);
-                //Log.v("ZT","Focus: abs: "+yFocus+"/"+xFocus+"  rel: "+xFocusRelative+"/"+yFocusRelative);
-                //Log.v("ZT","Visible rectangle: "+Math.round(currentlyVisibleArea.left)+"/"+Math.round(currentlyVisibleArea.top)+" "+Math.round(currentlyVisibleArea.right)+"/"+Math.round(currentlyVisibleArea.bottom));
                 final PlotPoint plotPoint = new PlotPoint();
                 plotPoint.x = lastXtouch;
                 plotPoint.y = lastYtouch;
@@ -892,38 +886,32 @@ public class WeatherWarningActivity extends Activity {
     class MapGestureListener extends GestureDetector.SimpleOnGestureListener{
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            //Log.v("MOTIONEVENT","singletapup");
             return super.onSingleTapUp(e);
         }
 
         @Override
         public void onLongPress(MotionEvent e) {
-            //Log.v("MOTIONEVENT","longpress");
             super.onLongPress(e);
         }
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            //Log.v("MOTIONEVENT","scroll");
             return super.onScroll(e1, e2, distanceX, distanceY);
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            //Log.v("MOTIONEVENT","fling");
             return super.onFling(e1, e2, velocityX, velocityY);
         }
 
         @Override
         public void onShowPress(MotionEvent e) {
-            //Log.v("MOTIONEVENT","showpress");
             super.onShowPress(e);
         }
 
         @Override
         public boolean onDown(MotionEvent e)
         {
-            //Log.v("MOTIONEVENT","down");
             // catch collapse-button-press prior to map-selection
             // perform this only if NOT in landscape layout
             if ((!deviceIsLandscape) && (map_collapsed_container!=null) && (germany!=null) && (weatherList!=null)){
@@ -947,25 +935,21 @@ public class WeatherWarningActivity extends Activity {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            //Log.v("MOTIONEVENT","doubletap");
             return super.onDoubleTap(e);
         }
 
         @Override
         public boolean onDoubleTapEvent(MotionEvent e) {
-            //Log.v("MOTIONEVENT","doubletap event");
             return super.onDoubleTapEvent(e);
         }
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            //Log.v("MOTIONEVENT","single tap confirmed");
             return super.onSingleTapConfirmed(e);
         }
 
         @Override
         public boolean onContextClick(MotionEvent e) {
-            // Log.v("MOTIONEVENT","context click");
             return super.onContextClick(e);
         }
     }

@@ -270,6 +270,9 @@ public class UpdateAlarmManager {
         if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS)){
             intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS,true);
         }
+        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN)){
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN,true);
+        }
         if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_RAINRADAR)){
             intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_RAINRADAR,true);
         }

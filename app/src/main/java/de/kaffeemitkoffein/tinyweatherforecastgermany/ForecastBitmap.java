@@ -913,4 +913,168 @@ public class ForecastBitmap{
         return bitmap;
     }
 
+    public static Bitmap getHorizontalBar(Context context, int width, int height, int value, int max, int color, int border){
+        Bitmap bitmap = Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint borderPaint = new Paint();
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setColor(border);
+        borderPaint.setStrokeWidth(5.0f);
+        Paint fillPaint = new Paint();
+        fillPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        fillPaint.setColor(color);
+        float x = (float) ( (float) value/max*width);
+        canvas.drawRect(0,0,x,height,fillPaint);
+        canvas.drawRect(0,0,x,height,borderPaint);
+        return bitmap;
+    }
+
+    public static Bitmap getPollenLegendBox(Context context, int size, int pollenType){
+        Bitmap bitmap = Bitmap.createBitmap(size,size, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        int borderColor = ThemePicker.getWidgetTextColor(context);
+        Paint borderPaint = new Paint();
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setColor(borderColor);
+        borderPaint.setStrokeWidth(5.0f);
+        Paint fillPaint = new Paint();
+        fillPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        fillPaint.setColor(Pollen.PollenLoadColors[pollenType]);
+        canvas.drawRect(0,0,bitmap.getWidth(),bitmap.getHeight(),fillPaint);
+        canvas.drawRect(0,0,bitmap.getWidth(),bitmap.getHeight(),borderPaint);
+        return bitmap;
+    }
+
+    public static class BBox{
+        public float x0; public float y0; public float x1; public float y1;
+
+        public BBox(float x0, float y0, float x1, float y1){
+            this.x0 = x0; this.x1 = x1; this.y0 = y0; this.y1 = y1;
+        }
+
+        public BBox(float[] rect){
+            this.x0 = rect[0]; this.y0 = rect[1]; this.x1 = rect[2];  this.y1 = rect[3];
+        }
+
+        public BBox(RectF rectF){
+            this.x0 = rectF.left; this.x1 = rectF.right; this.y0 = rectF.top; this.y1 = rectF.bottom;
+        }
+
+        public RectF getRectF(){
+            return new RectF(x0,y0,x1,x1);
+        }
+
+        public float getWidth(){
+            return x1 - x0;
+        }
+
+        public float getHeight(){
+            return y1 - y0;
+        }
+
+    }
+
+    public static class BBoxBitmap{
+        private BBox bbox;
+        private Bitmap bitmap;
+        private Canvas canvas;
+
+        public BBoxBitmap(BBox bbox, Bitmap bitmap){
+            this.bbox = bbox;
+            this.bitmap = bitmap;
+        }
+
+        private void initCanvas(){
+            if (canvas==null){
+                canvas = new Canvas(bitmap);
+            }
+        }
+
+        public int getBitmapHeight(){
+            if (bitmap!=null){
+                return bitmap.getHeight();
+            }
+            return -1;
+        }
+
+        public int getBitmapWidth(){
+            if (bitmap!=null){
+                return bitmap.getWidth();
+            }
+            return -1;
+        }
+
+        public float getXPixel(float xCoord){
+            float x = (getBitmapWidth()/bbox.getWidth()) * (xCoord - bbox.x0);
+            return x;
+        }
+
+        public float getYPixel(float yCoord){
+            float y = getBitmapHeight()-(getBitmapHeight()/bbox.getHeight()) * (yCoord - bbox.y0);
+            return y;
+        }
+
+        public void drawGeo(float longitude, float latitude, Paint paint){
+            initCanvas();
+            if (bitmap!=null){
+                canvas.drawPoint(getXPixel(longitude),getYPixel(latitude),paint);
+            }
+        }
+
+        public Path getPathFromPolygon(Polygon polygon){
+            Path path = new Path();
+            if (polygon.polygonX.length>0){
+                path.moveTo(getXPixel(polygon.polygonX[0]),getYPixel(polygon.polygonY[0]));
+                for (int i=1; i<polygon.polygonX.length; i++){
+                    path.lineTo(getXPixel(polygon.polygonX[i]),getYPixel(polygon.polygonY[i]));
+                }
+                path.lineTo(getXPixel(polygon.polygonX[0]),getYPixel(polygon.polygonY[0]));
+            }
+            return path;
+        }
+
+        public void drawGeoPolygon(Polygon polygon, Paint paint,Paint borderPaint){
+            initCanvas();
+            Path path = getPathFromPolygon(polygon);
+            canvas.drawPath(path,paint);
+            if (borderPaint!=null){
+                canvas.drawPath(path,borderPaint);
+            }
+        }
+
+        public void drawPollenArea(PollenArea pollenArea, Paint paint, Paint borderPaint){
+            if (pollenArea.geoPolygon==null){
+                pollenArea.initPolygon();
+            }
+            drawGeoPolygon(pollenArea.geoPolygon,paint, borderPaint);
+        }
+    }
+
+    public static Bitmap getPollenAreasBitmap(Context context, int pollenType, int timeParam){
+        if ((timeParam>=Pollen.Today) && (timeParam<=Pollen.DayAfterTomorrow)){
+            Paint pollenPaint = new Paint();
+            pollenPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            Paint pollenBorderPaint = new Paint();
+            pollenBorderPaint.setStyle(Paint.Style.STROKE);
+            pollenBorderPaint.setColor(ThemePicker.getWidgetTextColor(context));
+            BBox bBox = new BBox(WeatherLayer.WarnMapGeo);
+            Bitmap bitmap = Bitmap.createBitmap(WeatherLayer.WarnMapSize[0],WeatherLayer.WarnMapSize[1], Bitmap.Config.ARGB_8888);
+            bitmap.eraseColor(Color.BLUE);
+            BBoxBitmap bboxBitmap = new BBoxBitmap(bBox,bitmap);
+            ArrayList<PollenArea> pollenAreas = PollenArea.GetPollenAreas(context,null);
+            ArrayList<Pollen> pollens = Pollen.GetPollenData(context);
+            for (int i=0; i<pollenAreas.size(); i++){
+                PollenArea pollenArea = pollenAreas.get(i);
+                Pollen pollen = Pollen.GetPollenData(pollens,pollenArea);
+                int pollenLoad = pollen.getPollenLoad(context,pollenType,timeParam);
+                if (pollenLoad>=0){
+                    pollenPaint.setColor(Pollen.PollenLoadColors[pollenLoad]);
+                    bboxBitmap.drawPollenArea(pollenArea,pollenPaint,pollenBorderPaint);
+                }
+            }
+            return bitmap;
+        }
+        return null;
+    }
+
 }

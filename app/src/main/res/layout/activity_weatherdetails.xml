@@ -42,6 +42,7 @@
               android:text="@string/dwd_notice"/>
 
     <ScrollView
+            android:id="@+id/weatherdetails_scrollview"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_above="@id/weatherdetails_reference_text">
@@ -240,13 +241,44 @@
 
             </FrameLayout>
 
+            <LinearLayout
+                    android:id="@+id/weatherdetails_pollen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@id/weatherdetails_precipitationchartframe"
+                    android:layout_margin="3dp"
+                    android:padding="3dp">
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/weatherdetails_pollenvalues"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/weatherdetails_pollen"
+                    android:layout_margin="3dp"
+                    android:padding="3dp">
+            </LinearLayout>
+
 
             <View
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_below="@id/weatherdetails_precipitationchartframe"
+                    android:layout_below="@id/weatherdetails_pollenvalues"
                     />
 
         </RelativeLayout>
+
     </ScrollView>
+
+    <ProgressBar
+            android:id="@+id/weatherdetails_progressbar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:indeterminate="true"
+            android:visibility="invisible" android:layout_centerInParent="true"/>
+
 </RelativeLayout>

@@ -229,15 +229,13 @@
                   android:layout_marginBottom="@dimen/slider_marginDouble"/>
 
         <ProgressBar
-            android:id="@+id/main_progressbar"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:indeterminate="true"
-            android:visibility="invisible"/>
+                android:id="@+id/main_progressbar"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:indeterminate="true"
+                android:visibility="invisible" android:layout_centerInParent="true"/>
 
     </RelativeLayout>
 

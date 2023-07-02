@@ -22,6 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.*;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,9 +89,34 @@ public class WeatherLayer {
         public final static int SENSED_TEMPERATURE_MIN_0 = 17;
         public final static int SENSED_TEMPERATURE_MIN_1 = 18;
         public final static int SENSED_TEMPERATURE_MIN_2 = 19;
+        public final static int POLLEN_FORECAST_AMBROSIA_0 = 20;
+        public final static int POLLEN_FORECAST_AMBROSIA_1 = 21;
+        public final static int POLLEN_FORECAST_AMBROSIA_2 = 22;
+        public final static int POLLEN_FORECAST_BEIFUSS_0 = 23;
+        public final static int POLLEN_FORECAST_BEIFUSS_1 = 24;
+        public final static int POLLEN_FORECAST_BEIFUSS_2 = 25;
+        public final static int POLLEN_FORECAST_ROGGEN_0 = 26;
+        public final static int POLLEN_FORECAST_ROGGEN_1 = 27;
+        public final static int POLLEN_FORECAST_ROGGEN_2 = 28;
+        public final static int POLLEN_FORECAST_ESCHE_0 = 29;
+        public final static int POLLEN_FORECAST_ESCHE_1 = 30;
+        public final static int POLLEN_FORECAST_ESCHE_2 = 31;
+        public final static int POLLEN_FORECAST_BIRKE_0 = 32;
+        public final static int POLLEN_FORECAST_BIRKE_1 = 33;
+        public final static int POLLEN_FORECAST_BIRKE_2 = 34;
+        public final static int POLLEN_FORECAST_HASEL_0 = 35;
+        public final static int POLLEN_FORECAST_HASEL_1 = 36;
+        public final static int POLLEN_FORECAST_HASEL_2 = 37;
+        public final static int POLLEN_FORECAST_ERLE_0 = 38;
+        public final static int POLLEN_FORECAST_ERLE_1 = 39;
+        public final static int POLLEN_FORECAST_ERLE_2 = 40;
+        public final static int POLLEN_FORECAST_GRAESER_0 = 41;
+        public final static int POLLEN_FORECAST_GRAESER_1 = 42;
+        public final static int POLLEN_FORECAST_GRAESER_2 = 43;
     }
 
-    public final static int LAYERCOUNT = 12;
+
+    public final static int LAYERCOUNT = 44;
     public final SimpleDateFormat dateFormat = new SimpleDateFormat("EE, dd.MM.yyyy");
 
     public final static float WARNMAPX0 = 5.86599899999999f;
@@ -109,23 +135,44 @@ public class WeatherLayer {
             "uvi_cs_0", "uvi_cs_1", "uvi_cs_2","brd_orte","europe_borders_large",
             "sensed_temperature_0","sensed_temperature_1","sensed_temperature_2",
             "uvi_cl_eu_0","uvi_cs_eu_0",
-            "st_max_0","st_max_1","st_max_2","st_min_0","st_min_1","st_min_2"};
+            "st_max_0","st_max_1","st_max_2","st_min_0","st_min_1","st_min_2",
+            "pollen_ambrosia_0","pollen_ambrosia_1", "pollen_ambrosia_2",
+            "pollen_beifuss_0","pollen_beifuss_1", "pollen_beifuss_2",
+            "pollen_roggen_0", "pollen_roggen_1", "pollen_roggen_2",
+            "pollen_esche_0", "pollen_esche_1", "pollen_esche_2",
+            "pollen_birke_0", "pollen_birke_1", "pollen_birke_2",
+            "pollen_hasel_0", "pollen_hasel_1", "pollen_hasel_2",
+            "pollen_erle_0", "pollen_erle_1", "pollen_erle_2",
+            "pollen_graeser_0", "pollen_graeser_1", "pollen_graeser_2"
+            };
+
     public static final String[] LayerIDs = {"Warngebiete_Bundeslaender", "UVI_Global_CL", "UVI_Global_CL", "UVI_Global_CL",
             "UVI_CS", "UVI_CS", "UVI_CS","BRD_Orte","Laender",
             "GefuehlteTemp","GefuehlteTemp","GefuehlteTemp",
             "UVI_Global_CL", "UVI_CS",
-            "GefuehlteTempMax","GefuehlteTempMax","GefuehlteTempMax","GefuehlteTempMin","GefuehlteTempMin","GefuehlteTempMin"};
-    public final static int[] browseItemsOrder={Layers.UVI_CLOUDS_0,Layers.UVI_CLOUDS_1,Layers.UVI_CLOUDS_2,
+            "GefuehlteTempMax","GefuehlteTempMax","GefuehlteTempMax","GefuehlteTempMin","GefuehlteTempMin","GefuehlteTempMin",
+            null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+            null,null,null};
+    private final static int[] browseItemsOrder={Layers.UVI_CLOUDS_0,Layers.UVI_CLOUDS_1,Layers.UVI_CLOUDS_2,
             Layers.UVI_CLOUDLESS_0,Layers.UVI_CLOUDLESS_1,Layers.UVI_CLOUDLESS_2,
             Layers.UVI_CLOUDS_EUROPE_0, Layers.UVI_CLOUDLESS_EUROPE_0,
             Layers.SENSED_TEMPERATURE_1M_0,Layers.SENSED_TEMPERATURE_1M_1,Layers.SENSED_TEMPERATURE_1M_2,
             Layers.SENSED_TEMPERATURE_MIN_0,Layers.SENSED_TEMPERATURE_MIN_1,Layers.SENSED_TEMPERATURE_MIN_2,
-            Layers.SENSED_TEMPERATURE_MAX_0,Layers.SENSED_TEMPERATURE_MAX_1,Layers.SENSED_TEMPERATURE_MAX_2};
+            Layers.SENSED_TEMPERATURE_MAX_0,Layers.SENSED_TEMPERATURE_MAX_1,Layers.SENSED_TEMPERATURE_MAX_2,
+            Layers.POLLEN_FORECAST_AMBROSIA_0, Layers.POLLEN_FORECAST_AMBROSIA_1, Layers.POLLEN_FORECAST_AMBROSIA_2,
+            Layers.POLLEN_FORECAST_BEIFUSS_0, Layers.POLLEN_FORECAST_BEIFUSS_1, Layers.POLLEN_FORECAST_BEIFUSS_2,
+            Layers.POLLEN_FORECAST_ROGGEN_0, Layers.POLLEN_FORECAST_ROGGEN_1, Layers.POLLEN_FORECAST_ROGGEN_2,
+            Layers.POLLEN_FORECAST_ESCHE_0, Layers.POLLEN_FORECAST_ESCHE_1, Layers.POLLEN_FORECAST_ESCHE_2,
+            Layers.POLLEN_FORECAST_BIRKE_0, Layers.POLLEN_FORECAST_BIRKE_1, Layers.POLLEN_FORECAST_BIRKE_2,
+            Layers.POLLEN_FORECAST_HASEL_0, Layers.POLLEN_FORECAST_HASEL_1, Layers.POLLEN_FORECAST_HASEL_2,
+            Layers.POLLEN_FORECAST_ERLE_0, Layers.POLLEN_FORECAST_ERLE_1, Layers.POLLEN_FORECAST_ERLE_2,
+            Layers.POLLEN_FORECAST_GRAESER_0, Layers.POLLEN_FORECAST_GRAESER_1, Layers.POLLEN_FORECAST_GRAESER_2};
 
     public static class UpdateMode{
         public final static int NEVER = 0;
         public final static int UVI = 1;
         public final static int DAY = 2;
+        public final static int POLLEN = 3;
     }
 
     public static class TZ{
@@ -137,6 +184,84 @@ public class WeatherLayer {
         public final static int NONE = 0;
         public final static int UVI = 1;
         public final static int TS = 2;
+        public final static int POLLEN = 3;
+    }
+
+    public static boolean isInIntArray(int[] array, int value){
+        for (int i=0; i<array.length; i++){
+            if (array[i]==value){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static int[] getBrowseItemsOrder(int[] filter){
+        if (filter==null){
+            return browseItemsOrder;
+        } else {
+            int newLength=browseItemsOrder.length - filter.length;
+            int[] result = new int[newLength];
+            int i=0; int writePosition=0;
+            while (i<browseItemsOrder.length){
+                int value = browseItemsOrder[i];
+                if (!isInIntArray(filter,value)){
+                    result[writePosition]=value;
+                    writePosition++;
+                }
+                i++;
+            }
+            return result;
+        }
+    }
+
+    public static int[] getFilteredBrowseItemsOrder(Context context){
+        ArrayList<Integer> filterArrayList= new ArrayList<Integer>();
+        if (!WeatherSettings.getPollenActiveAmbrosia(context)){
+            filterArrayList.add(Layers.POLLEN_FORECAST_AMBROSIA_0);
+            filterArrayList.add(Layers.POLLEN_FORECAST_AMBROSIA_1);
+            filterArrayList.add(Layers.POLLEN_FORECAST_AMBROSIA_2);
+        }
+        if (!WeatherSettings.getPollenActiveBeifuss(context)){
+            filterArrayList.add(Layers.POLLEN_FORECAST_BEIFUSS_0);
+            filterArrayList.add(Layers.POLLEN_FORECAST_BEIFUSS_1);
+            filterArrayList.add(Layers.POLLEN_FORECAST_BEIFUSS_2);
+        }
+        if (!WeatherSettings.getPollenActiveRoggen(context)){
+            filterArrayList.add(Layers.POLLEN_FORECAST_ROGGEN_0);
+            filterArrayList.add(Layers.POLLEN_FORECAST_ROGGEN_1);
+            filterArrayList.add(Layers.POLLEN_FORECAST_ROGGEN_2);
+        }
+        if (!WeatherSettings.getPollenActiveEsche(context)){
+            filterArrayList.add(Layers.POLLEN_FORECAST_ESCHE_0);
+            filterArrayList.add(Layers.POLLEN_FORECAST_ESCHE_1);
+            filterArrayList.add(Layers.POLLEN_FORECAST_ESCHE_2);
+        }
+        if (!WeatherSettings.getPollenActiveBirke(context)){
+            filterArrayList.add(Layers.POLLEN_FORECAST_BIRKE_0);
+            filterArrayList.add(Layers.POLLEN_FORECAST_BIRKE_1);
+            filterArrayList.add(Layers.POLLEN_FORECAST_BIRKE_2);
+        }
+        if (!WeatherSettings.getPollenActiveHasel(context)){
+            filterArrayList.add(Layers.POLLEN_FORECAST_HASEL_0);
+            filterArrayList.add(Layers.POLLEN_FORECAST_HASEL_1);
+            filterArrayList.add(Layers.POLLEN_FORECAST_HASEL_2);
+        }
+        if (!WeatherSettings.getPollenActiveErle(context)){
+            filterArrayList.add(Layers.POLLEN_FORECAST_ERLE_0);
+            filterArrayList.add(Layers.POLLEN_FORECAST_ERLE_1);
+            filterArrayList.add(Layers.POLLEN_FORECAST_ERLE_2);
+        }
+        if (!WeatherSettings.getPollenActiveGraeser(context)){
+            filterArrayList.add(Layers.POLLEN_FORECAST_GRAESER_0);
+            filterArrayList.add(Layers.POLLEN_FORECAST_GRAESER_1);
+            filterArrayList.add(Layers.POLLEN_FORECAST_GRAESER_2);
+        }
+        int[] filterArray = new int[filterArrayList.size()];
+        for (int i=0; i< filterArrayList.size(); i++){
+            filterArray[i] = filterArrayList.get(i);
+        }
+        return getBrowseItemsOrder(filterArray);
     }
 
     public static String getCacheFilename(int layer) {
@@ -158,6 +283,8 @@ public class WeatherLayer {
     }
 
     public static String getLabel(Context context, int layer) {
+        final String seperator1=": ";
+        final String seperator2=", ";
         switch (layer) {
             case Layers.WARNING_AREAS_GERMANY:
                 return context.getResources().getString(R.string.layerlabel_warning_areas_de);
@@ -183,7 +310,42 @@ public class WeatherLayer {
                 return context.getResources().getString(R.string.layerlabel_ts_1);
             case Layers.SENSED_TEMPERATURE_1M_2:
                 return context.getResources().getString(R.string.layerlabel_ts_2);
-
+            case Layers.SENSED_TEMPERATURE_MIN_0:
+                return context.getResources().getString(R.string.layerlabel_ts_min_0);
+            case Layers.SENSED_TEMPERATURE_MIN_1:
+                return context.getResources().getString(R.string.layerlabel_ts_min_1);
+            case Layers.SENSED_TEMPERATURE_MIN_2:
+                return context.getResources().getString(R.string.layerlabel_ts_min_2);
+            case Layers.SENSED_TEMPERATURE_MAX_0:
+                return context.getResources().getString(R.string.layerlabel_ts_max_0);
+            case Layers.SENSED_TEMPERATURE_MAX_1:
+                return context.getResources().getString(R.string.layerlabel_ts_max_1);
+            case Layers.SENSED_TEMPERATURE_MAX_2:
+                return context.getResources().getString(R.string.layerlabel_ts_max_2);
+            case Layers.POLLEN_FORECAST_AMBROSIA_0: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_ambrosia)+seperator2+context.getResources().getString(R.string.today);
+            case Layers.POLLEN_FORECAST_AMBROSIA_1: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_ambrosia)+seperator2+context.getResources().getString(R.string.tomorrow);
+            case Layers.POLLEN_FORECAST_AMBROSIA_2: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_ambrosia)+seperator2+context.getResources().getString(R.string.dayaftertomorrow);
+            case Layers.POLLEN_FORECAST_BEIFUSS_0: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_mugwort)+seperator2+context.getResources().getString(R.string.today);
+            case Layers.POLLEN_FORECAST_BEIFUSS_1: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_mugwort)+seperator2+context.getResources().getString(R.string.tomorrow);
+            case Layers.POLLEN_FORECAST_BEIFUSS_2: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_mugwort)+seperator2+context.getResources().getString(R.string.dayaftertomorrow);
+            case Layers.POLLEN_FORECAST_ROGGEN_0: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_rye)+seperator2+context.getResources().getString(R.string.today);
+            case Layers.POLLEN_FORECAST_ROGGEN_1: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_rye)+seperator2+context.getResources().getString(R.string.tomorrow);
+            case Layers.POLLEN_FORECAST_ROGGEN_2: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_rye)+seperator2+context.getResources().getString(R.string.dayaftertomorrow);
+            case Layers.POLLEN_FORECAST_ESCHE_0: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_ash)+seperator2+context.getResources().getString(R.string.today);
+            case Layers.POLLEN_FORECAST_ESCHE_1: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_ash)+seperator2+context.getResources().getString(R.string.tomorrow);
+            case Layers.POLLEN_FORECAST_ESCHE_2: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_ash)+seperator2+context.getResources().getString(R.string.dayaftertomorrow);
+            case Layers.POLLEN_FORECAST_BIRKE_0: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_birch)+seperator2+context.getResources().getString(R.string.today);
+            case Layers.POLLEN_FORECAST_BIRKE_1: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_birch)+seperator2+context.getResources().getString(R.string.tomorrow);
+            case Layers.POLLEN_FORECAST_BIRKE_2: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_birch)+seperator2+context.getResources().getString(R.string.dayaftertomorrow);
+            case Layers.POLLEN_FORECAST_HASEL_0: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_hazel)+seperator2+context.getResources().getString(R.string.today);
+            case Layers.POLLEN_FORECAST_HASEL_1: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_hazel)+seperator2+context.getResources().getString(R.string.tomorrow);
+            case Layers.POLLEN_FORECAST_HASEL_2: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_hazel)+seperator2+context.getResources().getString(R.string.dayaftertomorrow);
+            case Layers.POLLEN_FORECAST_ERLE_0: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_alder)+seperator2+context.getResources().getString(R.string.today);
+            case Layers.POLLEN_FORECAST_ERLE_1: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_alder)+seperator2+context.getResources().getString(R.string.tomorrow);
+            case Layers.POLLEN_FORECAST_ERLE_2: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_alder)+seperator2+context.getResources().getString(R.string.dayaftertomorrow);
+            case Layers.POLLEN_FORECAST_GRAESER_0: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_grasses)+seperator2+context.getResources().getString(R.string.today);
+            case Layers.POLLEN_FORECAST_GRAESER_1: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_grasses)+seperator2+context.getResources().getString(R.string.tomorrow);
+            case Layers.POLLEN_FORECAST_GRAESER_2: return context.getResources().getString(R.string.pollen_title)+seperator1+context.getResources().getString(R.string.pollen_grasses)+seperator2+context.getResources().getString(R.string.dayaftertomorrow);
         }
         return null;
     }
@@ -211,12 +373,47 @@ public class WeatherLayer {
             case Layers.SENSED_TEMPERATURE_MIN_1:
             case Layers.SENSED_TEMPERATURE_MIN_2:
                 return context.getResources().getString(R.string.layerlabel_short_ts);
+            case Layers.POLLEN_FORECAST_AMBROSIA_0:
+            case Layers.POLLEN_FORECAST_AMBROSIA_1:
+            case Layers.POLLEN_FORECAST_AMBROSIA_2:
+            case Layers.POLLEN_FORECAST_BEIFUSS_0:
+            case Layers.POLLEN_FORECAST_BEIFUSS_1:
+            case Layers.POLLEN_FORECAST_BEIFUSS_2:
+            case Layers.POLLEN_FORECAST_ROGGEN_0:
+            case Layers.POLLEN_FORECAST_ROGGEN_1:
+            case Layers.POLLEN_FORECAST_ROGGEN_2:
+            case Layers.POLLEN_FORECAST_ESCHE_0:
+            case Layers.POLLEN_FORECAST_ESCHE_1:
+            case Layers.POLLEN_FORECAST_ESCHE_2:
+            case Layers.POLLEN_FORECAST_BIRKE_0:
+            case Layers.POLLEN_FORECAST_BIRKE_1:
+            case Layers.POLLEN_FORECAST_BIRKE_2:
+            case Layers.POLLEN_FORECAST_HASEL_0:
+            case Layers.POLLEN_FORECAST_HASEL_1:
+            case Layers.POLLEN_FORECAST_HASEL_2:
+            case Layers.POLLEN_FORECAST_ERLE_0:
+            case Layers.POLLEN_FORECAST_ERLE_1:
+            case Layers.POLLEN_FORECAST_ERLE_2:
+            case Layers.POLLEN_FORECAST_GRAESER_0:
+            case Layers.POLLEN_FORECAST_GRAESER_1:
+            case Layers.POLLEN_FORECAST_GRAESER_2:
+                return context.getResources().getString(R.string.pollen_title);
         }
         return null;
     }
 
     public static long getMidnightTime(long time, int daysToAdd) {
         return getFullHourTime(time,0,daysToAdd,TZ.UTC);
+    }
+
+    public static long getMidnightTime(long time) {
+        return getFullHourTime(time,0,0,TZ.UTC);
+    }
+
+    public static int getRelativeDays(long time){
+        long todayMidnightTime = getMidnightTime(Calendar.getInstance().getTimeInMillis());
+        long targetMidnightTime = getMidnightTime(time);
+        return (int) (targetMidnightTime - todayMidnightTime)/(1000*60*60*24);
     }
 
     public static long getFullHourTime(long time, int hour, int daysToAdd, int timeZone) {
@@ -231,12 +428,18 @@ public class WeatherLayer {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.roll(Calendar.DAY_OF_MONTH, daysToAdd);
+        calendar.add(Calendar.DAY_OF_MONTH, daysToAdd);
         long newTime = calendar.getTimeInMillis();
         return newTime;
     }
 
     public boolean isOutdated(Context context) {
+        if (updateMode==UpdateMode.NEVER){
+            if (cacheFileExists(context)){
+                return false;
+            }
+            return true;
+        }
         Calendar currentCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         Calendar layerCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         File cacheDir = context.getCacheDir();
@@ -279,8 +482,12 @@ public class WeatherLayer {
                 return true;
             }
         }
+        if (updateMode==UpdateMode.POLLEN){
+            if (Pollen.isUpdateDue(context)){
+                return true;
+            }
+        }
         return false;
-        //return true;
     }
 
     public static ArrayList<WeatherLayer> getLayers() {
@@ -306,6 +513,30 @@ public class WeatherLayer {
         list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
         list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_1,EuropeLargeGeo,getMidnightTime(time,1),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
         list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_2,EuropeLargeGeo,getMidnightTime(time,2),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_AMBROSIA_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_AMBROSIA_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_AMBROSIA_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BEIFUSS_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BEIFUSS_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BEIFUSS_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ROGGEN_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ROGGEN_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ROGGEN_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ESCHE_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ESCHE_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ESCHE_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BIRKE_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BIRKE_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BIRKE_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_HASEL_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_HASEL_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_HASEL_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ERLE_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ERLE_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ERLE_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_GRAESER_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_GRAESER_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_GRAESER_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
         return list;
     }
 
@@ -323,11 +554,27 @@ public class WeatherLayer {
         return bitmap;
     }
 
+    private int getPollenType(){
+        return  (layer-Layers.POLLEN_FORECAST_AMBROSIA_0)/3;
+    }
+
+    private int getPollenTimeParam(){
+        return (layer-Layers.POLLEN_FORECAST_AMBROSIA_0)%3;
+    }
+
     public Bitmap getLayerBitmap(Context context) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 1; // do not subsample
         options.inMutable = true; // always return mutable bitmap
-        Bitmap layerBitmap = BitmapFactory.decodeFile(getFullChacheFilepath(context), options);
+        Bitmap layerBitmap = null;
+        if ((isPollen()) && (isPollenLayerCacheFileOutdated(context))){
+            int pollenType = getPollenType();
+            int timeParam = getPollenTimeParam();
+            layerBitmap = ForecastBitmap.getPollenAreasBitmap(context, pollenType, timeParam);
+            saveLayerBitmapToCache(context,layerBitmap);
+        } else {
+            layerBitmap = BitmapFactory.decodeFile(getFullChacheFilepath(context), options);
+        }
         if (layerBitmap!=null){
             Bitmap targetBitmap = layerBitmap.copy(Bitmap.Config.ARGB_8888,true);
             Canvas canvasVisibleMap = new Canvas(targetBitmap);
@@ -352,17 +599,20 @@ public class WeatherLayer {
 
     public Bitmap getTransparentLayerBitmap(Context context, int targetColor) {
         Bitmap bitmap = getLayerBitmap(context);
-        int[] pixels = new int[bitmap.getWidth()*bitmap.getHeight()];
-        bitmap.getPixels(pixels,0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());
-        for (int i=0; i<pixels.length; i++){
-            if (pixels[i]==-1){
-                pixels[i]= Color.TRANSPARENT;
-            } else {
-                pixels[i]= targetColor;
+        if (bitmap!=null){
+            int[] pixels = new int[bitmap.getWidth()*bitmap.getHeight()];
+            bitmap.getPixels(pixels,0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());
+            for (int i=0; i<pixels.length; i++){
+                if (pixels[i]==-1){
+                    pixels[i]= Color.TRANSPARENT;
+                } else {
+                    pixels[i]= targetColor;
+                }
             }
+            bitmap.setPixels(pixels,0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());
+            return bitmap;
         }
-        bitmap.setPixels(pixels,0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());
-        return bitmap;
+        return null;
     }
 
     public static Bitmap replaceBitmapColor(Bitmap bitmap, int sourceColor, int targetColor){
@@ -379,6 +629,41 @@ public class WeatherLayer {
 
     public String getTimestampString(){
         return dateFormat.format(new Date(timestamp));
+    }
+
+    private void saveLayerBitmapToCache(Context context, Bitmap bitmap){
+        if (bitmap!=null){
+            try {
+                File cacheDir = context.getCacheDir();
+                File targetFile = new File(cacheDir,getCacheFilename());
+                FileOutputStream fileOutputStream = new FileOutputStream(targetFile);
+                bitmap.compress(Bitmap.CompressFormat.PNG,0,fileOutputStream);
+                fileOutputStream.close();
+            } catch (Exception e){
+                // fails silently
+            }
+        }
+    }
+
+    private boolean isPollenLayerCacheFileOutdated(Context context){
+        File cacheDir = context.getCacheDir();
+        File targetFile = new File(cacheDir,getCacheFilename());
+        long modified = targetFile.lastModified();
+        if (modified<Pollen.getLastPollenUpdateTime(context)){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean cacheFileExists(Context context){
+        File cacheDir = context.getCacheDir();
+        File targetFile = new File(cacheDir,getCacheFilename());
+        return targetFile.exists();
+    }
+
+
+    public boolean isPollen(){
+        return ((layer>=Layers.POLLEN_FORECAST_AMBROSIA_0) && (layer<=Layers.POLLEN_FORECAST_GRAESER_2));
     }
 
 }

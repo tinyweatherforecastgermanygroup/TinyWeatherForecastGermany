@@ -25,7 +25,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
-
 import java.util.ArrayList;
 
 public class WeatherContentManager {
@@ -39,6 +38,10 @@ public class WeatherContentManager {
     private static final String TEXT_URI_STRING_ALL    = TEXT_URI_STRING_SINGLE+"/*";
     private static final String AREA_URI_STRING_SINGLE = CONTENT_STRING+WeatherContentProvider.AUTHORITY+"/"+WeatherContentProvider.TABLE_NAME_AREAS;
     private static final String AREA_URI_STRING_ALL    = AREA_URI_STRING_SINGLE+"/*";
+    private static final String POLLENAREA_URI_STRING_SINGLE = CONTENT_STRING+WeatherContentProvider.AUTHORITY+"/"+WeatherContentProvider.TABLE_NAME_POLLENAREAS;
+    private static final String POLLENAREA_URI_STRING_ALL    = POLLENAREA_URI_STRING_SINGLE+"/*";
+    private static final String POLLEN_URI_STRING_SINGLE = CONTENT_STRING+WeatherContentProvider.AUTHORITY+"/"+WeatherContentProvider.TABLE_NAME_POLLEN;
+    private static final String POLLEN_URI_STRING_ALL    = POLLEN_URI_STRING_SINGLE+"/*";
 
     public static final Uri FORECAST_URI_SINLGE = Uri.parse(FORECAST_URI_STRING_SINGLE);
     public static final Uri FORECAST_URI_ALL = Uri.parse(FORECAST_URI_STRING_ALL);
@@ -48,6 +51,10 @@ public class WeatherContentManager {
     public static final Uri TEXT_URI_ALL = Uri.parse(TEXT_URI_STRING_ALL);
     public static final Uri AREA_URI_SINLGE = Uri.parse(AREA_URI_STRING_SINGLE);
     public static final Uri AREA_URI_ALL = Uri.parse(AREA_URI_STRING_ALL);
+    public static final Uri POLLENAREAS_URI_SINGLE = Uri.parse(POLLENAREA_URI_STRING_SINGLE);
+    public static final Uri POLLENAREAS_URI_ALL = Uri.parse(POLLENAREA_URI_STRING_ALL);
+    public static final Uri POLLEN_URI_SINGLE = Uri.parse(POLLENAREA_URI_STRING_SINGLE);
+    public static final Uri POLLEN_URI_ALL = Uri.parse(POLLEN_URI_STRING_ALL);
 
     private final static String serial_serparator="_,_";
 
@@ -516,6 +523,146 @@ public class WeatherContentManager {
         } else {
             return c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_warncellid));
         }
+    }
+
+    public static ContentValues getContentValuesFromPollenArea(PollenArea pollenArea){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_region_id,pollenArea.region_id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_partregion_id,pollenArea.partregion_id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_polygonstring,pollenArea.polygonString);
+        return contentValues;
+    }
+
+    public static PollenArea getPollenAreaFromCursor(Cursor c){
+        PollenArea pollenArea = new PollenArea();
+        pollenArea.region_id = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_region_id));
+        pollenArea.partregion_id = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_partregion_id));
+        pollenArea.polygonString = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_polygonstring));
+        return pollenArea;
+    }
+
+    public static ContentValues getContentValuesFromPollen(Pollen pollen){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_timestamp,pollen.timestamp);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_region_id,pollen.region_id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_region_name,pollen.region_name);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_partregion_id,pollen.partregion_id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_partregion_name,pollen.partregion_name);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_last_update,pollen.last_update);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_next_update,pollen.next_update);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_last_updateUTC,pollen.last_update_UTC);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_next_updateUTC,pollen.next_update_UTC);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia0,pollen.ambrosia[0]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss0,pollen.beifuss[0]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen0,pollen.roggen[0]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche0,pollen.esche[0]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke0,pollen.birke[0]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel0,pollen.hasel[0]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle0,pollen.erle[0]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser0,pollen.graeser[0]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia1,pollen.ambrosia[1]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss1,pollen.beifuss[1]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen1,pollen.roggen[1]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche1,pollen.esche[1]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke1,pollen.birke[1]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel1,pollen.hasel[1]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle1,pollen.erle[1]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser1,pollen.graeser[1]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia2,pollen.ambrosia[2]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss2,pollen.beifuss[2]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen2,pollen.roggen[2]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche2,pollen.esche[2]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke2,pollen.birke[2]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel2,pollen.hasel[2]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle2,pollen.erle[2]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser2,pollen.graeser[2]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia3,pollen.ambrosia[3]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss3,pollen.beifuss[3]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen3,pollen.roggen[3]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche3,pollen.esche[3]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke3,pollen.birke[3]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel3,pollen.hasel[3]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle3,pollen.erle[3]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser3,pollen.graeser[3]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia4,pollen.ambrosia[4]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss4,pollen.beifuss[4]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen4,pollen.roggen[4]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche4,pollen.esche[4]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke4,pollen.birke[4]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel4,pollen.hasel[4]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle4,pollen.erle[4]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser4,pollen.graeser[4]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia5,pollen.ambrosia[5]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss5,pollen.beifuss[5]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen5,pollen.roggen[5]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche5,pollen.esche[5]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke5,pollen.birke[5]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel5,pollen.hasel[5]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle5,pollen.erle[5]);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser5,pollen.graeser[5]);
+        return contentValues;
+    }
+
+    public static Pollen getPollenFromCursor(Cursor c){
+        Pollen pollen = new Pollen();
+        pollen.timestamp = c.getLong(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_timestamp));
+        pollen.region_id = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_region_id));
+        pollen.region_name = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_region_name));
+        pollen.partregion_id = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_partregion_id));
+        pollen.partregion_name = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_partregion_name));
+        pollen.last_update = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_last_update));
+        pollen.next_update = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_next_update));
+        pollen.last_update_UTC = c.getLong(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_last_updateUTC));
+        pollen.next_update_UTC = c.getLong(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_next_updateUTC));
+        pollen.ambrosia[0] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia0));
+        pollen.beifuss[0] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss0));
+        pollen.roggen[0] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen0));
+        pollen.esche[0] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche0));
+        pollen.birke[0] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke0));
+        pollen.hasel[0] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel0));
+        pollen.erle[0] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle0));
+        pollen.graeser[0] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser0));
+        pollen.ambrosia[1] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia1));
+        pollen.beifuss[1] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss1));
+        pollen.roggen[1] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen1));
+        pollen.esche[1] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche1));
+        pollen.birke[1] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke1));
+        pollen.hasel[1] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel1));
+        pollen.erle[1] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle1));
+        pollen.graeser[1] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser1));
+        pollen.ambrosia[2] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia2));
+        pollen.beifuss[2] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss2));
+        pollen.roggen[2] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen2));
+        pollen.esche[2] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche2));
+        pollen.birke[2] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke2));
+        pollen.hasel[2] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel2));
+        pollen.erle[2] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle2));
+        pollen.graeser[2] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser2));
+        pollen.ambrosia[3] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia3));
+        pollen.beifuss[3] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss3));
+        pollen.roggen[3] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen3));
+        pollen.esche[3] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche3));
+        pollen.birke[3] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke3));
+        pollen.hasel[3] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel3));
+        pollen.erle[3] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle3));
+        pollen.graeser[3] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser3));
+        pollen.ambrosia[4] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia4));
+        pollen.beifuss[4] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss4));
+        pollen.roggen[4] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen4));
+        pollen.esche[4] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche4));
+        pollen.birke[4] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke4));
+        pollen.hasel[4] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel4));
+        pollen.erle[4] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle4));
+        pollen.graeser[4] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser4));
+        pollen.ambrosia[5] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_ambrosia5));
+        pollen.beifuss[5] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_beifuss5));
+        pollen.roggen[5] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_roggen5));
+        pollen.esche[5] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_esche5));
+        pollen.birke[5] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_birke5));
+        pollen.hasel[5] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_hasel5));
+        pollen.erle[5] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle5));
+        pollen.graeser[5] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser5));
+        return pollen;
     }
 
     public static int checkForDatabaseUpgrade(Context c) {

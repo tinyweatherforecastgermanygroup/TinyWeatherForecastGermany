@@ -31,7 +31,7 @@
         android:background="?attr/colorPrimary">
 
     <TextView android:id="@+id/wlm_reference_text"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_alignParentBottom="true"
               android:layout_marginRight="2dp"
@@ -39,39 +39,93 @@
               android:textSize="@dimen/widget_textsize_medium"
               android:visibility="visible"
               android:layout_centerHorizontal="true"
+              android:gravity="center"
               android:text="@string/dwd_notice"/>
 
-    <TextView android:id="@+id/wlm_title"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_alignParentTop="true"
-              android:layout_marginRight="2dp"
-              android:layout_marginLeft="2dp"
-              android:layout_marginTop="4dp"
-              android:layout_marginBottom="4dp"
-              android:textColor="?attr/colorText"
-              android:textSize="@dimen/fcmain_textsize_large"
-              android:visibility="visible"
-              android:layout_centerHorizontal="true"/>
-
-    <ImageView
-            android:id="@+id/wlm_legend"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/uvi_legend_horizontal"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:layout_above="@id/wlm_reference_text"/>
-
-    <ImageView
-            android:id="@+id/wlm_map"
+    <RelativeLayout
+            android:id="@+id/wlm_contentholder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/germany_black"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:layout_below="@id/wlm_title"
-            android:layout_above="@id/wlm_legend">
-    </ImageView>
+            android:layout_above="@id/wlm_reference_text"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true">
+
+        <TextView android:id="@+id/wlm_title"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentTop="true"
+                  android:layout_marginRight="2dp"
+                  android:layout_marginLeft="2dp"
+                  android:layout_marginTop="4dp"
+                  android:layout_marginBottom="4dp"
+                  android:textColor="?attr/colorText"
+                  android:textSize="@dimen/fcmain_textsize_large"
+                  android:visibility="visible"
+                  android:gravity="center"
+                  android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+                android:id="@+id/wlm_spinnerholder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/wlm_title"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:weightSum="2">
+
+            <Spinner
+                    android:id="@+id/wlm_spinner1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+            <Spinner
+                    android:id="@+id/wlm_spinner2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+        </LinearLayout>
+
+        <ImageView
+                android:id="@+id/wlm_legend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_alignParentBottom="true"/>
+
+        <RelativeLayout
+                android:id="@+id/wlm_legend_hook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_alignParentBottom="true"/>
+
+        <ImageView
+                android:id="@+id/wlm_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_below="@id/wlm_spinnerholder"
+                android:layout_above="@id/wlm_legend">
+        </ImageView>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

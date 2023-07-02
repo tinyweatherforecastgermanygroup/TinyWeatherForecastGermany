@@ -286,10 +286,6 @@ public class CurrentWeatherInfo{
             if (start < current_weather_position) {
                 start = current_weather_position;
             }
-            /*
-            long[] timestamps = rawWeatherInfo.getTimeSteps();
-            Log.v("twfg","6H INTERVAL: "+Weather.toFullDateTimeString(timestamps[start])+" - "+Weather.toFullDateTimeString(timestamps[index]));
-            */
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_6);
             wi.setTimestamp(timesteps[index]);
@@ -377,10 +373,6 @@ public class CurrentWeatherInfo{
             if (start<current_weather_position){
                 start = current_weather_position;
             }
-            /*
-            long[] timestamps = rawWeatherInfo.getTimeSteps();
-            Log.v("twfg","24H INTERVAL: "+Weather.toFullDateTimeString(timestamps[start])+" - "+Weather.toFullDateTimeString(timestamps[index]));
-            */
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_24);
             wi.setTimestamp(timesteps[index]);

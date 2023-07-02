@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020, 2021 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/pl_maincontainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true">
+
+    <RelativeLayout
+            android:id="@+id/pl_row1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true">
+        <ImageView
+                android:id="@+id/pl_box0"
+                android:layout_width="@dimen/fcmain_textsize_medium"
+                android:layout_height="@dimen/fcmain_textsize_medium"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="0dp"/>
+        <TextView
+                android:id="@+id/pl_label0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:textColor="?attr/colorTextLight"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:layout_toRightOf="@id/pl_box0"
+                android:layout_marginLeft="2dp"
+                android:text="@string/pollen_load0"/>
+        <ImageView
+                android:id="@+id/pl_box1"
+                android:layout_width="@dimen/fcmain_textsize_medium"
+                android:layout_height="@dimen/fcmain_textsize_medium"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@id/pl_label0"
+                android:layout_marginLeft="4dp"/>
+        <TextView
+                android:id="@+id/pl_label1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorTextLight"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:layout_toRightOf="@id/pl_box1"
+                android:layout_marginLeft="2dp"
+                android:text="@string/pollen_load1"/>
+        <ImageView
+                android:id="@+id/pl_box2"
+                android:layout_width="@dimen/fcmain_textsize_medium"
+                android:layout_height="@dimen/fcmain_textsize_medium"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@id/pl_label1"
+                android:layout_marginLeft="4dp"/>
+        <TextView
+                android:id="@+id/pl_label2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorTextLight"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:layout_toRightOf="@id/pl_box2"
+                android:layout_marginLeft="2dp"
+                android:text="@string/pollen_load2"/>
+        <ImageView
+                android:id="@+id/pl_box3"
+                android:layout_width="@dimen/fcmain_textsize_medium"
+                android:layout_height="@dimen/fcmain_textsize_medium"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@id/pl_label2"
+                android:layout_marginLeft="4dp"/>
+        <TextView
+                android:id="@+id/pl_label3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorTextLight"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:layout_toRightOf="@id/pl_box3"
+                android:layout_marginLeft="2dp"
+                android:text="@string/pollen_load3"/>
+    </RelativeLayout>
+    <RelativeLayout
+            android:id="@+id/pl_row2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pl_row1"
+            android:gravity="center_horizontal">
+        <ImageView
+                android:id="@+id/pl_box4"
+                android:layout_width="@dimen/fcmain_textsize_medium"
+                android:layout_height="@dimen/fcmain_textsize_medium"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="0dp"/>
+        <TextView
+                android:id="@+id/pl_label4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorTextLight"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:layout_toRightOf="@id/pl_box4"
+                android:layout_marginLeft="2dp"
+                android:text="@string/pollen_load4"/>
+        <ImageView
+                android:id="@+id/pl_box5"
+                android:layout_width="@dimen/fcmain_textsize_medium"
+                android:layout_height="@dimen/fcmain_textsize_medium"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@id/pl_label4"
+                android:layout_marginLeft="4dp"/>
+        <TextView
+                android:id="@+id/pl_label5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorTextLight"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:layout_toRightOf="@id/pl_box5"
+                android:layout_marginLeft="2dp"
+                android:text="@string/pollen_load5"/>
+        <ImageView
+                android:id="@+id/pl_box6"
+                android:layout_width="@dimen/fcmain_textsize_medium"
+                android:layout_height="@dimen/fcmain_textsize_medium"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@id/pl_label5"
+                android:layout_marginLeft="4dp"/>
+        <TextView
+                android:id="@+id/pl_label6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:textColor="?attr/colorTextLight"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:layout_toRightOf="@id/pl_box6"
+                android:layout_marginLeft="2dp"
+                android:text="@string/pollen_load6"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

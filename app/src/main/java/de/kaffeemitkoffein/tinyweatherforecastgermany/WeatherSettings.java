@@ -141,6 +141,16 @@ public class WeatherSettings {
     public static final String PREF_HINTCOUNTER2 = "PREF_hintcounter2";
     public static final String PREF_MAPLASTUPDATETIME = "PREF_maplastupdatetime";
     public static final String PREF_LASTMAPDISPLAYED = "PREF_lastmapdisplayed";
+    public static final String PREF_POLLENREGION_ID = "PREF_pollen_region_id";
+    public static final String PREF_POLLENPARTREGION_ID = "PREF_pollen_partregion_id";
+    public static final String PREF_POLLEN_AMBROSIA = "PREF_pollen_ambrosia";
+    public static final String PREF_POLLEN_BEIFUSS = "PREF_pollen_beifuss";
+    public static final String PREF_POLLEN_ROGGEN = "PREF_pollen_roggen";
+    public static final String PREF_POLLEN_ESCHE = "PREF_pollen_esche";
+    public static final String PREF_POLLEN_BIRKE = "PREF_pollen_birke";
+    public static final String PREF_POLLEN_HASEL = "PREF_pollen_hasel";
+    public static final String PREF_POLLEN_ERLE = "PREF_pollen_erle";
+    public static final String PREF_POLLEN_GRAESER = "PREF_pollen_graeser";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -225,6 +235,16 @@ public class WeatherSettings {
     public static final long PREF_UVIMAPLASTUPDATETIME_DEFAULT = 0;
     public static final long PREF_LAYERTIME_DEFAULT = 0;
     public static final int PREF_LASTMAPDISPLAYED_DEFAULT = WeatherLayer.Layers.UVI_CLOUDS_0;
+    public static final int PREF_POLLENREGION_ID_DEFAULT = 1;
+    public static final int PREF_POLLENPARTREGION_ID_DEFAULT = 12;
+    public static final boolean PREF_POLLEN_AMBROSIA_DEFAULT = true;
+    public static final boolean PREF_POLLEN_BEIFUSS_DEFAULT = true;
+    public static final boolean PREF_POLLEN_ROGGEN_DEFAULT = true;
+    public static final boolean PREF_POLLEN_ESCHE_DEFAULT = true;
+    public static final boolean PREF_POLLEN_BIRKE_DEFAULT = true;
+    public static final boolean PREF_POLLEN_HASEL_DEFAULT = true;
+    public static final boolean PREF_POLLEN_ERLE_DEFAULT = true;
+    public static final boolean PREF_POLLEN_GRAESER_DEFAULT = true;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -307,6 +327,14 @@ public class WeatherSettings {
     public int hintCounter1 = PREF_HINTCOUNTER1_DEFAULT;
     public int hintCounter2 = PREF_HINTCOUNTER2_DEFAULT;
     public long uviLastUpdateTime = PREF_UVIMAPLASTUPDATETIME_DEFAULT;
+    public boolean pollenAmbrosia = PREF_POLLEN_AMBROSIA_DEFAULT;
+    public boolean pollenBeifuss = PREF_POLLEN_BEIFUSS_DEFAULT;
+    public boolean pollenRoggen = PREF_POLLEN_ROGGEN_DEFAULT;
+    public boolean pollenEsche = PREF_POLLEN_ESCHE_DEFAULT;
+    public boolean pollenBirke = PREF_POLLEN_BIRKE_DEFAULT;
+    public boolean pollenHasel = PREF_POLLEN_HASEL_DEFAULT;
+    public boolean pollenErle = PREF_POLLEN_ERLE_DEFAULT;
+    public boolean pollenGraeser = PREF_POLLEN_GRAESER_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -395,6 +423,14 @@ public class WeatherSettings {
         this.hintCounter1 = readPreference(PREF_HINTCOUNTER1,PREF_HINTCOUNTER1_DEFAULT);
         this.hintCounter2 = readPreference(PREF_HINTCOUNTER2,PREF_HINTCOUNTER2_DEFAULT);
         this.uviLastUpdateTime = readPreference(PREF_MAPLASTUPDATETIME,PREF_UVIMAPLASTUPDATETIME_DEFAULT);
+        this.pollenAmbrosia = readPreference(PREF_POLLEN_AMBROSIA,PREF_POLLEN_AMBROSIA_DEFAULT);
+        this.pollenBeifuss = readPreference(PREF_POLLEN_BEIFUSS,PREF_POLLEN_BEIFUSS_DEFAULT);
+        this.pollenRoggen = readPreference(PREF_POLLEN_ROGGEN,PREF_POLLEN_ROGGEN_DEFAULT);
+        this.pollenEsche = readPreference(PREF_POLLEN_ESCHE,PREF_POLLEN_ESCHE_DEFAULT);
+        this.pollenBirke = readPreference(PREF_POLLEN_BIRKE,PREF_POLLEN_BIRKE_DEFAULT);
+        this.pollenHasel = readPreference(PREF_POLLEN_HASEL,PREF_POLLEN_HASEL_DEFAULT);
+        this.pollenErle = readPreference(PREF_POLLEN_ERLE,PREF_POLLEN_ERLE_DEFAULT);
+        this.pollenGraeser = readPreference(PREF_POLLEN_GRAESER,PREF_POLLEN_GRAESER_DEFAULT);
     }
 
     public void savePreferences() {
@@ -474,6 +510,14 @@ public class WeatherSettings {
         applyPreference(PREF_HINTCOUNTER1,hintCounter1);
         applyPreference(PREF_HINTCOUNTER2,hintCounter2);
         applyPreference(PREF_MAPLASTUPDATETIME,uviLastUpdateTime);
+        applyPreference(PREF_POLLEN_AMBROSIA,pollenAmbrosia);
+        applyPreference(PREF_POLLEN_BEIFUSS,pollenBeifuss);
+        applyPreference(PREF_POLLEN_ROGGEN,pollenRoggen);
+        applyPreference(PREF_POLLEN_ESCHE,pollenEsche);
+        applyPreference(PREF_POLLEN_BIRKE,pollenBirke);
+        applyPreference(PREF_POLLEN_HASEL,pollenHasel);
+        applyPreference(PREF_POLLEN_ERLE,pollenErle);
+        applyPreference(PREF_POLLEN_GRAESER,pollenGraeser);
     }
 
     public void commitPreferences() {
@@ -553,6 +597,14 @@ public class WeatherSettings {
         commitPreference(PREF_HINTCOUNTER1,hintCounter1);
         commitPreference(PREF_HINTCOUNTER2,hintCounter2);
         commitPreference(PREF_MAPLASTUPDATETIME,uviLastUpdateTime);
+        commitPreference(PREF_POLLEN_AMBROSIA,pollenAmbrosia);
+        commitPreference(PREF_POLLEN_BEIFUSS,pollenBeifuss);
+        commitPreference(PREF_POLLEN_ROGGEN,pollenRoggen);
+        commitPreference(PREF_POLLEN_ESCHE,pollenEsche);
+        commitPreference(PREF_POLLEN_BIRKE,pollenBirke);
+        commitPreference(PREF_POLLEN_HASEL,pollenHasel);
+        commitPreference(PREF_POLLEN_ERLE,pollenErle);
+        commitPreference(PREF_POLLEN_GRAESER,pollenGraeser);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -680,6 +732,8 @@ public class WeatherSettings {
         pref_editor.putFloat(PREF_ALTITUDE,(float) weatherLocation.altitude);
         pref_editor.putInt(PREF_STATIONTYPE, weatherLocation.type);
         pref_editor.apply();
+        PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
+        setPollenRegion(context,pollenArea);
     }
 
     public static void resetStationToDefault(Context context) {
@@ -1599,4 +1653,65 @@ public class WeatherSettings {
         pref_editor.putInt(PREF_LASTMAPDISPLAYED,layer);
         pref_editor.apply();
     }
+
+    public static PollenArea getPollenRegion(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return new PollenArea(sharedPreferences.getInt(PREF_POLLENREGION_ID,PREF_POLLENREGION_ID_DEFAULT),
+                sharedPreferences.getInt(PREF_POLLENPARTREGION_ID,PREF_POLLENPARTREGION_ID_DEFAULT));
+    }
+
+    public static void setPollenRegion(Context context, PollenArea pollenArea){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putInt(PREF_POLLENREGION_ID,pollenArea.region_id);
+        pref_editor.putInt(PREF_POLLENPARTREGION_ID,pollenArea.partregion_id);
+        pref_editor.apply();
+    }
+
+    public static boolean getPollenActiveAmbrosia(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_POLLEN_AMBROSIA,PREF_POLLEN_AMBROSIA_DEFAULT);
+    }
+
+    public static boolean getPollenActiveBeifuss(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_POLLEN_BEIFUSS,PREF_POLLEN_BEIFUSS_DEFAULT);
+    }
+
+    public static boolean getPollenActiveRoggen(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_POLLEN_ROGGEN,PREF_POLLEN_ROGGEN_DEFAULT);
+    }
+
+    public static boolean getPollenActiveEsche(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_POLLEN_ESCHE,PREF_POLLEN_ESCHE_DEFAULT);
+    }
+
+    public static boolean getPollenActiveBirke(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_POLLEN_BIRKE,PREF_POLLEN_BIRKE_DEFAULT);
+    }
+
+    public static boolean getPollenActiveHasel(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_POLLEN_HASEL,PREF_POLLEN_HASEL_DEFAULT);
+    }
+
+    public static boolean getPollenActiveErle(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_POLLEN_ERLE,PREF_POLLEN_ERLE_DEFAULT);
+    }
+
+    public static boolean getPollenActiveGraeser(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_POLLEN_GRAESER,PREF_POLLEN_GRAESER_DEFAULT);
+    }
+
+    public static boolean anyPollenActive(Context context){
+        return ((getPollenActiveAmbrosia(context)) || (getPollenActiveBeifuss(context)) || (getPollenActiveRoggen(context)) ||
+                (getPollenActiveEsche(context)) || (getPollenActiveBirke(context)) || (getPollenActiveHasel(context)) ||
+                (getPollenActiveErle(context)) || (getPollenActiveGraeser(context)));
+    }
+
 }

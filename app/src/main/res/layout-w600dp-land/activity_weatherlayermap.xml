@@ -30,41 +30,113 @@
         android:layout_height="match_parent"
         android:background="?attr/colorPrimary">
 
-    <ImageView
-            android:id="@+id/wlm_legend"
-            android:layout_width="wrap_content"
+    <RelativeLayout
+            android:id="@+id/wlm_legendholder"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:src="@drawable/uvi_legend_vertical"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true">
+
+        <ImageView
+                android:id="@+id/wlm_legend"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/uvi_legend_vertical"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_alignParentRight="true"/>
 
         <RelativeLayout
-                android:layout_width="match_parent"
+                android:id="@+id/wlm_legend_hook"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/wlm_legend">
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_alignParentRight="true"/>
 
-            <TextView android:id="@+id/wlm_reference_text"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_alignParentBottom="true"
-                      android:layout_marginRight="2dp"
-                      android:textColor="?attr/colorText"
-                      android:textSize="@dimen/widget_textsize_medium"
-                      android:visibility="visible"
-                      android:layout_centerHorizontal="true"
-                      android:text="@string/dwd_notice"/>
-            <ImageView
-                    android:id="@+id/wlm_map"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/germany_black"
-                    android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    android:layout_above="@id/wlm_reference_text">
-            </ImageView>
+    </RelativeLayout>
 
+    <LinearLayout
+            android:id="@+id/wlm_bottom_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_toLeftOf="@id/wlm_legendholder">
 
-        </RelativeLayout>
+        <LinearLayout
+                android:id="@+id/wlm_spinnerholder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:layout_below="@id/wlm_title"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:weightSum="2">
+
+            <Spinner
+                    android:id="@+id/wlm_spinner1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+            <Spinner
+                    android:id="@+id/wlm_spinner2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+        </LinearLayout>
+
+        <TextView android:id="@+id/wlm_reference_text"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:layout_alignParentBottom="true"
+                  android:layout_marginRight="2dp"
+                  android:textColor="?attr/colorText"
+                  android:textSize="@dimen/widget_textsize_medium"
+                  android:visibility="visible"
+                  android:layout_gravity="center"
+                  android:text="@string/dwd_notice"/>
+
+    </LinearLayout>
+
+    <TextView android:id="@+id/wlm_title"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_toLeftOf="@id/wlm_legendholder"
+              android:layout_alignParentTop="true"
+              android:layout_marginRight="2dp"
+              android:layout_marginLeft="2dp"
+              android:layout_marginTop="4dp"
+              android:layout_marginBottom="4dp"
+              android:textColor="?attr/colorText"
+              android:textSize="@dimen/fcmain_textsize_large"
+              android:visibility="visible"
+              android:gravity="center"
+              android:layout_centerHorizontal="true"/>
+
+    <ImageView
+            android:id="@+id/wlm_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/wlm_legendholder"
+            android:layout_below="@id/wlm_title"
+            android:layout_above="@id/wlm_bottom_holder"
+            android:src="@drawable/germany_black"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter">
+    </ImageView>
+
 
 </RelativeLayout>

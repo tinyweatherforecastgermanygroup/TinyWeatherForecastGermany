@@ -65,7 +65,7 @@ public final class Weather {
             type=RawWeatherInfo.Source.UNKNOWN;
         }
 
-        public WeatherLocation(String description, String name, int type, long latitude, long longitude, long altitude){
+        public WeatherLocation(String description, String name, int type, double latitude, double longitude, double altitude){
             this.description = description;
             this.name = name;
             this.type = type;
@@ -1358,6 +1358,10 @@ public final class Weather {
         public int getSunDurationInHours(){
             return Math.round(getSunDurationInSeconds()/(60f*60f));
         }
+
+        public int getRelativeDay(){
+            return WeatherLayer.getRelativeDays(getTimestamp());
+        };
 
     }
 

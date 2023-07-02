@@ -19,9 +19,13 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -1228,7 +1232,6 @@ public class APIReaders {
         private InputStream getRadarInputStream(long time) throws IOException {
             URL url = getUrlStringForTime(time,true);
             URL url_legacy = getUrlStringForTime(time,false);
-            //Log.v("twfg","URL "+url.toString());
             try {
                 HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
                 InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
@@ -1448,8 +1451,7 @@ public class APIReaders {
                 stringBuilder.append("srs=EPSG%3A"); stringBuilder.append(weatherLayer.srs); stringBuilder.append("&");
             }
             stringBuilder.append("styles=&format=image%2Fpng");
-            String strResult = stringBuilder.toString();
-            //Log.v("twfg","URL: "+strResult);
+            String strResult = stringBuilder.toString();;
             try {
                 return new URL(strResult);
             } catch (MalformedURLException e){
@@ -1497,10 +1499,9 @@ public class APIReaders {
             return stringBuilder.toString();
         }
 
-        private InputStream getLayerInputStream(WeatherLayer weatherLayer) throws IOException {
+        public InputStream getLayerInputStream(WeatherLayer weatherLayer) throws IOException {
             URL url = getGeoServerURL(true,weatherLayer);
             URL url_legacy = getGeoServerURL(false,weatherLayer);
-            // Log.v("twfg","URL "+url.toString());
             try {
                 HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
                 InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
@@ -1526,7 +1527,7 @@ public class APIReaders {
             }
         }
 
-        public boolean readImage(InputStream inputStream, File targetFile){
+        public static boolean readImage(InputStream inputStream, File targetFile){
             try {
                 FileOutputStream fileOutputStream = new FileOutputStream(targetFile);
                 int filesize=0;
@@ -1538,7 +1539,6 @@ public class APIReaders {
                 }
                 fileOutputStream.close();
                 inputStream.close();
-                //Log.v("twfg","Read "+filesize+" bytes.");
             } catch (Exception e){
                 return false;
             }
@@ -1546,7 +1546,8 @@ public class APIReaders {
         }
 
         public boolean readLayer(WeatherLayer weatherLayer){
-            if (weatherLayer.isOutdated(context)){
+            // read outdated images from geoServer. Ignore pollen layers, because they are generated locally.
+            if (weatherLayer.isOutdated(context) && !weatherLayer.isPollen()){
                 try {
                     File cacheDir = context.getCacheDir();
                     File targetFile = new File(cacheDir,weatherLayer.getCacheFilename());
@@ -1567,8 +1568,10 @@ public class APIReaders {
                         readLayer(new WeatherLayer(context,weatherLayer.atop[i]));
                     }
                 }
+            } else {
+                // Log.v("twfg","Layer "+weatherLayer.layer+" already in place.");
             }
-            //Log.v("twfg","Layer "+weatherLayer.layer+" already in place.");
+            onProgress(weatherLayer);
             return true;
         }
 
@@ -1576,6 +1579,9 @@ public class APIReaders {
             // override to do something once update started
         }
 
+        public void onProgress(WeatherLayer weatherLayer){
+
+        }
 
         public void onFinished(boolean success){
 
@@ -1604,6 +1610,388 @@ public class APIReaders {
         }
     }
 
+    public static class PollenReader implements Runnable{
+
+        private static Context context;
+
+        public PollenReader(Context context){
+            this.context = context;
+        }
+
+        public static InputStream getPollenStream(boolean ssl) {
+            String urlString = "opendata.dwd.de/climate_environment/health/alerts/s31fg.json";
+            InputStream inputStream;
+            long sourceLastModified = 0;
+            if (ssl) {
+                urlString = "https://" + urlString;
+            } else {
+                    urlString = "http://"+urlString;
+            }
+            try {
+                URL url = new URL(urlString);
+                if (ssl) {
+                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                    inputStream = httpsURLConnection.getInputStream();
+                    sourceLastModified = httpsURLConnection.getLastModified();
+                } else {
+                    PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"Getting pollen-data unencrypted via http");
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    inputStream = httpURLConnection.getInputStream();
+                    sourceLastModified = httpURLConnection.getLastModified();
+                }
+                return inputStream;
+            } catch (MalformedURLException e){
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.FATAL,"Malformed pollen url: "+e.getMessage());
+            } catch (IOException e) {
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.FATAL,"I/O error reading pollen data: "+e.getMessage());
+            }
+            return null;
+        }
+
+        public String readPollenDataRawString() {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getPollenStream(!WeatherSettings.isTLSdisabled(context))));
+            StringBuilder stringBuilder = new StringBuilder();
+            String s;
+            try {
+                while ((s=bufferedReader.readLine())!=null){
+                    stringBuilder.append(s);
+                }
+                bufferedReader.close();
+                return stringBuilder.toString();
+            } catch (IOException e){
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.FATAL,"I/O error reading raw pollen data: "+e.getMessage());
+            }
+            return null;
+        }
+
+        public long parsePollenDateToMillis(String source){
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.getDefault());
+            long result = 0 ;
+            try{
+                Date date = simpleDateFormat.parse(source);
+                result = date.getTime();
+            } catch (Exception e){
+                result = 0;
+            }
+            return result;
+        }
+
+        public static int[] getPollenDataFromJson(JSONObject pollenObject, int type){
+            int[] result = new int[6];
+            result[0] = -1; result[1] = -1; result[2] = -1; result[3] = -1; result[4] = -1; result[5] = -1;
+            try {
+                int [] today = Pollen.getMinMax(pollenObject.getString("today"));
+                int [] tomorrow = Pollen.getMinMax(pollenObject.getString("tomorrow"));
+                int [] dayAfterTomorrow = Pollen.getMinMax(pollenObject.getString("dayafter_to"));
+                result[0] = today[0]; result[1] = today[1];
+                result[2] = tomorrow[0]; result[3] = tomorrow[1];
+                result[4] = dayAfterTomorrow[0]; result[5] = dayAfterTomorrow[1];
+            } catch (JSONException e) {
+                // nothing to do
+            }
+            return result;
+        }
+
+        public boolean readPollenData(){
+            String rawJsonData = readPollenDataRawString();
+            try {
+                Pollen basicPollen = new Pollen();
+                ArrayList<Pollen> pollenArrayList = new ArrayList<Pollen>();
+                JSONObject mainObject = new JSONObject(rawJsonData);
+                basicPollen.last_update = mainObject.getString("last_update");
+                basicPollen.last_update_UTC = parsePollenDateToMillis(basicPollen.last_update);
+                basicPollen.next_update = mainObject.getString("next_update");
+                basicPollen.next_update_UTC = parsePollenDateToMillis(basicPollen.next_update);
+                //pollen.name = mainObject.getString("name");
+                //pollen.sender = mainObject.getString("sender");
+                String content = mainObject.getString("content");
+                JSONArray contentArray = new JSONArray(content);
+                for (int i=0; i<contentArray.length(); i++){
+                    JSONObject contentArrayObject = contentArray.getJSONObject(i);
+                    JSONObject pollenObject = contentArrayObject.getJSONObject("Pollen");
+                    Pollen pollen = new Pollen(basicPollen);
+                    pollen.partregion_name = contentArrayObject.getString("partregion_name");
+                    pollen.region_name = contentArrayObject.getString("region_name");
+                    pollen.region_id = contentArrayObject.getInt("region_id");
+                    pollen.partregion_id = contentArrayObject.getInt("partregion_id");
+                    pollen.ambrosia = getPollenDataFromJson(pollenObject.getJSONObject("Ambrosia"),Pollen.Ambrosia);
+                    pollen.beifuss  = getPollenDataFromJson(pollenObject.getJSONObject("Beifuss"),Pollen.Beifuss);
+                    pollen.roggen   = getPollenDataFromJson(pollenObject.getJSONObject("Roggen"),Pollen.Roggen);
+                    pollen.esche    = getPollenDataFromJson(pollenObject.getJSONObject("Esche"),Pollen.Esche);
+                    pollen.birke    = getPollenDataFromJson(pollenObject.getJSONObject("Birke"),Pollen.Birke);
+                    pollen.hasel    = getPollenDataFromJson(pollenObject.getJSONObject("Hasel"),Pollen.Hasel);
+                    pollen.erle     = getPollenDataFromJson(pollenObject.getJSONObject("Erle"),Pollen.Erle);
+                    pollen.graeser  = getPollenDataFromJson(pollenObject.getJSONObject("Graeser"),Pollen.Graeser);
+                    pollenArrayList.add(pollen);
+                }
+                Pollen.WritePollenToDatabase(context,pollenArrayList);
+            } catch (JSONException e) {
+                PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Error reading pollen forecast: "+e.getMessage());
+                return false;
+            }
+            return true;
+        }
+
+        public void onStart(){
+        }
+
+        public void onFinished(boolean success){
+        }
+
+        @Override
+        public void run() {
+            onStart();
+            onFinished(readPollenData());
+        }
+    }
+
+    public static class PollenAreaReader implements Runnable {
+
+        private static Context context;
+
+        public PollenAreaReader(Context context) {
+            this.context = context;
+        }
+
+        public static InputStream getPollenAreaStream(boolean ssl) {
+            String urlString = "maps.dwd.de/geoserver/dwd/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=dwd%3APollenfluggebiete&outputFormat=application%2Fjson";
+            InputStream inputStream;
+            long sourceLastModified = 0;
+            if (ssl) {
+                urlString = "https://" + urlString;
+            } else {
+                urlString = "http://" + urlString;
+            }
+            try {
+                URL url = new URL(urlString);
+                if (ssl) {
+                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                    inputStream = httpsURLConnection.getInputStream();
+                    sourceLastModified = httpsURLConnection.getLastModified();
+                } else {
+                    PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.WARN, "Getting pollen areas unencrypted via http");
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    inputStream = httpURLConnection.getInputStream();
+                    sourceLastModified = httpURLConnection.getLastModified();
+                }
+                return inputStream;
+            } catch (MalformedURLException e) {
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.FATAL, "Malformed pollen area url: " + e.getMessage());
+            } catch (IOException e) {
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.FATAL, "I/O error reading pollen area data: " + e.getMessage());
+            }
+            return null;
+        }
+
+        public String readPollenAreaDataRawString() {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getPollenAreaStream(!WeatherSettings.isTLSdisabled(context))));
+            StringBuilder stringBuilder = new StringBuilder();
+            String s;
+            try {
+                while ((s = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(s);
+                }
+                bufferedReader.close();
+                return stringBuilder.toString();
+            } catch (IOException e) {
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.FATAL, "I/O error reading raw pollen data: " + e.getMessage());
+            }
+            return null;
+        }
+
+        public void readPollenAreas() {
+            String rawJsonData = readPollenAreaDataRawString();
+            ArrayList<PollenArea> pollenPolygons = new ArrayList<PollenArea>();
+            int regions = 0;
+            try {
+                JSONObject mainObject = new JSONObject(rawJsonData);
+                // featuresArray has a polyon (multiple polygons? unclear!) that is part of a PollenArea.
+                JSONArray featuresArray = mainObject.getJSONArray("features");
+                for (int feature = 0; feature < featuresArray.length(); feature++) {
+                    regions ++;
+                    JSONObject featureObject = featuresArray.getJSONObject(feature);
+                    String id = featureObject.getString("id");
+                    JSONObject properties = featureObject.getJSONObject("properties");
+                    int partregion_id = properties.getInt("GF");
+                    int region_id = (partregion_id/10)*10; // replace last digit by 0
+                    String GEN = properties.getString("GEN");
+                    JSONObject geometry = featureObject.getJSONObject("geometry");
+                    String type = geometry.getString("type");
+                    JSONArray coordinates = geometry.getJSONArray("coordinates");
+                    // seems coordinates may have multiple polygons
+                    for (int coordinate = 0; coordinate < coordinates.length(); coordinate++) {
+                        JSONArray polygonData = coordinates.getJSONArray(coordinate);
+                        if (type.equals("Polygon")){
+                            PollenArea singlePollenAreaPolygon = new PollenArea();
+                            singlePollenAreaPolygon.polygonString = polygonData.toString();
+                            singlePollenAreaPolygon.region_id = region_id;
+                            singlePollenAreaPolygon.partregion_id = partregion_id;
+                            pollenPolygons.add(singlePollenAreaPolygon);
+                        } else {
+                            // this is MultiPolygon
+                            for (int i = 0; i < polygonData.length(); i++) {
+                                JSONArray coordinatePair = polygonData.getJSONArray(i);
+                                PollenArea singlePollenAreaPolygon = new PollenArea();
+                                singlePollenAreaPolygon.polygonString = coordinatePair.toString();
+                                singlePollenAreaPolygon.region_id = region_id;
+                                singlePollenAreaPolygon.partregion_id = partregion_id;
+                                pollenPolygons.add(singlePollenAreaPolygon);
+                            }
+                        }
+                    }
+                }
+                PollenArea.WritePollenAreasToDatabase(context,pollenPolygons);
+            } catch (Exception e){
+                PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Error reading pollen areas: "+e.getMessage());
+            }
+        }
+
+        public void onFinished(){
+
+        }
+
+        @Override
+        public void run() {
+            readPollenAreas();
+            onFinished();
+        }
+    }
+
+    public static class WarnAreasReader implements Runnable {
+
+        private Context context;
+        ArrayList<Areas.Area> areas;
+        ContentResolver contentResolver;
+
+        public WarnAreasReader(Context context){
+            this.context = context;
+            this.areas = new ArrayList<Areas.Area>();
+            this.contentResolver = context.getApplicationContext().getContentResolver();
+        }
+
+        public static InputStream getAreaStream(Context context, boolean ssl, String area) {
+            String urlString = "maps.dwd.de/geoserver/dwd/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=dwd%3A"+area+"&outputFormat=application%2Fjson";
+            InputStream inputStream;
+            long sourceLastModified = 0;
+            if (ssl) {
+                urlString = "https://" + urlString;
+            } else {
+                urlString = "http://" + urlString;
+            }
+            try {
+                URL url = new URL(urlString);
+                if (ssl) {
+                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                    inputStream = httpsURLConnection.getInputStream();
+                    sourceLastModified = httpsURLConnection.getLastModified();
+                } else {
+                    PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.WARN, "Getting pollen areas unencrypted via http");
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    inputStream = httpURLConnection.getInputStream();
+                    sourceLastModified = httpURLConnection.getLastModified();
+                }
+                return inputStream;
+            } catch (MalformedURLException e) {
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.FATAL, "Malformed pollen area url: " + e.getMessage());
+            } catch (IOException e) {
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.FATAL, "I/O error reading pollen area data: " + e.getMessage());
+            }
+            return null;
+        }
+
+        public String readAreaDataRawString(String area) {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getAreaStream(context,!WeatherSettings.isTLSdisabled(context),area)));
+            StringBuilder stringBuilder = new StringBuilder();
+            String s;
+            try {
+                while ((s = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(s);
+                }
+                bufferedReader.close();
+                return stringBuilder.toString();
+            } catch (IOException e) {
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.FATAL, "I/O error reading raw pollen data: " + e.getMessage());
+            }
+            return null;
+        }
+
+        private String getPolygonString(JSONArray jsonArray) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i=0; i< jsonArray.length(); i++) {
+                try {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String zero = jsonObject.getString("0");
+                    String one = jsonObject.getString("1");
+                    // switch order
+                    stringBuilder.append(one); stringBuilder.append(","); stringBuilder.append(zero);
+                    // skip space symbol when last item
+                    if (i<jsonArray.length()-1) {
+                        stringBuilder.append(" ");
+                    }
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+            return stringBuilder.toString();
+        }
+
+        public int doFile(String areaName, int areaType) {
+            String rawJsonData = readAreaDataRawString("Warngebiete_Binnenseen");
+            int areaCount = 0;
+            try {
+                JSONObject mainObject = new JSONObject(rawJsonData);
+                // featuresArray holds the Areas
+                JSONArray featuresArray = mainObject.getJSONArray("features");
+                for (int feature = 0; feature < featuresArray.length(); feature++) {
+                    JSONObject featureObject = featuresArray.getJSONObject(feature);
+                    String id = featureObject.getString("id");
+                    JSONObject properties = featureObject.getJSONObject("properties");
+                    Areas.Area area = new Areas.Area();
+                    area.warncellID = properties.getString("WARNCELLID");
+                    area.warncenter = properties.getString("WARNCENTER");
+                    area.type       = properties.getInt("TYPE");
+                    area.name       = properties.getString("NAME");
+                    JSONObject geometry = featureObject.getJSONObject("geometry");
+                    String type = geometry.getString("type");
+                    JSONArray coordinates = geometry.getJSONArray("coordinates");
+                    ArrayList<String> polygons = new ArrayList<String>();
+                    // seems coordinates may have multiple polygons
+                    for (int coordinate = 0; coordinate < coordinates.length(); coordinate++) {
+                        JSONArray polygonData = coordinates.getJSONArray(coordinate);
+                        if (type.equals("Polygon")){
+                            String polygon = getPolygonString(polygonData);
+                            polygons.add(polygon);
+                        } else {
+                            // this is MultiPolygon
+                            for (int i = 0; i < polygonData.length(); i++) {
+                                JSONArray multiPolygon = polygonData.getJSONArray(i);
+                                String polygon = getPolygonString(multiPolygon);
+                                polygons.add(polygon);
+                            }
+                        }
+                    }
+                    area.polygonString = WeatherContentManager.serializeStringFromArrayList(polygons);
+                    areas.add(area);
+                    contentResolver.insert(WeatherContentManager.AREA_URI_ALL,WeatherContentManager.getContentValuesFromArea(area));
+                    areaCount ++;
+                }
+                // todo: write area to database
+            } catch (Exception e) {
+                return 0;
+            }
+            return areaCount;
+        }
+
+        @Override
+        public void run() {
+            doFile("Warngebiete_Binnenseen", Areas.Area.Type.BINNENSEE);
+                doFile("Warngebiete_Bundeslaender", Areas.Area.Type.BINNENSEE);
+                doFile("Warngebiete_Gemeinden", Areas.Area.Type.BINNENSEE);
+                doFile("Warngebiete_Kreise", Areas.Area.Type.BINNENSEE);
+                doFile("Warngebiete_Kueste", Areas.Area.Type.BINNENSEE);
+                //doFile("Warngebiete_See", Areas.Area.Type.BINNENSEE);
+        }
+    }
 
 
 }
