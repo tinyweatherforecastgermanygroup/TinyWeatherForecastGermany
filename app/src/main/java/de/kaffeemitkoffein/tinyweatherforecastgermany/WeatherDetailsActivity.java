@@ -61,6 +61,9 @@ public class WeatherDetailsActivity extends Activity {
 
     int weatherPosition;
 
+    // flag to prevent too fast view changes
+    boolean viewIsBeingCreated = false;
+
     private SwipeGestureDetector swipeGestureDetector;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -297,15 +300,19 @@ public class WeatherDetailsActivity extends Activity {
 
     private void moveOneItemBack(){
         if (weatherPosition>0){
-            weatherPosition--;
-            displayValues();
+            if (!viewIsBeingCreated){
+                weatherPosition--;
+                displayValues();
+            }
         }
     }
 
     private void moveOneItemForward(){
         if (weatherPosition<currentWeatherInfo.forecast1hourly.size()-1){
-            weatherPosition++;
-            displayValues();
+            if (!viewIsBeingCreated){
+                weatherPosition++;
+                displayValues();
+            }
         }
     }
 
@@ -324,6 +331,7 @@ public class WeatherDetailsActivity extends Activity {
     }
 
     public void displayValues(){
+        viewIsBeingCreated = true;
         weatherInfo = currentWeatherInfo.forecast1hourly.get(weatherPosition);
         actionBar.setTitle(currentWeatherInfo.weatherLocation.description);
         actionBar.setSubtitle(Weather.SIMPLEDATEFORMATS.DETAILED_NO_SECONDS.format(new Date(weatherInfo.getTimestamp())));
@@ -341,6 +349,7 @@ public class WeatherDetailsActivity extends Activity {
         setDetails(weatherInfo);
         setValues(weatherInfo,currentWeatherInfo.weatherLocation);
         setPrecipitationChart(weatherInfo);
+        viewIsBeingCreated = false;
     }
 
     public void setWarnings(final Weather.WeatherInfo weatherInfo, final Weather.WeatherLocation weatherLocation){
