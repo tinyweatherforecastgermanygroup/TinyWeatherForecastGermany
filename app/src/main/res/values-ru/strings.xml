@@ -365,4 +365,5 @@
     <string name="wd_wevents">Погодные явления</string>
     <string name="wd_ph">Вероятность выпадения града</string>
     <string name="wd_general">Общие данные</string>
+    <string name="preference_screen_pollen_hint_summary">Если вы деактивируете определенную пыльцу, она будет скрыта в подробном прогнозе, списке карт и детальном просмотре карты.</string>
 </resources>
