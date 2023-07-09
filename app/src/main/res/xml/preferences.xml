@@ -338,6 +338,12 @@
             android:defaultValue="true"/>
 
         <CheckBoxPreference
+                android:key="PREF_prefetch_maps"
+                android:title="@string/preference_prefetch_maps_title"
+                android:summary="@string/preference_prefetch_maps_summary"
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
                 android:key="PREF_use_metered_networks"
                 android:title="@string/preference_meterednetwork_title"
                 android:summary="@string/preference_meterednetwork_summary"

@@ -37,7 +37,7 @@ public class WeatherLayer {
     int height;
     String srs;
     int updateMode;
-    int[] atop;
+    int[] atop = null;
     int legendType;
 
     public int outlineColor = Color.WHITE;
@@ -54,18 +54,18 @@ public class WeatherLayer {
         this.legendType = legendType;
     }
 
-    public WeatherLayer(Context context, int layer) {
-        this.layer = layer;
-        this.timestamp = WeatherSettings.getLayerTime(context,layer);
-        ArrayList<WeatherLayer> allLayers = getLayers();
-        WeatherLayer weatherLayer = allLayers.get(layer);
-        this.mapGeo = weatherLayer.mapGeo;
-        this.width = weatherLayer.width;
-        this.height = weatherLayer.height;
-        this.srs = weatherLayer.srs;
-        this.updateMode = weatherLayer.updateMode;
-        this.atop = weatherLayer.atop;
-        this.legendType = weatherLayer.legendType;
+    public WeatherLayer(int i) {
+        WeatherLayer weatherLayer = getLayer(i);
+        if (weatherLayer!=null){
+            this.layer = weatherLayer.layer;
+            this.mapGeo = weatherLayer.mapGeo;
+            this.width = weatherLayer.width;
+            this.height = weatherLayer.height;
+            this.srs = weatherLayer.srs;
+            this.updateMode = weatherLayer.updateMode;
+            this.atop = weatherLayer.atop;
+            this.legendType = weatherLayer.legendType;
+        }
     }
 
     public static class Layers {
@@ -196,7 +196,7 @@ public class WeatherLayer {
         return false;
     }
 
-    public static int[] getBrowseItemsOrder(int[] filter){
+    private static int[] getBrowseItemsOrder(int[] filter){
         if (filter==null){
             return browseItemsOrder;
         } else {
@@ -215,7 +215,7 @@ public class WeatherLayer {
         }
     }
 
-    public static int[] getFilteredBrowseItemsOrder(Context context){
+    public static int[] getDisabledLayersArray(Context context){
         ArrayList<Integer> filterArrayList= new ArrayList<Integer>();
         if (!WeatherSettings.getPollenActiveAmbrosia(context)){
             filterArrayList.add(Layers.POLLEN_FORECAST_AMBROSIA_0);
@@ -261,7 +261,12 @@ public class WeatherLayer {
         for (int i=0; i< filterArrayList.size(); i++){
             filterArray[i] = filterArrayList.get(i);
         }
-        return getBrowseItemsOrder(filterArray);
+        return filterArray;
+    }
+
+
+    public static int[] getFilteredBrowseItemsOrder(Context context){
+        return getBrowseItemsOrder(getDisabledLayersArray(context));
     }
 
     public static String getCacheFilename(int layer) {
@@ -410,9 +415,11 @@ public class WeatherLayer {
         return getFullHourTime(time,0,0,TZ.UTC);
     }
 
-    public static int getRelativeDays(long time){
-        long todayMidnightTime = getMidnightTime(Calendar.getInstance().getTimeInMillis());
-        long targetMidnightTime = getMidnightTime(time);
+    public static int  getRelativeDays(long time){
+        // long todayMidnightTime = getMidnightTime(Calendar.getInstance().getTimeInMillis());
+        // long targetMidnightTime = getMidnightTime(time);
+        long todayMidnightTime = getFullHourTime(Calendar.getInstance().getTimeInMillis(),0,0,TZ.LOCAL);
+        long targetMidnightTime = getFullHourTime(time,0,0,TZ.LOCAL);
         return (int) (targetMidnightTime - todayMidnightTime)/(1000*60*60*24);
     }
 
@@ -433,7 +440,15 @@ public class WeatherLayer {
         return newTime;
     }
 
+
     public boolean isOutdated(Context context) {
+        if (updateMode==UpdateMode.POLLEN){
+            if (Pollen.isUpdateDue(context)){
+                return true;
+            } else {
+                return false;
+            }
+        }
         if (updateMode==UpdateMode.NEVER){
             if (cacheFileExists(context)){
                 return false;
@@ -448,12 +463,18 @@ public class WeatherLayer {
             // missing file (e.g. cache emptied) means always "outdated"
             return true;
         }
+        // too small file below 1k is very likely not a valid png
+        if (targetFile.length()<1024){
+            return true;
+        }
         // also check if any atop-layers are missing. If this is the case, the layer is also "outdated"
         if (atop!=null){
             for (int i=0; i<atop.length; i++){
-                WeatherLayer atopLayer = new WeatherLayer(context,atop[i]);
+                WeatherLayer atopLayer = new WeatherLayer(atop[i]);
+                if (atopLayer.layer!=layer){
                 if (atopLayer.isOutdated(context)){
-                    return true;
+                        return true;
+                    }
                 }
             }
         }
@@ -482,61 +503,78 @@ public class WeatherLayer {
                 return true;
             }
         }
-        if (updateMode==UpdateMode.POLLEN){
-            if (Pollen.isUpdateDue(context)){
+        return false;
+    }
+
+    public static WeatherLayer getLayer(int i){
+        long time = Calendar.getInstance().getTimeInMillis();
+        switch (i){
+            case Layers.WARNING_AREAS_GERMANY: return new WeatherLayer(Layers.WARNING_AREAS_GERMANY, WarnMapGeo, null, layerMapWidth, layerMapHeight, "4326",UpdateMode.NEVER,null,Legend.NONE);
+            case Layers.UVI_CLOUDS_0: return new WeatherLayer(Layers.UVI_CLOUDS_0, WarnMapGeo, getMidnightTime(time, 0), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI, new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
+            case Layers.UVI_CLOUDS_1: return new WeatherLayer(Layers.UVI_CLOUDS_1, WarnMapGeo, getMidnightTime(time, 1), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
+            case Layers.UVI_CLOUDS_2: return new WeatherLayer(Layers.UVI_CLOUDS_2, WarnMapGeo, getMidnightTime(time, 2), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
+            case Layers.UVI_CLOUDLESS_0: return new WeatherLayer(Layers.UVI_CLOUDLESS_0, WarnMapGeo, getMidnightTime(time, 0), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
+            case Layers.UVI_CLOUDLESS_1: return new WeatherLayer(Layers.UVI_CLOUDLESS_1, WarnMapGeo, getMidnightTime(time, 1), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
+            case Layers.UVI_CLOUDLESS_2: return new WeatherLayer(Layers.UVI_CLOUDLESS_2, WarnMapGeo, getMidnightTime(time, 2), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
+            case Layers.BRD_ORTE: return new WeatherLayer(Layers.BRD_ORTE, WarnMapGeo, null, layerMapWidth, layerMapHeight, "4326",UpdateMode.NEVER,null,Legend.NONE);
+            case Layers.EUROPE_BORDERS_LARGE: return new WeatherLayer(Layers.EUROPE_BORDERS_LARGE,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.NEVER,null,Legend.NONE);
+            case Layers.SENSED_TEMPERATURE_1M_0: return new WeatherLayer(Layers.SENSED_TEMPERATURE_1M_0,EuropeLargeGeo,getFullHourTime(time,6,0,TZ.LOCAL),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.DAY, new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
+            case Layers.SENSED_TEMPERATURE_1M_1: return new WeatherLayer(Layers.SENSED_TEMPERATURE_1M_1,EuropeLargeGeo,getFullHourTime(time,12,0,TZ.LOCAL),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.DAY, new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
+            case Layers.SENSED_TEMPERATURE_1M_2: return new WeatherLayer(Layers.SENSED_TEMPERATURE_1M_2,EuropeLargeGeo,getFullHourTime(time,18,0,TZ.LOCAL),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.DAY, new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
+            case Layers.UVI_CLOUDS_EUROPE_0: return new WeatherLayer(Layers.UVI_CLOUDS_EUROPE_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.UVI);
+            case Layers.UVI_CLOUDLESS_EUROPE_0: return new WeatherLayer(Layers.UVI_CLOUDLESS_EUROPE_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.UVI);
+            case Layers.SENSED_TEMPERATURE_MAX_0: return new WeatherLayer(Layers.SENSED_TEMPERATURE_MAX_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
+            case Layers.SENSED_TEMPERATURE_MAX_1: return new WeatherLayer(Layers.SENSED_TEMPERATURE_MAX_1,EuropeLargeGeo,getMidnightTime(time,1),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
+            case Layers.SENSED_TEMPERATURE_MAX_2: return new WeatherLayer(Layers.SENSED_TEMPERATURE_MAX_2,EuropeLargeGeo,getMidnightTime(time,2),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
+            case Layers.SENSED_TEMPERATURE_MIN_0: return new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
+            case Layers.SENSED_TEMPERATURE_MIN_1: return new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_1,EuropeLargeGeo,getMidnightTime(time,1),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
+            case Layers.SENSED_TEMPERATURE_MIN_2: return new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_2,EuropeLargeGeo,getMidnightTime(time,2),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
+            case Layers.POLLEN_FORECAST_AMBROSIA_0: return new WeatherLayer(Layers.POLLEN_FORECAST_AMBROSIA_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_AMBROSIA_1: return new WeatherLayer(Layers.POLLEN_FORECAST_AMBROSIA_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_AMBROSIA_2: return new WeatherLayer(Layers.POLLEN_FORECAST_AMBROSIA_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_BEIFUSS_0: return new WeatherLayer(Layers.POLLEN_FORECAST_BEIFUSS_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_BEIFUSS_1: return new WeatherLayer(Layers.POLLEN_FORECAST_BEIFUSS_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_BEIFUSS_2: return new WeatherLayer(Layers.POLLEN_FORECAST_BEIFUSS_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_ROGGEN_0: return new WeatherLayer(Layers.POLLEN_FORECAST_ROGGEN_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_ROGGEN_1: return new WeatherLayer(Layers.POLLEN_FORECAST_ROGGEN_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_ROGGEN_2: return new WeatherLayer(Layers.POLLEN_FORECAST_ROGGEN_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_ESCHE_0: return new WeatherLayer(Layers.POLLEN_FORECAST_ESCHE_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_ESCHE_1: return new WeatherLayer(Layers.POLLEN_FORECAST_ESCHE_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_ESCHE_2: return new WeatherLayer(Layers.POLLEN_FORECAST_ESCHE_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_BIRKE_0: return new WeatherLayer(Layers.POLLEN_FORECAST_BIRKE_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_BIRKE_1: return new WeatherLayer(Layers.POLLEN_FORECAST_BIRKE_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_BIRKE_2: return new WeatherLayer(Layers.POLLEN_FORECAST_BIRKE_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_HASEL_0: return new WeatherLayer(Layers.POLLEN_FORECAST_HASEL_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_HASEL_1: return new WeatherLayer(Layers.POLLEN_FORECAST_HASEL_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_HASEL_2: return new WeatherLayer(Layers.POLLEN_FORECAST_HASEL_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_ERLE_0: return new WeatherLayer(Layers.POLLEN_FORECAST_ERLE_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_ERLE_1: return new WeatherLayer(Layers.POLLEN_FORECAST_ERLE_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_ERLE_2: return new WeatherLayer(Layers.POLLEN_FORECAST_ERLE_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_GRAESER_0: return new WeatherLayer(Layers.POLLEN_FORECAST_GRAESER_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_GRAESER_1: return new WeatherLayer(Layers.POLLEN_FORECAST_GRAESER_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+            case Layers.POLLEN_FORECAST_GRAESER_2: return new WeatherLayer(Layers.POLLEN_FORECAST_GRAESER_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN);
+        }
+        return null;
+    }
+
+    public static boolean isInArray(int[] array, int item){
+        for (int i=0; i<array.length; i++){
+            if (array[i]==item){
                 return true;
             }
         }
         return false;
     }
 
-    public static ArrayList<WeatherLayer> getLayers() {
-        long time = Calendar.getInstance().getTimeInMillis();
+    public static ArrayList<WeatherLayer> getLayers(Context context) {
         ArrayList<WeatherLayer> list = new ArrayList<WeatherLayer>();
-        list.add(new WeatherLayer(Layers.WARNING_AREAS_GERMANY, WarnMapGeo, null, layerMapWidth, layerMapHeight, "4326",UpdateMode.NEVER,null,Legend.NONE));
-        list.add(new WeatherLayer(Layers.UVI_CLOUDS_0, WarnMapGeo, getMidnightTime(time, 0), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI, new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI));
-        list.add(new WeatherLayer(Layers.UVI_CLOUDS_1, WarnMapGeo, getMidnightTime(time, 1), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI));
-        list.add(new WeatherLayer(Layers.UVI_CLOUDS_2, WarnMapGeo, getMidnightTime(time, 2), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI));
-        list.add(new WeatherLayer(Layers.UVI_CLOUDLESS_0, WarnMapGeo, getMidnightTime(time, 0), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI));
-        list.add(new WeatherLayer(Layers.UVI_CLOUDLESS_1, WarnMapGeo, getMidnightTime(time, 1), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI));
-        list.add(new WeatherLayer(Layers.UVI_CLOUDLESS_2, WarnMapGeo, getMidnightTime(time, 2), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI));
-        list.add(new WeatherLayer(Layers.BRD_ORTE, WarnMapGeo, null, layerMapWidth, layerMapHeight, "4326",UpdateMode.NEVER,null,Legend.NONE));
-        list.add(new WeatherLayer(Layers.EUROPE_BORDERS_LARGE,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.NEVER,null,Legend.NONE));
-        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_1M_0,EuropeLargeGeo,getFullHourTime(time,6,0,TZ.LOCAL),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.DAY, new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
-        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_1M_1,EuropeLargeGeo,getFullHourTime(time,12,0,TZ.LOCAL),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.DAY, new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
-        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_1M_2,EuropeLargeGeo,getFullHourTime(time,18,0,TZ.LOCAL),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.DAY, new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
-        list.add(new WeatherLayer(Layers.UVI_CLOUDS_EUROPE_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.UVI));
-        list.add(new WeatherLayer(Layers.UVI_CLOUDLESS_EUROPE_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.UVI));
-        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MAX_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
-        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MAX_1,EuropeLargeGeo,getMidnightTime(time,1),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
-        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MAX_2,EuropeLargeGeo,getMidnightTime(time,2),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
-        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_0,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
-        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_1,EuropeLargeGeo,getMidnightTime(time,1),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
-        list.add(new WeatherLayer(Layers.SENSED_TEMPERATURE_MIN_2,EuropeLargeGeo,getMidnightTime(time,2),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.UVI,new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_AMBROSIA_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_AMBROSIA_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_AMBROSIA_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BEIFUSS_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BEIFUSS_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BEIFUSS_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ROGGEN_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ROGGEN_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ROGGEN_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ESCHE_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ESCHE_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ESCHE_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BIRKE_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BIRKE_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_BIRKE_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_HASEL_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_HASEL_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_HASEL_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ERLE_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ERLE_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_ERLE_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_GRAESER_0,WarnMapGeo,getMidnightTime(time,0),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_GRAESER_1,WarnMapGeo,getMidnightTime(time,1),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
-        list.add(new WeatherLayer(Layers.POLLEN_FORECAST_GRAESER_2,WarnMapGeo,getMidnightTime(time,2),layerMapWidth, layerMapHeight, "4326",UpdateMode.POLLEN,null,Legend.POLLEN));
+        int[] disabledLayers = getDisabledLayersArray(context);
+        for (int i=0; i<LAYERCOUNT; i++){
+            if (!isInArray(disabledLayers,i)){
+                WeatherLayer weatherLayer = getLayer(i);
+                list.add(weatherLayer);
+            }
+        }
         return list;
     }
 
@@ -555,11 +593,66 @@ public class WeatherLayer {
     }
 
     private int getPollenType(){
-        return  (layer-Layers.POLLEN_FORECAST_AMBROSIA_0)/3;
+        switch (layer){
+            case Layers.POLLEN_FORECAST_AMBROSIA_0:
+            case Layers.POLLEN_FORECAST_AMBROSIA_1:
+            case Layers.POLLEN_FORECAST_AMBROSIA_2: return Pollen.Ambrosia;
+            case Layers.POLLEN_FORECAST_BEIFUSS_0:
+            case Layers.POLLEN_FORECAST_BEIFUSS_1:
+            case Layers.POLLEN_FORECAST_BEIFUSS_2: return Pollen.Beifuss;
+            case Layers.POLLEN_FORECAST_ROGGEN_0:
+            case Layers.POLLEN_FORECAST_ROGGEN_1:
+            case Layers.POLLEN_FORECAST_ROGGEN_2: return Pollen.Roggen;
+            case Layers.POLLEN_FORECAST_ESCHE_0:
+            case Layers.POLLEN_FORECAST_ESCHE_1:
+            case Layers.POLLEN_FORECAST_ESCHE_2: return Pollen.Esche;
+            case Layers.POLLEN_FORECAST_BIRKE_0:
+            case Layers.POLLEN_FORECAST_BIRKE_1:
+            case Layers.POLLEN_FORECAST_BIRKE_2: return Pollen.Birke;
+            case Layers.POLLEN_FORECAST_HASEL_0:
+            case Layers.POLLEN_FORECAST_HASEL_1:
+            case Layers.POLLEN_FORECAST_HASEL_2: return Pollen.Hasel;
+            case Layers.POLLEN_FORECAST_ERLE_0:
+            case Layers.POLLEN_FORECAST_ERLE_1:
+            case Layers.POLLEN_FORECAST_ERLE_2: return Pollen.Erle;
+            case Layers.POLLEN_FORECAST_GRAESER_0:
+            case Layers.POLLEN_FORECAST_GRAESER_1:
+            case Layers.POLLEN_FORECAST_GRAESER_2: return Pollen.Graeser;
+            default: return -1;
+        }
     }
 
     private int getPollenTimeParam(){
-        return (layer-Layers.POLLEN_FORECAST_AMBROSIA_0)%3;
+        switch (layer){
+            case Layers.POLLEN_FORECAST_AMBROSIA_0:
+            case Layers.POLLEN_FORECAST_BEIFUSS_0:
+            case Layers.POLLEN_FORECAST_ROGGEN_0:
+            case Layers.POLLEN_FORECAST_ESCHE_0:
+            case Layers.POLLEN_FORECAST_BIRKE_0:
+            case Layers.POLLEN_FORECAST_HASEL_0:
+            case Layers.POLLEN_FORECAST_ERLE_0:
+            case Layers.POLLEN_FORECAST_GRAESER_0:
+                return Pollen.Today;
+            case Layers.POLLEN_FORECAST_AMBROSIA_1:
+            case Layers.POLLEN_FORECAST_BEIFUSS_1:
+            case Layers.POLLEN_FORECAST_ROGGEN_1:
+            case Layers.POLLEN_FORECAST_ESCHE_1:
+            case Layers.POLLEN_FORECAST_BIRKE_1:
+            case Layers.POLLEN_FORECAST_HASEL_1:
+            case Layers.POLLEN_FORECAST_ERLE_1:
+            case Layers.POLLEN_FORECAST_GRAESER_1:
+                return Pollen.Tomorrow;
+            case Layers.POLLEN_FORECAST_AMBROSIA_2:
+            case Layers.POLLEN_FORECAST_BEIFUSS_2:
+            case Layers.POLLEN_FORECAST_ROGGEN_2:
+            case Layers.POLLEN_FORECAST_ESCHE_2:
+            case Layers.POLLEN_FORECAST_BIRKE_2:
+            case Layers.POLLEN_FORECAST_HASEL_2:
+            case Layers.POLLEN_FORECAST_ERLE_2:
+            case Layers.POLLEN_FORECAST_GRAESER_2:
+                return Pollen.DayAfterTomorrow;
+            default: return -1;
+        }
     }
 
     public Bitmap getLayerBitmap(Context context) {
@@ -567,25 +660,35 @@ public class WeatherLayer {
         options.inSampleSize = 1; // do not subsample
         options.inMutable = true; // always return mutable bitmap
         Bitmap layerBitmap = null;
-        if ((isPollen()) && (isPollenLayerCacheFileOutdated(context))){
+        layerBitmap = BitmapFactory.decodeFile(getFullChacheFilepath(context), options);
+        // build pollen map if necessary
+        if (layerBitmap==null && isPollen()){
             int pollenType = getPollenType();
             int timeParam = getPollenTimeParam();
             layerBitmap = ForecastBitmap.getPollenAreasBitmap(context, pollenType, timeParam);
+            // put pollen bitmap to cache for faster reading in the future
             saveLayerBitmapToCache(context,layerBitmap);
+            timestamp = Pollen.getLastPollenUpdateTime(context)+(long) getPollenTimeParam()*24*60*60*1000;
         } else {
-            layerBitmap = BitmapFactory.decodeFile(getFullChacheFilepath(context), options);
+            long originalTimestamp = WeatherSettings.getLayerTime(context,layer);
+            // take timestamp from settings only if bitmap decoding was successful and time is not 8
+            if ((layerBitmap!=null) && (originalTimestamp!=0)){
+                timestamp = originalTimestamp;
+            }
         }
         if (layerBitmap!=null){
             Bitmap targetBitmap = layerBitmap.copy(Bitmap.Config.ARGB_8888,true);
             Canvas canvasVisibleMap = new Canvas(targetBitmap);
-            timestamp = WeatherSettings.getLayerTime(context,layer);
             if (layerBitmap!=null){
                 if (atop!=null){
                     final Paint cp = new Paint();
                     cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
                     for (int i=0; i<atop.length; i++){
-                        WeatherLayer atopLayer = new WeatherLayer(context,atop[i]);
-                        Bitmap atopBitmap = atopLayer.getTransparentLayerBitmap(context,outlineColor);
+                        WeatherLayer atopLayer = new WeatherLayer(atop[i]);
+                        Bitmap atopBitmap = null;
+                        if (atopLayer.layer!=layer){
+                            atopBitmap = atopLayer.getTransparentLayerBitmap(context,outlineColor);
+                        }
                         if (atopBitmap!=null){
                             canvasVisibleMap.drawBitmap(atopBitmap,0,0,cp);
                         }
@@ -631,7 +734,7 @@ public class WeatherLayer {
         return dateFormat.format(new Date(timestamp));
     }
 
-    private void saveLayerBitmapToCache(Context context, Bitmap bitmap){
+    public void saveLayerBitmapToCache(Context context, Bitmap bitmap){
         if (bitmap!=null){
             try {
                 File cacheDir = context.getCacheDir();
@@ -645,7 +748,7 @@ public class WeatherLayer {
         }
     }
 
-    private boolean isPollenLayerCacheFileOutdated(Context context){
+    public boolean isPollenLayerCacheFileOutdated(Context context){
         File cacheDir = context.getCacheDir();
         File targetFile = new File(cacheDir,getCacheFilename());
         long modified = targetFile.lastModified();

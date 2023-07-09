@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.*;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.*;
 import android.widget.*;
-
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -22,6 +20,7 @@ public class WeatherLayerMapActivity extends Activity {
     Context context;
     ZoomableImageView zoomableImageView;
     int layer;
+    WeatherLayer weatherLayer;
     TextView titleTextView;
     ImageView legendImageView;
     ImageView mapImageView;
@@ -36,6 +35,11 @@ public class WeatherLayerMapActivity extends Activity {
     Spinner spinner1;
     Spinner spinner2;
     int[] browseItemsOrder;
+
+    ArrayList<String> baseSpinnerItems;
+    ArrayList<Integer> baseJumpTarget;
+    ArrayList<String> additonalSpinnerItems;
+    ArrayList<Integer> additionalJumpTarget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +62,12 @@ public class WeatherLayerMapActivity extends Activity {
             Intent intent = getIntent();
             if (intent!=null){
                 if (intent.hasExtra(LAYER)){
-                    layer = intent.getIntExtra(LAYER, WeatherLayer.Layers.WARNING_AREAS_GERMANY);
+                    layer = intent.getIntExtra(LAYER, WeatherLayer.Layers.UVI_CLOUDS_0);
                 }
             }
         }
         if (layer==-1){
-            layer = 0;
+            layer = WeatherLayer.Layers.UVI_CLOUDS_0;
         }
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
@@ -72,6 +76,7 @@ public class WeatherLayerMapActivity extends Activity {
         spinnerHolder = (LinearLayout) findViewById(R.id.wlm_spinnerholder);
         spinner1 = (Spinner) findViewById(R.id.wlm_spinner1);
         spinner2 = (Spinner) findViewById(R.id.wlm_spinner2);
+        weatherLayer = new WeatherLayer(layer);
         attachSpinner();
         displayMap();
     }
@@ -110,11 +115,12 @@ public class WeatherLayerMapActivity extends Activity {
     }
 
     public int findLayerPosition(int layer){
-        int i=0;
-        while ((browseItemsOrder[i]!=layer) && (i<browseItemsOrder.length)){
-            i++;
+        for (int i=0; i<browseItemsOrder.length; i++){
+            if (browseItemsOrder[i]==layer){
+                return i;
+            }
         }
-        return i;
+        return -1;
     }
 
     public void changeMap(int direction){
@@ -131,16 +137,7 @@ public class WeatherLayerMapActivity extends Activity {
         displayMap();
     }
 
-    public void jumpToLayer(int newPosition){
-        if (newPosition<0){
-            newPosition = browseItemsOrder.length-1;
-        }
-        if (newPosition>=browseItemsOrder.length){
-            newPosition=0;
-        }
-        layer = newPosition;
-        displayMap();
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem mi) {
@@ -159,58 +156,105 @@ public class WeatherLayerMapActivity extends Activity {
         return result;
     }
 
-    public ArrayList<String> getTimeList(){
-        ArrayList<String> result = new ArrayList<String>();
-        result.add(removeSpecialChars(getResources().getString(R.string.today)));
-        result.add(removeSpecialChars(getResources().getString(R.string.tomorrow)));
-        result.add(removeSpecialChars(getResources().getString(R.string.dayaftertomorrow)));
-        return result;
+    public void setTimeSpinnerList(){
+        additonalSpinnerItems = new ArrayList<String>();
+        additionalJumpTarget =  new ArrayList<Integer>();
+        additonalSpinnerItems.add(removeSpecialChars(getResources().getString(R.string.today))); additionalJumpTarget.add(Pollen.Today);
+        additonalSpinnerItems.add(removeSpecialChars(getResources().getString(R.string.tomorrow))); additionalJumpTarget.add(Pollen.Tomorrow);
+        additonalSpinnerItems.add(removeSpecialChars(getResources().getString(R.string.dayaftertomorrow))); additionalJumpTarget.add(Pollen.DayAfterTomorrow);
     }
 
-    public ArrayList<String> getPollenList(){
-        ArrayList<String> result = new ArrayList<String>();
-        result.add(getResources().getString(R.string.pollen_ambrosia));
-        result.add(getResources().getString(R.string.pollen_mugwort));
-        result.add(getResources().getString(R.string.pollen_rye));
-        result.add(getResources().getString(R.string.pollen_ash));
-        result.add(getResources().getString(R.string.pollen_birch));
-        result.add(getResources().getString(R.string.pollen_hazel));
-        result.add(getResources().getString(R.string.pollen_alder));
-        result.add(getResources().getString(R.string.pollen_grasses));
-        return result;
+    public void setPollenSpinnerList(){
+        baseSpinnerItems = new ArrayList<String>();
+        baseJumpTarget =  new ArrayList<Integer>();
+        if (WeatherSettings.getPollenActiveAmbrosia(context)){
+            baseSpinnerItems.add(getResources().getString(R.string.pollen_ambrosia));
+            baseJumpTarget.add(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0);
+        }
+        if (WeatherSettings.getPollenActiveBeifuss(context)){
+            baseSpinnerItems.add(getResources().getString(R.string.pollen_mugwort));
+            baseJumpTarget.add(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_0);
+        }
+        if (WeatherSettings.getPollenActiveRoggen(context)){
+            baseSpinnerItems.add(getResources().getString(R.string.pollen_rye));
+            baseJumpTarget.add(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_0);
+        }
+        if (WeatherSettings.getPollenActiveEsche(context)){
+            baseSpinnerItems.add(getResources().getString(R.string.pollen_ash));
+            baseJumpTarget.add(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_0);
+        }
+        if (WeatherSettings.getPollenActiveBirke(context)){
+            baseSpinnerItems.add(getResources().getString(R.string.pollen_birch));
+            baseJumpTarget.add(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_0);
+        }
+        if (WeatherSettings.getPollenActiveHasel(context)){
+            baseSpinnerItems.add(getResources().getString(R.string.pollen_hazel));
+            baseJumpTarget.add(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_0);
+        }
+        if (WeatherSettings.getPollenActiveErle(context)){
+            baseSpinnerItems.add(getResources().getString(R.string.pollen_alder));
+            baseJumpTarget.add(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_0);
+        }
+        if (WeatherSettings.getPollenActiveGraeser(context)){
+            baseSpinnerItems.add(getResources().getString(R.string.pollen_grasses));
+            baseJumpTarget.add(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_0);
+        }
     }
 
-    public ArrayList<String> getCloudList(){
-        ArrayList<String> result = new ArrayList<String>();
-        result.add(removeSpecialChars(getResources().getString(R.string.clouds)));
-        result.add(removeSpecialChars(getResources().getString(R.string.clear_sky)));
-        return result;
+    public class SpinnerPositionPair{
+        int base; int additional;
     }
 
-    public ArrayList<String> getTodaySensedTemeraturesList(){
-        ArrayList<String> result = new ArrayList<String>();
-        result.add(getResources().getString(R.string.layerlabel_short_ts));
-        return result;
+    public SpinnerPositionPair getBaseSpinnerPosition(){
+      SpinnerPositionPair result = new SpinnerPositionPair();
+      for (int i=0; i<baseJumpTarget.size(); i++){
+          if ((layer==baseJumpTarget.get(i)) || (layer-1==baseJumpTarget.get(i)) || (layer-2==baseJumpTarget.get(i))){
+              result.base = i;
+              result.additional = 0;
+              if (layer-1==baseJumpTarget.get(i)){
+                  result.additional = 1;
+              }
+              if (layer-2==baseJumpTarget.get(i)){
+                  result.additional = 2;
+              }
+              return result;
+          }
+      }
+      return null;
+    };
+
+    public void setCloudSpinnerList(){
+        baseSpinnerItems = new ArrayList<String>();
+        baseJumpTarget =  new ArrayList<Integer>();
+        baseSpinnerItems.add(removeSpecialChars(getResources().getString(R.string.clouds))); baseJumpTarget.add(WeatherLayer.Layers.UVI_CLOUDS_0);
+        baseSpinnerItems.add(removeSpecialChars(getResources().getString(R.string.clear_sky))); baseJumpTarget.add(WeatherLayer.Layers.UVI_CLOUDLESS_0);
     }
 
-    public ArrayList<String> getTodaySensedTemeratureTimesList(){
-        ArrayList<String> result = new ArrayList<String>();
-        result.add(getResources().getString(R.string.local_time_6));
-        result.add(getResources().getString(R.string.local_time_12));
-        result.add(getResources().getString(R.string.local_time_18));
-        return result;
+    public void setTodaySensedTemeraturesSpinnerList(){
+        baseSpinnerItems = new ArrayList<String>();
+        baseJumpTarget =  new ArrayList<Integer>();
+        baseSpinnerItems.add(getResources().getString(R.string.layerlabel_short_ts)); baseJumpTarget.add(WeatherLayer.Layers.SENSED_TEMPERATURE_1M_0);
     }
 
-    public ArrayList<String> getMinMaxTemperatureList(){
-        ArrayList<String> result = new ArrayList<String>();
-        result.add(getResources().getString(R.string.temp_min));
-        result.add(getResources().getString(R.string.temp_max));
-        return result;
+    public void setTodaySensedTemperatureTimesSpinnerList(){
+        additonalSpinnerItems = new ArrayList<String>();
+        additionalJumpTarget =  new ArrayList<Integer>();
+        additonalSpinnerItems.add(getResources().getString(R.string.local_time_6)); additionalJumpTarget.add(0);
+        additonalSpinnerItems.add(getResources().getString(R.string.local_time_12)); additionalJumpTarget.add(1);
+        additonalSpinnerItems.add(getResources().getString(R.string.local_time_18)); additionalJumpTarget.add(2);
+    }
+
+    public void setMinMaxTemperatureSpinnerList(){
+        baseSpinnerItems = new ArrayList<String>();
+        baseJumpTarget =  new ArrayList<Integer>();
+        baseSpinnerItems.add(getResources().getString(R.string.temp_min)); baseJumpTarget.add(WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_0);
+        baseSpinnerItems.add(getResources().getString(R.string.temp_max)); baseJumpTarget.add(WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0);
     }
 
     final MainActivity.SpinnerListener spinnerClickListener = new MainActivity.SpinnerListener() {
         @Override
         public void handleItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+            /*
             int newPosition = -1;
             if ((layer>= WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0) &&
                     (layer<= WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_2)){
@@ -231,10 +275,12 @@ public class WeatherLayerMapActivity extends Activity {
                     newPosition = WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0 + spinner2.getSelectedItemPosition();
                 }
             }
-            if (newPosition>=0){
-                //Log.v("twfg","New layer is => "+newPosition);
-                jumpToLayer(newPosition);
-            }
+             */
+            int baseLayer = baseJumpTarget.get(spinner1.getSelectedItemPosition());
+            int addPosition = additionalJumpTarget.get(spinner2.getSelectedItemPosition());
+            int newPosition = baseLayer + addPosition;
+            layer = newPosition;
+            displayMap();
         }
     };
 
@@ -242,48 +288,46 @@ public class WeatherLayerMapActivity extends Activity {
         int pos1=-1; int pos2=-1;
         if ((layer>= WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0) &&
                 (layer<=WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_2)){
-            ArrayList<String> spinnerItems1 = getPollenList();
-            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,spinnerItems1);
-            ArrayList<String> spinnerItems2 = getTimeList();
-            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,spinnerItems2);
-            pos1 = (layer - WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0)/3;
-            pos2 = (layer - WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0)%3;
+            setPollenSpinnerList();
+            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,baseSpinnerItems);
+            setTimeSpinnerList();
+            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,additonalSpinnerItems);
+            SpinnerPositionPair spinnerPositionPair = getBaseSpinnerPosition();
+            if (spinnerPositionPair!=null){
+                pos1 = spinnerPositionPair.base; pos2=spinnerPositionPair.additional;
+            }
         }
         if ((layer>= WeatherLayer.Layers.UVI_CLOUDS_0) &&
                 (layer<=WeatherLayer.Layers.UVI_CLOUDLESS_2)){
-            ArrayList<String> spinnerItems1 = getCloudList();
-            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,spinnerItems1);
-            ArrayList<String> spinnerItems2 = getTimeList();
-            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,spinnerItems2);
-            pos1 = 0;
-            pos2 = layer-1;
-            if ((layer>=WeatherLayer.Layers.UVI_CLOUDLESS_0) && (layer<=WeatherLayer.Layers.UVI_CLOUDLESS_2)){
-                pos1=1; // clouds
-                pos2=layer-4;
+            setCloudSpinnerList();
+            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,baseSpinnerItems);
+            setTimeSpinnerList();
+            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,additonalSpinnerItems);
+            SpinnerPositionPair spinnerPositionPair = getBaseSpinnerPosition();
+            if (spinnerPositionPair!=null){
+                pos1 = spinnerPositionPair.base; pos2=spinnerPositionPair.additional;
             }
         }
         if ((layer>=WeatherLayer.Layers.SENSED_TEMPERATURE_1M_0) && (layer<=WeatherLayer.Layers.SENSED_TEMPERATURE_1M_2)){
-            ArrayList<String> spinnerItems1 = getTodaySensedTemeraturesList();
-            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,spinnerItems1);
-            ArrayList<String> spinnerItems2 = getTodaySensedTemeratureTimesList();
-            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,spinnerItems2);
-            pos1 = 0;
-            pos2 = layer-9;
-        }
-        if ((layer>=WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0) && (layer<=WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_2)){
-            ArrayList<String> spinnerItems1 = getMinMaxTemperatureList();
-            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,spinnerItems1);
-            ArrayList<String> spinnerItems2 = getTimeList();
-            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,spinnerItems2);
-            if ((layer>=WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0) && (layer<=WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_2)){
-                pos1 = 1;
-                pos2 = layer - WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0;
-            } else {
-                pos1 = 0;
-                pos2 = layer - WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_0;
+            setTodaySensedTemeraturesSpinnerList();
+            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,baseSpinnerItems);
+            setTodaySensedTemperatureTimesSpinnerList();
+            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,additonalSpinnerItems);
+            SpinnerPositionPair spinnerPositionPair = getBaseSpinnerPosition();
+            if (spinnerPositionPair!=null){
+                pos1 = spinnerPositionPair.base; pos2=spinnerPositionPair.additional;
             }
         }
-        //Log.v("twfg","SPINNER "+pos1+"/"+pos2);
+        if ((layer>=WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0) && (layer<=WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_2)){
+            setMinMaxTemperatureSpinnerList();
+            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,baseSpinnerItems);
+            setTimeSpinnerList();
+            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,additonalSpinnerItems);
+            SpinnerPositionPair spinnerPositionPair = getBaseSpinnerPosition();
+            if (spinnerPositionPair!=null){
+                pos1 = spinnerPositionPair.base; pos2=spinnerPositionPair.additional;
+            }
+        }
         if (pos1!=-1) {
             spinner1.setVisibility(View.VISIBLE);
             spinner1.setAdapter(adapter1);
@@ -323,7 +367,7 @@ public class WeatherLayerMapActivity extends Activity {
             // in landscape mode, display title in actionbar to save space
           actionBar.setTitle(WeatherLayer.getLabel(context,layer));
         }
-        final WeatherLayer weatherLayer = new WeatherLayer(context,layer);
+        weatherLayer = new WeatherLayer(layer);
         // files in cache might be missing, so we must check if the layer is "outdated". This check will
         // return also true when the underlying file is simply missing.
         if (weatherLayer.isOutdated(context)){
@@ -352,7 +396,7 @@ public class WeatherLayerMapActivity extends Activity {
             mapImageView = (ImageView) findViewById(R.id.wlm_map);
             mapImageView.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
         }
-
+        drawLegend(weatherLayer);
         Bitmap visibleBitmap = weatherLayer.getLayerBitmap(context);
         // layer might be null due to day-update shifts
         if (visibleBitmap!=null){
@@ -372,7 +416,6 @@ public class WeatherLayerMapActivity extends Activity {
         } else {
             mapImageView.setImageBitmap(WeatherIcons.getIconBitmap(context,WeatherIcons.IC_IMAGE_NOT_SUPPORTED,false));
         }
-        drawLegend(weatherLayer);
     }
 
     private void initPollenLegend(){

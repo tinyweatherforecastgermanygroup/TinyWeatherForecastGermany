@@ -28,6 +28,7 @@ public class WeatherDetailsActivity extends Activity {
     }
 
     Weather.WeatherInfo weatherInfo;
+    ArrayList<WeatherWarning> weatherWarnings = null;
     Context context;
     Handler mainHandler;
     ScheduledExecutorService scheduledExecutorService;
@@ -165,6 +166,7 @@ public class WeatherDetailsActivity extends Activity {
         Bitmap bitmap;
         boolean applyFilter;
         boolean smallHeading = false;
+        View.OnLongClickListener onLongClickListener = null;
 
         public DetailsElement(String heading, int icon, String value, String label, boolean applyFilter){
             this.heading = heading;
@@ -188,6 +190,15 @@ public class WeatherDetailsActivity extends Activity {
             this.value=value;
             this.label=label;
             this.applyFilter = true;
+        }
+
+        public DetailsElement(String heading, Bitmap bitmap, String value, String label, View.OnLongClickListener onLongClickListener){
+            this.heading = heading;
+            this.bitmap=bitmap;
+            this.value=value;
+            this.label=label;
+            this.applyFilter = true;
+            this.onLongClickListener = onLongClickListener;
         }
 
     }
@@ -352,35 +363,27 @@ public class WeatherDetailsActivity extends Activity {
         viewIsBeingCreated = false;
     }
 
-    public void setWarnings(final Weather.WeatherInfo weatherInfo, final Weather.WeatherLocation weatherLocation){
-        Runnable getWarningsRunnable = new WeatherWarnings.getWarningsForLocationRunnable(context,null,weatherLocation){
-            @Override
-            public void onResult(ArrayList<WeatherWarning> warnings) {
-                super.onResult(warnings);
-                long itemStopTime = weatherInfo.getTimestamp();
-                long itemStartTime = itemStopTime - 1000*60*60;
-                ArrayList<WeatherWarning> applicableWarnings = new ArrayList<WeatherWarning>();
-                for (int i=0; i<warnings.size(); i++){
-                    WeatherWarning warning = warnings.get(i);
-                    if ((warnings.get(i).onset<=itemStopTime) && (warnings.get(i).expires>=itemStartTime)){
-                        applicableWarnings.add(warnings.get(i));
-                    }
-                }
-                if (applicableWarnings.size()>0){
-                    setDetail(valuesListWarnings,newDetail("Wetterwarnungen",null,null,null),ListItemType.Label);
-                    for (int i=0; i<warnings.size(); i++){
-                        final RelativeLayout relativeLayout = (RelativeLayout) WeatherWarningAdapter.setWarningViewElements(context,layoutInflater,null,null,warnings.get(i),true,mainHandler,scheduledExecutorService);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                valuesListWarnings.addView(relativeLayout);
-                            }
-                        });
-                    }
-                }
+    public void setWarnings(final Weather.WeatherInfo weatherInfo, final Weather.WeatherLocation weatherLocation) {
+        if (weatherWarnings==null){
+            weatherWarnings = WeatherWarnings.getCurrentWarnings(context,true);
+        }
+        ArrayList<WeatherWarning> warningsForLocation = WeatherWarnings.getWarningsForLocation(context, weatherWarnings, weatherLocation);
+        long itemStopTime = weatherInfo.getTimestamp();
+        long itemStartTime = itemStopTime - 1000 * 60 * 60;
+        ArrayList<WeatherWarning> applicableWarnings = new ArrayList<WeatherWarning>();
+        for (int i = 0; i < warningsForLocation.size(); i++) {
+            WeatherWarning warning = warningsForLocation.get(i);
+            if ((warning.onset <= itemStopTime) && (warning.expires >= itemStartTime)) {
+                applicableWarnings.add(warning);
             }
-        };
-        scheduledExecutorService.execute(getWarningsRunnable);
+        }
+        if (applicableWarnings.size() > 0) {
+            setDetail(valuesListWarnings,newDetail(getResources().getString(R.string.preference_category_warnings),null,null,null),ListItemType.Label);
+            for (int i=0; i<applicableWarnings.size(); i++){
+                final RelativeLayout relativeLayout = (RelativeLayout) WeatherWarningAdapter.setWarningViewElements(context,layoutInflater,null,null,applicableWarnings.get(i),true,mainHandler,scheduledExecutorService);
+                valuesListWarnings.addView(relativeLayout);
+            }
+        }
     }
 
     public void setPrecipitationChart(Weather.WeatherInfo weatherInfo){
@@ -516,6 +519,12 @@ public class WeatherDetailsActivity extends Activity {
         } else {
             lineContainer.setVisibility(View.VISIBLE);
         }
+        if (chart!=null){
+            chart.setOnLongClickListener(detailsElement.onLongClickListener);
+        }
+        if (label!=null){
+            label.setOnLongClickListener(detailsElement.onLongClickListener);
+        }
         targetView.addView(view);
     }
 
@@ -529,6 +538,11 @@ public class WeatherDetailsActivity extends Activity {
         return detailsElement;
     }
 
+    private DetailsElement newDetail(String title, Bitmap icon, String value, String label, View.OnLongClickListener onLongClickListener){
+        DetailsElement detailsElement = new DetailsElement(title, icon, value, label, onLongClickListener);
+        return detailsElement;
+    }
+
     private DetailsElement newDetail(String title, int icon, String value, String label, boolean applyFilter){
         DetailsElement detailsElement = new DetailsElement(title, icon, value, label);
         detailsElement.applyFilter = applyFilter;
@@ -537,19 +551,33 @@ public class WeatherDetailsActivity extends Activity {
 
     public static void setPollenLegendColorBoxes(Context context, View view){
         ImageView box0 = (ImageView) view.findViewById(R.id.pl_box0);
-        box0.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,0));
+        if (box0!=null){
+            box0.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,0));
+        }
         ImageView box1 = (ImageView) view.findViewById(R.id.pl_box1);
-        box1.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,1));
+        if (box1!=null){
+            box1.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,1));
+        }
         ImageView box2 = (ImageView) view.findViewById(R.id.pl_box2);
-        box2.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,2));
+        if (box2!=null){
+            box2.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,2));
+        }
         ImageView box3 = (ImageView) view.findViewById(R.id.pl_box3);
-        box3.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,3));
+        if (box3!=null){
+            box3.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,3));
+        }
         ImageView box4 = (ImageView) view.findViewById(R.id.pl_box4);
-        box4.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,4));
+        if (box4!=null){
+            box4.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,4));
+        }
         ImageView box5 = (ImageView) view.findViewById(R.id.pl_box5);
-        box5.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,5));
+        if (box5!=null){
+            box5.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,5));
+        }
         ImageView box6 = (ImageView) view.findViewById(R.id.pl_box6);
-        box6.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,6));
+        if (box6!=null){
+            box6.setImageBitmap(ForecastBitmap.getPollenLegendBox(context,64,6));
+        }
     }
 
     private void setPollenLegend(LinearLayout targetView){
@@ -680,7 +708,7 @@ public class WeatherDetailsActivity extends Activity {
         } else {
             valuesListIncidents.setVisibility(View.GONE);
         }
-        int relativeDay = weatherInfo.getRelativeDay();
+        final int relativeDay = weatherInfo.getRelativeDay();
         if ((pollen!=null) && (relativeDay>=Pollen.Today) && (relativeDay<=Pollen.DayAfterTomorrow) && (WeatherSettings.anyPollenActive(context))){
             final int BAR_WIDTH = 1024; final int BAR_HEIGHT = 256;
             list = new ArrayList<DetailsElement>();
@@ -694,28 +722,140 @@ public class WeatherDetailsActivity extends Activity {
             int loadErle = pollen.getPollenLoad(context,Pollen.Erle,relativeDay);
             int loadGraeser = pollen.getPollenLoad(context,Pollen.Graeser,relativeDay);
             if ((loadAmbrosia>=0) && (WeatherSettings.getPollenActiveAmbrosia(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadAmbrosia,6,Pollen.PollenLoadColors[loadAmbrosia],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_ambrosia)));
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadAmbrosia,6,Pollen.PollenLoadColors[loadAmbrosia],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_ambrosia), new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        if (relativeDay==Pollen.Today){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0);
+                        }
+                        if (relativeDay==Pollen.Tomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_1);
+                        }
+                        if (relativeDay==Pollen.DayAfterTomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_2);
+                        }
+                        return true;
+                    }
+                }));
             }
             if ((loadBeifuss>=0) && (WeatherSettings.getPollenActiveBeifuss(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadBeifuss,6,Pollen.PollenLoadColors[loadBeifuss],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_mugwort)));
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadBeifuss,6,Pollen.PollenLoadColors[loadBeifuss],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_mugwort), new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        if (relativeDay==Pollen.Today){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_0);
+                        }
+                        if (relativeDay==Pollen.Tomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_1);
+                        }
+                        if (relativeDay==Pollen.DayAfterTomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_2);
+                        }
+                        return true;
+                    }
+                }));
             }
             if ((loadRoggen>=0) && (WeatherSettings.getPollenActiveRoggen(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadRoggen,6,Pollen.PollenLoadColors[loadRoggen],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_rye)));
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadRoggen,6,Pollen.PollenLoadColors[loadRoggen],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_rye), new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        if (relativeDay==Pollen.Today){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_0);
+                        }
+                        if (relativeDay==Pollen.Tomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_1);
+                        }
+                        if (relativeDay==Pollen.DayAfterTomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_2);
+                        }
+                        return true;
+                    }
+                }));
             }
             if ((loadEsche>=0) && (WeatherSettings.getPollenActiveEsche(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadEsche,6,Pollen.PollenLoadColors[loadEsche],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_ash)));
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadEsche,6,Pollen.PollenLoadColors[loadEsche],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_ash), new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        if (relativeDay==Pollen.Today){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_0);
+                        }
+                        if (relativeDay==Pollen.Tomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_1);
+                        }
+                        if (relativeDay==Pollen.DayAfterTomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_2);
+                        }
+                        return true;
+                    }
+                }));
             }
             if ((loadBirke>=0) && (WeatherSettings.getPollenActiveBirke(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadBirke,6,Pollen.PollenLoadColors[loadBirke],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_birch)));
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadBirke,6,Pollen.PollenLoadColors[loadBirke],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_birch), new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        if (relativeDay==Pollen.Today){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_0);
+                        }
+                        if (relativeDay==Pollen.Tomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_1);
+                        }
+                        if (relativeDay==Pollen.DayAfterTomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_2);
+                        }
+                        return true;
+                    }
+                }));
             }
             if ((loadHasel>=0) && (WeatherSettings.getPollenActiveHasel(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadHasel,6,Pollen.PollenLoadColors[loadHasel],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_hazel)));
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadHasel,6,Pollen.PollenLoadColors[loadHasel],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_hazel), new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        if (relativeDay==Pollen.Today){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_0);
+                        }
+                        if (relativeDay==Pollen.Tomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_1);
+                        }
+                        if (relativeDay==Pollen.DayAfterTomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_2);
+                        }
+                        return true;
+                    }
+                }));
             }
             if ((loadErle>=0) && (WeatherSettings.getPollenActiveErle(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadErle,6,Pollen.PollenLoadColors[loadErle],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_alder)));
+                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadErle,6,Pollen.PollenLoadColors[loadErle],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_alder),new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        if (relativeDay==Pollen.Today){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_0);
+                        }
+                        if (relativeDay==Pollen.Tomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_1);
+                        }
+                        if (relativeDay==Pollen.DayAfterTomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_2);
+                        }
+                        return true;
+                    }
+                }));
             }
             if ((loadGraeser>=0) && (WeatherSettings.getPollenActiveGraeser(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadGraeser,6,Pollen.PollenLoadColors[loadGraeser],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_grasses)));
+                list.add(newDetail(null, ForecastBitmap.getHorizontalBar(context, BAR_WIDTH, BAR_HEIGHT, loadGraeser, 6, Pollen.PollenLoadColors[loadGraeser], ThemePicker.getWidgetTextColor(context)), null, context.getResources().getString(R.string.pollen_grasses), new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        if (relativeDay==Pollen.Today){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_0);
+                        }
+                        if (relativeDay==Pollen.Tomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_1);
+                        }
+                        if (relativeDay==Pollen.DayAfterTomorrow){
+                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_2);
+                        }
+                        return true;
+                    }
+                }));
             }
             valuesListPollen.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
             for (int i=0; i<list.size(); i++){
@@ -751,6 +891,12 @@ public class WeatherDetailsActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void openLayerMap(int layerMap){
+        Intent intent = new Intent(this, WeatherLayerMapActivity.class);
+        intent.putExtra(WeatherLayerMapActivity.LAYER,layerMap);
+        startActivity(intent);
     }
 
     private void registerForBroadcast(){

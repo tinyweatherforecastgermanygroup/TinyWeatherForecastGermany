@@ -27,13 +27,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.*;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +46,7 @@ public class WeatherLayersActivity extends Activity {
     private Context context;
     Executor executor;
     ActionBar actionBar;
+    TableLayout tableLayout;
     TableRow tableRowAmbrosia; TableRow tableRowBeifuss; TableRow tableRowRoggen; TableRow tableRowEsche;
     TableRow tableRowBirke; TableRow tableRowHazel; TableRow tableRowErle; TableRow tableRowGraeser;
 
@@ -128,7 +127,16 @@ public class WeatherLayersActivity extends Activity {
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         executor = Executors.newSingleThreadExecutor();
-        weatherLayers = WeatherLayer.getLayers();
+        // make a list what do update
+        ArrayList<String> updateTasks = new ArrayList<String>();
+        // check for pollen update
+        PollenArea pollenArea = WeatherSettings.getPollenRegion(context);
+        Pollen pollen = Pollen.GetPollenData(context,pollenArea);
+        if ((pollen==null) || (Pollen.isUpdateDue(context))){
+            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN);
+        }
+        updateData(updateTasks);
+        weatherLayers = WeatherLayer.getLayers(context);
         getViewIDs();
         APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,weatherLayers){
             @Override
@@ -146,7 +154,8 @@ public class WeatherLayersActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        updateDisplay();
+                        // nothing to do, update done in onProgress, view should be complete
+                        //updateDisplay();
                     }
                 });
             }
@@ -189,7 +198,7 @@ public class WeatherLayersActivity extends Activity {
     }
 
     public void getViewIDs(){
-        TableLayout tableLayout = (TableLayout) findViewById(R.id.wm_table);
+        tableLayout = (TableLayout) findViewById(R.id.wm_table);
         tableRowAmbrosia = (TableRow) findViewById(R.id.wm_row14);
         tableRowBeifuss = (TableRow) findViewById(R.id.wm_row15);
         tableRowRoggen = (TableRow) findViewById(R.id.wm_row16);
@@ -431,9 +440,9 @@ public class WeatherLayersActivity extends Activity {
                     (TextView) findViewById(R.id.wm_heading_19_3),
                     (TextView) findViewById(R.id.wm_date_19_3)));
         } else {
-            tableLayout.removeView(tableRowBirke);
+            tableLayout.removeView(tableRowHazel);
         }
-        if (WeatherSettings.getPollenActiveHasel(context)){
+        if (WeatherSettings.getPollenActiveErle(context)){
             displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_0,
                     getWeatherLayerByID(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_0),
                     (RelativeLayout) findViewById(R.id.wm_element_20_1),
@@ -453,7 +462,7 @@ public class WeatherLayersActivity extends Activity {
                     (TextView) findViewById(R.id.wm_heading_20_3),
                     (TextView) findViewById(R.id.wm_date_20_3)));
         } else {
-            tableLayout.removeView(tableRowHazel);
+            tableLayout.removeView(tableRowErle);
         }
         if (WeatherSettings.getPollenActiveGraeser(context)){
             displayLayers.add(new DisplayLayer(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_0,
@@ -531,6 +540,14 @@ public class WeatherLayersActivity extends Activity {
             TableRow tableRow1 = (TableRow) findViewById(id);
             if (tableRow1!=null){
                 tableRow1.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
+            }
+        }
+    }
+
+    private void updateData(ArrayList<String> updateTasks){
+        if (updateTasks!=null){
+            if (updateTasks.size()>0){
+                UpdateAlarmManager.startDataUpdateService(context,updateTasks);
             }
         }
     }

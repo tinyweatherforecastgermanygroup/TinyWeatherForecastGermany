@@ -102,6 +102,8 @@ public class MainActivity extends Activity {
 
     PopupWindow hintPopupWindow = null;
 
+    private boolean performingFirstAppLaunch = false;
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent intent) {
@@ -404,11 +406,19 @@ public class MainActivity extends Activity {
             super.onCreate(savedInstanceState);
             context = getApplicationContext();
             startWelcomeActivity();
+            finish();
         } else {
             launchTimer = Calendar.getInstance().getTimeInMillis();
             ThemePicker.SetTheme(this);
             WeatherSettings.setRotationMode(this);
             super.onCreate(savedInstanceState);
+            // check from intent if the WelcomeActivity tells us this is the first app launch
+            Intent intent = getIntent();
+            if (intent!=null){
+                if (intent.hasExtra(WelcomeActivity.WA_EXTRA_ISFIRSTAPPLAUNCH)){
+                    performingFirstAppLaunch = intent.getBooleanExtra(WelcomeActivity.WA_EXTRA_ISFIRSTAPPLAUNCH,false);
+                }
+            }
             context = getApplicationContext();
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
             setContentView(R.layout.activity_main);
@@ -582,7 +592,7 @@ public class MainActivity extends Activity {
             // get new data from api or display present data.
             if (!API_TESTING_ENABLED){
                 if (weatherCard!=null){
-                    // Log.v("twfg","calling from API test");
+                    // Log.v("weather","calling from API test");
                     // displayWeatherForecast(weatherCard);
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
                 } else {
@@ -620,24 +630,67 @@ public class MainActivity extends Activity {
             });
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
             popupHint();
-        }
-        if (!PollenArea.IsPollenAreaDatabaseComplete(context)){
-            APIReaders.PollenAreaReader pollenAreaReader = new APIReaders.PollenAreaReader(context){
-                @Override
-                public void onFinished() {
-                    Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
-                    PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
-                    // todo: refresh view for pollen
-                    super.onFinished();
-                }
-            };
-            executor.execute(pollenAreaReader);
-        } else {
+            // create pollen area database
+            if (!PollenArea.IsPollenAreaDatabaseComplete(context)){
+                APIReaders.PollenAreaReader pollenAreaReader = new APIReaders.PollenAreaReader(context){
+                    @Override
+                    public void onFinished() {
+                        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+                        // PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
+                        // todo: refresh view for pollen
+                        super.onFinished();
+                    }
+                };
+                executor.execute(pollenAreaReader);
+            } else {
             /*
             long start = Calendar.getInstance().getTimeInMillis();
             Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
             final PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
              */
+            }
+            // Prefetch maps for better performance. This may be turned off later by the user.
+            // This will be done at a maximum of once per hour, see WeatherSettings.preFetchMaps.
+            if ((performingFirstAppLaunch) || (WeatherSettings.preFetchMaps(context))){
+                // read pollen data to be able to pre-generate pollen maps
+                APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context);
+                executor.execute(pollenReader);
+                ArrayList<WeatherLayer> weatherLayers = WeatherLayer.getLayers(context);
+                final APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,weatherLayers){
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                    }
+                    @Override
+                    public void onProgress(WeatherLayer weatherLayer) {
+                        super.onProgress(weatherLayer);
+                        if (weatherLayer.isPollen()){
+                            if (weatherLayer.isPollenLayerCacheFileOutdated(context)) {
+                                Bitmap bitmap = weatherLayer.getLayerBitmap(context);
+                                if (bitmap!=null) {
+                                    weatherLayer.saveLayerBitmapToCache(context,bitmap);
+                                }
+                            } else {
+                                // do nothing
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFinished(boolean success) {
+                        super.onFinished(success);
+                        WeatherSettings.setPrefetchMapsTime(context);
+                    }
+                };
+                spinner.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        executor.execute(getLayerImages);
+                    }
+                });
+            } else {
+                // do nothing
+            }
         }
     }
 

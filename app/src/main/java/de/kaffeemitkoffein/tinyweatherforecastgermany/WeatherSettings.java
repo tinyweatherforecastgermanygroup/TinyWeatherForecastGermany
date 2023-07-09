@@ -151,6 +151,8 @@ public class WeatherSettings {
     public static final String PREF_POLLEN_HASEL = "PREF_pollen_hasel";
     public static final String PREF_POLLEN_ERLE = "PREF_pollen_erle";
     public static final String PREF_POLLEN_GRAESER = "PREF_pollen_graeser";
+    public static final String PREF_PREFETCH_MAPS = "PREF_prefetch_maps";
+    public static final String PREF_LAST_PREFETCH_TIME = "PREF_prefetch_time";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -245,6 +247,8 @@ public class WeatherSettings {
     public static final boolean PREF_POLLEN_HASEL_DEFAULT = true;
     public static final boolean PREF_POLLEN_ERLE_DEFAULT = true;
     public static final boolean PREF_POLLEN_GRAESER_DEFAULT = true;
+    public static final boolean PREF_PREFETCH_MAPS_DEFAULT = true;
+    public static final long PREF_LAST_PREFETCH_TIME_DEFAULT = 0;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -335,6 +339,7 @@ public class WeatherSettings {
     public boolean pollenHasel = PREF_POLLEN_HASEL_DEFAULT;
     public boolean pollenErle = PREF_POLLEN_ERLE_DEFAULT;
     public boolean pollenGraeser = PREF_POLLEN_GRAESER_DEFAULT;
+    public boolean preFetchMaps = PREF_PREFETCH_MAPS_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -431,6 +436,7 @@ public class WeatherSettings {
         this.pollenHasel = readPreference(PREF_POLLEN_HASEL,PREF_POLLEN_HASEL_DEFAULT);
         this.pollenErle = readPreference(PREF_POLLEN_ERLE,PREF_POLLEN_ERLE_DEFAULT);
         this.pollenGraeser = readPreference(PREF_POLLEN_GRAESER,PREF_POLLEN_GRAESER_DEFAULT);
+        this.preFetchMaps = readPreference(PREF_PREFETCH_MAPS,PREF_PREFETCH_MAPS_DEFAULT);
     }
 
     public void savePreferences() {
@@ -518,6 +524,7 @@ public class WeatherSettings {
         applyPreference(PREF_POLLEN_HASEL,pollenHasel);
         applyPreference(PREF_POLLEN_ERLE,pollenErle);
         applyPreference(PREF_POLLEN_GRAESER,pollenGraeser);
+        applyPreference(PREF_PREFETCH_MAPS,preFetchMaps);
     }
 
     public void commitPreferences() {
@@ -605,6 +612,7 @@ public class WeatherSettings {
         commitPreference(PREF_POLLEN_HASEL,pollenHasel);
         commitPreference(PREF_POLLEN_ERLE,pollenErle);
         commitPreference(PREF_POLLEN_GRAESER,pollenGraeser);
+        commitPreference(PREF_PREFETCH_MAPS,preFetchMaps);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -1714,4 +1722,19 @@ public class WeatherSettings {
                 (getPollenActiveErle(context)) || (getPollenActiveGraeser(context)));
     }
 
+    public static boolean preFetchMaps(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        long lastPrefetchTime = sharedPreferences.getLong(PREF_LAST_PREFETCH_TIME,PREF_LAST_PREFETCH_TIME_DEFAULT);
+        if (Calendar.getInstance().getTimeInMillis()>lastPrefetchTime+1000*60*60) {
+            return sharedPreferences.getBoolean(PREF_PREFETCH_MAPS,PREF_PREFETCH_MAPS_DEFAULT);
+        }
+        return false;
+    }
+
+    public static void setPrefetchMapsTime(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_LAST_PREFETCH_TIME, Calendar.getInstance().getTimeInMillis());
+        pref_editor.apply();
+    }
 }

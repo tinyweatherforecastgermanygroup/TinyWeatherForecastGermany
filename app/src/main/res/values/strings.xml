@@ -200,6 +200,8 @@
     <string name="preference_map_display_coast_summary">Show warning areas on the coast.</string>
     <string name="preference_setalarm_title">Always update</string>
     <string name="preference_setalarm_summary">Keep weather data up to date.</string>
+    <string name="preference_prefetch_maps_title">Load maps immediately</string>
+    <string name="preference_prefetch_maps_summary">Automatically update weather maps and pollen forecast upon app launch. Improves performance, but consumes more data volume.</string>
     <string name="preference_setalarm_notice">NOTICE: this is currently not available, since enabled Gadgetbridge support forces automatic updates anyway.</string>
     <string name="preference_meterednetwork_title">Use metered networks</string>
     <string name="preference_meterednetwork_summary">Also use metered networks to get data.</string>

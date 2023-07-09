@@ -305,7 +305,7 @@ public class DataUpdateService extends Service {
                     executor.execute(textForecastRunnable);
                 }
                 if (updateLayers){
-                    APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,WeatherLayer.getLayers()){
+                    APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,WeatherLayer.getLayers(context)){
                         @Override
                         public void onStart() {
                             updateNotification(3);
@@ -318,6 +318,7 @@ public class DataUpdateService extends Service {
                             sendBroadcast(intent);
                         }
                     };
+                    getLayerImages.setForceUpdate(true);
                     executor.execute(getLayerImages);
                 }
                 if (updatePollen){

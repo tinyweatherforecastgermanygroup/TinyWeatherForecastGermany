@@ -1419,8 +1419,9 @@ public class APIReaders {
     public static class getLayerImages implements Runnable{
 
         private Context context;
-        ArrayList<WeatherLayer> layers;
+        private ArrayList<WeatherLayer> layers;
         public boolean ssl_exception = false;
+        private boolean forceUpdate = false;
 
         public getLayerImages(Context context, ArrayList<WeatherLayer> layers){
             this.context = context;
@@ -1540,21 +1541,21 @@ public class APIReaders {
                 fileOutputStream.close();
                 inputStream.close();
             } catch (Exception e){
-                return false;
+                // do nothing
             }
             return true;
         }
 
         public boolean readLayer(WeatherLayer weatherLayer){
             // read outdated images from geoServer. Ignore pollen layers, because they are generated locally.
-            if (weatherLayer.isOutdated(context) && !weatherLayer.isPollen()){
+            if ((weatherLayer.isOutdated(context) && !weatherLayer.isPollen()) || ((forceUpdate) && weatherLayer.updateMode!=WeatherLayer.UpdateMode.NEVER)){
                 try {
                     File cacheDir = context.getCacheDir();
                     File targetFile = new File(cacheDir,weatherLayer.getCacheFilename());
                     InputStream layerInputStream = getLayerInputStream(weatherLayer);
-                    //Log.v("twfg","Layer "+weatherLayer.layer+" fetching from GeoServer. File is "+targetFile.toString());
+                    //Log.v("weather","Layer "+weatherLayer.layer+" fetching from GeoServer. File is "+targetFile.toString()+" and time is "+weatherLayer.timestamp);
                     boolean result = readImage(layerInputStream,targetFile);
-                    if (result) {
+                    if ((result) && (weatherLayer.timestamp!=null)) {
                         // save the layer "midnight" time (this is the requested time)
                         WeatherSettings.setLayerTime(context,weatherLayer.layer,weatherLayer.timestamp);
                     }
@@ -1565,14 +1566,20 @@ public class APIReaders {
                 // Reason: this class may also be initiated with a layer-subset or a single layer.
                 if (weatherLayer.atop!=null){
                     for (int i=0; i<weatherLayer.atop.length; i++){
-                        readLayer(new WeatherLayer(context,weatherLayer.atop[i]));
+                        if (weatherLayer.atop[i]!=weatherLayer.layer){
+                            readLayer(new WeatherLayer(weatherLayer.atop[i]));
+                        }
                     }
                 }
             } else {
-                // Log.v("twfg","Layer "+weatherLayer.layer+" already in place.");
+                //Log.v("weather","Layer "+weatherLayer.layer+" already in place.");
             }
             onProgress(weatherLayer);
             return true;
+        }
+
+        public void setForceUpdate(boolean b){
+            this.forceUpdate = b;
         }
 
         public void onStart(){
@@ -1594,7 +1601,8 @@ public class APIReaders {
             if (DataUpdateService.isConnectedToInternet(context)){
                 if (layers!=null){
                     for (int i=0; i<layers.size(); i++){
-                        if (!readLayer(layers.get(i))){
+                        WeatherLayer weatherLayer = layers.get(i);
+                        if (!readLayer(weatherLayer)){
                             success = false;
                         }
                     }

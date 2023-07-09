@@ -36,6 +36,8 @@ import java.util.concurrent.Executors;
 
 public class WelcomeActivity extends Activity {
 
+    public final static String WA_EXTRA_ISFIRSTAPPLAUNCH = "WA_EXTRA_IFAL";
+
     RelativeLayout pager;
     LayoutInflater layoutInflater;
     Executor executor;
@@ -59,6 +61,8 @@ public class WelcomeActivity extends Activity {
     CheckBox checkBox3;
 
     View result_view;
+
+    boolean force_replay = false;
 
     private final static String SIS_PAGENUMBER = "PAGENUMBER";
 
@@ -90,7 +94,7 @@ public class WelcomeActivity extends Activity {
             }
         }
         executor = Executors.newSingleThreadExecutor();
-        boolean force_replay = false;
+        force_replay = false;
         Intent intent = getIntent();
         if (intent != null) {
             Bundle bundle = intent.getExtras();
@@ -395,7 +399,11 @@ public class WelcomeActivity extends Activity {
 
     private void startMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
-        //Intent i = new Intent(this, WeatherWarningActivity.class);
+        if (WeatherSettings.isFirstAppLaunch(getApplicationContext())){
+            i.putExtra(WA_EXTRA_ISFIRSTAPPLAUNCH,true);
+        } else {
+            i.putExtra(WA_EXTRA_ISFIRSTAPPLAUNCH,false);
+        }
         WeatherSettings.setAppLaunchedFlag(getApplicationContext());
         startActivity(i);
         finish();
