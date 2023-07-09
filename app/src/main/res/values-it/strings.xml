@@ -367,4 +367,6 @@
     <string name="hint_no">Non mostrare i suggerimenti</string>
     <string name="hint_1">Premere l\'indicatore di tempo in basso a sinistra per impostare il radar della pioggia all\'inizio. Premere sulla legenda per riavvolgere. Se il radar non riesce a caricarsi, l\'indicazione dell\'ora è gialla. Se è possibile visualizzare almeno un\'immagine non aggiornata, l\'indicazione del tempo è arancione.</string>
     <string name="preference_screen_pollen_hint_summary">Se si disattivano alcuni pollini, questi saranno nascosti nelle previsioni dettagliate, nell\'elenco delle mappe e nella visualizzazione dettagliata delle mappe.</string>
+    <string name="preference_prefetch_maps_title">Caricamento immediato delle mappe</string>
+    <string name="preference_prefetch_maps_summary">Aggiornamento automatico delle mappe meteo e delle previsioni dei pollini all\'avvio dell\'app. Migliora le prestazioni, ma consuma più volume di dati.</string>
 </resources>
