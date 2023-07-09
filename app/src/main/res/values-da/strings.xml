@@ -365,4 +365,6 @@
     <string name="wd_pfr">Sandsynlighed for frostregn</string>
     <string name="wd_pf">Sandsynlighed for tåge</string>
     <string name="hint_no">Vis ikke hints</string>
+    <string name="preference_screen_pollen_hint_summary">Hvis du deaktiverer en bestemt pollen, vil den blive skjult i den detaljerede prognose, kortlisten og den detaljerede kortvisning.</string>
+    <string name="preference_prefetch_maps_title">Indlæs kort med det samme</string>
 </resources>
