@@ -389,4 +389,6 @@
     <string name="layerlabel_uvi_cs_1">UV-index van morgen (onbewolkt)</string>
     <string name="layerlabel_ts_1">Gevoelstemperatuur om 12:00 (lokale tijd)</string>
     <string name="layerlabel_ts_min_0">Minimale gevoelstemperatuur van vandaag</string>
+    <string name="preference_screen_pollen_hint_summary">Als je bepaalde pollen uitschakelt, worden ze verborgen in de gedetailleerde weersvoorspelling, de kaartenlijst en de gedetailleerde kaartweergave.</string>
+    <string name="preference_prefetch_maps_title">Kaarten onmiddellijk laden</string>
 </resources>
