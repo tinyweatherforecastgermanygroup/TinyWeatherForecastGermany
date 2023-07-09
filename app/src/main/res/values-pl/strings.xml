@@ -366,4 +366,6 @@
     <string name="wd_pd">Prawdopodobieństwo mżawki</string>
     <string name="hint_no">Nie pokazuj wskazówek</string>
     <string name="preference_screen_pollen_hint_summary">Jeśli dezaktywujesz określone pyłki, zostaną one ukryte w szczegółowej prognozie, na liście map i w szczegółowym widoku mapy.</string>
+    <string name="preference_prefetch_maps_title">Natychmiastowe ładowanie map</string>
+    <string name="preference_prefetch_maps_summary">Automatyczna aktualizacja map pogody i prognozy pyłków po uruchomieniu aplikacji. Poprawia wydajność, ale zużywa więcej danych.</string>
 </resources>
