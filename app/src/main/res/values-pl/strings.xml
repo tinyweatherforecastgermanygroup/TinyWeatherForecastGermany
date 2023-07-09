@@ -365,4 +365,5 @@
     <string name="wd_pp">Prawdopodobieństwo wystąpienia opadów</string>
     <string name="wd_pd">Prawdopodobieństwo mżawki</string>
     <string name="hint_no">Nie pokazuj wskazówek</string>
+    <string name="preference_screen_pollen_hint_summary">Jeśli dezaktywujesz określone pyłki, zostaną one ukryte w szczegółowej prognozie, na liście map i w szczegółowym widoku mapy.</string>
 </resources>
