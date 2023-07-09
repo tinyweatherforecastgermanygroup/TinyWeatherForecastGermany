@@ -367,4 +367,5 @@
     <string name="hint_1">Stisknutím ukazatele času vlevo dole nastavíte dešťový radar na začátek. Stisknutím na legendě se přetočí zpět. Pokud se radar nenačte, ukazatel času je žlutý. Pokud se podaří zobrazit alespoň zastaralý snímek, je zobrazení času oranžové.</string>
     <string name="preference_prefetch_maps_title">Okamžité načtení map</string>
     <string name="preference_screen_pollen_hint_summary">Pokud deaktivujete určitý pyl, bude skryt v podrobné předpovědi, seznamu map a podrobném zobrazení mapy.</string>
+    <string name="preference_prefetch_maps_summary">Automatická aktualizace map počasí a pylové předpovědi po spuštění aplikace. Zlepšuje výkon, ale spotřebovává větší objem dat.</string>
 </resources>
