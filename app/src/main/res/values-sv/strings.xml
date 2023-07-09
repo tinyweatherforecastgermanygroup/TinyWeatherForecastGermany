@@ -34,4 +34,6 @@
     <string name="wd_wind">Vind</string>
     <string name="wd_general">Allmänna uppgifter</string>
     <string name="welcome_s3_text3">Lägg till några widgetar på startskärmen.</string>
+    <string name="preference_display_overviewchart_title">Översikt diagram</string>
+    <string name="preference_screen_pollen_hint_summary">Om du avaktiverar vissa pollen kommer de att döljas i den detaljerade prognosen, kartlistan och den detaljerade kartvyn.</string>
 </resources>
