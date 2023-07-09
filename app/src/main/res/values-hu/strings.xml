@@ -365,4 +365,5 @@
     <string name="wd_general">Általános adatok</string>
     <string name="hint_no">Ne mutasson tippeket</string>
     <string name="hint_1">Nyomja meg a bal alsó sarokban lévő időkijelzőt az esőradar kezdetére állításához. Nyomja meg a legendát a visszatekeréshez. Ha a radar nem töltődik be, az időkijelző sárga színű. Ha legalább egy elavult kép megjeleníthető, az időkijelzés narancssárga színű.</string>
+    <string name="preference_screen_pollen_hint_summary">Ha bizonyos polleneket kikapcsol, azok el lesznek rejtve a részletes előrejelzésben, a térképlistában és a részletes térképnézetben.</string>
 </resources>
