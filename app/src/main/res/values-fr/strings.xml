@@ -379,4 +379,6 @@
     <string name="wd_wind">Le vent</string>
     <string name="wd_general">Données générales</string>
     <string name="hint_no">Ne pas montrer d\'indices</string>
+    <string name="preference_screen_pollen_hint_summary">Si vous désactivez certains pollens, ils seront masqués dans les prévisions détaillées, la liste des cartes et la vue détaillée des cartes.</string>
+    <string name="preference_prefetch_maps_title">Chargement immédiat des cartes</string>
 </resources>
