@@ -366,4 +366,6 @@
     <string name="wd_ph">Вероятность выпадения града</string>
     <string name="wd_general">Общие данные</string>
     <string name="preference_screen_pollen_hint_summary">Если вы деактивируете определенную пыльцу, она будет скрыта в подробном прогнозе, списке карт и детальном просмотре карты.</string>
+    <string name="preference_prefetch_maps_title">Загружайте карты немедленно</string>
+    <string name="preference_prefetch_maps_summary">Автоматическое обновление карт погоды и прогноза пыльцы при запуске приложения. Улучшает производительность, но потребляет больший объем данных.</string>
 </resources>
