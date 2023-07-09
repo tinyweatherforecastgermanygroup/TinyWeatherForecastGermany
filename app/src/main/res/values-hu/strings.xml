@@ -366,4 +366,6 @@
     <string name="hint_no">Ne mutasson tippeket</string>
     <string name="hint_1">Nyomja meg a bal alsó sarokban lévő időkijelzőt az esőradar kezdetére állításához. Nyomja meg a legendát a visszatekeréshez. Ha a radar nem töltődik be, az időkijelző sárga színű. Ha legalább egy elavult kép megjeleníthető, az időkijelzés narancssárga színű.</string>
     <string name="preference_screen_pollen_hint_summary">Ha bizonyos polleneket kikapcsol, azok el lesznek rejtve a részletes előrejelzésben, a térképlistában és a részletes térképnézetben.</string>
+    <string name="preference_prefetch_maps_title">Térképek azonnali betöltése</string>
+    <string name="preference_prefetch_maps_summary">Az időjárási térképek és a pollenelőrejelzés automatikus frissítése az alkalmazás indításakor. Javítja a teljesítményt, de nagyobb adatmennyiséget fogyaszt.</string>
 </resources>
