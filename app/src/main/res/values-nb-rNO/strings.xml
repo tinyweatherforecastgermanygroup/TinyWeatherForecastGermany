@@ -342,4 +342,6 @@
     <string name="alertdialog_3_title">Tilbakestill innstillinger</string>
     <string name="alertdialog_3_text1">Alle innstillinger tilbakestilles til standardverdier, og deretter vises introen igjen for å gjøre de viktigste innstillingene.</string>
     <string name="preference_screen_pollen_hint_summary">Hvis du deaktiverer visse pollen, blir de skjult i den detaljerte prognosen, kartlisten og den detaljerte kartvisningen.</string>
+    <string name="preference_prefetch_maps_title">Last inn kart umiddelbart</string>
+    <string name="preference_prefetch_maps_summary">Oppdaterer automatisk værkart og pollenvarsel når appen startes. Forbedrer ytelsen, men bruker mer datavolum.</string>
 </resources>
