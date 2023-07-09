@@ -397,4 +397,5 @@
     <string name="preference_screen_pollen_alder_summary">Zeige die Vorhersage des Pollenfluges für Erle an.</string>
     <string name="preference_screen_pollen_hint_summary">Wenn Sie bestimmte Pollen deaktivieren, werden sie in der detaillierten Vorhersage, der Kartenliste und der detaillierten Kartenansicht ausgeblendet.</string>
     <string name="preference_prefetch_maps_title">Karten sofort laden</string>
+    <string name="preference_prefetch_maps_summary">Wetterkarten und Pollen-Vorhersage beim Start der App automatisch aktualisieren. Verbessert die Leistung, verbraucht aber mehr Daten-Volumen.</string>
 </resources>
