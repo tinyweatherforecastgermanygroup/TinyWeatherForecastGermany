@@ -365,4 +365,5 @@
     <string name="wd_wind">Angin</string>
     <string name="wd_general">Data umum</string>
     <string name="hint_no">Jangan tampilkan petunjuk</string>
+    <string name="preference_screen_pollen_hint_summary">Jika Anda menonaktifkan serbuk sari tertentu, serbuk sari tersebut akan disembunyikan di prakiraan rinci, daftar peta, dan tampilan peta rinci.</string>
 </resources>
