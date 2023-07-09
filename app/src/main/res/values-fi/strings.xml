@@ -366,4 +366,6 @@
     <string name="wd_pfr">Jäätävän sateen todennäköisyys</string>
     <string name="hint_1">Paina vasemmassa alareunassa olevaa ajanilmaisinta asettaaksesi sadetutkan alkuun. Paina legendaa kelataksesi taaksepäin. Jos tutka ei lataudu, aikanäyttö on keltainen. Jos ainakin vanhentunut kuva voidaan näyttää, aikanäyttö on oranssi.</string>
     <string name="preference_screen_pollen_hint_summary">Jos poistat tietyn siitepölyn käytöstä, se jää piiloon yksityiskohtaisessa ennusteessa, karttaluettelossa ja yksityiskohtaisessa karttanäkymässä.</string>
+    <string name="preference_prefetch_maps_title">Lataa kartat välittömästi</string>
+    <string name="preference_prefetch_maps_summary">Päivittää automaattisesti sääkartat ja siitepölyennusteen sovelluksen käynnistämisen yhteydessä. Parantaa suorituskykyä, mutta kuluttaa enemmän dataa.</string>
 </resources>
