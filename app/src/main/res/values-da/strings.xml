@@ -367,4 +367,5 @@
     <string name="hint_no">Vis ikke hints</string>
     <string name="preference_screen_pollen_hint_summary">Hvis du deaktiverer en bestemt pollen, vil den blive skjult i den detaljerede prognose, kortlisten og den detaljerede kortvisning.</string>
     <string name="preference_prefetch_maps_title">Indlæs kort med det samme</string>
+    <string name="preference_prefetch_maps_summary">Opdaterer automatisk vejrkort og pollenprognose, når appen startes. Forbedrer ydeevnen, men bruger mere datavolumen.</string>
 </resources>
