@@ -382,4 +382,19 @@
     <string name="wd_wevents">Wetterereignisse</string>
     <string name="wd_pv1">Wahrscheinlichkeit einer Sichtweite von weniger als einem Kilometer</string>
     <string name="wd_pt">Wahrscheinlichkeit von Gewitter</string>
+    <string name="tomorrow">morgen</string>
+    <string name="preference_screen_pollen_summary">Passe die Pollenanzeige an.</string>
+    <string name="preference_screen_pollen_ambrosia_summary">Zeige die Vorhersage des Pollenfluges für Ambrosia an.</string>
+    <string name="preference_screen_pollen_rye_summary">Zeige die Vorhersage des Pollenfluges für Roggen an.</string>
+    <string name="preference_screen_pollen_ash_summary">Zeige die Vorhersage des Pollenfluges für Esche an.</string>
+    <string name="preference_screen_pollen_birch_summary">Zeige die Vorhersage des Pollenfluges für Birke an.</string>
+    <string name="preference_screen_pollen_hazel_summary">Zeige die Vorhersage des Pollenfluges für Hazel an.</string>
+    <string name="preference_screen_pollen_grasses_summary">Zeige die Vorhersage des Pollenfluges für Gräser an.</string>
+    <string name="preference_screen_pollen_hint_title">Hinweis</string>
+    <string name="dayaftertomorrow">übermorgen</string>
+    <string name="preference_screen_pollen_title">Pollenanzeige</string>
+    <string name="preference_screen_pollen_mugwort_summary">Zeige die Vorhersage des Pollenfluges für Beifuß an.</string>
+    <string name="preference_screen_pollen_alder_summary">Zeige die Vorhersage des Pollenfluges für Erle an.</string>
+    <string name="preference_screen_pollen_hint_summary">Wenn Sie bestimmte Pollen deaktivieren, werden sie in der detaillierten Vorhersage, der Kartenliste und der detaillierten Kartenansicht ausgeblendet.</string>
+    <string name="preference_prefetch_maps_title">Karten sofort laden</string>
 </resources>
