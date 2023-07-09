@@ -36,4 +36,6 @@
     <string name="welcome_s3_text3">Lägg till några widgetar på startskärmen.</string>
     <string name="preference_display_overviewchart_title">Översikt diagram</string>
     <string name="preference_screen_pollen_hint_summary">Om du avaktiverar vissa pollen kommer de att döljas i den detaljerade prognosen, kartlistan och den detaljerade kartvyn.</string>
+    <string name="preference_prefetch_maps_title">Ladda kartor omedelbart</string>
+    <string name="preference_prefetch_maps_summary">Uppdatera väderkartor och pollenprognoser automatiskt när appen startas. Förbättrar prestandan, men förbrukar mer datavolym.</string>
 </resources>
