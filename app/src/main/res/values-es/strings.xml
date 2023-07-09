@@ -365,4 +365,5 @@
     <string name="hint_no">No mostrar pistas</string>
     <string name="hint_1">Pulse el indicador de tiempo situado en la parte inferior izquierda para poner el radar de lluvia al principio. Pulse en la leyenda para rebobinar. Si el radar no se carga, el indicador de tiempo es amarillo. Si se puede visualizar al menos una imagen desfasada, el indicador de tiempo es naranja.</string>
     <string name="wd_pfr">Probabilidad de lluvia helada</string>
+    <string name="preference_screen_pollen_hint_summary">Si desactiva determinado polen, éste quedará oculto en la previsión detallada, la lista de mapas y la vista detallada del mapa.</string>
 </resources>
