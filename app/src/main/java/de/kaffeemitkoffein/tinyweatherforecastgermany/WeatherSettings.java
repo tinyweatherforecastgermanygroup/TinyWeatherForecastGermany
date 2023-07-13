@@ -27,6 +27,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,6 +58,8 @@ public class WeatherSettings {
     public final static int DISPLAYTYPE_6HOURS = 3;
     public final static int DISPLAYTYPE_24HOURS = 4;
     public final static int DISPLAYTYPE_MIXED = 256;
+
+    public static final String PREF_CATEGORY_GENERAL = "PREF_category_general";
 
     public static final String PREF_STATION_NAME = "PREF_station_name";
     public static final String PREF_LOCATION_DESCRIPTION = "PREF_station_description";
@@ -130,6 +133,7 @@ public class WeatherSettings {
     public static final String PREF_THEME = "PREF_theme";
     public static final String PREF_ALTERNATIVE_ICONS = "PREF_alternative_icons";
     public static final String PREF_USE_METERED_NETWORKS = "PREF_use_metered_networks";
+    public static final String PREF_USE_WIFI_ONLY ="PREF_use_wifi_only";
     public static final String PREF_NOTIFICATION_IDENTIFIER = "PREF_notification_id";
     public static final String PREF_CLEARNOTIFICATIONS = "PREF_clearnotifications";
     public static final String PREF_ASKEDFORLOCATIONPERMISSION = "PREF_askedlocpermission";
@@ -226,6 +230,7 @@ public class WeatherSettings {
     public static final String PREF_THEME_DEFAULT = Theme.FOLLOW_DEVICE;
     public static final boolean PREF_ALTERNATIVE_ICONS_DEFAULT = true;
     public static final boolean PREF_USE_METERED_NETWORKS_DEFAULT = true;
+    public static final boolean PREF_USE_WIFI_ONLY_DEFAULT = false;
     public static final int PREF_NOTIFICATION_IDENTIFIER_DEFAULT = -2147483640;
     public static final boolean PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT = false;
     public static final String PREF_ROTATIONMODE_DEFAULT = DeviceRotation.DEVICE;
@@ -322,6 +327,7 @@ public class WeatherSettings {
     public String theme = PREF_THEME_DEFAULT;
     public boolean preferAlternativeIcons = PREF_ALTERNATIVE_ICONS_DEFAULT;
     public boolean useMeteredNetworks = PREF_USE_METERED_NETWORKS_DEFAULT;
+    public boolean useWifiOnly = PREF_USE_WIFI_ONLY_DEFAULT;
     public int notificationIdentifier = PREF_NOTIFICATION_IDENTIFIER_DEFAULT;
     private boolean askedforlocationpermission = PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT;
     public String rotationMode = PREF_ROTATIONMODE_DEFAULT;
@@ -421,6 +427,7 @@ public class WeatherSettings {
         this.theme = readPreference(PREF_THEME,PREF_THEME_DEFAULT);
         this.preferAlternativeIcons = readPreference(PREF_ALTERNATIVE_ICONS,PREF_ALTERNATIVE_ICONS_DEFAULT);
         this.useMeteredNetworks = readPreference(PREF_USE_METERED_NETWORKS,PREF_USE_METERED_NETWORKS_DEFAULT);
+        this.useWifiOnly = readPreference(PREF_USE_WIFI_ONLY,PREF_USE_WIFI_ONLY_DEFAULT);
         this.notificationIdentifier = readPreference(PREF_NOTIFICATION_IDENTIFIER,PREF_NOTIFICATION_IDENTIFIER_DEFAULT);
         this.rotationMode = readPreference(PREF_ROTATIONMODE,PREF_ROTATIONMODE_DEFAULT);
         this.ncChannelDetail = readPreference(PREF_NC_CHANNEL_DETAIL,PREF_NC_CHANNEL_DETAIL_DEFAULT);
@@ -509,6 +516,7 @@ public class WeatherSettings {
         applyPreference(PREF_THEME,this.theme);
         applyPreference(PREF_ALTERNATIVE_ICONS,this.preferAlternativeIcons);
         applyPreference(PREF_USE_METERED_NETWORKS,this.useMeteredNetworks);
+        applyPreference(PREF_USE_WIFI_ONLY,this.useWifiOnly);
         applyPreference(PREF_NOTIFICATION_IDENTIFIER,this.notificationIdentifier);
         applyPreference(PREF_ROTATIONMODE,rotationMode);
         applyPreference(PREF_NC_CHANNEL_DETAIL,ncChannelDetail);
@@ -597,6 +605,7 @@ public class WeatherSettings {
         commitPreference(PREF_THEME,this.theme);
         commitPreference(PREF_ALTERNATIVE_ICONS,this.preferAlternativeIcons);
         commitPreference(PREF_USE_METERED_NETWORKS,this.useMeteredNetworks);
+        commitPreference(PREF_USE_WIFI_ONLY,this.useWifiOnly);
         commitPreference(PREF_NOTIFICATION_IDENTIFIER,this.notificationIdentifier);
         commitPreference(PREF_ROTATIONMODE,rotationMode);
         commitPreference(PREF_NC_CHANNEL_DETAIL,ncChannelDetail);
@@ -1404,6 +1413,11 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_USE_METERED_NETWORKS,PREF_USE_METERED_NETWORKS_DEFAULT);
     }
 
+    public static boolean useWifiOnly(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_USE_WIFI_ONLY,PREF_USE_WIFI_ONLY_DEFAULT);
+    }
+
     public static int getUniqueNotificationIdentifier(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int i = sharedPreferences.getInt(PREF_NOTIFICATION_IDENTIFIER, PREF_NOTIFICATION_IDENTIFIER_DEFAULT);
@@ -1626,7 +1640,8 @@ public class WeatherSettings {
         long lastUpdateTime = getMapLastUpdateTime(context);
         // the DWD kindly asks not to update layers more often than every 5 minutes. We comply with that.
         // Source: https://www.dwd.de/DE/wetter/warnungen_aktuell/objekt_einbindung/einbindung_karten_geodienste.pdf?__blob=publicationFile&v=14
-        return (Calendar.getInstance().getTimeInMillis() + 1000*60*5 > lastUpdateTime);
+        boolean result = (Calendar.getInstance().getTimeInMillis() > lastUpdateTime+ 1000*60*5);
+        return result;
     }
 
     public static void setMapLastUpdateTime(Context context, long value){

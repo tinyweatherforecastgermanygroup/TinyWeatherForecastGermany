@@ -192,7 +192,7 @@ public class DataUpdateService extends Service {
             // 1) intent supplied telling what to do, AND
             // 2) internet connection is present
             boolean hasNetwork = false;
-            if (isConnectedToInternet(context)){
+            if (suitableNetworkAvailable(context)){
                 hasNetwork = true;
                 // put
                 if ((Build.VERSION.SDK_INT > 23) && (connectivityManager!=null)){
@@ -592,6 +592,97 @@ public class DataUpdateService extends Service {
             PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.WARN,"Error(s) occured when checking for a valid network: "+e.getMessage()+" => assuming there is a valid network connection.");
        }
         return true;
+    }
+
+    public static boolean isUnMeteredNetwork(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            Network network = connectivityManager.getActiveNetwork();
+            if (network != null) {
+                NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+                if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)) {
+                    return true;
+                }
+            }
+        } else {
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null) {
+                int netWorkType = networkInfo.getType();
+                // assumes WiFi is unmetered
+                if (netWorkType == ConnectivityManager.TYPE_WIFI){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean suitableNetworkAvailable(Context context){
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager!=null){
+                // use networkInfo for api below 23
+                if (Build.VERSION.SDK_INT < 23){
+                    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                    if (networkInfo != null) {
+                        if  (networkInfo.isConnected()){
+                            if (networkInfo.getType()==ConnectivityManager.TYPE_WIFI){
+                                // for api below 23, Wi-Fi means unmetered, is ok!
+                                return true;
+                            } else {
+                                // api below 23 and network is NOT Wi-Fi, check if allowed by user
+                                if (WeatherSettings.useWifiOnly(context)){
+                                    // other than Wi-Fi not allowed, return negative
+                                    return false;
+                                } else {
+                                    // other than wifi allowed, is ok
+                                    return true;
+                                }
+                            }
+                        } else {
+                            // no active connection
+                            return false;
+                        }
+                    } else {
+                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkinfo obtained => assuming no suitable network available.");
+                        return false;
+                    }
+                // use connectivityManager on api 23 and higher
+                } else {
+                    Network network = connectivityManager.getActiveNetwork();
+                    NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+                    if (networkCapabilities==null) {
+                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkCapabilities obtained => assuming no suitable network available.");
+                        return false;
+                    } else {
+                        //if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))){
+                        if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)){
+                            // internet conn present, check for metering
+                            if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)){
+                                // not metered, means always ok!
+                                return true;
+                            } else {
+                                // network might be metered or is metered.
+                                // check if this is allowed by user.
+                                if (WeatherSettings.useMeteredNetworks(context)){
+                                    // allowed to use metered, is ok!
+                                    return true;
+                                } else {
+                                    // metered forbidden, negative.
+                                    return false;
+                                }
+                            }
+                        } else {
+                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Network detected, but does not have internet access => assuming no suitable network available.");
+                            return false;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.WARN,"Error(s) occured when checking for a valid network: "+e.getMessage()+" => assuming there is no valid network connection.");
+        }
+        return false;
     }
 
 }

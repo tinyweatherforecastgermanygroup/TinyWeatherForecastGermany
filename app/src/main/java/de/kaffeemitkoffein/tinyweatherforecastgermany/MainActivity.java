@@ -632,16 +632,21 @@ public class MainActivity extends Activity {
             popupHint();
             // create pollen area database
             if (!PollenArea.IsPollenAreaDatabaseComplete(context)){
-                APIReaders.PollenAreaReader pollenAreaReader = new APIReaders.PollenAreaReader(context){
-                    @Override
-                    public void onFinished() {
-                        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
-                        // PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
-                        // todo: refresh view for pollen
-                        super.onFinished();
-                    }
-                };
-                executor.execute(pollenAreaReader);
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Pollen areas database is empty or corrupt and needs to be fetched from the geoserver.");
+                if (DataUpdateService.suitableNetworkAvailable(context)){
+                    APIReaders.PollenAreaReader pollenAreaReader = new APIReaders.PollenAreaReader(context){
+                        @Override
+                        public void onFinished() {
+                            Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+                            // PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
+                            // todo: refresh view for pollen
+                            super.onFinished();
+                        }
+                    };
+                    executor.execute(pollenAreaReader);
+                } else {
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Cannot fetch pollen areas because no suitable network connection found.");
+                }
             } else {
             /*
             long start = Calendar.getInstance().getTimeInMillis();
@@ -651,7 +656,7 @@ public class MainActivity extends Activity {
             }
             // Prefetch maps for better performance. This may be turned off later by the user.
             // This will be done at a maximum of once per hour, see WeatherSettings.preFetchMaps.
-            if ((performingFirstAppLaunch) || (WeatherSettings.preFetchMaps(context))){
+            if (((performingFirstAppLaunch) || (WeatherSettings.preFetchMaps(context))) && DataUpdateService.suitableNetworkAvailable(context)){
                 // read pollen data to be able to pre-generate pollen maps
                 APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context);
                 executor.execute(pollenReader);

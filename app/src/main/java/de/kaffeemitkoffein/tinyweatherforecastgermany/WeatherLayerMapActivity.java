@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -24,6 +26,7 @@ public class WeatherLayerMapActivity extends Activity {
     TextView titleTextView;
     ImageView legendImageView;
     ImageView mapImageView;
+    RelativeLayout mainContainer;
     RelativeLayout legendHookView;
     RelativeLayout legendHolder;
     boolean pollenLegendInitated=false;
@@ -40,6 +43,33 @@ public class WeatherLayerMapActivity extends Activity {
     ArrayList<Integer> baseJumpTarget;
     ArrayList<String> additonalSpinnerItems;
     ArrayList<Integer> additionalJumpTarget;
+
+    WeatherDetailsActivity.SwipeGestureDetector swipeGestureDetector = new WeatherDetailsActivity.SwipeGestureDetector(){
+        @Override
+        public boolean onLeftSwipe(View view, MotionEvent motionEvent) {
+            Log.v("twfg","left swipe");
+            changeMap(1);
+            return super.onLeftSwipe(view, motionEvent);
+        }
+
+        @Override
+        public boolean onRightSwipe(View view, MotionEvent motionEvent) {
+            Log.v("twfg","right swipe");
+            changeMap(-1);
+            return super.onRightSwipe(view, motionEvent);
+        }
+
+        @Override
+        public boolean onUpSwipe(View view, MotionEvent motionEvent) {
+            return super.onUpSwipe(view, motionEvent);
+        }
+
+        @Override
+        public boolean onDownSwipe(View view, MotionEvent motionEvent) {
+            return super.onDownSwipe(view, motionEvent);
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +107,8 @@ public class WeatherLayerMapActivity extends Activity {
         spinner1 = (Spinner) findViewById(R.id.wlm_spinner1);
         spinner2 = (Spinner) findViewById(R.id.wlm_spinner2);
         weatherLayer = new WeatherLayer(layer);
+        mainContainer = (RelativeLayout) findViewById(R.id.wlm_maincontainer);
+        mapImageView = (ImageView) findViewById(R.id.wlm_map);
         attachSpinner();
         displayMap();
     }
@@ -254,28 +286,6 @@ public class WeatherLayerMapActivity extends Activity {
     final MainActivity.SpinnerListener spinnerClickListener = new MainActivity.SpinnerListener() {
         @Override
         public void handleItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-            /*
-            int newPosition = -1;
-            if ((layer>= WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0) &&
-                    (layer<= WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_2)){
-                newPosition = WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0+spinner1.getSelectedItemPosition()*3+spinner2.getSelectedItemPosition();
-            }
-            if ((layer>= WeatherLayer.Layers.UVI_CLOUDS_0) &&
-                    (layer<=WeatherLayer.Layers.UVI_CLOUDLESS_2)){
-                newPosition = spinner1.getSelectedItemPosition()*3+1+spinner2.getSelectedItemPosition();
-            }
-            if ((layer>=WeatherLayer.Layers.SENSED_TEMPERATURE_1M_0) && (layer<=WeatherLayer.Layers.SENSED_TEMPERATURE_1M_2)){
-                newPosition = spinner2.getSelectedItemPosition()+9;
-            }
-            if ((layer>=WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0) && (layer<=WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_2)){
-                if (spinner1.getSelectedItemPosition()==0){
-                    newPosition = WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_0 + spinner2.getSelectedItemPosition();
-                }
-                if (spinner1.getSelectedItemPosition()==1){
-                    newPosition = WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0 + spinner2.getSelectedItemPosition();
-                }
-            }
-             */
             int baseLayer = baseJumpTarget.get(spinner1.getSelectedItemPosition());
             int addPosition = additionalJumpTarget.get(spinner2.getSelectedItemPosition());
             int newPosition = baseLayer + addPosition;

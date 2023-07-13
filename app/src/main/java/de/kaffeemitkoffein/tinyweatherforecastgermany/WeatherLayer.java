@@ -40,8 +40,6 @@ public class WeatherLayer {
     int[] atop = null;
     int legendType;
 
-    public int outlineColor = Color.WHITE;
-
     public WeatherLayer(int layer, float[] mapGeo, Long timestamp, int width, int height, String srs, int updateMode, int[] atop, int legendType) {
         this.layer = layer;
         this.mapGeo = mapGeo;
@@ -680,6 +678,7 @@ public class WeatherLayer {
             Bitmap targetBitmap = layerBitmap.copy(Bitmap.Config.ARGB_8888,true);
             Canvas canvasVisibleMap = new Canvas(targetBitmap);
             if (layerBitmap!=null){
+                int outlineColor = ThemePicker.getWidgetTextColor(context);
                 if (atop!=null){
                     final Paint cp = new Paint();
                     cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
@@ -705,6 +704,7 @@ public class WeatherLayer {
         if (bitmap!=null){
             int[] pixels = new int[bitmap.getWidth()*bitmap.getHeight()];
             bitmap.getPixels(pixels,0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());
+            final int lineColor = ThemePicker.getWidgetTextColor(context);
             for (int i=0; i<pixels.length; i++){
                 if (pixels[i]==-1){
                     pixels[i]= Color.TRANSPARENT;

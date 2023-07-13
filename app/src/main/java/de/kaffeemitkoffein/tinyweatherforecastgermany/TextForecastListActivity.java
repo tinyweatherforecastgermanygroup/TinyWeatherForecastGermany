@@ -122,8 +122,6 @@ public class TextForecastListActivity extends Activity {
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         displayFloatButton();
         floatButton.setOnClickListener(floatClickListener);
-        // TESTING
-        Executor executor = Executors.newSingleThreadExecutor();
         APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
             @Override
             public void onPositiveResult(){
@@ -134,9 +132,10 @@ public class TextForecastListActivity extends Activity {
 
             }
         };
-        //executor.execute(textForecastRunnable);
         RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.textforcasts_activity_main_relative_container);
-        mainLayout.post(textForecastRunnable);
+        if (DataUpdateService.suitableNetworkAvailable(context)){
+            mainLayout.post(textForecastRunnable);
+        }
     }
 
     @Override

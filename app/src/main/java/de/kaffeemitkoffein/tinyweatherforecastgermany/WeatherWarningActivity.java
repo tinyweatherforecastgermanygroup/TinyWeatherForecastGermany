@@ -96,7 +96,7 @@ public class WeatherWarningActivity extends Activity {
         @Override
         public void onReceive(Context c, Intent intent) {
             final String errorText = DataUpdateService.StopReason.getStopReasonErrorText(context,intent);
-            if ((errorText!=null)  && (forceWeatherUpdateFlag)){
+            if ((errorText!=null) && (forceWeatherUpdateFlag)){
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -820,7 +820,9 @@ public class WeatherWarningActivity extends Activity {
         executor.execute(radarMNGeoserverRunnable);
         */
         drawWindIcon();
-        scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
+        if (DataUpdateService.suitableNetworkAvailable(context)){
+            scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
+        }
         // set close listener
         ImageView closeImageview = (ImageView) findViewById(R.id.closeicon_map);
         if (closeImageview != null){

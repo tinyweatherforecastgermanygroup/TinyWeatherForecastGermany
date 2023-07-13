@@ -21,6 +21,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import org.json.JSONArray;
@@ -1406,7 +1407,7 @@ public class APIReaders {
              * conditions for update:
              * corrupted / incomplete dataset, OR outdated data, OR forced update (currently not used in production) AND there is internet access.
              */
-            if ((!fullRadarDataSet(context) || (WeatherSettings.isRadarDataOutdated(context)) || (forceUpdate)) && (DataUpdateService.isConnectedToInternet(context))){
+            if ((!fullRadarDataSet(context) || (WeatherSettings.isRadarDataOutdated(context)) || (forceUpdate)) && (DataUpdateService.suitableNetworkAvailable(context))){
                 multiFetchRadarSet();
             } else {
                 // when re-using data, the startTime needs to be loaded from settings
@@ -1422,12 +1423,12 @@ public class APIReaders {
         private ArrayList<WeatherLayer> layers;
         public boolean ssl_exception = false;
         private boolean forceUpdate = false;
+        private boolean alreadyToastedForbiddenUpdate = false;
 
         public getLayerImages(Context context, ArrayList<WeatherLayer> layers){
             this.context = context;
             this.layers = layers;
         }
-
 
         public static URL getGeoServerURL(boolean ssl, WeatherLayer weatherLayer){
             float x0 = weatherLayer.mapGeo[0]; float y0 = weatherLayer.mapGeo[1]; float x1 = weatherLayer.mapGeo[2]; float y1 = weatherLayer.mapGeo[3];
@@ -1549,30 +1550,51 @@ public class APIReaders {
         public boolean readLayer(WeatherLayer weatherLayer){
             // read outdated images from geoServer. Ignore pollen layers, because they are generated locally.
             if ((weatherLayer.isOutdated(context) && !weatherLayer.isPollen()) || ((forceUpdate) && weatherLayer.updateMode!=WeatherLayer.UpdateMode.NEVER)){
-                try {
-                    File cacheDir = context.getCacheDir();
-                    File targetFile = new File(cacheDir,weatherLayer.getCacheFilename());
-                    InputStream layerInputStream = getLayerInputStream(weatherLayer);
-                    //Log.v("weather","Layer "+weatherLayer.layer+" fetching from GeoServer. File is "+targetFile.toString()+" and time is "+weatherLayer.timestamp);
-                    boolean result = readImage(layerInputStream,targetFile);
-                    if ((result) && (weatherLayer.timestamp!=null)) {
-                        // save the layer "midnight" time (this is the requested time)
-                        WeatherSettings.setLayerTime(context,weatherLayer.layer,weatherLayer.timestamp);
-                    }
-                } catch (Exception e){
-                    return false;
-                }
-                // recurively iternate through dependant atop-layers, in case any of them is missing.
-                // Reason: this class may also be initiated with a layer-subset or a single layer.
-                if (weatherLayer.atop!=null){
-                    for (int i=0; i<weatherLayer.atop.length; i++){
-                        if (weatherLayer.atop[i]!=weatherLayer.layer){
-                            readLayer(new WeatherLayer(weatherLayer.atop[i]));
+                // only update if an suitable internet connection available
+                if (DataUpdateService.suitableNetworkAvailable(context)){
+                    // only update if not updated within last 5 minutes!
+                    if (WeatherSettings.isLayerUpdateAllowed(context)){
+                        try {
+                            File cacheDir = context.getCacheDir();
+                            File targetFile = new File(cacheDir,weatherLayer.getCacheFilename());
+                            InputStream layerInputStream = getLayerInputStream(weatherLayer);
+                            //Log.v("weather","Layer "+weatherLayer.layer+" fetching from GeoServer. File is "+targetFile.toString()+" and time is "+weatherLayer.timestamp);
+                            boolean result = readImage(layerInputStream,targetFile);
+                            if ((result) && (weatherLayer.timestamp!=null)) {
+                                // save the layer "midnight" time (this is the requested time)
+                                WeatherSettings.setLayerTime(context,weatherLayer.layer,weatherLayer.timestamp);
+                                // save internal timestamp of last geoserver call
+                                WeatherSettings.setMapLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
+                            }
+                        } catch (Exception e){
+                            PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"i/o error while fetching layers: "+e.getMessage());
+                            return false;
+                        }
+                        // recurively iternate through dependant atop-layers, in case any of them is missing.
+                        // Reason: this class may also be initiated with a layer-subset or a single layer.
+                        if (weatherLayer.atop!=null){
+                            for (int i=0; i<weatherLayer.atop.length; i++){
+                                if (weatherLayer.atop[i]!=weatherLayer.layer){
+                                    readLayer(new WeatherLayer(weatherLayer.atop[i]));
+                                }
+                            }
+                        }
+                    } else {
+                        PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"Layer "+weatherLayer.layer+" is outdated, but update not allowed yet.");
+                        // send once per api request only... and only send if is forced update...
+                        if ((!alreadyToastedForbiddenUpdate) && (forceUpdate)){
+                            // send broadcast to tell this to WeatherLayerActivity
+                            Intent intent = new Intent();
+                            intent.setAction(WeatherLayersActivity.ACTION_UPDATE_FORBIDDEN);
+                            context.sendBroadcast(intent);
+                            alreadyToastedForbiddenUpdate = true;
                         }
                     }
+                } else {
+                    PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"Layer "+weatherLayer.layer+" is outdated, but no suitable internet connection found.");
                 }
             } else {
-                //Log.v("weather","Layer "+weatherLayer.layer+" already in place.");
+                // layer in place. Do nothing special here.
             }
             onProgress(weatherLayer);
             return true;
@@ -1598,21 +1620,13 @@ public class APIReaders {
         public void run() {
             onStart();
             boolean success = true;
-            if (DataUpdateService.isConnectedToInternet(context)){
-                if (layers!=null){
-                    for (int i=0; i<layers.size(); i++){
-                        WeatherLayer weatherLayer = layers.get(i);
-                        if (!readLayer(weatherLayer)){
-                            success = false;
-                        }
-                    }
-                    if (success){
-                        WeatherSettings.setMapLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
+            if (layers!=null){
+                for (int i=0; i<layers.size(); i++){
+                    WeatherLayer weatherLayer = layers.get(i);
+                    if (!readLayer(weatherLayer)){
+                        success = false;
                     }
                 }
-            } else {
-                // success is false when no internet connection
-                success = false;
             }
             onFinished(success);
         }

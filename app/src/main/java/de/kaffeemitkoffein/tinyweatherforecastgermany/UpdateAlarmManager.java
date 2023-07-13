@@ -203,7 +203,7 @@ public class UpdateAlarmManager {
     }
 
     public static boolean updateWarnings(Context context, boolean forceUpdate){
-        if (WeatherSettings.areWarningsOutdated(context) || forceUpdate) {
+        if ((WeatherSettings.areWarningsOutdated(context) || forceUpdate)){
             try {
                 startDataUpdateService(context,false,true,false,false);
                 return true;
@@ -290,7 +290,7 @@ public class UpdateAlarmManager {
             intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS,true);
             noInternetConnRequired = true;
         }
-        if (DataUpdateService.isConnectedToInternet(context) || noInternetConnRequired){
+        if (DataUpdateService.suitableNetworkAvailable(context) || noInternetConnRequired){
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             if (Build.VERSION.SDK_INT<26){
                 context.startService(intent);

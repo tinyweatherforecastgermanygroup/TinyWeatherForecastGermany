@@ -35,6 +35,7 @@ import android.widget.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -42,6 +43,7 @@ public class WeatherLayersActivity extends Activity {
 
     public static final String ACTION_UPDATE_LAYERS = "ACTION_UPDATE_LAYERS";
     public static final String UPDATE_LAYERS_RESULT = "ACTION_UPDATE_LAYERS_RESULT";
+    public static final String ACTION_UPDATE_FORBIDDEN = "ACTION_UPDATE_FORBIDDEN";
 
     private Context context;
     Executor executor;
@@ -49,6 +51,7 @@ public class WeatherLayersActivity extends Activity {
     TableLayout tableLayout;
     TableRow tableRowAmbrosia; TableRow tableRowBeifuss; TableRow tableRowRoggen; TableRow tableRowEsche;
     TableRow tableRowBirke; TableRow tableRowHazel; TableRow tableRowErle; TableRow tableRowGraeser;
+    boolean forceWeatherUpdateFlag = false;
 
     public class DisplayLayer{
         WeatherLayer weatherLayer;
@@ -75,6 +78,15 @@ public class WeatherLayersActivity extends Activity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent intent) {
+            final String errorText = DataUpdateService.StopReason.getStopReasonErrorText(context,intent);
+            if ((errorText!=null) && (forceWeatherUpdateFlag)){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
             if (intent!=null){
                 if (intent.getAction().equals(ACTION_UPDATE_LAYERS) || (intent.getAction().equals(Pollen.ACTION_UPDATE_POLLEN))){
                     boolean result = false;
@@ -88,6 +100,17 @@ public class WeatherLayersActivity extends Activity {
                         updateDisplay();
                     }
                 }
+                if (intent.getAction().equals(MainActivity.MAINAPP_HIDE_PROGRESS)){
+                    forceWeatherUpdateFlag = false;
+                }
+                if (intent.getAction().equals(ACTION_UPDATE_FORBIDDEN)){
+                    long nextUpdateTime = WeatherSettings.getMapLastUpdateTime(context)+1000*60*5;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss", Locale.getDefault());
+                    String timeString = simpleDateFormat.format(new Date(nextUpdateTime));
+                    String text = String.format(context.getResources().getString(R.string.wm_update_not_allowed_yet),timeString);
+                    Toast.makeText(context,text,Toast.LENGTH_LONG).show();
+                }
+
             }
         }
     };
@@ -175,17 +198,14 @@ public class WeatherLayersActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem mi) {
         int item_id = mi.getItemId();
         if (item_id == R.id.wl_refresh) {
-            if (WeatherSettings.isLayerUpdateAllowed(context)){
+            if (!forceWeatherUpdateFlag){
                 ArrayList<String> updateTasks = new ArrayList<String>();
                 updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS);
                 updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN);
                 UpdateAlarmManager.startDataUpdateService(context,updateTasks);
+                forceWeatherUpdateFlag = true;
             } else {
-                long lastUpdateTime = WeatherSettings.getMapLastUpdateTime(context);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
-                String timeString = simpleDateFormat.format(new Date(lastUpdateTime));
-                String text = String.format(context.getResources().getString(R.string.wm_update_not_allowed_yet),timeString);
-                Toast.makeText(context,text,Toast.LENGTH_LONG).show();
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.ERR,"Layer update already running. Ignoring new user request to do so.");
             }
         }
         return super.onOptionsItemSelected(mi);
@@ -556,6 +576,8 @@ public class WeatherLayersActivity extends Activity {
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_UPDATE_LAYERS);
         filter.addAction(Pollen.ACTION_UPDATE_POLLEN);
+        filter.addAction(MainActivity.MAINAPP_HIDE_PROGRESS);
+        filter.addAction(ACTION_UPDATE_FORBIDDEN);
         registerReceiver(receiver,filter);
     }
 

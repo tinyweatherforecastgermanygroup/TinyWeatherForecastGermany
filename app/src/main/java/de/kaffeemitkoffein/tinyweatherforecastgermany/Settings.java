@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.*;
 import android.widget.Toast;
@@ -68,7 +69,9 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         alertDialog.show();
                     }
                 }
-                if (s.equals(WeatherSettings.PREF_USE_METERED_NETWORKS) && (!WeatherSettings.useMeteredNetworks(context)) && (WeatherSettings.notifyWarnings(context) || WeatherSettings.displayWarningsInWidget(context))){
+                if ((s.equals(WeatherSettings.PREF_USE_METERED_NETWORKS) && (!WeatherSettings.useMeteredNetworks(context))) ||
+                        ((s.equals(WeatherSettings.PREF_USE_WIFI_ONLY)) && (WeatherSettings.useWifiOnly(context)))
+                        && ((WeatherSettings.notifyWarnings(context) || WeatherSettings.displayWarningsInWidget(context)))){
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle(context.getResources().getString(R.string.alertdialog_1_title));
                     builder.setMessage(context.getResources().getString(R.string.preference_meterednetwork_notice));
@@ -80,7 +83,8 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         }
                     });
                     AlertDialog alertDialog = builder.create();
-                    alertDialog.show();           }
+                    alertDialog.show();
+                }
                 if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)){
                     setAlarmSettingAllowed();
                 }
@@ -399,6 +403,25 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 }
             });
         }
+        /*
+         See DataUpdateService.java, suitableNetworkAvailable(Context context):
+         for api below 23, we can offer a check to use Wi-Fi only,
+         for api above 22 we check for metered/unmetered networks.
+         One of the preferences always needs to be removed.
+         */
+        PreferenceCategory preferenceCategoryGeneral = (PreferenceCategory) findPreference(WeatherSettings.PREF_CATEGORY_GENERAL);
+        CheckBoxPreference wifiOnly = (CheckBoxPreference) findPreference(WeatherSettings.PREF_USE_WIFI_ONLY);
+        CheckBoxPreference useMeteredNetworks = (CheckBoxPreference) findPreference(WeatherSettings.PREF_USE_METERED_NETWORKS);
+        if (Build.VERSION.SDK_INT < 23){
+            if (useMeteredNetworks!=null){
+                preferenceCategoryGeneral.removePreference(useMeteredNetworks);
+            }
+        } else {
+            if (wifiOnly!=null){
+                preferenceCategoryGeneral.removePreference(wifiOnly);
+            }
+        }
+
      }
 
     @Override

@@ -22,6 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.*;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -1059,17 +1060,19 @@ public class ForecastBitmap{
             pollenBorderPaint.setColor(ThemePicker.getWidgetTextColor(context));
             BBox bBox = new BBox(WeatherLayer.WarnMapGeo);
             Bitmap bitmap = Bitmap.createBitmap(WeatherLayer.WarnMapSize[0],WeatherLayer.WarnMapSize[1], Bitmap.Config.ARGB_8888);
-            bitmap.eraseColor(Color.BLUE);
+            bitmap.eraseColor(Color.TRANSPARENT);
             BBoxBitmap bboxBitmap = new BBoxBitmap(bBox,bitmap);
             ArrayList<PollenArea> pollenAreas = PollenArea.GetPollenAreas(context,null);
             ArrayList<Pollen> pollens = Pollen.GetPollenData(context);
             for (int i=0; i<pollenAreas.size(); i++){
                 PollenArea pollenArea = pollenAreas.get(i);
                 Pollen pollen = Pollen.GetPollenData(pollens,pollenArea);
-                int pollenLoad = pollen.getPollenLoad(context,pollenType,timeParam);
-                if (pollenLoad>=0){
-                    pollenPaint.setColor(Pollen.PollenLoadColors[pollenLoad]);
-                    bboxBitmap.drawPollenArea(pollenArea,pollenPaint,pollenBorderPaint);
+                if (pollen!=null){
+                    int pollenLoad = pollen.getPollenLoad(context,pollenType,timeParam);
+                    if (pollenLoad>=0) {
+                        pollenPaint.setColor(Pollen.PollenLoadColors[pollenLoad]);
+                        bboxBitmap.drawPollenArea(pollenArea, pollenPaint, pollenBorderPaint);
+                    }
                 }
             }
             return bitmap;
