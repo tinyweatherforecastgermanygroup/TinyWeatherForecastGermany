@@ -1405,7 +1405,7 @@ public class APIReaders {
             boolean success = true;
             /* either update or return immediately to reuse present data
              * conditions for update:
-             * corrupted / incomplete dataset, OR outdated data, OR forced update (currently not used in production) AND there is internet access.
+             * corrupted / incomplete dataset, OR forced update (currently not used in production) AND there is internet access.
              */
             if ((!fullRadarDataSet(context) || (WeatherSettings.isRadarDataOutdated(context)) || (forceUpdate)) && (DataUpdateService.suitableNetworkAvailable(context))){
                 multiFetchRadarSet();

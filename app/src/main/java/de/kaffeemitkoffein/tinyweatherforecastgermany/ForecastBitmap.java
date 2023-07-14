@@ -133,32 +133,6 @@ public class ForecastBitmap{
         public float height;
     }
 
-    public LayoutParams getLayoutParams(Context context){
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        LayoutParams layoutParams = new LayoutParams();
-        if (windowManager!=null){
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-            float screenAspectRatio = getPhysicalDisplayRatio(context);
-            float screenWidth  = displayMetrics.widthPixels;
-            float screenHeight = displayMetrics.heightPixels;
-            if (screenWidth>screenHeight){
-                // landscape mode
-                layoutParams.width  = (int) screenWidth;
-                // catch a division by 0 possibility
-                if (displayMetrics.xdpi==0){
-                    displayMetrics.xdpi = 60;
-                }
-                layoutParams.height = (int) (((layoutParams.width/displayMetrics.xdpi) * (displayMetrics.ydpi)) / 20);
-            } else {
-                // portrait mode
-                layoutParams.width = displayMetrics.widthPixels;
-                layoutParams.height = Math.round(getForecastBarHeight(displayMetrics));
-            }
-        }
-        return layoutParams;
-    }
-
     private ForecastBitmap(Context context, final Builder builder){
         this.context = context;
         this.weatherInfos =  builder.weatherInfos;

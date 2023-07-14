@@ -58,14 +58,14 @@
     />
 
     <RelativeLayout
-                    android:id="@+id/fcitem_maincontainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/fcitem_topPadding"
-                    android:layout_above="@id/fcitem_bottomPadding"
-                    android:minHeight="324sp"
-                    android:padding="3dp"
-                    android:background="?attr/colorPrimary">
+            android:id="@+id/fcitem_maincontainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fcitem_topPadding"
+            android:layout_above="@id/fcitem_bottomPadding"
+            android:minHeight="324sp"
+            android:padding="3dp"
+            android:background="?attr/colorPrimary">
 
         <View android:id="@+id/fcitem_topspace"
               android:layout_width="0dp"

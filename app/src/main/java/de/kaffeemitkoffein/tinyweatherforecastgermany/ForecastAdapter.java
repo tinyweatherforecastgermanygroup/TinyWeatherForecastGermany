@@ -20,11 +20,13 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -71,7 +73,8 @@ private final String labelSunrise;
 private final String labelSunset;
 private final String labelTwilight;
 private DisplayMetrics displayMetrics;
-private final float screenWidthDP;
+private int screenDensity;
+private float screenWidthDP;
 private final int screenWidth;
 private final float fontScale;
 
@@ -103,9 +106,18 @@ public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherFo
     this.labelSunrise = context.getResources().getString(R.string.sunrise);
     this.labelSunset = context.getResources().getString(R.string.sunset);
     this.labelTwilight = context.getResources().getString(R.string.twilight);
-    // pd = px / (dpi/160)
+    // necessary for the later size calculation of the ForecastBar
     this.displayMetrics = context.getResources().getDisplayMetrics();
-    this.screenWidthDP = displayMetrics.widthPixels / (displayMetrics.xdpi/160);
+    // get the screen size & density
+    Configuration configuration = context.getResources().getConfiguration();
+    this.screenWidthDP = configuration.smallestScreenWidthDp;
+    if (this.screenWidthDP==Configuration.SCREEN_WIDTH_DP_UNDEFINED){
+        this.screenWidthDP=300;
+    }
+    this.screenDensity = configuration.densityDpi;
+    if (this.screenDensity==Configuration.DENSITY_DPI_UNDEFINED){
+        this.screenDensity=160;
+    }
     if (this.screenWidthDP>=400){
         this.screenWidth = ScreenWidthCategory.DP400;
     } else {
@@ -1258,7 +1270,7 @@ public int determineExpectedPixelHeightOfForecastElement(){
             }
         }
     }
-    float result = total*(displayMetrics.xdpi/160f)+ForecastBitmap.getForecastBarHeight(displayMetrics);
+    float result = total*(screenDensity/160f) + ForecastBitmap.getForecastBarHeight(displayMetrics);
     return Math.round(result);
 }
 
