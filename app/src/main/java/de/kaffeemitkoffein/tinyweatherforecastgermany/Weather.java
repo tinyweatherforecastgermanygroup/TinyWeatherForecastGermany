@@ -385,11 +385,12 @@ public final class Weather {
         private Integer prob_visibility_below_1km;
         private Double pressure;
         private Double uv;
+        private Integer uvHazardIndex;
         private Double td;
         private Integer[] probOfPrecipitation;
         public Clouds clouds;
         private Integer sunDuration;
-
+        private Boolean isDayTime = null;
 
         final class ForecastType{
             public static final int CURRENT  = 0;
@@ -532,6 +533,10 @@ public final class Weather {
 
         public void setTd(Double td) {
             this.td = td;
+        }
+
+        public void setUvHazardIndex(Integer uvHazardIndex){
+            this.uvHazardIndex = uvHazardIndex;
         }
 
         public boolean hasPrecipitationDetails(){
@@ -1320,8 +1325,21 @@ public final class Weather {
         }
 
         public boolean isDaytime(WeatherLocation weatherLocation){
-            boolean result = Weather.isDaytime(weatherLocation,timestamp);
-            return result;
+            // this is to minimize daytime calculations
+            if (this.isDayTime==null){
+                if (forecast_type==ForecastType.ONE_HOUR){
+                    this.isDayTime = Weather.isDaytime(weatherLocation,timestamp);
+                } else
+                if (forecast_type==ForecastType.HOURS_6){
+                    boolean startIsDaytime = Weather.isDaytime(weatherLocation,timestamp-1000*60*60*6);
+                    boolean stopIsDaytime = Weather.isDaytime(weatherLocation,timestamp);
+                    this.isDayTime = (startIsDaytime || stopIsDaytime);
+                } else
+                if (forecast_type==ForecastType.HOURS_24){
+                    this.isDayTime = true;
+                } else this.isDayTime = true;
+            }
+            return this.isDayTime;
         }
 
         public boolean calculateMissingCondition(){
@@ -1362,6 +1380,24 @@ public final class Weather {
         public int getRelativeDay(){
             return WeatherLayer.getRelativeDays(getTimestamp());
         };
+
+        public boolean hasUvHazardIndex(){
+            if (uvHazardIndex==null){
+                return false;
+            }
+            if (uvHazardIndex==-1){
+                return false;
+            }
+            return true;
+        }
+
+        public int getUvHazardIndex(){
+            if (hasUvHazardIndex()){
+                return this.uvHazardIndex;
+            } else {
+                return -1;
+            }
+        }
 
     }
 

@@ -30,7 +30,7 @@ public class WeatherContentProvider extends ContentProvider {
 
     static final String AUTHORITY = "de.kaffeemitkoffein.tinyweatherforecastgermany";
 
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "weather";
     private SQLiteDatabase database;
 
@@ -317,6 +317,7 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_FORECASTS_wwMh="wwMh";
         public static final String KEY_FORECASTS_wwMd="wwMd";
         public static final String KEY_FORECASTS_PEvap="PEvap";
+        public static final String KEY_FORECASTS_UVHazardIndex="UVHazardIndex";
 
         public static final String SQL_COMMAND_CREATE_TABLE_FORECASTS = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_FORECASTS + "("
                 + KEY_FORECASTS_id + " INTEGER PRIMARY KEY ASC,"
@@ -448,6 +449,7 @@ public class WeatherContentProvider extends ContentProvider {
                 + KEY_FORECASTS_wwMh + " TEXT,"
                 + KEY_FORECASTS_wwMd + " TEXT,"
                 + KEY_FORECASTS_PEvap + " TEXT,"
+                + KEY_FORECASTS_UVHazardIndex + " INTEGER,"
                 + KEY_FORECASTS_timestamp + " INTEGER,"
                 + KEY_FORECASTS_polling_time + " INTEGER,"
                 + KEY_FORECASTS_elements + " INTEGER" + "" + ");";
@@ -662,12 +664,6 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_POLLEN_next_update = "next_update";
         public static final String KEY_POLLEN_last_updateUTC = "last_updateUTC";
         public static final String KEY_POLLEN_next_updateUTC = "next_updateUTC";
-        public static final String KEY_POLLEN_todayMin = "todayMin";
-        public static final String KEY_POLLEN_todayMax = "todayMax";
-        public static final String KEY_POLLEN_tomorrowMin = "tomorrowMin";
-        public static final String KEY_POLLEN_tomorrowMax = "tomorrowMax";
-        public static final String KEY_POLLEN_dayAfterTomorrowMin = "dayAfterTomorrowMin";
-        public static final String KEY_POLLEN_dayAfterTomorrowMax = "dayAfterTomorrowMax";
 
         public static final String SQL_COMMAND_CREATE_TABLE_POLLEN = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_POLLEN + "("
             + KEY_POLLEN_id + " INTEGER,"

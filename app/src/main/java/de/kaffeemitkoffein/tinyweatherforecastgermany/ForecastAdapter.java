@@ -26,7 +26,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -234,6 +233,7 @@ private static class ViewHolder {
     ImageView biocular;
     ImageView symbolRH;
     View endofday_bar;
+    TextView uvHazardIndex;
 
     public ViewHolder() {
         symbols = new ImageView[6];
@@ -294,6 +294,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     TextView warningText = null;
     ImageView biocular = null;
     ImageView symbolRH = null;
+    TextView textView_uvHazardIndex = null;
     if (view == null) {
         // view is not available from cache
         newView = true;
@@ -340,6 +341,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         warningText = viewHolder.warningText;
         biocular = viewHolder.biocular;
         symbolRH = viewHolder.symbolRH;
+        textView_uvHazardIndex = viewHolder.uvHazardIndex;
     }
     // now fill the item with content
     if (supermaincontainer==null) {
@@ -491,7 +493,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             viewHolder.precipitation_textview = precipitation_textview;
         }
         if (precipitation_textview!=null){
-            precipitation_textview.setText(precipitation_string);
+            precipitation_textview.setText(precipitation_string+">"+weatherInfo.getUvHazardIndex()+"<");
             ThemePicker.applyPrecipitationAccentColor(context,precipitation_textview);
         }
     }
@@ -529,6 +531,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             sunDuration_unit.setText("h");
         }
     }
+
     if ((!weatherInfo.hasSunDuration()) ||
             ((weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.ONE_HOUR) && (weatherInfo.getSunDurationInMinutes()==0)) ||
             ((weatherInfo.getForecastType() != Weather.WeatherInfo.ForecastType.ONE_HOUR) && (weatherInfo.getSunDurationInHours()==0))){
@@ -791,6 +794,24 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     if (imageView_forecastBar == null){
         imageView_forecastBar = (ImageView) view.findViewById(R.id.fcitem_forecastbar);
         viewHolder.imageView_forecastBar = imageView_forecastBar;
+    }
+    // construct uvHazardIndex if applicable
+    if (textView_uvHazardIndex==null){
+        textView_uvHazardIndex = (TextView) view.findViewById(R.id.fcitem_uvHazardIndex);
+        viewHolder.uvHazardIndex = textView_uvHazardIndex;
+    }
+    if (textView_uvHazardIndex!=null) {
+        if (WeatherSettings.UVHImainDisplay(context) && weatherInfo.hasUvHazardIndex()){
+            if (weatherInfo.isDaytime(weatherLocation)) {
+                textView_uvHazardIndex.setVisibility(View.VISIBLE);
+                textView_uvHazardIndex.setBackground(ForecastBitmap.getColoredBox(context,UVHazardIndex.UVIndexColors[weatherInfo.getUvHazardIndex()]));
+                textView_uvHazardIndex.setText(String.valueOf(weatherInfo.getUvHazardIndex()));
+            } else {
+                textView_uvHazardIndex.setVisibility(View.GONE);
+            }
+        } else {
+            textView_uvHazardIndex.setVisibility(View.GONE);
+        }
     }
     // hourly forecast bar, display only if forecast is 6h
     if (((weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6) || (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_24)) && (display_bar) && (imageView_forecastBar!=null)){

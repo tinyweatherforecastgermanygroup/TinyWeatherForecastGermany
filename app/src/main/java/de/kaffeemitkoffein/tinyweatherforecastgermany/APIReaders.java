@@ -22,6 +22,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import org.json.JSONArray;
@@ -400,6 +402,8 @@ public class APIReaders {
 
         private Context context;
         private ArrayList<Weather.WeatherLocation> weatherLocations;
+        private long[] uvHazardIndexTimes;
+        private int[] uvHazardIndexValues;
         public boolean ssl_exception = false;
 
         private String[] seperateValues(String s){
@@ -424,9 +428,11 @@ public class APIReaders {
             return result;
         }
 
-        public WeatherForecastRunnable(Context context, ArrayList<Weather.WeatherLocation> weatherLocations){
+        public WeatherForecastRunnable(Context context, ArrayList<Weather.WeatherLocation> weatherLocations, long[] uvHazardIndexTimes, int[] uvHazardIndexValues){
             this.context = context;
             this.weatherLocations = weatherLocations;
+            this.uvHazardIndexTimes = uvHazardIndexTimes;
+            this.uvHazardIndexValues = uvHazardIndexValues;
         }
 
         public String getLastestDMOUrl(Context context, String stationName) throws IOException {
@@ -771,6 +777,7 @@ public class APIReaders {
             for (int i=0; i<weatherLocations.size(); i++){
                 RawWeatherInfo rawWeatherInfo = updateWeatherLocationData(weatherLocations.get(i));
                 if (rawWeatherInfo!=null){
+                    rawWeatherInfo.addUVHazardIndexData(uvHazardIndexTimes,uvHazardIndexValues);
                     rawWeatherInfos.add(rawWeatherInfo);
                 }
             }
@@ -2012,6 +2019,83 @@ public class APIReaders {
                 doFile("Warngebiete_Kreise", Areas.Area.Type.BINNENSEE);
                 doFile("Warngebiete_Kueste", Areas.Area.Type.BINNENSEE);
                 //doFile("Warngebiete_See", Areas.Area.Type.BINNENSEE);
+        }
+    }
+
+    public static class GetUvIndexForLocation implements Runnable{
+
+    public final static double GEOACCURACY_UVI = 0.01d;
+    private Context context;
+    private Weather.WeatherLocation weatherLocation;
+    private long[] timeArray;
+
+    public GetUvIndexForLocation(Context context, Weather.WeatherLocation weatherLocation, long[] timeArray){
+        this.context = context;
+        this.weatherLocation = weatherLocation;
+        this.timeArray = timeArray;
+    }
+
+        private InputStream getUVIStream(long time){
+            // https://maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AUVI_Global_CL&bbox=10.11%2C53.66%2C10.13%2C53.67&width=1&height=1&srs=EPSG%3A4326&format=image%2Fpng
+            String x0 = String.format(Locale.US,"%.2f",weatherLocation.latitude-GEOACCURACY_UVI);
+            String x1 = String.format(Locale.US,"%.2f",weatherLocation.latitude+GEOACCURACY_UVI);
+            String y0 = String.format(Locale.US,"%.2f",weatherLocation.longitude-GEOACCURACY_UVI);
+            String y1 = String.format(Locale.US,"%.2f",weatherLocation.longitude+GEOACCURACY_UVI);
+            String timestring = getLayerImages.getTimeStamp(time);
+            String urlString ="maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AUVI_Global_CL&bbox="+y0+"%2C"+x0+"%2C"+y1+"%2C"+x1+"&"+timestring+"&width=1&height=1&srs=EPSG%3A4326&format=image%2Fpng";
+            InputStream inputStream;
+            boolean ssl = !WeatherSettings.isTLSdisabled(context);
+            try {
+                if (ssl) {
+                    urlString = "https://" + urlString;
+                    URL url = new URL(urlString);
+                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                    inputStream = httpsURLConnection.getInputStream();
+                } else {
+                    urlString = "http://" + urlString;
+                    URL url = new URL(urlString);
+                    PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.WARN, "Getting pollen areas unencrypted via http");
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                return inputStream;
+            } catch (Exception e){
+                // do nothing
+
+            }
+            return null;
+        }
+
+        private int getUvIndex(long time){
+            try {
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(getUVIStream(time));
+                Bitmap bitmap = BitmapFactory.decodeStream(bufferedInputStream);
+                int pixel = bitmap.getPixel(0,0);
+                bufferedInputStream.close();
+                return UVHazardIndex.getUvIndexFromColor(pixel);
+            } catch (Exception e){
+                return -1;
+            }
+        }
+
+        public void onFinished(long[] timeArray, int[] resultArray){
+
+        }
+
+        @Override
+        public void run() {
+            if ((timeArray!=null) && (WeatherSettings.UVHIfetchData(context))){
+                long[] timeResult = new long[timeArray.length];
+                int[] result = new int[timeArray.length];
+                for (int position=0; position<timeArray.length; position++){
+                    long midnightTime = WeatherLayer.getMidnightTime(timeArray[position]);
+                    timeResult[position] = midnightTime;
+                    result[position] = getUvIndex(midnightTime);
+                }
+                onFinished(timeResult,result);
+            } else {
+                onFinished(null,null);
+            }
         }
     }
 

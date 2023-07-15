@@ -212,6 +212,7 @@ public class WeatherContentManager {
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_timestamp,rawWeatherInfo.timestamp);
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time,rawWeatherInfo.polling_time);
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_elements,rawWeatherInfo.elements);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_UVHazardIndex,serializeString(rawWeatherInfo.uvHazardIndex));
         return contentValues;
     }
 
@@ -349,6 +350,7 @@ public class WeatherContentManager {
                 rawWeatherInfo.wwMh = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_wwMh)));
                 rawWeatherInfo.wwMd = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_wwMd)));
                 rawWeatherInfo.PEvap = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_PEvap)));
+                rawWeatherInfo.uvHazardIndex = deSerializeString(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_UVHazardIndex)));
                 rawWeatherInfo.timestamp = c.getLong(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_timestamp));
                 rawWeatherInfo.polling_time = c.getLong(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time));
                 rawWeatherInfo.elements = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_elements));

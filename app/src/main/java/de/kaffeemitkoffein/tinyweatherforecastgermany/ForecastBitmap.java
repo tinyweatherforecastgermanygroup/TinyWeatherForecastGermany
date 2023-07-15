@@ -21,15 +21,12 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.WindowManager;
 import android.util.SparseArray;
-import android.widget.*;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1052,6 +1049,22 @@ public class ForecastBitmap{
             return bitmap;
         }
         return null;
+    }
+
+    public static Drawable getColoredBox(Context context, int color){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Drawable drawable = context.getResources().getDrawable(R.drawable.roundedbox_small,context.getTheme());
+            if (Build.VERSION.SDK_INT < 29) {
+                drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            } else {
+                drawable.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_IN));
+            }
+            return drawable;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(10,10, Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(color);
+        BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(),bitmap);
+        return bitmapDrawable;
     }
 
 }

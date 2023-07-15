@@ -208,6 +208,7 @@ public class CurrentWeatherInfo{
         if (!currentWeather.hasCondition()){
             currentWeather.calculateMissingCondition();
         }
+        currentWeather.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[current_weather_position]));
         // fill 1h forecast arraylist
         forecast1hourly = new ArrayList<Weather.WeatherInfo>();
         int startPosition1h = rawWeatherInfo.getCurrentForecastPosition();
@@ -266,6 +267,7 @@ public class CurrentWeatherInfo{
                 // add clculated values to rawWeatherInfo to make correct intervals possible later
                 rawWeatherInfo.D1[index] = String.valueOf(setSunDurationFromClouds(wi));
             }
+            wi.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[index]));
             forecast1hourly.add(wi);
             index++;
         }
@@ -361,6 +363,7 @@ public class CurrentWeatherInfo{
             }
             //wi.setSunDuration(getSunDuration(start, index));
             wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
+            wi.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[index]));
             forecast6hourly.add(wi);
             index = index + 6;
         }
@@ -433,6 +436,7 @@ public class CurrentWeatherInfo{
             }
             //wi.setSunDuration(getSunDuration(rawWeatherInfo,start,index));
             wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
+            wi.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[index]));
             forecast24hourly.add(wi);
             index = index + 24;
         }

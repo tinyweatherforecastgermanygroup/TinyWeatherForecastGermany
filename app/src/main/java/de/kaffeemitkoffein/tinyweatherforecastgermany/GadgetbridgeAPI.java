@@ -21,6 +21,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import nodomain.freeyourgadget.gadgetbridge.model.WeatherSpec;
 import java.util.Calendar;
 
@@ -74,6 +75,12 @@ public class GadgetbridgeAPI {
             if (weatherCard.currentWeather.hasWindDirection()){
                 weatherSpec.windDirection        = (int) weatherCard.currentWeather.getWindDirection();
             }
+            if (weatherCard.currentWeather.hasProbPrecipitation()){
+                weatherSpec.precipProbability    = weatherCard.currentWeather.getProbPrecipitation();
+            }
+            if (weatherCard.currentWeather.hasUvHazardIndex()){
+                weatherSpec.uvIndex = weatherCard.currentWeather.getUvHazardIndex();
+            }
             // build the forecast instance, ingore 1st entry (current day)
             for (int i=1; i<weatherCard.forecast24hourly.size(); i++){
                 // do not add and/or stop adding forecast if values are unknown
@@ -118,7 +125,7 @@ public class GadgetbridgeAPI {
         setWeatherData();
         if (weatherSpec!=null){
             Intent intent = new Intent();
-            intent.putExtra(WEATHER_EXTRA,weatherSpec);
+            intent.putExtra(WEATHER_EXTRA, (Parcelable) weatherSpec);
             // going by the docs, this requires at least api level 14
             // read the package name from the settings. Users may change the package name to
             // be able to use forks.

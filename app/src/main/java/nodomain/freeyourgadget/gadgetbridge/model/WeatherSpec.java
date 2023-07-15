@@ -21,10 +21,12 @@ package nodomain.freeyourgadget.gadgetbridge.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 // FIXME: document me and my fields, including units
-public class WeatherSpec implements Parcelable {
+public class WeatherSpec implements Parcelable, Serializable {
+
     public static final Creator<WeatherSpec> CREATOR = new Creator<WeatherSpec>() {
         @Override
         public WeatherSpec createFromParcel(Parcel in) {
@@ -36,17 +38,20 @@ public class WeatherSpec implements Parcelable {
             return new WeatherSpec[size];
         }
     };
-    public static final int VERSION = 2;
+    public static final int VERSION = 3;
+    private static final long serialVersionUID = VERSION;
     public int timestamp;
     public String location;
-    public int currentTemp;
+    public int currentTemp; // kelvin
     public int currentConditionCode = 3200;
     public String currentCondition;
     public int currentHumidity;
-    public int todayMaxTemp;
-    public int todayMinTemp;
-    public float windSpeed; //km per hour
-    public int windDirection; //deg
+    public int todayMaxTemp; // kelvin
+    public int todayMinTemp; // kelvin
+    public float windSpeed; // km per hour
+    public int windDirection; // deg
+    public float uvIndex;
+    public int precipProbability; // %
 
     public ArrayList<Forecast> forecasts = new ArrayList<>();
 
@@ -54,9 +59,22 @@ public class WeatherSpec implements Parcelable {
 
     }
 
+    // Lower bounds of beaufort regions 1 to 12
+    // Values from https://en.wikipedia.org/wiki/Beaufort_scale
+    static final float[] beaufort = new float[] { 2, 6, 12, 20, 29, 39, 50, 62, 75, 89, 103, 118 };
+    //                                    level: 0 1  2   3   4   5   6   7   8   9   10   11   12
+
+    public int windSpeedAsBeaufort() {
+        int l = 0;
+        while (l < beaufort.length && beaufort[l] < this.windSpeed) {
+            l++;
+        }
+        return l;
+    }
+
     protected WeatherSpec(Parcel in) {
         int version = in.readInt();
-        if (version == VERSION) {
+        if (version >= 2) {
             timestamp = in.readInt();
             location = in.readString();
             currentTemp = in.readInt();
@@ -68,6 +86,10 @@ public class WeatherSpec implements Parcelable {
             windSpeed = in.readFloat();
             windDirection = in.readInt();
             in.readList(forecasts, Forecast.class.getClassLoader());
+        }
+        if (version >= 3) {
+            uvIndex = in.readFloat();
+            precipProbability = in.readInt();
         }
     }
 
@@ -90,9 +112,13 @@ public class WeatherSpec implements Parcelable {
         dest.writeFloat(windSpeed);
         dest.writeInt(windDirection);
         dest.writeList(forecasts);
+        dest.writeFloat(uvIndex);
+        dest.writeInt(precipProbability);
     }
 
-    public static class Forecast implements Parcelable {
+    public static class Forecast implements Parcelable, Serializable {
+        private static final long serialVersionUID = 1L;
+
         public static final Creator<Forecast> CREATOR = new Creator<Forecast>() {
             @Override
             public Forecast createFromParcel(Parcel in) {

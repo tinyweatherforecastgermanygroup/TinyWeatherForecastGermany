@@ -24,11 +24,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -58,6 +55,8 @@ public class WeatherSettings {
     public final static int DISPLAYTYPE_6HOURS = 3;
     public final static int DISPLAYTYPE_24HOURS = 4;
     public final static int DISPLAYTYPE_MIXED = 256;
+
+    public final static int POLLBLOCKTIME = 1000*60*5; // 5 minutes in millis
 
     public static final String PREF_CATEGORY_GENERAL = "PREF_category_general";
 
@@ -90,6 +89,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_OVERVIEWCHART_MAX = "PREF_display_overviewchart_max";
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
+    public static final String PREF_LASTWEATHERUPDATETIME = "PREF_lastweatherupdatetime";
     public static final String PREF_LASTWIDGETUPDATETIME = "PREF_lastwidgetupdatetime";
     public static final String PREF_UPDATE_WARNINGS = "PREF_update_warnings";
     public static final String PREF_UPDATE_TEXTFORECASTS = "PREF_update_textforecasts";
@@ -157,6 +157,8 @@ public class WeatherSettings {
     public static final String PREF_POLLEN_GRAESER = "PREF_pollen_graeser";
     public static final String PREF_PREFETCH_MAPS = "PREF_prefetch_maps";
     public static final String PREF_LAST_PREFETCH_TIME = "PREF_prefetch_time";
+    public static final String PREF_UVHI_FETCH_DATA ="PREF_uvhi_fetch_data";
+    public static final String PREF_UVHI_MAINDISPLAY="PREF_uvhi_maindisplay";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -189,6 +191,7 @@ public class WeatherSettings {
     public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
     public static final boolean PREF_UPDATE_TEXTFORECASTS_DEFAULT = true;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
+    public static final long PREF_LASTWEATHERUPDATETIME_DEFAULT = 0;
     public static final long PREF_LASTWIDGETUPDATETIME_DEFAULT = 0;
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "90";
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
@@ -254,6 +257,9 @@ public class WeatherSettings {
     public static final boolean PREF_POLLEN_GRAESER_DEFAULT = true;
     public static final boolean PREF_PREFETCH_MAPS_DEFAULT = true;
     public static final long PREF_LAST_PREFETCH_TIME_DEFAULT = 0;
+    public static final boolean PREF_UVHI_FETCH_DATA_DEFAULT = false;
+    public static final boolean PREF_UVHI_MAINDISPLAY_DEFAULT = false;
+
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -284,6 +290,7 @@ public class WeatherSettings {
     public int displayOverviewChartMax = PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT;
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
+    public long lastWeatherUpdateTime = PREF_LASTWEATHERUPDATETIME_DEFAULT;
     public long lastWidgetUpdateTime = PREF_LASTWIDGETUPDATETIME_DEFAULT;
     public boolean update_warnings = PREF_UPDATE_WARNINGS_DEFAULT;
     public boolean update_textforecasts = PREF_UPDATE_TEXTFORECASTS_DEFAULT;
@@ -346,6 +353,8 @@ public class WeatherSettings {
     public boolean pollenErle = PREF_POLLEN_ERLE_DEFAULT;
     public boolean pollenGraeser = PREF_POLLEN_GRAESER_DEFAULT;
     public boolean preFetchMaps = PREF_PREFETCH_MAPS_DEFAULT;
+    public boolean UVHIfetch = PREF_UVHI_FETCH_DATA_DEFAULT;
+    public boolean UVHIdisplayMain = PREF_UVHI_MAINDISPLAY_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -444,6 +453,8 @@ public class WeatherSettings {
         this.pollenErle = readPreference(PREF_POLLEN_ERLE,PREF_POLLEN_ERLE_DEFAULT);
         this.pollenGraeser = readPreference(PREF_POLLEN_GRAESER,PREF_POLLEN_GRAESER_DEFAULT);
         this.preFetchMaps = readPreference(PREF_PREFETCH_MAPS,PREF_PREFETCH_MAPS_DEFAULT);
+        this.UVHIfetch = readPreference(PREF_UVHI_FETCH_DATA,PREF_UVHI_FETCH_DATA_DEFAULT);
+        this.UVHIdisplayMain = readPreference(PREF_UVHI_MAINDISPLAY,PREF_UVHI_MAINDISPLAY_DEFAULT);
     }
 
     public void savePreferences() {
@@ -533,6 +544,8 @@ public class WeatherSettings {
         applyPreference(PREF_POLLEN_ERLE,pollenErle);
         applyPreference(PREF_POLLEN_GRAESER,pollenGraeser);
         applyPreference(PREF_PREFETCH_MAPS,preFetchMaps);
+        applyPreference(PREF_UVHI_FETCH_DATA,UVHIfetch);
+        applyPreference(PREF_UVHI_MAINDISPLAY,UVHIdisplayMain);
     }
 
     public void commitPreferences() {
@@ -622,6 +635,8 @@ public class WeatherSettings {
         commitPreference(PREF_POLLEN_ERLE,pollenErle);
         commitPreference(PREF_POLLEN_GRAESER,pollenGraeser);
         commitPreference(PREF_PREFETCH_MAPS,preFetchMaps);
+        commitPreference(PREF_UVHI_FETCH_DATA,UVHIfetch);
+        commitPreference(PREF_UVHI_MAINDISPLAY,UVHIdisplayMain);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -1752,4 +1767,39 @@ public class WeatherSettings {
         pref_editor.putLong(PREF_LAST_PREFETCH_TIME, Calendar.getInstance().getTimeInMillis());
         pref_editor.apply();
     }
+
+    public static boolean UVHIfetchData(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_UVHI_FETCH_DATA,PREF_UVHI_FETCH_DATA_DEFAULT);
+    }
+
+    public static boolean UVHImainDisplay(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_UVHI_MAINDISPLAY,PREF_UVHI_MAINDISPLAY_DEFAULT);
+    }
+
+    public static void setUVHImainDisplay(Context context, boolean b) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_UVHI_MAINDISPLAY, b);
+        pref_editor.apply();
+    }
+
+    public static long getLastWeatherUpdateTime(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getLong(PREF_LASTWEATHERUPDATETIME,PREF_LASTWEATHERUPDATETIME_DEFAULT);
+    }
+
+    public static void setLastWeatherUpdateTime(Context context, long l) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_LASTWEATHERUPDATETIME, l);
+        pref_editor.apply();
+    }
+
+    public static boolean isWeatherUpdateAllowed(Context context){
+        long lastUpdate = getLastWeatherUpdateTime(context);
+        return (Calendar.getInstance().getTimeInMillis()>lastUpdate+POLLBLOCKTIME);
+    }
+
 }

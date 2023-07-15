@@ -642,6 +642,9 @@ public class WeatherDetailsActivity extends Activity {
             if (weatherInfo.hasSunDuration()){
                 list.add(newDetail(null,WeatherIcons.SYMBOL_SUN,weatherInfo.getSunDurationInMinutes()+"min",getResources().getString(R.string.wd_sun)));
             }
+            if (weatherInfo.hasUvHazardIndex()){
+                list.add(newDetail(null,null,String.valueOf(weatherInfo.getUvHazardIndex()),getResources().getString(R.string.preference_screen_uvhi_title)));
+            }
             if (weatherInfo.hasRH()){
                 list.add(newDetail(null,WeatherIcons.SYMBOL_RH,weatherInfo.getRHInt()+"%",getResources().getString(R.string.welcome_s2_text11)));
             }

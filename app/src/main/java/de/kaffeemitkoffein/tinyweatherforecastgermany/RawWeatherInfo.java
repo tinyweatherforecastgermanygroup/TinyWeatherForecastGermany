@@ -44,8 +44,6 @@ public class RawWeatherInfo{
         }
     }
 
-
-
     long polling_time;       // polling time from API in millis UTC
     long timestamp;         // currently not used.
     int elements;            // # of elements read
@@ -174,7 +172,7 @@ public class RawWeatherInfo{
     String[] wwMh;           // %; probability of fog within last 12h
     String[] wwMd;           // %; occurrence of fog within the last 24h
     String[] PEvap;       // kg/m²; potential evapotranspiration within the last 24h
-
+    String[] uvHazardIndex;
     // new xml mosmix elements 2023-01-20: Neff, RadS1, RR1
 
     public RawWeatherInfo(){
@@ -192,7 +190,7 @@ public class RawWeatherInfo{
                           String[] wwF, String[] wwF6, String[] wwFh, String[] wwP, String[] wwP6, String[] wwPh, String[] VV10, String[] ww, String[] ww3, String[] W1W2, String[] WPc11, String[] WPc31,
                           String[] WPc61, String[] WPch1, String[] WPcd1, String[] N, String[] Neff, String[] N05, String[] Nl, String[] Nm, String[] Nh, String[] Nlm, String[] H_BsC, String[] PPPP, String[] E_PPP,
                           String[] RadS1, String[] RadS3, String[] RRad1, String[] Rad1h, String[] RadL3, String[] VV, String[] D1, String[] SunD, String[] SunD3, String[] RSunD, String[] PSd00, String[] PSd30, String[] PSd60,
-                          String[] wwM, String[] wwM6, String[] wwMh, String[] wwMd, String[] PEvap){
+                          String[] wwM, String[] wwM6, String[] wwMh, String[] wwMd, String[] PEvap, String[] uvHazardIndex){
         this.polling_time = polling_time;
         this.elements = elements;
         this.weatherLocation = weatherLocation;
@@ -206,6 +204,7 @@ public class RawWeatherInfo{
         this.wwFh=wwFh;this.wwP=wwP;this.wwP6=wwP6;this.wwPh=wwPh;this.VV10=VV10;this.ww=ww;this.ww3=ww3;this.W1W2=W1W2; this.WPc11=WPc11; this.WPc31=WPc31;this.WPc61=WPc61;this.WPch1=WPch1;this.WPcd1=WPcd1;
         this.N=N; this.Neff=Neff; this.N05=N05;this.Nl=Nl;this.Nm=Nm;this.Nh=Nh;this.Nlm=Nlm;this.H_BsC=H_BsC;this.PPPP=PPPP;this.E_PPP=E_PPP; this.RadS1=RadS1; this.RadS3=RadS3;this.RRad1=RRad1;this.Rad1h=Rad1h;this.RadL3=RadL3;
         this.VV=VV;this.D1=D1;this.SunD=SunD;this.SunD3=SunD3;this.RSunD=RSunD;this.PSd00=PSd00;this.PSd30=PSd30;this.PSd60=PSd60;this.wwM=wwM;this.wwM6=wwM6;this.wwMh=wwMh;this.wwMd=wwMd;this.PEvap=PEvap;
+        this.uvHazardIndex = uvHazardIndex;
     }
 
     public RawWeatherInfo copy(){
@@ -213,7 +212,7 @@ public class RawWeatherInfo{
                 RRL1c, RR3, RR6, RR3c, RR6c, RRhc, RRdc, RRS1c, RRS3c, R101, R102, R103, R105, R107, R110, R120, R130, R150, RR1o1, RR1w1, RR1u1, R600, Rh00, R602, Rh02, Rd02, R610,
                 Rh10, R650, Rh50, Rd00, Rd10, Rd50, wwPd, DRR1, wwZ, wwZ6, wwZh, wwD, wwD6, wwDh, wwC, wwC6, wwCh, wwT, wwT6, wwTh, wwTd, wwL, wwL6, wwLh, wwS, wwS6, wwSh, wwF, wwF6,
                 wwFh, wwP, wwP6, wwPh, VV10, ww, ww3, W1W2, WPc11, WPc31, WPc61, WPch1, WPcd1, N, Neff, N05, Nl, Nm, Nh, Nlm, H_BsC, PPPP, E_PPP, RadS1, RadS3, RRad1, Rad1h, RadL3, VV, D1, SunD, SunD3,
-                RSunD, PSd00, PSd30, PSd60, wwM, wwM6, wwMh, wwMd, PEvap);
+                RSunD, PSd00, PSd30, PSd60, wwM, wwM6, wwMh, wwMd, PEvap, uvHazardIndex);
     }
 
     private void initEmptyValues(){
@@ -241,6 +240,7 @@ public class RawWeatherInfo{
         RadS1 = new String[DATA_SIZE]; RadS3 = new String[DATA_SIZE]; RRad1 = new String[DATA_SIZE];Rad1h = new String[DATA_SIZE];RadL3 = new String[DATA_SIZE];VV = new String[DATA_SIZE];D1 = new String[DATA_SIZE];
         SunD = new String[DATA_SIZE];SunD3 = new String[DATA_SIZE];RSunD = new String[DATA_SIZE];PSd00 = new String[DATA_SIZE];PSd30 = new String[DATA_SIZE];PSd60 = new String[DATA_SIZE];
         wwM = new String[DATA_SIZE];wwM6 = new String[DATA_SIZE];wwMh = new String[DATA_SIZE];wwMd = new String[DATA_SIZE];PEvap = new String[DATA_SIZE];
+        uvHazardIndex = new String[DATA_SIZE];
     }
 
     public long[] toLongArray(String[] valuearray){
@@ -534,6 +534,20 @@ public class RawWeatherInfo{
 
     public Integer getAverageClouds(int first, int last){
         return getAverageValueInt(N,first,last);
+    }
+
+    public void addUVHazardIndexData(final long[] uvIndexTimes, final int[] uvIndexValues) {
+        long[] timesteps = getTimeSteps();
+        for (int i=0; i<timesteps.length; i++){
+            this.uvHazardIndex[i]="-1";
+            if ((uvIndexTimes!=null) && (uvIndexValues!=null)){
+                for (int day=0; day<uvIndexTimes.length; day++){
+                    if (WeatherLayer.getMidnightTime(timesteps[i])==uvIndexTimes[day]){
+                        this.uvHazardIndex[i] = String.valueOf(uvIndexValues[day]);
+                    }
+                }
+            }
+        }
     }
 
 }

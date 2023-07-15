@@ -310,6 +310,25 @@
 
             </PreferenceScreen>
 
+            <PreferenceScreen
+                    android:key="PREF_screen_uvhi"
+                    android:title="@string/preference_screen_uvhi_title"
+                    android:summary="@string/preference_screen_uvhi_summary">
+
+                <CheckBoxPreference
+                        android:key="PREF_uvhi_fetch_data"
+                        android:title="@string/preference_screen_uvhi_fetchData_title"
+                        android:summary="@string/preference_screen_uvhi_fetchData_summary"
+                        android:defaultValue="false"/>
+                <CheckBoxPreference
+                        android:key="PREF_uvhi_maindisplay"
+                        android:title="@string/preference_screen_uvhi_showInMain_title"
+                        android:summary="@string/preference_screen_uvhi_showInMain_summary"
+                        android:defaultValue="false"/>
+
+            </PreferenceScreen>
+
+
             <CheckBoxPreference
                     android:key="PREF_display_station_geo"
                     android:title="@string/preference_display_station_geo_title"

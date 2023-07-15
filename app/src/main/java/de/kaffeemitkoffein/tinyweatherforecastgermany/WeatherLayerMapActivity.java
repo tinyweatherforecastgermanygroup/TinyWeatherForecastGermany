@@ -6,11 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.*;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -47,14 +45,12 @@ public class WeatherLayerMapActivity extends Activity {
     WeatherDetailsActivity.SwipeGestureDetector swipeGestureDetector = new WeatherDetailsActivity.SwipeGestureDetector(){
         @Override
         public boolean onLeftSwipe(View view, MotionEvent motionEvent) {
-            Log.v("twfg","left swipe");
             changeMap(1);
             return super.onLeftSwipe(view, motionEvent);
         }
 
         @Override
         public boolean onRightSwipe(View view, MotionEvent motionEvent) {
-            Log.v("twfg","right swipe");
             changeMap(-1);
             return super.onRightSwipe(view, motionEvent);
         }
