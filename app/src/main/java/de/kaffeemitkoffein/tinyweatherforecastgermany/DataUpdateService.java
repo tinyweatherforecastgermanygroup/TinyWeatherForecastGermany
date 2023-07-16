@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -63,9 +62,6 @@ public class DataUpdateService extends Service {
     public static String SERVICEEXTRAS_UPDATE_LOCATIONSLIST="SERVICEEXTRAS_LOCATIONS";
 
     private ConnectivityManager connectivityManager;
-
-    long[] UVTimeArray;
-    int[] UVIndexArray;
 
     static class StopReason {
         public static final int REGULAR = 0;
@@ -108,8 +104,12 @@ public class DataUpdateService extends Service {
         @Override
         public void run() {
             updateNotification(6);
-            Weather.sanitizeDatabase(getApplicationContext());
-            TextForecasts.cleanTextForecastDatabase(getApplicationContext());
+            try {
+                Weather.sanitizeDatabase(getApplicationContext());
+                TextForecasts.cleanTextForecastDatabase(getApplicationContext());
+            } catch (Exception e){
+                // nothing to do, this is lenient, because some clean-up may fail upon 1st app launch
+            }
         }
 
     };
@@ -209,70 +209,54 @@ public class DataUpdateService extends Service {
                 } else {
                     timer.schedule(timeOutTask,TIMEOUTTASK_DELAY);
                 }
-                if ((updateWeather) && (WeatherSettings.isWeatherUpdateAllowed(context))){
-                    // check if an arraylist of stations was provided, if not get the one from settings
-                    boolean getLocationFromSettings = false;
-                    if (weatherLocations==null){
+                // check if an arraylist of stations was provided, if not get the one from settings
+                boolean getLocationFromSettings = false;
+                if (weatherLocations==null){
+                    getLocationFromSettings = true;
+                } else {
+                    if (weatherLocations.size()==0){
                         getLocationFromSettings = true;
-                    } else {
-                        if (weatherLocations.size()==0){
-                            getLocationFromSettings = true;
-                        }
                     }
-                    // when arrayList of stations is null or empty, get the station from settings
-                    if (getLocationFromSettings){
-                        weatherLocations = new ArrayList<Weather.WeatherLocation>();
-                        weatherLocations.add(WeatherSettings.getSetStationLocation(context));
-                    }
-                    // get uv hazard index first
-                    long currentTime = Calendar.getInstance().getTimeInMillis();
-                    long[] timeArray = new long[3];
-                    timeArray[0] = WeatherLayer.getMidnightTime(currentTime,0);
-                    timeArray[1] = WeatherLayer.getMidnightTime(currentTime,Pollen.Tomorrow);
-                    timeArray[2] = WeatherLayer.getMidnightTime(currentTime,Pollen.DayAfterTomorrow);
-                    final ArrayList<Weather.WeatherLocation> finalWeatherLocations = weatherLocations;
-                    APIReaders.GetUvIndexForLocation uvIndexForLocation = new APIReaders.GetUvIndexForLocation(context,WeatherSettings.getSetStationLocation(context), timeArray){
+                }
+                // when arrayList of stations is null or empty, get the station from settings
+                if (getLocationFromSettings){
+                    weatherLocations = new ArrayList<Weather.WeatherLocation>();
+                    weatherLocations.add(WeatherSettings.getSetStationLocation(context));
+                }
+                if (updateWeather){
+                    APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(context, weatherLocations){
                         @Override
-                        public void onFinished(long[] timeArray, int[] resultArray) {
-                            UVTimeArray = timeArray;
-                            UVIndexArray = resultArray;
-                            APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(context, finalWeatherLocations,UVTimeArray,UVIndexArray){
-                                @Override
-                                public void onStart(){
-                                    updateNotification(0);
-                                }
-                                @Override
-                                public void onPositiveResult(){
-                                    // update GadgetBridge and widgets
-                                    UpdateAlarmManager.updateAppViews(context);
-                                    // notify main class
-                                    Intent intent = new Intent();
-                                    intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
-                                    sendBroadcast(intent);
-                                    WeatherSettings.setLastWeatherUpdateTime(context,Calendar.getInstance().getTimeInMillis());
-                                    PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.INFO,"Weather update: success");
-                                }
-                                @Override
-                                public void onNegativeResult(){
-                                    PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Weather update: failed, error.");
-                                    if (ssl_exception){
-                                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"SSL exception detected by service.");
-                                        Intent ssl_intent = new Intent();
-                                        ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
-                                        sendBroadcast(ssl_intent);
-                                    }
-                                    // need to update main app with old data
-                                    Intent intent = new Intent();
-                                    intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
-                                    sendBroadcast(intent);
-                                    // need to update views with old data: GadgetBridge and widgets
-                                    UpdateAlarmManager.updateAppViews(context);
-                                }
-                            };
-                            executor.execute(weatherForecastRunnable);
+                        public void onStart(){
+                            updateNotification(0);
+                        }
+                        @Override
+                        public void onPositiveResult(){
+                            // update GadgetBridge and widgets
+                            UpdateAlarmManager.updateAppViews(context);
+                            // notify main class
+                            Intent intent = new Intent();
+                            intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+                            sendBroadcast(intent);
+                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.INFO,"Weather update: success");
+                        }
+                        @Override
+                        public void onNegativeResult(){
+                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Weather update: failed, error.");
+                            if (ssl_exception){
+                                PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"SSL exception detected by service.");
+                                Intent ssl_intent = new Intent();
+                                ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
+                                sendBroadcast(ssl_intent);
+                            }
+                            // need to update main app with old data
+                            Intent intent = new Intent();
+                            intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+                            sendBroadcast(intent);
+                            // need to update views with old data: GadgetBridge and widgets
+                            UpdateAlarmManager.updateAppViews(context);
                         }
                     };
-                    executor.execute(uvIndexForLocation);
+                    executor.execute(weatherForecastRunnable);
                 }
                 if (updateWarnings) {
                     APIReaders.WeatherWarningsRunnable weatherWarningsRunnable = new APIReaders.WeatherWarningsRunnable(this){

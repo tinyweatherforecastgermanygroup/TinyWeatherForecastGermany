@@ -74,6 +74,7 @@ public class MainActivity extends Activity {
     StationsManager stationsManager;
     ArrayList<Weather.WeatherLocation> spinnerItems;
     Spinner spinner;
+    ListView weatherList;
     AutoCompleteTextView autoCompleteTextView;
     StationSearchEngine stationSearchEngine;
     SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
@@ -118,7 +119,6 @@ public class MainActivity extends Activity {
             }
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"received broadcast => custom refresh action");
-                weatherCard=null; // invalidate weather data in memory to force read from database
                 displayWeatherForecast();
                 forceWeatherUpdateFlag = false;
                 if (API_TESTING_ENABLED){
@@ -171,9 +171,8 @@ public class MainActivity extends Activity {
             }
             if (intent.getAction().equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE)){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"broadcast received => new weather warnings.");
-                checkIfWarningsApply();
+                displayWeatherForecast();
                 if (forceWeatherUpdateFlag){
-                    //UpdateAlarmManager.startDataUpdateService(getApplicationContext(),true,false,true);
                     forceWeatherUpdateFlag = false;
                 }
             }
@@ -357,7 +356,7 @@ public class MainActivity extends Activity {
         // this is necessary if the update of weather data occurs while the app is in the background
         try {
             if (weatherCard==null){
-                weatherCard = new Weather().getCurrentWeatherInfo(this);
+                weatherCard = Weather.getCurrentWeatherInfo(this);
             }
         } catch (Exception e){
             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when getting weather: "+e.getMessage());
@@ -420,8 +419,12 @@ public class MainActivity extends Activity {
                 }
             }
             context = getApplicationContext();
+            // init Preference
+            WeatherSettings weatherSettings = new WeatherSettings(context);
+            weatherSettings.savePreferences();
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
             setContentView(R.layout.activity_main);
+            weatherList = (ListView) findViewById(R.id.main_listview);
             stationsManager = new StationsManager(context);
             autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
             // disable log to logcat if release is not a userdebug
@@ -452,7 +455,6 @@ public class MainActivity extends Activity {
             } catch (Exception e){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Preparing database failed on main thread.");
             }
-            final WeatherSettings weatherSettings = new WeatherSettings(this);
             if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
                 // remove old databases if previous version was older than 30
                 if (weatherSettings.last_version_code<30){
@@ -542,14 +544,14 @@ public class MainActivity extends Activity {
                                 key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART) || key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS)){
                             // on 1st app call, weatherCard can be still null
                             if (weatherCard!=null){
-                                displayWeatherForecast(weatherCard);
+                                displayWeatherForecast();
                             }
                         }
                         // invalidate weather display and widgets
                         if ((key.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (key.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
                             // on 1st app call, weatherCard can be still null
                             if (weatherCard!=null){
-                                displayWeatherForecast(weatherCard);
+                                displayWeatherForecast();
                                 // refreshing widgets only makes sense when there is weather data
                                 WidgetRefresher.refresh(getApplicationContext());
                             }
@@ -560,6 +562,21 @@ public class MainActivity extends Activity {
                         }
                         if (key.equals(WeatherSettings.PREF_ROTATIONMODE)){
                             recreate();
+                        }
+                        // invalidate weather display because the display options have changed
+                        if (key.equals(WeatherSettings.PREF_UVHI_MAINDISPLAY)){
+                            // on 1st app call, weatherCard can be still null
+                            if (weatherCard!=null){
+                                displayWeatherForecast();
+                            }
+                        }
+                        if (key.equals(WeatherSettings.PREF_UVHI_FETCH_DATA)){
+                            if (WeatherSettings.UVHIfetchData(context)){
+                                // check for a force weather update to fetch a set with uvi data.
+                                if (Weather.hasUVHIData(context)){
+                                    forcedWeatherUpdate();
+                                }
+                            }
                         }
                     }
                 }
@@ -592,9 +609,9 @@ public class MainActivity extends Activity {
             // get new data from api or display present data.
             if (!API_TESTING_ENABLED){
                 if (weatherCard!=null){
-                    // Log.v("weather","calling from API test");
-                    // displayWeatherForecast(weatherCard);
+                    // check for update
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
+                    displayWeatherForecast();
                 } else {
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,weatherCard);
                 }
@@ -654,45 +671,55 @@ public class MainActivity extends Activity {
             final PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
              */
             }
+            // Setup a listener when layout of main spinner is done
+
             // Prefetch maps for better performance. This may be turned off later by the user.
             // This will be done at a maximum of once per hour, see WeatherSettings.preFetchMaps.
             if (((performingFirstAppLaunch) || (WeatherSettings.preFetchMaps(context))) && DataUpdateService.suitableNetworkAvailable(context)){
                 // read pollen data to be able to pre-generate pollen maps
-                APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context);
-                executor.execute(pollenReader);
-                ArrayList<WeatherLayer> weatherLayers = WeatherLayer.getLayers(context);
-                final APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,weatherLayers){
-                    @Override
-                    public void onStart() {
-                        super.onStart();
-                    }
-                    @Override
-                    public void onProgress(WeatherLayer weatherLayer) {
-                        super.onProgress(weatherLayer);
-                        if (weatherLayer.isPollen()){
-                            if (weatherLayer.isPollenLayerCacheFileOutdated(context)) {
-                                Bitmap bitmap = weatherLayer.getLayerBitmap(context);
-                                if (bitmap!=null) {
-                                    weatherLayer.saveLayerBitmapToCache(context,bitmap);
-                                }
-                            } else {
-                                // do nothing
-                            }
-                        }
-                    }
-
+                final APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context){
                     @Override
                     public void onFinished(boolean success) {
-                        super.onFinished(success);
-                        WeatherSettings.setPrefetchMapsTime(context);
+                        if (success) {
+                            ArrayList<WeatherLayer> weatherLayers = WeatherLayer.getLayers(context);
+                            final APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context, weatherLayers) {
+                                @Override
+                                public void onStart() {
+                                    super.onStart();
+                                }
+
+                                @Override
+                                public void onProgress(WeatherLayer weatherLayer) {
+                                    super.onProgress(weatherLayer);
+                                    if (weatherLayer.isPollen()) {
+                                        if (weatherLayer.isPollenLayerCacheFileOutdated(context)) {
+                                            Bitmap bitmap = weatherLayer.getLayerBitmap(context);
+                                            if (bitmap != null) {
+                                                weatherLayer.saveLayerBitmapToCache(context, bitmap);
+                                            }
+                                        } else {
+                                            // do nothing
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFinished(boolean success) {
+                                    if (success) {
+                                        WeatherSettings.setPrefetchMapsTime(context);
+                                    }
+                                }
+                            };
+                            getLayerImages.run();
+                        }
                     }
                 };
-                spinner.post(new Runnable() {
+                weatherList.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        executor.execute(getLayerImages);
+                        executor.execute(pollenReader);
                     }
-                });
+                },15000);
             } else {
                 // do nothing
             }
@@ -920,6 +947,7 @@ public class MainActivity extends Activity {
                     stationsManager = new StationsManager(context);
                 }
                 stationsManager.stations = stations;
+                displayWeatherForecast();
                 stationSearchEngine = new StationSearchEngine(context,executor,null,stationsManager){
                     @Override
                     public void newEntries(ArrayList<String> newEntries){
@@ -1102,18 +1130,48 @@ public class MainActivity extends Activity {
         return weatherInfos;
     }
 
-    public void displayWeatherForecast(CurrentWeatherInfo weatherCard){
-        displayUpdateTime(weatherCard);
-        ListView weatherList = (ListView) findViewById(R.id.main_listview);
-        forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
-        // display immediately if:
-        // a) warnings already loaded in memory, OR
-        // b) area database not ready yet, OR
-        // c) warnings are disabled.
-        if ((localWarnings!=null) || !WeatherSettings.isAreaDatabaseReady(context) || WeatherSettings.areWarningsDisabled(context)){
-            // warnings present, display immediately
+    public void displayWeatherForecast() {
+        // check if weather forecast in memory is outdated, fetch from database if necessary
+        if (weatherCard==null){
+            weatherCard = Weather.getCurrentWeatherInfo(context);
+        } else {
+            if (Weather.getPollingTime(context) > weatherCard.polling_time) {
+                weatherCard = Weather.getCurrentWeatherInfo(context);
+            }
+        }
+        // if warnings disabled or area database not ready
+        if (!WeatherSettings.areWarningsDisabled(context) && WeatherSettings.isAreaDatabaseReady(context)) {
+            // invalidate current warnings
+            localWarnings = null;
+            if (forecastAdapter != null) {
+                forecastAdapter.setWarnings(null);
+            }
+            // determine new warnings async
+            WeatherWarnings.getWarningsForLocationRunnable getWarningsForLocationRunnable = new WeatherWarnings.getWarningsForLocationRunnable(context, null, null) {
+                @Override
+                public void onResult(ArrayList<WeatherWarning> result) {
+                    localWarnings = result;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayAdapter(weatherCard);
+                        }
+                    });
+                }
+            };
+            executor.execute(getWarningsForLocationRunnable);
+        } else {
+            displayAdapter(weatherCard);
+        }
+    }
+
+    private void displayAdapter(CurrentWeatherInfo weatherCard){
+        if (weatherCard!=null){
+            displayUpdateTime(weatherCard);
+            forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
             forecastAdapter.setWarnings(localWarnings);
             weatherList.setAdapter(forecastAdapter);
+            forecastAdapter.notifyDataSetChanged();
             if (WeatherSettings.loggingEnabled(this)){
                 float time = (Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f;
                 DecimalFormat decimalFormat = new DecimalFormat("000.000");
@@ -1121,34 +1179,15 @@ public class MainActivity extends Activity {
             }
             weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
             weatherList.setOnItemClickListener(weatherItemDoubleClickListener);
-        } else {
-            // fetch warnings async if necessary
-            // will call this sub again after warnings were loaded
-            // only do it once the area database is in place
-            if (WeatherSettings.isAreaDatabaseReady(context)){
-                checkIfWarningsApply();
-            }
         }
    }
-
-    public void displayWeatherForecast(){
-        if (weatherCard==null){
-            weatherCard = new Weather().getCurrentWeatherInfo(this);
-        }
-        /*
-        if (weatherCard==null){
-            weatherCard = new CurrentWeatherInfo();
-        }
-         */
-        displayWeatherForecast(weatherCard);
-    }
 
     public void getWeatherForecast(){
         weatherCard = new Weather().getCurrentWeatherInfo(this);
         if ((weatherCard == null) || (API_TESTING_ENABLED)){
             UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE,weatherCard);
         } else {
-            displayWeatherForecast(weatherCard);
+            displayWeatherForecast();
         }
     }
 
@@ -1157,35 +1196,6 @@ public class MainActivity extends Activity {
         forceWeatherUpdateFlag = true;
     }
 
-    private void checkIfWarningsApply(){
-        // abort if warnings disabled or area database not ready
-        if (WeatherSettings.areWarningsDisabled(context) || !WeatherSettings.isAreaDatabaseReady(context)){
-            displayWeatherForecast();
-            return;
-        }
-        // invalidate current warnings
-        localWarnings = null;
-        if (forecastAdapter!=null){
-            forecastAdapter.setWarnings(null);
-        }
-        // determine new warnings async
-        WeatherWarnings.getWarningsForLocationRunnable getWarningsForLocationRunnable = new WeatherWarnings.getWarningsForLocationRunnable(context,null,null){
-            @Override
-            public void onResult(ArrayList<WeatherWarning> result){
-                localWarnings = result;
-                if (forecastAdapter!=null){
-                    forecastAdapter.setWarnings(localWarnings);
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        displayWeatherForecast();
-                    }
-                });
-            }
-        };
-        executor.execute(getWarningsForLocationRunnable);
-    }
 
     private void checkIfWarningsAreOutdated(){
         if (WeatherSettings.areWarningsOutdated(context) && WeatherSettings.updateWarnings(context)){
@@ -1199,7 +1209,7 @@ public class MainActivity extends Activity {
             });
         } else {
             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Warnings are up to date.");
-            checkIfWarningsApply();
+            //checkIfWarningsApply();
         }
     }
 
@@ -1511,11 +1521,11 @@ public class MainActivity extends Activity {
                             // Allow screen rotation within this app again
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                             main_area_progress_holder.setVisibility(View.GONE);
-                            // after new database is available, warnings need to be rebuilt and checked again
-                            checkIfWarningsApply();
                             // after new database is available, the text search has more options and needs to
                             // be rebuilt
                             loadStationsData();
+                            // after new database is available, warnings need to be rebuilt and checked again
+                            //checkIfWarningsApply();
                         }
                     });
                 }

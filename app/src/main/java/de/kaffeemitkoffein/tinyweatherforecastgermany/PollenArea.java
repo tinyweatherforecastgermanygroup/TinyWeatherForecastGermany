@@ -93,7 +93,6 @@ public class PollenArea {
 
   public static PollenArea FindPollenArea(Context context, Weather.WeatherLocation weatherLocation){
     ArrayList<PollenArea> pollenAreas = GetPollenAreas(context,null);
-    Integer[] result = new Integer[2];
     for (int i=0; i<pollenAreas.size(); i++){
       PollenArea pollenArea = pollenAreas.get(i);
       if (pollenArea.geoPolygon.isInPolygon(weatherLocation)){

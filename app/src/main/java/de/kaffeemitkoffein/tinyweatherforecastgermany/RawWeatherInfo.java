@@ -550,5 +550,6 @@ public class RawWeatherInfo{
         }
     }
 
+
 }
 

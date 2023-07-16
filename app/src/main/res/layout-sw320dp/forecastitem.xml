@@ -139,12 +139,11 @@
                    android:layout_below="@id/fcitem_sunet1"
                    android:src="@mipmap/arrow_down"/>
 
-
             <TextView
                     android:id="@+id/fcitem_uvHazardIndex"
                     android:layout_width="21dp"
                     android:layout_height="21dp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
                     android:gravity="center"
@@ -152,6 +151,7 @@
                     android:shadowRadius="1"
                     android:shadowDx="1"
                     android:shadowDy="1"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium"
                     android:shadowColor="?attr/colorTextLight"
                     android:textColor="?attr/colorText"/>
 

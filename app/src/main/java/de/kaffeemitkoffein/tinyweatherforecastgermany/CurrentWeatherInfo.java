@@ -34,8 +34,8 @@ public class CurrentWeatherInfo{
     public final static int DMO_PUBLICATION_DELAY = 1*60*60*1000; // 1 hour in millis
     public final SimpleDateFormat dateAndHourDateFormat = new SimpleDateFormat("dd. MMM yyyy HH:mm");
     Weather.WeatherLocation weatherLocation;
-    long polling_time;
-    long issue_time;
+    long polling_time = Calendar.getInstance().getTimeInMillis();
+    long issue_time = 0;
     Weather.WeatherInfo currentWeather;
     ArrayList<Weather.WeatherInfo> forecast1hourly;
     ArrayList<Weather.WeatherInfo> forecast6hourly;

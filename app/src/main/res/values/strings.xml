@@ -434,7 +434,7 @@
     <string name="layerlabel_ts_max_1">Maximum temperature sensed tomorrow</string>
     <string name="layerlabel_ts_max_2">Maximum temperature sensed the day after tomorrow</string>
     <string name="wm_maps">Weather maps</string>
-    <string name="wm_update_not_allowed_yet">Next update is possible in %1$s.</string>
+    <string name="wm_update_not_allowed_yet">Next update possible: %1$s </string>
     <string name="pollen_title">Pollen count forecast</string>
     <string name="pollen_ambrosia">Ambrosia</string>
     <string name="pollen_mugwort">Mugwort</string> <!-- Beifuss -->

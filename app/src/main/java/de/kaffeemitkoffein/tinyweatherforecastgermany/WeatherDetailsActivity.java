@@ -274,11 +274,13 @@ public class WeatherDetailsActivity extends Activity {
             updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
         }
         pollenArea = WeatherSettings.getPollenRegion(context);
-        pollen = Pollen.GetPollenData(context,pollenArea);
-        if ((pollen==null) || (Pollen.isUpdateDue(context))){
-            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN);
+        if (pollenArea!=null){
+            pollen = Pollen.GetPollenData(context,pollenArea);
+            if ((pollen==null) || (Pollen.isUpdateDue(context))){
+                updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN);
+            }
+            updateData(updateTasks);
         }
-        updateData(updateTasks);
         // result will be received by a broadcast event
         displayValues();
         TextView textViewNotice = (TextView) findViewById(R.id.weatherdetails_reference_text);
@@ -635,7 +637,7 @@ public class WeatherDetailsActivity extends Activity {
             valuesListWind.setVisibility(View.GONE);
         }
         list = new ArrayList<DetailsElement>();
-        if ((weatherInfo.hasSunDuration()) || (weatherInfo.hasRH()) || (weatherInfo.hasTemperature5cm()) || (weatherInfo.hasProbPrecipitation()) || (weatherInfo.hasPrecipitation())){
+        if ((weatherInfo.hasSunDuration()) || (weatherInfo.hasUvHazardIndex()) || (weatherInfo.hasRH()) || (weatherInfo.hasTemperature5cm()) || (weatherInfo.hasProbPrecipitation()) || (weatherInfo.hasPrecipitation())){
             valuesListElements.setVisibility(View.VISIBLE);
             valuesListElements.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
             list.add(newDetail(getResources().getString(R.string.wd_general),null,null,null));
@@ -711,160 +713,164 @@ public class WeatherDetailsActivity extends Activity {
         } else {
             valuesListIncidents.setVisibility(View.GONE);
         }
-        final int relativeDay = weatherInfo.getRelativeDay();
-        if ((pollen!=null) && (relativeDay>=Pollen.Today) && (relativeDay<=Pollen.DayAfterTomorrow) && (WeatherSettings.anyPollenActive(context))){
-            final int BAR_WIDTH = 1024; final int BAR_HEIGHT = 256;
-            list = new ArrayList<DetailsElement>();
-            list.add(newDetail(context.getResources().getString(R.string.pollen_title),null,null,null));
-            int loadAmbrosia = pollen.getPollenLoad(context,Pollen.Ambrosia,relativeDay);
-            int loadBeifuss = pollen.getPollenLoad(context,Pollen.Beifuss,relativeDay);
-            int loadRoggen = pollen.getPollenLoad(context,Pollen.Roggen,relativeDay);
-            int loadEsche = pollen.getPollenLoad(context,Pollen.Esche,relativeDay);
-            int loadBirke = pollen.getPollenLoad(context,Pollen.Birke,relativeDay);
-            int loadHasel = pollen.getPollenLoad(context,Pollen.Hasel,relativeDay);
-            int loadErle = pollen.getPollenLoad(context,Pollen.Erle,relativeDay);
-            int loadGraeser = pollen.getPollenLoad(context,Pollen.Graeser,relativeDay);
-            if ((loadAmbrosia>=0) && (WeatherSettings.getPollenActiveAmbrosia(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadAmbrosia,6,Pollen.PollenLoadColors[loadAmbrosia],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_ambrosia), new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        if (relativeDay==Pollen.Today){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0);
+        if (pollenArea!=null){
+            final int relativeDay = weatherInfo.getRelativeDay();
+            if ((pollen!=null) && (relativeDay>=Pollen.Today) && (relativeDay<=Pollen.DayAfterTomorrow) && (WeatherSettings.anyPollenActive(context))){
+                final int BAR_WIDTH = 1024; final int BAR_HEIGHT = 256;
+                list = new ArrayList<DetailsElement>();
+                list.add(newDetail(context.getResources().getString(R.string.pollen_title),null,null,null));
+                int loadAmbrosia = pollen.getPollenLoad(context,Pollen.Ambrosia,relativeDay);
+                int loadBeifuss = pollen.getPollenLoad(context,Pollen.Beifuss,relativeDay);
+                int loadRoggen = pollen.getPollenLoad(context,Pollen.Roggen,relativeDay);
+                int loadEsche = pollen.getPollenLoad(context,Pollen.Esche,relativeDay);
+                int loadBirke = pollen.getPollenLoad(context,Pollen.Birke,relativeDay);
+                int loadHasel = pollen.getPollenLoad(context,Pollen.Hasel,relativeDay);
+                int loadErle = pollen.getPollenLoad(context,Pollen.Erle,relativeDay);
+                int loadGraeser = pollen.getPollenLoad(context,Pollen.Graeser,relativeDay);
+                if ((loadAmbrosia>=0) && (WeatherSettings.getPollenActiveAmbrosia(context))){
+                    list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadAmbrosia,6,Pollen.PollenLoadColors[loadAmbrosia],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_ambrosia), new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            if (relativeDay==Pollen.Today){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0);
+                            }
+                            if (relativeDay==Pollen.Tomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_1);
+                            }
+                            if (relativeDay==Pollen.DayAfterTomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_2);
+                            }
+                            return true;
                         }
-                        if (relativeDay==Pollen.Tomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_1);
+                    }));
+                }
+                if ((loadBeifuss>=0) && (WeatherSettings.getPollenActiveBeifuss(context))){
+                    list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadBeifuss,6,Pollen.PollenLoadColors[loadBeifuss],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_mugwort), new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            if (relativeDay==Pollen.Today){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_0);
+                            }
+                            if (relativeDay==Pollen.Tomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_1);
+                            }
+                            if (relativeDay==Pollen.DayAfterTomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_2);
+                            }
+                            return true;
                         }
-                        if (relativeDay==Pollen.DayAfterTomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_2);
+                    }));
+                }
+                if ((loadRoggen>=0) && (WeatherSettings.getPollenActiveRoggen(context))){
+                    list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadRoggen,6,Pollen.PollenLoadColors[loadRoggen],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_rye), new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            if (relativeDay==Pollen.Today){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_0);
+                            }
+                            if (relativeDay==Pollen.Tomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_1);
+                            }
+                            if (relativeDay==Pollen.DayAfterTomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_2);
+                            }
+                            return true;
                         }
-                        return true;
-                    }
-                }));
+                    }));
+                }
+                if ((loadEsche>=0) && (WeatherSettings.getPollenActiveEsche(context))){
+                    list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadEsche,6,Pollen.PollenLoadColors[loadEsche],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_ash), new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            if (relativeDay==Pollen.Today){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_0);
+                            }
+                            if (relativeDay==Pollen.Tomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_1);
+                            }
+                            if (relativeDay==Pollen.DayAfterTomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_2);
+                            }
+                            return true;
+                        }
+                    }));
+                }
+                if ((loadBirke>=0) && (WeatherSettings.getPollenActiveBirke(context))){
+                    list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadBirke,6,Pollen.PollenLoadColors[loadBirke],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_birch), new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            if (relativeDay==Pollen.Today){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_0);
+                            }
+                            if (relativeDay==Pollen.Tomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_1);
+                            }
+                            if (relativeDay==Pollen.DayAfterTomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_2);
+                            }
+                            return true;
+                        }
+                    }));
+                }
+                if ((loadHasel>=0) && (WeatherSettings.getPollenActiveHasel(context))){
+                    list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadHasel,6,Pollen.PollenLoadColors[loadHasel],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_hazel), new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            if (relativeDay==Pollen.Today){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_0);
+                            }
+                            if (relativeDay==Pollen.Tomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_1);
+                            }
+                            if (relativeDay==Pollen.DayAfterTomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_2);
+                            }
+                            return true;
+                        }
+                    }));
+                }
+                if ((loadErle>=0) && (WeatherSettings.getPollenActiveErle(context))){
+                    list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadErle,6,Pollen.PollenLoadColors[loadErle],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_alder),new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            if (relativeDay==Pollen.Today){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_0);
+                            }
+                            if (relativeDay==Pollen.Tomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_1);
+                            }
+                            if (relativeDay==Pollen.DayAfterTomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_2);
+                            }
+                            return true;
+                        }
+                    }));
+                }
+                if ((loadGraeser>=0) && (WeatherSettings.getPollenActiveGraeser(context))){
+                    list.add(newDetail(null, ForecastBitmap.getHorizontalBar(context, BAR_WIDTH, BAR_HEIGHT, loadGraeser, 6, Pollen.PollenLoadColors[loadGraeser], ThemePicker.getWidgetTextColor(context)), null, context.getResources().getString(R.string.pollen_grasses), new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View view) {
+                            if (relativeDay==Pollen.Today){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_0);
+                            }
+                            if (relativeDay==Pollen.Tomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_1);
+                            }
+                            if (relativeDay==Pollen.DayAfterTomorrow){
+                                openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_2);
+                            }
+                            return true;
+                        }
+                    }));
+                }
+                valuesListPollen.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
+                for (int i=0; i<list.size(); i++){
+                    setDetail(valuesListPollen,list.get(i),ListItemType.Chart);
+                }
+                setPollenLegend(valuesListPollen);
+            } else {
+                valuesListPollen.setVisibility(View.GONE);
             }
-            if ((loadBeifuss>=0) && (WeatherSettings.getPollenActiveBeifuss(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadBeifuss,6,Pollen.PollenLoadColors[loadBeifuss],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_mugwort), new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        if (relativeDay==Pollen.Today){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_0);
-                        }
-                        if (relativeDay==Pollen.Tomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_1);
-                        }
-                        if (relativeDay==Pollen.DayAfterTomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BEIFUSS_2);
-                        }
-                        return true;
-                    }
-                }));
-            }
-            if ((loadRoggen>=0) && (WeatherSettings.getPollenActiveRoggen(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadRoggen,6,Pollen.PollenLoadColors[loadRoggen],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_rye), new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        if (relativeDay==Pollen.Today){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_0);
-                        }
-                        if (relativeDay==Pollen.Tomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_1);
-                        }
-                        if (relativeDay==Pollen.DayAfterTomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ROGGEN_2);
-                        }
-                        return true;
-                    }
-                }));
-            }
-            if ((loadEsche>=0) && (WeatherSettings.getPollenActiveEsche(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadEsche,6,Pollen.PollenLoadColors[loadEsche],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_ash), new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        if (relativeDay==Pollen.Today){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_0);
-                        }
-                        if (relativeDay==Pollen.Tomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_1);
-                        }
-                        if (relativeDay==Pollen.DayAfterTomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ESCHE_2);
-                        }
-                        return true;
-                    }
-                }));
-            }
-            if ((loadBirke>=0) && (WeatherSettings.getPollenActiveBirke(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadBirke,6,Pollen.PollenLoadColors[loadBirke],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_birch), new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        if (relativeDay==Pollen.Today){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_0);
-                        }
-                        if (relativeDay==Pollen.Tomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_1);
-                        }
-                        if (relativeDay==Pollen.DayAfterTomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_BIRKE_2);
-                        }
-                        return true;
-                    }
-                }));
-            }
-            if ((loadHasel>=0) && (WeatherSettings.getPollenActiveHasel(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadHasel,6,Pollen.PollenLoadColors[loadHasel],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_hazel), new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        if (relativeDay==Pollen.Today){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_0);
-                        }
-                        if (relativeDay==Pollen.Tomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_1);
-                        }
-                        if (relativeDay==Pollen.DayAfterTomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_HASEL_2);
-                        }
-                        return true;
-                    }
-                }));
-            }
-            if ((loadErle>=0) && (WeatherSettings.getPollenActiveErle(context))){
-                list.add(newDetail(null,ForecastBitmap.getHorizontalBar(context,BAR_WIDTH,BAR_HEIGHT,loadErle,6,Pollen.PollenLoadColors[loadErle],ThemePicker.getWidgetTextColor(context)),null,context.getResources().getString(R.string.pollen_alder),new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        if (relativeDay==Pollen.Today){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_0);
-                        }
-                        if (relativeDay==Pollen.Tomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_1);
-                        }
-                        if (relativeDay==Pollen.DayAfterTomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_ERLE_2);
-                        }
-                        return true;
-                    }
-                }));
-            }
-            if ((loadGraeser>=0) && (WeatherSettings.getPollenActiveGraeser(context))){
-                list.add(newDetail(null, ForecastBitmap.getHorizontalBar(context, BAR_WIDTH, BAR_HEIGHT, loadGraeser, 6, Pollen.PollenLoadColors[loadGraeser], ThemePicker.getWidgetTextColor(context)), null, context.getResources().getString(R.string.pollen_grasses), new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        if (relativeDay==Pollen.Today){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_0);
-                        }
-                        if (relativeDay==Pollen.Tomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_1);
-                        }
-                        if (relativeDay==Pollen.DayAfterTomorrow){
-                            openLayerMap(WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_2);
-                        }
-                        return true;
-                    }
-                }));
-            }
-            valuesListPollen.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
-            for (int i=0; i<list.size(); i++){
-                setDetail(valuesListPollen,list.get(i),ListItemType.Chart);
-            }
-            setPollenLegend(valuesListPollen);
         } else {
             valuesListPollen.setVisibility(View.GONE);
         }

@@ -159,6 +159,8 @@ public class WeatherSettings {
     public static final String PREF_LAST_PREFETCH_TIME = "PREF_prefetch_time";
     public static final String PREF_UVHI_FETCH_DATA ="PREF_uvhi_fetch_data";
     public static final String PREF_UVHI_MAINDISPLAY="PREF_uvhi_maindisplay";
+    public static final String PREF_CACHE_UVHI_TIMES ="PREF_cache_uvhi_times";
+    public static final String PREF_CACHE_UVHI_VALUES="PREF_cache_uvhi_values";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -242,7 +244,7 @@ public class WeatherSettings {
     public static final boolean PREF_WARNINGS_NOTIFY_LED_DEFAULT = true;
     public static final int PREF_HINTCOUNTER1_DEFAULT = 0;
     public static final int PREF_HINTCOUNTER2_DEFAULT = 0;
-    public static final long PREF_UVIMAPLASTUPDATETIME_DEFAULT = 0;
+    public static final long PREF_MAPLASTUPDATETIME_DEFAULT = 0;
     public static final long PREF_LAYERTIME_DEFAULT = 0;
     public static final int PREF_LASTMAPDISPLAYED_DEFAULT = WeatherLayer.Layers.UVI_CLOUDS_0;
     public static final int PREF_POLLENREGION_ID_DEFAULT = 1;
@@ -343,7 +345,7 @@ public class WeatherSettings {
     public boolean useLED = PREF_WARNINGS_NOTIFY_LED_DEFAULT;
     public int hintCounter1 = PREF_HINTCOUNTER1_DEFAULT;
     public int hintCounter2 = PREF_HINTCOUNTER2_DEFAULT;
-    public long uviLastUpdateTime = PREF_UVIMAPLASTUPDATETIME_DEFAULT;
+    public long uviLastUpdateTime = PREF_MAPLASTUPDATETIME_DEFAULT;
     public boolean pollenAmbrosia = PREF_POLLEN_AMBROSIA_DEFAULT;
     public boolean pollenBeifuss = PREF_POLLEN_BEIFUSS_DEFAULT;
     public boolean pollenRoggen = PREF_POLLEN_ROGGEN_DEFAULT;
@@ -443,7 +445,7 @@ public class WeatherSettings {
         this.useLED = readPreference(PREF_WARNINGS_NOTIFY_LED,PREF_WARNINGS_NOTIFY_LED_DEFAULT);
         this.hintCounter1 = readPreference(PREF_HINTCOUNTER1,PREF_HINTCOUNTER1_DEFAULT);
         this.hintCounter2 = readPreference(PREF_HINTCOUNTER2,PREF_HINTCOUNTER2_DEFAULT);
-        this.uviLastUpdateTime = readPreference(PREF_MAPLASTUPDATETIME,PREF_UVIMAPLASTUPDATETIME_DEFAULT);
+        this.uviLastUpdateTime = readPreference(PREF_MAPLASTUPDATETIME,PREF_MAPLASTUPDATETIME_DEFAULT);
         this.pollenAmbrosia = readPreference(PREF_POLLEN_AMBROSIA,PREF_POLLEN_AMBROSIA_DEFAULT);
         this.pollenBeifuss = readPreference(PREF_POLLEN_BEIFUSS,PREF_POLLEN_BEIFUSS_DEFAULT);
         this.pollenRoggen = readPreference(PREF_POLLEN_ROGGEN,PREF_POLLEN_ROGGEN_DEFAULT);
@@ -1648,7 +1650,7 @@ public class WeatherSettings {
 
     public static long getMapLastUpdateTime(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getLong(PREF_MAPLASTUPDATETIME,PREF_UVIMAPLASTUPDATETIME_DEFAULT);
+        return sharedPreferences.getLong(PREF_MAPLASTUPDATETIME,PREF_MAPLASTUPDATETIME_DEFAULT);
     }
 
     public static boolean isLayerUpdateAllowed(Context context){
@@ -1694,15 +1696,24 @@ public class WeatherSettings {
 
     public static PollenArea getPollenRegion(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return new PollenArea(sharedPreferences.getInt(PREF_POLLENREGION_ID,PREF_POLLENREGION_ID_DEFAULT),
-                sharedPreferences.getInt(PREF_POLLENPARTREGION_ID,PREF_POLLENPARTREGION_ID_DEFAULT));
+        int pollenRegion = sharedPreferences.getInt(PREF_POLLENREGION_ID,PREF_POLLENREGION_ID_DEFAULT);
+        int pollenPartRegion = sharedPreferences.getInt(PREF_POLLENPARTREGION_ID,PREF_POLLENPARTREGION_ID_DEFAULT);
+        if (pollenRegion==-1){
+            return null;
+        }
+        return new PollenArea(pollenRegion,pollenPartRegion);
     }
 
     public static void setPollenRegion(Context context, PollenArea pollenArea){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putInt(PREF_POLLENREGION_ID,pollenArea.region_id);
-        pref_editor.putInt(PREF_POLLENPARTREGION_ID,pollenArea.partregion_id);
+        if (pollenArea==null){
+            pref_editor.putInt(PREF_POLLENREGION_ID,-1);
+            pref_editor.putInt(PREF_POLLENPARTREGION_ID,-1);
+        } else {
+            pref_editor.putInt(PREF_POLLENREGION_ID,pollenArea.region_id);
+            pref_editor.putInt(PREF_POLLENPARTREGION_ID,pollenArea.partregion_id);
+        }
         pref_editor.apply();
     }
 
@@ -1785,21 +1796,67 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
-    public static long getLastWeatherUpdateTime(Context context){
+    public static long getLastUVHIUpdateTime(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(PREF_LASTWEATHERUPDATETIME,PREF_LASTWEATHERUPDATETIME_DEFAULT);
     }
 
-    public static void setLastWeatherUpdateTime(Context context, long l) {
+    public static void setLastUVHIUpdateTime(Context context, long l) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putLong(PREF_LASTWEATHERUPDATETIME, l);
         pref_editor.apply();
     }
 
-    public static boolean isWeatherUpdateAllowed(Context context){
-        long lastUpdate = getLastWeatherUpdateTime(context);
+    public static boolean isUVHIUpdateAllowed(Context context){
+        long lastUpdate = getLastUVHIUpdateTime(context);
         return (Calendar.getInstance().getTimeInMillis()>lastUpdate+POLLBLOCKTIME);
     }
+
+    public static void putUVHICache(Context context, long[] timeArray, int[] valueArray){
+        if ((timeArray!=null) && (valueArray!=null)){
+            ArrayList<String> timeStrings = new ArrayList<String>();
+            ArrayList<String> valueStrings = new ArrayList<String>();
+            for (int i=0; i<timeArray.length; i++){
+                timeStrings.add(String.valueOf(timeArray[i]));
+                valueStrings.add(String.valueOf(valueArray[i]));
+            }
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+            pref_editor.putString(PREF_CACHE_UVHI_TIMES,WeatherContentManager.serializeStringFromArrayList(timeStrings));
+            pref_editor.putString(PREF_CACHE_UVHI_VALUES,WeatherContentManager.serializeStringFromArrayList(valueStrings));
+            pref_editor.apply();
+        }
+    }
+
+    /*
+    public static long[] getUVHITimeCache(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String result = sharedPreferences.getString(PREF_CACHE_UVHI_TIMES,"");
+        if (result.equals("")){
+            return null;
+        }
+        String[] results = WeatherContentManager.deSerializeString(result);
+        long[] timeArray = new long[results.length];
+        for (int i=0; i<results.length; i++){
+            timeArray[i] = Long.parseLong(results[i]);
+        }
+        return timeArray;
+    }
+
+    public static int[] getUVHIValueCache(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String result = sharedPreferences.getString(PREF_CACHE_UVHI_VALUES,"");
+        if (result.equals("")){
+            return null;
+        }
+        String[] results = WeatherContentManager.deSerializeString(result);
+        int[] valueArray = new int[results.length];
+        for (int i=0; i<results.length; i++){
+            valueArray[i] = Integer.parseInt(results[i]);
+        }
+        return valueArray;
+    }
+     */
 
 }

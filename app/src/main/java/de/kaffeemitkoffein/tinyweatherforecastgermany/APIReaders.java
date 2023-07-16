@@ -402,8 +402,6 @@ public class APIReaders {
 
         private Context context;
         private ArrayList<Weather.WeatherLocation> weatherLocations;
-        private long[] uvHazardIndexTimes;
-        private int[] uvHazardIndexValues;
         public boolean ssl_exception = false;
 
         private String[] seperateValues(String s){
@@ -428,11 +426,9 @@ public class APIReaders {
             return result;
         }
 
-        public WeatherForecastRunnable(Context context, ArrayList<Weather.WeatherLocation> weatherLocations, long[] uvHazardIndexTimes, int[] uvHazardIndexValues){
+        public WeatherForecastRunnable(Context context, ArrayList<Weather.WeatherLocation> weatherLocations){
             this.context = context;
             this.weatherLocations = weatherLocations;
-            this.uvHazardIndexTimes = uvHazardIndexTimes;
-            this.uvHazardIndexValues = uvHazardIndexValues;
         }
 
         public String getLastestDMOUrl(Context context, String stationName) throws IOException {
@@ -774,11 +770,32 @@ public class APIReaders {
         public void run() {
             onStart();
             ArrayList<RawWeatherInfo> rawWeatherInfos = new ArrayList<RawWeatherInfo>();
-            for (int i=0; i<weatherLocations.size(); i++){
-                RawWeatherInfo rawWeatherInfo = updateWeatherLocationData(weatherLocations.get(i));
-                if (rawWeatherInfo!=null){
-                    rawWeatherInfo.addUVHazardIndexData(uvHazardIndexTimes,uvHazardIndexValues);
-                    rawWeatherInfos.add(rawWeatherInfo);
+            if (weatherLocations!=null){
+                for (int i=0; i<weatherLocations.size(); i++){
+                    final RawWeatherInfo rawWeatherInfo = updateWeatherLocationData(weatherLocations.get(i));
+                    if (rawWeatherInfo!=null){
+                        // get uv hazard index data
+                        if (WeatherSettings.UVHIfetchData(context)){
+                            final long currentTime = Calendar.getInstance().getTimeInMillis();
+                            long[] timeArray = new long[3];
+                            timeArray[0] = WeatherLayer.getMidnightTime(currentTime,0);
+                            timeArray[1] = WeatherLayer.getMidnightTime(currentTime,Pollen.Tomorrow);
+                            timeArray[2] = WeatherLayer.getMidnightTime(currentTime,Pollen.DayAfterTomorrow);
+                            final ArrayList<Weather.WeatherLocation> finalWeatherLocations = weatherLocations;
+                            APIReaders.GetUvIndexForLocation getUvIndexForLocation = new APIReaders.GetUvIndexForLocation(context,weatherLocations.get(i),timeArray){
+                                @Override
+                                public void onFinished(long[] timeArray, int[] resultArray) {
+                                    rawWeatherInfo.addUVHazardIndexData(timeArray,resultArray);
+                                }
+                            };
+                            //rawWeatherInfo.addUVHazardIndexData(uvHazardIndexTimes,uvHazardIndexValues);
+                            getUvIndexForLocation.run();
+                        } else {
+                            // init uvData arrays to empty -1 values
+                            rawWeatherInfo.addUVHazardIndexData(null,null);
+                        }
+                        rawWeatherInfos.add(rawWeatherInfo);
+                    }
                 }
             }
             onPostExecute(rawWeatherInfos);
@@ -1556,7 +1573,7 @@ public class APIReaders {
 
         public boolean readLayer(WeatherLayer weatherLayer){
             // read outdated images from geoServer. Ignore pollen layers, because they are generated locally.
-            if ((weatherLayer.isOutdated(context) && !weatherLayer.isPollen()) || ((forceUpdate) && weatherLayer.updateMode!=WeatherLayer.UpdateMode.NEVER)){
+            if ((weatherLayer.isOutdated(context) && !weatherLayer.isPollen()) || (forceUpdate)){
                 // only update if an suitable internet connection available
                 if (DataUpdateService.suitableNetworkAvailable(context)){
                     // only update if not updated within last 5 minutes!
@@ -1570,14 +1587,12 @@ public class APIReaders {
                             if ((result) && (weatherLayer.timestamp!=null)) {
                                 // save the layer "midnight" time (this is the requested time)
                                 WeatherSettings.setLayerTime(context,weatherLayer.layer,weatherLayer.timestamp);
-                                // save internal timestamp of last geoserver call
-                                WeatherSettings.setMapLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
                             }
                         } catch (Exception e){
                             PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"i/o error while fetching layers: "+e.getMessage());
                             return false;
                         }
-                        // recurively iternate through dependant atop-layers, in case any of them is missing.
+                        // recursively iterate through dependant atop-layers, in case any of them is missing.
                         // Reason: this class may also be initiated with a layer-subset or a single layer.
                         if (weatherLayer.atop!=null){
                             for (int i=0; i<weatherLayer.atop.length; i++){
@@ -1634,6 +1649,10 @@ public class APIReaders {
                         success = false;
                     }
                 }
+            }
+            if (success){
+                // save internal timestamp of last sucessful geoserver call
+                WeatherSettings.setMapLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
             }
             onFinished(success);
         }

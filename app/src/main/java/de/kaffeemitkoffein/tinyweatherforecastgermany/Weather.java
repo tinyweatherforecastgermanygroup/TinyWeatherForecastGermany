@@ -27,8 +27,6 @@ import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 import org.astronomie.info.Astronomy;
-
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -1401,10 +1399,11 @@ public final class Weather {
 
     }
 
-    public CurrentWeatherInfo getCurrentWeatherInfo(Context context){
+    public static CurrentWeatherInfo getCurrentWeatherInfo(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        WeatherSettings weatherSettings = new WeatherSettings(context);
-        String station_name = weatherSettings.station_name;
+        //WeatherSettings weatherSettings = new WeatherSettings(context);
+        //String station_name = weatherSettings.station_name;
+        String station_name = WeatherSettings.getSetStationLocation(context).name;
         Cursor cursor;
         String[] selectionArg={station_name};
         String orderBy=""+WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time+" DESC";
@@ -1423,15 +1422,52 @@ public final class Weather {
         return null;
     }
 
-    private static int deleteWeatherDataSet_Old(Context context, RawWeatherInfo rawWeatherInfo){
+    public static boolean hasUVHIData(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        int rows = 0;
-        try {
-            rows = contentResolver.delete(WeatherContentManager.FORECAST_URI_ALL,WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+"=?",new String[] {rawWeatherInfo.weatherLocation.name});
-        } catch (Exception e) {
-            // do nothing here
+        String station_name = WeatherSettings.getSetStationLocation(context).name;
+        Cursor cursor;
+        String[] selectionArg={station_name};
+        String[] projectionArg={WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_UVHazardIndex};
+        String orderBy=""+WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time+" DESC";
+        cursor = contentResolver.query(WeatherContentManager.FORECAST_URI_ALL,
+                projectionArg,WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+" = ?",selectionArg,orderBy);
+        // read only fist element. Database should not hold more than one data set for one station.
+        // Should there be more, take the most recent by polling time. The most recent entry is at position 1.
+        if (cursor.moveToFirst()){
+            // get the uvhi strings only
+            String[] uvhiStringArray = WeatherContentManager.deSerializeString(cursor.getString(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_UVHazardIndex)));
+            // check if very first element is -1 or something else
+            if (uvhiStringArray!=null){
+                if (uvhiStringArray.length>0){
+                    if (!uvhiStringArray[0].equals("-1")){
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
-        return rows;
+        cursor.close();
+        return false;
+    }
+
+    public static long getPollingTime(Context context){
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
+        String station_name = WeatherSettings.getSetStationLocation(context).name;
+        Cursor cursor;
+        String[] selectionArg={station_name};
+        String[] projectionArg={WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time};
+        String orderBy=""+WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time+" DESC";
+        cursor = contentResolver.query(WeatherContentManager.FORECAST_URI_ALL,
+                projectionArg,WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+" = ?",selectionArg,orderBy);
+        // read only fist element. Database should not hold more than one data set for one station.
+        // Should there be more, take the most recent by polling time. The most recent entry is at position 1.
+        if (cursor.moveToFirst()){
+            // get the uvhi strings only
+            long pollingTime = cursor.getLong(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time));
+            return pollingTime;
+        }
+        cursor.close();
+        return 0;
     }
 
     public static void sanitizeDatabase(Context context){
@@ -1500,8 +1536,18 @@ public final class Weather {
     public static boolean isDaytime(Weather.WeatherLocation weatherLocation, long time){
         if (usePreciseIsDaytime(weatherLocation)){
             Astronomy.Riseset riseset = getRiseset(weatherLocation,time);
-            if ((time>=getSunriseInUTC(riseset,time)) && (time<getSunsetInUTC(riseset,time))){
-                return true;
+            long sunRise = getSunriseInUTC(riseset,time);
+            long sunSet  = getSunsetInUTC(riseset,time);
+            //Log.v("twfg","rise: "+SIMPLEDATEFORMATS.DATETIME.format(new Date(sunRise))+" <-> "+SIMPLEDATEFORMATS.DATETIME.format(new Date(time))+" <-> set: "+SIMPLEDATEFORMATS.DATETIME.format(new Date(sunSet)));
+            if (sunRise<sunSet){
+                if ((time>=sunRise) && (time<sunSet)){
+                    return true;
+                }
+            }
+            if (sunSet<=sunRise){
+                if (!((time>=sunSet) && (time<=sunRise))){
+                    return true;
+                }
             }
             return false;
         } else {

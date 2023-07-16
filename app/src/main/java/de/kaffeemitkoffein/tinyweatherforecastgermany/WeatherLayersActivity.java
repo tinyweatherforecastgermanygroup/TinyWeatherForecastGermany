@@ -105,9 +105,9 @@ public class WeatherLayersActivity extends Activity {
                 }
                 if (intent.getAction().equals(ACTION_UPDATE_FORBIDDEN)){
                     long nextUpdateTime = WeatherSettings.getMapLastUpdateTime(context)+1000*60*5;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss", Locale.getDefault());
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
                     String timeString = simpleDateFormat.format(new Date(nextUpdateTime));
-                    String text = String.format(context.getResources().getString(R.string.wm_update_not_allowed_yet),timeString);
+                    String text = "\u29d6 "+String.format(context.getResources().getString(R.string.wm_update_not_allowed_yet),timeString);
                     Toast.makeText(context,text,Toast.LENGTH_LONG).show();
                 }
 
