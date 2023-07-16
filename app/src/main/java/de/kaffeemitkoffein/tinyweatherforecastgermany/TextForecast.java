@@ -19,7 +19,6 @@
 
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -122,7 +121,6 @@ public class TextForecast implements Comparable<TextForecast>{
                 titleStartPosition++;
             }
             this.title = source.get(titleStartPosition).trim();
-            Log.v("twfg",titleStartPosition+" "+title);
             int textStartPosition=titleStartPosition+1;
             while (source.get(textStartPosition).trim().equals("") && textStartPosition<source.size()){
                 textStartPosition++;
