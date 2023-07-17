@@ -404,6 +404,9 @@ public class MainActivity extends Activity {
         if (WeatherSettings.isFirstAppLaunch(this)){
             super.onCreate(savedInstanceState);
             context = getApplicationContext();
+            // init Preference
+            WeatherSettings weatherSettings = new WeatherSettings(context);
+            weatherSettings.savePreferences();
             startWelcomeActivity();
             finish();
         } else {
@@ -419,9 +422,7 @@ public class MainActivity extends Activity {
                 }
             }
             context = getApplicationContext();
-            // init Preference
             WeatherSettings weatherSettings = new WeatherSettings(context);
-            weatherSettings.savePreferences();
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
             setContentView(R.layout.activity_main);
             weatherList = (ListView) findViewById(R.id.main_listview);
@@ -505,7 +506,7 @@ public class MainActivity extends Activity {
                 @Override
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                     if ((sharedPreferences!=null) && (key!=null)){
-                        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"preference change detected.");
+                        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"preference change detected: "+key);
                         if (key.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (key.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
                             WidgetRefresher.refresh(context.getApplicationContext());
                         }
@@ -573,7 +574,7 @@ public class MainActivity extends Activity {
                         if (key.equals(WeatherSettings.PREF_UVHI_FETCH_DATA)){
                             if (WeatherSettings.UVHIfetchData(context)){
                                 // check for a force weather update to fetch a set with uvi data.
-                                if (Weather.hasUVHIData(context)){
+                                if (!Weather.hasUVHIData(context)){
                                     forcedWeatherUpdate();
                                 }
                             }
