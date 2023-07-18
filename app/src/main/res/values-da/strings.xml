@@ -392,4 +392,8 @@
     <string name="local_time_6">6:00 lokal tid</string>
     <string name="layerlabel_uvi_cs_2">UV-risikoindeks for i overmorgen (klar himmel)</string>
     <string name="layerlabel_ts_0">Temperatur målt kl. 6:00 lokal tid</string>
+    <string name="preference_screen_pollen_title">Pollenudstilling</string>
+    <string name="preference_screen_pollen_summary">Tilpas visningen af pollental.</string>
+    <string name="temp_max">Maksimal temperatur</string>
+    <string name="temp_min">Minimumstemperatur</string>
 </resources>
