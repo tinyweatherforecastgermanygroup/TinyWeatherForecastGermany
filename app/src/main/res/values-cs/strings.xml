@@ -381,4 +381,15 @@
     <string name="service_notification_text4">Získání mapových vrstev…</string>
     <string name="service_notification_text5">Získávání dat z dešťového radaru…</string>
     <string name="layerlabel_warning_areas_de">Varovné oblasti Německo</string>
+    <string name="layerlabel_short_ts">Vnímaná teplota</string>
+    <string name="layerlabel_ts_0">Teplota zjištěná v 6:00 místního času</string>
+    <string name="local_time_6">6:00 místního času</string>
+    <string name="layerlabel_uvi_cl_0">Index UV nebezpečí pro dnešní den</string>
+    <string name="layerlabel_uvi_cl_1">Index UV nebezpečí pro zítřek</string>
+    <string name="layerlabel_uvi_cl_2">Index UV nebezpečí pro pozítří</string>
+    <string name="layerlabel_uvi_cs_1">Index UV nebezpečí pro zítřek (jasná obloha)</string>
+    <string name="layerlabel_uvi_cs_2">Index UV nebezpečí pro pozítří (jasná obloha)</string>
+    <string name="layerlabel_uvi_eu_cl_0">Index UV nebezpečí pro dnešní den (Evropa)</string>
+    <string name="layerlabel_uvi_cs_0">Index UV nebezpečí pro dnešní den (jasná obloha)</string>
+    <string name="layerlabel_uvi_eu_cs_0">Index UV nebezpečí pro dnešní den (Evropa, jasná obloha)</string>
 </resources>
