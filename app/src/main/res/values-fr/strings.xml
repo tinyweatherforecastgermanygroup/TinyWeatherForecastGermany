@@ -406,4 +406,8 @@
     <string name="layerlabel_uvi_cl_2">Indice de risque UV pour après-demain</string>
     <string name="layerlabel_uvi_eu_cl_0">Indice de risque UV pour aujourd\'hui (Europe)</string>
     <string name="layerlabel_ts_0">Température mesurée à 6:00 heure locale</string>
+    <string name="preference_screen_pollen_summary">Personnaliser l\'affichage du nombre de pollens.</string>
+    <string name="preference_screen_pollen_title">Exposition de pollen</string>
+    <string name="temp_max">Température maximale</string>
+    <string name="temp_min">Température minimale</string>
 </resources>
