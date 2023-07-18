@@ -40,7 +40,7 @@
     <string name="about_button">Privacy/Chi siamo</string>
     <string name="warnings_button">Avvisi meteo</string>
     <string name="texts_button">Testi</string>
-    <string name="today">Oggi</string>
+    <string name="today">oggi</string>
     <string name="station">Stazione</string>
     <string name="whatsnew_button">Cosa c\'è di nuovo</string>
     <string name="boldwidget_description">Audace</string>
@@ -369,4 +369,14 @@
     <string name="preference_screen_pollen_hint_summary">Se si disattivano alcuni pollini, questi saranno nascosti nelle previsioni dettagliate, nell\'elenco delle mappe e nella visualizzazione dettagliata delle mappe.</string>
     <string name="preference_prefetch_maps_title">Caricamento immediato delle mappe</string>
     <string name="preference_prefetch_maps_summary">Aggiornamento automatico delle mappe meteo e delle previsioni dei pollini all\'avvio dell\'app. Migliora le prestazioni, ma consuma più volume di dati.</string>
+    <string name="tomorrow">domani</string>
+    <string name="dayaftertomorrow">dopodomani</string>
+    <string name="preference_screen_uvhi_summary">Personalizzare la visualizzazione dell\'indice di pericolo UV.</string>
+    <string name="preference_screen_uvhi_fetchData_title">Recuperare i dati UV</string>
+    <string name="preference_screen_uvhi_showInMain_title">Mostra nella vista principale</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Visualizza l\'indice di pericolo UV nella vista principale dell\'applicazione.</string>
+    <string name="preference_wifionly_summary">Limitare l\'uso della rete al Wi-Fi.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Oltre alle previsioni del tempo, cercate anche le previsioni dell\'indice di rischio UV per la vostra località.</string>
+    <string name="preference_screen_uvhi_title">Indice di pericolosità UV</string>
+    <string name="preference_wifionly_title">Utilizzare solo il Wi-Fi</string>
 </resources>
