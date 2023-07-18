@@ -381,4 +381,15 @@
     <string name="service_notification_text4">Mendapatkan lapisan peta…</string>
     <string name="service_notification_text5">Mendapatkan data radar hujan…</string>
     <string name="layerlabel_warning_areas_de">Area peringatan Jerman</string>
+    <string name="layerlabel_uvi_eu_cs_0">Indeks bahaya UV untuk hari ini (Eropa, langit cerah)</string>
+    <string name="layerlabel_short_ts">Suhu yang dirasakan</string>
+    <string name="layerlabel_ts_0">Suhu terdeteksi pada pukul 6:00 waktu setempat</string>
+    <string name="local_time_6">6:00 waktu setempat</string>
+    <string name="layerlabel_uvi_cl_1">Indeks bahaya UV untuk hari esok</string>
+    <string name="layerlabel_uvi_cl_2">Indeks bahaya UV untuk lusa</string>
+    <string name="layerlabel_uvi_cs_1">Indeks bahaya UV untuk hari esok (langit cerah)</string>
+    <string name="layerlabel_uvi_cs_2">Indeks bahaya UV untuk lusa (langit cerah)</string>
+    <string name="layerlabel_uvi_eu_cl_0">Indeks bahaya UV untuk hari ini (Eropa)</string>
+    <string name="layerlabel_uvi_cl_0">Indeks bahaya UV untuk hari ini</string>
+    <string name="layerlabel_uvi_cs_0">Indeks bahaya UV untuk hari ini (langit cerah)</string>
 </resources>
