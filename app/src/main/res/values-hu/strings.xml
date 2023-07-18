@@ -20,7 +20,7 @@
     <string name="about_button">Adatvédelem/Tájékoztatás</string>
     <string name="warnings_button">Időjárási figyelmeztetések</string>
     <string name="texts_button">Szövegek</string>
-    <string name="today">Ma</string>
+    <string name="today">ma</string>
     <string name="classicwidget_description">Klasszikus</string>
     <string name="boldwidget_description">Feltűnő</string>
     <string name="actionbar_textinput_title">Ide írd be a helyet:</string>
@@ -368,4 +368,14 @@
     <string name="preference_screen_pollen_hint_summary">Ha bizonyos polleneket kikapcsol, azok el lesznek rejtve a részletes előrejelzésben, a térképlistában és a részletes térképnézetben.</string>
     <string name="preference_prefetch_maps_title">Térképek azonnali betöltése</string>
     <string name="preference_prefetch_maps_summary">Az időjárási térképek és a pollenelőrejelzés automatikus frissítése az alkalmazás indításakor. Javítja a teljesítményt, de nagyobb adatmennyiséget fogyaszt.</string>
+    <string name="tomorrow">holnap</string>
+    <string name="dayaftertomorrow">holnapután</string>
+    <string name="preference_screen_uvhi_summary">Az UV-veszélyességi index megjelenítésének testreszabása.</string>
+    <string name="preference_screen_uvhi_fetchData_title">UV adatok lekérése</string>
+    <string name="preference_screen_uvhi_showInMain_title">Megjelenítés a fő nézetben</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Az UV-veszélyességi index megjelenítése az alkalmazás fő nézetében.</string>
+    <string name="preference_wifionly_summary">Korlátozza a hálózat használatát a Wi-Fi-re.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Az időjárás-előrejelzés mellett az UV-veszélyességi index előrejelzését is lekérheti az Ön tartózkodási helyére vonatkozóan.</string>
+    <string name="preference_screen_uvhi_title">UV veszélyességi index</string>
+    <string name="preference_wifionly_title">Csak Wi-Fi-t használjon</string>
 </resources>
