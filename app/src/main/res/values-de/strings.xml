@@ -406,4 +406,7 @@
     <string name="preference_wifionly_summary">Netzwerk-Nutzung auf WLAN beschränken.</string>
     <string name="preference_screen_uvhi_title">UV-Gefahrenindex</string>
     <string name="preference_screen_uvhi_fetchData_summary">Lädt neben der Wettervorhersage auch die Vorhersage des UV-Gefahrenindexes für Ihren Standort.</string>
+    <string name="service_notification_text4">Kartenebenen abrufen…</string>
+    <string name="service_notification_text5">Abrufen von Regenradardaten…</string>
+    <string name="layerlabel_warning_areas_de">Warngebiete Deutschland</string>
 </resources>
