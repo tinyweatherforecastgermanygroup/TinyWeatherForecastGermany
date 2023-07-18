@@ -378,4 +378,7 @@
     <string name="preference_screen_uvhi_fetchData_summary">Az időjárás-előrejelzés mellett az UV-veszélyességi index előrejelzését is lekérheti az Ön tartózkodási helyére vonatkozóan.</string>
     <string name="preference_screen_uvhi_title">UV veszélyességi index</string>
     <string name="preference_wifionly_title">Csak Wi-Fi-t használjon</string>
+    <string name="service_notification_text4">Térképrétegek beszerzése…</string>
+    <string name="service_notification_text5">Esőradar adatok beszerzése…</string>
+    <string name="layerlabel_warning_areas_de">Figyelmeztető területek Németország</string>
 </resources>
