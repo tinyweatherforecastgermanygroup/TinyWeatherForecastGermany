@@ -392,4 +392,8 @@
     <string name="layerlabel_uvi_cl_2">Wskaźnik zagrożenia UV na pojutrze</string>
     <string name="layerlabel_uvi_cs_0">Wskaźnik zagrożenia UV na dziś (bezchmurne niebo)</string>
     <string name="layerlabel_uvi_cs_1">Wskaźnik zagrożenia UV na jutro (bezchmurne niebo)</string>
+    <string name="preference_screen_pollen_title">Prezentacja pyłków</string>
+    <string name="preference_screen_pollen_summary">Dostosuj wyświetlanie liczby pyłków.</string>
+    <string name="temp_max">Maksymalna temperatura</string>
+    <string name="temp_min">Minimalna temperatura</string>
 </resources>
