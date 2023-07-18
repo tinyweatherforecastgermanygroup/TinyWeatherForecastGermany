@@ -378,4 +378,7 @@
     <string name="preference_wifionly_title">Используйте только Wi-Fi</string>
     <string name="preference_screen_uvhi_summary">Настройка отображения индекса опасности ультрафиолетового излучения.</string>
     <string name="preference_wifionly_summary">Ограничьте использование сети только Wi-Fi.</string>
+    <string name="service_notification_text4">Получение слоев карты…</string>
+    <string name="service_notification_text5">Получение данных радаров дождя…</string>
+    <string name="layerlabel_warning_areas_de">Зоны предупреждения Германия</string>
 </resources>
