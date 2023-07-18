@@ -378,4 +378,7 @@
     <string name="preference_screen_uvhi_title">UV-vaaraindeksi</string>
     <string name="preference_screen_uvhi_summary">Mukauta UV-vaaraindeksin näyttöä.</string>
     <string name="preference_wifionly_summary">Rajoita verkon käyttö Wi-Fi-verkkoon.</string>
+    <string name="service_notification_text4">Karttatasojen saaminen…</string>
+    <string name="service_notification_text5">Sadetutkatietojen saaminen…</string>
+    <string name="layerlabel_warning_areas_de">Varoitusalueet Saksa</string>
 </resources>
