@@ -409,4 +409,15 @@
     <string name="service_notification_text4">Kartenebenen abrufen…</string>
     <string name="service_notification_text5">Abrufen von Regenradardaten…</string>
     <string name="layerlabel_warning_areas_de">Warngebiete Deutschland</string>
+    <string name="layerlabel_uvi_cl_0">UV-Gefahrenindex für heute</string>
+    <string name="layerlabel_uvi_cl_1">UV-Gefahrenindex für morgen</string>
+    <string name="layerlabel_uvi_cl_2">UV-Gefahrenindex für übermorgen</string>
+    <string name="layerlabel_uvi_cs_1">UV-Gefahrenindex für morgen (klarer Himmel)</string>
+    <string name="layerlabel_uvi_cs_2">UV-Gefahrenindex für übermorgen (klarer Himmel)</string>
+    <string name="layerlabel_uvi_eu_cl_0">UV-Gefahrenindex für heute (Europa)</string>
+    <string name="layerlabel_uvi_eu_cs_0">UV-Gefahrenindex für heute (Europa, klarer Himmel)</string>
+    <string name="layerlabel_ts_0">Температура виміряна о 6:00 за місцевим часом</string>
+    <string name="local_time_6">6:00 Uhr Ortszeit</string>
+    <string name="layerlabel_uvi_cs_0">UV-Gefahrenindex für heute (klarer Himmel)</string>
+    <string name="layerlabel_short_ts">Gefühlte Temperatur</string>
 </resources>
