@@ -378,4 +378,7 @@
     <string name="preference_wifionly_summary">Omezte používání sítě na Wi-Fi.</string>
     <string name="preference_screen_uvhi_summary">Přizpůsobení zobrazení indexu UV nebezpečí.</string>
     <string name="preference_screen_uvhi_fetchData_summary">Kromě předpovědi počasí získáte také předpověď indexu UV nebezpečí pro vaši lokalitu.</string>
+    <string name="service_notification_text4">Získání mapových vrstev…</string>
+    <string name="service_notification_text5">Získávání dat z dešťového radaru…</string>
+    <string name="layerlabel_warning_areas_de">Varovné oblasti Německo</string>
 </resources>
