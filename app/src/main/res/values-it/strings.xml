@@ -379,4 +379,7 @@
     <string name="preference_screen_uvhi_fetchData_summary">Oltre alle previsioni del tempo, cercate anche le previsioni dell\'indice di rischio UV per la vostra località.</string>
     <string name="preference_screen_uvhi_title">Indice di pericolosità UV</string>
     <string name="preference_wifionly_title">Utilizzare solo il Wi-Fi</string>
+    <string name="service_notification_text4">Ottenere i livelli della mappa…</string>
+    <string name="service_notification_text5">Ottenere i dati del radar della pioggia…</string>
+    <string name="layerlabel_warning_areas_de">Aree di allerta Germania</string>
 </resources>
