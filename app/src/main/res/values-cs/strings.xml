@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="license_button">Licenci</string>
-    <string name="today">Dnes</string>
+    <string name="today">dnes</string>
     <string name="station">Stanice</string>
     <string name="dwd_warnings_notice">Datový základ: Deutscher Wetterdienst, zobrazení zkrácených výstrah.</string>
     <string name="weathercode_HEAVY_SNOWFALL_CONTINUOUS">silné sněžení, souvislé</string>
@@ -368,4 +368,14 @@
     <string name="preference_prefetch_maps_title">Okamžité načtení map</string>
     <string name="preference_screen_pollen_hint_summary">Pokud deaktivujete určitý pyl, bude skryt v podrobné předpovědi, seznamu map a podrobném zobrazení mapy.</string>
     <string name="preference_prefetch_maps_summary">Automatická aktualizace map počasí a pylové předpovědi po spuštění aplikace. Zlepšuje výkon, ale spotřebovává větší objem dat.</string>
+    <string name="tomorrow">zítra</string>
+    <string name="dayaftertomorrow">pozítří</string>
+    <string name="preference_screen_uvhi_title">Index nebezpečnosti UV záření</string>
+    <string name="preference_screen_uvhi_fetchData_title">Získání dat UV</string>
+    <string name="preference_screen_uvhi_showInMain_title">Zobrazit v hlavním zobrazení</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Zobrazení indexu UV nebezpečí v hlavním zobrazení aplikace.</string>
+    <string name="preference_wifionly_title">Používejte pouze Wi-Fi</string>
+    <string name="preference_wifionly_summary">Omezte používání sítě na Wi-Fi.</string>
+    <string name="preference_screen_uvhi_summary">Přizpůsobení zobrazení indexu UV nebezpečí.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Kromě předpovědi počasí získáte také předpověď indexu UV nebezpečí pro vaši lokalitu.</string>
 </resources>
