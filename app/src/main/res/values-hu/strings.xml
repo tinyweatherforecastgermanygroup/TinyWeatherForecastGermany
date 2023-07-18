@@ -381,4 +381,15 @@
     <string name="service_notification_text4">Térképrétegek beszerzése…</string>
     <string name="service_notification_text5">Esőradar adatok beszerzése…</string>
     <string name="layerlabel_warning_areas_de">Figyelmeztető területek Németország</string>
+    <string name="local_time_6">Helyi idő szerint 6:00</string>
+    <string name="layerlabel_uvi_cl_1">UV veszélyességi index holnapra</string>
+    <string name="layerlabel_uvi_cl_2">UV-veszélyességi index holnaputánra</string>
+    <string name="layerlabel_uvi_cs_1">UV veszélyességi index holnapra (tiszta égbolt)</string>
+    <string name="layerlabel_uvi_eu_cs_0">UV-veszélyességi index ma (Európa, tiszta égbolt)</string>
+    <string name="layerlabel_short_ts">Érzékelt hőmérséklet</string>
+    <string name="layerlabel_ts_0">Helyi idő szerint 6:00 órakor mért hőmérséklet</string>
+    <string name="layerlabel_uvi_cl_0">UV veszélyességi index a mai napra</string>
+    <string name="layerlabel_uvi_cs_0">UV veszélyességi index a mai napra (tiszta égbolt)</string>
+    <string name="layerlabel_uvi_cs_2">UV-veszélyességi index holnaputánra (tiszta égbolt)</string>
+    <string name="layerlabel_uvi_eu_cl_0">UV-veszélyességi index ma (Európa)</string>
 </resources>
