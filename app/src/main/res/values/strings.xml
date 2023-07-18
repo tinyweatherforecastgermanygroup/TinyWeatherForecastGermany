@@ -278,7 +278,7 @@
     <string name="service_notification_text1">Getting weather warnings…</string>
     <string name="service_notification_text2">Getting text forecasts…</string>
     <string name="service_notification_text4">Getting map layers…</string>
-    <string name="service_notification_text5">Getting rain radar…</string>
+    <string name="service_notification_text5">Getting rain radar data…</string>
     <string name="service_notification_text3">Cleaning up…</string>
     <string name="service_warning_categoryname">Weather warnings</string>
     <string name="direction_north">N</string>
@@ -437,13 +437,20 @@
     <string name="wm_update_not_allowed_yet">Next update possible: %1$s </string>
     <string name="pollen_title">Pollen count forecast</string>
     <string name="pollen_ambrosia">Ambrosia</string>
-    <string name="pollen_mugwort">Mugwort</string> <!-- Beifuss -->
-    <string name="pollen_rye">Rye</string> <!-- Roggen -->
-    <string name="pollen_ash">Ash</string> <!-- Esche -->
-    <string name="pollen_birch">Birch</string> <!-- Birke -->
-    <string name="pollen_hazel">Hazel</string> <!-- Hasel -->
-    <string name="pollen_alder">Alder</string> <!-- Erle -->
-    <string name="pollen_grasses">Grasses</string> <!-- Gräser -->
+    <string name="pollen_mugwort">Mugwort</string>
+    <!-- Beifuss -->
+    <string name="pollen_rye">Rye</string>
+    <!-- Roggen -->
+    <string name="pollen_ash">Ash</string>
+    <!-- Esche -->
+    <string name="pollen_birch">Birch</string>
+    <!-- Birke -->
+    <string name="pollen_hazel">Hazel</string>
+    <!-- Hasel -->
+    <string name="pollen_alder">Alder</string>
+    <!-- Erle -->
+    <string name="pollen_grasses">Grasses</string>
+    <!-- Gräser -->
     <string name="pollen_load0">none</string>
     <string name="pollen_load1">none to low</string>
     <string name="pollen_load2">low</string>
@@ -452,14 +459,4 @@
     <string name="pollen_load5">medium to high</string>
     <string name="pollen_load6">high</string>
     <string name="clear_sky">clear sky</string>
-
-
-
-
-
-
-
-
-
-
 </resources>
