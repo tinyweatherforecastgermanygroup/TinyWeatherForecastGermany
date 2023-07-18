@@ -381,4 +381,15 @@
     <string name="service_notification_text4">Получение слоев карты…</string>
     <string name="service_notification_text5">Получение данных радаров дождя…</string>
     <string name="layerlabel_warning_areas_de">Зоны предупреждения Германия</string>
+    <string name="layerlabel_uvi_cs_0">Индекс опасности ультрафиолетового излучения для сегодняшнего дня (ясное небо)</string>
+    <string name="layerlabel_uvi_cs_1">Индекс опасности ультрафиолетового излучения на завтра (ясное небо)</string>
+    <string name="layerlabel_uvi_cs_2">Индекс опасности ультрафиолетового излучения для послезавтрашнего дня (ясное небо)</string>
+    <string name="layerlabel_uvi_eu_cl_0">Индекс опасности ультрафиолетового излучения на сегодня (Европа)</string>
+    <string name="layerlabel_uvi_eu_cs_0">Индекс опасности ультрафиолетового излучения на сегодня (Европа, ясное небо)</string>
+    <string name="layerlabel_uvi_cl_2">Индекс опасности ультрафиолетового излучения для послезавтрашнего дня</string>
+    <string name="layerlabel_short_ts">Воспринимаемая температура</string>
+    <string name="local_time_6">6:00 по местному времени</string>
+    <string name="layerlabel_uvi_cl_0">Индекс опасности ультрафиолетового излучения на сегодня</string>
+    <string name="layerlabel_uvi_cl_1">Индекс опасности ультрафиолетового излучения на завтра</string>
+    <string name="layerlabel_ts_0">Температура измеряется в 6:00 по местному времени</string>
 </resources>
