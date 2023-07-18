@@ -392,4 +392,8 @@
     <string name="layerlabel_uvi_eu_cl_0">Indeks bahaya UV untuk hari ini (Eropa)</string>
     <string name="layerlabel_uvi_cl_0">Indeks bahaya UV untuk hari ini</string>
     <string name="layerlabel_uvi_cs_0">Indeks bahaya UV untuk hari ini (langit cerah)</string>
+    <string name="preference_screen_pollen_title">Tampilan serbuk sari</string>
+    <string name="temp_max">Suhu maksimum</string>
+    <string name="temp_min">Suhu minimum</string>
+    <string name="preference_screen_pollen_summary">Menyesuaikan tampilan jumlah serbuk sari.</string>
 </resources>
