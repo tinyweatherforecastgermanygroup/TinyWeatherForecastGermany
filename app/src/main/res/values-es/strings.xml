@@ -392,4 +392,8 @@
     <string name="layerlabel_uvi_cl_0">Índice de riesgo UV para hoy</string>
     <string name="layerlabel_uvi_cl_2">Índice de peligrosidad UV para pasado mañana</string>
     <string name="layerlabel_uvi_eu_cl_0">Índice de peligro UV para hoy (Europa)</string>
+    <string name="preference_screen_pollen_title">Exposición de polen</string>
+    <string name="preference_screen_pollen_summary">Personalizar la visualización del recuento de polen.</string>
+    <string name="temp_max">Temperatura máxima</string>
+    <string name="temp_min">Temperatura mínima</string>
 </resources>
