@@ -378,4 +378,7 @@
     <string name="preference_wifionly_summary">Limita el uso de la red a Wi-Fi.</string>
     <string name="preference_screen_uvhi_fetchData_summary">Además de la previsión meteorológica, consulta también la previsión del índice de riesgo de rayos UV para tu localidad.</string>
     <string name="preference_screen_uvhi_title">Índice de peligro UV</string>
+    <string name="service_notification_text4">Obtener capas de mapas…</string>
+    <string name="service_notification_text5">Obtención de datos del radar de lluvia…</string>
+    <string name="layerlabel_warning_areas_de">Zonas de alerta Alemania</string>
 </resources>
