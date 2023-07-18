@@ -381,4 +381,15 @@
     <string name="service_notification_text4">Отримання шарів карти…</string>
     <string name="service_notification_text5">Отримуємо дані з дощового радара…</string>
     <string name="layerlabel_warning_areas_de">Попереджувальні зони Німеччина</string>
+    <string name="layerlabel_short_ts">Відчутна температура</string>
+    <string name="layerlabel_uvi_cl_0">Індекс небезпеки ультрафіолету на сьогодні</string>
+    <string name="layerlabel_uvi_cl_1">Індекс небезпеки ультрафіолету на завтра</string>
+    <string name="layerlabel_uvi_cl_2">Індекс небезпеки ультрафіолетового випромінювання на післязавтра</string>
+    <string name="layerlabel_uvi_cs_0">Індекс небезпеки ультрафіолетового випромінювання на сьогодні (ясне небо)</string>
+    <string name="layerlabel_uvi_cs_1">Індекс небезпеки ультрафіолетового випромінювання на завтра (ясне небо)</string>
+    <string name="layerlabel_uvi_cs_2">Індекс небезпеки ультрафіолетового випромінювання на післязавтра (ясне небо)</string>
+    <string name="layerlabel_uvi_eu_cl_0">Індекс небезпеки ультрафіолетового випромінювання на сьогодні (Європа)</string>
+    <string name="layerlabel_uvi_eu_cs_0">Індекс небезпеки ультрафіолетового випромінювання на сьогодні (Європа, ясне небо)</string>
+    <string name="layerlabel_ts_0">Температура виміряна о 6:00 за місцевим часом</string>
+    <string name="local_time_6">6:00 за місцевим часом</string>
 </resources>
