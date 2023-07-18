@@ -354,4 +354,7 @@
     <string name="preference_screen_uvhi_fetchData_summary">I tillegg til værvarselet kan du også hente prognosen for UV-risikoindeksen for stedet der du befinner deg.</string>
     <string name="preference_screen_uvhi_title">UV-fareindeks</string>
     <string name="preference_wifionly_title">Bruk kun Wi-Fi</string>
+    <string name="service_notification_text4">Henter kartlag…</string>
+    <string name="service_notification_text5">Innhenting av regnradardata…</string>
+    <string name="layerlabel_warning_areas_de">Advarselsområder Tyskland</string>
 </resources>
