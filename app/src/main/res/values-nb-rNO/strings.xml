@@ -357,4 +357,15 @@
     <string name="service_notification_text4">Henter kartlag…</string>
     <string name="service_notification_text5">Innhenting av regnradardata…</string>
     <string name="layerlabel_warning_areas_de">Advarselsområder Tyskland</string>
+    <string name="layerlabel_uvi_cs_0">UV-fareindeks for i dag (klar himmel)</string>
+    <string name="local_time_6">6:00 lokal tid</string>
+    <string name="layerlabel_uvi_cl_1">UV-fareindeks for morgendagen</string>
+    <string name="layerlabel_uvi_cl_2">UV-risikoindeks for i overmorgen</string>
+    <string name="layerlabel_uvi_cs_2">UV-risikoindeks for i overmorgen (klar himmel)</string>
+    <string name="layerlabel_uvi_eu_cl_0">UV-fareindeks for i dag (Europa)</string>
+    <string name="layerlabel_uvi_eu_cs_0">UV-risikoindeks for i dag (Europa, klar himmel)</string>
+    <string name="layerlabel_short_ts">Opplevd temperatur</string>
+    <string name="layerlabel_ts_0">Temperatur målt kl. 6:00 lokal tid</string>
+    <string name="layerlabel_uvi_cl_0">UV-fareindeks for i dag</string>
+    <string name="layerlabel_uvi_cs_1">UV-risikoindeks for i morgen (klar himmel)</string>
 </resources>
