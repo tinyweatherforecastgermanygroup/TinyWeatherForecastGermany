@@ -220,7 +220,7 @@
     <string name="service_notification_text1">Отримання погодних попереджень…</string>
     <string name="service_notification_text2">Отримання текстових попереджень…</string>
     <string name="service_notification_text3">Очищення…</string>
-    <string name="service_warning_categoryname">Погодні попередження</string>
+    <string name="service_warning_categoryname">Попередження про погоду</string>
     <string name="direction_calm">-</string>
     <string name="twilight">Сутінки</string>
     <string name="preference_feedback_summary">Надішліть розробнику якийсь відгук на ел. пошту.</string>
@@ -378,4 +378,7 @@
     <string name="preference_screen_uvhi_fetchData_summary">Окрім прогнозу погоди, також отримайте прогноз індексу небезпеки ультрафіолетового випромінювання для вашого місцезнаходження.</string>
     <string name="preference_screen_uvhi_title">Індекс небезпеки ультрафіолетового випромінювання</string>
     <string name="preference_screen_uvhi_summary">Налаштуйте відображення індексу небезпеки ультрафіолетового випромінювання.</string>
+    <string name="service_notification_text4">Отримання шарів карти…</string>
+    <string name="service_notification_text5">Отримуємо дані з дощового радара…</string>
+    <string name="layerlabel_warning_areas_de">Попереджувальні зони Німеччина</string>
 </resources>
