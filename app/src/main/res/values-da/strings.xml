@@ -15,7 +15,7 @@
     <string name="geoinput_button">Find efter placering</string>
     <string name="about_button">Privatliv/omkring</string>
     <string name="warnings_button">Advarsler om vejret</string>
-    <string name="today">I dag</string>
+    <string name="today">i dag</string>
     <string name="whatsnew_button">Hvad er nyt</string>
     <string name="boldwidget_description">Fed</string>
     <string name="classicwidget_description">Klassisk</string>
@@ -368,4 +368,14 @@
     <string name="preference_screen_pollen_hint_summary">Hvis du deaktiverer en bestemt pollen, vil den blive skjult i den detaljerede prognose, kortlisten og den detaljerede kortvisning.</string>
     <string name="preference_prefetch_maps_title">Indlæs kort med det samme</string>
     <string name="preference_prefetch_maps_summary">Opdaterer automatisk vejrkort og pollenprognose, når appen startes. Forbedrer ydeevnen, men bruger mere datavolumen.</string>
+    <string name="tomorrow">i morgen</string>
+    <string name="dayaftertomorrow">i overmorgen</string>
+    <string name="preference_screen_uvhi_summary">Tilpas visningen af UV-risikoindekset.</string>
+    <string name="preference_screen_uvhi_fetchData_title">Hent UV-data</string>
+    <string name="preference_screen_uvhi_showInMain_title">Vis i hovedvisning</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Vis UV-fareindekset i appens hovedvisning.</string>
+    <string name="preference_wifionly_summary">Begræns netværksbrug til Wi-Fi.</string>
+    <string name="preference_screen_uvhi_title">UV-risikoindeks</string>
+    <string name="preference_wifionly_title">Brug kun Wi-Fi</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Udover vejrudsigten kan du også hente prognosen for UV-risikoindekset for dit sted.</string>
 </resources>
