@@ -368,4 +368,8 @@
     <string name="layerlabel_ts_0">Temperatur målt kl. 6:00 lokal tid</string>
     <string name="layerlabel_uvi_cl_0">UV-fareindeks for i dag</string>
     <string name="layerlabel_uvi_cs_1">UV-risikoindeks for i morgen (klar himmel)</string>
+    <string name="temp_max">Maksimal temperatur</string>
+    <string name="temp_min">Minimumstemperatur</string>
+    <string name="preference_screen_pollen_title">Utstilling av pollen</string>
+    <string name="preference_screen_pollen_summary">Tilpass visningen av pollentall.</string>
 </resources>
