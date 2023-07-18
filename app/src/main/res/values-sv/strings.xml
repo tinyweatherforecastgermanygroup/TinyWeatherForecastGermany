@@ -68,4 +68,9 @@
     <string name="layerlabel_uvi_cl_0">UV-riskindex för idag</string>
     <string name="layerlabel_uvi_cl_2">UV-riskindex för dagen efter i morgon</string>
     <string name="layerlabel_uvi_eu_cs_0">UV-riskindex för idag (Europa, klar himmel)</string>
+    <string name="preference_screen_pollen_title">Display för pollen</string>
+    <string name="preference_screen_pollen_summary">Anpassa visningen av antalet pollen.</string>
+    <string name="temp_min">Minsta temperatur</string>
+    <string name="temp_max">Maximal temperatur</string>
+    <string name="layerlabel_ts_min_0">Minsta temperatur uppmätt idag</string>
 </resources>
