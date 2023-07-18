@@ -382,4 +382,15 @@
     <string name="service_notification_text4">Ottenere i livelli della mappa…</string>
     <string name="service_notification_text5">Ottenere i dati del radar della pioggia…</string>
     <string name="layerlabel_warning_areas_de">Aree di allerta Germania</string>
+    <string name="layerlabel_uvi_eu_cl_0">Indice di rischio UV per oggi (Europa)</string>
+    <string name="layerlabel_uvi_cl_1">Indice di pericolo UV per domani</string>
+    <string name="layerlabel_uvi_cl_2">Indice di rischio UV per dopodomani</string>
+    <string name="layerlabel_uvi_cs_0">Indice di rischio UV per oggi (cielo sereno)</string>
+    <string name="layerlabel_uvi_cs_2">Indice di pericolosità UV per dopodomani (cielo sereno)</string>
+    <string name="layerlabel_uvi_eu_cs_0">Indice di rischio UV per oggi (Europa, cielo sereno)</string>
+    <string name="layerlabel_short_ts">Temperatura percepita</string>
+    <string name="layerlabel_ts_0">Temperatura rilevata alle 6:00 ora locale</string>
+    <string name="local_time_6">6:00 ora locale</string>
+    <string name="layerlabel_uvi_cl_0">Indice di rischio UV per oggi</string>
+    <string name="layerlabel_uvi_cs_1">Indice di pericolo UV per domani (cielo sereno)</string>
 </resources>
