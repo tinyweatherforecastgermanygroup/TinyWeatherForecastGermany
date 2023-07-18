@@ -392,4 +392,8 @@
     <string name="layerlabel_uvi_cs_0">UV veszélyességi index a mai napra (tiszta égbolt)</string>
     <string name="layerlabel_uvi_cs_2">UV-veszélyességi index holnaputánra (tiszta égbolt)</string>
     <string name="layerlabel_uvi_eu_cl_0">UV-veszélyességi index ma (Európa)</string>
+    <string name="preference_screen_pollen_title">Pollen kijelző</string>
+    <string name="preference_screen_pollen_summary">A pollenszám-kijelzés testreszabása.</string>
+    <string name="temp_max">Maximális hőmérséklet</string>
+    <string name="temp_min">Minimális hőmérséklet</string>
 </resources>
