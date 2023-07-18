@@ -26,7 +26,7 @@
     <string name="geoinput_button">Buscar por ubicación</string>
     <string name="about_button">Privacidad/Acerca de</string>
     <string name="texts_button">Textos</string>
-    <string name="today">Hoy</string>
+    <string name="today">hoy</string>
     <string name="station">Estación</string>
     <string name="whatsnew_button">Qué hay de nuevo</string>
     <string name="boldwidget_description">Negrita</string>
@@ -368,4 +368,14 @@
     <string name="preference_screen_pollen_hint_summary">Si desactiva determinado polen, éste quedará oculto en la previsión detallada, la lista de mapas y la vista detallada del mapa.</string>
     <string name="preference_prefetch_maps_title">Cargar mapas inmediatamente</string>
     <string name="preference_prefetch_maps_summary">Actualiza automáticamente los mapas meteorológicos y la previsión de polen al iniciar la aplicación. Mejora el rendimiento, pero consume más volumen de datos.</string>
+    <string name="tomorrow">mañana</string>
+    <string name="dayaftertomorrow">pasado mañana</string>
+    <string name="preference_screen_uvhi_summary">Personaliza la visualización del índice de peligro UV.</string>
+    <string name="preference_screen_uvhi_fetchData_title">Obtener datos UV</string>
+    <string name="preference_screen_uvhi_showInMain_title">Mostrar en vista principal</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Muestra el índice de peligro UV en la vista principal de la aplicación.</string>
+    <string name="preference_wifionly_title">Utilizar sólo Wi-Fi</string>
+    <string name="preference_wifionly_summary">Limita el uso de la red a Wi-Fi.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Además de la previsión meteorológica, consulta también la previsión del índice de riesgo de rayos UV para tu localidad.</string>
+    <string name="preference_screen_uvhi_title">Índice de peligro UV</string>
 </resources>
