@@ -12,7 +12,7 @@
     <string name="about_button">Tietosuoja/tietoa</string>
     <string name="warnings_button">Varoitukset säästä</string>
     <string name="texts_button">Tekstit</string>
-    <string name="today">Tänään</string>
+    <string name="today">tänään</string>
     <string name="station">Asema</string>
     <string name="whatsnew_button">Mitä uutta</string>
     <string name="boldwidget_description">Rohkea</string>
@@ -368,4 +368,14 @@
     <string name="preference_screen_pollen_hint_summary">Jos poistat tietyn siitepölyn käytöstä, se jää piiloon yksityiskohtaisessa ennusteessa, karttaluettelossa ja yksityiskohtaisessa karttanäkymässä.</string>
     <string name="preference_prefetch_maps_title">Lataa kartat välittömästi</string>
     <string name="preference_prefetch_maps_summary">Päivittää automaattisesti sääkartat ja siitepölyennusteen sovelluksen käynnistämisen yhteydessä. Parantaa suorituskykyä, mutta kuluttaa enemmän dataa.</string>
+    <string name="tomorrow">huomenna</string>
+    <string name="dayaftertomorrow">ylihuomenna</string>
+    <string name="preference_screen_uvhi_fetchData_title">Hae UV-tiedot</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Hae sääennusteen lisäksi myös sijaintisi UV-vaaraindeksiennuste.</string>
+    <string name="preference_screen_uvhi_showInMain_title">Näytä päänäkymässä</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Näytä UV-vaaraindeksi sovelluksen päänäkymässä.</string>
+    <string name="preference_wifionly_title">Käytä vain Wi-Fi-yhteyttä</string>
+    <string name="preference_screen_uvhi_title">UV-vaaraindeksi</string>
+    <string name="preference_screen_uvhi_summary">Mukauta UV-vaaraindeksin näyttöä.</string>
+    <string name="preference_wifionly_summary">Rajoita verkon käyttö Wi-Fi-verkkoon.</string>
 </resources>
