@@ -381,4 +381,15 @@
     <string name="service_notification_text4">Obtener capas de mapas…</string>
     <string name="service_notification_text5">Obtención de datos del radar de lluvia…</string>
     <string name="layerlabel_warning_areas_de">Zonas de alerta Alemania</string>
+    <string name="local_time_6">6:00 hora local</string>
+    <string name="layerlabel_uvi_cl_1">Índice de riesgo UV para mañana</string>
+    <string name="layerlabel_uvi_cs_0">Índice de riesgo UV para hoy (cielo despejado)</string>
+    <string name="layerlabel_uvi_cs_1">Índice de riesgo UV para mañana (cielo despejado)</string>
+    <string name="layerlabel_uvi_cs_2">Índice de riesgo UV para pasado mañana (cielo despejado)</string>
+    <string name="layerlabel_uvi_eu_cs_0">Índice de riesgo UV para hoy (Europa, cielo despejado)</string>
+    <string name="layerlabel_short_ts">Temperatura percibida</string>
+    <string name="layerlabel_ts_0">Temperatura detectada a las 6:00 hora local</string>
+    <string name="layerlabel_uvi_cl_0">Índice de riesgo UV para hoy</string>
+    <string name="layerlabel_uvi_cl_2">Índice de peligrosidad UV para pasado mañana</string>
+    <string name="layerlabel_uvi_eu_cl_0">Índice de peligro UV para hoy (Europa)</string>
 </resources>
