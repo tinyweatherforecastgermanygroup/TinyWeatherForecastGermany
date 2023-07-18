@@ -427,4 +427,12 @@
     <string name="local_time_6">6:00 lokale tijd</string>
     <string name="temp_max">Maximumtemperatuur</string>
     <string name="pollen_load4">gemiddeld</string>
+    <string name="preference_screen_uvhi_summary">De weergave van de UV-risico-index aanpassen.</string>
+    <string name="preference_screen_uvhi_fetchData_title">UV-gegevens ophalen</string>
+    <string name="preference_screen_uvhi_showInMain_title">Weergeven in hoofdweergave</string>
+    <string name="preference_wifionly_title">Gebruik alleen Wi-Fi</string>
+    <string name="preference_wifionly_summary">Beperk het netwerkgebruik tot Wi-Fi.</string>
+    <string name="preference_screen_uvhi_title">UV-risico-index</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Geef de UV-risico-index weer in de hoofdweergave van de app.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Haal naast de weersvoorspelling ook de voorspelling van de UV-risico-index voor jouw locatie op.</string>
 </resources>
