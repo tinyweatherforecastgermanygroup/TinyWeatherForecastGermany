@@ -378,4 +378,7 @@
     <string name="preference_wifionly_summary">Batasi penggunaan jaringan untuk Wi-Fi.</string>
     <string name="preference_screen_uvhi_showInMain_summary">Menampilkan indeks bahaya UV di tampilan aplikasi utama.</string>
     <string name="preference_screen_uvhi_summary">Menyesuaikan tampilan indeks bahaya UV.</string>
+    <string name="service_notification_text4">Mendapatkan lapisan peta…</string>
+    <string name="service_notification_text5">Mendapatkan data radar hujan…</string>
+    <string name="layerlabel_warning_areas_de">Area peringatan Jerman</string>
 </resources>
