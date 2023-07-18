@@ -12,7 +12,7 @@
     <string name="warnings_button">Peringatan cuaca</string>
     <string name="texts_button">Teks</string>
     <string name="overview_button">Ikhtisar</string>
-    <string name="today">Hari ini</string>
+    <string name="today">hari ini</string>
     <string name="station">Stasiun</string>
     <string name="whatsnew_button">Apa yang baru</string>
     <string name="classicwidget_description">Klasik</string>
@@ -368,4 +368,14 @@
     <string name="preference_screen_pollen_hint_summary">Jika Anda menonaktifkan serbuk sari tertentu, serbuk sari tersebut akan disembunyikan di prakiraan rinci, daftar peta, dan tampilan peta rinci.</string>
     <string name="preference_prefetch_maps_title">Memuat peta dengan segera</string>
     <string name="preference_prefetch_maps_summary">Secara otomatis memperbarui peta cuaca dan prakiraan serbuk sari pada saat aplikasi diluncurkan. Meningkatkan kinerja, tetapi mengkonsumsi lebih banyak volume data.</string>
+    <string name="tomorrow">besok</string>
+    <string name="dayaftertomorrow">lusa</string>
+    <string name="preference_screen_uvhi_title">Indeks bahaya UV</string>
+    <string name="preference_screen_uvhi_fetchData_title">Mengambil data UV</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Selain prakiraan cuaca, dapatkan juga prakiraan indeks bahaya UV untuk lokasi Anda.</string>
+    <string name="preference_screen_uvhi_showInMain_title">Tampilkan dalam tampilan utama</string>
+    <string name="preference_wifionly_title">Gunakan Wi-Fi saja</string>
+    <string name="preference_wifionly_summary">Batasi penggunaan jaringan untuk Wi-Fi.</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Menampilkan indeks bahaya UV di tampilan aplikasi utama.</string>
+    <string name="preference_screen_uvhi_summary">Menyesuaikan tampilan indeks bahaya UV.</string>
 </resources>
