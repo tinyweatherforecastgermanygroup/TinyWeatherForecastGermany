@@ -13,7 +13,7 @@
     <string name="about_button">Prywatność / O</string>
     <string name="warnings_button">Ostrzeżenia pogodowe</string>
     <string name="texts_button">Teksty</string>
-    <string name="today">Dzisiaj</string>
+    <string name="today">dzisiaj</string>
     <string name="station">Stacja</string>
     <string name="whatsnew_button">Co nowego</string>
     <string name="boldwidget_description">Pogrubiona</string>
@@ -368,4 +368,14 @@
     <string name="preference_screen_pollen_hint_summary">Jeśli dezaktywujesz określone pyłki, zostaną one ukryte w szczegółowej prognozie, na liście map i w szczegółowym widoku mapy.</string>
     <string name="preference_prefetch_maps_title">Natychmiastowe ładowanie map</string>
     <string name="preference_prefetch_maps_summary">Automatyczna aktualizacja map pogody i prognozy pyłków po uruchomieniu aplikacji. Poprawia wydajność, ale zużywa więcej danych.</string>
+    <string name="tomorrow">jutro</string>
+    <string name="dayaftertomorrow">pojutrze</string>
+    <string name="preference_screen_uvhi_summary">Dostosuj wyświetlanie indeksu zagrożenia UV.</string>
+    <string name="preference_screen_uvhi_fetchData_title">Pobieranie danych UV</string>
+    <string name="preference_screen_uvhi_showInMain_title">Pokaż w widoku głównym</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Wyświetla wskaźnik zagrożenia UV w widoku głównym aplikacji.</string>
+    <string name="preference_wifionly_summary">Ogranicz korzystanie z sieci do Wi-Fi.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Oprócz prognozy pogody, pobierz również prognozę indeksu zagrożenia UV dla swojej lokalizacji.</string>
+    <string name="preference_screen_uvhi_title">Wskaźnik zagrożenia UV</string>
+    <string name="preference_wifionly_title">Korzystaj tylko z sieci Wi-Fi</string>
 </resources>
