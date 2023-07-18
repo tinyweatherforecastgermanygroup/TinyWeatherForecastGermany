@@ -4,7 +4,7 @@
     <string name="new_station">Region endret til</string>
     <string name="update_button">Oppdater</string>
     <string name="texts_button">Tekster</string>
-    <string name="today">I dag</string>
+    <string name="today">i dag</string>
     <string name="station">Stasjon</string>
     <string name="whatsnew_button">Nyheter</string>
     <string name="boldwidget_description">Fet</string>
@@ -344,4 +344,14 @@
     <string name="preference_screen_pollen_hint_summary">Hvis du deaktiverer visse pollen, blir de skjult i den detaljerte prognosen, kartlisten og den detaljerte kartvisningen.</string>
     <string name="preference_prefetch_maps_title">Last inn kart umiddelbart</string>
     <string name="preference_prefetch_maps_summary">Oppdaterer automatisk værkart og pollenvarsel når appen startes. Forbedrer ytelsen, men bruker mer datavolum.</string>
+    <string name="tomorrow">i morgen</string>
+    <string name="dayaftertomorrow">i overmorgen</string>
+    <string name="preference_screen_uvhi_summary">Tilpass visningen av UV-fareindeksen.</string>
+    <string name="preference_screen_uvhi_fetchData_title">Hente UV-data</string>
+    <string name="preference_screen_uvhi_showInMain_title">Vis i hovedvisningen</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Vis UV-fareindeksen i appens hovedvisning.</string>
+    <string name="preference_wifionly_summary">Begrens nettverksbruken til Wi-Fi.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">I tillegg til værvarselet kan du også hente prognosen for UV-risikoindeksen for stedet der du befinner deg.</string>
+    <string name="preference_screen_uvhi_title">UV-fareindeks</string>
+    <string name="preference_wifionly_title">Bruk kun Wi-Fi</string>
 </resources>
