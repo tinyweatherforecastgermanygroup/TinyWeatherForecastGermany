@@ -381,4 +381,15 @@
     <string name="service_notification_text4">Pobieranie mapy…</string>
     <string name="service_notification_text5">Pobieranie danych z radaru deszczowego…</string>
     <string name="layerlabel_warning_areas_de">Obszary ostrzegawcze Niemcy</string>
+    <string name="layerlabel_uvi_cs_2">Wskaźnik zagrożenia UV na pojutrze (bezchmurne niebo)</string>
+    <string name="layerlabel_uvi_eu_cl_0">Wskaźnik zagrożenia UV na dziś (Europa)</string>
+    <string name="layerlabel_uvi_eu_cs_0">Wskaźnik zagrożenia UV na dziś (Europa, bezchmurne niebo)</string>
+    <string name="layerlabel_short_ts">Opplevd temperatur</string>
+    <string name="layerlabel_ts_0">Temperatura zmierzona o 6:00 czasu lokalnego</string>
+    <string name="layerlabel_uvi_cl_0">Wskaźnik zagrożenia UV na dziś</string>
+    <string name="layerlabel_uvi_cl_1">Indeks zagrożenia UV na jutro</string>
+    <string name="local_time_6">6:00 czasu lokalnego</string>
+    <string name="layerlabel_uvi_cl_2">Wskaźnik zagrożenia UV na pojutrze</string>
+    <string name="layerlabel_uvi_cs_0">Wskaźnik zagrożenia UV na dziś (bezchmurne niebo)</string>
+    <string name="layerlabel_uvi_cs_1">Wskaźnik zagrożenia UV na jutro (bezchmurne niebo)</string>
 </resources>
