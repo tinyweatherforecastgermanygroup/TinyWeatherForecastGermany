@@ -29,7 +29,7 @@
     <string name="about_button">Confidentialité/À propos</string>
     <string name="warnings_button">Avertissements météo</string>
     <string name="texts_button">Textes</string>
-    <string name="today">Aujourd\'hui</string>
+    <string name="today">aujourd\'hui</string>
     <string name="station">Poste</string>
     <string name="whatsnew_button">Quoi de neuf</string>
     <string name="boldwidget_description">Gras</string>
@@ -382,4 +382,14 @@
     <string name="preference_screen_pollen_hint_summary">Si vous désactivez certains pollens, ils seront masqués dans les prévisions détaillées, la liste des cartes et la vue détaillée des cartes.</string>
     <string name="preference_prefetch_maps_title">Chargement immédiat des cartes</string>
     <string name="preference_prefetch_maps_summary">Mise à jour automatique des cartes météorologiques et des prévisions de pollen au lancement de l\'application. Améliore les performances, mais consomme plus de données.</string>
+    <string name="tomorrow">demain</string>
+    <string name="dayaftertomorrow">après-demain</string>
+    <string name="preference_screen_uvhi_summary">Personnaliser l\'affichage de l\'indice de risque UV.</string>
+    <string name="preference_screen_uvhi_showInMain_title">Afficher dans la vue principale</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Affiche l\'indice de danger UV dans la vue principale de l\'application.</string>
+    <string name="preference_wifionly_title">Utiliser uniquement le Wi-Fi</string>
+    <string name="preference_wifionly_summary">Limiter l\'utilisation du réseau au Wi-Fi.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Outre les prévisions météorologiques, vous pouvez également obtenir les prévisions de l\'indice de risque UV pour votre lieu de résidence.</string>
+    <string name="preference_screen_uvhi_title">Indice de risque UV</string>
+    <string name="preference_screen_uvhi_fetchData_title">Récupérer les données UV</string>
 </resources>
