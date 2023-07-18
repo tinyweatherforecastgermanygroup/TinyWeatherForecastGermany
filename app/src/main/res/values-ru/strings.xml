@@ -13,7 +13,7 @@
     <string name="warnings_button">Предупреждения о погоде</string>
     <string name="texts_button">Тексты</string>
     <string name="overview_button">Обзор</string>
-    <string name="today">Сегодня</string>
+    <string name="today">сегодня</string>
     <string name="station">Станция</string>
     <string name="whatsnew_button">Что нового</string>
     <string name="boldwidget_description">Жирный</string>
@@ -368,4 +368,14 @@
     <string name="preference_screen_pollen_hint_summary">Если вы деактивируете определенную пыльцу, она будет скрыта в подробном прогнозе, списке карт и детальном просмотре карты.</string>
     <string name="preference_prefetch_maps_title">Загружайте карты немедленно</string>
     <string name="preference_prefetch_maps_summary">Автоматическое обновление карт погоды и прогноза пыльцы при запуске приложения. Улучшает производительность, но потребляет больший объем данных.</string>
+    <string name="tomorrow">завтра</string>
+    <string name="dayaftertomorrow">послезавтра</string>
+    <string name="preference_screen_uvhi_fetchData_title">Получение данных об ультрафиолетовом излучении</string>
+    <string name="preference_screen_uvhi_showInMain_title">Показать в основном представлении</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Отображение индекса опасности ультрафиолетового излучения в основном представлении приложения.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Помимо прогноза погоды, можно также получить прогноз индекса опасности ультрафиолетового излучения для вашей местности.</string>
+    <string name="preference_screen_uvhi_title">Индекс опасности ультрафиолетового излучения</string>
+    <string name="preference_wifionly_title">Используйте только Wi-Fi</string>
+    <string name="preference_screen_uvhi_summary">Настройка отображения индекса опасности ультрафиолетового излучения.</string>
+    <string name="preference_wifionly_summary">Ограничьте использование сети только Wi-Fi.</string>
 </resources>
