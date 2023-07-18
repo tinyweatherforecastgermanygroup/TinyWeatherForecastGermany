@@ -392,4 +392,8 @@
     <string name="layerlabel_uvi_eu_cs_0">Індекс небезпеки ультрафіолетового випромінювання на сьогодні (Європа, ясне небо)</string>
     <string name="layerlabel_ts_0">Температура виміряна о 6:00 за місцевим часом</string>
     <string name="local_time_6">6:00 за місцевим часом</string>
+    <string name="preference_screen_pollen_title">Відображення пилку</string>
+    <string name="preference_screen_pollen_summary">Налаштуйте відображення кількості пилку.</string>
+    <string name="temp_max">Максимальна температура</string>
+    <string name="temp_min">Мінімальна температура</string>
 </resources>
