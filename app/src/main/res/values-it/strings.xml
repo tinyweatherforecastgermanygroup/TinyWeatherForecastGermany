@@ -393,4 +393,8 @@
     <string name="local_time_6">6:00 ora locale</string>
     <string name="layerlabel_uvi_cl_0">Indice di rischio UV per oggi</string>
     <string name="layerlabel_uvi_cs_1">Indice di pericolo UV per domani (cielo sereno)</string>
+    <string name="preference_screen_pollen_title">Esposizione del polline</string>
+    <string name="preference_screen_pollen_summary">Personalizzare la visualizzazione del conteggio dei pollini.</string>
+    <string name="temp_max">Temperatura massima</string>
+    <string name="temp_min">Temperatura minima</string>
 </resources>
