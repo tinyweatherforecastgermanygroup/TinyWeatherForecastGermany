@@ -57,4 +57,15 @@
     <string name="service_warning_categoryname">Vädervarningar</string>
     <string name="direction_north">N</string>
     <string name="layerlabel_warning_areas_de">Varningsområden Tyskland</string>
+    <string name="layerlabel_uvi_cl_1">UV-riskindex för morgondagen</string>
+    <string name="layerlabel_uvi_cs_0">UV-riskindex för idag (klar himmel)</string>
+    <string name="layerlabel_uvi_cs_1">UV-riskindex för i morgon (klar himmel)</string>
+    <string name="layerlabel_uvi_cs_2">UV-riskindex för i övermorgon (klar himmel)</string>
+    <string name="layerlabel_uvi_eu_cl_0">UV-riskindex för idag (Europa)</string>
+    <string name="layerlabel_short_ts">Upplevd temperatur</string>
+    <string name="layerlabel_ts_0">Temperaturavkänning kl. 6:00 lokal tid</string>
+    <string name="local_time_6">6:00 lokal tid</string>
+    <string name="layerlabel_uvi_cl_0">UV-riskindex för idag</string>
+    <string name="layerlabel_uvi_cl_2">UV-riskindex för dagen efter i morgon</string>
+    <string name="layerlabel_uvi_eu_cs_0">UV-riskindex för idag (Europa, klar himmel)</string>
 </resources>
