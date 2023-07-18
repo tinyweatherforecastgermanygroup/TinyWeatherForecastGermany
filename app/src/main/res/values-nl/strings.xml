@@ -365,7 +365,7 @@
     <string name="wd_ccb500">Bewolking lager dan 500 voet (152,4 meter)</string>
     <string name="wd_bcc">Basishoogte van convectieve wolken</string>
     <string name="wd_pv1">Waarschijnlijkheid van zichtbaarheid lager dan één kilometer</string>
-    <string name="service_notification_text5">Bezig met voorbereiden van buienradar…</string>
+    <string name="service_notification_text5">Het krijgen van regenradargegevens…</string>
     <string name="layerlabel_short_uv">UV-index</string>
     <string name="layerlabel_uvi_cl_0">UV-index van vandaag</string>
     <string name="layerlabel_uvi_cl_1">UV-index van morgen</string>
