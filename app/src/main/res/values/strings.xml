@@ -280,7 +280,6 @@
     <string name="service_notification_text4">Getting map layers…</string>
     <string name="service_notification_text5">Getting rain radar data…</string>
     <string name="service_notification_text3">Cleaning up…</string>
-    <string name="service_warning_categoryname">Weather warnings</string>
     <string name="direction_north">N</string>
     <string name="direction_south">S</string>
     <string name="direction_west">W</string>
@@ -409,7 +408,6 @@
     <string name="hint_no">Do not show hints</string>
     <string name="hint_1">Press the time indicator at the bottom left to set the rain radar to the beginning. Press on the legend to rewind. If the radar fails to load, the time display is yellow. If at least an outdated image can be displayed, the time display is orange.</string>
     <string name="layerlabel_warning_areas_de">Warning areas Germany</string>
-    <string name="layerlabel_short_uv">UV hazard index</string>
     <string name="layerlabel_uvi_cl_0">UV hazard index for today</string>
     <string name="layerlabel_uvi_cl_1">UV hazard index for tomorrow</string>
     <string name="layerlabel_uvi_cl_2">UV hazard index for the day after tomorrow</string>

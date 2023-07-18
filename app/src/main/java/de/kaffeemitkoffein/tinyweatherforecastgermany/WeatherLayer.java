@@ -365,7 +365,7 @@ public class WeatherLayer {
             case Layers.UVI_CLOUDLESS_1:
             case Layers.UVI_CLOUDS_EUROPE_0:
             case Layers.UVI_CLOUDLESS_EUROPE_0:
-                return context.getResources().getString(R.string.layerlabel_short_uv);
+                return context.getResources().getString(R.string.preference_screen_uvhi_title);
             case Layers.SENSED_TEMPERATURE_1M_0:
             case Layers.SENSED_TEMPERATURE_1M_1:
             case Layers.SENSED_TEMPERATURE_1M_2:

@@ -458,8 +458,8 @@ public class DataUpdateService extends Service {
     public static Notification getWarningNotification(Context context, NotificationManager notificationManager, WeatherWarning weatherWarning, String sortKey){
         final String notificationChannelID = WeatherSettings.getNotificationChannelID(context);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel nc = new NotificationChannel(notificationChannelID,context.getResources().getString(R.string.service_warning_categoryname),WARNING_NC_IMPORTANCE);
-            nc.setDescription(context.getResources().getString(R.string.service_warning_categoryname));
+            NotificationChannel nc = new NotificationChannel(notificationChannelID,context.getResources().getString(R.string.preference_category_warnings),WARNING_NC_IMPORTANCE);
+            nc.setDescription(context.getResources().getString(R.string.preference_category_warnings));
             if (WeatherSettings.LEDEnabled(context)){
                 nc.enableLights(true);
                 nc.setLightColor(WeatherSettings.getLEDColor(context));
