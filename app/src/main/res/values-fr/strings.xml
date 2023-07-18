@@ -392,4 +392,7 @@
     <string name="preference_screen_uvhi_fetchData_summary">Outre les prévisions météorologiques, vous pouvez également obtenir les prévisions de l\'indice de risque UV pour votre lieu de résidence.</string>
     <string name="preference_screen_uvhi_title">Indice de risque UV</string>
     <string name="preference_screen_uvhi_fetchData_title">Récupérer les données UV</string>
+    <string name="service_notification_text4">Obtenir des couches de cartes…</string>
+    <string name="service_notification_text5">Obtenir les données du radar de pluie…</string>
+    <string name="layerlabel_warning_areas_de">Zones d\'alerte Allemagne</string>
 </resources>
