@@ -5,7 +5,7 @@
     <string name="license_button">Ліцензія</string>
     <string name="update_button">Оновити</string>
     <string name="settings_button">Параметри</string>
-    <string name="today">Сьогодні</string>
+    <string name="today">сьогодні</string>
     <string name="station">Станція</string>
     <string name="whatsnew_button">Що нового</string>
     <string name="app_name">Tiny Weather Forecast Germany</string>
@@ -368,4 +368,14 @@
     <string name="preference_screen_pollen_hint_summary">Якщо ви деактивуєте певний пилок, він буде прихований у детальному прогнозі, списку мап та детальному перегляді мапи.</string>
     <string name="preference_prefetch_maps_title">Негайно завантажуйте карти</string>
     <string name="preference_prefetch_maps_summary">Автоматичне оновлення погодних карт і прогнозу пилку після запуску програми. Покращує продуктивність, але споживає більше даних.</string>
+    <string name="tomorrow">завтра</string>
+    <string name="dayaftertomorrow">післязавтра</string>
+    <string name="preference_screen_uvhi_fetchData_title">Отримати УФ-дані</string>
+    <string name="preference_screen_uvhi_showInMain_title">Показати в головному вікні</string>
+    <string name="preference_screen_uvhi_showInMain_summary">Відображати індекс небезпеки ультрафіолетового випромінювання в головному вікні програми.</string>
+    <string name="preference_wifionly_title">Використовуйте тільки Wi-Fi</string>
+    <string name="preference_wifionly_summary">Обмежте використання мережі до Wi-Fi.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Окрім прогнозу погоди, також отримайте прогноз індексу небезпеки ультрафіолетового випромінювання для вашого місцезнаходження.</string>
+    <string name="preference_screen_uvhi_title">Індекс небезпеки ультрафіолетового випромінювання</string>
+    <string name="preference_screen_uvhi_summary">Налаштуйте відображення індексу небезпеки ультрафіолетового випромінювання.</string>
 </resources>
