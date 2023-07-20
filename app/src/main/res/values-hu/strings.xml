@@ -282,7 +282,6 @@
     <string name="welcome_s3_text3">Adjon hozzá néhány widgetet a kezdőképernyőjéhez.</string>
     <string name="geoinput_title">A legközelebbi meteorológiai állomás keresése</string>
     <string name="preference_led_notice_summary">Csak néhány készülék rendelkezik értesítési LED-del. Más eszközökön ezek a beállítások nem hatnak. Más készülékbeállítások megakadályozhatják, hogy az értesítési LED villogjon.</string>
-    <string name="service_warning_categoryname">Időjárási figyelmeztetések</string>
     <string name="direction_east">K</string>
     <string name="preference_feedback_title">Visszajelzés</string>
     <string name="preference_clearnotifications_summary">Az időjárási riasztások értesítéseinek visszaállítása. Minden érvényes értesítés újra megjelenik.</string>

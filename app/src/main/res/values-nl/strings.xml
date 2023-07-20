@@ -275,7 +275,6 @@
     <string name="preference_meterednetwork_notice">Let op: door geen beperkte verbindingen te gebruiken mis je mogelijk weerswaarschuwingen.</string>
     <string name="service_notification_categoryname">Bezig met bijwerken van weersgegevens…</string>
     <string name="preference_clearnotifications_summary">Herstel de meldingen van weerswaarschuwingen. Alle geldige meldingen worden opnieuw getoond.</string>
-    <string name="service_warning_categoryname">Weerswaarschuwingen</string>
     <string name="welcome_s3_text5">Houd de voorspelling lang ingedrukt om de gedetailleerde weergave te openen.</string>
     <string name="welcome_setupwarnings">Waarschuwingen instellen</string>
     <string name="battery_and_data_hint">Let op: hierdoor neemt het accu- en gegevensverbruik toe.</string>

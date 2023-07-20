@@ -152,7 +152,6 @@
     <string name="logging_button_share">Comhroinn</string>
     <string name="preference_clearnotifications_summary">Athshocraigh fógraí le haghaidh foláirimh aimsire. Taispeánfar gach fógra bailí arís.</string>
     <string name="logging_comment_title">Comhroinn an logchomhad\?</string>
-    <string name="service_warning_categoryname">Rabhadh aimsire</string>
     <string name="service_notification_text3">Glanadh suas…</string>
     <string name="service_notification_text2">Réamhaisnéisí téacs á bhfáil…</string>
     <string name="service_notification_text0">Ag fáil réamhaisnéis na haimsire nua…</string>

@@ -286,7 +286,6 @@
     <string name="update_failed">Päivitys epäonnistui:</string>
     <string name="network_lost">Internet-yhteys katkeaa.</string>
     <string name="service_notification_categoryname">Säätietojen päivittäminen</string>
-    <string name="service_warning_categoryname">Säävaroitukset</string>
     <string name="overview_button">Yleiskatsaus</string>
     <string name="preference_display_rotation_title">Näytön kohdistaminen</string>
     <string name="preference_display_rotation_summary">Näytön kohdistaminen</string>

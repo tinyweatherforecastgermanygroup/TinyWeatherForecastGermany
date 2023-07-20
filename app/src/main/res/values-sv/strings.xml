@@ -54,7 +54,6 @@
     <string name="preference_screen_uvhi_summary">Anpassa visningen av UV-riskindexet.</string>
     <string name="service_notification_text5">Få radarinformation om regn…</string>
     <string name="service_notification_text3">Städning…</string>
-    <string name="service_warning_categoryname">Vädervarningar</string>
     <string name="direction_north">N</string>
     <string name="layerlabel_warning_areas_de">Varningsområden Tyskland</string>
     <string name="layerlabel_uvi_cl_1">UV-riskindex för morgondagen</string>

@@ -220,7 +220,6 @@
     <string name="service_notification_text1">Отримання погодних попереджень…</string>
     <string name="service_notification_text2">Отримання текстових попереджень…</string>
     <string name="service_notification_text3">Очищення…</string>
-    <string name="service_warning_categoryname">Попередження про погоду</string>
     <string name="direction_calm">-</string>
     <string name="twilight">Сутінки</string>
     <string name="preference_feedback_summary">Надішліть розробнику якийсь відгук на ел. пошту.</string>

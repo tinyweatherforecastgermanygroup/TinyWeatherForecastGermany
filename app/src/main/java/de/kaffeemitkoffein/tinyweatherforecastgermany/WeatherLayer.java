@@ -310,9 +310,9 @@ public class WeatherLayer {
             case Layers.SENSED_TEMPERATURE_1M_0:
                 return context.getResources().getString(R.string.layerlabel_ts_0);
             case Layers.SENSED_TEMPERATURE_1M_1:
-                return context.getResources().getString(R.string.layerlabel_ts_1);
+                return context.getResources().getString(R.string.layerlabel_ts_0).replace("6:00","12:00");
             case Layers.SENSED_TEMPERATURE_1M_2:
-                return context.getResources().getString(R.string.layerlabel_ts_2);
+                return context.getResources().getString(R.string.layerlabel_ts_0).replace("6:00","18:00");
             case Layers.SENSED_TEMPERATURE_MIN_0:
                 return context.getResources().getString(R.string.layerlabel_ts_min_0);
             case Layers.SENSED_TEMPERATURE_MIN_1:

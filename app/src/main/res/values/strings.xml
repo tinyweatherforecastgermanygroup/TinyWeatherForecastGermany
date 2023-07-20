@@ -421,8 +421,6 @@
     <string name="layerlabel_ts_1">Temperature sensed at 12:00 local time</string>
     <string name="layerlabel_ts_2">Temperature sensed at 18:00 local time</string>
     <string name="local_time_6">6:00 local time</string>
-    <string name="local_time_12">12:00 local time</string>
-    <string name="local_time_18">18:00 local time</string>
     <string name="temp_max">Maximum temperature</string>
     <string name="temp_min">Minimum temperature</string>
     <string name="layerlabel_ts_min_0">Minimum perceived temperature today</string>

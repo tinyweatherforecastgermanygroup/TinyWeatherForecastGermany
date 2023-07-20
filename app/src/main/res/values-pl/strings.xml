@@ -276,7 +276,6 @@
     <string name="preference_meterednetwork_summary">Korzystaj również z sieci metrażowych, aby uzyskać dane.</string>
     <string name="preference_meterednetwork_notice">Ostrzeżenia pogodowe mogą Ci umknąć, jeśli korzystasz wyłącznie z sieci bez limitu.</string>
     <string name="preference_clearnotifications_message">Pamięć powiadomień skasowana.</string>
-    <string name="service_warning_categoryname">Ostrzeżenia pogodowe</string>
     <string name="service_notification_categoryname">Aktualizowanie danych pogodowych</string>
     <string name="welcome_setupwarnings">Ustaw ostrzeżenia pogodowe</string>
     <string name="battery_and_data_hint">Spowoduje to zwiększenie zużycia baterii i ilości danych.</string>

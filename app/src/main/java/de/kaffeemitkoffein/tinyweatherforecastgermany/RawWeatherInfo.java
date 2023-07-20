@@ -542,7 +542,7 @@ public class RawWeatherInfo{
             this.uvHazardIndex[i]="-1";
             if ((uvIndexTimes!=null) && (uvIndexValues!=null)){
                 for (int day=0; day<uvIndexTimes.length; day++){
-                    if (WeatherLayer.getMidnightTime(timesteps[i])==uvIndexTimes[day]){
+                    if (WeatherLayer.getFullHourTime(timesteps[i],0,0,WeatherLayer.TZ.LOCAL)==uvIndexTimes[day]){
                         this.uvHazardIndex[i] = String.valueOf(uvIndexValues[day]);
                     }
                 }

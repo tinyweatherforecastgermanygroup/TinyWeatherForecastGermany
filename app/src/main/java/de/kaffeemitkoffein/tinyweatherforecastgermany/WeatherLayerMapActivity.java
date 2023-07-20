@@ -268,8 +268,8 @@ public class WeatherLayerMapActivity extends Activity {
         additonalSpinnerItems = new ArrayList<String>();
         additionalJumpTarget =  new ArrayList<Integer>();
         additonalSpinnerItems.add(getResources().getString(R.string.local_time_6)); additionalJumpTarget.add(0);
-        additonalSpinnerItems.add(getResources().getString(R.string.local_time_12)); additionalJumpTarget.add(1);
-        additonalSpinnerItems.add(getResources().getString(R.string.local_time_18)); additionalJumpTarget.add(2);
+        additonalSpinnerItems.add(getResources().getString(R.string.local_time_6).replace("6:00","12:00")); additionalJumpTarget.add(1);
+        additonalSpinnerItems.add(getResources().getString(R.string.local_time_6).replace("6:00","18:00")); additionalJumpTarget.add(2);
     }
 
     public void setMinMaxTemperatureSpinnerList(){

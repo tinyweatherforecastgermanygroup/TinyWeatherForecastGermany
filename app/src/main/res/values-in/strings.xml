@@ -284,7 +284,6 @@
     <string name="logging_comment_hint">Anda dapat menambahkan komentar pada catatan untuk menemukan kesalahan — mohon jelaskan apa yang terjadi:</string>
     <string name="logging_copy_success">Catatan telah disalin ke papan klip Anda.</string>
     <string name="service_notification_channelname">Memperbarui data cuaca</string>
-    <string name="service_warning_categoryname">Peringatan cuaca</string>
     <string name="preference_feedback_summary">Berikan pengembang sedikit masukan melalui surel.</string>
     <string name="feedback_mail_text">Ketika mengirim sebuah laporan kutu, mohon juga untuk menyalin dan menempelkan catatan jika dimungkinkan.</string>
     <string name="ends">berakhir</string>

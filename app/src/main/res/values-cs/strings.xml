@@ -272,7 +272,6 @@
     <string name="preference_notify_warnings_summary">Upozornění na nová varování pro vybranou lokalitu.</string>
     <string name="preference_meterednetwork_notice">Pokud používáte pouze sítě bez měření, můžete zmeškat varování před počasím.</string>
     <string name="service_notification_categoryname">Aktualizace údajů o počasí</string>
-    <string name="service_warning_categoryname">Varování před počasím</string>
     <string name="battery_and_data_hint">Tím se zvýší spotřeba baterie a objem dat.</string>
     <string name="preference_meterednetwork_title">Použití měřených sítí</string>
     <string name="preference_meterednetwork_summary">K získávání dat používejte také sítě s měřením.</string>

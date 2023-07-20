@@ -292,7 +292,6 @@
     <string name="preference_displaywarninginwidget_title">Warnungen in Widget(s) anzeigen</string>
     <string name="preference_meterednetwork_summary">Auch mobile/getaktete Netzwerke für den Datenabruf benutzen.</string>
     <string name="preference_meterednetwork_notice">Möglicherweise verpassen sie Warnungen wenn sie diese nur über nicht-getaktete Netzwerke (WLAN) abrufen.</string>
-    <string name="service_warning_categoryname">Wetterwarnungen</string>
     <string name="battery_and_data_hint">Die Nutzung deines Akkus und Datenvolumen werden dadurch steigen.</string>
     <string name="preference_clearnotifications_title">Benachrichtigungen zurück setzen</string>
     <string name="preference_clearnotifications_summary">Benachrichtigungen zurücksetzen. Alle Warnungen werden erneut benachrichtigt.</string>

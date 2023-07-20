@@ -275,7 +275,6 @@
     <string name="preference_meterednetwork_title">Brug målerbaserede net</string>
     <string name="preference_meterednetwork_summary">Du kan også bruge net med taxameter til at få data.</string>
     <string name="service_notification_categoryname">Opdatering af vejrdata</string>
-    <string name="service_warning_categoryname">Advarsler om vejret</string>
     <string name="welcome_s3_text5">Tryk længe på prognosen for at åbne en mere detaljeret visning.</string>
     <string name="update_failed">Opdateringen mislykkedes:</string>
     <string name="network_lost">internetforbindelse tabt.</string>

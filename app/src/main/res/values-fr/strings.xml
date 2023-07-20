@@ -288,7 +288,6 @@
     <string name="preference_meterednetwork_title">Utiliser des réseaux de compteurs</string>
     <string name="preference_meterednetwork_summary">Utilisez également les réseaux à compteur pour obtenir des données.</string>
     <string name="preference_meterednetwork_notice">Vous risquez de manquer les alertes météo si vous utilisez uniquement des réseaux sans compteur.</string>
-    <string name="service_warning_categoryname">Alertes météo</string>
     <string name="welcome_setupwarnings">Configuration des alertes météo</string>
     <string name="battery_and_data_hint">Cela augmentera l\'utilisation de la batterie et du volume de données.</string>
     <string name="preference_clearnotifications_message">La mémoire de notification est effacée.</string>

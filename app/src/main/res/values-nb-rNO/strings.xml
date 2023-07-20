@@ -277,7 +277,6 @@
     <string name="preference_usegps_title">Bruk lokasjonstjenester</string>
     <string name="preference_gpsauto_summary">Sjekk at plasseringen er riktig ved hver oppstart.</string>
     <string name="service_notification_categoryname">Oppdatering av værdata</string>
-    <string name="service_warning_categoryname">Værvarsler</string>
     <string name="preference_clearnotifications_title">Tilbakestill varsler</string>
     <string name="network_timeout">Internett-tilkoblingen ble tidsavbrutt.</string>
     <string name="preference_displaywarninginwidget_title">Vis advarsler i widgeten</string>

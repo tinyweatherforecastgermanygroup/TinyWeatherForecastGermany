@@ -275,7 +275,6 @@
     <string name="preference_meterednetwork_summary">Usa anche le reti a pagamento per ottenere dati.</string>
     <string name="preference_meterednetwork_notice">Potresti perdere gli avvisi meteorologici quando usi solo le reti non misurate.</string>
     <string name="service_notification_categoryname">Aggiornamento dei dati meteo</string>
-    <string name="service_warning_categoryname">Avvertenze meteorologiche</string>
     <string name="welcome_setupwarnings">Impostazione degli avvisi meteo</string>
     <string name="battery_and_data_hint">Questo aumenterà l\'uso della batteria e del volume di dati.</string>
     <string name="preference_clearnotifications_message">Memoria di notifica cancellata.</string>

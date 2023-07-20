@@ -188,7 +188,6 @@
     <string name="service_notification_text0">Получение нового прогноза погоды…</string>
     <string name="service_notification_text1">Получение предупреждений о погоде…</string>
     <string name="service_notification_text3">Очистка…</string>
-    <string name="service_warning_categoryname">Предупреждения о погоде</string>
     <string name="direction_north">Се</string>
     <string name="direction_south">Юг</string>
     <string name="direction_west">Во</string>
