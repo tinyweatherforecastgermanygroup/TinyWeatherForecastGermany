@@ -18,11 +18,15 @@
  */
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
+import android.os.Build;
+import android.util.Log;
 import org.astronomie.info.Astronomy;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class RawWeatherInfo{
 
@@ -293,14 +297,15 @@ public class RawWeatherInfo{
 
     public long[] getTimeSteps(){
         long[] result = new long[Weather.DATA_SIZE];
-        SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        //SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         kml_dateFormat.setLenient(true);
         for (int i=0; i<elements; i++){
             try {
-                Date parse = kml_dateFormat.parse(timesteps[i]);
+                Date parse = kml_dateFormat.parse(timesteps[i].replace("Z","+0000"));
                 result[i] = parse.getTime();
             } catch (Exception e){
-                // nothing to dd
+                // do nothing
             }
         }
         return result;
@@ -308,7 +313,7 @@ public class RawWeatherInfo{
 
     public long[] getTimeSteps(int start, int stop){
         long[] result = new long[Weather.DATA_SIZE];
-        SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         kml_dateFormat.setLenient(true);
         for (int i=start; i<stop; i++){
             try {
@@ -542,7 +547,7 @@ public class RawWeatherInfo{
             this.uvHazardIndex[i]="-1";
             if ((uvIndexTimes!=null) && (uvIndexValues!=null)){
                 for (int day=0; day<uvIndexTimes.length; day++){
-                    if (WeatherLayer.getFullHourTime(timesteps[i],0,0,WeatherLayer.TZ.LOCAL)==uvIndexTimes[day]){
+                    if (WeatherLayer.getFullHourTime(timesteps[i],0,0,WeatherLayer.TZ.UTC)==uvIndexTimes[day]){
                         this.uvHazardIndex[i] = String.valueOf(uvIndexValues[day]);
                     }
                 }

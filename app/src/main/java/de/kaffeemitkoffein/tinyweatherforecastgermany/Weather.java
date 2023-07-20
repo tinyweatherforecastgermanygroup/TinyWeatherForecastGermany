@@ -1538,7 +1538,6 @@ public final class Weather {
             Astronomy.Riseset riseset = getRiseset(weatherLocation,time);
             long sunRise = getSunriseInUTC(riseset,time);
             long sunSet  = getSunsetInUTC(riseset,time);
-            //Log.v("twfg","rise: "+SIMPLEDATEFORMATS.DATETIME.format(new Date(sunRise))+" <-> "+SIMPLEDATEFORMATS.DATETIME.format(new Date(time))+" <-> set: "+SIMPLEDATEFORMATS.DATETIME.format(new Date(sunSet)));
             if (sunRise<sunSet){
                 if ((time>=sunRise) && (time<sunSet)){
                     return true;

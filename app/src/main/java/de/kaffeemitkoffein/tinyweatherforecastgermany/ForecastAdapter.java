@@ -493,7 +493,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             viewHolder.precipitation_textview = precipitation_textview;
         }
         if (precipitation_textview!=null){
-            precipitation_textview.setText(precipitation_string+">"+weatherInfo.getUvHazardIndex()+"<");
+            precipitation_textview.setText(precipitation_string);
             ThemePicker.applyPrecipitationAccentColor(context,precipitation_textview);
         }
     }
@@ -801,11 +801,12 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         viewHolder.uvHazardIndex = textView_uvHazardIndex;
     }
     if (textView_uvHazardIndex!=null) {
-        if (WeatherSettings.UVHImainDisplay(context) && weatherInfo.hasUvHazardIndex()){
+        int uvHazardPosition = getHourlyPosition(i);
+        if (WeatherSettings.UVHImainDisplay(context) && weatherForecasts_hourly.get(uvHazardPosition).hasUvHazardIndex()){
             if (weatherInfo.isDaytime(weatherLocation)) {
                 textView_uvHazardIndex.setVisibility(View.VISIBLE);
-                textView_uvHazardIndex.setBackground(ForecastBitmap.getColoredBox(context,UVHazardIndex.UVIndexColors[weatherInfo.getUvHazardIndex()]));
-                textView_uvHazardIndex.setText(String.valueOf(weatherInfo.getUvHazardIndex()));
+                textView_uvHazardIndex.setBackground(ForecastBitmap.getColoredBox(context,UVHazardIndex.UVIndexColors[weatherForecasts_hourly.get(uvHazardPosition).getUvHazardIndex()]));
+                textView_uvHazardIndex.setText(String.valueOf(weatherForecasts_hourly.get(uvHazardPosition).getUvHazardIndex()));
             } else {
                 textView_uvHazardIndex.setVisibility(View.GONE);
             }
@@ -1097,6 +1098,16 @@ private int getHourlyOffset(int start, int position6h){
     }
     return position - 6; // display 6 hours before
 }
+
+    private int getHourlyPosition(int position6h){
+        int position = 0;
+        // calculates corresponding position in hourly forecasts that corresponds to 6-hourly forecasts.
+        while (weatherForecasts_hourly.get(position).getTimestamp()<weatherForecasts.get(position6h).getTimestamp() && position<weatherForecasts_hourly.size()-1){
+            position++;
+        }
+        return position;
+    }
+
 
 public static String formatDistanceNumberToString(double d){
     DecimalFormat decimalFormat = new DecimalFormat();
