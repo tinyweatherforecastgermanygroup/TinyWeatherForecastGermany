@@ -374,7 +374,6 @@
     <string name="layerlabel_uvi_eu_cs_0">UV-index van vandaag (Europa, onbewolkt)</string>
     <string name="layerlabel_short_ts">Waargenomen temperatuur</string>
     <string name="layerlabel_ts_0">Gevoelstemperatuur om 6:00 (lokale tijd)</string>
-    <string name="layerlabel_ts_2">Gevoelstemperatuur om 18:00 (lokale tijd)</string>
     <string name="layerlabel_ts_max_0">Maximale gevoelstemperatuur van vandaag</string>
     <string name="layerlabel_ts_max_1">Maximale gevoelstemperatuur van morgen</string>
     <string name="layerlabel_ts_max_2">Maximale gevoelstemperatuur van overmorgen</string>
@@ -385,7 +384,6 @@
     <string name="service_notification_text4">Bezig met ophalen van kaartlagen…</string>
     <string name="layerlabel_warning_areas_de">Waarschuwingsgebieden in Duitsland</string>
     <string name="layerlabel_uvi_cs_1">UV-index van morgen (onbewolkt)</string>
-    <string name="layerlabel_ts_1">Gevoelstemperatuur om 12:00 (lokale tijd)</string>
     <string name="layerlabel_ts_min_0">Minimale gevoelstemperatuur van vandaag</string>
     <string name="preference_screen_pollen_hint_summary">Als je bepaalde pollen uitschakelt, dan worden ze niet getoond in de uitgebreide weersvoorspelling, kaartenlijst en uitgebreide kaartweergave.</string>
     <string name="preference_prefetch_maps_title">Kaarten onmiddellijk laden</string>
