@@ -365,7 +365,6 @@
     <string name="wd_bcc">Basishoogte van convectieve wolken</string>
     <string name="wd_pv1">Waarschijnlijkheid van zichtbaarheid lager dan één kilometer</string>
     <string name="service_notification_text5">Het krijgen van regenradargegevens…</string>
-    <string name="layerlabel_short_uv">UV-index</string>
     <string name="layerlabel_uvi_cl_0">UV-index van vandaag</string>
     <string name="layerlabel_uvi_cl_1">UV-index van morgen</string>
     <string name="layerlabel_uvi_cl_2">UV-index van overmorgen</string>
@@ -401,8 +400,6 @@
     <string name="preference_screen_pollen_hint_title">Tip</string>
     <string name="preference_screen_pollen_hazel_summary">Toon de hazelaarpollen-voorspelling.</string>
     <string name="preference_screen_pollen_alder_summary">Toon de elspollen-voorspelling.</string>
-    <string name="local_time_12">12:00 lokale tijd</string>
-    <string name="local_time_18">18:00 lokale tijd</string>
     <string name="temp_min">Minimumtemperatuur</string>
     <string name="pollen_title">Pollenvoorspelling</string>
     <string name="pollen_ambrosia">Ambrosia</string>
