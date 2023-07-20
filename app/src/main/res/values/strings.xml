@@ -424,9 +424,9 @@
     <string name="layerlabel_ts_min_0">Minimum perceived temperature today</string>
     <string name="layerlabel_ts_min_1">Minimum temperature sensed tomorrow</string>
     <string name="layerlabel_ts_min_2">Minimum temperature sensed the day after tomorrow</string>
-    <string name="layerlabel_ts_max_0">Maximum temperature sensed today</string>
-    <string name="layerlabel_ts_max_1">Maximum temperature sensed tomorrow</string>
-    <string name="layerlabel_ts_max_2">Maximum temperature sensed the day after tomorrow</string>
+    <string name="layerlabel_ts_max_0">Maximum temperature perceived today</string>
+    <string name="layerlabel_ts_max_1">Maximum temperature perceived tomorrow</string>
+    <string name="layerlabel_ts_max_2">Maximum temperature perceived the day after tomorrow</string>
     <string name="wm_maps">Weather maps</string>
     <string name="wm_update_not_allowed_yet">Next update possible: %1$s </string>
     <string name="pollen_title">Pollen count forecast</string>
