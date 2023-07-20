@@ -374,13 +374,13 @@
     <string name="layerlabel_uvi_eu_cs_0">UV-index van vandaag (Europa, onbewolkt)</string>
     <string name="layerlabel_short_ts">Waargenomen temperatuur</string>
     <string name="layerlabel_ts_0">Gevoelstemperatuur om 6:00 (lokale tijd)</string>
-    <string name="layerlabel_ts_max_0">Maximale gevoelstemperatuur van vandaag</string>
-    <string name="layerlabel_ts_max_1">Maximale gevoelstemperatuur van morgen</string>
-    <string name="layerlabel_ts_max_2">Maximale gevoelstemperatuur van overmorgen</string>
+    <string name="layerlabel_ts_max_0">Maximum temperatuur waargenomen vandaag</string>
+    <string name="layerlabel_ts_max_1">Maximum temperatuur waargenomen morgen</string>
+    <string name="layerlabel_ts_max_2">Maximumtemperatuur waargenomen overmorgen</string>
     <string name="layerlabel_ts_min_1">Minimale gevoelstemperatuur van morgen</string>
     <string name="layerlabel_ts_min_2">Minimale gevoelstemperatuur van overmorgen</string>
     <string name="wm_maps">Weerkaarten</string>
-    <string name="wm_update_not_allowed_yet">De informatie kan over %1$s worden bijgewerkt.</string>
+    <string name="wm_update_not_allowed_yet">Volgende update mogelijk: %1$s</string>
     <string name="service_notification_text4">Bezig met ophalen van kaartlagen…</string>
     <string name="layerlabel_warning_areas_de">Waarschuwingsgebieden in Duitsland</string>
     <string name="layerlabel_uvi_cs_1">UV-index van morgen (onbewolkt)</string>
