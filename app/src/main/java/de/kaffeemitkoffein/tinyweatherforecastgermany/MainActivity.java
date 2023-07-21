@@ -355,7 +355,7 @@ public class MainActivity extends Activity {
         registerForBroadcast();
         // this is necessary if the update of weather data occurs while the app is in the background
         try {
-            if (weatherCard==null){
+            if (weatherCard==null || WeatherSettings.getWeatherUpdatedFlag(context)!=0){
                 weatherCard = Weather.getCurrentWeatherInfo(this);
             }
         } catch (Exception e){

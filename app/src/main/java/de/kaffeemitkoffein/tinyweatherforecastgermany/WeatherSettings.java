@@ -159,8 +159,8 @@ public class WeatherSettings {
     public static final String PREF_LAST_PREFETCH_TIME = "PREF_prefetch_time";
     public static final String PREF_UVHI_FETCH_DATA ="PREF_uvhi_fetch_data";
     public static final String PREF_UVHI_MAINDISPLAY="PREF_uvhi_maindisplay";
-    public static final String PREF_CACHE_UVHI_TIMES ="PREF_cache_uvhi_times";
-    public static final String PREF_CACHE_UVHI_VALUES="PREF_cache_uvhi_values";
+    public static final String PREF_WEATHERUPDATEDFLAG="PREF_weather_updated";
+
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -261,6 +261,7 @@ public class WeatherSettings {
     public static final long PREF_LAST_PREFETCH_TIME_DEFAULT = 0;
     public static final boolean PREF_UVHI_FETCH_DATA_DEFAULT = false;
     public static final boolean PREF_UVHI_MAINDISPLAY_DEFAULT = false;
+    public static final long PREF_WEATHERUPDATEDFLAG_DEFAULT = 0l;
 
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
@@ -357,6 +358,7 @@ public class WeatherSettings {
     public boolean preFetchMaps = PREF_PREFETCH_MAPS_DEFAULT;
     public boolean UVHIfetch = PREF_UVHI_FETCH_DATA_DEFAULT;
     public boolean UVHIdisplayMain = PREF_UVHI_MAINDISPLAY_DEFAULT;
+    public long weatherUpdatedFlag = PREF_WEATHERUPDATEDFLAG_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -457,6 +459,7 @@ public class WeatherSettings {
         this.preFetchMaps = readPreference(PREF_PREFETCH_MAPS,PREF_PREFETCH_MAPS_DEFAULT);
         this.UVHIfetch = readPreference(PREF_UVHI_FETCH_DATA,PREF_UVHI_FETCH_DATA_DEFAULT);
         this.UVHIdisplayMain = readPreference(PREF_UVHI_MAINDISPLAY,PREF_UVHI_MAINDISPLAY_DEFAULT);
+        this.weatherUpdatedFlag = readPreference(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
     }
 
     public void savePreferences() {
@@ -548,6 +551,7 @@ public class WeatherSettings {
         applyPreference(PREF_PREFETCH_MAPS,preFetchMaps);
         applyPreference(PREF_UVHI_FETCH_DATA,UVHIfetch);
         applyPreference(PREF_UVHI_MAINDISPLAY,UVHIdisplayMain);
+        applyPreference(PREF_WEATHERUPDATEDFLAG,weatherUpdatedFlag);
     }
 
     public void commitPreferences() {
@@ -639,6 +643,7 @@ public class WeatherSettings {
         commitPreference(PREF_PREFETCH_MAPS,preFetchMaps);
         commitPreference(PREF_UVHI_FETCH_DATA,UVHIfetch);
         commitPreference(PREF_UVHI_MAINDISPLAY,UVHIdisplayMain);
+        commitPreference(PREF_WEATHERUPDATEDFLAG,weatherUpdatedFlag);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -768,6 +773,7 @@ public class WeatherSettings {
         pref_editor.apply();
         PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
         setPollenRegion(context,pollenArea);
+        resetUVHIUpdateAllowedTime(context);
     }
 
     public static void resetStationToDefault(Context context) {
@@ -780,6 +786,7 @@ public class WeatherSettings {
         pref_editor.putInt(PREF_STATIONTYPE,PREF_STATIONTYPE_DEFAULT);
         pref_editor.putString(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
         pref_editor.apply();
+        resetUVHIUpdateAllowedTime(context);
     }
 
     public static void updateFavorites(Context context, ArrayList<Weather.WeatherLocation> favorites) {
@@ -1813,50 +1820,29 @@ public class WeatherSettings {
         return (Calendar.getInstance().getTimeInMillis()>lastUpdate+POLLBLOCKTIME);
     }
 
-    public static void putUVHICache(Context context, long[] timeArray, int[] valueArray){
-        if ((timeArray!=null) && (valueArray!=null)){
-            ArrayList<String> timeStrings = new ArrayList<String>();
-            ArrayList<String> valueStrings = new ArrayList<String>();
-            for (int i=0; i<timeArray.length; i++){
-                timeStrings.add(String.valueOf(timeArray[i]));
-                valueStrings.add(String.valueOf(valueArray[i]));
-            }
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-            pref_editor.putString(PREF_CACHE_UVHI_TIMES,WeatherContentManager.serializeStringFromArrayList(timeStrings));
-            pref_editor.putString(PREF_CACHE_UVHI_VALUES,WeatherContentManager.serializeStringFromArrayList(valueStrings));
-            pref_editor.apply();
-        }
+    public static void resetUVHIUpdateAllowedTime(Context context){
+        setLastUVHIUpdateTime(context,0);
     }
 
-    /*
-    public static long[] getUVHITimeCache(Context context){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String result = sharedPreferences.getString(PREF_CACHE_UVHI_TIMES,"");
-        if (result.equals("")){
-            return null;
-        }
-        String[] results = WeatherContentManager.deSerializeString(result);
-        long[] timeArray = new long[results.length];
-        for (int i=0; i<results.length; i++){
-            timeArray[i] = Long.parseLong(results[i]);
-        }
-        return timeArray;
+    public static void setUVHIUpdateAllowedTime(Context context){
+        setLastUVHIUpdateTime(context,Calendar.getInstance().getTimeInMillis());
     }
 
-    public static int[] getUVHIValueCache(Context context){
+    public static long getWeatherUpdatedFlag(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String result = sharedPreferences.getString(PREF_CACHE_UVHI_VALUES,"");
-        if (result.equals("")){
-            return null;
-        }
-        String[] results = WeatherContentManager.deSerializeString(result);
-        int[] valueArray = new int[results.length];
-        for (int i=0; i<results.length; i++){
-            valueArray[i] = Integer.parseInt(results[i]);
-        }
-        return valueArray;
+        long result = sharedPreferences.getLong(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_WEATHERUPDATEDFLAG, PREF_WEATHERUPDATEDFLAG_DEFAULT);
+        pref_editor.apply();
+        return result;
     }
-     */
+
+    public static void setWeatherUpdatedFlag(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_WEATHERUPDATEDFLAG, Calendar.getInstance().getTimeInMillis());
+        pref_editor.apply();
+    }
+
 
 }

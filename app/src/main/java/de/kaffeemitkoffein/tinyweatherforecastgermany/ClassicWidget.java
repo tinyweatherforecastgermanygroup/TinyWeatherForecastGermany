@@ -352,11 +352,11 @@ public class ClassicWidget extends AppWidgetProvider {
         setConditionIcon(c,remoteViews,weatherCard);
         if (weatherCard.currentWeather.hasTemperature()){
             remoteViews.setTextViewText(R.id.classicwidget_temperature,String.valueOf(weatherCard.currentWeather.getTemperatureInCelsiusInt()+"°"));
+            remoteViews.setTextColor(R.id.classicwidget_temperature,ThemePicker.getTemperatureAccentColor(c,weatherCard.currentWeather));
         } else {
             remoteViews.setTextViewText(R.id.classicwidget_temperature,NOT_AVAILABLE);
         }
         //remoteViews.setTextColor(R.id.classicwidget_temperature,ThemePicker.getWidgetTextColor(c));
-        remoteViews.setTextColor(R.id.classicwidget_temperature,ThemePicker.getTemperatureAccentColor(c,weatherCard.currentWeather));
         String lowhigh = NOT_AVAILABLE;
         if (weatherCard.currentWeather.hasMinTemperature()){
             lowhigh = String.valueOf(weatherCard.currentWeather.getMinTemperatureInCelsiusInt()+"°");

@@ -223,7 +223,7 @@ public class DataUpdateService extends Service {
                     weatherLocations = new ArrayList<Weather.WeatherLocation>();
                     weatherLocations.add(WeatherSettings.getSetStationLocation(context));
                 }
-                if (updateWeather){
+                if ((updateWeather) && (WeatherSettings.isUVHIUpdateAllowed(context) || !WeatherSettings.UVHIfetchData(context))){
                     APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(context, weatherLocations){
                         @Override
                         public void onStart(){
@@ -238,6 +238,7 @@ public class DataUpdateService extends Service {
                             intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
                             sendBroadcast(intent);
                             PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.INFO,"Weather update: success");
+                            super.onPositiveResult();
                         }
                         @Override
                         public void onNegativeResult(){

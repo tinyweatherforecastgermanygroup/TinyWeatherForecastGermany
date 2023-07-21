@@ -175,25 +175,27 @@ public class Pollen {
     }
 
     public static Pollen GetPollenData(Context context, PollenArea pollenArea){
-        ContentResolver contentResolver = context.getContentResolver();
-        Cursor cursor = contentResolver.query(WeatherContentManager.POLLEN_URI_ALL, null,null,null,null);
-        if (cursor.moveToFirst()){
-            do {
-                Pollen pollen = WeatherContentManager.getPollenFromCursor(cursor);
-                if (pollen.partregion_id==-1){
-                    if (pollen.region_id == pollenArea.region_id){
-                        cursor.close();
-                        return pollen;
+        if (pollenArea!=null){
+            ContentResolver contentResolver = context.getContentResolver();
+            Cursor cursor = contentResolver.query(WeatherContentManager.POLLEN_URI_ALL, null,null,null,null);
+            if (cursor.moveToFirst()){
+                do {
+                    Pollen pollen = WeatherContentManager.getPollenFromCursor(cursor);
+                    if (pollen.partregion_id==-1){
+                        if (pollen.region_id == pollenArea.region_id){
+                            cursor.close();
+                            return pollen;
+                        }
+                    } else {
+                        if (pollen.partregion_id == pollenArea.partregion_id){
+                            cursor.close();
+                            return pollen;
+                        }
                     }
-                } else {
-                    if (pollen.partregion_id == pollenArea.partregion_id){
-                        cursor.close();
-                        return pollen;
-                    }
-                }
-            } while (cursor.moveToNext());
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
         }
-        cursor.close();
         return null;
     }
 

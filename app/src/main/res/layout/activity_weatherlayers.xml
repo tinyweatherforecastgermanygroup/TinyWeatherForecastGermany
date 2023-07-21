@@ -433,7 +433,7 @@
                             android:gravity="center"
                             android:textAlignment="center"
                             android:layout_alignParentTop="true"
-                            android:text="@string/layerlabel_ts_1"
+                            android:text="@string/layerlabel_ts_0"
                             android:textSize="@dimen/fcmain_textsize_large"/>
                     <ImageView
                             android:id="@+id/wm_image_4_1"
@@ -476,7 +476,7 @@
                             android:gravity="center"
                             android:textAlignment="center"
                             android:layout_alignParentTop="true"
-                            android:text="@string/layerlabel_ts_2"
+                            android:text="@string/layerlabel_ts_0"
                             android:textSize="@dimen/fcmain_textsize_large"/>
                     <ImageView
                             android:id="@+id/wm_image_5_1"

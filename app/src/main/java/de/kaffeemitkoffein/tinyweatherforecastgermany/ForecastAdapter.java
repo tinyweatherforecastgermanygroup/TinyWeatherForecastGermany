@@ -482,6 +482,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             setVisibility(precipitation_unit_lower, View.GONE);
         }
     }
+    precipitation_string = precipitation_string +">"+weatherInfo.getUvHazardIndex()+"<";
     if (precipitation_string.equals("")){
         setVisibility(precipitation_symbol,View.GONE);
         setVisibility(precipitation_textview,View.GONE);
@@ -801,12 +802,23 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         viewHolder.uvHazardIndex = textView_uvHazardIndex;
     }
     if (textView_uvHazardIndex!=null) {
+        /*
         int uvHazardPosition = getHourlyPosition(i);
-        if (WeatherSettings.UVHImainDisplay(context) && weatherForecasts_hourly.get(uvHazardPosition).hasUvHazardIndex()){
+        // we take the previous hour as source whenever possible, as 00:00 - 00:00 would show the next day
+        if (uvHazardPosition>0){
+            uvHazardPosition--;
+        }
+        //if (WeatherSettings.UVHImainDisplay(context) && weatherForecasts_hourly.get(uvHazardPosition).hasUvHazardIndex()){
+         */
+        if (WeatherSettings.UVHImainDisplay(context) && weatherInfo.hasUvHazardIndex()){
             if (weatherInfo.isDaytime(weatherLocation)) {
                 textView_uvHazardIndex.setVisibility(View.VISIBLE);
+                /*
                 textView_uvHazardIndex.setBackground(ForecastBitmap.getColoredBox(context,UVHazardIndex.UVIndexColors[weatherForecasts_hourly.get(uvHazardPosition).getUvHazardIndex()]));
                 textView_uvHazardIndex.setText(String.valueOf(weatherForecasts_hourly.get(uvHazardPosition).getUvHazardIndex()));
+                 */
+                textView_uvHazardIndex.setBackground(ForecastBitmap.getColoredBox(context,UVHazardIndex.UVIndexColors[weatherInfo.getUvHazardIndex()]));
+                textView_uvHazardIndex.setText(String.valueOf(weatherInfo.getUvHazardIndex()));
             } else {
                 textView_uvHazardIndex.setVisibility(View.GONE);
             }

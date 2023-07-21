@@ -52,6 +52,8 @@ public class WeatherLayersActivity extends Activity {
     TableRow tableRowAmbrosia; TableRow tableRowBeifuss; TableRow tableRowRoggen; TableRow tableRowEsche;
     TableRow tableRowBirke; TableRow tableRowHazel; TableRow tableRowErle; TableRow tableRowGraeser;
     boolean forceWeatherUpdateFlag = false;
+    TextView wm_heading_4_1;
+    TextView wm_heading_5_1;
 
     public class DisplayLayer{
         WeatherLayer weatherLayer;
@@ -184,6 +186,14 @@ public class WeatherLayersActivity extends Activity {
             }
         };
         executor.execute(getLayerImages);
+        TextView wm_heading_4_1 = findViewById(R.id.wm_heading_4_1);
+        TextView wm_heading_5_1 = findViewById(R.id.wm_heading_5_1);
+        if (wm_heading_4_1!=null){
+            wm_heading_4_1.setText(String.valueOf(wm_heading_4_1.getText()).replace("6:00","12:00"));
+        }
+        if (wm_heading_5_1!=null){
+            wm_heading_5_1.setText(String.valueOf(wm_heading_5_1.getText()).replace("6:00","18:00"));
+        }
         setRowBackgrounds();
     }
 

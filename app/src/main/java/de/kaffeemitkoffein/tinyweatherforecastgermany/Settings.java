@@ -351,7 +351,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
         setNotifySeverity();
         setUseMinMax();
         setNotifyLED();
-        setUVHIdisplayMain();
+        //setUVHIdisplayMain();
         SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(this);
         String gadgetbridge_packagename = sp.getString(WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME,WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT);
         if (gadgetbridge_packagename.equals("")){

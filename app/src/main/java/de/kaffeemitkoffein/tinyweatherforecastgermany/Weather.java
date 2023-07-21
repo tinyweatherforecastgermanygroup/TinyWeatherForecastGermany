@@ -549,6 +549,18 @@ public final class Weather {
             this.sunDuration = i;
         }
 
+        public boolean hasIsDayTime(){
+            return !(isDayTime==null);
+        }
+
+        public void setIsDayTime(boolean b){
+            this.isDayTime = b;
+        }
+
+        public Boolean getIsDayTime(){
+            return isDayTime;
+        }
+
         public long getTimestamp(){
             return this.timestamp;
         }

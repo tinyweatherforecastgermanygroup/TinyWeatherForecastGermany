@@ -18,15 +18,9 @@
  */
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
-import android.os.Build;
-import android.util.Log;
-import org.astronomie.info.Astronomy;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class RawWeatherInfo{
 
@@ -298,11 +292,10 @@ public class RawWeatherInfo{
     public long[] getTimeSteps(){
         long[] result = new long[Weather.DATA_SIZE];
         SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        //SimpleDateFormat kml_dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         kml_dateFormat.setLenient(true);
         for (int i=0; i<elements; i++){
             try {
-                Date parse = kml_dateFormat.parse(timesteps[i].replace("Z","+0000"));
+                Date parse = kml_dateFormat.parse(timesteps[i]);
                 result[i] = parse.getTime();
             } catch (Exception e){
                 // do nothing
@@ -525,6 +518,30 @@ public class RawWeatherInfo{
         return null;
     }
 
+    public Integer getUVHIValue(boolean[] isDayTimeArray, String[] UVitems, int first, int last){
+        int uvValue = -1;
+        if (first<0){
+            first = 0;
+        }
+        if (last>elements){
+            last = elements;
+        }
+        int[] itemlist = toIntArray(UVitems);
+        if (itemlist!=null){
+            for (int i=first; i<=last; i++){
+                if (isDayTimeArray[i]){
+                    if (itemlist[i]>uvValue){
+                        uvValue = itemlist[i];
+                    }
+                }
+            }
+        }
+        if (uvValue==-1){
+            return null;
+        };
+        return uvValue;
+    }
+
     public Double getAverageTemperature(int first, int last){
         return getAverageValueDouble(TTT,first,last);
     }
@@ -554,6 +571,16 @@ public class RawWeatherInfo{
             }
         }
     }
+
+    public boolean[] getIsDaytimeArray(final Weather.WeatherLocation weatherLocation){
+        long[] timeSteps = getTimeSteps();
+        boolean[] result = new boolean[timeSteps.length];
+        for (int i=0; i<timeSteps.length; i++){
+            result[i] = Weather.isDaytime(weatherLocation,timeSteps[i]);
+        }
+        return result;
+    }
+
 
 
 }

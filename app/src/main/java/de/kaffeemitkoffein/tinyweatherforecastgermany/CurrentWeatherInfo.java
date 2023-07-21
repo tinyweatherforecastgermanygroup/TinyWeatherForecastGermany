@@ -162,12 +162,14 @@ public class CurrentWeatherInfo{
         currentWeather.setForecastType(Weather.WeatherInfo.ForecastType.CURRENT);
         // get timesteps_long in long
         long[] timesteps = rawWeatherInfo.getTimeSteps();
+        // calculate isDayTimes for hourly timestep array
+        boolean[] isDayTimeArray = rawWeatherInfo.getIsDaytimeArray(weatherLocation);
         // get current weather data
         int current_weather_position = rawWeatherInfo.getCurrentForecastPosition();
         int next_midnight_position   = rawWeatherInfo.getNextMidnightAfterCurrentForecastPosition();
         currentWeather.setTimestamp(timesteps[current_weather_position]);
         currentWeather.setConditionCode(getIntItem((rawWeatherInfo.ww[current_weather_position])));
-        // take significant weather, highest priority alternatively
+        // take significant weather, the highest priority alternatively
         if (preferAlternativeIcons || !currentWeather.hasCondition()) {
             currentWeather.setConditionCode(getIntItem((rawWeatherInfo.WPc11[current_weather_position])));
         }
@@ -208,7 +210,10 @@ public class CurrentWeatherInfo{
         if (!currentWeather.hasCondition()){
             currentWeather.calculateMissingCondition();
         }
-        currentWeather.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[current_weather_position]));
+        currentWeather.setIsDayTime(isDayTimeArray[current_weather_position]);
+        if (isDayTimeArray[current_weather_position]){
+            currentWeather.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[current_weather_position]));
+        }
         // fill 1h forecast arraylist
         forecast1hourly = new ArrayList<Weather.WeatherInfo>();
         int startPosition1h = rawWeatherInfo.getCurrentForecastPosition();
@@ -267,7 +272,11 @@ public class CurrentWeatherInfo{
                 // add clculated values to rawWeatherInfo to make correct intervals possible later
                 rawWeatherInfo.D1[index] = String.valueOf(setSunDurationFromClouds(wi));
             }
-            wi.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[index]));
+            wi.setIsDayTime(isDayTimeArray[index]);
+            // set uv hazard index only if this position is daytime
+            if (isDayTimeArray[index]){
+                wi.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[index]));
+            }
             forecast1hourly.add(wi);
             index++;
         }
@@ -363,7 +372,9 @@ public class CurrentWeatherInfo{
             }
             //wi.setSunDuration(getSunDuration(start, index));
             wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
-            wi.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[index]));
+            //wi.isDaytime(weatherLocation);
+            // set the UV index properly
+            wi.setUvHazardIndex(rawWeatherInfo.getUVHIValue(isDayTimeArray,rawWeatherInfo.uvHazardIndex,start,index));
             forecast6hourly.add(wi);
             index = index + 6;
         }
@@ -436,7 +447,7 @@ public class CurrentWeatherInfo{
             }
             //wi.setSunDuration(getSunDuration(rawWeatherInfo,start,index));
             wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
-            wi.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[index]));
+            wi.setUvHazardIndex(rawWeatherInfo.getUVHIValue(isDayTimeArray,rawWeatherInfo.uvHazardIndex,start,index));
             forecast24hourly.add(wi);
             index = index + 24;
         }

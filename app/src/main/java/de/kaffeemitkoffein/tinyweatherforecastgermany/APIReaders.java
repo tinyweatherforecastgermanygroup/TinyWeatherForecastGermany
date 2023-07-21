@@ -572,7 +572,9 @@ public class APIReaders {
                     NodeList timesteps = document.getElementsByTagName("dwd:TimeStep");
                     for (int i=0; i<timesteps.getLength(); i++){
                         Element element = (Element) timesteps.item(i);
-                        rawWeatherInfo.timesteps[i] = element.getFirstChild().getNodeValue();
+                        // replace formatting to work like expected with UTC time later. This is done here once to
+                        // increase performance.
+                        rawWeatherInfo.timesteps[i] = element.getFirstChild().getNodeValue().replace("Z","+0000");
                         rawWeatherInfo.elements = i;
                     }
                     NodeList forecast = document.getElementsByTagName("dwd:Forecast");
@@ -732,7 +734,7 @@ public class APIReaders {
          */
 
         public void onPositiveResult(){
-            // do nothing at the moment.
+            WeatherSettings.setWeatherUpdatedFlag(context);
         }
 
         public void onPositiveResult(ArrayList<RawWeatherInfo> rawWeatherInfos){
