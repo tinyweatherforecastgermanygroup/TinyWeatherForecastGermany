@@ -105,6 +105,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
 
     private boolean performingFirstAppLaunch = false;
 
+    private Activity thisActivity;
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent intent) {
@@ -129,7 +131,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             if (intent.getAction().equals(MAINAPP_SSL_ERROR)){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"received broadcast => ssl error intent received by main app.");
                 if ((!WeatherSettings.isTLSdisabled(context)) && (Build.VERSION.SDK_INT < 28)){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context,0);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(thisActivity,0);
                     builder.setTitle(context.getResources().getString(R.string.connerror_title));
                     Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_ANNOUNCEMENT,false));
                     builder.setIcon(drawable);
@@ -152,7 +154,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                             dialogInterface.dismiss();
                         }
                     });
-                    AlertDialog alertDialog = builder.create();
+                    final AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 }
             }
@@ -472,6 +474,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 }
             }
             context = getApplicationContext();
+            thisActivity = this;
             WeatherSettings weatherSettings = new WeatherSettings(context);
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
             setContentView(R.layout.activity_main);

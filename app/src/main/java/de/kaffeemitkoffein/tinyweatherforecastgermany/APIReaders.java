@@ -758,7 +758,7 @@ public class APIReaders {
         }
 
         private void onPostExecute(ArrayList<RawWeatherInfo> rawWeatherInfos) {
-            if (rawWeatherInfos == null) {
+            if (rawWeatherInfos.size()==0) {
                 onNegativeResult();
             } else {
                 for (int i=0; i<rawWeatherInfos.size(); i++){
