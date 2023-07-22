@@ -389,16 +389,16 @@
     <string name="layerlabel_uvi_cs_2">Індекс небезпеки ультрафіолетового випромінювання на післязавтра (ясне небо)</string>
     <string name="layerlabel_uvi_eu_cl_0">Індекс небезпеки ультрафіолетового випромінювання на сьогодні (Європа)</string>
     <string name="layerlabel_uvi_eu_cs_0">Індекс небезпеки ультрафіолетового випромінювання на сьогодні (Європа, ясне небо)</string>
-    <string name="layerlabel_ts_0">Температура виміряна о 6:00 за місцевим часом</string>
+    <string name="layerlabel_ts_0">Температура, сприйнята о 6:00 за місцевим часом</string>
     <string name="local_time_6">6:00 за місцевим часом</string>
     <string name="preference_screen_pollen_title">Відображення пилку</string>
     <string name="preference_screen_pollen_summary">Налаштуйте відображення кількості пилку.</string>
     <string name="temp_max">Максимальна температура</string>
     <string name="temp_min">Мінімальна температура</string>
     <string name="preference_screen_pollen_ambrosia_summary">Відображати прогноз кількості пилку амброзії.</string>
-    <string name="preference_screen_pollen_mugwort_summary">Показати прогноз кількості пилку для полинового дерева.</string>
+    <string name="preference_screen_pollen_mugwort_summary">Відображати прогноз кількості пилку полинового пилку.</string>
     <string name="preference_screen_pollen_rye_summary">Відобразити прогноз кількості пилку жита.</string>
-    <string name="preference_screen_pollen_ash_summary">Відображати прогноз кількості пилку попелу.</string>
+    <string name="preference_screen_pollen_ash_summary">Показує прогноз кількості пилку для попелу.</string>
     <string name="preference_screen_pollen_birch_summary">Відобразити прогноз кількості пилку берези.</string>
     <string name="preference_screen_pollen_hazel_summary">Відобразити прогноз кількості пилку ліщини.</string>
     <string name="preference_screen_pollen_alder_summary">Відобразити прогноз кількості пилку вільхи.</string>
@@ -426,4 +426,7 @@
     <string name="pollen_load2">низький</string>
     <string name="pollen_load3">від низького до середнього</string>
     <string name="pollen_load4">середній</string>
+    <string name="pollen_load5">від середнього до високого</string>
+    <string name="pollen_load6">високий</string>
+    <string name="clear_sky">чисте небо</string>
 </resources>
