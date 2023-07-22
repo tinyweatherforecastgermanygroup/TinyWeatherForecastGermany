@@ -446,4 +446,5 @@
     <string name="pollen_load5">mittel bis hoch</string>
     <string name="pollen_load6">hoch</string>
     <string name="clear_sky">klarer Himmel</string>
+    <string name="welcome_s4_showuv">UV Gefahrenindex für die Wetterstation laden und anzeigen.</string>
 </resources>
