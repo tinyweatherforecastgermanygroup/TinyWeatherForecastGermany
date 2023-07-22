@@ -381,7 +381,7 @@
     <string name="service_notification_text5">Získávání dat z dešťového radaru…</string>
     <string name="layerlabel_warning_areas_de">Varovné oblasti Německo</string>
     <string name="layerlabel_short_ts">Vnímaná teplota</string>
-    <string name="layerlabel_ts_0">Teplota zjištěná v 6:00 místního času</string>
+    <string name="layerlabel_ts_0">Teplota vnímaná v 6:00 místního času</string>
     <string name="local_time_6">6:00 místního času</string>
     <string name="layerlabel_uvi_cl_0">Index UV nebezpečí pro dnešní den</string>
     <string name="layerlabel_uvi_cl_1">Index UV nebezpečí pro zítřek</string>
@@ -403,7 +403,7 @@
     <string name="pollen_load4">střední</string>
     <string name="preference_screen_pollen_ambrosia_summary">Zobrazení předpovědi počtu pylů ambrózie.</string>
     <string name="preference_screen_pollen_mugwort_summary">Zobrazte předpověď počtu pylů pelyňku.</string>
-    <string name="preference_screen_pollen_ash_summary">Zobrazení předpovědi počtu pylů žita.</string>
+    <string name="preference_screen_pollen_ash_summary">Zobrazuje pylovou předpověď pro město Ash.</string>
     <string name="preference_screen_pollen_rye_summary">Zobrazení předpovědi počtu pylů žita.</string>
     <string name="preference_screen_pollen_birch_summary">Zobrazení předpovědi počtu pylů břízy.</string>
     <string name="preference_screen_pollen_hazel_summary">Zobrazení předpovědi počtu pylů lísky.</string>
@@ -425,4 +425,8 @@
     <string name="pollen_ambrosia">Ambrosia</string>
     <string name="pollen_mugwort">Mugwort</string>
     <string name="pollen_rye">Centeno</string>
+    <string name="pollen_load3">nízká až střední</string>
+    <string name="pollen_load5">střední až vysoká</string>
+    <string name="pollen_load6">vysoká</string>
+    <string name="clear_sky">jasná obloha</string>
 </resources>
