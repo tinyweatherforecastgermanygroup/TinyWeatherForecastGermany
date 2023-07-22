@@ -429,4 +429,5 @@
     <string name="pollen_load5">middel til høj</string>
     <string name="pollen_load6">høj</string>
     <string name="clear_sky">klar himmel</string>
+    <string name="welcome_s4_showuv">Indlæs og vis UV-risikoindekset for din placering.</string>
 </resources>
