@@ -381,7 +381,7 @@
     <string name="service_notification_text5">Sadetutkatietojen saaminen…</string>
     <string name="layerlabel_warning_areas_de">Varoitusalueet Saksa</string>
     <string name="layerlabel_short_ts">Koettu lämpötila</string>
-    <string name="layerlabel_ts_0">Lämpötila mitataan klo 6:00 paikallista aikaa</string>
+    <string name="layerlabel_ts_0">Lämpötila havaittu klo 6:00 paikallista aikaa</string>
     <string name="local_time_6">6:00 paikallista aikaa</string>
     <string name="layerlabel_uvi_eu_cs_0">UV-vaaraindeksi tänään (Eurooppa, kirkas taivas)</string>
     <string name="layerlabel_uvi_cl_1">UV-vaaraindeksi huomenna</string>
@@ -402,7 +402,7 @@
     <string name="pollen_load2">alhainen</string>
     <string name="preference_screen_pollen_ambrosia_summary">Näytä ambrosia siitepölymäärän ennuste.</string>
     <string name="preference_screen_pollen_mugwort_summary">Näytä ennuste siitepölymäärän osalta.</string>
-    <string name="preference_screen_pollen_ash_summary">Näytä rukiin siitepölymäärän ennuste.</string>
+    <string name="preference_screen_pollen_ash_summary">Näytetään tuhkan siitepölymääräennuste.</string>
     <string name="preference_screen_pollen_rye_summary">Vis prognosen for antallet af rugpollen.</string>
     <string name="preference_screen_pollen_birch_summary">Näytä koivun siitepölymäärän ennuste.</string>
     <string name="preference_screen_pollen_hazel_summary">Näytä pähkinäpölyn siitepölyennuste.</string>
@@ -425,4 +425,8 @@
     <string name="layerlabel_ts_max_1">Huomiseksi havaittu enimmäislämpötila</string>
     <string name="layerlabel_ts_min_0">Pienin havaittu lämpötila tänään</string>
     <string name="layerlabel_ts_min_1">Huomenna havaittu vähimmäislämpötila</string>
+    <string name="pollen_load6">korkea</string>
+    <string name="clear_sky">kirkas taivas</string>
+    <string name="pollen_load3">alhainen tai keskisuuri</string>
+    <string name="pollen_load5">keskitaso tai korkea</string>
 </resources>
