@@ -428,4 +428,5 @@
     <string name="pollen_load5">średni do wysokiego</string>
     <string name="pollen_load6">wysoki</string>
     <string name="clear_sky">czyste niebo</string>
+    <string name="preference_screen_pollen_rye_summary">Wyświetla prognozę liczby pyłków żyta.</string>
 </resources>
