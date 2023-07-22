@@ -429,4 +429,5 @@
     <string name="pollen_load5">közepes vagy magas</string>
     <string name="pollen_load6">magas</string>
     <string name="clear_sky">tiszta égbolt</string>
+    <string name="welcome_s4_showuv">Betölti és megjeleníti a helyére vonatkozó UV-veszélyességi indexet.</string>
 </resources>
