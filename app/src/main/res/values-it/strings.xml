@@ -388,7 +388,7 @@
     <string name="layerlabel_uvi_cs_2">Indice di pericolosità UV per dopodomani (cielo sereno)</string>
     <string name="layerlabel_uvi_eu_cs_0">Indice di rischio UV per oggi (Europa, cielo sereno)</string>
     <string name="layerlabel_short_ts">Temperatura percepita</string>
-    <string name="layerlabel_ts_0">Temperatura rilevata alle 6:00 ora locale</string>
+    <string name="layerlabel_ts_0">Temperatura percepita alle 6:00 ora locale</string>
     <string name="local_time_6">6:00 ora locale</string>
     <string name="layerlabel_uvi_cl_0">Indice di rischio UV per oggi</string>
     <string name="layerlabel_uvi_cs_1">Indice di pericolo UV per domani (cielo sereno)</string>
@@ -402,7 +402,7 @@
     <string name="pollen_load4">medio</string>
     <string name="preference_screen_pollen_ambrosia_summary">Visualizza la previsione del conteggio dei pollini di ambrosia.</string>
     <string name="preference_screen_pollen_mugwort_summary">Mostrare le previsioni polliniche per l\'artemisia.</string>
-    <string name="preference_screen_pollen_ash_summary">Visualizzare la previsione del conteggio dei pollini di segale.</string>
+    <string name="preference_screen_pollen_ash_summary">Mostra la previsione del numero di pollini per la cenere.</string>
     <string name="preference_screen_pollen_birch_summary">Visualizza la previsione del conteggio dei pollini di betulla.</string>
     <string name="preference_screen_pollen_hazel_summary">Visualizza la previsione del conteggio dei pollini di nocciolo.</string>
     <string name="preference_screen_pollen_alder_summary">Visualizzare la previsione del conteggio dei pollini di ontano.</string>
@@ -425,4 +425,8 @@
     <string name="pollen_title">Previsioni sulla conta dei pollini</string>
     <string name="pollen_grasses">Erbe</string>
     <string name="layerlabel_ts_min_0">Suhu minimum yang dirasakan hari ini</string>
+    <string name="pollen_load3">da basso a medio</string>
+    <string name="pollen_load5">medio-alto</string>
+    <string name="pollen_load6">alto</string>
+    <string name="clear_sky">cielo sereno</string>
 </resources>
