@@ -734,7 +734,7 @@ public class APIReaders {
          */
 
         public void onPositiveResult(){
-            WeatherSettings.setWeatherUpdatedFlag(context);
+            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
         }
 
         public void onPositiveResult(ArrayList<RawWeatherInfo> rawWeatherInfos){

@@ -82,7 +82,7 @@ Translations:
 
 * Czech: eUgEntOptIc44, mondstern
 * Danish: eUgEntOptIc44, mondstern
-* Dutch: Allan Nordhøy, alternative_be, eUgEntOptIc44, jwildeboer, mondstern
+* Dutch: Allan Nordhøy, alternative_be, eUgEntOptIc44, jwildeboer, mondstern, Vistaus
 * English: Allan Nordhøy
 * French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
 * Finnish: eUgEntOptIc44, mondstern
@@ -95,6 +95,7 @@ Translations:
 * Polish: eUgEntOptIc44, Eryk Michalak, ewm, mondstern
 * Russian: Wirdi51
 * Spanish: eUgEntOptIc44, hegondev
+* Swedish: tygyh
 * Ukrainian: eUgEntOptIc44, Andrij Mizyk
 
 Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).

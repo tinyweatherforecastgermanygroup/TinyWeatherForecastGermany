@@ -76,22 +76,23 @@ Contributeurs :
 
 Traductions :
 
-* Tchèque : eUgEntOptIc44, mondstern
-* Danois : eUgEntOptIc44, mondstern
-* Néerlandais : Allan Nordhøy, alternative_be, eUgEntOptIc44, jwildeboer, mondstern
-* Anglais : Allan Nordhøy
-* Français : Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
-* Finnois : eUgEntOptIc44, mondstern
-* Allemand : Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, mondstern, silmaril, w4ts0n
-* Hongrois : eUgEntOptIc44, Gőz Barnabás
-* Indonésien : Linerly
-* Italien : mondstern, eUgEntOptIc44
-* Irlandais : mondstern
-* Bokmål norvégien : Allan Nordhøy, eUgEntOptIc44, mondstern
-* Polonais : eUgEntOptIc44, Eryk Michalak, ewm, mondstern
-* Russe : Wirdi51
-* Espagnol : eUgEntOptIc44, hegondev
-* Ukrainien : eUgEntOptIc44, Andrij Mizyk
+* Czech: eUgEntOptIc44, mondstern
+* Danish: eUgEntOptIc44, mondstern
+* Dutch: Allan Nordhøy, alternative_be, eUgEntOptIc44, jwildeboer, mondstern, Vistaus
+* English: Allan Nordhøy
+* French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
+* Finnish: eUgEntOptIc44, mondstern
+* German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, mondstern, silmaril, w4ts0n
+* Hungarian: eUgEntOptIc44, Gőz Barnabás
+* Indonesian: Linerly
+* Italian: mondstern, eUgEntOptIc44
+* Irish: mondstern
+* Norwegian Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
+* Polish: eUgEntOptIc44, Eryk Michalak, ewm, mondstern
+* Russian: Wirdi51
+* Spanish: eUgEntOptIc44, hegondev
+* Swedish: tygyh
+* Ukrainian: eUgEntOptIc44, Andrij Mizyk
 
 Participez à *Tiny Weather Forecast Germany* et [aidez à le traduire dans d'autres langues ou complétez les traductions existantes](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
 

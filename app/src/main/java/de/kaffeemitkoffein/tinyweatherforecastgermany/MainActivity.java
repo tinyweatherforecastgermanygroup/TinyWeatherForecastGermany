@@ -56,7 +56,7 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final static String SIS_ABOUT_DIALOG_STATE="ABOUT_DIALOG_VISIBLE";
     private final static String SIS_WHATSNEW_DIALOG_STATE="WHATSNEW_DIALOG_VISIBLE";
@@ -276,6 +276,37 @@ public class MainActivity extends Activity {
         }
     };
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if ((sharedPreferences!=null) && (key!=null)){
+            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"preference change detected: "+key);
+            // reload weather data if necessary
+            if (key.equals(WeatherSettings.PREF_STATION_NAME)){
+                // invalidate local warnings when station changes
+                localWarnings = null;
+            }
+            if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
+                boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
+                if (!updated){
+                    // launch new warnings from present dataset only
+                    ArrayList<String> tasks = new ArrayList<String>();
+                    tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS);
+                    UpdateAlarmManager.startDataUpdateService(context,tasks);
+                    displayWeatherForecast();
+                } else {
+                    // nothing to do, views will be updated after the update finished, and notifications will be
+                    // launched, then
+                }
+                UpdateAlarmManager.updateAppViews(context);
+            }
+            // invalidate menu if warnings visibility has changed
+            if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
+                invalidateOptionsMenu();
+            }
+        }
+    }
+
+
     private void performTextSearch(){
     // weather settings must be read at the time of selection!
             WeatherSettings weatherSettings = new WeatherSettings(context);
@@ -350,13 +381,26 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
     protected void onResume(){
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app resumed.");
         registerForBroadcast();
         // this is necessary if the update of weather data occurs while the app is in the background
         try {
-            if (weatherCard==null || WeatherSettings.getWeatherUpdatedFlag(context)!=0){
-                weatherCard = Weather.getCurrentWeatherInfo(this);
+            int weatherUpdateFlag = WeatherSettings.getWeatherUpdatedFlag(context);
+            if (weatherCard==null || weatherUpdateFlag!=WeatherSettings.UpdateType.NONE){
+                if (weatherUpdateFlag==WeatherSettings.UpdateType.DATA){
+                    weatherCard = Weather.getCurrentWeatherInfo(this);
+                    displayWeatherForecast();
+                }
+                if (weatherUpdateFlag==WeatherSettings.UpdateType.VIEWS){
+                    recreate();
+                }
             }
         } catch (Exception e){
             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when getting weather: "+e.getMessage());
@@ -368,6 +412,12 @@ public class MainActivity extends Activity {
         }
         weatherLocationManager.checkLocation();
         super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -502,86 +552,6 @@ public class MainActivity extends Activity {
             } catch (Exception e){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading StationSpinner!");
             }
-            preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                    if ((sharedPreferences!=null) && (key!=null)){
-                        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"preference change detected: "+key);
-                        if (key.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (key.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
-                            WidgetRefresher.refresh(context.getApplicationContext());
-                        }
-                        // reload weather data if necessary
-                        if (key.equals(WeatherSettings.PREF_STATION_NAME)){
-                            // invalidate local warnings when station changes
-                            localWarnings = null;
-                        }
-                        if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
-                            boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
-                            if (!updated){
-                                // launch new warnings from present dataset only
-                                ArrayList<String> tasks = new ArrayList<String>();
-                                tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS);
-                                UpdateAlarmManager.startDataUpdateService(context,tasks);
-                                displayWeatherForecast();
-                            } else {
-                                // nothing to do, views will be updated after the update finished, and notifications will be
-                                // launched, then
-                            }
-                            UpdateAlarmManager.updateAppViews(context);
-                        }
-                        // show geo
-                        if (key.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
-                            if (weatherCard != null){
-                                displayUpdateTime(weatherCard);
-                            }
-                        }
-                        // invalidate menu if warnings visibility has changed
-                        if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
-                            invalidateOptionsMenu();
-                        }
-                        // invalidate weather display because the display options have changed
-                        if (key.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (key.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (key.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
-                                (key.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (key.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (key.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT)) ||
-                                key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART) || key.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS)){
-                            // on 1st app call, weatherCard can be still null
-                            if (weatherCard!=null){
-                                displayWeatherForecast();
-                            }
-                        }
-                        // invalidate weather display and widgets
-                        if ((key.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (key.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
-                            // on 1st app call, weatherCard can be still null
-                            if (weatherCard!=null){
-                                displayWeatherForecast();
-                                // refreshing widgets only makes sense when there is weather data
-                                WidgetRefresher.refresh(getApplicationContext());
-                            }
-                        }
-                        if (key.equals(WeatherSettings.PREF_THEME)){
-                            recreate();
-                            WidgetRefresher.refresh(context);
-                        }
-                        if (key.equals(WeatherSettings.PREF_ROTATIONMODE)){
-                            recreate();
-                        }
-                        // invalidate weather display because the display options have changed
-                        if (key.equals(WeatherSettings.PREF_UVHI_MAINDISPLAY)){
-                            // on 1st app call, weatherCard can be still null
-                            if (weatherCard!=null){
-                                displayWeatherForecast();
-                            }
-                        }
-                        if (key.equals(WeatherSettings.PREF_UVHI_FETCH_DATA)){
-                            if (WeatherSettings.UVHIfetchData(context)){
-                                // check for a force weather update to fetch a set with uvi data.
-                                if (!Weather.hasUVHIData(context)){
-                                    forcedWeatherUpdate();
-                                }
-                            }
-                        }
-                    }
-                }
-            };
             RelativeLayout infoTextLayout = (RelativeLayout) findViewById(R.id.main_infotext_layout);
             infoTextLayout.setOnLongClickListener(infoTextClickListener);
             // register the GPS methods

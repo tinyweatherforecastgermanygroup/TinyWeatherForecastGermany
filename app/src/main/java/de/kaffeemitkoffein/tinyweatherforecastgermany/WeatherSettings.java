@@ -261,7 +261,7 @@ public class WeatherSettings {
     public static final long PREF_LAST_PREFETCH_TIME_DEFAULT = 0;
     public static final boolean PREF_UVHI_FETCH_DATA_DEFAULT = false;
     public static final boolean PREF_UVHI_MAINDISPLAY_DEFAULT = false;
-    public static final long PREF_WEATHERUPDATEDFLAG_DEFAULT = 0l;
+    public static final int PREF_WEATHERUPDATEDFLAG_DEFAULT = UpdateType.NONE;
 
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
@@ -358,7 +358,7 @@ public class WeatherSettings {
     public boolean preFetchMaps = PREF_PREFETCH_MAPS_DEFAULT;
     public boolean UVHIfetch = PREF_UVHI_FETCH_DATA_DEFAULT;
     public boolean UVHIdisplayMain = PREF_UVHI_MAINDISPLAY_DEFAULT;
-    public long weatherUpdatedFlag = PREF_WEATHERUPDATEDFLAG_DEFAULT;
+    public int weatherUpdatedFlag = PREF_WEATHERUPDATEDFLAG_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -1828,19 +1828,25 @@ public class WeatherSettings {
         setLastUVHIUpdateTime(context,Calendar.getInstance().getTimeInMillis());
     }
 
-    public static long getWeatherUpdatedFlag(Context context) {
+    public final static class UpdateType {
+        public final static int NONE = 0;
+        public final static int DATA = 1;
+        public final static int VIEWS = 2;
+    }
+
+    public static int getWeatherUpdatedFlag(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        long result = sharedPreferences.getLong(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
+        int result = sharedPreferences.getInt(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putLong(PREF_WEATHERUPDATEDFLAG, PREF_WEATHERUPDATEDFLAG_DEFAULT);
+        pref_editor.putInt(PREF_WEATHERUPDATEDFLAG, PREF_WEATHERUPDATEDFLAG_DEFAULT);
         pref_editor.apply();
         return result;
     }
 
-    public static void setWeatherUpdatedFlag(Context context) {
+    public static void setWeatherUpdatedFlag(Context context, int flag) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putLong(PREF_WEATHERUPDATEDFLAG, Calendar.getInstance().getTimeInMillis());
+        pref_editor.putInt(PREF_WEATHERUPDATEDFLAG, flag);
         pref_editor.apply();
     }
 

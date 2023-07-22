@@ -482,7 +482,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             setVisibility(precipitation_unit_lower, View.GONE);
         }
     }
-    precipitation_string = precipitation_string +">"+weatherInfo.getUvHazardIndex()+"<";
+    //precipitation_string = precipitation_string +">"+weatherInfo.getUvHazardIndex()+"<";
     if (precipitation_string.equals("")){
         setVisibility(precipitation_symbol,View.GONE);
         setVisibility(precipitation_textview,View.GONE);
@@ -652,7 +652,6 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         if (weatherInfo.hasCondition()){
             int weathercondition = weatherInfo.getCondition();
             boolean showDaylightIcon = weatherInfo.isDaytime(weatherLocation);
-
             if (weatherInfo.getForecastType()==Weather.WeatherInfo.ForecastType.HOURS_6) {
                 // in case if the 6-h forecast, take the middle of the interval to determine day/night icon
                 showDaylightIcon = Weather.isDaytime(weatherLocation,(weatherInfo.getTimestamp()+six_hours_ago)/2);
