@@ -429,4 +429,5 @@
     <string name="clear_sky">kirkas taivas</string>
     <string name="pollen_load3">alhainen tai keskisuuri</string>
     <string name="pollen_load5">keskitaso tai korkea</string>
+    <string name="welcome_s4_showuv">Lataa ja näytä sijaintisi UV-vaaraindeksi.</string>
 </resources>
