@@ -428,4 +428,5 @@
     <string name="pollen_load5">medio-alto</string>
     <string name="pollen_load6">alta</string>
     <string name="clear_sky">cielo despejado</string>
+    <string name="welcome_s4_showuv">Cargue y visualice el índice de peligrosidad UV de su ubicación.</string>
 </resources>
