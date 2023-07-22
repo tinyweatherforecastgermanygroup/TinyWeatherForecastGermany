@@ -125,6 +125,17 @@
                           android:paddingBottom="@dimen/welcome_action_padding"
                           android:enabled="true"/>
 
+                <CheckBox android:id="@+id/welcome_screen4_check4"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginLeft="12dp"
+                          android:gravity="top|left"
+                          android:text="@string/welcome_s4_showuv"
+                          android:textSize="@dimen/welcome_setup_size"
+                          android:textColor="?attr/colorText"
+                          android:paddingBottom="@dimen/welcome_action_padding"
+                          android:enabled="true"/>
+
                 <TextView
                         android:id="@+id/welcome_screen4_intervaltext"
                         android:layout_width="wrap_content"

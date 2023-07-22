@@ -60,6 +60,7 @@ public class WelcomeActivity extends Activity {
     CheckBox checkBox1;
     CheckBox checkBox2;
     CheckBox checkBox3;
+    CheckBox checkBox4;
 
     View result_view;
 
@@ -328,6 +329,16 @@ public class WelcomeActivity extends Activity {
                     WeatherSettings.setDisplaySunrise(getApplicationContext(),b);
                 }
             });
+            checkBox4 = result_view.findViewById(R.id.welcome_screen4_check4);
+            checkBox4.setChecked(WeatherSettings.UVHIfetchData(getApplicationContext()) && WeatherSettings.UVHImainDisplay(getApplicationContext()));
+            checkBox4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    WeatherSettings.setUVHIfetchData(getApplicationContext(),b);
+                    WeatherSettings.setUVHImainDisplay(getApplicationContext(),b);
+                }
+            });
+
         }
         if (page == 5) {
             result_view = layoutInflater.inflate(R.layout.welcome_screen5, pager, false);

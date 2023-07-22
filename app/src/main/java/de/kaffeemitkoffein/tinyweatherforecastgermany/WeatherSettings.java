@@ -1791,6 +1791,13 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_UVHI_FETCH_DATA,PREF_UVHI_FETCH_DATA_DEFAULT);
     }
 
+    public static void setUVHIfetchData(Context context, boolean b) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_UVHI_FETCH_DATA, b);
+        pref_editor.apply();
+    }
+
     public static boolean UVHImainDisplay(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_UVHI_MAINDISPLAY,PREF_UVHI_MAINDISPLAY_DEFAULT);
