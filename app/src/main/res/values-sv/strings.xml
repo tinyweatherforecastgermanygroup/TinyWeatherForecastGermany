@@ -62,7 +62,7 @@
     <string name="layerlabel_uvi_cs_2">UV-riskindex för i övermorgon (klar himmel)</string>
     <string name="layerlabel_uvi_eu_cl_0">UV-riskindex för idag (Europa)</string>
     <string name="layerlabel_short_ts">Upplevd temperatur</string>
-    <string name="layerlabel_ts_0">Temperaturavkänning kl. 6:00 lokal tid</string>
+    <string name="layerlabel_ts_0">Upplevd temperatur kl. 6:00 lokal tid</string>
     <string name="local_time_6">6:00 lokal tid</string>
     <string name="layerlabel_uvi_cl_0">UV-riskindex för idag</string>
     <string name="layerlabel_uvi_cl_2">UV-riskindex för dagen efter i morgon</string>
@@ -77,11 +77,11 @@
     <string name="preference_screen_pollen_mugwort_summary">Visa prognosen för pollenantalet för gråbo.</string>
     <string name="preference_screen_pollen_birch_summary">Visa prognosen för antalet björkpollen.</string>
     <string name="preference_screen_pollen_hazel_summary">Visa prognosen för antalet hasselpollen.</string>
-    <string name="preference_screen_pollen_alder_summary">Visa prognosen för antalet hasselpollen.</string>
+    <string name="preference_screen_pollen_alder_summary">Visa prognosen för antalet pollen från al.</string>
     <string name="preference_screen_pollen_grasses_summary">Visa prognosen för antalet pollen från gräs.</string>
     <string name="preference_screen_pollen_hint_title">Tips</string>
     <string name="preference_screen_pollen_rye_summary">Visa prognosen för antalet rågpollen.</string>
-    <string name="preference_screen_pollen_ash_summary">Visa prognosen för antalet askpollen.</string>
+    <string name="preference_screen_pollen_ash_summary">Visar prognosen för antalet pollen från aska.</string>
     <string name="pollen_rye">Råg</string>
     <string name="pollen_ash">Ask</string>
     <string name="pollen_birch">Björk</string>
@@ -101,4 +101,8 @@
     <string name="pollen_load0">ingen</string>
     <string name="pollen_load1">ingen till låg</string>
     <string name="pollen_load2">låg</string>
+    <string name="pollen_load3">låg till medelhög</string>
+    <string name="clear_sky">klar himmel</string>
+    <string name="pollen_load5">medelhög till hög</string>
+    <string name="pollen_load6">hög</string>
 </resources>
