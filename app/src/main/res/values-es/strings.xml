@@ -387,7 +387,7 @@
     <string name="layerlabel_uvi_cs_2">Índice de riesgo UV para pasado mañana (cielo despejado)</string>
     <string name="layerlabel_uvi_eu_cs_0">Índice de riesgo UV para hoy (Europa, cielo despejado)</string>
     <string name="layerlabel_short_ts">Temperatura percibida</string>
-    <string name="layerlabel_ts_0">Temperatura detectada a las 6:00 hora local</string>
+    <string name="layerlabel_ts_0">Temperatura percibida a las 6:00 hora local</string>
     <string name="layerlabel_uvi_cl_0">Índice de riesgo UV para hoy</string>
     <string name="layerlabel_uvi_cl_2">Índice de peligrosidad UV para pasado mañana</string>
     <string name="layerlabel_uvi_eu_cl_0">Índice de peligro UV para hoy (Europa)</string>
@@ -397,7 +397,7 @@
     <string name="temp_min">Temperatura mínima</string>
     <string name="preference_screen_pollen_ambrosia_summary">Mostrar la previsión de recuento de polen de ambrosía.</string>
     <string name="preference_screen_pollen_mugwort_summary">Muestra la previsión del recuento de polen de artemisa.</string>
-    <string name="preference_screen_pollen_ash_summary">Mostrar la previsión del recuento de polen de centeno.</string>
+    <string name="preference_screen_pollen_ash_summary">Muestra el recuento de polen previsto para la ceniza.</string>
     <string name="preference_screen_pollen_birch_summary">Mostrar la previsión del recuento de polen de abedul.</string>
     <string name="preference_screen_pollen_hazel_summary">Mostrar la previsión del recuento de polen de avellano.</string>
     <string name="preference_screen_pollen_alder_summary">Mostrar la previsión de recuento de polen de aliso.</string>
@@ -424,4 +424,8 @@
     <string name="pollen_load4">medio</string>
     <string name="layerlabel_ts_max_0">Temperatura máxima percibida hoy</string>
     <string name="layerlabel_ts_max_1">Temperatura máxima percibida mañana</string>
+    <string name="pollen_load3">bajo a medio</string>
+    <string name="pollen_load5">medio-alto</string>
+    <string name="pollen_load6">alta</string>
+    <string name="clear_sky">cielo despejado</string>
 </resources>
