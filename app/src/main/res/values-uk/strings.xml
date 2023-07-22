@@ -429,4 +429,5 @@
     <string name="pollen_load5">від середнього до високого</string>
     <string name="pollen_load6">високий</string>
     <string name="clear_sky">чисте небо</string>
+    <string name="welcome_s4_showuv">Завантажте та відобразіть індекс небезпеки ультрафіолетового випромінювання для вашого місцезнаходження.</string>
 </resources>
