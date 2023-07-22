@@ -393,7 +393,7 @@ public class WeatherDetailsActivity extends Activity {
             if (valuesListPrecipitation!=null){
                 valuesListPrecipitation.setVisibility(View.VISIBLE);
                 valuesListPrecipitation.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
-                DetailsElement precipitationChartHeading = newDetail("Wahrscheinlichkeit von Niederschlagsmengen",null,null,null);
+                DetailsElement precipitationChartHeading = newDetail(getResources().getString(R.string.wd_probablity_precipitation_amounts),null,null,null);
                 if (ForecastBitmap.getDisplayOrientation(context)== Configuration.ORIENTATION_LANDSCAPE){
                     precipitationChartHeading.smallHeading = true;
                 }
