@@ -373,7 +373,7 @@
     <string name="layerlabel_uvi_eu_cl_0">UV-index van vandaag (Europa)</string>
     <string name="layerlabel_uvi_eu_cs_0">UV-index van vandaag (Europa, onbewolkt)</string>
     <string name="layerlabel_short_ts">Waargenomen temperatuur</string>
-    <string name="layerlabel_ts_0">Gevoelstemperatuur om 6:00 (lokale tijd)</string>
+    <string name="layerlabel_ts_0">Temperatuur waargenomen om 6:00 lokale tijd</string>
     <string name="layerlabel_ts_max_0">Maximum temperatuur waargenomen vandaag</string>
     <string name="layerlabel_ts_max_1">Maximum temperatuur waargenomen morgen</string>
     <string name="layerlabel_ts_max_2">Maximumtemperatuur waargenomen overmorgen</string>
