@@ -417,7 +417,7 @@
     <string name="layerlabel_uvi_eu_cl_0">UV hazard index for today (Europe)</string>
     <string name="layerlabel_uvi_eu_cs_0">UV hazard index for today (Europe, clear sky)</string>
     <string name="layerlabel_short_ts">Perceived temperature</string>
-    <string name="layerlabel_ts_0">Temperature sensed at 6:00 local time</string>
+    <string name="layerlabel_ts_0">Temperature perceived at 6:00 local time</string>
     <string name="local_time_6">6:00 local time</string>
     <string name="temp_max">Maximum temperature</string>
     <string name="temp_min">Minimum temperature</string>
