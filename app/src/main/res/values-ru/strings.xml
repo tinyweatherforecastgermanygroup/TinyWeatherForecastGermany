@@ -390,7 +390,7 @@
     <string name="local_time_6">6:00 по местному времени</string>
     <string name="layerlabel_uvi_cl_0">Индекс опасности ультрафиолетового излучения на сегодня</string>
     <string name="layerlabel_uvi_cl_1">Индекс опасности ультрафиолетового излучения на завтра</string>
-    <string name="layerlabel_ts_0">Температура измеряется в 6:00 по местному времени</string>
+    <string name="layerlabel_ts_0">Температура, воспринимаемая в 6:00 по местному времени</string>
     <string name="preference_screen_pollen_summary">Настройте отображение количества пыльцы.</string>
     <string name="temp_max">Максимальная температура</string>
     <string name="temp_min">Минимальная температура</string>
@@ -415,7 +415,7 @@
     <string name="pollen_load1">от нуля до минимума</string>
     <string name="preference_screen_pollen_ambrosia_summary">Отображение прогноза количества пыльцы амброзии.</string>
     <string name="preference_screen_pollen_mugwort_summary">Показать прогноз количества пыльцы полыни.</string>
-    <string name="preference_screen_pollen_ash_summary">Отображение прогноза количества пыльцы ржи.</string>
+    <string name="preference_screen_pollen_ash_summary">Показывает прогноз количества пыльцы в золе.</string>
     <string name="preference_screen_pollen_birch_summary">Отображение прогноза количества пыльцы березы.</string>
     <string name="preference_screen_pollen_hazel_summary">Отображение прогноза количества пыльцы орешника.</string>
     <string name="preference_screen_pollen_alder_summary">Отображение прогноза количества пыльцы ольхи.</string>
@@ -424,4 +424,8 @@
     <string name="layerlabel_ts_max_0">Максимальная температура, ощущаемая сегодня</string>
     <string name="layerlabel_ts_min_0">Минимальная предполагаемая температура сегодня</string>
     <string name="layerlabel_ts_min_1">Минимальная температура, зафиксированная завтра</string>
+    <string name="pollen_load3">низкий и средний</string>
+    <string name="pollen_load5">средний и высокий</string>
+    <string name="pollen_load6">высокая</string>
+    <string name="clear_sky">чистое небо</string>
 </resources>
