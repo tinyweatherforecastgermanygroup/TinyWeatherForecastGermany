@@ -1,9 +1,6 @@
 New in version ([VERSION]):
 
-- improved rain radar
-- new detailed forecast overview
-- new language: Russian (thanks to Wirdi51 !)
-- improved translations
-- minor layout improvements and bugfixes
-- fixed color errors in light & dark theme
+- new: weather maps, pollen forecast, UV hazard index
+- supports UV hazard index and precipitation on wearables with Gadgetbridge
+- numerous, further improvements
 

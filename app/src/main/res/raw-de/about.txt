@@ -1,7 +1,7 @@
 Kleine Wettervorschau Deutschland
 =================================
 
-Copyright © 2020, 2021, 2022 Pawel Dube
+Copyright © 2020, 2021, 2022, 2023 Pawel Dube
 
 Version: [VERSION]
 
@@ -20,7 +20,7 @@ Dieses Programm benutzt PNPOLY - Point Inclusion in Polygon Test by W. Randolph 
 
 Dieses Programm benutzt die Astronomy Klasse, Copyright (C) 2010-2012, Helmut Lehmeyer, lizenziert unter der GNU General Public License Version 3.
 
-PAT maps by Ian Macky <http://ian.macky.net/pat>. Images of the "Lange Anna" (Helgoland) and the Pellworm lighthouse by arwanger.
+PAT maps by Ian Macky <http://ian.macky.net/pat>. Bilder der "Lange Anna" (Helgoland) und des Pellworm Leuchtturms by arwanger.
 
 Die Berechnung der relativen Luftfeuchtigkeit aus der Temperatur und dem Taupunkt erfolgt anhand eines vereinfachten Formel-Beispiels des DWD (Deutscher Wetterdienst), siehe <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
 
@@ -71,7 +71,7 @@ Author: Pawel Dube (pdube@gmx.de)
 Datenschutz:
 ------------
 
-Tiny Weather Forecast Germany ruft Wetterdaten und Wetter-Warnungen aus dem Open-Data-Portal des Deutschen Wetterdienstes <https://www.dwd.de/DE/Home/home_node.html> ab.
+Tiny Weather Forecast Germany ruft Wetterdaten und Wetter-Warnungen aus dem Open-Data-Portal und dem Geoserver des Deutschen Wetterdienstes <https://www.dwd.de/DE/Home/home_node.html> ab.
 
 Dazu ist es technisch notwendig, im Rahmen der Internetverbindung die IP-Adresse an den Deutschen Wetterdienst zu übermitteln und den Ort/Sensor, dessen Daten abgerufen werden sollen. Bei den Warnungen wird auch übermittelt, ob diese (abhängig von der Spracheinstellung des Gerätes) auf Französisch, Spanisch, Deutsch oder Englisch abgerufen werden sollen. Wie der Deutsche Wetterdienst mit diesen Daten umgeht und wie er sie speichert kann in der Datenschutzerklärung des Deutschen Wetterdienstes <https://www.dwd.de/DE/service/datenschutz/datenschutz_node.html> nachgelesen werden.
 

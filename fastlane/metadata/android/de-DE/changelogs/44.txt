@@ -1,5 +1,3 @@
-Neu in dieser Version ([VERSION]):
-
 - neu: Wetterkarten, Pollen-Vorhersage, UV-Gefahrenindex
 - unterstützt UV-Gefahrenindex und Niederschlag auf Wearables über Gadgetbridge
 - zahlreiche, weitere Verbesserungen
