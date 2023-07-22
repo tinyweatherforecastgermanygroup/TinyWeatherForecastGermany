@@ -404,7 +404,7 @@
     <string name="layerlabel_uvi_cl_1">Indice de risque UV pour demain</string>
     <string name="layerlabel_uvi_cl_2">Indice de risque UV pour après-demain</string>
     <string name="layerlabel_uvi_eu_cl_0">Indice de risque UV pour aujourd\'hui (Europe)</string>
-    <string name="layerlabel_ts_0">Température mesurée à 6:00 heure locale</string>
+    <string name="layerlabel_ts_0">Température perçue à 6h00 heure locale</string>
     <string name="preference_screen_pollen_summary">Personnaliser l\'affichage du nombre de pollens.</string>
     <string name="preference_screen_pollen_title">Exposition de pollen</string>
     <string name="temp_max">Température maximale</string>
@@ -418,7 +418,7 @@
     <string name="pollen_birch">Bouleau</string>
     <string name="preference_screen_pollen_ambrosia_summary">Afficher la prévision du nombre de pollens d\'ambroisie.</string>
     <string name="preference_screen_pollen_mugwort_summary">Affiche les prévisions de pollen d\'armoise.</string>
-    <string name="preference_screen_pollen_ash_summary">Afficher la prévision du nombre de pollens de seigle.</string>
+    <string name="preference_screen_pollen_ash_summary">Affichage des prévisions de pollen pour les cendres.</string>
     <string name="preference_screen_pollen_birch_summary">Afficher la prévision du nombre de pollens de bouleau.</string>
     <string name="preference_screen_pollen_hazel_summary">Afficher la prévision du nombre de pollens de noisetier.</string>
     <string name="preference_screen_pollen_alder_summary">Afficher la prévision du nombre de pollens d\'aulne.</string>
@@ -439,4 +439,8 @@
     <string name="pollen_load4">moyen</string>
     <string name="layerlabel_ts_min_0">Température minimale ressentie aujourd\'hui</string>
     <string name="layerlabel_ts_min_1">Température minimale relevée demain</string>
+    <string name="pollen_load3">faible à moyenne</string>
+    <string name="pollen_load5">moyenne à élevée</string>
+    <string name="pollen_load6">haut</string>
+    <string name="clear_sky">ciel dégagé</string>
 </resources>
