@@ -429,4 +429,5 @@
     <string name="preference_screen_uvhi_title">UV-risico-index</string>
     <string name="preference_screen_uvhi_showInMain_summary">Geef de UV-risico-index weer in de hoofdweergave van de app.</string>
     <string name="preference_screen_uvhi_fetchData_summary">Haal naast de weersvoorspelling ook de voorspelling van de UV-risico-index voor jouw locatie op.</string>
+    <string name="welcome_s4_showuv">De UV-risico-index voor uw locatie laden en weergeven.</string>
 </resources>
