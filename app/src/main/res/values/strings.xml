@@ -375,7 +375,7 @@
     <string name="areadatabasecreator_title">Preparing data</string>
     <string name="welcome_s4_viewmodel">Show detailed weather forecasts.</string>
     <string name="welcome_s4_displaytype">Chose how to display the weather forecast:</string>
-    <string name="welcome_s4_showuv">Load and display the uv hazard index for your location.</string>
+    <string name="welcome_s4_showuv">Load and display the UV hazard index for your location.</string>
     <string name="welcome_setupwarnings">Setup warnings</string>
     <string name="widget_transparency_default">90</string>
     <string name="battery_and_data_hint">This will increase battery and data volume use.</string>
