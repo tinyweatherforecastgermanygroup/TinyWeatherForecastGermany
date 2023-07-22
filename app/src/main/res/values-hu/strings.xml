@@ -386,7 +386,7 @@
     <string name="layerlabel_uvi_cs_1">UV veszélyességi index holnapra (tiszta égbolt)</string>
     <string name="layerlabel_uvi_eu_cs_0">UV-veszélyességi index ma (Európa, tiszta égbolt)</string>
     <string name="layerlabel_short_ts">Érzékelt hőmérséklet</string>
-    <string name="layerlabel_ts_0">Helyi idő szerint 6:00 órakor mért hőmérséklet</string>
+    <string name="layerlabel_ts_0">Helyi idő szerint 6:00 órakor érzékelt hőmérséklet</string>
     <string name="layerlabel_uvi_cl_0">UV veszélyességi index a mai napra</string>
     <string name="layerlabel_uvi_cs_0">UV veszélyességi index a mai napra (tiszta égbolt)</string>
     <string name="layerlabel_uvi_cs_2">UV-veszélyességi index holnaputánra (tiszta égbolt)</string>
@@ -414,7 +414,7 @@
     <string name="preference_screen_pollen_hazel_summary">Mogyorópollenszám-előrejelzés megjelenítése.</string>
     <string name="preference_screen_pollen_ambrosia_summary">Az ambrosia pollenszám-előrejelzés megjelenítése.</string>
     <string name="preference_screen_pollen_mugwort_summary">Mutasd meg a pollenelőrejelzést a kökörcsinre.</string>
-    <string name="preference_screen_pollen_ash_summary">A rozs pollenszám-előrejelzés megjelenítése.</string>
+    <string name="preference_screen_pollen_ash_summary">A kőrisre vonatkozó pollenszám-előrejelzés.</string>
     <string name="preference_screen_pollen_birch_summary">A nyírfapollenszám-előrejelzés megjelenítése.</string>
     <string name="preference_screen_pollen_rye_summary">A rozs pollenszám-előrejelzés megjelenítése.</string>
     <string name="preference_screen_pollen_alder_summary">Az égerpollenszám-előrejelzés megjelenítése.</string>
@@ -425,4 +425,8 @@
     <string name="layerlabel_ts_min_2">A holnapután érzékelt minimumhőmérséklet</string>
     <string name="layerlabel_ts_max_0">A ma érzékelt legmagasabb hőmérséklet</string>
     <string name="wm_maps">Időjárási térképek</string>
+    <string name="pollen_load3">alacsony vagy közepes</string>
+    <string name="pollen_load5">közepes vagy magas</string>
+    <string name="pollen_load6">magas</string>
+    <string name="clear_sky">tiszta égbolt</string>
 </resources>
