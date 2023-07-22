@@ -2113,6 +2113,7 @@ public class APIReaders {
                     timeResult[position] = midnightTime;
                     result[position] = getUvIndex(midnightTime);
                 }
+                WeatherSettings.setUVHIUpdateAllowedTime(context);
                 onFinished(timeResult,result);
             } else {
                 onFinished(null,null);
