@@ -514,7 +514,7 @@ public class WeatherLayersActivity extends Activity {
                     (TextView) findViewById(R.id.wm_heading_21_3),
                     (TextView) findViewById(R.id.wm_date_21_3)));
         } else {
-            tableLayout.removeView(tableRowHazel);
+            tableLayout.removeView(tableRowGraeser);
         }
     }
 

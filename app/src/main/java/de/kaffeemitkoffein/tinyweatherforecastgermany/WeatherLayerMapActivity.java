@@ -295,9 +295,9 @@ public class WeatherLayerMapActivity extends Activity {
         if ((layer>= WeatherLayer.Layers.POLLEN_FORECAST_AMBROSIA_0) &&
                 (layer<=WeatherLayer.Layers.POLLEN_FORECAST_GRAESER_2)){
             setPollenSpinnerList();
-            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,baseSpinnerItems);
+            adapter1 = new ArrayAdapter<String>(context, R.layout.custom_spinner_item_small,baseSpinnerItems);
             setTimeSpinnerList();
-            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,additonalSpinnerItems);
+            adapter2 = new ArrayAdapter<String>(context, R.layout.custom_spinner_item_small,additonalSpinnerItems);
             SpinnerPositionPair spinnerPositionPair = getBaseSpinnerPosition();
             if (spinnerPositionPair!=null){
                 pos1 = spinnerPositionPair.base; pos2=spinnerPositionPair.additional;
@@ -306,9 +306,9 @@ public class WeatherLayerMapActivity extends Activity {
         if ((layer>= WeatherLayer.Layers.UVI_CLOUDS_0) &&
                 (layer<=WeatherLayer.Layers.UVI_CLOUDLESS_2)){
             setCloudSpinnerList();
-            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,baseSpinnerItems);
+            adapter1 = new ArrayAdapter<String>(context, R.layout.custom_spinner_item_small,baseSpinnerItems);
             setTimeSpinnerList();
-            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,additonalSpinnerItems);
+            adapter2 = new ArrayAdapter<String>(context, R.layout.custom_spinner_item_small,additonalSpinnerItems);
             SpinnerPositionPair spinnerPositionPair = getBaseSpinnerPosition();
             if (spinnerPositionPair!=null){
                 pos1 = spinnerPositionPair.base; pos2=spinnerPositionPair.additional;
@@ -316,9 +316,9 @@ public class WeatherLayerMapActivity extends Activity {
         }
         if ((layer>=WeatherLayer.Layers.SENSED_TEMPERATURE_1M_0) && (layer<=WeatherLayer.Layers.SENSED_TEMPERATURE_1M_2)){
             setTodaySensedTemeraturesSpinnerList();
-            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,baseSpinnerItems);
+            adapter1 = new ArrayAdapter<String>(context, R.layout.custom_spinner_item_small,baseSpinnerItems);
             setTodaySensedTemperatureTimesSpinnerList();
-            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,additonalSpinnerItems);
+            adapter2 = new ArrayAdapter<String>(context, R.layout.custom_spinner_item_small,additonalSpinnerItems);
             SpinnerPositionPair spinnerPositionPair = getBaseSpinnerPosition();
             if (spinnerPositionPair!=null){
                 pos1 = spinnerPositionPair.base; pos2=spinnerPositionPair.additional;
@@ -326,9 +326,9 @@ public class WeatherLayerMapActivity extends Activity {
         }
         if ((layer>=WeatherLayer.Layers.SENSED_TEMPERATURE_MAX_0) && (layer<=WeatherLayer.Layers.SENSED_TEMPERATURE_MIN_2)){
             setMinMaxTemperatureSpinnerList();
-            adapter1 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,baseSpinnerItems);
+            adapter1 = new ArrayAdapter<String>(context, R.layout.custom_spinner_item_small,baseSpinnerItems);
             setTimeSpinnerList();
-            adapter2 = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item,additonalSpinnerItems);
+            adapter2 = new ArrayAdapter<String>(context, R.layout.custom_spinner_item_small,additonalSpinnerItems);
             SpinnerPositionPair spinnerPositionPair = getBaseSpinnerPosition();
             if (spinnerPositionPair!=null){
                 pos1 = spinnerPositionPair.base; pos2=spinnerPositionPair.additional;
