@@ -390,7 +390,7 @@
     <string name="layerlabel_short_ts">Oplevet temperatur</string>
     <string name="local_time_6">6:00 lokal tid</string>
     <string name="layerlabel_uvi_cs_2">UV-risikoindeks for i overmorgen (klar himmel)</string>
-    <string name="layerlabel_ts_0">Temperatur målt kl. 6:00 lokal tid</string>
+    <string name="layerlabel_ts_0">Oplevet temperatur kl. 6:00 lokal tid</string>
     <string name="preference_screen_pollen_title">Pollenudstilling</string>
     <string name="preference_screen_pollen_summary">Tilpas visningen af pollental.</string>
     <string name="temp_max">Maksimal temperatur</string>
@@ -405,7 +405,7 @@
     <string name="pollen_load1">ingen til lav</string>
     <string name="preference_screen_pollen_ambrosia_summary">Vis prognosen for antallet af ambrosia-pollen.</string>
     <string name="preference_screen_pollen_mugwort_summary">Vis prognosen for pollentallet for bynke-ambrosie.</string>
-    <string name="preference_screen_pollen_ash_summary">Vis prognosen for antallet af rugpollen.</string>
+    <string name="preference_screen_pollen_ash_summary">Viser prognosen for pollental for aske.</string>
     <string name="preference_screen_pollen_birch_summary">Vis prognosen for antallet af birkepollen.</string>
     <string name="preference_screen_pollen_hazel_summary">Vis prognosen for antallet af hasselpollen.</string>
     <string name="preference_screen_pollen_alder_summary">Vis prognosen for antallet af ellepollen.</string>
@@ -425,4 +425,8 @@
     <string name="layerlabel_ts_max_0">Den maksimale temperatur i dag</string>
     <string name="layerlabel_ts_min_0">Oplevet minimumstemperatur i dag</string>
     <string name="layerlabel_ts_min_1">Minimumstemperatur målt i morgen</string>
+    <string name="pollen_load3">lav til middel</string>
+    <string name="pollen_load5">middel til høj</string>
+    <string name="pollen_load6">høj</string>
+    <string name="clear_sky">klar himmel</string>
 </resources>
