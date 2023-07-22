@@ -428,4 +428,5 @@
     <string name="pollen_load5">средний и высокий</string>
     <string name="pollen_load6">высокая</string>
     <string name="clear_sky">чистое небо</string>
+    <string name="welcome_s4_showuv">Загрузка и отображение индекса опасности ультрафиолетового излучения для вашего местоположения.</string>
 </resources>
