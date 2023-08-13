@@ -20,6 +20,7 @@
     package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
     import android.content.Context;
+    import android.content.Intent;
     import android.graphics.BlendMode;
     import android.graphics.BlendModeColorFilter;
     import android.graphics.Color;
@@ -29,12 +30,11 @@
     import android.os.Handler;
     import android.os.Looper;
     import android.view.LayoutInflater;
+    import android.view.MotionEvent;
     import android.view.View;
     import android.view.ViewGroup;
-    import android.widget.BaseAdapter;
-    import android.widget.LinearLayout;
-    import android.widget.RelativeLayout;
-    import android.widget.TextView;
+    import android.widget.*;
+
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
     import java.util.Date;
@@ -98,6 +98,7 @@
             TextView warning_item_description;
             TextView warning_item_instruction;
             TextView warning_item_elements;
+            ImageView shareIcon;
 
             public ViewHolder() {
             }
@@ -134,7 +135,7 @@
             return view;
         }
 
-        public static View setWarningViewElements(Context context, LayoutInflater layoutInflater, View view, ViewGroup viewGroup, final WeatherWarning warning, boolean highlight, final Handler mainHandler, Executor executor) {
+        public static View setWarningViewElements(final Context context, LayoutInflater layoutInflater, View view, ViewGroup viewGroup, final WeatherWarning warning, boolean highlight, final Handler mainHandler, Executor executor) {
             ViewHolder viewHolder = new ViewHolder();
             if (view != null) {
                 viewHolder = (ViewHolder) view.getTag();
@@ -160,6 +161,7 @@
                 viewHolder.warning_item_description = (TextView) view.findViewById(R.id.warning_item_description);
                 viewHolder.warning_item_instruction = (TextView) view.findViewById(R.id.warning_item_instruction);
                 viewHolder.warning_item_elements = (TextView) view.findViewById(R.id.warning_item_elements);
+                viewHolder.shareIcon = (ImageView) view.findViewById(R.id.warning_item_shareicon);
                 view.setTag(viewHolder);
             }
             int color = warning.getWarningColor();
@@ -187,7 +189,17 @@
                 }
                 viewHolder.warning_item_maincontainer.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.WIDGETBACKGROUND));
             }
-            String line1 = new String();
+            if (viewHolder.shareIcon != null){
+                viewHolder.shareIcon.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        Intent intent = DataUpdateService.getWarningIntent(context,warning);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                        return true;
+                    }
+                });
+            }
             if (warning.effective != 0) {
                 viewHolder.warning_item_effective.setText(formatTime(warning.effective));
             }

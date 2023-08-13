@@ -26,7 +26,6 @@
     />
 
     <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/warning_item_maincontainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -190,6 +189,16 @@
                 android:gravity="left">
         </TextView>
     </LinearLayout>
+
+    <ImageView
+            android:id="@+id/warning_item_shareicon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:paddingTop="10dp"
+            android:paddingRight="4dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:src="?attr/ic_share"/>
 
 </RelativeLayout>
 

@@ -458,12 +458,18 @@ public class DataUpdateService extends Service {
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
-    private static PendingIntent getWarningPendingIntent(Context context, WeatherWarning weatherWarning){
+    public static Intent getWarningIntent(Context context, WeatherWarning weatherWarning){
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT,weatherWarning.getPlainTextWarning(context,true));
         intent.putExtra(Intent.EXTRA_SUBJECT,weatherWarning.event);
+        return intent;
+    }
+
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private static PendingIntent getWarningPendingIntent(Context context, WeatherWarning weatherWarning){
+        Intent intent = getWarningIntent(context,weatherWarning);
         PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= 23){
             pendingIntent = PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_CANCEL_CURRENT);
