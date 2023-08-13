@@ -559,7 +559,10 @@ public class CurrentWeatherInfo{
     }
 
     public String getHumanReadableIssueTime(){
-        return dateAndHourDateFormat.format(new Date(issue_time));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(issue_time);
+        Date date = calendar.getTime();
+        return dateAndHourDateFormat.format(date);
     }
 
     public String getHumanReadablePollingTime(){
