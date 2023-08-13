@@ -19,6 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.*;
 import android.content.Context;
@@ -456,6 +457,22 @@ public class DataUpdateService extends Service {
         notificationManager.notify(notification_id,notificationBuilder.build());
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private static PendingIntent getWarningPendingIntent(Context context, WeatherWarning weatherWarning){
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT,weatherWarning.getPlainTextWarning(context,true));
+        intent.putExtra(Intent.EXTRA_SUBJECT,weatherWarning.event);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= 23){
+            pendingIntent = PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_CANCEL_CURRENT);
+        } else {
+            pendingIntent = PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        }
+        return pendingIntent;
+    }
+
     public static Notification getWarningNotification(Context context, NotificationManager notificationManager, WeatherWarning weatherWarning, String sortKey){
         final String notificationChannelID = WeatherSettings.getNotificationChannelID(context);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -477,6 +494,8 @@ public class DataUpdateService extends Service {
         String expires = WeatherWarnings.getExpiresMiniString(context,weatherWarning);
         expires = expires.replaceFirst(String.valueOf(expires.charAt(0)),String.valueOf(expires.charAt(0)).toUpperCase());
         notificationBody = WeatherSettings.getSetStationLocation(context).description.toUpperCase(Locale.ROOT)+": "+notificationBody + " ("+expires+".)";
+        // construct pending intent for sharing
+        PendingIntent shareWarningPendingIntent = getWarningPendingIntent(context,weatherWarning);
         Notification n;
         Notification.Builder notificationBuilder;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -497,6 +516,10 @@ public class DataUpdateService extends Service {
                     .setWhen(weatherWarning.onset)
                     .setGroup(WARNING_NC_GROUP)
                     .setSortKey(sortKey);
+            // for api level 23 and above
+            Notification.Action.Builder actionBuilder = new Notification.Action.Builder(WeatherIcons.getIconResource(context,WeatherIcons.IC_SHARE),context.getResources().getString(R.string.logging_button_share),shareWarningPendingIntent);
+            Notification.Action notificationAction = actionBuilder.build();
+            notificationBuilder.addAction(notificationAction);
         } else {
             notificationBuilder
                     .setContentTitle(weatherWarning.headline)
@@ -505,6 +528,14 @@ public class DataUpdateService extends Service {
                     .setContentIntent(pendingIntent)
                     .setShowWhen(true)
                     .setWhen(weatherWarning.onset);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                // for api level 23 and above
+                Notification.Action.Builder actionBuilder = new Notification.Action.Builder(WeatherIcons.getIconResource(context,WeatherIcons.IC_SHARE),context.getResources().getString(R.string.logging_button_share),shareWarningPendingIntent);
+                Notification.Action notificationAction = actionBuilder.build();
+                notificationBuilder.addAction(notificationAction);
+            } else {
+                notificationBuilder.addAction(WeatherIcons.getIconResource(context,WeatherIcons.IC_SHARE),context.getResources().getString(R.string.logging_button_share),shareWarningPendingIntent);
+            }
             if (WeatherSettings.LEDEnabled(context)){
                 notificationBuilder.setLights(WeatherSettings.getLEDColor(context),200,1000);
             }

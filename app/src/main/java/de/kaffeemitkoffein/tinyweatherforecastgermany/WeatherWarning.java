@@ -65,7 +65,7 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
     }
 
     public final static String ID_UPDATE="Update";
-    public final static String ID_SLIENT_UPDATE="SILENT_UPDATE";
+    public final static String ID_SILENT_UPDATE="SILENT_UPDATE";
 
     long polling_time;
     String identifier;      // id of the warning
@@ -179,7 +179,7 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
 
     public boolean isSilentUpdate(){
         for (int i=0; i<codes.size(); i++){
-            if (codes.get(i).equalsIgnoreCase(ID_SLIENT_UPDATE)){
+            if (codes.get(i).equalsIgnoreCase(ID_SILENT_UPDATE)){
                 return true;
             }
         }
@@ -242,6 +242,69 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
     }
 
      */
+
+    public static String getUnderlineString(String source, String underlineChar){
+        if (source==null){
+            return null;
+        } else {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i=0; i<source.length(); i++){
+                stringBuilder.append(underlineChar);
+            }
+            return stringBuilder.toString();
+        }
+    }
+
+    public String getPlainTextWarning(Context context, boolean includeCredentials){
+        String newLine = System.getProperty("line.separator");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(WeatherWarningAdapter.formatTime(this.effective)); stringBuilder.append(" ");
+        stringBuilder.append(this.status);
+        stringBuilder.append(" ");
+        stringBuilder.append(this.msgType);
+        stringBuilder.append(newLine);
+        stringBuilder.append(this.event);
+        stringBuilder.append(newLine);
+        stringBuilder.append(getUnderlineString(this.event,"="));
+        stringBuilder.append(newLine);
+        stringBuilder.append(WeatherWarningAdapter.formatTime(this.onset)); stringBuilder.append(" ");
+        stringBuilder.append(context.getResources().getString(R.string.warnings_until)); stringBuilder.append(" ");
+        stringBuilder.append(WeatherWarningAdapter.formatTime(this.expires));
+        stringBuilder.append(newLine);
+        stringBuilder.append(this.urgency);  stringBuilder.append(" ");
+        stringBuilder.append(this.severity); stringBuilder.append(" ");
+        stringBuilder.append(this.certainty);
+        stringBuilder.append(newLine);
+        stringBuilder.append("> ");
+        for (int i=0; i<this.area_names.size(); i++){
+            stringBuilder.append(this.area_names.get(i));
+            if (i<this.area_names.size()-1){
+                stringBuilder.append(", ");
+            }
+        }
+        stringBuilder.append(newLine); stringBuilder.append(newLine);
+        stringBuilder.append(this.headline);
+        stringBuilder.append(newLine);
+        stringBuilder.append(getUnderlineString(this.headline,"=")); stringBuilder.append(newLine);
+        stringBuilder.append(newLine);
+        stringBuilder.append(this.description);
+        stringBuilder.append(newLine); stringBuilder.append(newLine);
+        stringBuilder.append(this.instruction);
+        stringBuilder.append(newLine); stringBuilder.append(newLine);
+        if ((this.parameter_names!=null) && (this.parameter_values!=null)){
+            for (int i=0; i<this.parameter_names.size() && i<this.parameter_values.size(); i++){
+                stringBuilder.append(this.parameter_names.get(i)); stringBuilder.append(": ");
+                stringBuilder.append(this.parameter_values.get(i)); stringBuilder.append(newLine);
+            }
+            if (this.parameter_names.size()>0){
+                stringBuilder.append(newLine);
+            }
+        }
+        if (includeCredentials){
+            stringBuilder.append(context.getResources().getString(R.string.dwd_warnings_notice));
+        }
+        return stringBuilder.toString();
+    }
 
     /*
      * Warnings are sorted by severity and timestamp.

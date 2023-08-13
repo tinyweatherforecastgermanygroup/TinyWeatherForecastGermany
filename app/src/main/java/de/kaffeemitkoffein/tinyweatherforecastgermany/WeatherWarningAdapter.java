@@ -19,7 +19,6 @@
 
     package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-    import android.app.Activity;
     import android.content.Context;
     import android.graphics.BlendMode;
     import android.graphics.BlendModeColorFilter;
@@ -104,7 +103,7 @@
             }
        }
 
-       private static String formatTime(long time){
+       public static String formatTime(long time){
            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd.MM.yyyy HH:mm:ss");
            return simpleDateFormat.format(new Date(time));
        }

@@ -678,9 +678,19 @@ public class WeatherWarningActivity extends Activity {
         if ((!hide_rain) && (radarBitmap!=null)){
             cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
             canvas.drawBitmap(radarBitmap, 0,0,cp);
-            showRainDescription();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showRainDescription();
+                }
+            });
         } else {
-            clearRainDescription();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    clearRainDescription();
+                }
+            });
         }
         //drawDebugGrid(canvas);
         mapZoomable.updateBitmap(visibleBitmap);
