@@ -60,7 +60,12 @@ public class ClassicWidget extends AppWidgetProvider {
 
     @Override
     public void onDeleted(Context c, int[] ints){
-        super.onDisabled(c);
+        super.onDeleted(c,ints);
+    }
+
+    @Override
+    public void onRestored(Context c, int[] ints, int[] ints2){
+        super.onRestored(c,ints,ints2);
     }
 
     @Override
