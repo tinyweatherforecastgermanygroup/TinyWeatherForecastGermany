@@ -49,20 +49,18 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="10"
                 android:orientation="vertical"
                 android:layout_above="@id/weatherdetails_reference_text">
 
             <RelativeLayout
                     android:id="@+id/weatherdetails_forecastcontainer"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="4"
+                    android:layout_height="wrap_content"
                     android:padding="3dp">
 
                 <ImageView android:id="@+id/weatherdetails_backgroundimage"
                            android:layout_width="match_parent"
-                           android:layout_height="match_parent"/>
+                           android:layout_height="wrap_content"/>
 
                 <RelativeLayout
                         android:id="@+id/weatherdetails_weather_container"
@@ -73,7 +71,7 @@
                         android:layout_marginLeft="@dimen/widget_margin"
                         android:layout_marginRight="@dimen/widget_margin"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
 
                     <ImageView android:id="@+id/weatherdetails_weatherconditionicon"
                                android:layout_width="@dimen/widget_weathericon_size"
@@ -81,7 +79,7 @@
                                android:layout_alignParentLeft="true"
                                android:layout_centerVertical="true"
                                android:layout_gravity="left"
-                               android:src="@mipmap/not_available" />
+                               android:src="@mipmap/not_available"/>
 
                     <TextView android:id="@+id/weatherdetails_temperature"
                               android:textSize="@dimen/widget_textsize_double"
@@ -291,7 +289,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_below="@id/weatherdetails_incidents"
-                    />
+            />
 
         </RelativeLayout>
     </ScrollView>

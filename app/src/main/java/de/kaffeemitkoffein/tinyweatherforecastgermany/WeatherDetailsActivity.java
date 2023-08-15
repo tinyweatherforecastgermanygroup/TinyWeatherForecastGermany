@@ -642,7 +642,7 @@ public class WeatherDetailsActivity extends Activity {
             valuesListElements.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
             list.add(newDetail(getResources().getString(R.string.wd_general),null,null,null));
             if (weatherInfo.hasSunDuration()){
-                list.add(newDetail(null,WeatherIcons.SYMBOL_SUN,weatherInfo.getSunDurationInMinutes()+"min",getResources().getString(R.string.wd_sun)));
+                list.add(newDetail(null,WeatherIcons.SYMBOL_SUN,weatherInfo.getSunDurationInMinutes()+" min",getResources().getString(R.string.wd_sun)));
             }
             if (weatherInfo.hasUvHazardIndex()){
                 list.add(newDetail(null,null,String.valueOf(weatherInfo.getUvHazardIndex()),getResources().getString(R.string.preference_screen_uvhi_title)));

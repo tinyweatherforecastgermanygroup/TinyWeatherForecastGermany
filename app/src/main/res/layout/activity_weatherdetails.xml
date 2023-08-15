@@ -54,7 +54,7 @@
             <RelativeLayout
                     android:id="@+id/weatherdetails_forecastcontainer"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
                     android:padding="4dp">
 
                 <ImageView android:id="@+id/weatherdetails_backgroundimage"

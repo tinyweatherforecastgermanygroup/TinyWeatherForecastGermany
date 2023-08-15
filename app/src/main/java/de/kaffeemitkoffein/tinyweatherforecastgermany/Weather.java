@@ -815,7 +815,7 @@ public final class Weather {
                 windspeedstring = String.valueOf(getFlurriesInMsInt());
             }
             if (unit){
-                windspeedstring = windspeedstring + getWindUnitString(context);
+                windspeedstring = windspeedstring + " " + getWindUnitString(context);
             }
             return windspeedstring;
         }
