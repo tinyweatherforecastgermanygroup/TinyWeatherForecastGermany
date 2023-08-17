@@ -430,4 +430,5 @@
     <string name="pollen_load6">vysoká</string>
     <string name="clear_sky">jasná obloha</string>
     <string name="welcome_s4_showuv">Načtení a zobrazení indexu UV nebezpečí pro vaši polohu.</string>
+    <string name="wd_probablity_precipitation_amounts">Pravděpodobnost množství srážek</string>
 </resources>
