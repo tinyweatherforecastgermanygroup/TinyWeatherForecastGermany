@@ -161,7 +161,7 @@
     <string name="weathercode_SLIGHT_SNOWFALL_CONTINUOUS">vähäinen lumisade, jatkuva</string>
     <string name="weathercode_MODERATE_OR_HEAVY_RAIN_AND_SNOW">sade ja lumi</string>
     <string name="weathercode_SLIGHT_RAIN_AND_SNOW">pientä sadetta ja lunta</string>
-    <string name="weathercode_HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS">rankkasade, jatkuva</string>
+    <string name="weathercode_HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS">rankka tihkusade, jatkuva</string>
     <string name="weathercode_MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS">kohtalainen tihkusade, jatkuva</string>
     <string name="weathercode_SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS">pientä tihkusadetta, jatkuvaa</string>
     <string name="weathercode_HEAVY_RAIN_NOT_FREEZING_CONTINUOUS">rankkasade, jatkuva</string>
@@ -288,7 +288,7 @@
     <string name="service_notification_categoryname">Säätietojen päivittäminen</string>
     <string name="overview_button">Yleiskatsaus</string>
     <string name="preference_display_rotation_title">Näytön kohdistaminen</string>
-    <string name="preference_display_rotation_summary">Näytön kohdistaminen</string>
+    <string name="preference_display_rotation_summary">Näytön linjaaminen</string>
     <string name="travel_button">Päivitä kaikki</string>
     <string name="preference_gpsauto_summary">Tarkista, että sijainti on oikea jokaisen käynnistyksen yhteydessä.</string>
     <string name="preference_gpsmanual_summary">Valitse itse sääasema lähimpien asemien luettelosta.</string>
@@ -430,4 +430,5 @@
     <string name="pollen_load3">alhainen tai keskisuuri</string>
     <string name="pollen_load5">keskitaso tai korkea</string>
     <string name="welcome_s4_showuv">Lataa ja näytä sijaintisi UV-vaaraindeksi.</string>
+    <string name="wd_probablity_precipitation_amounts">Sademäärien todennäköisyys</string>
 </resources>
