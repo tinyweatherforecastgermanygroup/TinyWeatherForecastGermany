@@ -430,4 +430,5 @@
     <string name="clear_sky">czyste niebo</string>
     <string name="preference_screen_pollen_rye_summary">Wyświetla prognozę liczby pyłków żyta.</string>
     <string name="welcome_s4_showuv">Wczytuje i wyświetla wskaźnik zagrożenia UV dla danej lokalizacji.</string>
+    <string name="wd_probablity_precipitation_amounts">Prawdopodobieństwo wystąpienia opadów</string>
 </resources>
