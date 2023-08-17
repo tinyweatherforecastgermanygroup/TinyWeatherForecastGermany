@@ -60,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="?attr/colorTextLight"
                     android:textSize="@dimen/fcmain_textsize_large"
+                    android:paddingRight="2dp"
                     android:gravity="center"
                     android:layout_gravity="center"
                     android:textAlignment="center"/>
