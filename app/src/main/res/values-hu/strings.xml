@@ -430,4 +430,5 @@
     <string name="pollen_load6">magas</string>
     <string name="clear_sky">tiszta égbolt</string>
     <string name="welcome_s4_showuv">Betölti és megjeleníti a helyére vonatkozó UV-veszélyességi indexet.</string>
+    <string name="wd_probablity_precipitation_amounts">A csapadékmennyiségek valószínűsége</string>
 </resources>
