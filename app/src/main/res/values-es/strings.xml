@@ -429,4 +429,6 @@
     <string name="pollen_load6">alta</string>
     <string name="clear_sky">cielo despejado</string>
     <string name="welcome_s4_showuv">Cargue y visualice el índice de peligrosidad UV de su ubicación.</string>
+    <string name="preference_screen_pollen_rye_summary">Mostrar la previsión del recuento de polen de centeno.</string>
+    <string name="wd_probablity_precipitation_amounts">Probabilidad de precipitaciones</string>
 </resources>
