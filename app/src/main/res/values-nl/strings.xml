@@ -384,7 +384,7 @@
     <string name="service_notification_text4">Bezig met ophalen van kaartlagen…</string>
     <string name="layerlabel_warning_areas_de">Waarschuwingsgebieden in Duitsland</string>
     <string name="layerlabel_uvi_cs_1">UV-index van morgen (onbewolkt)</string>
-    <string name="layerlabel_ts_min_0">Minimale gevoelstemperatuur van vandaag</string>
+    <string name="layerlabel_ts_min_0">Minimaal waargenomen temperatuur vandaag</string>
     <string name="preference_screen_pollen_hint_summary">Als je bepaalde pollen uitschakelt, dan worden ze niet getoond in de uitgebreide weersvoorspelling, kaartenlijst en uitgebreide kaartweergave.</string>
     <string name="preference_prefetch_maps_title">Kaarten onmiddellijk laden</string>
     <string name="dayaftertomorrow">overmorgen</string>
@@ -430,4 +430,5 @@
     <string name="preference_screen_uvhi_showInMain_summary">Geef de UV-risico-index weer in de hoofdweergave van de app.</string>
     <string name="preference_screen_uvhi_fetchData_summary">Haal naast de weersvoorspelling ook de voorspelling van de UV-risico-index voor jouw locatie op.</string>
     <string name="welcome_s4_showuv">De UV-risico-index voor uw locatie laden en weergeven.</string>
+    <string name="wd_probablity_precipitation_amounts">Waarschijnlijkheid van neerslaghoeveelheden</string>
 </resources>
