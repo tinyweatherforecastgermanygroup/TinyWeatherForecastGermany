@@ -56,13 +56,13 @@ import java.util.ArrayList;
  *
  * <h3>How to use:</h3>
  * <ol>
-*  <li>create an instance of ZoomableImageView providing Context, the imageview and the bitmap,</li>
+ *  <li>create an instance of ZoomableImageView providing Context, the imageview and the bitmap,</li>
  * <li>and optionally override "onGestureFinished" to catch the results once a gesture is done. If you do not need to
  *    further react after a zoom/move gesture, you can skip this.</li>
  * <li>Register an OnTouchListerner and handle over the motionEvent to the ZoomableImageView.</li>
  * </ol>
  * <p>That's all.</p>
- * <br>       
+ * <br>
  *         mapImageView = (ImageView) findViewById(R.id.map);
  *
  *         zoomableImageView = new ZoomableImageView(getApplicationContext(),mapImageView,BitmapFactory.decodeResource(getResources(),R.drawable.germany_nc,null)){
@@ -146,6 +146,9 @@ public class ZoomableImageView {
     private float imageViewWidth;
     private float imageViewHeight;
 
+    private float stretchFactor = 1;
+    private boolean fillViewPort = false;
+
     private ArrayList<Float> spriteX;
     private ArrayList<Float> spriteY;
     private ArrayList<Bitmap> spriteBitmap;
@@ -157,32 +160,61 @@ public class ZoomableImageView {
      *
      * @param context the application context
      * @param imageView the imageview
-     * @param bitmap the bitmap to be used in the imageview
+     * @param bitmap_src the bitmap to be used in the imageview
      */
 
 
-    public ZoomableImageView(Context context,ImageView imageView, Bitmap bitmap){
+    public ZoomableImageView(Context context,ImageView imageView, final Bitmap bitmap_src){
         this.context = context;
         this.imageView = imageView;
-        this.imageViewWidth  = imageView.getWidth();
-        this.imageViewHeight = imageView.getHeight();
-        this.bitmap = bitmap.copy(Bitmap.Config.ARGB_8888,true);
+        this.imageViewWidth  = bitmap_src.getWidth();
+        this.imageViewHeight = bitmap_src.getHeight();
+        this.bitmap = bitmap_src.copy(Bitmap.Config.ARGB_8888,true);
+        this.fillViewPort = false;
         initDefaults();
     }
 
-    public ZoomableImageView(Context context,ImageView imageView, Bitmap bitmap, boolean strechBitmap){
+    public ZoomableImageView(Context context, final ImageView imageView, final Bitmap bitmap_src, final boolean fillViewPort){
         this.context = context;
         this.imageView = imageView;
-        if (strechBitmap){
-            this.imageViewWidth  = imageView.getWidth();
-            this.imageViewHeight = imageView.getHeight();
-        } else {
-            this.imageViewWidth = bitmap.getWidth();
-            this.imageViewHeight = bitmap.getHeight();
-        }
-        this.bitmap = bitmap.copy(Bitmap.Config.ARGB_8888,true);
-        initDefaults();
-        redrawBitmap();
+        this.fillViewPort = fillViewPort;
+        imageView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (fillViewPort){
+                    scaleBitmapToFillViewPort(bitmap_src);
+                } else {
+                    imageViewWidth = bitmap.getWidth();
+                    imageViewHeight = bitmap.getHeight();
+                    bitmap = bitmap_src.copy(Bitmap.Config.ARGB_8888,true);
+                }
+                initDefaults();
+                redrawBitmap();
+            }
+        });
+    }
+
+    private void scaleBitmapToFillViewPort(final Bitmap bitmap_src){
+        imageViewWidth = imageView.getWidth();
+        imageViewHeight = imageView.getHeight();
+        float xstretchFactor = imageViewHeight/bitmap_src.getHeight();
+        float ystretchFactor = imageViewWidth/bitmap_src.getWidth();
+        stretchFactor = Math.max(xstretchFactor,ystretchFactor);
+        int targetX = Math.round((stretchFactor)*bitmap_src.getWidth());
+        int targetY = Math.round((stretchFactor)*bitmap_src.getHeight());
+        bitmap = Bitmap.createScaledBitmap(bitmap_src,targetX,targetY,true);
+    }
+
+    /**
+     * Inits default values.
+     */
+
+    private void initDefaults(){
+        xFocus = bitmap.getWidth()/2f;
+        yFocus = bitmap.getHeight()/2f;
+        scaleFactor = 1.0f;
+        zoomGestureListener = new ZoomGestureListener();
+        scaleGestureDetector = new ScaleGestureDetector(context,zoomGestureListener);
     }
 
     /**
@@ -209,7 +241,11 @@ public class ZoomableImageView {
         if ((newbitmap.getHeight()!=bitmap.getHeight()) || (newbitmap.getWidth()!=bitmap.getWidth())){
             initDefaults();
         }
-        this.bitmap = newbitmap.copy(Bitmap.Config.ARGB_8888,true);
+        if (fillViewPort){
+            scaleBitmapToFillViewPort(newbitmap);
+        } else {
+            this.bitmap = newbitmap.copy(Bitmap.Config.ARGB_8888,true);
+        }
         redrawBitmap();
     }
 
@@ -350,8 +386,9 @@ public class ZoomableImageView {
      */
 
     public boolean onTouchEvent(MotionEvent motionEvent){
-        int widthVisible  = Math.round(bitmap.getWidth()*scaleFactor);
-        int heightVisible = Math.round(bitmap.getHeight()*scaleFactor);
+        int widthVisible  = Math.round(imageViewWidth * scaleFactor);
+        int heightVisible = Math.round(imageViewHeight * scaleFactor);
+
         lastPressX = motionEvent.getX()/imageView.getWidth()*widthVisible+(xFocus-widthVisible/2);
         lastPressY = motionEvent.getY()/imageView.getHeight()*heightVisible+(yFocus-heightVisible/2);
         scaleGestureDetector.onTouchEvent(motionEvent);
@@ -369,30 +406,7 @@ public class ZoomableImageView {
         if (motionEvent.getAction() == MotionEvent.ACTION_UP){
             onGestureFinished(scaleFactor,lastPressX,lastPressY,getXFocus(),getYFocus(),getRelativeXFocus(),getRelativeYFocus(),temporaryVisibleArea);
         }
-
         return true;
-    }
-
-    /**
-     * Inits default values.
-     */
-
-    private void initDefaults(){
-        xFocus = bitmap.getWidth()/2f;
-        yFocus = bitmap.getHeight()/2f;
-        scaleFactor = 1.0f;
-        zoomGestureListener = new ZoomGestureListener();
-        scaleGestureDetector = new ScaleGestureDetector(context,zoomGestureListener);
-        if ((imageViewHeight==0) || (imageViewWidth==0)){
-            imageView.post(new Runnable() {
-                @Override
-                public void run() {
-                    imageViewWidth  = imageView.getWidth();
-                    imageViewHeight = imageView.getHeight();
-                    redrawBitmap();
-                }
-            });
-        }
     }
 
     /**
@@ -402,8 +416,9 @@ public class ZoomableImageView {
      */
 
     private void redrawBitmap(float scaleFactor){
-        int widthVisible  = Math.round(bitmap.getWidth()*scaleFactor);
-        int heightVisible = Math.round(bitmap.getHeight()*scaleFactor);
+        int widthVisible  = Math.round(imageViewWidth * scaleFactor);
+        int heightVisible = Math.round(imageViewHeight * scaleFactor);
+
         int left = Math.round((xFocus - widthVisible/2f));
         int top = Math.round((yFocus - heightVisible/2f));
         // fail-safe boundaries
@@ -484,13 +499,10 @@ public class ZoomableImageView {
      */
 
     private void moveMap(float xDelta, float yDelta){
-
-        int widthVisible  = Math.round(bitmap.getWidth()*scaleFactor);
-        int heightVisible = Math.round(bitmap.getHeight()*scaleFactor);
-
+        int widthVisible  = Math.round(imageViewWidth * scaleFactor);
+        int heightVisible = Math.round(imageViewHeight * scaleFactor);
         xFocus = xFocus + (xDelta/ imageView.getWidth())*widthVisible;
         yFocus = yFocus + (yDelta/ imageView.getHeight())*heightVisible;
-
         float rightBound = bitmap.getWidth()-widthVisible/2f;
         float leftBound  = widthVisible/2f;
         float topBound = heightVisible/2f;

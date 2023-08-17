@@ -114,6 +114,7 @@
                 android:layout_alignParentBottom="true"/>
 
         <ImageView
+                android:background="@color/colorAccentCyan_Solarized"
                 android:id="@+id/wlm_map"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -122,7 +123,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
                 android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
+                android:scaleType="center"
                 android:layout_below="@id/wlm_spinnerholder"
                 android:layout_above="@id/wlm_legend">
         </ImageView>

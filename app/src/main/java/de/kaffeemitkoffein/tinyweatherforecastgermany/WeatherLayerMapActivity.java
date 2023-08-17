@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.*;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.util.ArrayList;
@@ -406,7 +407,7 @@ public class WeatherLayerMapActivity extends Activity {
         Bitmap visibleBitmap = weatherLayer.getLayerBitmap(context);
         // layer might be null due to day-update shifts
         if (visibleBitmap!=null){
-            zoomableImageView = new ZoomableImageView(context,mapImageView,visibleBitmap,false){
+            zoomableImageView = new ZoomableImageView(context,mapImageView,visibleBitmap,true){
                 @Override
                 public void onGestureFinished(float scaleFactor, float lastPressX, float lastPressY, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
                     // things to do after gesture finished.
@@ -416,6 +417,8 @@ public class WeatherLayerMapActivity extends Activity {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     zoomableImageView.onTouchEvent(motionEvent);
+                    //Log.v("twfg","-------------");
+                    //
                     return true;
                 }
             });
