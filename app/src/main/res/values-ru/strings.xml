@@ -429,4 +429,6 @@
     <string name="pollen_load6">высокая</string>
     <string name="clear_sky">чистое небо</string>
     <string name="welcome_s4_showuv">Загрузка и отображение индекса опасности ультрафиолетового излучения для вашего местоположения.</string>
+    <string name="preference_screen_pollen_rye_summary">Отображение прогноза количества пыльцы ржи.</string>
+    <string name="wd_probablity_precipitation_amounts">Вероятность количества осадков</string>
 </resources>
