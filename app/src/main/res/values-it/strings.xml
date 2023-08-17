@@ -430,4 +430,6 @@
     <string name="pollen_load6">alto</string>
     <string name="clear_sky">cielo sereno</string>
     <string name="welcome_s4_showuv">Carica e visualizza l\'indice di pericolo UV per la propria località.</string>
+    <string name="preference_screen_pollen_rye_summary">Visualizzare la previsione del conteggio dei pollini di segale.</string>
+    <string name="wd_probablity_precipitation_amounts">Probabilità di quantità di precipitazioni</string>
 </resources>
