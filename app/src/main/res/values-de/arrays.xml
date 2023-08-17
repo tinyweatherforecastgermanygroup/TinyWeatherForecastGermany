@@ -115,4 +115,18 @@
         <item>extreme Unwetterwarnung</item>
     </string-array>
 
+    <string-array name="display_rotation_text">
+        <item>Gerätedrehung</item>
+        <item>Hochkant</item>
+        <item>Waagerecht</item>
+    </string-array>
+
+    <string-array name="theme_text">
+        <item>Dunkel</item>
+        <item>Hell</item>
+        <item>Solarized dunkel</item>
+        <item>Solarized hell</item>
+        <item>automatisch (basierend auf den Geräteeinstellungen)</item>
+    </string-array>
+
 </resources>
