@@ -405,4 +405,5 @@
     <string name="pollen_load6">høy</string>
     <string name="clear_sky">klar himmel</string>
     <string name="welcome_s4_showuv">Last inn og vis UV-fareindeksen for stedet der du befinner deg.</string>
+    <string name="wd_probablity_precipitation_amounts">Sannsynlighet for nedbørsmengder</string>
 </resources>
