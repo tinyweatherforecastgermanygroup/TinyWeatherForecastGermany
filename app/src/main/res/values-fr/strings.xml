@@ -444,4 +444,5 @@
     <string name="pollen_load6">haut</string>
     <string name="clear_sky">ciel dégagé</string>
     <string name="welcome_s4_showuv">Chargement et affichage de l\'indice de risque UV pour votre emplacement.</string>
+    <string name="wd_probablity_precipitation_amounts">Probabilité de précipitations</string>
 </resources>
