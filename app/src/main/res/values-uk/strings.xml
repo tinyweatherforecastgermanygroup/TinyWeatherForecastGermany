@@ -430,4 +430,5 @@
     <string name="pollen_load6">високий</string>
     <string name="clear_sky">чисте небо</string>
     <string name="welcome_s4_showuv">Завантажте та відобразіть індекс небезпеки ультрафіолетового випромінювання для вашого місцезнаходження.</string>
+    <string name="wd_probablity_precipitation_amounts">Ймовірність кількості опадів</string>
 </resources>
