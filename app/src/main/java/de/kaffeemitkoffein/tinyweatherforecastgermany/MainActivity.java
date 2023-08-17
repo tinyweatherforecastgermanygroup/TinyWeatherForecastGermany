@@ -1011,14 +1011,14 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         TextView textView_update_time = (TextView) findViewById(R.id.main_update_time);
         textView_update_time.setText(getApplicationContext().getResources().getString(R.string.main_updatetime)+" "+updatetime);
         TextView textView_station_geo = (TextView) findViewById(R.id.main_station_geo);
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-        if (weatherSettings.display_station_geo){
+        if (WeatherSettings.displayStationGeo(context)){
             try {
+                Weather.WeatherLocation stationLocation = WeatherSettings.getSetStationLocation(context);
                 String stationInfoString = getApplicationContext().getResources().getString(R.string.station)+
-                        " Lat.: "+new DecimalFormat("0.00").format(weatherSettings.latitude)+
-                        " Long.: "+new DecimalFormat("0.00").format(weatherSettings.longitude)+
-                        " Alt.: "+new DecimalFormat("0.00").format(weatherSettings.altitude);
-                if (weatherSettings.stationType==RawWeatherInfo.Source.DMO){
+                        " Lat.: "+new DecimalFormat("0.00").format(stationLocation.latitude)+
+                        " Long.: "+new DecimalFormat("0.00").format(stationLocation.longitude)+
+                        " Alt.: "+new DecimalFormat("0.00").format(stationLocation.altitude);
+                if (stationLocation.type==RawWeatherInfo.Source.DMO){
                     stationInfoString=stationInfoString+ " (DMO)";
                 }
                 textView_station_geo.setText(stationInfoString);
@@ -1027,7 +1027,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 textView_station_geo.setText("-");
             }
         } else {
-            textView_station_geo.setVisibility(View.INVISIBLE);
+            textView_station_geo.setVisibility(View.GONE);
             textView_station_geo.invalidate();
         }
         final ImageView overviewChartImageView = (ImageView) findViewById(R.id.main_overview_chart);

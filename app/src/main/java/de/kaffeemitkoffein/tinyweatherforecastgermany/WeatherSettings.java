@@ -749,6 +749,11 @@ public class WeatherSettings {
         pref_editor.commit();
     }
 
+    public static boolean displayStationGeo(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_STATION_GEO,PREF_DISPLAY_STATION_GEO_DEFAULT);
+    }
+
     public static Weather.WeatherLocation getSetStationLocation(Context context) {
         Weather.WeatherLocation weatherLocation = new Weather.WeatherLocation();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
