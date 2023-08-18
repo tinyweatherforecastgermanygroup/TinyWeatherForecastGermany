@@ -23,6 +23,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.*;
+import android.content.ClipboardManager;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -35,10 +36,7 @@ import android.os.Bundle;
 import android.app.*;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.InputType;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
+import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
@@ -1700,12 +1698,60 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         if (!hasLocationPermission() && WeatherSettings.askedForLocationPermission(context)){
             // user actively denied permissions
             useGPS.setChecked(false);
-            // useGPS.setActivated(false);
-            // useGPS.setClickable(false);
             WeatherSettings.setUSEGPSFlag(getApplicationContext(),false);
         }
         final EditText text_latitude = view.findViewById(R.id.geoinput_edit_latitude);
         final EditText text_longitude = view.findViewById(R.id.geoinput_edit_longitude);
+        // a tag of "null" means that the values were modified manually by the user
+        final Location location = weatherLocationManager.getLastKnownLocation();
+        if (location!=null){
+            // fake last location to hamburg for debugging
+            // location.setLatitude(53.57530); location.setLongitude(10.01530);
+            text_longitude.setText(new DecimalFormat("000.00000").format(location.getLongitude()));
+            text_latitude.setText(new DecimalFormat("00.00000").format(location.getLatitude()));
+            TextView gps_known_knote = view.findViewById(R.id.geoinput_known_note);
+            gps_known_knote.setVisibility(View.VISIBLE);
+            final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
+            gps_known_knote.setText(getApplicationContext().getResources().getString(R.string.geoinput_known_note)+" "+simpleDateFormat.format(location.getTime()));
+        }
+        text_latitude.setTag("autofill"); text_longitude.setTag("autofill");
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                text_latitude.setTag(null);
+                text_longitude.setTag(null);
+            }
+        };
+        text_latitude.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    text_latitude.setTag(null);
+                }
+            });
+        text_longitude.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                text_longitude.setTag(null);
+            }
+        });
         useGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -1734,20 +1780,36 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                     }
                 } else {
                     Location own_location = new Location("manual");
-                    own_location.setTime(Calendar.getInstance().getTimeInMillis());
-                    try {
-                        double latitude = Location.convert(standardizeGeo(text_latitude.getText().toString()));
-                        double longitude = Location.convert(standardizeGeo(text_longitude.getText().toString()));
-                        own_location.setLatitude(latitude);
-                        own_location.setLongitude(longitude);
-                        if ((latitude>=-90) && (latitude<=90) && (longitude>=-180) && (longitude<=180)) {
-                            launchStationSearchByLocation(own_location);
-                        } else {
-                            showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongvalue));
+                    if (location!=null){
+                        // copy location known location if it exists to preserve timestamp from when it is
+                        own_location = new Location(location);
+                    }
+                    // check if latitude was modified by the user
+                    if (text_latitude.getTag()==null){
+                        own_location.setTime(0);
+                        try {
+                            double latitude = Location.convert(standardizeGeo(text_latitude.getText().toString()));
+                            own_location.setLatitude(latitude);
+                        } catch (Exception e) {
+                            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Error parsing geo input: "+e.getMessage());
+                            showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongformat));
                         }
-                    } catch (Exception e) {
-                        PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Error parsing geo input: "+e.getMessage());
-                        showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongformat));
+                    }
+                    // check if longitude was modified by the user
+                    if (text_longitude.getTag()==null){
+                        own_location.setTime(0);
+                        try {
+                            double longitude = Location.convert(standardizeGeo(text_longitude.getText().toString()));
+                            own_location.setLongitude(longitude);
+                        } catch (Exception e) {
+                            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Error parsing geo input: "+e.getMessage());
+                            showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongformat));
+                        }
+                    }
+                    if ((own_location.getLatitude()>=-90) && (own_location.getLatitude()<=90) && (own_location.getLongitude()>=-180) && (own_location.getLongitude()<=180)) {
+                        launchStationSearchByLocation(own_location);
+                    } else {
+                        showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongvalue));
                     }
                 }
             }
@@ -1761,17 +1823,6 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
         useGPS.setChecked(WeatherSettings.getUseGPSFlag(getApplicationContext()));
-        Location location = weatherLocationManager.getLastKnownLocation();
-        if (location!=null){
-            // fake last location to hamburg
-                location.setLatitude(53.57530); location.setLongitude(10.01530);
-            text_longitude.setText(new DecimalFormat("000.00000").format(location.getLongitude()));
-            text_latitude.setText(new DecimalFormat("00.00000").format(location.getLatitude()));
-            TextView gps_known_knote = view.findViewById(R.id.geoinput_known_note);
-            gps_known_knote.setVisibility(View.VISIBLE);
-            final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
-            gps_known_knote.setText(getApplicationContext().getResources().getString(R.string.geoinput_known_note)+" "+simpleDateFormat.format(location.getTime()));
-        }
     }
 
     private void launchStationSearchByLocation(final Location own_location){
@@ -1842,9 +1893,14 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             if (time!=0){
                 textView_time.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_time)+" "+simpleDateFormat.format(new Date(time)));
             } else {
-                // do not display time if time is unknown in Location data
-                String s = own_location.getExtras().getString(Weather.WeatherLocation.EXTRAS_NAME,"");
-                textView_time.setText(s);
+                // do not display time if coordinates were entered manually
+                String s = own_location.getExtras().getString(Weather.WeatherLocation.EXTRAS_NAME,null);
+                if (s!=null){
+                    textView_time.setVisibility(View.VISIBLE);
+                    textView_time.setText(s);
+                } else {
+                    textView_time.setVisibility(View.GONE);
+                }
             }
             builder.setView(view);
             builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {

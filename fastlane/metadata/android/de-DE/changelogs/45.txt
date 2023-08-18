@@ -1,0 +1,8 @@
+- Wetterwarnungen können nun geteilt werden
+- Datenstand wird in lokaler Zeit (nicht UTC) angezeigt
+- Übersichtsgrafik-Widget nutzt nach Gerätedrehung den verfügbaren Platz vollständig
+- größere Schrift in den Wetterdetails, abgeschnittene Vorhersage auf einigen Geräten behoben
+- Karten nutzen nun den verfügbaren Platz besser
+- erweitertes Logging der Gadgetbridge-API mit Niederschlag & UV-Gefahrenindex
+- weitere Verbesserungen der Benutzeroberfläche
+- verbesserte Übersetzungen

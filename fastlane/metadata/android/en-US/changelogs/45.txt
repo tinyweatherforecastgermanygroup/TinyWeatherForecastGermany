@@ -1,0 +1,8 @@
+- Weather alerts can now be shared
+- data status is now displayed in local time (not UTC)
+- widget with overview graph fully uses available space after device rotation
+- larger font in weather details, fixed truncated forecast on some devices
+- maps now better use the available space
+- enhanced logging of the Gadgetbridge API including precipitation & UV hazard index
+- further user interface improvements
+- improved translations

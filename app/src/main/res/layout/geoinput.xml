@@ -31,10 +31,24 @@
         android:background="?attr/colorPrimaryDark"
         android:padding="3dp">
 
+        <TextView
+                android:id="@+id/geoinput_known_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorAccent"
+                android:textSize="@dimen/geo_textsize_medium"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="6dp"
+                android:visibility="gone"
+                android:text="@string/geoinput_known_note"/>
+
+
         <LinearLayout
             android:id="@+id/geoinput_globeholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/geoinput_known_note"
             android:weightSum="5"
             android:orientation="horizontal">
 
@@ -44,18 +58,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/geoinput_known_note"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/colorAccent"
-                    android:textSize="@dimen/geo_textsize_medium"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignLeft="@id/geoinput_globe"
-                    android:layout_marginBottom="6dp"
-                    android:visibility="gone"
-                    android:text="@string/geoinput_known_note"/>
 
                 <TextView
                     android:id="@+id/geoinput_text_latitude"
