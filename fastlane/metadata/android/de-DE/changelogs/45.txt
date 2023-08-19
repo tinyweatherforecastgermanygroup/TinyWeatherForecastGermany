@@ -1,4 +1,4 @@
-- Wetterwarnungen können nun geteilt werden
+- Wetterwarnungen können geteilt werden
 - Datenstand wird in lokaler Zeit (nicht UTC) angezeigt
 - Übersichtsgrafik-Widget nutzt nach Gerätedrehung den verfügbaren Platz vollständig
 - größere Schrift in den Wetterdetails, abgeschnittene Vorhersage auf einigen Geräten behoben

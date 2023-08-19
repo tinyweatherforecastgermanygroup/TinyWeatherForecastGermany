@@ -57,6 +57,14 @@
             android:textSize="@dimen/welcome_text_size"
             android:paddingBottom="@dimen/welcome_text_padding"/>
 
+        <ImageView
+                android:id="@+id/welcome_screen1_gplimage"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/gplv3"/>
+
         <TextView
             android:id="@+id/welcome_screen1_text2"
             android:layout_width="wrap_content"

@@ -28,6 +28,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.*;
+import android.util.Log;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
@@ -108,6 +109,8 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                     WidgetRefresher.refreshChartWidget(context);
                 }
                 if (s.equals(WeatherSettings.PREF_THEME)) {
+                    WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
+                    Log.v("twfg","* UPDATE VIEWS SET");
                     WidgetRefresher.refresh(context);
                     recreate();
                 }
@@ -121,29 +124,25 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 if (s.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (s.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
                     WidgetRefresher.refresh(context.getApplicationContext());
                 }
-                if (s.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)){
-                    WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
-                }
                 // invalidate weather display because the display options have changed
                 if (s.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (s.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (s.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
                         (s.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (s.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (s.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT)) ||
                         s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART) || s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS) || (s.equals(WeatherSettings.PREF_VIEWMODEL)) ||
-                        (s.equals(WeatherSettings.PREF_UVHI_MAINDISPLAY))){
-                    WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
-                }
-                // invalidate weather display and widgets
-                if ((s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
-                    // on 1st app call, weatherCard can be still null
-                    WidgetRefresher.refresh(getApplicationContext());
-                    WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
+                        (s.equals(WeatherSettings.PREF_UVHI_MAINDISPLAY)) || (s.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)) ||
+                        (s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
+                    if (WeatherSettings.getWeatherUpdatedFlag(context)!=WeatherSettings.UpdateType.VIEWS){
+                        WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
+                        Log.v("twfg","* UPDATE DATA SET");
+                    }
+                    // invalidate weather display and widgets
+                    if ((s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
+                        WidgetRefresher.refresh(getApplicationContext());
+                    }
                 }
                 if (s.equals(WeatherSettings.PREF_UVHI_FETCH_DATA)){
                     if (!Weather.hasUVHIData(context)){
                             forcedWeatherUpdate();
                     }
-                }
-                if (s.equals(WeatherSettings.PREF_THEME)){
-                    WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
                 }
             }
         }

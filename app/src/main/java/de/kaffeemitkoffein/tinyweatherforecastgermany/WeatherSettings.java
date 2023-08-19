@@ -1849,9 +1849,6 @@ public class WeatherSettings {
     public static int getWeatherUpdatedFlag(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int result = sharedPreferences.getInt(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putInt(PREF_WEATHERUPDATEDFLAG, PREF_WEATHERUPDATEDFLAG_DEFAULT);
-        pref_editor.apply();
         return result;
     }
 
@@ -1860,6 +1857,7 @@ public class WeatherSettings {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putInt(PREF_WEATHERUPDATEDFLAG, flag);
         pref_editor.apply();
+
     }
 
 

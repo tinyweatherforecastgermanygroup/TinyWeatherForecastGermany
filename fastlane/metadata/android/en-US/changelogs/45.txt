@@ -1,4 +1,4 @@
-- Weather alerts can now be shared
+- Weather alerts can be shared
 - data status is now displayed in local time (not UTC)
 - widget with overview graph fully uses available space after device rotation
 - larger font in weather details, fixed truncated forecast on some devices
