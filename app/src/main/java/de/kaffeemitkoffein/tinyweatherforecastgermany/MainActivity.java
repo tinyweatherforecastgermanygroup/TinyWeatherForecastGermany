@@ -40,7 +40,6 @@ import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -392,19 +391,15 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app resumed.");
         registerForBroadcast();
         // this is necessary if the update of weather data occurs while the app is in the background
-        Log.v("twfg","* onResume");
         try {
             int weatherUpdateFlag = WeatherSettings.getWeatherUpdatedFlag(context);
             if (weatherCard==null || weatherUpdateFlag!=WeatherSettings.UpdateType.NONE){
-                Log.v("twfg","* update needed");
-                if (weatherUpdateFlag==WeatherSettings.UpdateType.DATA){
-                    Log.v("twfg","* update DATA");
+                if (weatherUpdateFlag==WeatherSettings.UpdateType.DATA){;
                     weatherCard = Weather.getCurrentWeatherInfo(this);
                     displayWeatherForecast();
                     WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
                 }
                 if (weatherUpdateFlag==WeatherSettings.UpdateType.VIEWS){
-                    Log.v("twfg","* update VIEWS");
                     WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
                     recreate();
                 }

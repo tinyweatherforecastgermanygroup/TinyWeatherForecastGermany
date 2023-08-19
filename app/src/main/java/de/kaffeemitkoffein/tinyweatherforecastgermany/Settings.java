@@ -28,7 +28,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.*;
-import android.util.Log;
 import android.widget.Toast;
 
 @SuppressWarnings("deprecation")
@@ -110,7 +109,6 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 }
                 if (s.equals(WeatherSettings.PREF_THEME)) {
                     WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
-                    Log.v("twfg","* UPDATE VIEWS SET");
                     WidgetRefresher.refresh(context);
                     recreate();
                 }
@@ -132,7 +130,6 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         (s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
                     if (WeatherSettings.getWeatherUpdatedFlag(context)!=WeatherSettings.UpdateType.VIEWS){
                         WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
-                        Log.v("twfg","* UPDATE DATA SET");
                     }
                     // invalidate weather display and widgets
                     if ((s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
