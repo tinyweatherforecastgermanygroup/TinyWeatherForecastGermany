@@ -63,6 +63,11 @@ public class NumberPickerPreference extends DialogPreference {
             numberPicker.setMaxValue(7);
             numberPicker.setDisplayedValues(maxValues);
         }
+        if (getKey().equals(WeatherSettings.PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS)){
+            numberPicker.setMinValue(0);
+            numberPicker.setMaxValue(255);
+            //numberPicker.setDisplayedValues(maxValues);
+        }
         numberPicker.setValue(getPersistedInt(10));
         return numberPicker;
     }

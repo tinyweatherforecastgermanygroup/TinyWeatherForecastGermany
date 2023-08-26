@@ -117,6 +117,8 @@
     <string name="preference_displaynoteinwidget_summary">Show the data source string.</string>
     <string name="preference_cache_warnings_title">Cache warnings</string>
     <string name="preference_cache_warnings_summary">How long warnings should be displayed without re-loading from the Deutscher Wetterdienst.</string>
+    <string name="preference_max_loc_in_shared_warnings_title">Locations to share</string>
+    <string name="preference_max_loc_in_shared_warnings_summary">Number of affected locations to share. Enter zero to share all. Current value:</string>
     <string name="preference_disable_warnings_title">Disable warnings</string>
     <string name="preference_disable_warnings_summary">Do not display weather warnings.</string>
     <string name="preference_screen_display_title">Display settings</string>

@@ -22,6 +22,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.Color;
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
+import java.util.Locale;
 
 public class WeatherWarning implements Comparable<WeatherWarning> {
 
@@ -258,12 +260,17 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
     public String getPlainTextWarning(Context context, boolean includeCredentials){
         String newLine = System.getProperty("line.separator");
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(WeatherSettings.getSetStationLocation(context).description.toUpperCase(Locale.getDefault()));
+        stringBuilder.append(": ");
+        stringBuilder.append(this.description);
+        stringBuilder.append(newLine);
+        stringBuilder.append(newLine);
         stringBuilder.append(WeatherWarningAdapter.formatTime(this.effective)); stringBuilder.append(" ");
         stringBuilder.append(this.status);
         stringBuilder.append(" ");
         stringBuilder.append(this.msgType);
         stringBuilder.append(newLine);
-        stringBuilder.append(this.event);
+        stringBuilder.append(this.event.toUpperCase(Locale.getDefault()));
         stringBuilder.append(newLine);
         stringBuilder.append(getUnderlineString(this.event,"="));
         stringBuilder.append(newLine);
@@ -276,21 +283,34 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         stringBuilder.append(this.certainty);
         stringBuilder.append(newLine);
         stringBuilder.append("> ");
-        for (int i=0; i<this.area_names.size(); i++){
+        boolean limitLocationsInWarnings = true;
+        int max_locations = WeatherSettings.getMaxLocationsInSharedWarnings(context);
+        int locationCount = 0;
+        // if zero, do not limit location count but set to arraylist length
+        if (max_locations == 0){
+            limitLocationsInWarnings = false;
+            max_locations = area_names.size();
+        }
+        for (int i=0; ((i<this.area_names.size()) && (i<max_locations)); i++){
             stringBuilder.append(this.area_names.get(i));
             if (i<this.area_names.size()-1){
                 stringBuilder.append(", ");
             }
+            locationCount++;
+        }
+        if ((limitLocationsInWarnings) && (locationCount<this.area_names.size())){
+            stringBuilder.append("…");
         }
         stringBuilder.append(newLine); stringBuilder.append(newLine);
         stringBuilder.append(this.headline);
         stringBuilder.append(newLine);
-        stringBuilder.append(getUnderlineString(this.headline,"=")); stringBuilder.append(newLine);
+        stringBuilder.append(getUnderlineString(this.headline,"="));
         stringBuilder.append(newLine);
-        stringBuilder.append(this.description);
-        stringBuilder.append(newLine); stringBuilder.append(newLine);
-        stringBuilder.append(this.instruction);
-        stringBuilder.append(newLine); stringBuilder.append(newLine);
+        stringBuilder.append(newLine);
+        if (this.instruction.trim().length()>0){
+            stringBuilder.append(this.instruction);
+            stringBuilder.append(newLine); stringBuilder.append(newLine);
+        }
         if ((this.parameter_names!=null) && (this.parameter_values!=null)){
             for (int i=0; i<this.parameter_names.size() && i<this.parameter_values.size(); i++){
                 stringBuilder.append(this.parameter_names.get(i)); stringBuilder.append(": ");

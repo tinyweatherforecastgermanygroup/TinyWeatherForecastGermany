@@ -374,7 +374,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
         }
         // allow changing alarm state?
         setAlarmSettingAllowed();
-        // allow warinings in widget setting?
+        // allow warnings in widget setting?
         setShowWarningsInWidgetAllowed();
         setNotifyWarnings();
         setNotifySeverity();
@@ -464,7 +464,10 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 preferenceCategoryGeneral.removePreference(wifiOnly);
             }
         }
-
+        NumberPickerPreference locationsToShare = (NumberPickerPreference) findPreference(WeatherSettings.PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS);
+        if (locationsToShare!=null){
+            locationsToShare.setSummary(getResources().getString(R.string.preference_max_loc_in_shared_warnings_summary)+" "+WeatherSettings.getMaxLocationsInSharedWarnings(context));
+        }
      }
 
     @Override

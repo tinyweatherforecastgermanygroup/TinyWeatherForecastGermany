@@ -160,7 +160,7 @@ public class WeatherSettings {
     public static final String PREF_UVHI_FETCH_DATA ="PREF_uvhi_fetch_data";
     public static final String PREF_UVHI_MAINDISPLAY="PREF_uvhi_maindisplay";
     public static final String PREF_WEATHERUPDATEDFLAG="PREF_weather_updated";
-
+    public static final String PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS = "PREF_max_loc_in_shared_warnings";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -262,6 +262,8 @@ public class WeatherSettings {
     public static final boolean PREF_UVHI_FETCH_DATA_DEFAULT = false;
     public static final boolean PREF_UVHI_MAINDISPLAY_DEFAULT = false;
     public static final int PREF_WEATHERUPDATEDFLAG_DEFAULT = UpdateType.NONE;
+    public static final int PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT = 12;
+
 
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
@@ -359,6 +361,8 @@ public class WeatherSettings {
     public boolean UVHIfetch = PREF_UVHI_FETCH_DATA_DEFAULT;
     public boolean UVHIdisplayMain = PREF_UVHI_MAINDISPLAY_DEFAULT;
     public int weatherUpdatedFlag = PREF_WEATHERUPDATEDFLAG_DEFAULT;
+    public int maxLocationsInSharedWarnings = PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT;
+
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -460,6 +464,7 @@ public class WeatherSettings {
         this.UVHIfetch = readPreference(PREF_UVHI_FETCH_DATA,PREF_UVHI_FETCH_DATA_DEFAULT);
         this.UVHIdisplayMain = readPreference(PREF_UVHI_MAINDISPLAY,PREF_UVHI_MAINDISPLAY_DEFAULT);
         this.weatherUpdatedFlag = readPreference(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
+        this.maxLocationsInSharedWarnings = readPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT);
     }
 
     public void savePreferences() {
@@ -552,6 +557,7 @@ public class WeatherSettings {
         applyPreference(PREF_UVHI_FETCH_DATA,UVHIfetch);
         applyPreference(PREF_UVHI_MAINDISPLAY,UVHIdisplayMain);
         applyPreference(PREF_WEATHERUPDATEDFLAG,weatherUpdatedFlag);
+        applyPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,maxLocationsInSharedWarnings);
     }
 
     public void commitPreferences() {
@@ -644,6 +650,7 @@ public class WeatherSettings {
         commitPreference(PREF_UVHI_FETCH_DATA,UVHIfetch);
         commitPreference(PREF_UVHI_MAINDISPLAY,UVHIdisplayMain);
         commitPreference(PREF_WEATHERUPDATEDFLAG,weatherUpdatedFlag);
+        commitPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,maxLocationsInSharedWarnings);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -1860,5 +1867,10 @@ public class WeatherSettings {
 
     }
 
+    public static int getMaxLocationsInSharedWarnings(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int result = sharedPreferences.getInt(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT);
+        return result;
+    }
 
 }

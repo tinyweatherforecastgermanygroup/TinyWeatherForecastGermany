@@ -499,7 +499,7 @@ public class DataUpdateService extends Service {
         String notificationBody = weatherWarning.description;
         String expires = WeatherWarnings.getExpiresMiniString(context,weatherWarning);
         expires = expires.replaceFirst(String.valueOf(expires.charAt(0)),String.valueOf(expires.charAt(0)).toUpperCase());
-        notificationBody = WeatherSettings.getSetStationLocation(context).description.toUpperCase(Locale.ROOT)+": "+notificationBody + " ("+expires+".)";
+        notificationBody = WeatherSettings.getSetStationLocation(context).description.toUpperCase(Locale.getDefault())+": "+notificationBody + " ("+expires+".)";
         // construct pending intent for sharing
         PendingIntent shareWarningPendingIntent = getWarningPendingIntent(context,weatherWarning);
         Notification n;
