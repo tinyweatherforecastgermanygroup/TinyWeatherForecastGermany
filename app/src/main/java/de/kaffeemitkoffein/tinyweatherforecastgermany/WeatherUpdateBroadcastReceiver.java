@@ -19,9 +19,18 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.util.Log;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
 
@@ -29,17 +38,35 @@ public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"received a broadcast to update weather data.");
+        PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "received a broadcast to update weather data.");
         if (intent != null) {
-            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"+-> intent not null.");
+            PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "+-> intent not null.");
             String action = intent.getAction();
-            if (action != null){
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"+-> intent has an action.");
+            if (action != null) {
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "+-> intent has an action.");
             }
             if (intent.getAction().equals(UPDATE_ACTION)) {
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"+-> action is a update request.");
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.CHECK_FOR_UPDATE,null);
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "+-> action is a update request.");
+                checkForLocation(context);
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context, UpdateAlarmManager.CHECK_FOR_UPDATE, null);
             }
         }
     }
+
+    @SuppressLint("MissingPermission")
+    private void checkForLocation(Context context) {
+        String message = "* LOCATION CHECK: " + Weather.SIMPLEDATEFORMATS.TIME.format(new Date(Calendar.getInstance().getTimeInMillis()));
+        Log.v("twfg", message);
+        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,message);
+        if (WeatherLocationManager.hasLocationPermission(context)){
+            Location location = WeatherLocationManager.getLastKnownLocation(context);
+            if (location!=null){
+                Log.v("twfg","* NEW LOCATION: "+location.toString());
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"* NEW LOCATION: "+location.toString());
+            }
+        }
+
+
+    }
+
 }

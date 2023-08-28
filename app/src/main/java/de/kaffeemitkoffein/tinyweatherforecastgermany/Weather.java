@@ -1316,6 +1316,11 @@ public final class Weather {
             return td;
         }
 
+        public int getTdInCelsiusInt(){
+            double value = td - KelvinConstant;
+            return (int) Math.round(value);
+        }
+
         public boolean hasRH(){
             if ((temperature==null) || (td==null)){
                 return false;

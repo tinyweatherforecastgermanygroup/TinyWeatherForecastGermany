@@ -152,7 +152,7 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
         }
     }
 
-    private static boolean hasLocationPermission(Context context){
+    public static boolean hasLocationPermission(Context context){
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             {
@@ -196,7 +196,7 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
     };
 
     @SuppressLint("MissingPermission")
-    public Location getLastKnownLocation(){
+    public static Location getLastKnownLocation(Context context){
         Location location = null;
         if (hasLocationPermission(context)) {
             final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -261,7 +261,7 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
 
     public void checkLocation(){
         if (WeatherSettings.GPSAuto(context)){
-            Location lastKnownLocation = getLastKnownLocation();
+            Location lastKnownLocation = getLastKnownLocation(context);
             if (lastKnownLocation!=null){
                 if ((!WeatherSettings.isGPSFixOutdated(context,lastKnownLocation.getTime())) && (lastKnownLocation.getTime()>WeatherSettings.getlastGPSfixtime(context))){
                     newLocation(lastKnownLocation);

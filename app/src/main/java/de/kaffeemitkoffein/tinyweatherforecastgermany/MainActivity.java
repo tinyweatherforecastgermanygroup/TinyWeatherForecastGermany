@@ -1705,7 +1705,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         final EditText text_latitude = view.findViewById(R.id.geoinput_edit_latitude);
         final EditText text_longitude = view.findViewById(R.id.geoinput_edit_longitude);
         // a tag of "null" means that the values were modified manually by the user
-        final Location location = weatherLocationManager.getLastKnownLocation();
+        final Location location = weatherLocationManager.getLastKnownLocation(context);
         if (location!=null){
             // fake last location to hamburg for debugging
             // location.setLatitude(53.57530); location.setLongitude(10.01530);
