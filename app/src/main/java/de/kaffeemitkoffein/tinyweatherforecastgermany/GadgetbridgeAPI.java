@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 import nodomain.freeyourgadget.gadgetbridge.model.WeatherSpec;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GadgetbridgeAPI {
@@ -81,21 +83,91 @@ public class GadgetbridgeAPI {
             if (weatherCard.currentWeather.hasUvHazardIndex()){
                 weatherSpec.uvIndex = weatherCard.currentWeather.getUvHazardIndex();
             }
+            if (weatherCard.currentWeather.hasTd()){
+                weatherSpec.dewPoint = (int) Math.round(weatherCard.currentWeather.getTd());
+            }
+            if (weatherCard.currentWeather.hasPressure()){
+                weatherSpec.pressure = weatherCard.currentWeather.getPressure();
+            }
+            if (weatherCard.currentWeather.hasClouds()){
+                weatherSpec.cloudCover = weatherCard.currentWeather.getClouds();
+            }
+            if (weatherCard.currentWeather.hasVisibility()){
+                weatherSpec.visibility = weatherCard.currentWeather.getVisibilityInMetres();
+            }
+            weatherSpec.sunRise  = (int) (Weather.getSunriseInUTC(weatherCard.weatherLocation,weatherCard.currentWeather)/1000);
+            weatherSpec.sunSet   = (int) (Weather.getSunsetInUTC(weatherCard.weatherLocation,weatherCard.currentWeather)/1000);
+            weatherSpec.moonRise = (int) (Weather.getMoonRiseInUTC(weatherCard.weatherLocation,weatherCard.currentWeather)/1000);
+            weatherSpec.moonSet  = (int) (Weather.getMoonSetInUTC(weatherCard.weatherLocation,weatherCard.currentWeather)/1000);
+            weatherSpec.moonPhase = Weather.getMoonPhase(weatherCard.currentWeather.getTimestamp());
+            weatherSpec.latitude = (float) weatherCard.weatherLocation.latitude;
+            weatherSpec.longitude = (float) weatherCard.weatherLocation.longitude;
+            weatherSpec.isCurrentLocation = -1;
+
             // build the forecast instance, ingore 1st entry (current day)
-            for (int i=1; i<weatherCard.forecast24hourly.size(); i++){
-                // do not add and/or stop adding forecast if values are unknown
-                if (!weatherCard.forecast24hourly.get(i).hasMinTemperature()||
-                        (!weatherCard.forecast24hourly.get(i).hasMaxTemperature())||
-                        (!weatherCard.forecast24hourly.get(i).hasCondition())||
-                        (!weatherCard.forecast24hourly.get(i).hasRH())){
-                    break;
+            weatherSpec.hourly = new ArrayList<WeatherSpec.Hourly>();
+            for (int i=1; i<weatherCard.forecast1hourly.size(); i++){
+                WeatherSpec.Hourly hourly = new WeatherSpec.Hourly();
+                Weather.WeatherInfo weatherInfo = weatherCard.forecast1hourly.get(i);
+                hourly.timestamp = (int) (weatherInfo.getTimestamp()/1000);
+                if (weatherInfo.hasTemperature()){
+                    hourly.temp = weatherInfo.getTemperatureInt();
                 }
-                WeatherSpec.Forecast forecast = new WeatherSpec.Forecast(
-                        weatherCard.forecast24hourly.get(i).getMinTemperatureInt(),
-                        weatherCard.forecast24hourly.get(i).getMaxTemperatureInt(),
-                        WeatherCodeContract.translateToOpenWeatherCode(weatherCard.forecast24hourly.get(i).getCondition()),
-                        weatherCard.forecast24hourly.get(i).getRHInt());
-                weatherSpec.forecasts.add(forecast);
+                if (weatherInfo.hasCondition()){
+                    hourly.conditionCode = WeatherCodeContract.translateToOpenWeatherCode(weatherInfo.getCondition());
+                }
+                if (weatherInfo.hasRH()){
+                    hourly.humidity = weatherInfo.getRHInt();
+                }
+                if (weatherInfo.hasWindSpeed()){
+                    hourly.windSpeed = weatherInfo.getWindSpeedInKmhInt();
+                }
+                if (weatherInfo.hasWindDirection()){
+                    hourly.windDirection = weatherInfo.getWindDirectionInt();
+                }
+                if (weatherInfo.hasUvHazardIndex()){
+                    hourly.uvIndex = weatherInfo.getUvHazardIndex();
+                }
+                if (weatherInfo.hasProbPrecipitation()){
+                    hourly.precipProbability = weatherInfo.getProbPrecipitation();
+                }
+                weatherSpec.hourly.add(hourly);
+            }
+            // build the forecast instance, ingore 1st entry (current day)
+            weatherSpec.forecasts = new ArrayList<WeatherSpec.Daily>();
+            for (int i=1; i<weatherCard.forecast24hourly.size(); i++){
+                WeatherSpec.Daily daily = new WeatherSpec.Daily();
+                Weather.WeatherInfo weatherInfo = weatherCard.forecast24hourly.get(i);
+                if (weatherInfo.hasMinTemperature()){
+                    daily.minTemp = weatherInfo.getMinTemperatureInt();
+                }
+                if (weatherInfo.hasMaxTemperature()){
+                    daily.maxTemp = weatherInfo.getMaxTemperatureInt();
+                }
+                if (weatherInfo.hasCondition()){
+                    daily.conditionCode = WeatherCodeContract.translateToOpenWeatherCode(weatherInfo.getCondition());
+                }
+                if (weatherInfo.hasRH()){
+                    daily.humidity = weatherInfo.getRHInt();
+                }
+                if (weatherInfo.hasWindSpeed()){
+                    daily.windSpeed = weatherInfo.getWindSpeedInKmhInt();
+                }
+                if (weatherInfo.hasWindDirection()){
+                    daily.windDirection = weatherInfo.getWindDirectionInt();
+                }
+                if (weatherInfo.hasUvHazardIndex()){
+                    daily.uvIndex = weatherInfo.getUV();
+                }
+                if (weatherInfo.hasProbPrecipitation()){
+                    daily.precipProbability = weatherInfo.getProbPrecipitation();
+                }
+                daily.sunRise = (int) (Weather.getSunriseInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
+                daily.sunSet = (int) (Weather.getSunsetInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
+                daily.moonRise = (int) (Weather.getMoonRiseInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
+                daily.moonSet = (int) (Weather.getMoonSetInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
+                daily.moonPhase = Weather.getMoonPhase(weatherCard.forecast24hourly.get(i).getTimestamp());
+                weatherSpec.forecasts.add(daily);
             }
             String timestampHumanReadable = "";
             try {

@@ -1550,6 +1550,18 @@ public final class Weather {
         return riseset;
     }
 
+    public static Astronomy.Riseset getMoonRiseset(Weather.WeatherLocation weatherLocation, long time){
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.setTimeInMillis(time);
+        int zone = ((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) /(1000*60*60));
+        Astronomy.Riseset riseset = Astronomy.moonRise(getJulianDay(time),
+                DELTA_T,
+                Math.toRadians(weatherLocation.longitude),
+                Math.toRadians(weatherLocation.latitude),
+                zone,false);
+        return riseset;
+    }
+
     public static boolean isDaytime(Weather.WeatherLocation weatherLocation, long time){
         if (usePreciseIsDaytime(weatherLocation)){
             Astronomy.Riseset riseset = getRiseset(weatherLocation,time);
@@ -1625,16 +1637,107 @@ public final class Weather {
         return setRiseTimeToDay(riseset.set,time);
     }
 
+    public static long getSunsetInUTC(WeatherLocation weatherLocation, long time){
+        Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,time);
+        return getSunsetInUTC(riseset,time);
+    }
+
+    public static long getSunsetInUTC(WeatherLocation weatherLocation, WeatherInfo weatherInfo){
+        return getSunsetInUTC(weatherLocation, weatherInfo.getTimestamp());
+    }
+
     public static long getSunriseInUTC(Astronomy.Riseset riseset, long time){
         return setRiseTimeToDay(riseset.rise,time);
     }
+
+    public static long getSunriseInUTC(WeatherLocation weatherLocation, long time){
+        Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,time);
+        return getSunriseInUTC(riseset,time);
+    }
+
+    public static long getSunriseInUTC(WeatherLocation weatherLocation, WeatherInfo weatherInfo){
+        return getSunriseInUTC(weatherLocation,weatherInfo.getTimestamp());
+    }
+
 
     public static long getCivilTwilightMorning(Astronomy.Riseset riseset, long time){
         return setRiseTimeToDay(riseset.cicilTwilightMorning,time);
     }
 
+    public static long getCivilTwilightMorning(WeatherLocation weatherLocation, long time){
+        Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,time);
+        return getCivilTwilightEvening(riseset,time);
+    }
+
+    public static long getCivilTwilightMorning(WeatherLocation weatherLocation, WeatherInfo weatherInfo){
+        return getCivilTwilightMorning(weatherLocation,weatherInfo.getTimestamp());
+    }
+
     public static long getCivilTwilightEvening(Astronomy.Riseset riseset, long time){
         return setRiseTimeToDay(riseset.cicilTwilightEvening,time);
+    }
+
+    public static long getCivilTwilightEvening(WeatherLocation weatherLocation, long time){
+        Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,time);
+        return getCivilTwilightEvening(riseset,time);
+    }
+
+    public static long getCivilTwilightEvening(WeatherLocation weatherLocation, WeatherInfo weatherInfo){
+        return getCivilTwilightEvening(weatherLocation,weatherInfo.getTimestamp());
+    }
+
+    public static long getMoonRiseInUTC(Astronomy.Riseset riseset, long time){
+        return setRiseTimeToDay(riseset.rise,time);
+    }
+
+    public static long getMoonRiseInUTC(WeatherLocation weatherLocation, long time){
+        Astronomy.Riseset riseset = Weather.getMoonRiseset(weatherLocation,time);
+        return getMoonRiseInUTC(riseset,time);
+    }
+
+    public static long getMoonRiseInUTC(WeatherLocation weatherLocation, WeatherInfo weatherInfo){
+        return getMoonRiseInUTC(weatherLocation,weatherInfo.getTimestamp());
+    }
+
+    public static long getMoonSetInUTC(Astronomy.Riseset riseset, long time){
+        return setRiseTimeToDay(riseset.set,time);
+    }
+
+    public static long getMoonSetInUTC(WeatherLocation weatherLocation, long time){
+        Astronomy.Riseset riseset = Weather.getMoonRiseset(weatherLocation,time);
+        return getMoonSetInUTC(riseset,time);
+    }
+
+    public static long getMoonSetInUTC(WeatherLocation weatherLocation, WeatherInfo weatherInfo){
+        return getMoonSetInUTC(weatherLocation,weatherInfo.getTimestamp());
+    }
+
+
+    /**
+     * Calculates the moon phase from the current time.
+     * - days: day of the moon phase; range 0 - 29.53
+     * - phase: moon phase in a range of 0-1, where 0 is new moon and 0.5 is full moon
+     *
+     * @param time
+     * @return days
+     */
+
+    public static int getMoonPhase(long time){
+        // known new moon on 2000/06/01 12:24:01 in unix timestamp
+        long known_new_moon = 959862241;
+        // moon phases repeat every 29.53 days.
+        double moon_repeats_days = 29.53d;
+        // get seconds passed since known new moon
+        long sec_passed_since_new_moon = time - known_new_moon;
+        // convert passed seconds to days
+        long days_passed_since_new_moon = sec_passed_since_new_moon / 60 / 60 / 24;
+        // get new moons since known_new_moon
+        double new_moons_since = days_passed_since_new_moon / moon_repeats_days;
+        // get day of the moon phase, range 0 - 29.53
+        double day = days_passed_since_new_moon % moon_repeats_days;
+        // get moon-phase in range 0-1, while 0.5 is full moon
+        double phase = day / moon_repeats_days;
+        return (int) Math.round(day);
     }
 
     public static boolean isSunriseInIntervalUTC(Astronomy.Riseset riseset, long start, long stop){
