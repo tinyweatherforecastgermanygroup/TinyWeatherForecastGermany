@@ -20,7 +20,6 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.*;
 import android.content.ClipboardManager;
@@ -31,6 +30,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.*;
@@ -284,6 +284,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             if (key.equals(WeatherSettings.PREF_STATION_NAME)){
                 // invalidate local warnings when station changes
                 localWarnings = null;
+                addToSpinner(WeatherSettings.getSetStationLocation(context));
             }
             if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
                 boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
@@ -390,6 +391,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     protected void onResume(){
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app resumed.");
         registerForBroadcast();
+        // this is necassary if location changed in background
+        loadStationsSpinner();
         // this is necessary if the update of weather data occurs while the app is in the background
         try {
             int weatherUpdateFlag = WeatherSettings.getWeatherUpdatedFlag(context);
@@ -466,6 +469,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             ThemePicker.SetTheme(this);
             WeatherSettings.setRotationMode(this);
             super.onCreate(savedInstanceState);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setBackgroundDrawable(getDrawable(R.drawable.ic_launcher_foreground));
+            }
             // check from intent if the WelcomeActivity tells us this is the first app launch
             Intent intent = getIntent();
             if (intent!=null){
@@ -569,8 +575,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             getApplication().registerActivityLifecycleCallbacks(weatherLocationManager);
             weatherLocationManager.setView((RelativeLayout) findViewById(R.id.gps_progress_holder));
             weatherLocationManager.registerCancelButton((Button) findViewById(R.id.cancel_gps));
-            if (WeatherSettings.GPSAuto(context) && (!hasLocationPermission())){
-                requestLocationPermission();
+            if (WeatherSettings.GPSAuto(context) && (!WeatherLocationManager.hasLocationPermission(context))){
+                requestLocationPermission(PERMISSION_CALLBACK_LOCATION);
             }
             if (!API_TESTING_ENABLED){
                 weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
@@ -860,6 +866,12 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         // spinner code
         spinner = (Spinner) findViewById(R.id.stations_spinner);
         spinnerItems = WeatherSettings.getFavoritesWeatherLocations(context);
+        // check if spinner is up-to-date; if other location is set, update spinner
+        Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
+        if (!currentStation.name.equals(spinnerItems.get(0).name)){
+            addToSpinner(currentStation);
+            return;
+        }
         ArrayList<String> spinnerDescriptions = Weather.WeatherLocation.getDescriptions(spinnerItems);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, spinnerDescriptions);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
@@ -1696,16 +1708,18 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
         LayoutInflater layoutInflater = this.getLayoutInflater();
         final View view = layoutInflater.inflate(R.layout.geoinput,null,false);
-        final CheckBox useGPS = view.findViewById(R.id.geoinput_check_gps);
-        if (!hasLocationPermission() && WeatherSettings.askedForLocationPermission(context)){
+        final CheckBox useGPS = (CheckBox) view.findViewById(R.id.geoinput_check_gps);
+        final TextView checkBoxText = (TextView) view.findViewById(R.id.geoinput_text_gps);
+        if (!WeatherLocationManager.hasLocationPermission(context) && WeatherSettings.getAskedForLocationFlag(context)>WeatherSettings.AskedLocationFlag.NONE){
             // user actively denied permissions
             useGPS.setChecked(false);
+            checkBoxText.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTDARK));
             WeatherSettings.setUSEGPSFlag(getApplicationContext(),false);
         }
         final EditText text_latitude = view.findViewById(R.id.geoinput_edit_latitude);
         final EditText text_longitude = view.findViewById(R.id.geoinput_edit_longitude);
         // a tag of "null" means that the values were modified manually by the user
-        final Location location = weatherLocationManager.getLastKnownLocation(context);
+        final Location location = WeatherLocationManager.getLastKnownLocation(context);
         if (location!=null){
             // fake last location to hamburg for debugging
             // location.setLatitude(53.57530); location.setLongitude(10.01530);
@@ -1775,13 +1789,13 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (useGPS.isChecked()){
-                    if (!hasLocationPermission()){
-                        requestLocationPermission();
+                    if (!WeatherLocationManager.hasLocationPermission(context)){
+                        requestLocationPermission(PERMISSION_CALLBACK_LOCATION);
                     } else {
                         weatherLocationManager.startGPSLocationSearch();
                     }
                 } else {
-                    Location own_location = new Location("manual");
+                    Location own_location = new Location(Weather.WeatherLocation.CUSTOMPROVIDER);
                     if (location!=null){
                         // copy location known location if it exists to preserve timestamp from when it is
                         own_location = new Location(location);
@@ -1846,24 +1860,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
 
     private void calcualateClosestStations(ArrayList<Weather.WeatherLocation> stations, final Location own_location){
         weatherLocationManager.stopGPSLocationSearch();
-        for (int i=0; i<stations.size(); i++){
-            Location location_station = new Location("weather");
-            location_station.setLatitude(stations.get(i).latitude);
-            location_station.setLongitude(stations.get(i).longitude);
-            stations.get(i).distance = location_station.distanceTo(own_location);
-        }
-        Collections.sort(stations, new Comparator<Weather.WeatherLocation>() {
-            @Override
-            public int compare(Weather.WeatherLocation t0, Weather.WeatherLocation t1) {
-                if (t0.distance<t1.distance){
-                    return -1;
-                }
-                if (t0.distance==t1.distance){
-                    return 0;
-                }
-                return 1;
-            }
-        });
+        stations = StationsManager.sortStationsByDistance(stations,own_location);
         Bundle bundle = own_location.getExtras();
         int items_count = 20;
         if (bundle!=null) {
@@ -1953,43 +1950,37 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         }
     }
 
-    private static final int PERMISSION_CALLBACK_LOCATION = 121;
+    public static final int PERMISSION_CALLBACK_LOCATION                   = 121;
+    public static final int PERMISSION_CALLBACK_LOCATION_BEFORE_BACKGROUND = 122;
+    public static final int PERMISSION_CALLBACK_BACKGROUND_LOCATION        = 123;
+    public static final String LOCATION_DENIED                             = "android.permission.LOCATION_DENIED";
 
-    private boolean hasLocationPermission(){
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            {
-               // permission not granted
-                PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"No location permission granted by user.");
-                return false;
-            }
-            else
-            {
-                // permission is granted, ok
-                return true;
-            }
+    private void requestLocationPermission(int callback){
+        // below SDK 23, permissions are granted at app install.
+        if (android.os.Build.VERSION.SDK_INT >=23){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},callback);
+            WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.LOCATION);
         }
-        else
-        {
-            // before api 23, permissions are always granted, so everything is ok
-            return true;
-        }
-    }
-
-
-    @SuppressLint("NewApi")
-    private void requestLocationPermission(){
-        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_CALLBACK_LOCATION);
-        WeatherSettings.setAskedLocationFlag(context);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int permRequestCode, String perms[], int[] grantRes){
-        Boolean hasLocationPermission = false;
+        boolean hasLocationPermission = false;
+        boolean hasBackgroundLocationPermission = false;
         for (int i=0; i<grantRes.length; i++){
             if ((perms[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
                 hasLocationPermission = true;
+            }
+            if ((perms[i].equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
+                hasLocationPermission = true;
+            }
+        }
+        // on sdk below 29, background permission is not present/always true if normal, foreground permission was granted.
+        // the above loop will result in "false" for sdk below 29, and this needs to be fixed.
+        if (android.os.Build.VERSION.SDK_INT<=29){
+            if (hasLocationPermission){
+                hasBackgroundLocationPermission=true;
             }
         }
         if (permRequestCode == PERMISSION_CALLBACK_LOCATION){
@@ -1997,10 +1988,10 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 weatherLocationManager.startGPSLocationSearch();
             } else {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
-                    showLocationPermissionsRationale();
+                    showPermissionsRationale(Manifest.permission.ACCESS_FINE_LOCATION,PERMISSION_CALLBACK_LOCATION);
                 } else {
-                    if (WeatherSettings.askedForLocationPermission(context)){
-                        // do nothing
+                    if (WeatherSettings.getAskedForLocationFlag(context)>=WeatherSettings.AskedLocationFlag.LOCATION){
+                        showPermissionsRationale(LOCATION_DENIED,PERMISSION_CALLBACK_LOCATION);
                     }
                 }
             }
@@ -2027,7 +2018,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     private void showSimpleLocationAlert(String text){
         AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
         builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
-        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_GPS_FIXED,false));
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_INFO_OUTLINE,false));
         builder.setIcon(drawable);
         builder.setMessage(text);
         builder.setPositiveButton(R.string.alertdialog_ok, new DialogInterface.OnClickListener() {
@@ -2040,8 +2031,41 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         alertDialog.show();
     }
 
-    private void showLocationPermissionsRationale(){
-        showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_rationale));
+    private void showPermissionsRationale(final String permisson, final int callback){
+        String text = getApplicationContext().getResources().getString(R.string.geoinput_rationale);
+        if (permisson.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)){
+            text = getApplicationContext().getResources().getString(R.string.backgroundGPS_rationale);
+        }
+        if (permisson.equals(LOCATION_DENIED)){
+            text = getApplicationContext().getResources().getString(R.string.geoinput_settingshint);
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_INFO_OUTLINE,false));
+        builder.setIcon(drawable);
+        builder.setMessage(text);
+        builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton(getApplicationContext().getResources().getString(R.string.allow), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (permisson.equals(Manifest.permission.ACCESS_FINE_LOCATION)){
+                    requestLocationPermission(callback);
+                }
+                if (permisson.equals(LOCATION_DENIED)){
+                    // jump immediately to the settings screen
+                    dialogInterface.dismiss();
+                    Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.fromParts("package",getPackageName(),null));
+                    startActivity(intent);
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public String standardizeGeo(final String s){

@@ -99,7 +99,7 @@ public class GadgetbridgeAPI {
             weatherSpec.sunSet   = (int) (Weather.getSunsetInUTC(weatherCard.weatherLocation,weatherCard.currentWeather)/1000);
             weatherSpec.moonRise = (int) (Weather.getMoonRiseInUTC(weatherCard.weatherLocation,weatherCard.currentWeather)/1000);
             weatherSpec.moonSet  = (int) (Weather.getMoonSetInUTC(weatherCard.weatherLocation,weatherCard.currentWeather)/1000);
-            weatherSpec.moonPhase = Weather.getMoonPhase(weatherCard.currentWeather.getTimestamp());
+            weatherSpec.moonPhase = Weather.getMoonPhaseInDegrees(weatherCard.currentWeather.getTimestamp());
             weatherSpec.latitude = (float) weatherCard.weatherLocation.latitude;
             weatherSpec.longitude = (float) weatherCard.weatherLocation.longitude;
             weatherSpec.isCurrentLocation = -1;
@@ -166,7 +166,7 @@ public class GadgetbridgeAPI {
                 daily.sunSet = (int) (Weather.getSunsetInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
                 daily.moonRise = (int) (Weather.getMoonRiseInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
                 daily.moonSet = (int) (Weather.getMoonSetInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
-                daily.moonPhase = Weather.getMoonPhase(weatherCard.forecast24hourly.get(i).getTimestamp());
+                daily.moonPhase = Weather.getMoonPhaseInDegrees(weatherCard.forecast24hourly.get(i).getTimestamp());
                 weatherSpec.forecasts.add(daily);
             }
             String timestampHumanReadable = "";
@@ -216,8 +216,7 @@ public class GadgetbridgeAPI {
     }
 
     public final void sendWeatherBroadcastIfEnabled(){
-        WeatherSettings weatherSettings = new WeatherSettings(context);
-        if (weatherSettings.serve_gadgetbridge){
+        if (WeatherSettings.serveGadgetBridge(context)){
             sendWeatherBroadcast();
         }
     }

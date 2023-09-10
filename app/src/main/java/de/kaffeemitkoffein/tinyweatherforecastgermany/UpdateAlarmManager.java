@@ -253,6 +253,8 @@ public class UpdateAlarmManager {
         weatherSettings.views_last_update_time = Calendar.getInstance().getTimeInMillis();
         //weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,weatherSettings.views_last_update_time);
         weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,Calendar.getInstance().getTimeInMillis());
+        // send broadcast to also update main app view
+
     }
 
     public static boolean startDataUpdateService(final Context context, final ArrayList<String> tasks){

@@ -33,6 +33,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WeatherLocationManager implements Application.ActivityLifecycleCallbacks {
 
     public static final int GPSFIXINTERVAL = 1000*60*60*24; // once per day
@@ -173,6 +176,24 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
         }
     }
 
+    public static boolean hasBackgroundLocationPermission(Context context){
+        // always present below 23
+        if (android.os.Build.VERSION.SDK_INT < 23){
+            return true;
+        } else {
+            if (android.os.Build.VERSION.SDK_INT < 29) {
+                // below 29, background permission is always granted with normal "foreground" permission
+                return WeatherLocationManager.hasLocationPermission(context);
+            } else {
+                if (context.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                    return false;
+                }
+                return true;
+            }
+        }
+    }
+
+
     final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -197,32 +218,45 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
 
     @SuppressLint("MissingPermission")
     public static Location getLastKnownLocation(Context context){
-        Location location = null;
-        if (hasLocationPermission(context)) {
+        if (hasBackgroundLocationPermission(context)){
             final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            if (locationManager != null) {
-                if (locationManager.getProvider(LocationManager.NETWORK_PROVIDER) != null) {
-                    if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (locationManager!=null){
+                ArrayList<Location> locationCandidates = new ArrayList<Location>();
+                List<String> enabledProviders = locationManager.getProviders(true);
+                for (int i=0; i<enabledProviders.size(); i++){
+                    Location location = locationManager.getLastKnownLocation(enabledProviders.get(i));
+                    if (location!=null){
+                        locationCandidates.add(location);
                     }
                 }
-                if (location == null) {
-                    if (locationManager.getProvider(LocationManager.GPS_PROVIDER) != null) {
-                        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                // if known last locations were found, check which one is the most recent
+                if (locationCandidates.size()>0){
+                    Location newLocationCandidate=locationCandidates.get(0);
+                    if (locationCandidates.size()>1){
+                        for (int i=0; i<locationCandidates.size(); i++){
+                            Location location = locationCandidates.get(i);
+                            // always take the newer one
+                            if (location.getTime()>newLocationCandidate.getTime()){
+                                newLocationCandidate = location;
+                            }
+                            // if both are of the same time, take the more precise one
+                            if (location.hasAccuracy()){
+                                if (!newLocationCandidate.hasAccuracy()){
+                                    newLocationCandidate = location;
+                                } else {
+                                    // means both locations have an accuracy; take the better one
+                                    if (location.getAccuracy()<newLocationCandidate.getAccuracy()){
+                                        newLocationCandidate = location;
+                                    }
+                                }
+                            }
                         }
                     }
-                }
-                if (location == null) {
-                    if (locationManager.getProvider(LocationManager.PASSIVE_PROVIDER) != null) {
-                        if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
-                            location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-                        }
-                    }
+                    return newLocationCandidate;
                 }
             }
         }
-        return location;
+        return null;
     }
 
     @SuppressLint("MissingPermission")

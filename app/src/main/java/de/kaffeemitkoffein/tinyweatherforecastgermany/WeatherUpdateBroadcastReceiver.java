@@ -24,11 +24,8 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
-import android.util.Log;
-
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -56,17 +53,45 @@ public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
     @SuppressLint("MissingPermission")
     private void checkForLocation(Context context) {
         String message = "* LOCATION CHECK: " + Weather.SIMPLEDATEFORMATS.TIME.format(new Date(Calendar.getInstance().getTimeInMillis()));
-        Log.v("twfg", message);
         PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,message);
-        if (WeatherLocationManager.hasLocationPermission(context)){
+        if (WeatherLocationManager.hasBackgroundLocationPermission(context)){
             Location location = WeatherLocationManager.getLastKnownLocation(context);
-            if (location!=null){
-                Log.v("twfg","* NEW LOCATION: "+location.toString());
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"* NEW LOCATION: "+location.toString());
+            if (location!=null) {
+                Weather.WeatherLocation oldWeatherLocation = WeatherSettings.getLastPassiveLocation(context);
+                Weather.WeatherLocation newWeatherLocation = new Weather.WeatherLocation(location);
+                // DEBUG
+                newWeatherLocation.time = Calendar.getInstance().getTimeInMillis();
+                if (newWeatherLocation.time > oldWeatherLocation.time) {
+                    // check for distance significance
+                    float distance = oldWeatherLocation.toLocation().distanceTo(newWeatherLocation.toLocation());
+                    // DEBUG
+                    newWeatherLocation.accuracy = -12;
+                    if (distance > newWeatherLocation.accuracy){
+                        // is significant geo
+                        // find closest station
+                        Weather.WeatherLocation closestStation = findClosestStation(context,newWeatherLocation.toLocation());
+                        if (closestStation!=null){
+                            Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
+                            if (!closestStation.name.equals(currentStation.name)){
+                                // new station is different to old one
+                                WeatherSettings.setStation(context,closestStation);
+                            }
+                        }
+                    }
+                }
             }
         }
+    }
 
-
+    public static Weather.WeatherLocation findClosestStation(Context context, Location location) {
+        StationsManager stationsManager = new StationsManager(context);
+        stationsManager.readStations();
+        ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
+        if (stations.size()>0) {
+            stations = StationsManager.sortStationsByDistance(stations,location);
+            return stations.get(0);
+        }
+        return null;
     }
 
 }

@@ -495,10 +495,10 @@
             android:title="@string/preference_category_location">
 
         <CheckBoxPreference
-                android:key="PREF_usegps"
-                android:title="@string/preference_usegps_title"
-                android:summary="@string/geoinput_gps"
-                android:defaultValue="true"/>
+                android:key="PREF_use_backgr_location"
+                android:title="@string/preference_use_background_location_title"
+                android:summary="@string/preference_use_background_location_summary"
+                android:defaultValue="false"/>
 
         <CheckBoxPreference
                 android:key="PREF_gpsauto"

@@ -19,12 +19,17 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.*;
@@ -34,6 +39,8 @@ import android.widget.Toast;
 public class Settings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private Context context;
+
+    private CheckBoxPreference useBackgroundLocation;
 
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
@@ -139,6 +146,11 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 if (s.equals(WeatherSettings.PREF_UVHI_FETCH_DATA)){
                     if (!Weather.hasUVHIData(context)){
                             forcedWeatherUpdate();
+                    }
+                }
+                if (s.equals(WeatherSettings.PREF_USE_BACKGROUND_LOCATION)){
+                    if (WeatherSettings.useBackgroundLocation(context)){
+                        requestBackgroundLocationPermission();
                     }
                 }
             }
@@ -348,6 +360,16 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     protected void onResume(){
         super.onResume();
         context = this;
+        // the following handles an aborted action to grant permissions in app settings; brings the preferences
+        // in line with the permission not changed/granted.
+        if (useBackgroundLocation==null){
+            useBackgroundLocation = (CheckBoxPreference) findPreference(WeatherSettings.PREF_USE_BACKGROUND_LOCATION);
+        }
+        if (!WeatherLocationManager.hasBackgroundLocationPermission(context)){
+            useBackgroundLocation.setChecked(false);
+        } else {
+            useBackgroundLocation.setChecked(true);
+        }
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(listener);
     }
 
@@ -468,10 +490,209 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
         if (locationsToShare!=null){
             locationsToShare.setSummary(getResources().getString(R.string.preference_max_loc_in_shared_warnings_summary)+" "+WeatherSettings.getMaxLocationsInSharedWarnings(context));
         }
+        useBackgroundLocation = (CheckBoxPreference) findPreference(WeatherSettings.PREF_USE_BACKGROUND_LOCATION);
      }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         updateValuesDisplay();
     }
+
+    private void requestLocationPermission(int callback){
+        // below SDK 23, permissions are granted at app install.
+        if (android.os.Build.VERSION.SDK_INT >=23){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},callback);
+            WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.LOCATION);
+        }
+    }
+
+    public void requestBackgroundLocationPermission(){
+        if (WeatherLocationManager.hasLocationPermission(context)){
+            // on sdk < 29 background permission is already granted/does not exist
+            if (android.os.Build.VERSION.SDK_INT>=29){
+                // on sdk 29 try the permission dialog exactly once
+                if (android.os.Build.VERSION.SDK_INT==29){
+                    if (WeatherSettings.getAskedForLocationFlag(context)<WeatherSettings.AskedLocationFlag.BACKGROUND_LOCATION) {
+                        // ask exactly once
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION);
+                        // remember that we asked for it
+                        WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.BACKGROUND_LOCATION);
+                    } else {
+                        // go to the settings if already asked once
+                        openPermissionSettings();
+                    }
+                }
+                // on sdk above 29, always go directly to the settings
+                if (android.os.Build.VERSION.SDK_INT>29) {
+                    openPermissionSettings();
+                }
+            }
+        } else {
+            // ask for simple foreground location permission, since this is missing.
+            // on sdk below 28, this is enoungh.
+            // on sdk 29 and above, we need to return here from onRequestPermissionResult
+            requestLocationPermission(MainActivity.PERMISSION_CALLBACK_LOCATION_BEFORE_BACKGROUND);
+            WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int permRequestCode, String perms[], int[] grantRes){
+        boolean hasLocationPermission = false;
+        boolean hasBackgroundLocationPermission = false;
+        for (int i=0; i<grantRes.length; i++){
+            if ((perms[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)) && (grantRes[i]== PackageManager.PERMISSION_GRANTED)){
+                hasLocationPermission = true;
+            }
+            if ((perms[i].equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
+                hasLocationPermission = true;
+            }
+        }
+        // on sdk below 29, background permission is not present/always true if normal, foreground permission was granted.
+        // the above loop will result in "false" for sdk below 29, and this needs to be fixed.
+        if (Build.VERSION.SDK_INT<=29){
+            if (hasLocationPermission){
+                hasBackgroundLocationPermission=true;
+            }
+        }
+        if (permRequestCode == MainActivity.PERMISSION_CALLBACK_LOCATION){
+            if (hasLocationPermission){
+                // do nothing
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
+                        showPermissionsRationale(Manifest.permission.ACCESS_FINE_LOCATION,MainActivity.PERMISSION_CALLBACK_LOCATION);
+                    } else {
+                        if (WeatherSettings.getAskedForLocationFlag(context)>=WeatherSettings.AskedLocationFlag.LOCATION){
+                            showPermissionsRationale(MainActivity.LOCATION_DENIED,MainActivity.PERMISSION_CALLBACK_LOCATION);
+                        }
+                    }
+                }
+            }
+        }
+        if (permRequestCode == MainActivity.PERMISSION_CALLBACK_LOCATION_BEFORE_BACKGROUND){
+            if (hasLocationPermission){
+                requestBackgroundLocationPermission();
+            } else {
+                showPermissionsRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION,MainActivity.PERMISSION_CALLBACK_LOCATION_BEFORE_BACKGROUND);
+            }
+        }
+        if (permRequestCode == MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION){
+            if (hasBackgroundLocationPermission){
+                openBatteryOptimizationSettings();
+            } else {
+                showPermissionsRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION, MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION);
+            }
+        }
+    }
+
+    public void openPermissionSettings(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
+        builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_INFO_OUTLINE,false));
+        builder.setIcon(drawable);
+        String text = getApplicationContext().getResources().getString(R.string.backgroundGPS_settingshint)+" \""+
+                getApplicationContext().getResources().getString(R.string.always_allow)+"\".";
+        if (android.os.Build.VERSION.SDK_INT>=30){
+            String label = (String) getPackageManager().getBackgroundPermissionOptionLabel();
+            text = getApplicationContext().getResources().getString(R.string.backgroundGPS_settingshint)+" \""+
+                    label+"\".";
+        }
+        builder.setMessage(text);
+        builder.setPositiveButton(R.string.allow, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.fromParts("package",getPackageName(),null));
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                useBackgroundLocation.setChecked(false);
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    public void openBatteryOptimizationSettings(){
+        // only open on api 23 and higher
+        if (Build.VERSION.SDK_INT>=23){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
+            builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
+            Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_INFO_OUTLINE,false));
+            builder.setIcon(drawable);
+            String text = getApplicationContext().getResources().getString(R.string.disable_battery_saving_rationale);
+            builder.setMessage(text);
+            builder.setPositiveButton(R.string.allow, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    Intent intent = new Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                    intent.setData(Uri.fromParts("package",getPackageName(),null));
+                    startActivity(intent);
+                }
+            });
+            builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    }
+
+    private void showPermissionsRationale(final String permission, final int callback){
+        String text = getApplicationContext().getResources().getString(R.string.geoinput_rationale);
+        if (permission.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)){
+            text = getApplicationContext().getResources().getString(R.string.backgroundGPS_rationale);
+        }
+        if (permission.equals(MainActivity.LOCATION_DENIED)){
+            text = getApplicationContext().getResources().getString(R.string.geoinput_settingshint);
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
+        Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_INFO_OUTLINE,false));
+        builder.setIcon(drawable);
+        builder.setMessage(text);
+        builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (permission.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)){
+                    useBackgroundLocation.setChecked(false);
+                }
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton(getApplicationContext().getResources().getString(R.string.allow), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (permission.equals(Manifest.permission.ACCESS_FINE_LOCATION)){
+                    requestLocationPermission(callback);
+                }
+                if (permission.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)){
+                    dialogInterface.dismiss();
+                    openPermissionSettings();
+                }
+                if (permission.equals(MainActivity.LOCATION_DENIED)){
+                    // jump immediately to the settings screen
+                    dialogInterface.dismiss();
+                    Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.fromParts("package",getPackageName(),null));
+                    startActivity(intent);
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
 }
+
+

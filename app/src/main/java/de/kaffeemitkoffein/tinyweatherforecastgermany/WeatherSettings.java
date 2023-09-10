@@ -136,7 +136,7 @@ public class WeatherSettings {
     public static final String PREF_USE_WIFI_ONLY ="PREF_use_wifi_only";
     public static final String PREF_NOTIFICATION_IDENTIFIER = "PREF_notification_id";
     public static final String PREF_CLEARNOTIFICATIONS = "PREF_clearnotifications";
-    public static final String PREF_ASKEDFORLOCATIONPERMISSION = "PREF_askedlocpermission";
+    public static final String PREF_ASKEDFORLOCATIONFLAG = "PREF_askedlocpermflag";
     public static final String PREF_ROTATIONMODE = "PREF_rotationmode";
     public static final String PREF_NC_CHANNEL_DETAIL = "PREF_channel_detail";
     public static final String PREF_LED_COLOR = "PREF_led_color";
@@ -161,6 +161,8 @@ public class WeatherSettings {
     public static final String PREF_UVHI_MAINDISPLAY="PREF_uvhi_maindisplay";
     public static final String PREF_WEATHERUPDATEDFLAG="PREF_weather_updated";
     public static final String PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS = "PREF_max_loc_in_shared_warnings";
+    public static final String PREF_LAST_PASSIVE_LOCATION = "PREF_last_passive_location";
+    public static final String PREF_USE_BACKGROUND_LOCATION = "PREF_use_backgr_location";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -237,7 +239,7 @@ public class WeatherSettings {
     public static final boolean PREF_USE_METERED_NETWORKS_DEFAULT = true;
     public static final boolean PREF_USE_WIFI_ONLY_DEFAULT = false;
     public static final int PREF_NOTIFICATION_IDENTIFIER_DEFAULT = -2147483640;
-    public static final boolean PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT = false;
+    public static final int PREF_ASKEDFORLOCATIONFLAG_DEFAULT = AskedLocationFlag.NONE;
     public static final String PREF_ROTATIONMODE_DEFAULT = DeviceRotation.DEVICE;
     public static final long PREF_NC_CHANNEL_DETAIL_DEFAULT = 0;
     public static final int PREF_LED_COLOR_DEFAULT = 0;
@@ -263,8 +265,8 @@ public class WeatherSettings {
     public static final boolean PREF_UVHI_MAINDISPLAY_DEFAULT = false;
     public static final int PREF_WEATHERUPDATEDFLAG_DEFAULT = UpdateType.NONE;
     public static final int PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT = 12;
-
-
+    public static final String PREF_LAST_PASSIVE_LOCATION_DEFAULT = "";
+    public static final boolean PREF_USE_BACKGROUND_LOCATION_DEFAULT = false;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -341,7 +343,7 @@ public class WeatherSettings {
     public boolean useMeteredNetworks = PREF_USE_METERED_NETWORKS_DEFAULT;
     public boolean useWifiOnly = PREF_USE_WIFI_ONLY_DEFAULT;
     public int notificationIdentifier = PREF_NOTIFICATION_IDENTIFIER_DEFAULT;
-    private boolean askedforlocationpermission = PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT;
+    private int askedForLocationFlag = PREF_ASKEDFORLOCATIONFLAG_DEFAULT;
     public String rotationMode = PREF_ROTATIONMODE_DEFAULT;
     public long ncChannelDetail = PREF_NC_CHANNEL_DETAIL_DEFAULT;
     public int ledColor = PREF_LED_COLOR_DEFAULT;
@@ -362,6 +364,8 @@ public class WeatherSettings {
     public boolean UVHIdisplayMain = PREF_UVHI_MAINDISPLAY_DEFAULT;
     public int weatherUpdatedFlag = PREF_WEATHERUPDATEDFLAG_DEFAULT;
     public int maxLocationsInSharedWarnings = PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT;
+    public Weather.WeatherLocation lastPassiveLocation;
+    public boolean useBackgroundLocation = PREF_USE_BACKGROUND_LOCATION_DEFAULT;
 
 
     private Context context;
@@ -465,6 +469,7 @@ public class WeatherSettings {
         this.UVHIdisplayMain = readPreference(PREF_UVHI_MAINDISPLAY,PREF_UVHI_MAINDISPLAY_DEFAULT);
         this.weatherUpdatedFlag = readPreference(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
         this.maxLocationsInSharedWarnings = readPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT);
+        this.lastPassiveLocation = new Weather.WeatherLocation(readPreference(PREF_LAST_PASSIVE_LOCATION,PREF_LAST_PASSIVE_LOCATION_DEFAULT));
     }
 
     public void savePreferences() {
@@ -558,6 +563,7 @@ public class WeatherSettings {
         applyPreference(PREF_UVHI_MAINDISPLAY,UVHIdisplayMain);
         applyPreference(PREF_WEATHERUPDATEDFLAG,weatherUpdatedFlag);
         applyPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,maxLocationsInSharedWarnings);
+        applyPreference(PREF_LAST_PASSIVE_LOCATION,lastPassiveLocation.serializeToString());
     }
 
     public void commitPreferences() {
@@ -651,6 +657,7 @@ public class WeatherSettings {
         commitPreference(PREF_UVHI_MAINDISPLAY,UVHIdisplayMain);
         commitPreference(PREF_WEATHERUPDATEDFLAG,weatherUpdatedFlag);
         commitPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,maxLocationsInSharedWarnings);
+        commitPreference(PREF_LAST_PASSIVE_LOCATION,lastPassiveLocation.serializeToString());
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -786,6 +793,8 @@ public class WeatherSettings {
         PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
         setPollenRegion(context,pollenArea);
         resetUVHIUpdateAllowedTime(context);
+        // always set this to the last passive location, so that user choice overrides older location data
+        setLastPassiveLocation(context,weatherLocation);
     }
 
     public static void resetStationToDefault(Context context) {
@@ -1507,16 +1516,22 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
-    public static void setAskedLocationFlag(Context context){
+    public class AskedLocationFlag{
+        public final static int NONE = 0;
+        public final static int LOCATION = 1;
+        public final static int BACKGROUND_LOCATION = 2;
+    }
+
+    public static void setAskedLocationFlag(Context context, int flag){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putBoolean(PREF_ASKEDFORLOCATIONPERMISSION,true);
+        pref_editor.putInt(PREF_ASKEDFORLOCATIONFLAG,flag);
         pref_editor.apply();
     }
 
-    public static boolean askedForLocationPermission(Context context){
+    public static int getAskedForLocationFlag(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getBoolean(PREF_ASKEDFORLOCATIONPERMISSION,PREF_ASKEDFORLOCATIONPERMISSION_DEFAULT);
+        return sharedPreferences.getInt(PREF_ASKEDFORLOCATIONFLAG,PREF_ASKEDFORLOCATIONFLAG_DEFAULT);
     }
 
     public final class DeviceRotation {
@@ -1872,5 +1887,30 @@ public class WeatherSettings {
         int result = sharedPreferences.getInt(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT);
         return result;
     }
+
+    public static Weather.WeatherLocation getLastPassiveLocation(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return new Weather.WeatherLocation(sharedPreferences.getString(PREF_LAST_PASSIVE_LOCATION,PREF_LAST_PASSIVE_LOCATION_DEFAULT));
+    }
+
+    public static void setLastPassiveLocation(Context context, Weather.WeatherLocation weatherLocation){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putString(PREF_LAST_PASSIVE_LOCATION,weatherLocation.serializeToString());
+        pref_editor.apply();
+    }
+
+    public static boolean useBackgroundLocation(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_USE_BACKGROUND_LOCATION,PREF_USE_BACKGROUND_LOCATION_DEFAULT);
+    }
+
+    public static void setuseBackgroundLocation(Context context, boolean b){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_USE_BACKGROUND_LOCATION,b);
+        pref_editor.apply();
+    }
+
 
 }

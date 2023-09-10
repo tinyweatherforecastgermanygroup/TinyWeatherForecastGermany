@@ -44,23 +44,21 @@ public final class Weather {
         public static final String EXTRAS_NAME="NAME";
         public static final String EXTRAS_ITEMS_TO_SHOW="ITEMS_TO_SHOW";
         public static final String PARCELABLE_NAME = "de.kaffeemitkoffein.tinyweatherforecastgermany.WHEATHERLOCATION";
+        public static final float ACCURACY_UNKNOWN = -1f;
+        private static final String SEPARATOR = "|";
+        public static final String CUSTOMPROVIDER="manual";
 
-        public String description;
-        public String name;
-        double latitude;
-        double longitude;
-        double altitude;
-        float distance;
-        int type;
+        public String description = "";
+        public String name = "";
+        double latitude = 0d;
+        double longitude = 0d;
+        double altitude = 0d;
+        float distance = 0f;
+        float accuracy = ACCURACY_UNKNOWN;
+        int type = RawWeatherInfo.Source.UNKNOWN;
+        long time = 0l;
 
         public WeatherLocation(){
-            description="";
-            name="";
-            latitude=0;
-            longitude=0;
-            altitude=0;
-            distance=0;
-            type=RawWeatherInfo.Source.UNKNOWN;
         }
 
         public WeatherLocation(String description, String name, int type, double latitude, double longitude, double altitude){
@@ -72,6 +70,20 @@ public final class Weather {
             this.altitude = altitude;
         }
 
+        public WeatherLocation(Location location){
+            this.latitude = location.getLatitude();
+            this.longitude = location.getLongitude();
+            if (location.hasAltitude()){
+                this.altitude = location.getAltitude();
+            }
+            if (location.hasAccuracy()){
+                this.accuracy = location.getAccuracy();
+            } else {
+                this.accuracy = ACCURACY_UNKNOWN;
+            }
+            this.time = location.getTime();
+        }
+
         protected WeatherLocation(Parcel in) {
             description = in.readString();
             name = in.readString();
@@ -80,6 +92,67 @@ public final class Weather {
             longitude = in.readDouble();
             altitude = in.readDouble();
             distance = in.readFloat();
+            accuracy = in.readFloat();
+            type = in.readInt();
+            time = in.readLong();
+        }
+
+        public String serializeToString(){
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(description); stringBuilder.append(SEPARATOR);
+            stringBuilder.append(name); stringBuilder.append(SEPARATOR);
+            stringBuilder.append(type); stringBuilder.append(SEPARATOR);
+            stringBuilder.append(latitude); stringBuilder.append(SEPARATOR);
+            stringBuilder.append(longitude); stringBuilder.append(SEPARATOR);
+            stringBuilder.append(altitude); stringBuilder.append(SEPARATOR);
+            stringBuilder.append(distance); stringBuilder.append(SEPARATOR);
+            stringBuilder.append(accuracy); stringBuilder.append(SEPARATOR);
+            stringBuilder.append(time);
+            return stringBuilder.toString();
+        }
+
+        public WeatherLocation(final String serializedString){
+            if (serializedString!=null){
+                String[] items = serializedString.split("\\"+SEPARATOR);
+                if (items.length>=8){
+                    try {
+                        this.description = items[0];
+                        this.name = items[1];
+                        this.type = Integer.parseInt(items[2]);
+                        this.latitude = Double.parseDouble(items[3]);
+                        this.longitude = Double.parseDouble(items[4]);
+                        this.altitude = Double.parseDouble(items[5]);
+                        this.distance = Float.parseFloat(items[6]);
+                        this.accuracy = Float.parseFloat(items[7]);
+                        this.time = Long.parseLong(items[8]);
+                    } catch (Exception e){
+                        // do nothing, default values are set.
+                    }
+                }
+            }
+        }
+
+        public boolean hasAccuracy(){
+            if (accuracy<0){
+                return false;
+            }
+            return true;
+        }
+
+        public float getAccuracy(){
+            return accuracy;
+        }
+
+        public Location toLocation(){
+            Location location = new Location(CUSTOMPROVIDER);
+            location.setLatitude(this.latitude);
+            location.setLongitude(this.longitude);
+            location.setAltitude(this.altitude);
+            if (hasAccuracy()){
+                location.setAccuracy(this.accuracy);
+            }
+            location.setTime(this.time);
+            return location;
         }
 
         public static final Creator<WeatherLocation> CREATOR = new Creator<WeatherLocation>() {
@@ -113,6 +186,9 @@ public final class Weather {
             parcel.writeDouble(longitude);
             parcel.writeDouble(altitude);
             parcel.writeFloat(distance);
+            parcel.writeFloat(accuracy);
+            parcel.writeInt(type);
+            parcel.writeLong(time);
         }
 
         public static ArrayList<String> getDescriptions(ArrayList<WeatherLocation> weatherLocations){
@@ -1722,7 +1798,7 @@ public final class Weather {
      * @return days
      */
 
-    public static int getMoonPhase(long time){
+    public static int getMoonPhaseDay(long time){
         // known new moon on 2000/06/01 12:24:01 in unix timestamp
         long known_new_moon = 959862241;
         // moon phases repeat every 29.53 days.
@@ -1738,6 +1814,25 @@ public final class Weather {
         // get moon-phase in range 0-1, while 0.5 is full moon
         double phase = day / moon_repeats_days;
         return (int) Math.round(day);
+    }
+
+    public static int getMoonPhaseInDegrees(long time){
+        // known new moon on 2000/06/01 12:24:01 in unix timestamp
+        long known_new_moon = 959862241;
+        // moon phases repeat every 29.53 days.
+        double moon_repeats_days = 29.53d;
+        // get seconds passed since known new moon
+        long sec_passed_since_new_moon = time - known_new_moon;
+        // convert passed seconds to days
+        long days_passed_since_new_moon = sec_passed_since_new_moon / 60 / 60 / 24;
+        // get new moons since known_new_moon
+        double new_moons_since = days_passed_since_new_moon / moon_repeats_days;
+        // get day of the moon phase, range 0 - 29.53
+        double day = days_passed_since_new_moon % moon_repeats_days;
+        // get moon-phase in range 0-1, while 0.5 is full moon
+        double phase = day / moon_repeats_days;
+        double degree = 360*phase;
+        return (int) Math.round(degree);
     }
 
     public static boolean isSunriseInIntervalUTC(Astronomy.Riseset riseset, long start, long stop){

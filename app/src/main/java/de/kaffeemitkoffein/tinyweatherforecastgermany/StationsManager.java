@@ -347,7 +347,7 @@ public class StationsManager {
         return resultList;
     }
 
-    public static ArrayList<Weather.WeatherLocation> sortStationsByDistance(ArrayList<Weather.WeatherLocation> stations, Location targetLocation){
+    public static ArrayList<Weather.WeatherLocation> sortStationsByDistance(ArrayList<Weather.WeatherLocation> stations, final Location targetLocation){
         for (int i=0; i<stations.size(); i++){
             Location location_station = new Location("weather");
             location_station.setLatitude(stations.get(i).latitude);
@@ -368,6 +368,9 @@ public class StationsManager {
         });
         return stations;
     }
+
+
+
 
 }
 

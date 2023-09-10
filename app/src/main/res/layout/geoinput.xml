@@ -135,14 +135,14 @@
             android:checked="false"/>
 
         <TextView
-            android:id="@+id/geoinput_text_gps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:textSize="@dimen/geo_textsize_large"
-            android:layout_toRightOf="@id/geoinput_check_gps"
-            android:layout_below="@id/geoinput_text_into"
-            android:text="@string/geoinput_gps"/>
+                android:id="@+id/geoinput_text_gps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorText"
+                android:textSize="@dimen/geo_textsize_large"
+                android:layout_toRightOf="@id/geoinput_check_gps"
+                android:layout_below="@id/geoinput_text_into"
+                android:text="@string/geoinput_gps"/>
 
     </RelativeLayout>
 </ScrollView>
