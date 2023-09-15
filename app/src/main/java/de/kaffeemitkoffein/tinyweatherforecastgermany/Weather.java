@@ -1788,50 +1788,54 @@ public final class Weather {
         return getMoonSetInUTC(weatherLocation,weatherInfo.getTimestamp());
     }
 
+    // known new moon on 2023, Sept. 15 01:39 UTC, in seconds epoch time 1694785140 in millis 1694785140000
+    final static long KNOWN_NEW_MOON = 1694785140;
+    // moon phases repeat every 29.53 days.
+    final static double MOON_REPEAT_DAYS = 29.530589d;
+
+    /**
+     * Calculates the moon day from the current time.
+     *
+     * @param time in milliseconds epoch time
+     * @return day of the moon phase; range 0 - 29.53
+     */
+
+    public static double getMoonPhaseDay(long time){
+        // get seconds passed since known new moon
+        long sec_passed_since_new_moon = time/1000 - KNOWN_NEW_MOON;
+        // convert passed seconds to days
+        double days_passed_since_new_moon = sec_passed_since_new_moon / 60d / 60d / 24d;
+        // get new moons since known_new_moon
+        double new_moons_since = days_passed_since_new_moon / MOON_REPEAT_DAYS;
+        // get day of the moon phase, range 0 - 29.53
+        double day = days_passed_since_new_moon % MOON_REPEAT_DAYS;
+        return day;
+    }
 
     /**
      * Calculates the moon phase from the current time.
-     * - days: day of the moon phase; range 0 - 29.53
-     * - phase: moon phase in a range of 0-1, where 0 is new moon and 0.5 is full moon
      *
-     * @param time
-     * @return days
+     * @param time in milliseconds epoch time
+     * @return the moon phase; range 0 - 1, where 0 is new moon and 0.5 is full moon
      */
 
-    public static int getMoonPhaseDay(long time){
-        // known new moon on 2000/06/01 12:24:01 in unix timestamp
-        long known_new_moon = 959862241;
-        // moon phases repeat every 29.53 days.
-        double moon_repeats_days = 29.53d;
-        // get seconds passed since known new moon
-        long sec_passed_since_new_moon = time - known_new_moon;
-        // convert passed seconds to days
-        long days_passed_since_new_moon = sec_passed_since_new_moon / 60 / 60 / 24;
-        // get new moons since known_new_moon
-        double new_moons_since = days_passed_since_new_moon / moon_repeats_days;
-        // get day of the moon phase, range 0 - 29.53
-        double day = days_passed_since_new_moon % moon_repeats_days;
+    public static double getMoonPhase(long time){
+        double day = getMoonPhaseDay(time);
         // get moon-phase in range 0-1, while 0.5 is full moon
-        double phase = day / moon_repeats_days;
-        return (int) Math.round(day);
+        double phase = day / MOON_REPEAT_DAYS;
+        return phase;
     }
 
+    /**
+     * Calculates the moon phase from the current time.
+     *
+     * @param time in milliseconds epoch time
+     * @return the moon phase in degrees; range 0 - 360, where 0 is new moon and 180 is full moon
+     */
+
     public static int getMoonPhaseInDegrees(long time){
-        // known new moon on 2000/06/01 12:24:01 in unix timestamp
-        long known_new_moon = 959862241;
-        // moon phases repeat every 29.53 days.
-        double moon_repeats_days = 29.53d;
-        // get seconds passed since known new moon
-        long sec_passed_since_new_moon = time - known_new_moon;
-        // convert passed seconds to days
-        long days_passed_since_new_moon = sec_passed_since_new_moon / 60 / 60 / 24;
-        // get new moons since known_new_moon
-        double new_moons_since = days_passed_since_new_moon / moon_repeats_days;
-        // get day of the moon phase, range 0 - 29.53
-        double day = days_passed_since_new_moon % moon_repeats_days;
-        // get moon-phase in range 0-1, while 0.5 is full moon
-        double phase = day / moon_repeats_days;
-        double degree = 360*phase;
+        double phase = getMoonPhase(time);
+        double degree = 360d*phase;
         return (int) Math.round(degree);
     }
 
