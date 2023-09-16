@@ -279,7 +279,6 @@ public class UpdateAlarmManager {
             intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_RAINRADAR,true);
         }
         if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST)){
-            //ArrayList<Weather.WeatherLocation> weatherLocations = WeatherSettings.getFavoritesWeatherLocations(context);
             ArrayList<Weather.WeatherLocation> weatherLocations = StationFavorites.getFavorites(context);
             if (weatherLocations.size()>0){
                 intent = intent.putParcelableArrayListExtra(Weather.WeatherLocation.PARCELABLE_NAME,weatherLocations);

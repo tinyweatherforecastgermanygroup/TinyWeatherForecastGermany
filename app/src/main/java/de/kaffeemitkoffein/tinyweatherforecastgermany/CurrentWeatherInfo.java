@@ -336,7 +336,7 @@ public class CurrentWeatherInfo{
                 // try to self-calculate this
                 wi.setProbPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwP, start, index));
             }
-            wi.setProbDrizzle(getIntItem(rawWeatherInfo.wwZ6[current_weather_position]));
+            wi.setProbDrizzle(getIntItem(rawWeatherInfo.wwZ6[index]));
             if (!wi.hasProbDrizzle()) {
                 // try to self-calculate this
                 wi.setProbDrizzle(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwZ, start, index));
