@@ -421,6 +421,12 @@
                     android:entryValues="@array/display_notifySeverity_value"
                     android:defaultValue="Minor"/>
 
+            <de.kaffeemitkoffein.tinyweatherforecastgermany.NumberPickerPreference
+                    android:key="PREF_max_loc_in_shared_warnings"
+                    android:title="@string/preference_max_loc_in_shared_warnings_title"
+                    android:summary="@string/preference_max_loc_in_shared_warnings_summary"
+            />
+
             <CheckBoxPreference
                     android:key="PREF_warnings_notify_LED"
                     android:title="@string/preference_notify_LED_title"
@@ -444,12 +450,6 @@
                     android:title="@string/preference_led_notice_title"
                     android:summary="@string/preference_led_notice_summary"/>
                     />
-
-            <de.kaffeemitkoffein.tinyweatherforecastgermany.NumberPickerPreference
-                    android:key="PREF_max_loc_in_shared_warnings"
-                    android:title="@string/preference_max_loc_in_shared_warnings_title"
-                    android:summary="@string/preference_max_loc_in_shared_warnings_summary"
-            />
 
         </PreferenceScreen>
 

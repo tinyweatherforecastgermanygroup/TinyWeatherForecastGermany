@@ -32,8 +32,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class WeatherLocationManager implements Application.ActivityLifecycleCallbacks {
@@ -259,6 +260,64 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
         return null;
     }
 
+    /**
+     * checks for a new location using known locations, meaning that no active location search is triggered.
+     * Requires the location background permission.
+     *
+     * @param context
+     * @return true if a new station was set, otherwise false (including not granted permission)
+     */
+
+    public static boolean checkForBackgroundLocation(Context context) {
+        String message = "* LOCATION CHECK: " + Weather.SIMPLEDATEFORMATS.TIME.format(new Date(Calendar.getInstance().getTimeInMillis()));
+        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,message);
+        if (WeatherLocationManager.hasBackgroundLocationPermission(context)){
+            Location location = WeatherLocationManager.getLastKnownLocation(context);
+            if (location!=null) {
+                Weather.WeatherLocation oldWeatherLocation = WeatherSettings.getLastPassiveLocation(context);
+                Weather.WeatherLocation newWeatherLocation = new Weather.WeatherLocation(location);
+                if (newWeatherLocation.time > oldWeatherLocation.time) {
+                    // check for distance significance
+                    float distance = oldWeatherLocation.toLocation().distanceTo(newWeatherLocation.toLocation());
+                    if (distance > newWeatherLocation.accuracy){
+                        // is significant geo
+                        // find the closest station
+                        Weather.WeatherLocation closestStation = findClosestStation(context,newWeatherLocation.toLocation());
+                        if (closestStation!=null){
+                            Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
+                            if (!closestStation.name.equals(currentStation.name)){
+                                // new station is different to old one
+                                WeatherSettings.setStation(context,closestStation);
+                                // set flag so that at next app start the new location will be added to the spinner
+                                WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public static Weather.WeatherLocation findClosestStation(Context context, Location location) {
+        StationsManager stationsManager = new StationsManager(context);
+        stationsManager.readStations();
+        ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
+        if (stations.size()>0) {
+            stations = StationsManager.sortStationsByDistance(stations,location);
+            Weather.WeatherLocation closestStation = stations.get(0);
+            // copy location data into stations data so that we have the real, more exact coordinates for future use
+            // like e.g. warnings
+            Weather.WeatherLocation resultStation = new Weather.WeatherLocation(location);
+            resultStation.name = closestStation.name;
+            resultStation.description = closestStation.description;
+            return resultStation;
+        }
+        return null;
+    }
+
+
     @SuppressLint("MissingPermission")
     public void startGPSLocationSearch(){
         if (activity!=null){
@@ -294,19 +353,17 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
     }
 
     public void checkLocation(){
-        if (WeatherSettings.GPSAuto(context)){
-            Location lastKnownLocation = getLastKnownLocation(context);
-            if (lastKnownLocation!=null){
-                if ((!WeatherSettings.isGPSFixOutdated(context,lastKnownLocation.getTime())) && (lastKnownLocation.getTime()>WeatherSettings.getlastGPSfixtime(context))){
-                    newLocation(lastKnownLocation);
-                    return;
-                } else {
-                    // nothing to do
-                }
+        Location lastKnownLocation = getLastKnownLocation(context);
+        if (lastKnownLocation!=null){
+            if ((!WeatherSettings.isGPSFixOutdated(context,lastKnownLocation.getTime())) && (lastKnownLocation.getTime()>WeatherSettings.getlastGPSfixtime(context))){
+                newLocation(lastKnownLocation);
+                return;
+            } else {
+                // nothing to do
             }
-            if (WeatherSettings.isLastGPSFixOutdated(context)){
-                startGPSLocationSearch();
-            }
+        }
+        if (WeatherSettings.isLastGPSFixOutdated(context)){
+            startGPSLocationSearch();
         }
     }
 

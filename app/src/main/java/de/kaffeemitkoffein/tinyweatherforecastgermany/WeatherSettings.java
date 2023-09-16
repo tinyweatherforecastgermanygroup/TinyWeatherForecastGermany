@@ -105,6 +105,7 @@ public class WeatherSettings {
     public static final String PREF_LOGGING = "PREF_logging";
     public static final String PREF_LOG_TO_LOGCAT = "PREF_log_to_logcat";
     public static final String PREF_FAVORITESDATA = "PREF_favoritesdata";
+    public static final String PREF_FAVORITESDATA2 = "PREF_favoritesdata2";
     public static final String PREF_WARNINGS_CACHETIME = "PREF_warnings_cachetime";
     public static final String PREF_WARNINGS_DISABLE = "PREF_warnings_diable";
     public static final String PREF_WARNINGS_LAST_UPDATE_TIME = "PREF_warnings_last_update_time";
@@ -209,6 +210,7 @@ public class WeatherSettings {
     public static final boolean PREF_LOGGING_DEFAULT = false;
     public static final boolean PREF_LOG_TO_LOGCAT_DEFAULT = false;
     public static final String PREF_FAVORITESDATA_DEFAULT = PREF_STATION_NAME_DEFAULT;
+    public static final String PREF_FAVORITESDATA_DEFAULT2 = "";
     public static final String PREF_WARNINGS_CACHETIME_DEFAULT = "30";
     public static final boolean PREF_WARNINGS_DISABLE_DEFAULT = false;
     public static final long PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT = 0;
@@ -315,6 +317,7 @@ public class WeatherSettings {
     public boolean logging = PREF_LOGGING_DEFAULT;
     public boolean log_to_logcat = PREF_LOG_TO_LOGCAT_DEFAULT;
     public String favoritesdata = PREF_FAVORITESDATA_DEFAULT;
+    public String favoritesdata2 = PREF_FAVORITESDATA_DEFAULT2;
     public String warnings_cache_time = PREF_WARNINGS_CACHETIME_DEFAULT;
     public boolean warnings_disabled = PREF_WARNINGS_DISABLE_DEFAULT;
     public boolean is_first_app_launch = true;
@@ -421,6 +424,7 @@ public class WeatherSettings {
         this.logging = readPreference(PREF_LOGGING, PREF_LOGGING_DEFAULT);
         this.log_to_logcat = readPreference(PREF_LOG_TO_LOGCAT, PREF_LOG_TO_LOGCAT_DEFAULT);
         this.favoritesdata = readPreference(PREF_FAVORITESDATA, PREF_FAVORITESDATA_DEFAULT);
+        this.favoritesdata = readPreference(PREF_FAVORITESDATA2, PREF_FAVORITESDATA_DEFAULT2);
         this.warnings_cache_time = readPreference(PREF_WARNINGS_CACHETIME, PREF_WARNINGS_CACHETIME_DEFAULT);
         this.warnings_disabled = readPreference(PREF_WARNINGS_DISABLE, PREF_WARNINGS_DISABLE_DEFAULT);
         this.warnings_last_update_time = readPreference(PREF_WARNINGS_LAST_UPDATE_TIME, PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
@@ -810,6 +814,7 @@ public class WeatherSettings {
         resetUVHIUpdateAllowedTime(context);
     }
 
+    /*
     public static void updateFavorites(Context context, ArrayList<Weather.WeatherLocation> favorites) {
         String result = "";
         for (int i = 0; i < favorites.size(); i++) {
@@ -856,6 +861,20 @@ public class WeatherSettings {
             }
         }
         return favorites;
+    }
+
+     */
+
+    public static String getFavorites2(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(PREF_FAVORITESDATA2,PREF_FAVORITESDATA_DEFAULT2);
+    }
+
+    public static void putFavorites2(Context context, String rawFavorites) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_FAVORITESDATA2,rawFavorites);
+        editor.apply();
     }
 
     public int getDisplayType() {
@@ -1866,6 +1885,7 @@ public class WeatherSettings {
         public final static int NONE = 0;
         public final static int DATA = 1;
         public final static int VIEWS = 2;
+        public final static int STATION = 3;
     }
 
     public static int getWeatherUpdatedFlag(Context context) {

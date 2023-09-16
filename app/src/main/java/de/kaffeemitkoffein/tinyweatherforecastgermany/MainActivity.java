@@ -70,7 +70,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
 
     Context context;
     StationsManager stationsManager;
-    ArrayList<Weather.WeatherLocation> spinnerItems;
+    // ArrayList<Weather.WeatherLocation> spinnerItems;
+    StationFavorites stationFavorites;
     Spinner spinner;
     ListView weatherList;
     AutoCompleteTextView autoCompleteTextView;
@@ -391,31 +392,22 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     protected void onResume(){
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app resumed.");
         registerForBroadcast();
-        // this is necassary if location changed in background
-        loadStationsSpinner();
-        // this is necessary if the update of weather data occurs while the app is in the background
-        try {
-            int weatherUpdateFlag = WeatherSettings.getWeatherUpdatedFlag(context);
-            if (weatherCard==null || weatherUpdateFlag!=WeatherSettings.UpdateType.NONE){
-                if (weatherUpdateFlag==WeatherSettings.UpdateType.DATA){;
-                    weatherCard = Weather.getCurrentWeatherInfo(this);
-                    displayWeatherForecast();
-                    WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
-                }
-                if (weatherUpdateFlag==WeatherSettings.UpdateType.VIEWS){
-                    WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
-                    recreate();
+        if (WeatherSettings.GPSAuto(context)){
+            weatherLocationManager.checkLocation();
+        } else {
+            if (WeatherSettings.useBackgroundLocation(context)){
+                if (WeatherLocationManager.checkForBackgroundLocation(context)){
+                    WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
                 }
             }
-        } catch (Exception e){
-            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when getting weather: "+e.getMessage());
         }
+        // this is necessary if the update of weather data occurs while the app is in the background
+        loadCurrentWeather();
         try {
             checkIfWarningsAreOutdated();
         } catch (Exception e){
             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when checking for warnings: "+e.getMessage());
         }
-        weatherLocationManager.checkLocation();
         super.onResume();
     }
 
@@ -469,9 +461,6 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             ThemePicker.SetTheme(this);
             WeatherSettings.setRotationMode(this);
             super.onCreate(savedInstanceState);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setBackgroundDrawable(getDrawable(R.drawable.ic_launcher_foreground));
-            }
             // check from intent if the WelcomeActivity tells us this is the first app launch
             Intent intent = getIntent();
             if (intent!=null){
@@ -581,17 +570,13 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             if (!API_TESTING_ENABLED){
                 weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
             }
-            try {
-                weatherCard = new Weather().getCurrentWeatherInfo(getApplicationContext());
-            } catch (Exception e){
-                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
-            }
+            //loadCurrentWeather();
             // get new data from api or display present data.
             if (!API_TESTING_ENABLED){
                 if (weatherCard!=null){
                     // check for update
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
-                    displayWeatherForecast();
+                    //displayWeatherForecast();
                 } else {
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,weatherCard);
                 }
@@ -644,15 +629,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 } else {
                     PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Cannot fetch pollen areas because no suitable network connection found.");
                 }
-            } else {
-            /*
-            long start = Calendar.getInstance().getTimeInMillis();
-            Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
-            final PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
-             */
             }
-            // Setup a listener when layout of main spinner is done
-
             // Prefetch maps for better performance. This may be turned off later by the user.
             // This will be done at a maximum of once per hour, see WeatherSettings.preFetchMaps.
             if (((performingFirstAppLaunch) || (WeatherSettings.preFetchMaps(context))) && DataUpdateService.suitableNetworkAvailable(context)){
@@ -865,9 +842,11 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     private void loadStationsSpinner() {
         // spinner code
         spinner = (Spinner) findViewById(R.id.stations_spinner);
-        spinnerItems = WeatherSettings.getFavoritesWeatherLocations(context);
-        // check if spinner is up-to-date; if other location is set, update spinner
+        if (stationFavorites==null){
+            stationFavorites = new StationFavorites(context);
+        }
         Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
+        ArrayList<Weather.WeatherLocation> spinnerItems = StationFavorites.getFavorites(context);
         if (!currentStation.name.equals(spinnerItems.get(0).name)){
             addToSpinner(currentStation);
             return;
@@ -902,26 +881,46 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     }
 
     private void addToSpinner(Weather.WeatherLocation weatherLocation){
-        spinnerItems = WeatherSettings.getFavoritesWeatherLocations(context);
-        ArrayList<Weather.WeatherLocation> new_spinner_items = new ArrayList<Weather.WeatherLocation>();
-        new_spinner_items.add(weatherLocation);
-        for (int i=0; i<spinnerItems.size() && i<10; i++){
-            // prevent double entries
-            if (!spinnerItems.get(i).name.equals(weatherLocation.name)){
-                new_spinner_items.add(spinnerItems.get(i));
-            }
+        if (stationFavorites==null){
+            stationFavorites = new StationFavorites(context);
         }
-        spinnerItems = new_spinner_items;
-        WeatherSettings.updateFavorites(context,spinnerItems);
+        stationFavorites.addFavorite(weatherLocation);
         loadStationsSpinner();
     }
 
     private void clearFavorites(){
-        ArrayList<Weather.WeatherLocation> new_spinner_items = new ArrayList<Weather.WeatherLocation>();
-        new_spinner_items.add(WeatherSettings.getSetStationLocation(this));
-        spinnerItems = new_spinner_items;
-        WeatherSettings.updateFavorites(context,spinnerItems);
+        if (stationFavorites==null){
+            stationFavorites = new StationFavorites(context);
+        }
+        stationFavorites.deleteList();
         loadStationsSpinner();
+    }
+
+    private void loadCurrentWeather(){
+        int updateFlag = WeatherSettings.getWeatherUpdatedFlag(context);
+        if ((updateFlag==WeatherSettings.UpdateType.STATION) || (updateFlag==WeatherSettings.UpdateType.DATA)){
+            // in case of new station add it to the spinner list and update the spinner display
+            if (updateFlag==WeatherSettings.UpdateType.STATION){
+                addToSpinner(WeatherSettings.getSetStationLocation(context));
+            }
+            // force a re-load of weather data using the station from settings
+            weatherCard = null;
+            // this will trigger an update automatically if data of weather station is outdated and will postpone
+            // the display until the update finished.
+            displayWeatherForecast();
+            // set back the flag as update was done.
+            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
+            return;
+        }
+        if (updateFlag==WeatherSettings.UpdateType.VIEWS){
+            // set back the flag before recreate occurs
+            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
+            // recreate the whole view
+            recreate();
+            return;
+        }
+        // display weather without any update mode active
+        displayWeatherForecast();
     }
 
     public void loadStationsData(){

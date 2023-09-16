@@ -155,6 +155,17 @@ public final class Weather {
             return location;
         }
 
+        public boolean isInList(ArrayList<WeatherLocation> locations){
+            if (locations!=null){
+                for (int i=0; i<locations.size(); i++){
+                    if (this.name.equals(locations.get(i).name)){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public static final Creator<WeatherLocation> CREATOR = new Creator<WeatherLocation>() {
             @Override
             public WeatherLocation createFromParcel(Parcel in) {
