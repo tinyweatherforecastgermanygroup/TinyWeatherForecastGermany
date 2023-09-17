@@ -431,4 +431,11 @@
     <string name="clear_sky">tiszta égbolt</string>
     <string name="welcome_s4_showuv">Betölti és megjeleníti a helyére vonatkozó UV-veszélyességi indexet.</string>
     <string name="wd_probablity_precipitation_amounts">A csapadékmennyiségek valószínűsége</string>
+    <string name="preference_use_background_location_summary">Ellenőrizze a helyet rendszeresen a más alkalmazások által kapott helymeghatározási adatok segítségével.</string>
+    <string name="preference_max_loc_in_shared_warnings_title">Megosztandó helyszínek</string>
+    <string name="preference_display_wind_in_charts_summary">A szélsebesség megjelenítése az áttekintő diagramon és a diagram widgeten.</string>
+    <string name="preference_max_loc_in_shared_warnings_summary">A megosztandó érdekelt pozíciók száma. Az összes megosztásához nullát kell beírni. Jelenlegi érték:</string>
+    <string name="preference_display_wind_in_charts_title">Megjelenítés a diagramokban</string>
+    <string name="preference_use_background_location_title">A háttérben</string>
+    <string name="dewpoint">harmatpont</string>
 </resources>
