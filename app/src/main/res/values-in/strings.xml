@@ -431,4 +431,11 @@
     <string name="clear_sky">langit cerah</string>
     <string name="welcome_s4_showuv">Memuat dan menampilkan indeks bahaya UV untuk lokasi Anda.</string>
     <string name="wd_probablity_precipitation_amounts">Probabilitas jumlah curah hujan</string>
+    <string name="preference_use_background_location_summary">Periksa lokasi secara teratur menggunakan data lokasi yang diperoleh dari aplikasi lain.</string>
+    <string name="preference_max_loc_in_shared_warnings_title">Lokasi untuk dibagikan</string>
+    <string name="preference_display_wind_in_charts_summary">Menampilkan kecepatan angin di bagan ikhtisar dan widget bagan.</string>
+    <string name="preference_max_loc_in_shared_warnings_summary">Jumlah posisi yang diminati untuk dibagikan. Masukkan nol untuk membagikan semua. Nilai saat ini:</string>
+    <string name="preference_display_wind_in_charts_title">Tampilkan dalam Grafik</string>
+    <string name="preference_use_background_location_title">Di latar belakang</string>
+    <string name="dewpoint">titik embun</string>
 </resources>
