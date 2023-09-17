@@ -448,4 +448,11 @@
     <string name="clear_sky">klarer Himmel</string>
     <string name="welcome_s4_showuv">UV Gefahrenindex für die Wetterstation laden und anzeigen.</string>
     <string name="wd_probablity_precipitation_amounts">Wahrscheinlichkeit von Niederschlagsmengen</string>
+    <string name="preference_use_background_location_summary">Überprüfe den Standort regelmäßig anhand der von anderen Apps erhaltenen Standortdaten.</string>
+    <string name="preference_max_loc_in_shared_warnings_title">Geteilte Orte</string>
+    <string name="preference_display_wind_in_charts_summary">Anzeige der Windgeschwindigkeit in der Übersichtsgrafik und im Widget mit der Grafik.</string>
+    <string name="preference_max_loc_in_shared_warnings_summary">Anzahl der betroffenen Orte, die geteilt werden sollen. Geben Sie Null ein, um alle zu teilen. Aktueller Wert:</string>
+    <string name="preference_display_wind_in_charts_title">In Diagrammen anzeigen</string>
+    <string name="preference_use_background_location_title">Im Hintergrund</string>
+    <string name="dewpoint">Taupunkt</string>
 </resources>
