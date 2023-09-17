@@ -406,4 +406,11 @@
     <string name="clear_sky">klar himmel</string>
     <string name="welcome_s4_showuv">Last inn og vis UV-fareindeksen for stedet der du befinner deg.</string>
     <string name="wd_probablity_precipitation_amounts">Sannsynlighet for nedbørsmengder</string>
+    <string name="preference_use_background_location_summary">Kontroller posisjonen regelmessig ved hjelp av posisjonsdataene som er innhentet av andre apper.</string>
+    <string name="preference_max_loc_in_shared_warnings_title">Steder å dele</string>
+    <string name="preference_display_wind_in_charts_summary">Vis vindhastigheten i oversiktskartet og i kartwidgeten.</string>
+    <string name="preference_max_loc_in_shared_warnings_summary">Antall berørte steder som skal deles. Angi null for å dele alle. Gjeldende verdi:</string>
+    <string name="preference_display_wind_in_charts_title">Vis i diagrammer</string>
+    <string name="preference_use_background_location_title">I bakgrunnen</string>
+    <string name="dewpoint">duggpunkt</string>
 </resources>
