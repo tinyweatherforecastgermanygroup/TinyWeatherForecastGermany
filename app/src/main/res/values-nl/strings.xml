@@ -431,4 +431,11 @@
     <string name="preference_screen_uvhi_fetchData_summary">Haal naast de weersvoorspelling ook de voorspelling van de UV-risico-index voor jouw locatie op.</string>
     <string name="welcome_s4_showuv">De UV-risico-index voor uw locatie laden en weergeven.</string>
     <string name="wd_probablity_precipitation_amounts">Waarschijnlijkheid van neerslaghoeveelheden</string>
+    <string name="preference_use_background_location_summary">Controleer de locatie regelmatig met behulp van de locatiegegevens die door andere apps zijn verkregen.</string>
+    <string name="preference_max_loc_in_shared_warnings_title">Locaties om te delen</string>
+    <string name="preference_display_wind_in_charts_summary">Geef de windsnelheid weer in de overzichtskaart en de kaartwidget.</string>
+    <string name="preference_max_loc_in_shared_warnings_summary">Aantal geïnteresseerde posities dat gedeeld moet worden. Voer nul in om alles te delen. Huidige waarde:</string>
+    <string name="preference_display_wind_in_charts_title">Toon in grafieken</string>
+    <string name="preference_use_background_location_title">Op de achtergrond</string>
+    <string name="dewpoint">dauwpunt</string>
 </resources>
