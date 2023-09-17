@@ -432,4 +432,11 @@
     <string name="welcome_s4_showuv">Carica e visualizza l\'indice di pericolo UV per la propria località.</string>
     <string name="preference_screen_pollen_rye_summary">Visualizzare la previsione del conteggio dei pollini di segale.</string>
     <string name="wd_probablity_precipitation_amounts">Probabilità di quantità di precipitazioni</string>
+    <string name="preference_use_background_location_summary">Controllare regolarmente la posizione utilizzando i dati di localizzazione ottenuti da altre app.</string>
+    <string name="preference_max_loc_in_shared_warnings_title">Luoghi da condividere</string>
+    <string name="preference_display_wind_in_charts_summary">Visualizzare la velocità del vento nel grafico d\'insieme e nel widget del grafico.</string>
+    <string name="preference_max_loc_in_shared_warnings_summary">Numero di posizioni interessate da condividere. Immettere zero per condividere tutte. Valore attuale:</string>
+    <string name="preference_display_wind_in_charts_title">Mostra nei grafici</string>
+    <string name="preference_use_background_location_title">Sullo sfondo</string>
+    <string name="dewpoint">punto di rugiada</string>
 </resources>
