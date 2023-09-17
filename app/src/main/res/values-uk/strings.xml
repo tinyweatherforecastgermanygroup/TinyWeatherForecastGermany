@@ -431,4 +431,11 @@
     <string name="clear_sky">чисте небо</string>
     <string name="welcome_s4_showuv">Завантажте та відобразіть індекс небезпеки ультрафіолетового випромінювання для вашого місцезнаходження.</string>
     <string name="wd_probablity_precipitation_amounts">Ймовірність кількості опадів</string>
+    <string name="preference_use_background_location_summary">Регулярно перевіряйте місцезнаходження, використовуючи дані про місцезнаходження, отримані іншими програмами.</string>
+    <string name="preference_max_loc_in_shared_warnings_title">Локації, якими можна поділитися</string>
+    <string name="preference_display_wind_in_charts_summary">Відображати швидкість вітру на оглядовій діаграмі та віджеті діаграми.</string>
+    <string name="preference_max_loc_in_shared_warnings_summary">Кількість постраждалих населених пунктів, до яких потрібно надати доступ. Введіть нуль, щоб надати доступ до всіх. Поточне значення:</string>
+    <string name="preference_display_wind_in_charts_title">Показати в діаграмах</string>
+    <string name="preference_use_background_location_title">На задньому плані</string>
+    <string name="dewpoint">точка роси</string>
 </resources>
