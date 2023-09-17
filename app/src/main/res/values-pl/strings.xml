@@ -431,4 +431,11 @@
     <string name="preference_screen_pollen_rye_summary">Wyświetla prognozę liczby pyłków żyta.</string>
     <string name="welcome_s4_showuv">Wczytuje i wyświetla wskaźnik zagrożenia UV dla danej lokalizacji.</string>
     <string name="wd_probablity_precipitation_amounts">Prawdopodobieństwo wystąpienia opadów</string>
+    <string name="preference_use_background_location_summary">Regularnie sprawdzaj lokalizację, korzystając z danych lokalizacji uzyskanych przez inne aplikacje.</string>
+    <string name="preference_max_loc_in_shared_warnings_title">Miejsca do udostępnienia</string>
+    <string name="preference_display_wind_in_charts_summary">Wyświetla prędkość wiatru na wykresie ogólnym i widżecie wykresu.</string>
+    <string name="preference_max_loc_in_shared_warnings_summary">Liczba dotkniętych lokalizacji do udostępnienia. Wprowadź zero, aby udostępnić wszystkie. Bieżąca wartość:</string>
+    <string name="preference_display_wind_in_charts_title">Pokaż na wykresach</string>
+    <string name="preference_use_background_location_title">W tle</string>
+    <string name="dewpoint">punkt rosy</string>
 </resources>
