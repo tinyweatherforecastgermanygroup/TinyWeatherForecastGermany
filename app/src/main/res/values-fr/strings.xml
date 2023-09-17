@@ -445,4 +445,11 @@
     <string name="clear_sky">ciel dégagé</string>
     <string name="welcome_s4_showuv">Chargement et affichage de l\'indice de risque UV pour votre emplacement.</string>
     <string name="wd_probablity_precipitation_amounts">Probabilité de précipitations</string>
+    <string name="preference_use_background_location_summary">Vérifiez régulièrement l\'emplacement à l\'aide des données de localisation obtenues par d\'autres applications.</string>
+    <string name="preference_max_loc_in_shared_warnings_title">Lieux à partager</string>
+    <string name="preference_display_wind_in_charts_summary">Afficher la vitesse du vent dans la carte de synthèse et dans le widget de la carte.</string>
+    <string name="preference_max_loc_in_shared_warnings_summary">Nombre de positions intéressées à partager. Saisir zéro pour tout partager. Valeur actuelle :</string>
+    <string name="preference_display_wind_in_charts_title">Afficher dans les graphiques</string>
+    <string name="preference_use_background_location_title">En arrière-plan</string>
+    <string name="dewpoint">point de rosée</string>
 </resources>
