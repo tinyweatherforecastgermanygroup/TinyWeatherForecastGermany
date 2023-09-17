@@ -897,7 +897,7 @@ public class ForecastBitmap{
                 }
             }
         }
-        if (hasWindSpeed){
+        if ((hasWindSpeed) && (WeatherSettings.displayWindInCharts(context))){
             for (int i=startPosition; i<endPosition-1; i++) {
                 int pos = i - startPosition;
                 float windscale=100f;

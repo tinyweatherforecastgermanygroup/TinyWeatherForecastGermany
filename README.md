@@ -119,6 +119,7 @@ The app uses the following permissions:
 * foreground service: a foreground service is used to reliably get the forecast data. The service does not run all the time but only when a weather forecast update from the DWD needs to be done, and it runs until it is finished.
 * Receive boot completed: the app needs to know about a reboot to restart periodic checks if an update is due, to update widgets and to send data to Gadgetbridge when enabled.
 * Access fine location: used to determine the closest weather sensors to your position. This permission needs not to be granted if this feature is not used or if the search is performed based on manually entered geo-coordinates.
+* Access background location: used to passively check the location while the app is not running and switch to a closer weather station if appropriate. This permission needs not to be granted if this feature is not used.
 
 ## FAQ
 
@@ -170,6 +171,16 @@ Since *DMO* forecasts get updated every 12 hours only, periodic updates automati
 ### My widgets don't get updated (unless I open the app).
 
 The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
+
+### My widgets don't update the station automatically when I am on travel.
+
+1. You need to grand the _background location permission_. Please note that you must grant the general location permission before you can grant the background permission. The app asks all of this is the appropriate order. Should you have declined any of the location permissions, you can grant them in the app settings.
+2. You also need to enable background location checks in the app settings.
+3. To safe your battery, the app never starts an active location fix in the background. It only re-uses locations obtained by other apps, e.g. map applications. Simply start the location search in any app on your device or search actively for the closest station within the app. All of this will make the widgets change to the closest station.
+4. Please also note that the background-checks are performed every 15-30 minutes only. 
+5. Open the app to immediately check for known, passive locations.
+
+All of this does not work: this functionality may be broken due to energy saving apps or roms breaking expected functionality. See above "my widgets don't get updated (unless I open the app)". 
 
 ### How often does the app update the weather forecast?
 
@@ -234,6 +245,10 @@ This also works from a web browser, provided the page in question offers a `geo:
 The delete icon works the other way around: it does not remove the currently displayed region but *all other* regions that were selected at some point in the past. The idea of Tiny Weather Forecast Germany is centred around the idea of your usual location and not so much on a list of bookmarks.
 
 It is also implemented this way to quickly delete a presumptive travel history. Think of it as a privacy feature.
+
+### Why aren't all locations in my bookmarks?
+
+When on travel and with the passive location checks in the background enabled, the weather station may switch multiple times before you open the app. To prevent the app from recording a detailed travel history, only locations that applied when you actively opened the app are added to the bookmarks. PLease also note that the number of bookmarks is limited to 10. 
 
 ### How do I delete a location?
 

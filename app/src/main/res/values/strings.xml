@@ -155,7 +155,7 @@
     <string name="preference_display_wind_unit_summary">Select the unit for wind speed.</string>
     <string name="preference_display_wind_in_radar_title">Show in rain radar</string>
     <string name="preference_display_wind_in_radar_summary">Display wind direction in the rain radar</string>
-    <string name="preference_display_wind_in_charts_title">Show in Charts</string>
+    <string name="preference_display_wind_in_charts_title">Show in charts</string>
     <string name="preference_display_wind_in_charts_summary">Display the wind speed in the overview chart and the chart widget.</string>
     <string name="preference_display_distance_unit_title">Distance</string>
     <string name="preference_display_distance_unit_summary">Select the unit for distances.</string>
@@ -220,7 +220,7 @@
     <string name="preference_meterednetwork_notice">You might miss weather warnings when using unmetered networks only.</string>
     <string name="preference_category_location">Location</string>
     <string name="preference_usegps_title">Use location services</string>
-    <string name="preference_use_background_location_title">Im Hintergrund</string>
+    <string name="preference_use_background_location_title">Im the background</string>
     <string name="preference_use_background_location_summary">Check the location regularly using the location data obtained by other apps.</string>
     <string name="preference_gpsauto_title">Check location</string>
     <string name="preference_gpsauto_summary">Check that the location is correct at each startup.</string>
