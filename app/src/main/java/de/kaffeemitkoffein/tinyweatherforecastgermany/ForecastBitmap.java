@@ -645,6 +645,16 @@ public class ForecastBitmap{
         return rPaint;
     }
 
+    public static Paint GetDefaultWindPaint(int color, int lineWidth) {
+        Paint rPaint = new Paint();
+        rPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        rPaint.setColor(color);
+        rPaint.setStrokeWidth(lineWidth);
+        rPaint.setPathEffect(new DashPathEffect(new float[]{1,2,1,2},0));
+        rPaint.setAntiAlias(true);
+        return rPaint;
+    }
+
     public static Bitmap getOverviewChart(Context context, int width, int height, ArrayList<Weather.WeatherInfo> weatherInfos, ArrayList<WeatherWarning> warnings){
         // integrity checks of data
         if (weatherInfos==null){
@@ -657,6 +667,7 @@ public class ForecastBitmap{
         boolean hasTemperature = true;
         boolean hasPrecipitation = true;
         boolean hasClouds = true;
+        boolean hasWindSpeed = true;
         for (int i=startPosition; i<weatherInfos.size(); i++){
             Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
             if (!weatherInfo1.hasTemperature()){
@@ -667,6 +678,9 @@ public class ForecastBitmap{
             }
             if (!weatherInfo1.hasPrecipitation()){
                 hasPrecipitation=false;
+            }
+            if (!weatherInfo1.hasWindSpeed()){
+                hasWindSpeed=false;
             }
         }
         if ((!hasTemperature)&&(!hasClouds)&&(!hasPrecipitation)){
@@ -687,6 +701,7 @@ public class ForecastBitmap{
         Paint temperaturePaint = GetDefaultLinePaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.RED),lineWidth);
         Paint cloudsPaint = GetDefaultLinePaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTDARK),lineWidth);
         Paint precipitationPaint = GetDefaultLinePaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE),lineWidth);
+        Paint windPaint = GetDefaultWindPaint(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXT),lineWidth);
         Paint linePaint = new Paint();
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeWidth(1);
@@ -882,7 +897,52 @@ public class ForecastBitmap{
                 }
             }
         }
+        if (hasWindSpeed){
+            for (int i=startPosition; i<endPosition-1; i++) {
+                int pos = i - startPosition;
+                float windscale=100f;
+                Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
+                Weather.WeatherInfo weatherInfo2 = weatherInfos.get(i + 1);
+                float wind1 = weatherInfo1.getWindSpeedInKmhInt();
+                float wind2 = weatherInfo2.getWindSpeedInKmhInt();
+                float y1_t = zeroline_position - wind1 * (chartHeight/windscale);
+                float y2_t = zeroline_position - wind2 * (chartHeight/windscale);
+                windPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXT));
+                if (wind1>windscale){
+                    y1_t = zeroline_position - chartHeight+lineWidth;
+                    windPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.YELLOW));
+                }
+                if (wind2>windscale){
+                    y2_t = zeroline_position - chartHeight+lineWidth;
+                    windPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.YELLOW));
+                }
+                float x1 = xChartOffset + ((float) chartWidth / (float) itemCount) * pos;
+                float x2 = xChartOffset + ((float) chartWidth / (float) itemCount) * (pos + 1);
+                canvas.drawLine(x1, y1_t, x2, y2_t, windPaint);
+            }
+            String windLabel = getWindScaleString(context);
+            Paint windTextPaint = new Paint(textPaint);
+            windTextPaint.setTextSize(labelTextSize/1.5f);
+            windTextPaint.setShadowLayer(2,2,2,Color.BLACK);
+            windTextPaint.setAntiAlias(true);
+            float windXOffset = bitmap.getWidth() - windTextPaint.measureText(windLabel)-3;
+            canvas.drawText(windLabel,windXOffset,zeroline_position-windTextPaint.getTextSize()-2,windTextPaint);
+        }
         return bitmap;
+    }
+
+    public static String getWindScaleString(Context context){
+        // scale is 0-100 km/h, 0-7 bf, 0-15.65 m/s, 30.41 kt
+        if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.BEAUFORT){
+            return "0 - 7 bf";
+        }
+        if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.METERS_PER_SECOND){
+            return "0 - 15.65 m/s";
+        }
+        if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.KILOMETERS_PER_HOUR){
+            return "0 - 30.41 kt";
+        }
+        return "0 - 100 km/h";
     }
 
     public static Bitmap getHorizontalBar(Context context, int width, int height, int value, int max, int color, int border){

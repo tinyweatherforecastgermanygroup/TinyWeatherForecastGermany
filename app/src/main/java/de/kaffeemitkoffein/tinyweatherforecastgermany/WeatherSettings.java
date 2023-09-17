@@ -164,6 +164,7 @@ public class WeatherSettings {
     public static final String PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS = "PREF_max_loc_in_shared_warnings";
     public static final String PREF_LAST_PASSIVE_LOCATION = "PREF_last_passive_location";
     public static final String PREF_USE_BACKGROUND_LOCATION = "PREF_use_backgr_location";
+    public static final String PREF_DISPLAY_WIND_IN_CHARTS = "PREF_wind_in_charts";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -269,6 +270,7 @@ public class WeatherSettings {
     public static final int PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT = 12;
     public static final String PREF_LAST_PASSIVE_LOCATION_DEFAULT = "";
     public static final boolean PREF_USE_BACKGROUND_LOCATION_DEFAULT = false;
+    public static final boolean PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT = false;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
@@ -369,6 +371,7 @@ public class WeatherSettings {
     public int maxLocationsInSharedWarnings = PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT;
     public Weather.WeatherLocation lastPassiveLocation;
     public boolean useBackgroundLocation = PREF_USE_BACKGROUND_LOCATION_DEFAULT;
+    public boolean displayWindInCharts = PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT;
 
 
     private Context context;
@@ -474,6 +477,7 @@ public class WeatherSettings {
         this.weatherUpdatedFlag = readPreference(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
         this.maxLocationsInSharedWarnings = readPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT);
         this.lastPassiveLocation = new Weather.WeatherLocation(readPreference(PREF_LAST_PASSIVE_LOCATION,PREF_LAST_PASSIVE_LOCATION_DEFAULT));
+        this.displayWindInCharts = readPreference(PREF_DISPLAY_WIND_IN_CHARTS,PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT);
     }
 
     public void savePreferences() {
@@ -568,6 +572,7 @@ public class WeatherSettings {
         applyPreference(PREF_WEATHERUPDATEDFLAG,weatherUpdatedFlag);
         applyPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,maxLocationsInSharedWarnings);
         applyPreference(PREF_LAST_PASSIVE_LOCATION,lastPassiveLocation.serializeToString());
+        applyPreference(PREF_DISPLAY_WIND_IN_CHARTS,this.displayWindInCharts);
     }
 
     public void commitPreferences() {
@@ -662,6 +667,7 @@ public class WeatherSettings {
         commitPreference(PREF_WEATHERUPDATEDFLAG,weatherUpdatedFlag);
         commitPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,maxLocationsInSharedWarnings);
         commitPreference(PREF_LAST_PASSIVE_LOCATION,lastPassiveLocation.serializeToString());
+        commitPreference(PREF_DISPLAY_WIND_IN_CHARTS,this.displayWindInCharts);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -813,57 +819,6 @@ public class WeatherSettings {
         pref_editor.apply();
         resetUVHIUpdateAllowedTime(context);
     }
-
-    /*
-    public static void updateFavorites(Context context, ArrayList<Weather.WeatherLocation> favorites) {
-        String result = "";
-        for (int i = 0; i < favorites.size(); i++) {
-            result = result + favorites.get(i).name + FAVORITES_SEPERATOR;
-        }
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putString(PREF_FAVORITESDATA, result);
-        pref_editor.commit();
-    }
-
-    public ArrayList<String> getFavorites() {
-        ArrayList<String> result = new ArrayList<String>();
-        String[] split_descriptions = this.favoritesdata.split(FAVORITES_SEPERATOR);
-        for (int i = 0; i < split_descriptions.length; i++) {
-            result.add(split_descriptions[i]);
-        }
-        // if favorites are corrupted, simply reset to display current station only and return default
-        if (split_descriptions.length==0){
-            result.add(this.location_description);
-            this.favoritesdata = this.location_description;
-            applyPreference(PREF_FAVORITESDATA,this.favoritesdata);
-        }
-        return result;
-    }
-
-    public static ArrayList<Weather.WeatherLocation> getFavoritesWeatherLocations(Context context){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String favoritesData = sharedPreferences.getString(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
-        String[] namesArray = favoritesData.split(FAVORITES_SEPERATOR);
-        // convert array to arrayList
-        ArrayList<String> names = new ArrayList<String>();
-        for (int i=0; i<namesArray.length; i++){
-            names.add(namesArray[i]);
-        }
-        ArrayList<Weather.WeatherLocation> favorites = new ArrayList<Weather.WeatherLocation>();
-        ArrayList<Weather.WeatherLocation> weatherLocations = StationsManager.readStations(context);
-        for (int i=0; i<names.size(); i++){
-            for (int j=0; j<weatherLocations.size(); j++){
-                Weather.WeatherLocation weatherLocation = weatherLocations.get(j);
-                if (weatherLocation.name.equals(names.get(i))){
-                    favorites.add(weatherLocation);
-                }
-            }
-        }
-        return favorites;
-    }
-
-     */
 
     public static String getFavorites2(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1930,6 +1885,11 @@ public class WeatherSettings {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_USE_BACKGROUND_LOCATION,b);
         pref_editor.apply();
+    }
+
+    public static boolean displayWindInCharts(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_WIND_IN_CHARTS,PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT);
     }
 
 

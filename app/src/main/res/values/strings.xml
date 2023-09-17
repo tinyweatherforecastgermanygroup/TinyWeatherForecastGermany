@@ -155,6 +155,8 @@
     <string name="preference_display_wind_unit_summary">Select the unit for wind speed.</string>
     <string name="preference_display_wind_in_radar_title">Show in rain radar</string>
     <string name="preference_display_wind_in_radar_summary">Display wind direction in the rain radar</string>
+    <string name="preference_display_wind_in_charts_title">Show in Charts</string>
+    <string name="preference_display_wind_in_charts_summary">Display the wind speed in the overview chart and the chart widget.</string>
     <string name="preference_display_distance_unit_title">Distance</string>
     <string name="preference_display_distance_unit_summary">Select the unit for distances.</string>
     <string name="preference_screen_pollen_title">Pollen display</string>
