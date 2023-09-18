@@ -228,7 +228,7 @@
     <string name="textforecasttype_short_term">Vær Kort Sikt</string>
     <string name="textforecasttype_maritime_warning">Maritime Advarsel</string>
     <string name="textforecasttype_medium_term">Vær Mellomlang Sikt</string>
-    <string name="geoinput_rationale">Plasseringen tjenester trengs kun én gang, for å finne den neste værstasjon. De kan være deaktivert etterpå. Alternativt, kan du angi geo-koordinater manuelt for å finne neste værstasjon.</string>
+    <string name="geoinput_rationale">Appen kan bruke stedstjenester på enheten din til å finne den nærmeste værstasjonen. Alternativt kan du søke etter en værstasjon selv, angi koordinatene manuelt eller dele en posisjon fra en kartapp. Hvis du vil at appen skal søke etter posisjonen din, må du ha posisjonstillatelse.</string>
     <string name="feedback_mail_subject">Tilbakemelding: TinyWeatherForecastGermany</string>
     <string name="alertdialog_2_text">Denne app som logger seg til logcat. Logging for å logcat vil bli deaktivert, siden denne funksjonen er ikke ment for offisielle utgivelser.</string>
     <string name="weathercode_DRIZZLE_FREEZING_MODERATE_OR_HEAVY">frysing duskregn</string>
@@ -413,4 +413,11 @@
     <string name="preference_display_wind_in_charts_title">Vis i diagrammer</string>
     <string name="preference_use_background_location_title">I bakgrunnen</string>
     <string name="dewpoint">duggpunkt</string>
+    <string name="disable_battery_saving_rationale">Posisjonssjekken i bakgrunnen vil ikke fungere pålitelig så lenge batterioptimalisering er slått på. Det er bedre å deaktivere batterioptimalisering for denne appen. Vær oppmerksom på at systemet kan tilbakestille denne innstillingen av og til. Hvis stedskontrollen ikke fungerer som den skal, bør du sjekke denne innstillingen i fremtiden.</string>
+    <string name="backgroundGPS_settingshint">For å gi tillatelse til bakgrunnsplassering må du åpne appinnstillingene: velg tillatelser; velg plassering, tillat</string>
+    <string name="geoinput_settingshint">For å gi plasseringstillatelse må du åpne appinnstillingene: velg tillatelser, velg plassering, tillat tilgang til plassering.</string>
+    <string name="backgroundGPS_rationale">Velg Alltid tillate for posisjonstillatelsen slik at posisjonen også kan oppdateres i bakgrunnen. Bare posisjoner som andre apper har oppdaget, vil bli brukt. Appen vil ikke aktivt bestemme posisjonen i bakgrunnen, slik at batteriet ikke belastes unødvendig. Uten denne tillatelsen kan ikke appen justere posisjonen i bakgrunnen. Andre funksjoner i appen påvirkes ikke hvis du ikke gir denne tillatelsen.</string>
+    <string name="allow">Tillat</string>
+    <string name="always_allow">alltid tillate</string>
+    <string name="opensettings">Åpne innstillingene</string>
 </resources>
