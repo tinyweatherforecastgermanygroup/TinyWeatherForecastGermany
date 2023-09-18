@@ -232,7 +232,7 @@
     <string name="geoinput_select">Sélectionnez l\'une des stations météo suivantes :</string>
     <string name="geoinput_wrongformat">La coordonnée n\'a pas de format valide. Vous pouvez utiliser des annotations comme +53.12345 pour les degrés, ou -44.22:12.12345 pour saisir les degrés et les minutes ou 33.12.12345 pour saisir les degrés, les minutes et les secondes. Veuillez réessayer.</string>
     <string name="geoinput_wrongvalue">La longitude doit être comprise entre -180 et +180, la latitude doit être comprise entre -90 et +90. Veuillez réessayer.</string>
-    <string name="geoinput_rationale">Les services de localisation ne sont nécessaires qu\'une fois, pour trouver la prochaine station météo. Ils peuvent être désactivés par la suite. Alternativement, vous pouvez entrer les géo-coordonnées manuellement pour trouver la prochaine station météo.</string>
+    <string name="geoinput_rationale">L\'application peut utiliser les services de localisation de votre appareil pour trouver la station météo la plus proche. Vous pouvez également rechercher vous-même une station météo, saisir les coordonnées manuellement ou partager un emplacement à partir d\'une application cartographique. Si vous souhaitez que l\'application recherche votre position, l\'autorisation de localisation est requise.</string>
     <string name="geoinput_noprovider">Aucun service de localisation approprié n\'a été trouvé. Veuillez activer les services de localisation et réessayer.</string>
     <string name="geoinput_reflocation_title">L\'emplacement de référence est :</string>.
     <string name="geoinput_reflocation_longitude">Longitude :</string>
@@ -452,4 +452,11 @@
     <string name="preference_display_wind_in_charts_title">Afficher dans les graphiques</string>
     <string name="preference_use_background_location_title">En arrière-plan</string>
     <string name="dewpoint">point de rosée</string>
+    <string name="disable_battery_saving_rationale">La vérification de l\'emplacement en arrière-plan ne fonctionnera pas de manière fiable tant que l\'optimisation de la batterie sera activée. Il est préférable de désactiver l\'optimisation de la batterie pour cette application. Notez que le système peut réinitialiser ce paramètre de temps en temps. Si la vérification de l\'emplacement ne fonctionne pas correctement, vous devriez vérifier ce paramètre à l\'avenir.</string>
+    <string name="backgroundGPS_settingshint">Pour accorder l\'autorisation de localisation en arrière-plan, vous devez ouvrir les paramètres de l\'application : sélectionner autorisations ; sélectionner localisation, autoriser</string>
+    <string name="geoinput_settingshint">Pour accorder l\'autorisation de localisation, vous devez ouvrir les paramètres de l\'application : sélectionnez autorisations ; sélectionnez localisation, autoriser l\'accès à la localisation.</string>
+    <string name="backgroundGPS_rationale">Sélectionnez l\'option \"Toujours autoriser\" pour que la localisation puisse être mise à jour en arrière-plan. Seules les positions détectées par d\'autres applications seront utilisées. L\'application ne déterminera pas activement l\'emplacement en arrière-plan afin de ne pas surcharger inutilement votre batterie. Sans cette autorisation, l\'application ne peut pas ajuster la position en arrière-plan. Les autres fonctions de l\'application ne seront pas affectées si vous n\'accordez pas cette autorisation.</string>
+    <string name="allow">Autoriser</string>
+    <string name="always_allow">toujours permettre</string>
+    <string name="opensettings">Ouvrir les paramètres</string>
 </resources>
