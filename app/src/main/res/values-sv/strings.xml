@@ -115,4 +115,12 @@
     <string name="preference_display_wind_in_charts_title">Visa i diagram</string>
     <string name="preference_use_background_location_title">I bakgrunden</string>
     <string name="dewpoint">daggpunkt</string>
+    <string name="disable_battery_saving_rationale">Platskontrollen i bakgrunden fungerar inte tillförlitligt så länge batterioptimeringen är aktiverad. Det är bättre att inaktivera batterioptimering för den här appen. Observera att systemet kan återställa den här inställningen ibland. Om platskontrollen inte fungerar korrekt bör du kontrollera den här inställningen i framtiden.</string>
+    <string name="backgroundGPS_settingshint">För att bevilja platsbehörighet i bakgrunden måste du öppna appinställningarna: välj behörigheter; välj plats, tillåt</string>
+    <string name="geoinput_rationale">Appen kan använda platstjänster på din enhet för att hitta den närmaste väderstationen. Alternativt kan du själv söka efter en väderstation, ange koordinaterna manuellt eller dela en plats från en kartapp. Om du vill att appen ska söka efter din plats krävs platsbehörigheten.</string>
+    <string name="geoinput_settingshint">För att bevilja platsbehörighet måste du öppna appinställningarna: välj behörigheter; välj plats, tillåt platsåtkomst.</string>
+    <string name="backgroundGPS_rationale">Välj Tillåt alltid för platsbehörighet så att platsen även kan uppdateras i bakgrunden. Endast platser som andra appar har upptäckt används. Appen kommer inte att aktivt bestämma platsen i bakgrunden så att ditt batteri inte belastas i onödan. Utan detta tillstånd kan appen inte justera platsen i bakgrunden. Andra funktioner i appen påverkas inte om du inte ger detta tillstånd.</string>
+    <string name="allow">Tillåt</string>
+    <string name="always_allow">alltid tillåta</string>
+    <string name="opensettings">Öppna inställningar</string>
 </resources>
