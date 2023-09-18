@@ -12,7 +12,7 @@
     <string name="connerror_title">Tls-probleem</string>
     <string name="georeceive_error">Foutmelding: de geocoördinaten kunnen niet worden uitgelezen.</string>
     <string name="geoinput_noprovider">Er zijn geen geschikte locatiediensten gevonden. Schakel locatiediensten in en probeer het opnieuw.</string>
-    <string name="geoinput_rationale">De locatiediensten zijn maar één keer nodig om het volgende weerstation te vinden. Ze kunnen daarna worden uitgeschakeld. Als alternatief kunt je de geocoördinaten handmatig invoeren om het volgende weerstation te vinden.</string>
+    <string name="geoinput_rationale">De app kan de locatiediensten van je apparaat gebruiken om het dichtstbijzijnde weerstation te vinden. Je kunt ook zelf naar een weerstation zoeken, de coördinaten handmatig invoeren of een locatie delen vanuit een kaart-app. Als je wilt dat deze app jouw locatie zoekt, is de locatie-toestemming vereist.</string>
     <string name="geoinput_intro">Voer de lengte- en breedtegraad handmatig in om de volgende weerstations te bepalen of gebruik de locatiediensten van je toestel om ze te vinden.</string>
     <string name="welcome_s3_text1">Klik/Druk op het pictogram in de linkerbovenhoek om de kaart in te klappen.</string>
     <string name="welcome_s1_text2">ondersteunt meer dan 5000 locaties</string>
@@ -438,4 +438,11 @@
     <string name="preference_display_wind_in_charts_title">Toon in grafieken</string>
     <string name="preference_use_background_location_title">Op de achtergrond</string>
     <string name="dewpoint">dauwpunt</string>
+    <string name="disable_battery_saving_rationale">De locatiecontrole op de achtergrond werkt niet betrouwbaar zolang batterijoptimalisatie is ingeschakeld. Het is beter om batterijoptimalisatie voor deze app uit te schakelen. Houd er rekening mee dat het systeem deze instelling af en toe kan resetten. Als de locatiecontrole niet goed werkt, moet je deze instelling in de toekomst controleren.</string>
+    <string name="backgroundGPS_settingshint">Om de toestemming voor locatie op de achtergrond te verlenen, moet je de app-instellingen openen: selecteer machtigingen; selecteer locatie, toestaan</string>
+    <string name="geoinput_settingshint">Om de locatietoestemming te verlenen, moet je de app-instellingen openen: selecteer machtigingen; selecteer locatie, sta locatietoegang toe.</string>
+    <string name="backgroundGPS_rationale">Selecteer Altijd toestaan voor de locatietoestemming zodat de locatie ook op de achtergrond kan worden bijgewerkt. Alleen locaties die door andere apps zijn gedetecteerd, worden gebruikt. De app zal niet actief de locatie op de achtergrond bepalen zodat je batterij niet onnodig belast wordt. Zonder deze toestemming kan de app de locatie niet op de achtergrond aanpassen. Andere functies van de app worden niet beïnvloed als je deze toestemming niet geeft.</string>
+    <string name="allow">toestaan</string>
+    <string name="always_allow">altijd toestaan</string>
+    <string name="opensettings">Open de instellingen</string>
 </resources>
