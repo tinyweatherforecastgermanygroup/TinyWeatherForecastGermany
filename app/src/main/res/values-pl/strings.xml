@@ -259,7 +259,7 @@
     <string name="geoinput_intro">Wprowadź ręcznie długość i szerokość geograficzną, aby określić najbliższe stacje pogodowe lub skorzystaj z usług lokalizacyjnych swojego urządzenia, aby je znaleźć.</string>
     <string name="geoinput_gps">Użyj usług lokalizacyjnych urządzenia, aby określić swoją aktualną lokalizację.</string>
     <string name="geoinput_wrongformat">Współrzędna nie ma poprawnego formatu. Możesz użyć adnotacji takich jak +53.12345 dla stopni lub -44.22:12.12345, aby wprowadzić stopnie i minuty lub 33.12.12345, aby wprowadzić stopnie, minuty i sekundy. Proszę spróbować ponownie.</string>
-    <string name="geoinput_rationale">Usługi lokalizacyjne są potrzebne tylko raz, do znalezienia następnej stacji pogodowej. Później mogą być wyłączone. Alternatywnie, można wprowadzić współrzędne geograficzne ręcznie, aby znaleźć następną stację pogodową.</string>
+    <string name="geoinput_rationale">Aplikacja może korzystać z usług lokalizacji urządzenia, aby znaleźć najbliższą stację pogodową. Alternatywnie można samodzielnie wyszukać stację pogodową, wprowadzić współrzędne ręcznie lub udostępnić lokalizację z aplikacji mapy. Jeśli chcesz, aby aplikacja wyszukiwała Twoją lokalizację, wymagane jest zezwolenie na lokalizację.</string>
     <string name="widget_transparency_default">90</string>
     <string name="logging_comment_title">Udostępnić dzienniki\?</string>
     <string name="logging_comment_inputhint">Aplikacja zawiesza się…</string>
@@ -438,4 +438,11 @@
     <string name="preference_display_wind_in_charts_title">Pokaż na wykresach</string>
     <string name="preference_use_background_location_title">W tle</string>
     <string name="dewpoint">punkt rosy</string>
+    <string name="disable_battery_saving_rationale">Sprawdzanie lokalizacji w tle nie będzie działać niezawodnie, dopóki włączona jest optymalizacja baterii. Lepiej jest wyłączyć optymalizację baterii dla tej aplikacji. Należy pamiętać, że system może od czasu do czasu resetować to ustawienie. Jeśli sprawdzanie lokalizacji nie działa prawidłowo, należy sprawdzić to ustawienie w przyszłości.</string>
+    <string name="backgroundGPS_settingshint">Aby przyznać uprawnienie do lokalizacji w tle, należy otworzyć ustawienia aplikacji: wybrać uprawnienia; wybrać lokalizację, zezwolić</string>
+    <string name="geoinput_settingshint">Aby przyznać uprawnienia do lokalizacji, należy otworzyć ustawienia aplikacji: wybrać uprawnienia; wybrać lokalizację, zezwolić na dostęp do lokalizacji.</string>
+    <string name="backgroundGPS_rationale">Wybierz zawsze zezwalaj na lokalizację, aby lokalizacja mogła być aktualizowana również w tle. Używane będą tylko lokalizacje wykryte przez inne aplikacje. Aplikacja nie będzie aktywnie określać lokalizacji w tle, aby niepotrzebnie nie obciążać baterii. Bez tego uprawnienia aplikacja nie może dostosowywać lokalizacji w tle. Nieudzielenie tego uprawnienia nie będzie miało wpływu na inne funkcje aplikacji.</string>
+    <string name="allow">Zezwalaj</string>
+    <string name="always_allow">zawsze zezwalaj</string>
+    <string name="opensettings">Otwórz ustawienia</string>
 </resources>
