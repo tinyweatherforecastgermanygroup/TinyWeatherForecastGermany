@@ -257,7 +257,7 @@
     <string name="alertdialog_2_text">Denne app logger i øjeblikket til logcat. Logning til logcat vil blive deaktiveret, da denne funktion ikke er beregnet til officielle udgivelser.</string>
     <string name="geoinput_intro">Indtast længde- og breddegrad manuelt for at finde de næste vejrstationer, eller brug din enheds placeringstjenester til at finde dem.</string>
     <string name="preference_displaysunrise_summary">Vis tidspunkter for solopgang, solnedgang og tusmørke.</string>
-    <string name="geoinput_rationale">Placeringstjenesterne er kun nødvendige én gang, nemlig for at finde den næste vejrstation. De kan deaktiveres efterfølgende. Alternativt kan du indtaste geokoordinaterne manuelt for at finde den næste vejrstation.</string>
+    <string name="geoinput_rationale">Appen kan bruge placeringstjenester på din enhed til at finde den nærmeste vejrstation. Alternativt kan du selv søge efter en vejrstation, indtaste koordinater manuelt eller dele en placering fra en kort-app. Hvis du vil have denne app til at søge efter din placering, er placeringstilladelsen påkrævet.</string>
     <string name="preference_displayendofdaybar_summary">Viser en bjælke for at adskille dage.</string>
     <string name="geoinput_reflocation_latitude">Breddegrad:</string>
     <string name="preference_display_wind_arc_summary">En lille bue viser vindændringer.</string>
@@ -438,4 +438,11 @@
     <string name="preference_display_wind_in_charts_title">Vis i diagrammer</string>
     <string name="preference_use_background_location_title">I baggrunden</string>
     <string name="dewpoint">dugpunkt</string>
+    <string name="disable_battery_saving_rationale">Lokalitetskontrollen i baggrunden fungerer ikke pålideligt, så længe batterioptimering er slået til. Det er bedre at deaktivere batterioptimering for denne app. Bemærk, at systemet kan nulstille denne indstilling en gang imellem. Hvis lokationskontrollen ikke fungerer korrekt, bør du tjekke denne indstilling i fremtiden.</string>
+    <string name="backgroundGPS_settingshint">For at give tilladelse til baggrundsplacering skal du åbne app-indstillingerne: vælg tilladelser; vælg placering, tillad</string>
+    <string name="geoinput_settingshint">For at give tilladelse til placering skal du åbne appens indstillinger: Vælg tilladelser, vælg placering, tillad adgang til placering.</string>
+    <string name="backgroundGPS_rationale">Vælg tillad altid for placeringstilladelsen, så placeringen også kan opdateres i baggrunden. Kun placeringer, som andre apps har registreret, vil blive brugt. Appen vil ikke aktivt bestemme placeringen i baggrunden, så dit batteri ikke belastes unødigt. Uden denne tilladelse kan appen ikke justere placeringen i baggrunden. Appens øvrige funktioner vil ikke blive påvirket, hvis du ikke giver denne tilladelse.</string>
+    <string name="allow">Tillad</string>
+    <string name="always_allow">altid tillade</string>
+    <string name="opensettings">Åbn indstillingerne</string>
 </resources>
