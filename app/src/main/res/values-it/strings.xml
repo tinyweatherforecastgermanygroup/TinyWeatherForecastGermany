@@ -236,7 +236,7 @@
     <string name="geoinput_select">Seleziona una delle seguenti stazioni meteo:</string>
     <string name="geoinput_wrongformat">La coordinata non ha un formato valido. Puoi usare annotazioni come +53.12345 per i gradi, o -44.22:12.12345 per inserire gradi e minuti o 33.12.12345 per inserire gradi, minuti e secondi. Per favore riprova.</string>
     <string name="geoinput_wrongvalue">La longitudine deve essere tra -180 e +180, la latitudine deve essere tra -90 e +90. Si prega di riprovare.</string>
-    <string name="geoinput_rationale">I servizi di localizzazione sono necessari solo una volta, per trovare la prossima stazione meteo. Possono essere disabilitati in seguito. In alternativa, puoi inserire le geo-coordinate manualmente per trovare la prossima stazione meteo.</string>
+    <string name="geoinput_rationale">L\'applicazione può utilizzare i servizi di localizzazione del dispositivo per trovare la stazione meteo più vicina. In alternativa, è possibile cercare autonomamente una stazione meteorologica, inserire manualmente le coordinate o condividere una posizione da un\'applicazione di mappe. Se si desidera che l\'applicazione cerchi la propria posizione, è necessaria l\'autorizzazione alla localizzazione.</string>
     <string name="warning_stationreset_text">Per risolvere un bug, la tua stazione e le tue stazioni preferite sono state riportate ai valori di default.</string>
     <string name="radar_rain1">lieve</string>
     <string name="radar_rain2">leggero</string>
@@ -439,4 +439,11 @@
     <string name="preference_display_wind_in_charts_title">Mostra nei grafici</string>
     <string name="preference_use_background_location_title">Sullo sfondo</string>
     <string name="dewpoint">punto di rugiada</string>
+    <string name="disable_battery_saving_rationale">Il controllo della posizione in background non funziona in modo affidabile se l\'ottimizzazione della batteria è attiva. È meglio disattivare l\'ottimizzazione della batteria per questa applicazione. Si noti che il sistema potrebbe ripristinare questa impostazione di tanto in tanto. Se il controllo della posizione non funziona correttamente, è necessario controllare questa impostazione in futuro.</string>
+    <string name="backgroundGPS_settingshint">Per concedere l\'autorizzazione alla localizzazione in background, è necessario aprire le impostazioni dell\'app: selezionare le autorizzazioni; selezionare localizzazione, consentire</string>
+    <string name="geoinput_settingshint">Per concedere l\'autorizzazione alla localizzazione è necessario aprire le impostazioni dell\'app: selezionare le autorizzazioni; selezionare posizione, consentire l\'accesso alla posizione.</string>
+    <string name="backgroundGPS_rationale">Selezionate sempre l\'autorizzazione alla localizzazione, in modo che la posizione possa essere aggiornata anche in background. Verranno utilizzate solo le posizioni rilevate da altre app. L\'app non determinerà attivamente la posizione in background per non gravare inutilmente sulla batteria. Senza questa autorizzazione, l\'app non può regolare la posizione in background. Se non si concede questa autorizzazione, le altre funzioni dell\'applicazione non saranno influenzate.</string>
+    <string name="allow">Consentire</string>
+    <string name="always_allow">consentire sempre</string>
+    <string name="opensettings">Aprire le impostazioni</string>
 </resources>
