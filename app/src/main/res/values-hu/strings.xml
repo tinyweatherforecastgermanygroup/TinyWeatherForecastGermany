@@ -336,7 +336,7 @@
     <string name="network_nonetwork">nincs internetkapcsolat.</string>
     <string name="geoinput_select">Válassza ki az alábbi időjárás-állomások egyikét:</string>
     <string name="geoinput_wrongformat">A koordinátának nincs érvényes formátuma. Használhat olyan megjegyzéseket, mint +53.12345 a fokok megadásához, vagy -44.22:12.12345 a fokok és percek megadásához, vagy 33.12.12345 a fokok, percek és másodpercek megadásához. Kérjük, próbálja meg újra.</string>
-    <string name="geoinput_rationale">A helymeghatározó szolgáltatásokra csak egyszer van szükség, a következő időjárás-állomás megtalálásához. Ezt követően letilthatók. Alternatívaként manuálisan is megadhatja a földrajzi koordinátákat a következő időjárás-állomás megtalálásához.</string>
+    <string name="geoinput_rationale">Az alkalmazás képes a készülék helymeghatározó szolgáltatásait használni a legközelebbi időjárás-állomás megtalálásához. Alternatívaként maga is kereshet időjárás-állomást, manuálisan megadhatja a koordinátákat, vagy megoszthatja a helyet egy térképalkalmazásból. Ha azt szeretné, hogy ez az alkalmazás keresse meg az Ön tartózkodási helyét, a helymeghatározási engedély szükséges.</string>
     <string name="warning_stationreset_text">Egy hiba kijavítása érdekében az Ön állomása és kedvenc állomásai alapértelmezettre lettek visszaállítva.</string>
     <string name="welcome_s4_displaytype">Válassza ki, hogyan jelenjen meg az időjárás-előrejelzés:</string>
     <string name="network_timeout">az internetkapcsolat leállt.</string>
@@ -438,4 +438,11 @@
     <string name="preference_display_wind_in_charts_title">Megjelenítés a diagramokban</string>
     <string name="preference_use_background_location_title">A háttérben</string>
     <string name="dewpoint">harmatpont</string>
+    <string name="disable_battery_saving_rationale">A helyellenőrzés a háttérben nem fog megbízhatóan működni, amíg az akkumulátor optimalizálása be van kapcsolva. Jobb, ha kikapcsolja az akkumulátor-optimalizálást ennél az alkalmazásnál. Vegye figyelembe, hogy a rendszer időnként visszaállíthatja ezt a beállítást. Ha a helyellenőrzés nem működik megfelelően, a jövőben ellenőrizze ezt a beállítást.</string>
+    <string name="backgroundGPS_settingshint">A háttérben történő helymeghatározás engedélyezéséhez meg kell nyitnia az alkalmazás beállításait: Válassza ki az engedélyeket; válassza ki a helymeghatározás, engedélyezés.</string>
+    <string name="geoinput_settingshint">A helymeghatározási engedély megadásához meg kell nyitnia az alkalmazás beállításait: Válassza ki az engedélyeket; válassza ki a helymeghatározást, engedélyezze a helymeghatározási hozzáférést.</string>
+    <string name="backgroundGPS_rationale">Válassza a Mindig engedélyezni a hely engedélyezését, hogy a hely a háttérben is frissülhessen. Csak a más alkalmazások által észlelt helyszíneket fogja használni. Az alkalmazás nem fogja aktívan meghatározni a helyet a háttérben, így nem terheli feleslegesen az akkumulátort. Engedély nélkül az alkalmazás nem tudja beállítani a helyet a háttérben. Az alkalmazás egyéb funkcióit nem befolyásolja, ha nem adja meg ezt az engedélyt.</string>
+    <string name="allow">Engedélyezze a</string>
+    <string name="always_allow">mindig engedje meg</string>
+    <string name="opensettings">Nyissa meg a beállításokat</string>
 </resources>
