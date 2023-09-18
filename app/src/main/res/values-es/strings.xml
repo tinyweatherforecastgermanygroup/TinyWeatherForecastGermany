@@ -226,7 +226,7 @@
     <string name="geoinput_longitude">Introduce la longitud (de -180 a 180):</string>
     <string name="geoinput_latitude">Introduzca la latitud (-90 a 90):</string>
     <string name="geoinput_wrongvalue">La longitud debe estar entre -180 y +180, la latitud debe estar entre -90 y +90. Por favor, inténtelo de nuevo.</string>
-    <string name="geoinput_rationale">Los servicios de localización sólo son necesarios una vez, para encontrar la siguiente estación meteorológica. Se pueden desactivar después. Como alternativa, puede introducir las coordenadas geográficas manualmente para encontrar la siguiente estación meteorológica.</string>
+    <string name="geoinput_rationale">La aplicación puede utilizar los servicios de localización de tu dispositivo para encontrar la estación meteorológica más cercana. También puedes buscar una estación meteorológica tú mismo, introducir las coordenadas manualmente o compartir una ubicación desde una aplicación de mapas. Si quieres que esta aplicación busque tu ubicación, se requiere el permiso de ubicación.</string>
     <string name="geoinput_noprovider">No se ha encontrado ningún servicio de localización adecuado. Por favor, active los servicios de localización y vuelva a intentarlo.</string>
     <string name="geoinput_reflocation_longitude">Longitud:</string>
     <string name="geoinput_reflocation_latitude">Latitud:</string>
@@ -438,4 +438,11 @@
     <string name="preference_display_wind_in_charts_title">Mostrar en gráficos</string>
     <string name="preference_use_background_location_title">En el fondo</string>
     <string name="dewpoint">punto de rocío</string>
+    <string name="disable_battery_saving_rationale">La comprobación de la ubicación en segundo plano no funcionará de forma fiable mientras esté activada la optimización de la batería. Es mejor desactivar la optimización de la batería para esta aplicación. Ten en cuenta que el sistema puede restablecer este ajuste ocasionalmente. Si la comprobación de la ubicación no funciona correctamente, deberías comprobar este ajuste en el futuro.</string>
+    <string name="backgroundGPS_settingshint">Para conceder el permiso de ubicación en segundo plano, debe abrir la configuración de la aplicación: seleccione permisos; seleccione ubicación, permitir</string>
+    <string name="geoinput_settingshint">Para conceder el permiso de ubicación tienes que abrir los ajustes de la aplicación: selecciona permisos; selecciona ubicación, permitir acceso a ubicación.</string>
+    <string name="backgroundGPS_rationale">Seleccione permitir siempre el permiso de ubicación para que la ubicación también pueda actualizarse en segundo plano. Sólo se utilizarán las ubicaciones que otras aplicaciones hayan detectado. La aplicación no determinará activamente la ubicación en segundo plano para no sobrecargar innecesariamente la batería. Sin este permiso, la aplicación no puede ajustar la ubicación en segundo plano. Otras funciones de la aplicación no se verán afectadas si no concedes este permiso.</string>
+    <string name="allow">Permitir</string>
+    <string name="always_allow">permitir siempre</string>
+    <string name="opensettings">Abrir ajustes</string>
 </resources>
