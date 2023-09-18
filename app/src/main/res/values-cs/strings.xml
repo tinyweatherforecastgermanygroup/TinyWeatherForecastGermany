@@ -234,7 +234,7 @@
     <string name="geoinput_select">Vyberte jednu z následujících meteorologických stanic:</string>
     <string name="geoinput_wrongformat">Souřadnice nemá platný formát. Můžete použít anotace jako +53.12345 pro zadání stupňů nebo -44.22:12.12345 pro zadání stupňů a minut nebo 33.12.12345 pro zadání stupňů, minut a sekund. Zkuste to prosím znovu.</string>
     <string name="geoinput_wrongvalue">Zeměpisná délka musí být mezi -180 a +180, zeměpisná šířka musí být mezi -90 a +90. Zkuste to prosím znovu.</string>
-    <string name="geoinput_rationale">Lokalizační služby jsou potřeba pouze jednou, k nalezení další meteorologické stanice. Poté je lze vypnout. Případně můžete zadat zeměpisné souřadnice ručně, abyste našli další meteorologickou stanici.</string>
+    <string name="geoinput_rationale">Aplikace dokáže využít polohové služby vašeho zařízení k vyhledání nejbližší meteorologické stanice. Meteorologickou stanici můžete také vyhledat sami, zadat souřadnice ručně nebo sdílet polohu z mapové aplikace. Pokud chcete, aby tato aplikace vyhledávala vaši polohu, je vyžadováno povolení k určování polohy.</string>
     <string name="geoinput_noprovider">Nebyla nalezena žádná vhodná služba umístění. Povolte prosím polohové služby a zkuste to znovu.</string>
     <string name="warning_stationreset_title">Obnovení stanice</string>
     <string name="warning_stationreset_text">Kvůli opravě chyby byla vaše stanice a oblíbené stanice resetovány na výchozí nastavení.</string>
@@ -438,4 +438,11 @@
     <string name="preference_display_wind_in_charts_title">Zobrazit v grafech</string>
     <string name="preference_use_background_location_title">V pozadí</string>
     <string name="dewpoint">rosný bod</string>
+    <string name="disable_battery_saving_rationale">Kontrola polohy na pozadí nebude spolehlivě fungovat, pokud je zapnutá optimalizace baterie. Pro tuto aplikaci je lepší optimalizaci baterie vypnout. Upozorňujeme, že systém může toto nastavení občas obnovit. Pokud kontrola polohy nefunguje správně, měli byste toto nastavení v budoucnu zkontrolovat.</string>
+    <string name="backgroundGPS_settingshint">Chcete-li udělit povolení k umístění na pozadí, musíte otevřít nastavení aplikace: vybrat oprávnění; vybrat umístění, povolit.</string>
+    <string name="geoinput_settingshint">Chcete-li udělit oprávnění k poloze, musíte otevřít nastavení aplikace: vyberte oprávnění; vyberte polohu, povolte přístup k poloze.</string>
+    <string name="backgroundGPS_rationale">Vyberte možnost vždy povolit povolení polohy, aby bylo možné polohu aktualizovat i na pozadí. Budou použita pouze umístění, která zjistily jiné aplikace. Aplikace nebude aktivně určovat polohu na pozadí, aby zbytečně nezatěžovala baterii. Bez tohoto oprávnění nemůže aplikace upravovat polohu na pozadí. Pokud toto oprávnění neudělíte, ostatní funkce aplikace nebudou ovlivněny.</string>
+    <string name="allow">Povolit</string>
+    <string name="always_allow">vždy povolit</string>
+    <string name="opensettings">Otevřete nastavení</string>
 </resources>
