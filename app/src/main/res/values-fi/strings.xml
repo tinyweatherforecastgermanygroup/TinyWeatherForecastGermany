@@ -129,7 +129,7 @@
     <string name="warning_stationreset_text">Virheen korjaamiseksi asemasi ja suosikkiasemasi on palautettu oletusasetuksiin.</string>
     <string name="radar_rain1">lievä</string>
     <string name="welcome_s3_text4">Ennustepalkissa pilvet näkyvät harmaana ja sade sinisenä.</string>
-    <string name="geoinput_rationale">Paikannuspalveluja tarvitaan vain kerran seuraavan sääaseman löytämiseksi. Ne voidaan poistaa käytöstä sen jälkeen. Vaihtoehtoisesti voit syöttää maantieteelliset koordinaatit manuaalisesti seuraavan sääaseman löytämiseksi.</string>
+    <string name="geoinput_rationale">Sovellus voi käyttää laitteesi sijaintipalveluita löytääksesi lähimmän sääaseman. Vaihtoehtoisesti voit etsiä sääaseman itse, syöttää koordinaatit manuaalisesti tai jakaa sijainnin karttasovelluksesta. Jos haluat tämän sovelluksen etsivän sijaintisi, tarvitaan sijaintioikeus.</string>
     <string name="geoinput_noprovider">Sopivaa sijaintipalvelua ei löytynyt. Ota sijaintipalvelut käyttöön ja yritä uudelleen.</string>
     <string name="geoinput_reflocation_longitude">Pituuspiiri:</string>
     <string name="geoinput_reflocation_title">Vertailupaikka on:</string>
@@ -438,4 +438,11 @@
     <string name="preference_display_wind_in_charts_title">Näytä kaavioissa</string>
     <string name="preference_use_background_location_title">Taustalla</string>
     <string name="dewpoint">kastepiste</string>
+    <string name="disable_battery_saving_rationale">Sijainnin tarkistus taustalla ei toimi luotettavasti niin kauan kuin akun optimointi on päällä. Akun optimointi kannattaa poistaa käytöstä tämän sovelluksen osalta. Huomaa, että järjestelmä saattaa nollata tämän asetuksen toisinaan. Jos sijainnin tarkistus ei toimi kunnolla, tarkista tämä asetus tulevaisuudessa.</string>
+    <string name="backgroundGPS_settingshint">Taustapaikannusoikeuden myöntäminen edellyttää, että avaat sovelluksen asetukset: valitse käyttöoikeudet, valitse sijainti, salli</string>
+    <string name="geoinput_settingshint">Sijaintioikeuden myöntäminen edellyttää, että avaat sovelluksen asetukset: valitse käyttöoikeudet, valitse sijainti, salli sijainnin käyttö.</string>
+    <string name="backgroundGPS_rationale">Valitse aina sallia sijaintilupa, jotta sijainti voidaan päivittää myös taustalla. Vain muiden sovellusten havaitsemia sijainteja käytetään. Sovellus ei määritä sijaintia aktiivisesti taustalla, jotta akkua ei rasiteta tarpeettomasti. Ilman tätä lupaa sovellus ei voi säätää sijaintia taustalla. Sovelluksen muihin toimintoihin ei vaikuta, jos et anna tätä lupaa.</string>
+    <string name="allow">Salli</string>
+    <string name="always_allow">sallia aina</string>
+    <string name="opensettings">Avaa asetukset</string>
 </resources>
