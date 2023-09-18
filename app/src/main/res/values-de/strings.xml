@@ -241,7 +241,7 @@
     <string name="geoinput_select">Wähle eine der folgenden Wetterstationen:</string>
     <string name="geoinput_wrongformat">Die Koordinate hat kein gültiges Format. Mögliche Schreibweisen sind z.B. +53.12345 für Grade, oder -44.22:12.12345 für Grade und Minuten oder 33:12:12345 für Grade, Minuten und Sekunden. Bitte versuche es erneut.</string>
     <string name="geoinput_wrongvalue">Längengrad muss zwischen -180 and +180, Breitengrad zwischen -90 and +90 sein. Bitte versuche es erneut.</string>
-    <string name="geoinput_rationale">Die Standortdienste werden nur einmalig benötigt, um die nächste Wetterstation zu finden. Sie können danach wieder deaktiviert werden. Ebenso können die Geokoordinaten manuell eingegeben werden, um die nächste Wetterstation zu finden.</string>
+    <string name="geoinput_rationale">Die App kann die Standortdienste Ihres Geräts nutzen, um die nächstgelegene Wetterstation zu finden. Alternativ können Sie auch selbst nach einer Wetterstation suchen, die Koordinaten manuell eingeben oder einen Standort aus einer Karten-App teilen. Wenn Sie möchten, dass diese App nach Ihrem Standort sucht, ist die Standortberechtigung erforderlich.</string>
     <string name="geoinput_noprovider">Kein brauchbarer Standortdienst gefunden. Bitte schalte Standortdienste an und versuche es erneut.</string>
     <string name="geoinput_reflocation_title">Der Referenzstandort ist:</string>
     <string name="geoinput_reflocation_longitude">Längengrad:</string>
@@ -455,4 +455,11 @@
     <string name="preference_display_wind_in_charts_title">In Diagrammen anzeigen</string>
     <string name="preference_use_background_location_title">Im Hintergrund</string>
     <string name="dewpoint">Taupunkt</string>
+    <string name="disable_battery_saving_rationale">Die Standortüberprüfung im Hintergrund funktioniert nicht zuverlässig, solange die Batterieoptimierung aktiviert ist. Es ist besser, die Batterieoptimierung für diese App zu deaktivieren. Beachten Sie, dass das System diese Einstellung gelegentlich zurücksetzen kann. Wenn die Standortüberprüfung nicht richtig funktioniert, sollten Sie diese Einstellung in Zukunft überprüfen.</string>
+    <string name="backgroundGPS_settingshint">Um die Berechtigung für die Hintergrundortung zu erteilen, müssen Sie die App-Einstellungen öffnen: Wählen Sie Berechtigungen; wählen Sie Standort, erlauben</string>
+    <string name="geoinput_settingshint">Um die Standortberechtigung zu erteilen, müssen Sie die App-Einstellungen öffnen: Wählen Sie Berechtigungen; wählen Sie Standort, Standortzugriff erlauben.</string>
+    <string name="backgroundGPS_rationale">Wählen Sie für die Standortberechtigung immer zulassen, damit der Standort auch im Hintergrund aktualisiert werden kann. Es werden nur Standorte verwendet, die von anderen Apps erkannt wurden. Die App wird den Standort nicht aktiv im Hintergrund ermitteln, damit Ihr Akku nicht unnötig belastet wird. Ohne diese Berechtigung kann die App den Standort nicht im Hintergrund anpassen. Andere Funktionen der App werden nicht beeinträchtigt, wenn Sie diese Berechtigung nicht erteilen.</string>
+    <string name="allow">Erlauben</string>
+    <string name="always_allow">immer erlauben</string>
+    <string name="opensettings">Öffne die Einstellungen</string>
 </resources>
