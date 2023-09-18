@@ -210,7 +210,7 @@
     <string name="geoinput_cancel">Batalkan</string>
     <string name="geoinput_select">Pilih salah satu stasiun cuaca:</string>
     <string name="geoinput_wrongvalue">Bujur harus di antara -180 dan +180, lintang harus di antara -90 dan +90. Mohon coba lagi.</string>
-    <string name="geoinput_rationale">Layanan lokasi hanya dibutuhkan sekali, untuk mencari stasiun cuaca berikut. Itu dapat dinonaktifkan setelah ini. Secara alternatif, Anda dapat memasukkan koordinat geografis secara manual untuk menari stasiun cuaca berikut.</string>
+    <string name="geoinput_rationale">Aplikasi ini dapat menggunakan layanan lokasi pada perangkat Anda untuk menemukan stasiun cuaca terdekat. Selain itu, Anda dapat mencari stasiun cuaca sendiri, memasukkan koordinat secara manual, atau berbagi lokasi dari aplikasi peta. Jika Anda ingin aplikasi ini mencari lokasi Anda, izin lokasi diperlukan.</string>
     <string name="geoinput_noprovider">Tidak ada layanan lokasi yang ditemukan. Mohon aktifkan layanan lokasi dan coba lagi.</string>
     <string name="geoinput_reflocation_title">Lokasi referensi adalah:</string>
     <string name="geoinput_reflocation_longitude">Bujur:</string>
@@ -438,4 +438,11 @@
     <string name="preference_display_wind_in_charts_title">Tampilkan dalam Grafik</string>
     <string name="preference_use_background_location_title">Di latar belakang</string>
     <string name="dewpoint">titik embun</string>
+    <string name="disable_battery_saving_rationale">Pemeriksaan lokasi di latar belakang tidak akan berfungsi dengan baik selama pengoptimalan baterai diaktifkan. Lebih baik menonaktifkan pengoptimalan baterai untuk aplikasi ini. Perhatikan bahwa sistem mungkin mengatur ulang pengaturan ini sesekali. Jika pemeriksaan lokasi tidak berfungsi dengan baik, Anda harus memeriksa pengaturan ini di masa mendatang.</string>
+    <string name="backgroundGPS_settingshint">Untuk memberikan izin lokasi latar belakang, Anda perlu membuka pengaturan aplikasi: pilih izin; pilih lokasi, izinkan</string>
+    <string name="geoinput_settingshint">Untuk memberikan izin lokasi, Anda perlu membuka pengaturan aplikasi: pilih izin; pilih lokasi, izinkan akses lokasi.</string>
+    <string name="backgroundGPS_rationale">Pilih selalu izinkan untuk izin lokasi sehingga lokasi juga dapat diperbarui di latar belakang. Hanya lokasi yang telah dideteksi oleh aplikasi lain yang akan digunakan. Aplikasi tidak akan secara aktif menentukan lokasi di latar belakang sehingga baterai Anda tidak terbebani. Tanpa izin ini, aplikasi tidak dapat menyesuaikan lokasi di latar belakang. Fungsi lain dari aplikasi tidak akan terpengaruh jika Anda tidak memberikan izin ini.</string>
+    <string name="allow">Izinkan</string>
+    <string name="always_allow">selalu mengizinkan</string>
+    <string name="opensettings">Buka pengaturan</string>
 </resources>
