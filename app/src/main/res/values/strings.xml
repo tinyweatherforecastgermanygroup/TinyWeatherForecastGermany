@@ -157,6 +157,8 @@
     <string name="preference_display_wind_in_radar_summary">Display wind direction in the rain radar</string>
     <string name="preference_display_wind_in_charts_title">Show in charts</string>
     <string name="preference_display_wind_in_charts_summary">Display the wind speed in the overview chart and the chart widget.</string>
+    <string name="preference_display_wind_in_charts_max_title">Wind scale in charts</string>
+    <string name="preference_display_wind_in_charts_max_summary">Maximum wind speed value displayed in the charts, entered in kilometers per hour (km/h). Current value: </string>
     <string name="preference_display_distance_unit_title">Distance</string>
     <string name="preference_display_distance_unit_summary">Select the unit for distances.</string>
     <string name="preference_screen_pollen_title">Pollen display</string>
@@ -228,6 +230,8 @@
     <string name="preference_gpsmanual_summary">Select the weather station from a list of nearest stations by yourself.</string>
     <string name="preference_display_station_geo_title">Geographic coordinates</string>
     <string name="preference_display_station_geo_summary">Display geographic coordinates of station</string>
+    <string name="preference_station_replace_title">Show municipality instead of weather station</string>
+    <string name="preference_display_replace_summary">Displays the municipality name, if available. Applies only to weather stations in Germany.</string>
     <string name="preference_screen_gadgetbridge_title">Gadgetbridge support</string>
     <string name="preference_screen_gadgetbridge_summary">Options for integrating the weather data of this app into Gadgetbridge. </string>
     <string name="preference_gadgetbridge_serve_title">Enable</string>

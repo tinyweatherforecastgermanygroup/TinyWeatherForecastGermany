@@ -163,7 +163,7 @@ public class StationSearchEngine {
     private void addStationsToEntries(ArrayList<Weather.WeatherLocation> stations){
         ArrayList<String> newEntries = new ArrayList<String>();
         for (int i=0; i<stations.size(); i++){
-            newEntries.add(stations.get(i).description);
+            newEntries.add(stations.get(i).getOriginalDescription());
         }
         newEntries(newEntries);
     }
@@ -186,15 +186,9 @@ public class StationSearchEngine {
         if (area.polygons.size()==0) {
             return null;
         }else {
-            float xSum = 0;
-            float ySum = 0;
-            for (int i=0; i<area.polygons.size(); i++) {
-                xSum = xSum + area.polygons.get(i).getPolygonXCentroid();
-                ySum = ySum + area.polygons.get(i).getPolygonYCentroid();
-            }
             Location location = new Location("weather");
-            location.setLatitude(ySum/area.polygons.size());
-            location.setLongitude(xSum/area.polygons.size());
+            location.setLatitude(area.centroidLatitude);
+            location.setLongitude(area.centroidLongitude);
             Bundle bundle = new Bundle();
             bundle.putString(Weather.WeatherLocation.EXTRAS_NAME,area.name);
             bundle.putInt(Weather.WeatherLocation.EXTRAS_ITEMS_TO_SHOW,300);

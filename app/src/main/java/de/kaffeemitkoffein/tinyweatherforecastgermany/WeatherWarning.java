@@ -260,7 +260,7 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
     public String getPlainTextWarning(Context context, boolean includeCredentials){
         String newLine = System.getProperty("line.separator");
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(WeatherSettings.getSetStationLocation(context).description.toUpperCase(Locale.getDefault()));
+        stringBuilder.append(WeatherSettings.getSetStationLocation(context).getDescription(context).toUpperCase(Locale.getDefault()));
         stringBuilder.append(": ");
         stringBuilder.append(this.description);
         stringBuilder.append(newLine);

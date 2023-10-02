@@ -42,7 +42,7 @@
             android:visibility="visible"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@mipmap/light_mixed_rain_and_snow_partly">
+            android:src="@mipmap/mod_cloudy">
         </ImageView>
 
         <LinearLayout

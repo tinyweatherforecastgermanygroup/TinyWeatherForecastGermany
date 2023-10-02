@@ -62,6 +62,7 @@ public class WeatherSettings {
 
     public static final String PREF_STATION_NAME = "PREF_station_name";
     public static final String PREF_LOCATION_DESCRIPTION = "PREF_station_description";
+    public static final String PREF_LOCATION_DESC_ALTERNATE = "PREF_station_desc_alternate";
     public static final String PREF_LONGITUDE = "PREF_longitude";
     public static final String PREF_LATITUDE = "PREF_latitude";
     public static final String PREF_ALTITUDE = "PREF_altitude";
@@ -165,9 +166,12 @@ public class WeatherSettings {
     public static final String PREF_LAST_PASSIVE_LOCATION = "PREF_last_passive_location";
     public static final String PREF_USE_BACKGROUND_LOCATION = "PREF_use_backgr_location";
     public static final String PREF_DISPLAY_WIND_IN_CHARTS = "PREF_wind_in_charts";
+    public static final String PREF_DISPLAY_WIND_IN_CHARTS_MAX = "PREF_wind_in_charts_max";
+    public static final String PREF_REPLACE_BY_MUNICIPALITY = "PREF_replace_by_municipality";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
+    public static final String PREF_LOCATION_DESC_ALTERNATE_DEFAULT = "";
     public static final double PREF_LATITUDE_DEFAULT = 53.55;
     public static final double PREF_LONGITUDE_DEFAULT = 9.98;
     public static final double PREF_ALTITUDE_DEFAULT = 8.0;
@@ -271,8 +275,11 @@ public class WeatherSettings {
     public static final String PREF_LAST_PASSIVE_LOCATION_DEFAULT = "";
     public static final boolean PREF_USE_BACKGROUND_LOCATION_DEFAULT = false;
     public static final boolean PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT = false;
+    public static final String PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT = "100";
+    public static final boolean PREF_REPLACE_BY_MUNICIPALITY_DEFAULT = false;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
+    public String location_desc_alternate = PREF_LOCATION_DESC_ALTERNATE_DEFAULT;
     public String station_name = PREF_STATION_NAME_DEFAULT;
     public double longitude = PREF_LONGITUDE_DEFAULT;
     public double latitude = PREF_LATITUDE_DEFAULT;
@@ -372,7 +379,8 @@ public class WeatherSettings {
     public Weather.WeatherLocation lastPassiveLocation;
     public boolean useBackgroundLocation = PREF_USE_BACKGROUND_LOCATION_DEFAULT;
     public boolean displayWindInCharts = PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT;
-
+    public String windInChartsMax = PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT;
+    public boolean replaceByMunicipality = PREF_REPLACE_BY_MUNICIPALITY_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -386,6 +394,7 @@ public class WeatherSettings {
     public void readPreferences() {
         this.location_description = readPreference(PREF_LOCATION_DESCRIPTION, PREF_LOCATION_DESCRIPTION_DEFAULT);
         this.station_name = readPreference(PREF_STATION_NAME, PREF_STATION_NAME_DEFAULT);
+        this.location_desc_alternate = readPreference(PREF_LOCATION_DESC_ALTERNATE,PREF_LOCATION_DESC_ALTERNATE_DEFAULT);
         this.longitude = readPreference(PREF_LONGITUDE, PREF_LONGITUDE_DEFAULT);
         this.latitude = readPreference(PREF_LATITUDE, PREF_LATITUDE_DEFAULT);
         this.altitude = readPreference(PREF_ALTITUDE, PREF_ALTITUDE_DEFAULT);
@@ -478,11 +487,14 @@ public class WeatherSettings {
         this.maxLocationsInSharedWarnings = readPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT);
         this.lastPassiveLocation = new Weather.WeatherLocation(readPreference(PREF_LAST_PASSIVE_LOCATION,PREF_LAST_PASSIVE_LOCATION_DEFAULT));
         this.displayWindInCharts = readPreference(PREF_DISPLAY_WIND_IN_CHARTS,PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT);
+        this.windInChartsMax = readPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT);
+        this.replaceByMunicipality = readPreference(PREF_REPLACE_BY_MUNICIPALITY,PREF_REPLACE_BY_MUNICIPALITY_DEFAULT);
     }
 
     public void savePreferences() {
         applyPreference(PREF_LOCATION_DESCRIPTION, this.location_description);
         applyPreference(PREF_STATION_NAME, this.station_name);
+        applyPreference(PREF_LOCATION_DESC_ALTERNATE,this.location_desc_alternate);
         applyPreference(PREF_LONGITUDE, this.longitude);
         applyPreference(PREF_LATITUDE, this.latitude);
         applyPreference(PREF_ALTITUDE, this.altitude);
@@ -573,11 +585,14 @@ public class WeatherSettings {
         applyPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,maxLocationsInSharedWarnings);
         applyPreference(PREF_LAST_PASSIVE_LOCATION,lastPassiveLocation.serializeToString());
         applyPreference(PREF_DISPLAY_WIND_IN_CHARTS,this.displayWindInCharts);
+        applyPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,this.windInChartsMax);
+        applyPreference(PREF_REPLACE_BY_MUNICIPALITY,this.replaceByMunicipality);
     }
 
     public void commitPreferences() {
         commitPreference(PREF_LOCATION_DESCRIPTION, this.location_description);
         commitPreference(PREF_STATION_NAME, this.station_name);
+        commitPreference(PREF_LOCATION_DESC_ALTERNATE,this.location_desc_alternate);
         commitPreference(PREF_LONGITUDE, this.longitude);
         commitPreference(PREF_LATITUDE, this.latitude);
         commitPreference(PREF_ALTITUDE, this.altitude);
@@ -668,6 +683,8 @@ public class WeatherSettings {
         commitPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,maxLocationsInSharedWarnings);
         commitPreference(PREF_LAST_PASSIVE_LOCATION,lastPassiveLocation.serializeToString());
         commitPreference(PREF_DISPLAY_WIND_IN_CHARTS,this.displayWindInCharts);
+        commitPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,this.windInChartsMax);
+        commitPreference(PREF_REPLACE_BY_MUNICIPALITY,this.replaceByMunicipality);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -781,8 +798,8 @@ public class WeatherSettings {
     public static Weather.WeatherLocation getSetStationLocation(Context context) {
         Weather.WeatherLocation weatherLocation = new Weather.WeatherLocation();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        weatherLocation.description = sharedPreferences.getString(PREF_LOCATION_DESCRIPTION,PREF_LOCATION_DESCRIPTION_DEFAULT);
-        weatherLocation.name = sharedPreferences.getString(PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT);
+        weatherLocation.setDescription(sharedPreferences.getString(PREF_LOCATION_DESCRIPTION,PREF_LOCATION_DESCRIPTION_DEFAULT));
+        weatherLocation.setName(sharedPreferences.getString(PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT));
         weatherLocation.latitude = sharedPreferences.getFloat(PREF_LATITUDE,(float) PREF_LATITUDE_DEFAULT);
         weatherLocation.longitude = sharedPreferences.getFloat(PREF_LONGITUDE,(float) PREF_LONGITUDE_DEFAULT);
         weatherLocation.altitude = sharedPreferences.getFloat(PREF_ALTITUDE,(float) PREF_ALTITUDE_DEFAULT);
@@ -790,11 +807,18 @@ public class WeatherSettings {
         return weatherLocation;
     }
 
-    public static void setStation(Context context, Weather.WeatherLocation weatherLocation) {
+    public static void setStation(final Context context, Weather.WeatherLocation weatherLocation) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putString(PREF_LOCATION_DESCRIPTION, weatherLocation.description);
-        pref_editor.putString(PREF_STATION_NAME,weatherLocation.name);
+        pref_editor.putString(PREF_LOCATION_DESCRIPTION, weatherLocation.getOriginalDescription());
+        // remove alternate station description when a new station is set.
+        // Reason: a station change may be triggered by the JobWorker / Broadcastreceiver
+        // in the background doing passive location checks. Determining the alternate description may be
+        // resource intensive and runs at risk to be killed when not done in the foregroud. So this search
+        // is performed either when fetching new weather data (service) or when setting the station spinner in
+        // the main app. Both ensures that this action finishes sucessfully.
+        pref_editor.putString(PREF_LOCATION_DESC_ALTERNATE,PREF_LOCATION_DESC_ALTERNATE_DEFAULT);
+        pref_editor.putString(PREF_STATION_NAME,weatherLocation.getName());
         pref_editor.putFloat(PREF_LATITUDE,(float) weatherLocation.latitude);
         pref_editor.putFloat(PREF_LONGITUDE,(float) weatherLocation.longitude);
         pref_editor.putFloat(PREF_ALTITUDE,(float) weatherLocation.altitude);
@@ -807,6 +831,14 @@ public class WeatherSettings {
         setLastPassiveLocation(context,weatherLocation);
     }
 
+    public static void setDescriptionAlternate(Context context, String newName){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putString(PREF_LOCATION_DESC_ALTERNATE,newName);
+        pref_editor.apply();
+
+    }
+
     public static void resetStationToDefault(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
@@ -816,6 +848,7 @@ public class WeatherSettings {
         pref_editor.putFloat(PREF_ALTITUDE, (float) PREF_ALTITUDE_DEFAULT);
         pref_editor.putInt(PREF_STATIONTYPE,PREF_STATIONTYPE_DEFAULT);
         pref_editor.putString(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
+        pref_editor.putString(PREF_LOCATION_DESCRIPTION,PREF_LOCATION_DESCRIPTION_DEFAULT);
         pref_editor.apply();
         resetUVHIUpdateAllowedTime(context);
     }
@@ -1840,21 +1873,26 @@ public class WeatherSettings {
         public final static int NONE = 0;
         public final static int DATA = 1;
         public final static int VIEWS = 2;
-        public final static int STATION = 3;
+        public final static int STATION = 4;
     }
 
-    public static int getWeatherUpdatedFlag(Context context) {
+    public static boolean hasWeatherUpdatedFlag(Context context, int flag) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int result = sharedPreferences.getInt(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
-        return result;
+        int savedFlag = sharedPreferences.getInt(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
+        int result = savedFlag & flag;
+        return (result>0);
     }
 
     public static void setWeatherUpdatedFlag(Context context, int flag) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        int oldFlag = sharedPreferences.getInt(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putInt(PREF_WEATHERUPDATEDFLAG, flag);
+        if (flag==UpdateType.NONE){
+            pref_editor.putInt(PREF_WEATHERUPDATEDFLAG, UpdateType.NONE);
+        } else {
+            pref_editor.putInt(PREF_WEATHERUPDATEDFLAG, oldFlag|flag);
+        }
         pref_editor.apply();
-
     }
 
     public static int getMaxLocationsInSharedWarnings(Context context) {
@@ -1892,5 +1930,19 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_DISPLAY_WIND_IN_CHARTS,PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT);
     }
 
+    public static int getWindInChartsMaxKmh(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String s = sharedPreferences.getString(PREF_DISPLAY_WIND_IN_CHARTS_MAX,PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT);
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException e){
+            return 100;
+        }
+    }
+
+    public static boolean replaceByMunicipality(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_REPLACE_BY_MUNICIPALITY,PREF_REPLACE_BY_MUNICIPALITY_DEFAULT);
+    }
 
 }

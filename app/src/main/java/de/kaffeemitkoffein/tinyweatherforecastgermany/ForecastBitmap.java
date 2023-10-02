@@ -25,19 +25,23 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowManager;
-import android.util.SparseArray;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.ImageView;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 
 public class ForecastBitmap{
 
     private Context context;
     private ArrayList<Weather.WeatherInfo> weatherInfos;
     private Weather.WeatherLocation weatherLocation;
+    private ForecastIcons forecastIcons;
     private int bitmapWidth = 0;
     private int bitmapHeight = 0;
     private int anticipatedWidth = 0;
@@ -60,10 +64,6 @@ public class ForecastBitmap{
         TEXT_PAINT.setAlpha(255);
     }
 
-    // some code more
-
-    private static final SparseArray<Bitmap> BITMAP_CACHE = new SparseArray<>();
-
     static class Builder{
         private ArrayList<Weather.WeatherInfo> weatherInfos;
         private Weather.WeatherLocation weatherLocation;
@@ -73,6 +73,7 @@ public class ForecastBitmap{
         private float iconRatio = (float) 0.5;
         private boolean displayWind = false;
         private boolean displaySimpleBar = false;
+        private ForecastIcons forecastIcons;
         private int windDisplayType = Weather.WindDisplayType.ARROW;
 
         public Builder setWetherInfos(ArrayList<Weather.WeatherInfo> weatherInfos){
@@ -92,6 +93,11 @@ public class ForecastBitmap{
 
         public Builder setWidth(int width){
             this.bitmapWidth = width;
+            return this;
+        }
+
+        public Builder setForcastIconsClass(ForecastIcons forecastIcons){
+            this.forecastIcons = forecastIcons;
             return this;
         }
 
@@ -141,6 +147,7 @@ public class ForecastBitmap{
         this.displayWind = builder.displayWind;
         this.displaySimpleBar = builder.displaySimpleBar;
         this.windDisplayType = builder.windDisplayType;
+        this.forecastIcons = builder.forecastIcons;
         if ((bitmapHeight==0) || (bitmapWidth==0)){
             WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
             if (windowManager!=null){
@@ -176,37 +183,11 @@ public class ForecastBitmap{
     }
 
     private Bitmap getIconBitmap(Context context, Weather.WeatherInfo weatherInfo, int bitmapWidth, int bitmapHeight){
-        // set default resource to not available;
-        int resource = R.mipmap.not_available;
-        if (weatherInfo.hasCondition()){
-            // display always daytime
-            resource = WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(),true);
-            // calculate daytime precisely if location is set
-            if (weatherLocation!=null){
-                resource = WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(), weatherInfo.isDaytime(this.weatherLocation));
-            }
+        if (forecastIcons==null){
+            forecastIcons = new ForecastIcons(context,bitmapWidth,bitmapHeight);
         }
-
-        final int key = Objects.hash(resource, bitmapHeight, bitmapWidth);
-        Bitmap bitmap = BITMAP_CACHE.get(key);
-
-        if (bitmap == null) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeResource(context.getResources(), resource, options);
-            options.inSampleSize = ForecastAdapter.calculateInSampleSize(options,bitmapWidth,bitmapHeight);
-            options.inJustDecodeBounds = false;
-            bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), resource, options),bitmapWidth,
-                    bitmapHeight,
-                    true);
-            BITMAP_CACHE.put(key, bitmap);
-        }
-
+        Bitmap bitmap = Bitmap.createScaledBitmap(forecastIcons.getIconBitmap(weatherInfo,weatherLocation),bitmapWidth,bitmapHeight,true);
         return bitmap;
-    }
-
-    public static void clearBitmapCache() {
-        BITMAP_CACHE.clear();
     }
 
     private static void drawPolygon(Canvas canvas, float[] poly_x, float[] poly_y, int color, int alpha){
@@ -898,13 +879,35 @@ public class ForecastBitmap{
             }
         }
         if ((hasWindSpeed) && (WeatherSettings.displayWindInCharts(context))){
+            float maxScaleKmh = WeatherSettings.getWindInChartsMaxKmh(context);
+            float windscale = maxScaleKmh;
+            if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.KNOTS){
+                windscale = Weather.Units.KnotsFromKmh(maxScaleKmh);
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.BEAUFORT){
+                windscale = Weather.Units.BeaufortFromKmh(maxScaleKmh);
+            }
+            if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.METERS_PER_SECOND){
+                windscale = Weather.Units.MSFromKmh(maxScaleKmh);
+            }
             for (int i=startPosition; i<endPosition-1; i++) {
                 int pos = i - startPosition;
-                float windscale=100f;
                 Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
                 Weather.WeatherInfo weatherInfo2 = weatherInfos.get(i + 1);
                 float wind1 = weatherInfo1.getWindSpeedInKmhInt();
                 float wind2 = weatherInfo2.getWindSpeedInKmhInt();
+                if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.METERS_PER_SECOND){
+                    wind1 = weatherInfo1.getWindSpeedInMsInt();
+                    wind2 = weatherInfo2.getWindSpeedInMsInt();
+                }
+                if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.BEAUFORT){
+                    wind1 = weatherInfo1.getWindSpeedInBeaufortInt();
+                    wind2 = weatherInfo2.getWindSpeedInBeaufortInt();
+                }
+                if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.KNOTS){
+                    wind1 = weatherInfo1.getWindSpeedInKnotsInt();
+                    wind2 = weatherInfo2.getWindSpeedInKnotsInt();
+                }
                 float y1_t = zeroline_position - wind1 * (chartHeight/windscale);
                 float y2_t = zeroline_position - wind2 * (chartHeight/windscale);
                 windPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXT));
@@ -933,14 +936,16 @@ public class ForecastBitmap{
 
     public static String getWindScaleString(Context context){
         // scale is 0-100 km/h, 0-7 bf, 0-15.65 m/s, 30.41 kt
+        int maxScaleKmh = WeatherSettings.getWindInChartsMaxKmh(context);
+        final DecimalFormat df = new DecimalFormat("#.##");
         if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.BEAUFORT){
-            return "0 - 7 bf";
+            return "0 - " + df.format(Weather.Units.BeaufortFromKmh(WeatherSettings.getWindInChartsMaxKmh(context))) + " bf";
         }
         if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.METERS_PER_SECOND){
-            return "0 - 15.65 m/s";
+            return "0 - " + df.format(Weather.Units.MSFromKmh(WeatherSettings.getWindInChartsMaxKmh(context))) + " m/s";
         }
         if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.KILOMETERS_PER_HOUR){
-            return "0 - 30.41 kt";
+            return "0 - " + df.format(Weather.Units.KnotsFromKmh(WeatherSettings.getWindInChartsMaxKmh(context))) + " kt";
         }
         return "0 - 100 km/h";
     }
@@ -1125,6 +1130,57 @@ public class ForecastBitmap{
         bitmap.eraseColor(color);
         BitmapDrawable bitmapDrawable = new BitmapDrawable(context.getResources(),bitmap);
         return bitmapDrawable;
+    }
+
+    public static void fadeOutAnimation(final ImageView imageView, final long duration){
+        Animation fadeOutAnimation = new AlphaAnimation(1,0);
+        fadeOutAnimation.setDuration(duration);
+        fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                // nothing to do
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                imageView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // nothing to do
+            }
+        });
+        imageView.startAnimation(fadeOutAnimation);
+
+    }
+
+    public static void fadeInAnimation(final ImageView imageView, final long duration){
+        Animation fadeInAnimation = new AlphaAnimation(0,1);
+        fadeInAnimation.setDuration(duration);
+        fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                imageView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // nothing to do
+                imageView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fadeOutAnimation(imageView,duration);
+                    }
+                },duration*2);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // nothing to do
+            }
+        });
+        imageView.startAnimation(fadeInAnimation);
     }
 
 }

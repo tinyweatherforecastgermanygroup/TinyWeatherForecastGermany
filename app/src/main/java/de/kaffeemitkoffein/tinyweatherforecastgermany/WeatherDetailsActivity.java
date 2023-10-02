@@ -35,6 +35,7 @@ public class WeatherDetailsActivity extends Activity {
     LayoutInflater layoutInflater;
     ActionBar actionBar;
     Executor executor;
+    ForecastIcons forecastIcons;
 
     CurrentWeatherInfo currentWeatherInfo;
     Pollen pollen;
@@ -346,7 +347,7 @@ public class WeatherDetailsActivity extends Activity {
     public void displayValues(){
         viewIsBeingCreated = true;
         weatherInfo = currentWeatherInfo.forecast1hourly.get(weatherPosition);
-        actionBar.setTitle(currentWeatherInfo.weatherLocation.description);
+        actionBar.setTitle(currentWeatherInfo.weatherLocation.getDescription(context));
         actionBar.setSubtitle(Weather.SIMPLEDATEFORMATS.DETAILED_NO_SECONDS.format(new Date(weatherInfo.getTimestamp())));
         valuesListWarnings.removeAllViews();
         valuesListClouds.removeAllViews();
@@ -410,10 +411,9 @@ public class WeatherDetailsActivity extends Activity {
     }
 
     public void setValues(Weather.WeatherInfo weatherInfo, Weather.WeatherLocation weatherLocation){
-        stationDescription.setText(weatherLocation.description);
+        stationDescription.setText(weatherLocation.getDescription(context));
         if (weatherInfo.hasCondition()){
-            int resource = WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(),true);
-            weatherConditionIcon.setImageResource(resource);
+            weatherConditionIcon.setImageBitmap(forecastIcons.getIconBitmap(weatherInfo,weatherLocation));
             weatherConditionText.setText(WeatherCodeContract.getWeatherConditionText(context,weatherInfo.getCondition()));
         }
         if (weatherInfo.hasTemperature()){
@@ -892,6 +892,7 @@ public class WeatherDetailsActivity extends Activity {
     protected void onResume() {
         super.onResume();
         registerForBroadcast();
+        forecastIcons  = new ForecastIcons(context,weatherConditionIcon);
     }
 
     @Override

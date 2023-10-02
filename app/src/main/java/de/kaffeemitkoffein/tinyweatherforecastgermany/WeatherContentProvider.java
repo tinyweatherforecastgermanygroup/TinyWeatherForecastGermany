@@ -30,7 +30,7 @@ public class WeatherContentProvider extends ContentProvider {
 
     static final String AUTHORITY = "de.kaffeemitkoffein.tinyweatherforecastgermany";
 
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "weather";
     private SQLiteDatabase database;
 
@@ -190,6 +190,7 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_FORECASTS_timestamp="timestamp";
         public static final String KEY_FORECASTS_name="name";
         public static final String KEY_FORECASTS_description="description";
+        public static final String KEY_FORECASTS_description_alternate="description_alternate";
         public static final String KEY_FORECASTS_longitude="longitude";
         public static final String KEY_FORECASTS_latitude="latitude";
         public static final String KEY_FORECASTS_altitude="altitude";
@@ -324,6 +325,7 @@ public class WeatherContentProvider extends ContentProvider {
                 + KEY_FORECASTS_timetext + " TEXT,"
                 + KEY_FORECASTS_name + " TEXT,"
                 + KEY_FORECASTS_description + " TEXT,"
+                + KEY_FORECASTS_description_alternate + " TEXT,"
                 + KEY_FORECASTS_longitude + " REAL,"
                 + KEY_FORECASTS_latitude + " REAL,"
                 + KEY_FORECASTS_altitude + " REAL,"
@@ -576,6 +578,8 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_AREAS_type = "type";
         public static final String KEY_AREAS_name = "name";
         public static final String KEY_AREAS_polygonstring = "polygonstring";
+        public static final String KEY_AREAS_centroid_latitude = "latitude";
+        public static final String KEY_AREAS_centroid_longitude = "longitude";
 
         public static final String SQL_COMMAND_CREATE_TABLE_AREAS = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_AREAS + "("
                 + KEY_AREAS_id + " INTEGER PRIMARY KEY ASC,"
@@ -583,7 +587,9 @@ public class WeatherContentProvider extends ContentProvider {
                 + KEY_AREAS_warncenter + " TEXT,"
                 + KEY_AREAS_type + " INTEGER,"
                 + KEY_AREAS_name + " TEXT,"
-                + KEY_AREAS_polygonstring + " TEXT"
+                + KEY_AREAS_polygonstring + " TEXT,"
+                + KEY_AREAS_centroid_latitude + " REAL,"
+                + KEY_AREAS_centroid_longitude + " REAL"
                 + ");";
 
         /*

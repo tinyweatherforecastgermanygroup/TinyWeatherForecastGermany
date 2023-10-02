@@ -29,6 +29,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.PersistableBundle;
 import android.os.SystemClock;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,8 +37,8 @@ import java.util.Date;
 
 public class UpdateAlarmManager {
 
-    private static final int PRIVATE_ALARM_IDENTIFIER = 0;
-    private static final int PRIVATE_JOBINFO_IDENTIFIER = 1;
+    public static final int PRIVATE_ALARM_IDENTIFIER = 0;
+    public static final int PRIVATE_JOBINFO_IDENTIFIER = 1;
     public static final int NOTIFICATION_ALARM_IDENTIFIER = 2;
 
      // time to elapse before a next update try when network not available.
@@ -79,8 +80,9 @@ public class UpdateAlarmManager {
         adaptUpdateIntervalsToSettings(context);
         WeatherSettings weatherSettings = new WeatherSettings(context);
         if (weatherCard==null){
-            weatherCard = new Weather().getCurrentWeatherInfo(context);
+            weatherCard = Weather.getCurrentWeatherInfo(context);
         }
+        boolean forceUpdate = (update_mode&FORCE_UPDATE)==FORCE_UPDATE;
         boolean travelUpdate = (update_mode&TRAVEL_UPDATE)==TRAVEL_UPDATE;
         /*
          * Create alarms to cancel notifications if applicable
@@ -97,7 +99,6 @@ public class UpdateAlarmManager {
         // weatherCard can be null on first app launch or after clearing memory or if station
         // was not used before.
         // update_time_utc is used to calculate if an update from the DWD API is due.
-        // long update_time_utc = Calendar.getInstance().getTimeInMillis() + update_period;
         long update_time_utc = 0; // set default to 1970 to force update if last update time is unknown
         if (weatherCard != null){
             update_time_utc = weatherCard.polling_time + update_period;
@@ -111,8 +112,6 @@ public class UpdateAlarmManager {
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Data issued: "+new Date(weatherCard.issue_time).toString());
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Last data poll: "+new Date(weatherCard.polling_time).toString());
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"New data expected: "+new Date(weatherCard.getWhenNewServerDataExpected(context)).toString());
-            //PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Is new expected: "+weatherCard.isNewServerDataExpected());
-            //PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"is 6h: "+weatherSettings.forecastUpdateIntervalIs6h());
         }
         PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Next update due: "+new Date(update_time_utc).toString());
         boolean result = false;
@@ -122,7 +121,7 @@ public class UpdateAlarmManager {
                 ((update_mode==CHECK_FOR_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode==WIDGET_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
                 ((update_mode&FORCE_UPDATE)==FORCE_UPDATE) ||
-                (!(update_time_utc <= Calendar.getInstance().getTimeInMillis()) && (weatherCard.isNewServerDataExpected(context) && WeatherSettings.forecastUpdateIntervalIs6h(context)) && (weatherSettings.setalarm))){
+                (weatherCard.isNewServerDataExpected(context) && WeatherSettings.forecastUpdateIntervalIs6h(context) && (weatherSettings.setalarm))){
             // update now.
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.
@@ -193,8 +192,12 @@ public class UpdateAlarmManager {
             jobintent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
             final JobWorkItem jobWorkItem = new JobWorkItem(jobintent);
             final JobInfo jobInfo;
+            PersistableBundle persistableBundle = new PersistableBundle();
+            persistableBundle.putString(UpdateJobService.ACTION,WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
             jobInfo = new JobInfo.Builder(PRIVATE_JOBINFO_IDENTIFIER,new ComponentName(context,UpdateJobService.class))
+                    .setExtras(persistableBundle)
                     .setMinimumLatency(next_update_due_in_millis)
+                    .setOverrideDeadline(next_update_due_in_millis+5000)
                     .build();
             jobScheduler.enqueue(jobInfo,jobWorkItem);
             PrivateLog.log(context, PrivateLog.UPDATER,PrivateLog.INFO,"job scheduled in "+next_update_due_in_millis/1000/60+" minutes.");

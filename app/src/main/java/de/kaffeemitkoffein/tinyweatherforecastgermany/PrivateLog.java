@@ -287,9 +287,9 @@ public class PrivateLog {
         stringBuilder.append(lineBreak);
         stringBuilder.append("Currently set station in settings:");
         stringBuilder.append(lineBreak);
-        stringBuilder.append("Station name: "+weatherLocation.name);
+        stringBuilder.append("Station name: "+weatherLocation.getName());
         stringBuilder.append(lineBreak);
-        stringBuilder.append("Station description: "+weatherLocation.description);
+        stringBuilder.append("Station description: "+weatherLocation.getDescription(context));
         stringBuilder.append(lineBreak);
         return stringBuilder.toString();
     }

@@ -32,6 +32,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -158,7 +160,8 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
 
     public static boolean hasLocationPermission(Context context){
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            if ((context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) &&
+                (context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED))
             {
                 // permission not granted
                 PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"No location permission granted by user.");
@@ -285,7 +288,7 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
                         Weather.WeatherLocation closestStation = findClosestStation(context,newWeatherLocation.toLocation());
                         if (closestStation!=null){
                             Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
-                            if (!closestStation.name.equals(currentStation.name)){
+                            if (!closestStation.getName().equals(currentStation.getName())){
                                 // new station is different to old one
                                 WeatherSettings.setStation(context,closestStation);
                                 // set flag so that at next app start the new location will be added to the spinner
@@ -310,11 +313,43 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
             // copy location data into stations data so that we have the real, more exact coordinates for future use
             // like e.g. warnings
             Weather.WeatherLocation resultStation = new Weather.WeatherLocation(location);
-            resultStation.name = closestStation.name;
-            resultStation.description = closestStation.description;
+            resultStation.setName(closestStation.getName());
+            resultStation.setDescription(closestStation.getOriginalDescription());
             return resultStation;
         }
         return null;
+    }
+
+    public static String getDescriptionGeo(Weather.WeatherLocation weatherLocation){
+        if (weatherLocation!=null){
+            if (weatherLocation.getOriginalDescription().contains("SWIS-PUNKT")){
+                DecimalFormat decimalFormat = new DecimalFormat("##0.000");
+                String latString = decimalFormat.format(weatherLocation.latitude);
+                String lonString = decimalFormat.format(weatherLocation.longitude);
+                return latString+" / "+lonString;
+            }
+        }
+        return null;
+    }
+
+    public static String getDescriptionAlternate(Context context, Weather.WeatherLocation weatherLocation) {
+        String newDescriptionAlternate = null;
+        if (weatherLocation != null) {
+            int[] types = {Areas.Area.Type.GEMEINDE, Areas.Area.Type.SEE, Areas.Area.Type.KUESTE, Areas.Area.Type.BINNENSEE};
+            ArrayList<Areas.Area> areas = Areas.getAreas(context,types);
+            int i = 0;
+            while ((i<areas.size()) && (!areas.get(i).isInArea(weatherLocation))){
+                i++;
+            }
+            if (i<areas.size()){
+                Areas.Area nameArea = areas.get(i);
+                newDescriptionAlternate = nameArea.name;
+            } else {
+                newDescriptionAlternate = getDescriptionGeo(weatherLocation);
+            }
+            WeatherSettings.setDescriptionAlternate(context,newDescriptionAlternate);
+        }
+        return newDescriptionAlternate;
     }
 
 

@@ -27,11 +27,15 @@ import android.os.Build;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class UpdateJobService extends JobService{
+
+    public final static String ACTION = "ACTION";
+
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
         Intent intent = new Intent(this,WeatherUpdateBroadcastReceiver.class);
         intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        intent.setAction(WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
+        String action = jobParameters.getExtras().getString(ACTION,WeatherUpdateBroadcastReceiver.UPDATE_ACTION);
+        intent.setAction(action);
         sendBroadcast(intent);
         PrivateLog.log(this,PrivateLog.UPDATER,PrivateLog.INFO," UpdateJobService called, sent broadcast, terminating.");
         return false;

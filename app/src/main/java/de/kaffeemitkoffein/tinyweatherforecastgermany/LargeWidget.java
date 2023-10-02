@@ -134,6 +134,7 @@ public class LargeWidget extends ClassicWidget{
     }
 
     private Bitmap getDailyBar(Context context, float width_bar, float height_bar, Weather.WeatherInfo weatherInfo){
+        ForecastIcons forecastIcons = new ForecastIcons(context,null);
         // create an empty bitmap with black being the transparent color
         Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bar),Math.round(height_bar),Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -171,7 +172,8 @@ public class LargeWidget extends ClassicWidget{
         float y_offset_counter = height_item;
         // *** draw the weather icon ***
         if (weatherInfo.hasCondition()){
-            Bitmap condition_icon = BitmapFactory.decodeResource(context.getResources(),WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(),true));
+            //Bitmap condition_icon = BitmapFactory.decodeResource(context.getResources(),WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(),true));
+            Bitmap condition_icon = forecastIcons.getIconBitmap(weatherInfo,null);
             // determine the necessary icon size, the icon ratio is always 1:1
             float max_icon_diameter = width_bar;
             if (height_item<width_bar){

@@ -19,10 +19,12 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.widget.Button;
 import android.widget.TextView;
 
 public final class ThemePicker {
@@ -278,6 +280,23 @@ public final class ThemePicker {
             return R.drawable.germany;
         }
         return R.drawable.germany_black;
+    }
+
+    private static void tintButton(Context context, Button button){
+        if (button!=null){
+            //button.setBackgroundColor(getColor(context,ThemeColor.PRIMARYLIGHT));
+            //button.setTextColor(getColor(context,ThemeColor.TEXTLIGHT));
+            button.setTypeface(Typeface.DEFAULT_BOLD);
+        }
+    }
+
+    public static void tintAlertDialogButtons(Context context, AlertDialog alertDialog){
+        Button button1 = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        tintButton(context,button1);
+        Button button2 = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        tintButton(context,button2);
+        Button button3 = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+        tintButton(context,button3);
     }
 
 }

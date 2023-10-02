@@ -82,8 +82,9 @@ public class WeatherContentManager {
     public static ContentValues getContentValuesFromWeatherCard(RawWeatherInfo rawWeatherInfo){
         ContentValues contentValues = new ContentValues();
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_timetext,rawWeatherInfo.timetext);
-        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name,rawWeatherInfo.weatherLocation.name);
-        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_description,rawWeatherInfo.weatherLocation.description);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name,rawWeatherInfo.weatherLocation.getName());
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_description,rawWeatherInfo.weatherLocation.getOriginalDescription());
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_description_alternate,rawWeatherInfo.weatherLocation.getDescriptionAlternate());
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_longitude,rawWeatherInfo.weatherLocation.longitude);
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_latitude,rawWeatherInfo.weatherLocation.latitude);
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_altitude,rawWeatherInfo.weatherLocation.altitude);
@@ -223,8 +224,9 @@ public class WeatherContentManager {
             RawWeatherInfo rawWeatherInfo = new RawWeatherInfo();
             if (c.moveToFirst()){
                 rawWeatherInfo.timetext = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_timetext));
-                rawWeatherInfo.weatherLocation.name = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name));
-                rawWeatherInfo.weatherLocation.description = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_description));
+                rawWeatherInfo.weatherLocation.setName(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name)));
+                rawWeatherInfo.weatherLocation.setDescription(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_description)));
+                rawWeatherInfo.weatherLocation.setDescriptionAlternate(c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_description_alternate)));
                 rawWeatherInfo.weatherLocation.longitude = c.getDouble(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_longitude));
                 rawWeatherInfo.weatherLocation.latitude = c.getDouble(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_latitude));
                 rawWeatherInfo.weatherLocation.altitude = c.getDouble(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_altitude));
@@ -494,6 +496,8 @@ public class WeatherContentManager {
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_type, area.type);
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_name, area.name);
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_polygonstring, area.polygonString);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_centroid_latitude, area.centroidLatitude);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_centroid_longitude, area.centroidLongitude);
         return contentValues;
     }
 
@@ -507,6 +511,8 @@ public class WeatherContentManager {
             area.type = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_type));
             area.name = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_name));
             area.polygonString = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_polygonstring));
+            area.centroidLatitude = c.getDouble(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_centroid_latitude));
+            area.centroidLongitude = c.getDouble(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_centroid_longitude));
             return area;
         }
     }

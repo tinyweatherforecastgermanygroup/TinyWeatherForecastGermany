@@ -52,7 +52,7 @@ public class CurrentWeatherInfo{
     }
 
     public void setToEmpty(){
-        weatherLocation = new Weather.WeatherLocation("","",RawWeatherInfo.Source.UNKNOWN,0,0,0);
+        weatherLocation = new Weather.WeatherLocation(Weather.WeatherLocation.EMPTYVALUE,Weather.WeatherLocation.EMPTYVALUE,Weather.WeatherLocation.EMPTYVALUE,RawWeatherInfo.Source.UNKNOWN,0,0,0);
         currentWeather = new Weather.WeatherInfo();
         forecast1hourly = new ArrayList<Weather.WeatherInfo>();
         forecast6hourly = new ArrayList<Weather.WeatherInfo>();
@@ -453,8 +453,8 @@ public class CurrentWeatherInfo{
         }
     }
 
-    public String getCity(){
-        return weatherLocation.description;
+    public String getCity(Context context){
+        return weatherLocation.getDescription(context);
     }
 
     public ArrayList<Weather.WindData> getWindForecast(int number){
@@ -546,7 +546,7 @@ public class CurrentWeatherInfo{
      */
 
     public boolean isNewServerDataExpected(Context context){
-        return (getWhenNewServerDataExpected(context)) < Calendar.getInstance().getTimeInMillis();
+        return (((getWhenNewServerDataExpected(context)) < Calendar.getInstance().getTimeInMillis()) && (polling_time < Calendar.getInstance().getTimeInMillis() - MOSMIX_UPDATE_INTERVAL));
     }
 
     public long getWhenNewServerDataExpected(Context context){

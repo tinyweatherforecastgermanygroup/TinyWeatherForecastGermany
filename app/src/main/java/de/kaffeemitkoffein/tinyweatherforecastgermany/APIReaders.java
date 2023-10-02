@@ -481,7 +481,7 @@ public class APIReaders {
 
 
         private InputStream getWeatherInputStream(Weather.WeatherLocation weatherLocation) throws IOException {
-            String stationName = weatherLocation.name.replace("*","");
+            String stationName = weatherLocation.getName().replace("*","");
             // stationType MOS is default
             String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+stationName+"/kml/MOSMIX_L_LATEST_"+stationName+".kmz";
             String weather_url_legacy = "http://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+stationName+"/kml/MOSMIX_L_LATEST_"+stationName+".kmz";
@@ -536,11 +536,11 @@ public class APIReaders {
                 // set data source
                 rawWeatherInfo.source = RawWeatherInfo.Source.MOS;   // MOSMIX data
                 // populate name from settings, as name is file-name in API but not repeated in the content
-                rawWeatherInfo.weatherLocation = weatherLocation;
+                rawWeatherInfo.weatherLocation = new Weather.WeatherLocation(weatherLocation);
                 try {
                     DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
                     Document document = documentBuilder.parse(zipInputStream);
-                    rawWeatherInfo.weatherLocation.description = "?";
+                    rawWeatherInfo.weatherLocation.setDescription("?");
                     // get sensor description, usually city name. This should be equal to weatherLocation.description,
                     // but we take it from the api to be sure nothing changed and the right city gets displayed!
 
@@ -549,7 +549,14 @@ public class APIReaders {
                         // should be only one, but we take the latest
                         Element placemark_element = (Element) placemark_nodes.item(i);
                         String description = placemark_element.getFirstChild().getNodeValue();
-                        rawWeatherInfo.weatherLocation.description = description;
+                        rawWeatherInfo.weatherLocation.setDescription(description);
+                        if (!rawWeatherInfo.weatherLocation.hasAlternateDescription()){
+                            String alternateDescription = WeatherLocationManager.getDescriptionAlternate(context,rawWeatherInfo.weatherLocation);
+                            if (alternateDescription!=null) {
+                                rawWeatherInfo.weatherLocation.setDescriptionAlternate(alternateDescription);
+                                WeatherSettings.setDescriptionAlternate(context,alternateDescription);
+                            }
+                        }
                     }
 
                     // get the issue time; should be only one, but we take the latest
@@ -747,7 +754,7 @@ public class APIReaders {
             rawWeatherInfo.polling_time = calendar.getTimeInMillis();
             //context.getContentResolver().insert(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo));
             String selection = ""+WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+"=?";
-            String[] selectionArgs = {rawWeatherInfo.weatherLocation.name};
+            String[] selectionArgs = {rawWeatherInfo.weatherLocation.getName()};
             int result = context.getContentResolver().update(WeatherContentManager.FORECAST_URI_ALL,WeatherContentManager.getContentValuesFromWeatherCard(rawWeatherInfo),selection,selectionArgs);
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Weather entries updated: "+result);
             if (result==0){
@@ -790,7 +797,6 @@ public class APIReaders {
                                     rawWeatherInfo.addUVHazardIndexData(timeArray,resultArray);
                                 }
                             };
-                            //rawWeatherInfo.addUVHazardIndexData(uvHazardIndexTimes,uvHazardIndexValues);
                             getUvIndexForLocation.run();
                         } else {
                             // init uvData arrays to empty -1 values

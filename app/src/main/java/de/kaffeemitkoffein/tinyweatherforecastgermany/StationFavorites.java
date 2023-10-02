@@ -29,14 +29,6 @@ public class StationFavorites {
         return favorites;
     }
 
-    public ArrayList<String> getFavoriteDescriptions(){
-        ArrayList<String> descriptions = new ArrayList<String>();
-        for (int i=0; i<favorites.size(); i++){
-            descriptions.add(favorites.get(i).description);
-        }
-        return descriptions;
-    }
-
     public static ArrayList<Weather.WeatherLocation> saveFavorites(Context context, ArrayList<Weather.WeatherLocation> favorites){
         // remove double entries
         ArrayList<Weather.WeatherLocation> sanitizedFavorites = new ArrayList<Weather.WeatherLocation>();
@@ -72,8 +64,9 @@ public class StationFavorites {
         defaultStation.longitude = WeatherSettings.PREF_LONGITUDE_DEFAULT;
         defaultStation.latitude = WeatherSettings.PREF_LATITUDE_DEFAULT;
         defaultStation.altitude = WeatherSettings.PREF_ALTITUDE_DEFAULT;
-        defaultStation.name = WeatherSettings.PREF_STATION_NAME_DEFAULT;
-        defaultStation.description = WeatherSettings.PREF_LOCATION_DESCRIPTION_DEFAULT;
+        defaultStation.setName(WeatherSettings.PREF_STATION_NAME_DEFAULT);
+        defaultStation.setDescriptionAlternate(Weather.WeatherLocation.EMPTYVALUE);
+        defaultStation.setDescription(WeatherSettings.PREF_LOCATION_DESCRIPTION_DEFAULT);
         return defaultStation;
     }
 

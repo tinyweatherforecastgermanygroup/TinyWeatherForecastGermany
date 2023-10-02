@@ -73,6 +73,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                             }
                         });
                         AlertDialog alertDialog = builder.create();
+                        alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
                         alertDialog.show();
                     }
                 }
@@ -90,6 +91,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         }
                     });
                     AlertDialog alertDialog = builder.create();
+                    alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
                     alertDialog.show();
                 }
                 if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)) {
@@ -135,9 +137,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART) || s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS) || (s.equals(WeatherSettings.PREF_VIEWMODEL)) ||
                         (s.equals(WeatherSettings.PREF_UVHI_MAINDISPLAY)) || (s.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)) ||
                         (s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
-                    if (WeatherSettings.getWeatherUpdatedFlag(context)!=WeatherSettings.UpdateType.VIEWS){
                         WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
-                    }
                     // invalidate weather display and widgets
                     if ((s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
                         WidgetRefresher.refresh(getApplicationContext());
@@ -150,7 +150,9 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 }
                 if (s.equals(WeatherSettings.PREF_USE_BACKGROUND_LOCATION)){
                     if (WeatherSettings.useBackgroundLocation(context)){
-                        requestBackgroundLocationPermission();
+                        if (!WeatherLocationManager.hasLocationPermission(context)){
+                            requestBackgroundLocationPermission();
+                        }
                     }
                 }
             }
@@ -491,6 +493,10 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             locationsToShare.setSummary(getResources().getString(R.string.preference_max_loc_in_shared_warnings_summary)+" "+WeatherSettings.getMaxLocationsInSharedWarnings(context));
         }
         useBackgroundLocation = (CheckBoxPreference) findPreference(WeatherSettings.PREF_USE_BACKGROUND_LOCATION);
+        EditTextPreference maxWindScaleInChartsPreference = (EditTextPreference) findPreference(WeatherSettings.PREF_DISPLAY_WIND_IN_CHARTS_MAX);
+        if (maxWindScaleInChartsPreference!=null){
+            maxWindScaleInChartsPreference.setSummary(context.getResources().getString(R.string.preference_display_wind_in_charts_max_summary)+ " "+ WeatherSettings.getWindInChartsMaxKmh(context)+ " km/h");
+        }
      }
 
     @Override
@@ -501,31 +507,35 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     private void requestLocationPermission(int callback){
         // below SDK 23, permissions are granted at app install.
         if (android.os.Build.VERSION.SDK_INT >=23){
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},callback);
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},callback);
             WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.LOCATION);
         }
     }
 
     public void requestBackgroundLocationPermission(){
+        if (WeatherLocationManager.hasBackgroundLocationPermission(context)){
+            return;
+        }
         if (WeatherLocationManager.hasLocationPermission(context)){
             // on sdk < 29 background permission is already granted/does not exist
             if (android.os.Build.VERSION.SDK_INT>=29){
-                // on sdk 29 try the permission dialog exactly once
-                if (android.os.Build.VERSION.SDK_INT==29){
-                    if (WeatherSettings.getAskedForLocationFlag(context)<WeatherSettings.AskedLocationFlag.BACKGROUND_LOCATION) {
-                        // ask exactly once
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION);
-                        // remember that we asked for it
-                        WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.BACKGROUND_LOCATION);
-                    } else {
-                        // go to the settings if already asked once
-                        openPermissionSettings();
-                    }
+                // on sdk 29 and above try the permission dialog exactly once
+                if (WeatherSettings.getAskedForLocationFlag(context)<WeatherSettings.AskedLocationFlag.BACKGROUND_LOCATION) {
+                    // ask exactly once
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION);
+                    // remember that we asked for it
+                    WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.BACKGROUND_LOCATION);
+                } else {
+                    // go to the settings if already asked once
+                    openPermissionSettings();
                 }
+
                 // on sdk above 29, always go directly to the settings
+                /*
                 if (android.os.Build.VERSION.SDK_INT>29) {
                     openPermissionSettings();
                 }
+                 */
             }
         } else {
             // ask for simple foreground location permission, since this is missing.
@@ -537,20 +547,23 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     }
 
     @Override
-    public void onRequestPermissionsResult(int permRequestCode, String perms[], int[] grantRes){
+    public void onRequestPermissionsResult(int permRequestCode, String[] perms, int[] grantRes){
         boolean hasLocationPermission = false;
         boolean hasBackgroundLocationPermission = false;
         for (int i=0; i<grantRes.length; i++){
             if ((perms[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)) && (grantRes[i]== PackageManager.PERMISSION_GRANTED)){
                 hasLocationPermission = true;
             }
-            if ((perms[i].equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
+            if ((perms[i].equals(Manifest.permission.ACCESS_COARSE_LOCATION)) && (grantRes[i]== PackageManager.PERMISSION_GRANTED)){
                 hasLocationPermission = true;
+            }
+            if ((perms[i].equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
+                hasBackgroundLocationPermission = true;
             }
         }
         // on sdk below 29, background permission is not present/always true if normal, foreground permission was granted.
         // the above loop will result in "false" for sdk below 29, and this needs to be fixed.
-        if (Build.VERSION.SDK_INT<=29){
+        if (Build.VERSION.SDK_INT<29){
             if (hasLocationPermission){
                 hasBackgroundLocationPermission=true;
             }
@@ -560,7 +573,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 // do nothing
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
+                    if ((shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) || (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION))){
                         showPermissionsRationale(Manifest.permission.ACCESS_FINE_LOCATION,MainActivity.PERMISSION_CALLBACK_LOCATION);
                     } else {
                         if (WeatherSettings.getAskedForLocationFlag(context)>=WeatherSettings.AskedLocationFlag.LOCATION){
@@ -571,17 +584,24 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             }
         }
         if (permRequestCode == MainActivity.PERMISSION_CALLBACK_LOCATION_BEFORE_BACKGROUND){
-            if (hasLocationPermission){
-                requestBackgroundLocationPermission();
+            if (Build.VERSION.SDK_INT >= 29) {
+                if (hasLocationPermission){
+                    requestBackgroundLocationPermission();
+                } else {
+                    showPermissionsRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION,MainActivity.PERMISSION_CALLBACK_LOCATION_BEFORE_BACKGROUND);
+                }
             } else {
-                showPermissionsRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION,MainActivity.PERMISSION_CALLBACK_LOCATION_BEFORE_BACKGROUND);
+                // nothing to do, background permission is always granted with location permission
+                WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.BACKGROUND_LOCATION);
             }
         }
         if (permRequestCode == MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION){
             if (hasBackgroundLocationPermission){
-                openBatteryOptimizationSettings();
+                openBatteryOptimizationSettings(context);
             } else {
-                showPermissionsRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION, MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION);
+                if (Build.VERSION.SDK_INT >= 29) {
+                    showPermissionsRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION, MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION);
+                }
             }
         }
     }
@@ -616,25 +636,27 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             }
         });
         AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
         alertDialog.show();
     }
 
-    public void openBatteryOptimizationSettings(){
+    public static void openBatteryOptimizationSettings(final Context context){
         // only open on api 23 and higher
         if (Build.VERSION.SDK_INT>=23){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
-            builder.setTitle(getApplicationContext().getResources().getString(R.string.geoinput_title));
-            Drawable drawable = new BitmapDrawable(getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_INFO_OUTLINE,false));
+            AlertDialog.Builder builder = new AlertDialog.Builder(context,0);
+            builder.setTitle(context.getApplicationContext().getResources().getString(R.string.geoinput_title));
+            Drawable drawable = new BitmapDrawable(context.getResources(),WeatherIcons.getIconBitmap(context,WeatherIcons.IC_INFO_OUTLINE,false));
             builder.setIcon(drawable);
-            String text = getApplicationContext().getResources().getString(R.string.disable_battery_saving_rationale);
+            String text = context.getApplicationContext().getResources().getString(R.string.disable_battery_saving_rationale);
             builder.setMessage(text);
             builder.setPositiveButton(R.string.allow, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
-                    Intent intent = new Intent(android.provider.Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-                    intent.setData(Uri.fromParts("package",getPackageName(),null));
-                    startActivity(intent);
+                    Intent i3 = new Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                    i3.setData(Uri.fromParts("package",context.getPackageName(),null));
+                    i3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i3);
                 }
             });
             builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
@@ -644,6 +666,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 }
             });
             AlertDialog alertDialog = builder.create();
+            alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
             alertDialog.show();
         }
     }
@@ -689,6 +712,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             }
         });
         AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
         alertDialog.show();
     }
 

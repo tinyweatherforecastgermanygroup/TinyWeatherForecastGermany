@@ -47,6 +47,8 @@ public class Areas {
         public String name;
         public ArrayList<Polygon> polygons;
         public String polygonString;
+        public double centroidLatitude;
+        public double centroidLongitude;
 
         final static class Type{
             final static int BUNDESLAND = 12;
@@ -78,6 +80,25 @@ public class Areas {
                 return Type.SEE;
             }
             return Type.UNKNOWN;
+        }
+
+        public boolean isInArea(float longitude, float latitude){
+            if (polygons==null){
+                polygons = Polygon.getPolygonArraylistFromString(polygonString);
+            }
+            if (polygons.size()>0){
+                for (int i=0; i<polygons.size(); i++){
+                    Polygon polygon = polygons.get(i);
+                    if (polygon.isInPolygon(longitude,latitude)){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public boolean isInArea(Weather.WeatherLocation weatherLocation){
+            return isInArea((float) weatherLocation.longitude,(float) weatherLocation.latitude);
         }
 
     }
@@ -174,13 +195,18 @@ public class Areas {
                         area.type = Integer.parseInt(items[2]);
                         area.name = removeQuotes(items[3]);
                         area.polygonString = items[4];
-                        // check if entry exists
-                        /*
-                        if (getArea(context, area.warncellID)==null){
-                            contentResolver.insert(AreaContentProvider.URI_AREADATA,AreaContentProvider.getContentValuesFromArea(area));
+                        area.polygons = Polygon.getPolygonArraylistFromString(area.polygonString);
+                        // calculate centroid
+                        double xSum = 0;
+                        double ySum = 0;
+                        if (area.polygons.size()>0){
+                            for (int j=0; j<area.polygons.size(); j++) {
+                                xSum = xSum + area.polygons.get(j).getPolygonXCentroid();
+                                ySum = ySum + area.polygons.get(j).getPolygonYCentroid();
+                            }
+                            area.centroidLongitude = xSum / area.polygons.size();
+                            area.centroidLatitude  = ySum / area.polygons.size();
                         }
-
-                         */
                         if (!knownWarncellIDs.contains(area.warncellID)){
                             contentResolver.insert(WeatherContentManager.AREA_URI_ALL,WeatherContentManager.getContentValuesFromArea(area));
                         }
@@ -290,7 +316,6 @@ public class Areas {
         }
         String selection = WeatherContentProvider.WeatherDatabaseHelper.KEY_AREAS_type + " IN("+s+")";
         Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,null,selection,selectionArg,null);
-        //Cursor cursor = contentResolver.query(WeatherContentManager.AREA_URI_ALL,null,"type=?","selectionArg",null);
         int i = 0;
         if (cursor!=null){
             if (cursor.moveToFirst()){
@@ -301,6 +326,14 @@ public class Areas {
                 } while (cursor.moveToNext());
             }
             cursor.close();
+        }
+        return areas;
+    }
+
+    public static ArrayList<Area> getAreas(Context context, int[] types){
+        ArrayList<Area> areas = new ArrayList<Area>();
+        for (int i=0; i<types.length; i++){
+            areas.addAll(getAreas(context,types[i]));
         }
         return areas;
     }

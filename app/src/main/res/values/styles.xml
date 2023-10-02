@@ -91,6 +91,9 @@
         <item name="android:textColorSecondary">@color/colorTextDark_LightTheme</item>
         <!-- unknown -->
         <item name="android:textColorTertiary">@color/colorText_LightTheme</item>
+        <!-- styles the AlertDialogs -->
+        <item name="android:alertDialogStyle">@style/alertDialogStyle_LightTheme</item>
+
     </style>
 
     <style name="ActionBar_Light" parent="@android:style/Widget.Holo.ActionBar">
@@ -122,6 +125,21 @@
         <item name="android:buttonBarButtonStyle">@style/ButtonStyle_Light</item>
         <item name="android:windowTitleStyle">@style/AlertDialogTitle_Light</item>
     </style>
+
+    <!-- styles the AlertDialogs-->
+    <style name="alertDialogStyle_LightTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:fullDark">@color/colorPrimaryLight_LightTheme</item>
+        <item name="android:topDark">@color/colorPrimaryLight_LightTheme</item>
+        <item name="android:centerDark">@color/colorPrimaryLight_LightTheme</item>
+        <item name="android:bottomDark">@color/colorPrimaryLight_LightTheme</item>
+
+        <item name="android:fullBright">@color/colorPrimaryLight_LightTheme</item>
+        <item name="android:topBright">@color/colorPrimaryLight_LightTheme</item>
+        <item name="android:centerBright">@color/colorPrimaryLight_LightTheme</item>
+        <item name="android:bottomBright">@color/colorPrimaryLight_LightTheme</item>
+        <item name="android:bottomMedium">@color/colorPrimaryLight_LightTheme</item>
+    </style>
+
 
     <!--
     *****************************************************************************
@@ -197,6 +215,8 @@
         <item name="android:textColorSecondary">@color/colorTextDark_DarkTheme</item>
         <!-- unknown -->
         <item name="android:textColorTertiary">@color/colorText_DarkTheme</item>
+        <!-- styles the AlertDialogs -->
+        <item name="android:alertDialogStyle">@style/alertDialogStyle_DarkTheme</item>
     </style>
 
     <style name="ActionBar_Dark" parent="@android:style/Widget.Holo.ActionBar">
@@ -228,6 +248,21 @@
         <item name="android:buttonBarButtonStyle">@style/ButtonStyle_Dark</item>
         <item name="android:windowTitleStyle">@style/AlertDialogTitle_Dark</item>
     </style>
+
+    <!-- styles the AlertDialogs-->
+    <style name="alertDialogStyle_DarkTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:fullDark">@color/colorPrimaryLight_DarkTheme</item>
+        <item name="android:topDark">@color/colorPrimaryLight_DarkTheme</item>
+        <item name="android:centerDark">@color/colorPrimaryLight_DarkTheme</item>
+        <item name="android:bottomDark">@color/colorPrimaryLight_DarkTheme</item>
+
+        <item name="android:fullBright">@color/colorPrimaryLight_DarkTheme</item>
+        <item name="android:topBright">@color/colorPrimaryLight_DarkTheme</item>
+        <item name="android:centerBright">@color/colorPrimaryLight_DarkTheme</item>
+        <item name="android:bottomBright">@color/colorPrimaryLight_DarkTheme</item>
+        <item name="android:bottomMedium">@color/colorPrimaryLight_DarkTheme</item>
+    </style>
+
 
     <!--
     *****************************************************************************
@@ -282,11 +317,11 @@
         <item name="android:centerDark">@color/colorPrimaryLight_Solarized</item>
         <item name="android:bottomDark">@color/colorPrimaryLight_Solarized</item>
 
-        <item name="android:fullBright">@color/colorPrimary_Solarized</item>
-        <item name="android:topBright">@color/colorPrimary_Solarized</item>
-        <item name="android:centerBright">@color/colorPrimary_Solarized</item>
-        <item name="android:bottomBright">@color/colorPrimary_Solarized</item>
-        <item name="android:bottomMedium">@color/colorPrimary_Solarized</item>
+        <item name="android:fullBright">@color/colorPrimaryLight_Solarized</item>
+        <item name="android:topBright">@color/colorPrimaryLight_Solarized</item>
+        <item name="android:centerBright">@color/colorPrimaryLight_Solarized</item>
+        <item name="android:bottomBright">@color/colorPrimaryLight_Solarized</item>
+        <item name="android:bottomMedium">@color/colorPrimaryLight_Solarized</item>
     </style>
 
     <!--
@@ -342,11 +377,11 @@
         <item name="android:centerDark">@color/colorPrimaryLight_SolarizedDark</item>
         <item name="android:bottomDark">@color/colorPrimaryLight_SolarizedDark</item>
 
-        <item name="android:fullBright">@color/colorPrimary_SolarizedDark</item>
-        <item name="android:topBright">@color/colorPrimary_SolarizedDark</item>
-        <item name="android:centerBright">@color/colorPrimary_SolarizedDark</item>
-        <item name="android:bottomBright">@color/colorPrimary_SolarizedDark</item>
-        <item name="android:bottomMedium">@color/colorPrimary_SolarizedDark</item>
+        <item name="android:fullBright">@color/colorPrimaryLight_SolarizedDark</item>
+        <item name="android:topBright">@color/colorPrimaryLight_SolarizedDark</item>
+        <item name="android:centerBright">@color/colorPrimaryLight_SolarizedDark</item>
+        <item name="android:bottomBright">@color/colorPrimaryLight_SolarizedDark</item>
+        <item name="android:bottomMedium">@color/colorPrimaryLight_SolarizedDark</item>
     </style>
 
 </resources>

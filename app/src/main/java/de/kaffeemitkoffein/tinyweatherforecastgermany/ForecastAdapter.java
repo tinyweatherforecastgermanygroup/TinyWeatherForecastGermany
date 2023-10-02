@@ -77,8 +77,13 @@ private float screenWidthDP;
 private final int screenWidth;
 private final float fontScale;
 
+private ForecastIcons forecastIcons;
+private ForecastIcons forecastIconsBar;
 
 private final SparseArray<Bitmap> bitmapCache = new SparseArray<>();
+
+    private final SparseArray<Bitmap> forecastIconCache = new SparseArray<>();
+
 
 public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, Weather.WeatherLocation weatherLocation) {
     this.context = context;
@@ -178,7 +183,9 @@ private void loadScaledIcon(final ImageView imageView, final int id, final int s
 
 public void clearBitmapCache() {
     bitmapCache.clear();
-    ForecastBitmap.clearBitmapCache();
+    if (forecastIcons!=null){
+        forecastIcons.clearCache();
+    }
 }
 
 private static void setVisibility(final View view, final int visibility) {
@@ -196,7 +203,6 @@ private static void switchVisibility(final View view) {
         view.setVisibility(View.GONE);
     }
 }
-
 
 private static class ViewHolder {
     RelativeLayout supermaincontainer;
@@ -342,6 +348,10 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         biocular = viewHolder.biocular;
         symbolRH = viewHolder.symbolRH;
         textView_uvHazardIndex = viewHolder.uvHazardIndex;
+    }
+    // init forecastIcons on 1st call after we inflated the imageview size
+    if (forecastIcons==null){
+        forecastIcons = new ForecastIcons(context,weather_icon);
     }
     // now fill the item with content
     if (supermaincontainer==null) {
@@ -649,20 +659,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         viewHolder.weather_icon = weather_icon;
     }
     if (weather_icon!=null){
-        if (weatherInfo.hasCondition()){
-            int weathercondition = weatherInfo.getCondition();
-            boolean showDaylightIcon = weatherInfo.isDaytime(weatherLocation);
-            if (weatherInfo.getForecastType()==Weather.WeatherInfo.ForecastType.HOURS_6) {
-                // in case if the 6-h forecast, take the middle of the interval to determine day/night icon
-                showDaylightIcon = Weather.isDaytime(weatherLocation,(weatherInfo.getTimestamp()+six_hours_ago)/2);
-            }
-            if (weatherInfo.getForecastType()==Weather.WeatherInfo.ForecastType.HOURS_24){
-                showDaylightIcon = true;
-            }
-            loadScaledIcon(weather_icon, WeatherCodeContract.getWeatherConditionDrawableResource(context,weathercondition, showDaylightIcon), SCALE_CONDITION_ICON,false);
-        } else {
-            loadScaledIcon(weather_icon, WeatherCodeContract.getWeatherConditionDrawableResource(context,WeatherCodeContract.NOT_AVAILABLE, true), SCALE_CONDITION_ICON,true);
-        }
+            weather_icon.setImageBitmap(forecastIcons.getIconBitmap(weatherInfo,weatherLocation));
     }
     // right column
     if (textView_temp == null){
@@ -845,18 +842,23 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         }
         // construct arraylist with 0-6 items
         ArrayList<Weather.WeatherInfo> baritems = new ArrayList<>();
-        /*
-        for (int j=offset; j<=offset+count; j++){
-            baritems.add(weatherForecasts_hourly.get(j));
-        }
-         */
         for (int j=0; j<count; j++){
             baritems.add(weatherForecasts_hourly.get(offset+(j*increment)));
+        }
+        if (forecastIconsBar==null){
+            // try to get the real hight of the forecast bar if already inflated
+            float forecastBarHeight = imageView_forecastBar.getHeight();
+            if (forecastBarHeight==0){
+                // this is a rough approximation to keep icons and memory usage low, see ForecastBar class
+                forecastBarHeight = displayMetrics.heightPixels/20f;
+            }
+            forecastIconsBar = new ForecastIcons(context,Math.round(forecastBarHeight*0.75f),Math.round(forecastBarHeight*0.75f));
         }
         // end new
         final ForecastBitmap forecastBitmap = new ForecastBitmap.Builder()
                 .setWetherInfos(baritems)
                 .setAnticipatedWidth(6)
+                .setForcastIconsClass(forecastIconsBar)
                 .setWeatherLocation(weatherLocation)
                 .displaySimpleBar(displaySimpleBar)
                 .setWindDisplayType(display_wind_type)

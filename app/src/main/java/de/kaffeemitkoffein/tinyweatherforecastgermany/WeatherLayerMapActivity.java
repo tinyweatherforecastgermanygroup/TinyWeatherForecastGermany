@@ -416,8 +416,6 @@ public class WeatherLayerMapActivity extends Activity {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     zoomableImageView.onTouchEvent(motionEvent);
-                    //Log.v("twfg","-------------");
-                    //
                     return true;
                 }
             });

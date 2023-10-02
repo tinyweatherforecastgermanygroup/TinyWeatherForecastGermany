@@ -47,7 +47,7 @@ public class GadgetbridgeAPI {
         if (weatherCard!=null){
             // build the WeatherSpec instance with current weather
             weatherSpec = new WeatherSpec();
-            weatherSpec.location             = weatherCard.getCity();
+            weatherSpec.location             = weatherCard.getCity(context);
             // fake timestamp for current weather if desired by user; some wearables do not accept a forecast
             // for current weather.
             if (WeatherSettings.fakeTimestampForGadgetBridge(context)){

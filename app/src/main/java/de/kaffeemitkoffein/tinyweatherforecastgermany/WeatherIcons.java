@@ -112,122 +112,6 @@ public class WeatherIcons {
     public static int getIconResource(Context context, int icon) {
         int result = 0;
         switch (icon) {
-            case NOT_AVAILABLE: result = R.mipmap.not_available; break;
-            case THUNDERSTORM:
-                result = R.mipmap.thunderstorm;
-                break;
-            case FREEZING_DRIZZLE:
-                result = R.mipmap.freezing_drizzle;
-                break;
-            case FREEZING_DRIZZLE_SLIGHT:
-                result = R.mipmap.freezing_drizzle_slight;
-                break;
-            case FREEZING_RAIN:
-                result = R.mipmap.freezing_rain;
-                break;
-            case FREEZING_RAIN_SLIGHT:
-                result = R.mipmap.freezing_rain_slight;
-                break;
-            case SNOW_SHOWERS_PARTLY:
-                result = R.mipmap.snow_showers_partly;
-                break;
-            case SNOW_SHOWERS_PARTLY_NIGHT:
-                result = R.mipmap.snow_showers_partly_night;
-                break;
-            case LIGHT_SNOW_SHOWERS_PARTLY:
-                result = R.mipmap.light_snow_showers_partly;
-                break;
-            case LIGHT_SNOW_SHOWERS_PARTLY_NIGHT:
-                result = R.mipmap.light_snow_showers_partly_night;
-                break;
-            case MIXED_RAIN_AND_SNOW_PARTLY:
-                result = R.mipmap.mixed_rain_and_snow_partly;
-                break;
-            case MIXED_RAIN_AND_SNOW_PARTLY_NIGHT:
-                result = R.mipmap.mixed_rain_and_snow_partly_night;
-                break;
-            case LIGHT_MIXED_RAIN_AND_SNOW_PARTLY:
-                result = R.mipmap.light_mixed_rain_and_snow_partly;
-                break;
-            case LIGHT_MIXED_RAIN_AND_SNOW_PARTLY_NIGHT:
-                result = R.mipmap.light_mixed_rain_and_snow_partly_night;
-                break;
-            case EXTREMELY_HEAVY_SHOWERS_PARTLY:
-                result = R.mipmap.extremely_heavy_showers_partly;
-                break;
-            case EXTREMELY_HEAVY_SHOWERS_PARTLY_NIGHT:
-                result = R.mipmap.extremely_heavy_showers_partly_night;
-                break;
-            case SHOWERS_PARTLY:
-                result = R.mipmap.showers_partly;
-                break;
-            case SHOWERS_PARTLY_NIGHT:
-                result = R.mipmap.showers_partly_night;
-                break;
-            case LIGHT_SHOWERS_PARTLY:
-                result = R.mipmap.light_showers_partly;
-                break;
-            case LIGHT_SHOWERS_PARTLY_NIGHT:
-                result = R.mipmap.light_showers_partly_night;
-                break;
-            case HEAVY_SNOW_SHOWERS:
-                result = R.mipmap.heavy_snow_showers;
-                break;
-            case MODERATE_SNOW_SHOWERS:
-                result = R.mipmap.moderate_snow_showers;
-                break;
-            case LIGHT_SNOW_SHOWERS:
-                result = R.mipmap.light_snow_showers;
-                break;
-            case MIXED_RAIN_AND_SNOW:
-                result = R.mipmap.mixed_rain_and_snow;
-                break;
-            case LIGHT_MIXED_RAIN_AND_SNOW:
-                result = R.mipmap.light_mixed_rain_and_snow;
-                break;
-            case HEAVY_DRIZZLE:
-                result = R.mipmap.heavy_drizzle;
-                break;
-            case MODERATE_DRIZZLE:
-                result = R.mipmap.moderate_drizzle;
-                break;
-            case LIGHT_DRIZZLE:
-                result = R.mipmap.light_drizzle;
-                break;
-            case HEAVY_SHOWERS:
-                result = R.mipmap.heavy_showers;
-                break;
-            case MODERATE_SHOWERS:
-                result = R.mipmap.moderate_showers;
-                break;
-            case LIGHT_SHOWERS:
-                result = R.mipmap.light_showers;
-                break;
-            case ICE_FOG:
-                result = R.mipmap.ice_fog;
-                break;
-            case FOG:
-                result = R.mipmap.fog;
-                break;
-            case CLOUDY:
-                result = R.mipmap.cloudy;
-                break;
-            case MOSTLY_CLOUDY_DAY:
-                result = R.mipmap.mostly_cloudy_day;
-                break;
-            case MOSTLY_CLOUDY_NIGHT:
-                result = R.mipmap.mostly_cloudy_night;
-                break;
-            case PARTLY_CLOUDY_DAY:
-                result = R.mipmap.partly_cloudy_day;
-                break;
-            case PARTLY_CLOUDY_NIGHT:
-                result = R.mipmap.partly_cloudy_night;
-                break;
-            case SUNNY:
-                result = R.mipmap.sunny;
-                break;
-            case CLEAR_NIGHT: result = R.mipmap.clear_night; break;
             case SYMBOL_RH : result = R.mipmap.symbol_rh; break;
             case SYMBOL_CLOUD : result = R.mipmap.symbol_cloud; break;
             case SYMBOL_DRIZZLE : result = R.mipmap.symbol_drizzle; break;
@@ -274,12 +158,6 @@ public class WeatherIcons {
         // override with dark variants if applicable
         if (!ThemePicker.isDarkTheme(context)) {
             switch (icon) {
-                case NOT_AVAILABLE: result = R.mipmap.not_available_black; break;
-                case CLEAR_NIGHT:
-                    result = R.mipmap.clear_night_black; break;
-                case MOSTLY_CLOUDY_NIGHT:
-                    result = R.mipmap.mostly_cloudy_night_black;
-                    break;
                 case ARROW : result = R.mipmap.arrow_black; break;
                 case SUNSET : result = R.mipmap.sunset_black; break;
                 case ARROW_UP : result = R.mipmap.arrow_up_black; break;

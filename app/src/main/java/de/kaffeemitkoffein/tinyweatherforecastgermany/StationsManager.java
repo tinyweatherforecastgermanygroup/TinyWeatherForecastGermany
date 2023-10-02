@@ -66,8 +66,8 @@ public class StationsManager {
             String[] station_values = station_items[i].split(";");
             if (station_values.length>3){
                 weatherLocation.type=Integer.parseInt(station_values[0]);
-                weatherLocation.description = station_values[1];
-                weatherLocation.name = station_values[2];
+                weatherLocation.setDescription(station_values[1]);
+                weatherLocation.setName(station_values[2]);
                 /*
                 if (weatherLocation.type==RawWeatherInfo.Source.DMO){
                     weatherLocation.description = weatherLocation.description+" (Gebiet)";
@@ -137,64 +137,15 @@ public class StationsManager {
         return stations;
     }
 
-    public ArrayList<String> getStationNames(){
-        if (stations != null){
-            ArrayList<String> names = new ArrayList<String>();
-            for (int i=0; i<stations.size(); i++){
-                Weather.WeatherLocation weatherLocation = stations.get(i);
-                names.add(weatherLocation.description);
-            }
-            return names;
-        }
-        return null;
-    }
 
-    public int getSetPosition(){
-        WeatherSettings weatherSettings = new WeatherSettings(context);
-        String description = weatherSettings.location_description;
-        if (stations != null){
-            for (int i=0; i<stations.size();i++){
-                if (stations.get(i).description.equals(description)){
-                    return i;
-                }
-            }
-        }
-        return 0;
-    }
 
-    public static int getSetPosition(Context context, ArrayList<Weather.WeatherLocation> locationArrayList, Weather.WeatherLocation location){
-        WeatherSettings weatherSettings = new WeatherSettings(context);
-        String description = weatherSettings.location_description;
-        if (locationArrayList != null){
-            for (int i=0; i<locationArrayList.size();i++){
-                if (locationArrayList.get(i).description.equals(description)){
-                    return i;
-                }
-            }
-        }
-        return 0;
-    }
 
-    public Weather.WeatherLocation getStation(int position){
-        if (stations != null){
-            if (position<stations.size()){
-                Weather.WeatherLocation weatherLocation = new Weather.WeatherLocation();
-                weatherLocation.type = stations.get(position).type;
-                weatherLocation.description = stations.get(position).description;
-                weatherLocation.longitude = stations.get(position).longitude;
-                weatherLocation.latitude = stations.get(position).latitude;
-                weatherLocation.altitude = stations.get(position).altitude;
-                weatherLocation.name = stations.get(position).name;
-                return weatherLocation;
-            }
-        }
-        return null;
-    }
+
 
     public String getName(int position){
         if (stations != null){
             if (position<stations.size()){
-                return stations.get(position).name;
+                return stations.get(position).getName();
             }
         }
         return null;
@@ -203,7 +154,7 @@ public class StationsManager {
     public String getDescription(int position){
         if (stations != null){
             if (position<stations.size()){
-                return stations.get(position).description;
+                return stations.get(position).getDescription(context);
             }
         }
         return null;
@@ -248,7 +199,7 @@ public class StationsManager {
         if (stations!=null){
             int index = 0;
             while (index < stations.size()){
-                if (stations.get(index).description.toUpperCase().equals(description.toUpperCase())){
+                if (stations.get(index).getOriginalDescription().toUpperCase().equals(description.toUpperCase())){
                     // priorize mos source and return immediately when found
                     if (stations.get(index).type==RawWeatherInfo.Source.MOS){
                         return index;
@@ -272,8 +223,8 @@ public class StationsManager {
             if ((i==null) & (lenient)) {
                 int index = 0;
                 while (index < stations.size()){
-                    if ((stations.get(index).description.toUpperCase().equals(StationSearchEngine.toUmlaut(description))) ||
-                        (stations.get(index).description.toUpperCase().equals(StationSearchEngine.toInternationalUmlaut(description)))){
+                    if ((stations.get(index).getOriginalDescription().toUpperCase().equals(StationSearchEngine.toUmlaut(description))) ||
+                        (stations.get(index).getOriginalDescription().toUpperCase().equals(StationSearchEngine.toInternationalUmlaut(description)))){
                         // priorize mos source and return immediately when found
                         if (stations.get(index).type==RawWeatherInfo.Source.MOS){
                             return index;
@@ -296,7 +247,7 @@ public class StationsManager {
         if (stations!=null){
             int index = 0;
             while (index < stations.size()){
-                if (stations.get(index).name.toUpperCase().equals(name.toUpperCase())){
+                if (stations.get(index).getName().toUpperCase().equals(name.toUpperCase())){
                     // priorize mos source and return immediately when found
                     if (stations.get(index).type==RawWeatherInfo.Source.MOS){
                         return index;

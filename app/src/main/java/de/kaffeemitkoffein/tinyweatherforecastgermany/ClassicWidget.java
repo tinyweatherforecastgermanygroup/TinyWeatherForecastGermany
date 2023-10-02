@@ -286,14 +286,16 @@ public class ClassicWidget extends AppWidgetProvider {
 
     public void setConditionIcon(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo) {
         if (weatherInfo.currentWeather.hasCondition()){
-            remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.currentWeather.getCondition(),weatherInfo.currentWeather.isDaytime(weatherInfo.weatherLocation)));
+            ForecastIcons forecastIcons = new ForecastIcons(context,null);
+            remoteViews.setImageViewBitmap(R.id.classicwidget_weatherconditionicon,forecastIcons.getIconBitmap(weatherInfo.currentWeather,weatherInfo.weatherLocation));
+            //remoteViews.setImageViewResource(R.id.classicwidget_weatherconditionicon,WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.currentWeather.getCondition(),weatherInfo.currentWeather.isDaytime(weatherInfo.weatherLocation)));
         } else {
             remoteViews.setImageViewBitmap(R.id.classicwidget_weatherconditionicon,WeatherIcons.getIconBitmap(context,WeatherIcons.NOT_AVAILABLE,true));
         }
     }
 
     public void setLocationText(Context context, RemoteViews remoteViews, CurrentWeatherInfo weatherInfo, boolean shorten_text){
-        String location_text = weatherInfo.getCity();
+        String location_text = weatherInfo.getCity(context);
         if ((location_text.length()>10) && (shorten_text)){
             location_text = location_text.substring(0,10)+".";
         }

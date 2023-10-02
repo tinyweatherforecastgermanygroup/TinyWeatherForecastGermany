@@ -54,7 +54,7 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainActivity extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends Activity {
 
     private final static String SIS_ABOUT_DIALOG_STATE="ABOUT_DIALOG_VISIBLE";
     private final static String SIS_WHATSNEW_DIALOG_STATE="WHATSNEW_DIALOG_VISIBLE";
@@ -76,7 +76,6 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     ListView weatherList;
     AutoCompleteTextView autoCompleteTextView;
     StationSearchEngine stationSearchEngine;
-    SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
     public static final SimpleDateFormat hourMinuteSecondMilliSecDateFormat = new SimpleDateFormat("HH:mm:ss:SSS");
 
@@ -84,7 +83,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
 
     long last_updateweathercall = Calendar.getInstance().getTimeInMillis();
 
-    private Dialog aboutDialog;
+    private AlertDialog aboutDialog;
     private boolean aboutDiaglogVisible=false;
 
     private boolean forceWeatherUpdateFlag = false;
@@ -154,7 +153,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                         }
                     });
                     final AlertDialog alertDialog = builder.create();
+                    alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
                     alertDialog.show();
+                    ThemePicker.tintAlertDialogButtons(context,alertDialog);
                 }
             }
             if (intent.getAction().equals(MainActivity.MAINAPP_SHOW_PROGRESS)){
@@ -277,36 +278,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         }
     };
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if ((sharedPreferences!=null) && (key!=null)){
-            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"preference change detected: "+key);
-            // reload weather data if necessary
-            if (key.equals(WeatherSettings.PREF_STATION_NAME)){
-                // invalidate local warnings when station changes
-                localWarnings = null;
-                addToSpinner(WeatherSettings.getSetStationLocation(context));
-            }
-            if (key.equals(WeatherSettings.PREF_STATION_NAME) || (key.equals(WeatherSettings.PREF_UPDATEINTERVAL))){
-                boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
-                if (!updated){
-                    // launch new warnings from present dataset only
-                    ArrayList<String> tasks = new ArrayList<String>();
-                    tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS);
-                    UpdateAlarmManager.startDataUpdateService(context,tasks);
-                    displayWeatherForecast();
-                } else {
-                    // nothing to do, views will be updated after the update finished, and notifications will be
-                    // launched, then
-                }
-                UpdateAlarmManager.updateAppViews(context);
-            }
-            // invalidate menu if warnings visibility has changed
-            if (key.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
-                invalidateOptionsMenu();
-            }
-        }
-    }
+
 
 
     private void performTextSearch(){
@@ -385,7 +357,6 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     @Override
     protected void onStart() {
         super.onStart();
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -398,6 +369,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             if (WeatherSettings.useBackgroundLocation(context)){
                 if (WeatherLocationManager.checkForBackgroundLocation(context)){
                     WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
+                } else {
                 }
             }
         }
@@ -414,7 +386,6 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     @Override
     protected void onStop() {
         super.onStop();
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -534,8 +505,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 // the old name does not exist in stations4.txt any more.
                 if (weatherSettings.last_version_code<34){
                     Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(this);
-                    if (currentStation.name.equals("K2226")){
-                        currentStation.name = "10522";
+                    if (currentStation.getName().equals("K2226")){
+                        currentStation.setName("10522");
                         WeatherSettings.setStation(this,currentStation);
                     }
                 }
@@ -567,11 +538,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             if (WeatherSettings.GPSAuto(context) && (!WeatherLocationManager.hasLocationPermission(context))){
                 requestLocationPermission(PERMISSION_CALLBACK_LOCATION);
             }
-            if (!API_TESTING_ENABLED){
-                weatherSettings.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-            }
-            //loadCurrentWeather();
             // get new data from api or display present data.
+            /*
             if (!API_TESTING_ENABLED){
                 if (weatherCard!=null){
                     // check for update
@@ -581,6 +549,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                     UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,weatherCard);
                 }
             }
+
+             */
 
             // test API
             if (API_TESTING_ENABLED){
@@ -681,9 +651,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 // do nothing
             }
             // TESTING
+
         }
     }
-
 
     /**
      * Returns a location for a geo intent.
@@ -741,35 +711,14 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         return null;
     }
 
-    private void errorDialog(Exception e){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
-        builder.setCancelable(true);
-        builder.setTitle("Error:");
-        String s = e.getMessage()+"/n"+e.getCause()+ Arrays.toString(e.getStackTrace())+"/n";
-        builder.setMessage(s);
-        builder.setNeutralButton(getApplicationContext().getResources().getString(R.string.alertdialog_ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                aboutDiaglogVisible=false;
-                dialogInterface.dismiss();
-            }
-        });
-        aboutDialog = builder.create();
-        aboutDialog.show();
-        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("Error",s);
-        clipboardManager.setPrimaryClip(clipData);
-        Toast.makeText(getApplicationContext(),"Error message has been copied to clipboard!",Toast.LENGTH_LONG).show();
-    }
-
     private void newWeatherRegionSelected(final Weather.WeatherLocation weatherLocation){
-        if (!weatherLocation.name.equals(WeatherSettings.getSetStationLocation(context).name)){
+        if (!weatherLocation.getName().equals(WeatherSettings.getSetStationLocation(context).getName())){
             final Context context = this;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+weatherLocation.description,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.new_station)+" "+weatherLocation.getDescription(context),Toast.LENGTH_LONG).show();
                     } catch (Exception e){
                         PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Warning: new station message failed.");
                     }
@@ -779,7 +728,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             weatherCard = null;
             WeatherSettings.setStation(this,weatherLocation);
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+weatherLocation.description);
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+weatherLocation.getDescription(context));
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
             last_updateweathercall = Calendar.getInstance().getTimeInMillis();
             addToSpinner(weatherLocation);
@@ -824,20 +773,6 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         }
     }
 
-    private ArrayList<String> getDescriptionsFromNames(ArrayList<String> names){
-        ArrayList<String> descriptions = new ArrayList<String>();
-        if (stationsManager==null){
-            stationsManager = new StationsManager(context);
-            stationsManager.readStations();
-        }
-        for (int i=0; i<names.size(); i++){
-            String description = stationsManager.getFromName(names.get(i)).description;
-            if (description!=null){
-                descriptions.add(description);
-            }
-        }
-        return descriptions;
-    }
 
     private void loadStationsSpinner() {
         // spinner code
@@ -846,12 +781,15 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             stationFavorites = new StationFavorites(context);
         }
         Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
+        // check if alternate description exists, and find it if not.
         ArrayList<Weather.WeatherLocation> spinnerItems = StationFavorites.getFavorites(context);
-        if (!currentStation.name.equals(spinnerItems.get(0).name)){
+        /*
+        if (!currentStation.getName().equals(spinnerItems.get(0).getName())){
             addToSpinner(currentStation);
             return;
         }
-        ArrayList<String> spinnerDescriptions = Weather.WeatherLocation.getDescriptions(spinnerItems);
+        */
+        ArrayList<String> spinnerDescriptions = Weather.WeatherLocation.getDescriptions(context,spinnerItems);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, spinnerDescriptions);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
         spinner.setAdapter(spinnerArrayAdapter);
@@ -884,6 +822,13 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         if (stationFavorites==null){
             stationFavorites = new StationFavorites(context);
         }
+        if (!weatherLocation.hasAlternateDescription()){
+            String newDescriptionAlternate = WeatherLocationManager.getDescriptionAlternate(context,weatherLocation);
+            if (newDescriptionAlternate!=null){
+                weatherLocation.setDescriptionAlternate(newDescriptionAlternate);
+                WeatherSettings.setDescriptionAlternate(context,newDescriptionAlternate);
+            }
+        }
         stationFavorites.addFavorite(weatherLocation);
         loadStationsSpinner();
     }
@@ -897,22 +842,19 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     }
 
     private void loadCurrentWeather(){
-        int updateFlag = WeatherSettings.getWeatherUpdatedFlag(context);
-        if ((updateFlag==WeatherSettings.UpdateType.STATION) || (updateFlag==WeatherSettings.UpdateType.DATA)){
+        if ((WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)) ||
+                (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA))){
             // in case of new station add it to the spinner list and update the spinner display
-            if (updateFlag==WeatherSettings.UpdateType.STATION){
+            if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)){
                 addToSpinner(WeatherSettings.getSetStationLocation(context));
             }
             // force a re-load of weather data using the station from settings
             weatherCard = null;
-            // this will trigger an update automatically if data of weather station is outdated and will postpone
-            // the display until the update finished.
-            displayWeatherForecast();
             // set back the flag as update was done.
             WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
             return;
         }
-        if (updateFlag==WeatherSettings.UpdateType.VIEWS){
+        if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS)){
             // set back the flag before recreate occurs
             WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
             // recreate the whole view
@@ -932,7 +874,6 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                     stationsManager = new StationsManager(context);
                 }
                 stationsManager.stations = stations;
-                displayWeatherForecast();
                 stationSearchEngine = new StationSearchEngine(context,executor,null,stationsManager){
                     @Override
                     public void newEntries(ArrayList<String> newEntries){
@@ -1124,7 +1065,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 weatherCard = Weather.getCurrentWeatherInfo(context);
             }
         }
-        // if warnings disabled or area database not ready
+        // if warnings enabled and area database in place
         if (!WeatherSettings.areWarningsDisabled(context) && WeatherSettings.isAreaDatabaseReady(context)) {
             // invalidate current warnings
             localWarnings = null;
@@ -1347,7 +1288,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             }
         });
         aboutDialog = builder.create();
+        aboutDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
         aboutDialog.show();
+        ThemePicker.tintAlertDialogButtons(context,aboutDialog);
         aboutDiaglogVisible=true;
         String versioning = BuildConfig.VERSION_NAME + " (build "+BuildConfig.VERSION_CODE+")";
         TextView textView = (TextView) aboutDialog.findViewById(R.id.about_textview);
@@ -1430,26 +1373,11 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             }
         });
         whatsNewDialog = builder.create();
+        whatsNewDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
         whatsNewDialog.show();
+        ThemePicker.tintAlertDialogButtons(context,whatsNewDialog);
         whatsNewDialogVisible=true;
-
         TextView textView = (TextView) whatsNewDialog.findViewById(R.id.whatsnew_textview);
-        /*
-        String textfile = "whatsnew";
-        InputStream inputStream = getResources().openRawResource(getResources().getIdentifier(textfile,"raw",getApplicationContext().getPackageName()));
-        try {
-            int size = inputStream.available();
-            byte[] textdata = new byte[size];
-            inputStream.read(textdata);
-            inputStream.close();
-            String text = new String(textdata);
-            text = text.replace("[VERSION]",BuildConfig.VERSION_NAME);
-            textView.setText(text);
-        } catch (IOException e) {
-            textView.setText("Error.");
-            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Showing the what-is-new dialog failed.");
-        }
-         */
         textView.setText(readTextFileFromResources("whatsnew"));
     }
 
@@ -1531,7 +1459,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             }
         });
         AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
         alertDialog.show();
+        ThemePicker.tintAlertDialogButtons(context,alertDialog);
     }
 
     public static void askDialog(Context context, Integer icon, String title, String[] text,  DialogInterface.OnClickListener positiveListener){
@@ -1567,7 +1497,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             });
         }
         AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
         alertDialog.show();
+        ThemePicker.tintAlertDialogButtons(context,alertDialog);
     }
 
     private void registerForBroadcast(){
@@ -1600,7 +1532,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                     }
                 });
                 AlertDialog alertDialog = builder.create();
+                alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
                 alertDialog.show();
+                ThemePicker.tintAlertDialogButtons(context,alertDialog);
             }
         }
     }
@@ -1836,7 +1770,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             }
         });
         AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
         alertDialog.show();
+        ThemePicker.tintAlertDialogButtons(context,alertDialog);
         useGPS.setChecked(WeatherSettings.getUseGPSFlag(getApplicationContext()));
     }
 
@@ -1872,7 +1808,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 if (stations.get(i).type==RawWeatherInfo.Source.DMO){
                     areaString="Area ";
                 }
-                String s = stations.get(i).description+" ["+areaString+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]";
+                String s = stations.get(i).getOriginalDescription()+" ["+areaString+new DecimalFormat("0.0").format(stations.get(i).distance/1000) + " km]";
                 stationDistanceList.add(s);
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
@@ -1908,7 +1844,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 }
             });
             final AlertDialog alertDialog = builder.create();
+            alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
             alertDialog.show();
+            ThemePicker.tintAlertDialogButtons(context,alertDialog);
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,R.layout.geochoice_item,R.id.geochoiceitem_text,stationDistanceList);
             ListView listView = view.findViewById(R.id.geochoice_listview);
             listView.setAdapter(arrayAdapter);
@@ -1921,7 +1859,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                     station_description = station_description.substring(0,station_description.indexOf(" ["));
                     Weather.WeatherLocation newWeatherLocation = stationsManager.getLocationFromDescription(station_description);
                     if (newWeatherLocation!=null){
-                        if (!weatherSettings.station_name.equals(newWeatherLocation.name)){
+                        if (!weatherSettings.station_name.equals(newWeatherLocation.getName())){
                             newWeatherRegionSelected(newWeatherLocation);
                         }
                     } else {
@@ -1942,8 +1880,8 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
                 newWeatherLocation.altitude = own_location.getAltitude();
                 newWeatherLocation.latitude = own_location.getLatitude();
                 newWeatherLocation.longitude = own_location.getLongitude();
-                newWeatherLocation.name = stations.get(0).name;
-                newWeatherLocation.description = stations.get(0).description;
+                newWeatherLocation.setName(stations.get(0).getName());
+                newWeatherLocation.setDescription(stations.get(0).getOriginalDescription());
                 newWeatherRegionSelected(newWeatherLocation);
             }
         }
@@ -1957,7 +1895,7 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
     private void requestLocationPermission(int callback){
         // below SDK 23, permissions are granted at app install.
         if (android.os.Build.VERSION.SDK_INT >=23){
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},callback);
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},callback);
             WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.LOCATION);
         }
     }
@@ -1969,6 +1907,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
         boolean hasBackgroundLocationPermission = false;
         for (int i=0; i<grantRes.length; i++){
             if ((perms[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
+                hasLocationPermission = true;
+            }
+            if ((perms[i].equals(Manifest.permission.ACCESS_COARSE_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
                 hasLocationPermission = true;
             }
             if ((perms[i].equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
@@ -2027,7 +1968,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             }
         });
         AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
         alertDialog.show();
+        ThemePicker.tintAlertDialogButtons(context,alertDialog);
     }
 
     private void showPermissionsRationale(final String permisson, final int callback){
@@ -2064,7 +2007,9 @@ public class MainActivity extends Activity implements SharedPreferences.OnShared
             }
         });
         AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
         alertDialog.show();
+        ThemePicker.tintAlertDialogButtons(context,alertDialog);
     }
 
     public String standardizeGeo(final String s){

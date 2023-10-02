@@ -46,10 +46,12 @@ public final class Weather {
         public static final String PARCELABLE_NAME = "de.kaffeemitkoffein.tinyweatherforecastgermany.WHEATHERLOCATION";
         public static final float ACCURACY_UNKNOWN = -1f;
         private static final String SEPARATOR = "|";
+        public static final String EMPTYVALUE = "";
         public static final String CUSTOMPROVIDER="manual";
 
-        public String description = "";
-        public String name = "";
+        private String description = EMPTYVALUE;
+        private String name = EMPTYVALUE;
+        private String description_alternate = EMPTYVALUE;
         double latitude = 0d;
         double longitude = 0d;
         double altitude = 0d;
@@ -61,13 +63,24 @@ public final class Weather {
         public WeatherLocation(){
         }
 
-        public WeatherLocation(String description, String name, int type, double latitude, double longitude, double altitude){
+        public WeatherLocation(String description, String description_alternate, String name, int type, double latitude, double longitude, double altitude){
             this.description = description;
+            this.description_alternate = description_alternate;
             this.name = name;
             this.type = type;
             this.latitude = latitude;
             this.longitude = longitude;
             this.altitude = altitude;
+        }
+
+        public WeatherLocation(WeatherLocation weatherLocation){
+            this.description = weatherLocation.description;
+            this.description_alternate = weatherLocation.description_alternate;
+            this.name = weatherLocation.name;
+            this.type = weatherLocation.type;
+            this.latitude = weatherLocation.latitude;
+            this.longitude = weatherLocation.longitude;
+            this.altitude = weatherLocation.altitude;
         }
 
         public WeatherLocation(Location location){
@@ -86,6 +99,7 @@ public final class Weather {
 
         protected WeatherLocation(Parcel in) {
             description = in.readString();
+            description_alternate = in.readString();
             name = in.readString();
             type = in.readInt();
             latitude = in.readDouble();
@@ -100,6 +114,7 @@ public final class Weather {
         public String serializeToString(){
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(description); stringBuilder.append(SEPARATOR);
+            stringBuilder.append(description_alternate); stringBuilder.append(SEPARATOR);
             stringBuilder.append(name); stringBuilder.append(SEPARATOR);
             stringBuilder.append(type); stringBuilder.append(SEPARATOR);
             stringBuilder.append(latitude); stringBuilder.append(SEPARATOR);
@@ -117,14 +132,15 @@ public final class Weather {
                 if (items.length>=8){
                     try {
                         this.description = items[0];
-                        this.name = items[1];
-                        this.type = Integer.parseInt(items[2]);
-                        this.latitude = Double.parseDouble(items[3]);
-                        this.longitude = Double.parseDouble(items[4]);
-                        this.altitude = Double.parseDouble(items[5]);
-                        this.distance = Float.parseFloat(items[6]);
-                        this.accuracy = Float.parseFloat(items[7]);
-                        this.time = Long.parseLong(items[8]);
+                        this.description_alternate = items[1];
+                        this.name = items[2];
+                        this.type = Integer.parseInt(items[3]);
+                        this.latitude = Double.parseDouble(items[4]);
+                        this.longitude = Double.parseDouble(items[5]);
+                        this.altitude = Double.parseDouble(items[6]);
+                        this.distance = Float.parseFloat(items[7]);
+                        this.accuracy = Float.parseFloat(items[8]);
+                        this.time = Long.parseLong(items[9]);
                     } catch (Exception e){
                         // do nothing, default values are set.
                     }
@@ -191,6 +207,7 @@ public final class Weather {
         @Override
         public void writeToParcel(Parcel parcel, int flags) {
             parcel.writeString(description);
+            parcel.writeString(description_alternate);
             parcel.writeString(name);
             parcel.writeInt(type);
             parcel.writeDouble(latitude);
@@ -202,11 +219,11 @@ public final class Weather {
             parcel.writeLong(time);
         }
 
-        public static ArrayList<String> getDescriptions(ArrayList<WeatherLocation> weatherLocations){
+        public static ArrayList<String> getDescriptions(Context context, ArrayList<WeatherLocation> weatherLocations){
             if (weatherLocations!=null){
                 ArrayList<String> descriptions = new ArrayList<String>();
                 for (int i=0; i<weatherLocations.size(); i++){
-                    descriptions.add(weatherLocations.get(i).description);
+                        descriptions.add(weatherLocations.get(i).getDescription(context));
                 }
                 return descriptions;
             }
@@ -241,6 +258,45 @@ public final class Weather {
             }
             return false;
         }
+
+        public boolean hasAlternateDescription() {
+            if (this.description_alternate.equals(EMPTYVALUE)){
+                return false;
+            }
+            return true;
+        }
+
+        public String getName(){
+            return this.name;
+        }
+
+        public String getOriginalDescription(){
+            return this.description;
+        }
+
+        public String getDescription(Context context){
+            if ((hasAlternateDescription() && this.description.contains("SWIS-PUNKT")) || (WeatherSettings.replaceByMunicipality(context))){
+                return this.description_alternate;
+            }
+            return this.description;
+        }
+
+        public String getDescriptionAlternate(){
+            return this.description_alternate;
+        }
+
+        public void setName(String s){
+            this.name = s;
+        }
+
+        public void setDescription(String s){
+            this.description = s;
+        }
+
+        public void setDescriptionAlternate(String s){
+            this.description_alternate = s;
+        }
+
     }
 
     public static class WeatherLocationFinder implements Runnable{
@@ -284,6 +340,57 @@ public final class Weather {
 
         public void newWeatherLocation(WeatherLocation weatherLocation){
 
+        }
+    }
+
+    public static class Units {
+
+        public static float KnotsFromKmh(float kmh){
+            return kmh*0.539956803456f;
+        }
+
+        public static float BeaufortFromKmh(float kmh){
+            if (kmh>=118){
+                return 12;
+            }
+            if (kmh>=103){
+                return 11;
+            }
+            if (kmh>=89){
+                return 10;
+            }
+            if (kmh>=75){
+                return 9;
+            }
+            if (kmh>=62){
+                return 8;
+            }
+            if (kmh>=50){
+                return 7;
+            }
+            if (kmh>=39){
+                return 6;
+            }
+            if (kmh>=29){
+                return 5;
+            }
+            if (kmh>=20){
+                return 4;
+            }
+            if (kmh>=12){
+                return 3;
+            }
+            if (kmh>=6){
+                return 2;
+            }
+            if (kmh>=1){
+                return 1;
+            }
+            return 0;
+        }
+
+        public static float MSFromKmh(float kmh){
+            return kmh*0.277777778f;
         }
     }
 
