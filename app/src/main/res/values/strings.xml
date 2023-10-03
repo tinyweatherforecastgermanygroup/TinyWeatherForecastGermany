@@ -222,12 +222,12 @@
     <string name="preference_meterednetwork_notice">You might miss weather warnings when using unmetered networks only.</string>
     <string name="preference_category_location">Location</string>
     <string name="preference_usegps_title">Use location services</string>
-    <string name="preference_use_background_location_title">Im the background</string>
-    <string name="preference_use_background_location_summary">Check the location regularly using the location data obtained by other apps.</string>
+    <string name="preference_use_background_location_title">In the background</string>
+    <string name="preference_use_background_location_summary">Check the location regularly using location data in place.</string>
     <string name="preference_gpsauto_title">Check location</string>
     <string name="preference_gpsauto_summary">Check that the location is correct at each startup.</string>
     <string name="preference_gpsmanual_title">Manual</string>
-    <string name="preference_gpsmanual_summary">Select the weather station from a list of nearest stations by yourself.</string>
+    <string name="preference_gpsmanual_summary">Select the weather station from a list of the nearest stations by yourself.</string>
     <string name="preference_display_station_geo_title">Geographic coordinates</string>
     <string name="preference_display_station_geo_summary">Display geographic coordinates of station</string>
     <string name="preference_station_replace_title">Display municipality</string>

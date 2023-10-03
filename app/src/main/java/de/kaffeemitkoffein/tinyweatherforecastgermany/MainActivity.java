@@ -514,30 +514,10 @@ public class MainActivity extends Activity {
                 if (weatherSettings.last_version_code<35){
                     WeatherSettings.fixUniqueNotificationIdentifier(context);
                 }
-                // rebuild favorites from station names
+                // delete favorites and restore current station from settings, because the order of the flattened
+                // strings has changed in the Weather.WeatherLocation class.
                 if (weatherSettings.last_version_code<46){
-                    Runnable fixFavorites = new Runnable() {
-                        @Override
-                        public void run() {
-                            final StationsManager stationsManagerFix = new StationsManager(context);
-                            stationsManagerFix.readStations();
-                            ArrayList<Weather.WeatherLocation> oldStations= StationFavorites.getFavorites(context);
-                            // extract names, which are in "description alternate" due to a shift in the string order
-                            ArrayList<Weather.WeatherLocation> newFavorites = new ArrayList<Weather.WeatherLocation>();
-                            for (int i=0; i<oldStations.size(); i++){
-                                int position = stationsManagerFix.getPositionFromName(oldStations.get(i).getDescriptionAlternate());
-                                newFavorites.add(stationsManagerFix.stations.get(position));
-                            }
-                            StationFavorites.saveFavorites(context,newFavorites);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(context,context.getResources().getString(R.string.favorites_rebuild_sucessfully),Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                    };
-                    executor.execute(fixFavorites);
+                    StationFavorites.deleteList(context);
                 }
                 showWhatsNewDialog();
             }
@@ -855,10 +835,7 @@ public class MainActivity extends Activity {
     }
 
     private void clearFavorites(){
-        if (stationFavorites==null){
-            stationFavorites = new StationFavorites(context);
-        }
-        stationFavorites.deleteList();
+        StationFavorites.deleteList(context);
         loadStationsSpinner();
     }
 

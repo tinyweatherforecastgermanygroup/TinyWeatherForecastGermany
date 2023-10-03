@@ -120,6 +120,7 @@ The app uses the following permissions:
 * Receive boot completed: the app needs to know about a reboot to restart periodic checks if an update is due, to update widgets and to send data to Gadgetbridge when enabled.
 * Access fine location: used to determine the closest weather sensors to your position. This permission needs not to be granted if this feature is not used or if the search is performed based on manually entered geo-coordinates.
 * Access background location: used to passively check the location while the app is not running and switch to a closer weather station if appropriate. This permission needs not to be granted if this feature is not used.
+* Request ignore battery optimizations: needed to present a user-friendly dialog to optionally disable battery optimization.
 
 ## FAQ
 
@@ -172,15 +173,17 @@ Since *DMO* forecasts get updated every 12 hours only, periodic updates automati
 
 The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
 
+You may try to disable battery optimization for Tiny Weatherforecast Germany.
+
 ### My widgets don't update the station automatically when I am on travel.
 
-1. You need to grand the _background location permission_. Please note that you must grant the general location permission before you can grant the background permission. The app asks all of this is the appropriate order. Should you have declined any of the location permissions, you can grant them in the app settings.
+1. You need to grand the _background location permission_. Please note on some devices you must grant the general location permission before you can grant the background permission. The app asks all of this is the appropriate order. Should you have declined any of the location permissions, you can grant them in the app settings.
 2. You also need to enable background location checks in the app settings.
-3. To safe your battery, the app never starts an active location fix in the background. It only re-uses locations obtained by other apps, e.g. map applications. Simply start the location search in any app on your device or search actively for the closest station within the app. All of this will make the widgets change to the closest station.
+3. To save your battery, the app never starts an active location fix in the background. It only re-uses locations obtained by other apps, e.g. map applications. Simply start the location search in any app on your device or search actively for the closest station within the app. All of this will make the widgets change to the closest station.
 4. Please also note that the background-checks are performed every 15-30 minutes only. 
 5. Open the app to immediately check for known, passive locations.
 
-All of this does not work: this functionality may be broken due to energy saving apps or roms breaking expected functionality. See above "my widgets don't get updated (unless I open the app)". 
+Should all of this not help: this functionality may be broken due to energy saving apps or roms breaking expected functionality. See above "my widgets don't get updated (unless I open the app)". 
 
 ### How often does the app update the weather forecast?
 
@@ -206,7 +209,7 @@ When GadgetBridge support is **enabled**, the app will update GadgetBridge appro
   
 If you encounter problems with GadgetBridge not updating, placing a widget on the home screen may help, since the widget will try to also update GadgetBridge every time the widget itself gets updated by the system.
   
-### Why is percipitation displayed in kg/m² instead of mm?
+### Why is precipitation displayed in kg/m² instead of mm?
   
 This unit is more precise regarding solid precipitation (e.g. snow). Assuming rain, after some converting of units you will notice that the value is the same like "mm".
   

@@ -113,7 +113,6 @@ public class WeatherLayer {
         public final static int POLLEN_FORECAST_GRAESER_2 = 43;
     }
 
-
     public final static int LAYERCOUNT = 44;
     public final SimpleDateFormat dateFormat = new SimpleDateFormat("EE, dd.MM.yyyy");
 
@@ -584,7 +583,6 @@ public class WeatherLayer {
     public static Bitmap getExactlyGermanyBitmap(Context context) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 1; // do not subsample
-        //Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), ThemePicker.getGermanyResource(context), options);
         Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(),ThemePicker.getGermanyResource(context)),WeatherWarningActivity.MAP_PIXEL_FIXEDWIDTH,WeatherWarningActivity.MAP_PIXEL_FIXEDHEIGHT,false);
         bitmap = Bitmap.createBitmap(bitmap, EXACTLY_GERMANY_XOFFSET_PIXEL, EXACTLY_GERMANY_YOFFSET_PIXEL, EXACTLY_GERMANY_WIDTH_PIXEL, EXACTLY_GERMANY_HEIGHT_PIXEL);
         return bitmap;
@@ -677,23 +675,22 @@ public class WeatherLayer {
         if (layerBitmap!=null){
             Bitmap targetBitmap = layerBitmap.copy(Bitmap.Config.ARGB_8888,true);
             Canvas canvasVisibleMap = new Canvas(targetBitmap);
-            if (layerBitmap!=null){
-                int outlineColor = ThemePicker.getWidgetTextColor(context);
-                if (atop!=null){
-                    final Paint cp = new Paint();
-                    cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
-                    for (int i=0; i<atop.length; i++){
-                        WeatherLayer atopLayer = new WeatherLayer(atop[i]);
-                        Bitmap atopBitmap = null;
-                        if (atopLayer.layer!=layer){
-                            atopBitmap = atopLayer.getTransparentLayerBitmap(context,outlineColor);
-                        }
-                        if (atopBitmap!=null){
-                            canvasVisibleMap.drawBitmap(atopBitmap,0,0,cp);
-                        }
+            int outlineColor = ThemePicker.getWidgetTextColor(context);
+            if (atop!=null){
+                final Paint cp = new Paint();
+                cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
+                for (int i=0; i<atop.length; i++){
+                    WeatherLayer atopLayer = new WeatherLayer(atop[i]);
+                    Bitmap atopBitmap = null;
+                    if (atopLayer.layer!=layer){
+                        atopBitmap = atopLayer.getTransparentLayerBitmap(context,outlineColor);
+                    }
+                    if (atopBitmap!=null){
+                        canvasVisibleMap.drawBitmap(atopBitmap,0,0,cp);
                     }
                 }
             }
+
             return targetBitmap;
         }
         return null;

@@ -557,8 +557,15 @@ public class WeatherLayersActivity extends Activity {
             if (displayLayer!=null){
                 Bitmap bitmap = updateLayer.getLayerBitmap(context);
                 if (bitmap!=null){
+                    displayLayer.textViewTitle.setVisibility(View.VISIBLE);
+                    displayLayer.textViewDate.setVisibility(View.VISIBLE);
+                    displayLayer.imageView.setVisibility(View.VISIBLE);
                     displayLayer.imageView.setImageBitmap(bitmap);
                     displayLayer.textViewDate.setText(displayLayer.weatherLayer.getTimestampString());
+                } else {
+                    displayLayer.textViewTitle.setVisibility(View.GONE);
+                    displayLayer.textViewDate.setVisibility(View.GONE);
+                    displayLayer.imageView.setVisibility(View.GONE);
                 }
             }
         }

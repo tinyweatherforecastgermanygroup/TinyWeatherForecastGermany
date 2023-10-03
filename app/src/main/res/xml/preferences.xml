@@ -241,7 +241,7 @@
                         android:defaultValue="true"/>
 
                 <PreferenceCategory
-                        android:title="@string/preference_display_overviewchart_title">
+                        android:title="@string/chartwidget_description">
 
                     <CheckBoxPreference
                             android:key="PREF_wind_in_charts"

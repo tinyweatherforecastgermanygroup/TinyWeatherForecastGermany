@@ -70,13 +70,15 @@ public class StationFavorites {
         return defaultStation;
     }
 
-    public void deleteList(){
-        if (favorites.size()>0){
-            ArrayList<Weather.WeatherLocation> newFavorites = new ArrayList<Weather.WeatherLocation>();
-            newFavorites.add(favorites.get(0));
-            favorites = newFavorites;
-            saveFavorites(context,favorites);
+    public static void deleteList(Context context){
+        StationFavorites stationFavorites = new StationFavorites(context);
+        stationFavorites.favorites = new ArrayList<Weather.WeatherLocation>();
+        Weather.WeatherLocation setStation = WeatherSettings.getSetStationLocation(context);
+        if (!setStation.hasAlternateDescription()){
+            setStation.setDescriptionAlternate(WeatherLocationManager.getDescriptionAlternate(context,setStation));
         }
+        stationFavorites.favorites.add(setStation);
+        StationFavorites.saveFavorites(context,stationFavorites.favorites);
     }
 
     public static ArrayList<Weather.WeatherLocation> resetFavorites(Context context){
