@@ -191,7 +191,9 @@ public class WeatherWarningActivity extends Activity {
             germany = (ImageView) findViewById(R.id.warningactivity_map);
         }
         PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"app resumed.");
-        weatherLocationManager.checkLocation();
+        if (WeatherSettings.GPSAuto(context)){
+            weatherLocationManager.checkLocation();
+        }
         if ((!hide_rain) && (!cancelRainSlides) && (validSlideSetObtained)){
             scheduledExecutorService.execute(showNextRainSlide);
         }
