@@ -114,7 +114,6 @@
                 android:layout_alignParentBottom="true"/>
 
         <ImageView
-                android:background="@color/colorAccentCyan_Solarized"
                 android:id="@+id/wlm_map"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
