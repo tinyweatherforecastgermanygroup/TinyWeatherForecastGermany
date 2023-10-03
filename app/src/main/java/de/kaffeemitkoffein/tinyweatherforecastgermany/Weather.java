@@ -275,7 +275,7 @@ public final class Weather {
         }
 
         public String getDescription(Context context){
-            if ((hasAlternateDescription() && this.description.contains("SWIS-PUNKT")) || (WeatherSettings.replaceByMunicipality(context))){
+            if ((hasAlternateDescription()) && ((this.description.contains("SWIS-PUNKT")) || (WeatherSettings.replaceByMunicipality(context)))){
                 return this.description_alternate;
             }
             return this.description;

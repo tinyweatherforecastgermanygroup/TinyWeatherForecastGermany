@@ -138,10 +138,6 @@ public class StationsManager {
     }
 
 
-
-
-
-
     public String getName(int position){
         if (stations != null){
             if (position<stations.size()){

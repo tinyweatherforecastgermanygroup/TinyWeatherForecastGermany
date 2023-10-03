@@ -230,8 +230,8 @@
     <string name="preference_gpsmanual_summary">Select the weather station from a list of nearest stations by yourself.</string>
     <string name="preference_display_station_geo_title">Geographic coordinates</string>
     <string name="preference_display_station_geo_summary">Display geographic coordinates of station</string>
-    <string name="preference_station_replace_title">Show municipality instead of weather station</string>
-    <string name="preference_display_replace_summary">Displays the municipality name, if available. Applies only to weather stations in Germany.</string>
+    <string name="preference_station_replace_title">Display municipality</string>
+    <string name="preference_display_replace_summary">Show the municipality name instead of the station name, if available.</string>
     <string name="preference_screen_gadgetbridge_title">Gadgetbridge support</string>
     <string name="preference_screen_gadgetbridge_summary">Options for integrating the weather data of this app into Gadgetbridge. </string>
     <string name="preference_gadgetbridge_serve_title">Enable</string>
@@ -473,4 +473,5 @@
     <string name="pollen_load5">medium to high</string>
     <string name="pollen_load6">high</string>
     <string name="clear_sky">clear sky</string>
+    <string name="favorites_rebuild_sucessfully">The favorites were rebuilt successfully!</string>
 </resources>

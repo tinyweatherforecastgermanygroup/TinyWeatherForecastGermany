@@ -155,6 +155,9 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         }
                     }
                 }
+                if (s.equals(WeatherSettings.PREF_REPLACE_BY_MUNICIPALITY)){
+                    WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
+                }
             }
         }
     };

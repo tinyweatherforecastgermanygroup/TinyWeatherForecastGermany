@@ -171,7 +171,7 @@ public class WeatherSettings {
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
-    public static final String PREF_LOCATION_DESC_ALTERNATE_DEFAULT = "";
+    public static final String PREF_LOCATION_DESC_ALTERNATE_DEFAULT = "Hamburg-Mitte/Ost";
     public static final double PREF_LATITUDE_DEFAULT = 53.55;
     public static final double PREF_LONGITUDE_DEFAULT = 9.98;
     public static final double PREF_ALTITUDE_DEFAULT = 8.0;

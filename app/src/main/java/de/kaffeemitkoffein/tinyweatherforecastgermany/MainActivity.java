@@ -514,6 +514,31 @@ public class MainActivity extends Activity {
                 if (weatherSettings.last_version_code<35){
                     WeatherSettings.fixUniqueNotificationIdentifier(context);
                 }
+                // rebuild favorites from station names
+                if (weatherSettings.last_version_code<46){
+                    Runnable fixFavorites = new Runnable() {
+                        @Override
+                        public void run() {
+                            final StationsManager stationsManagerFix = new StationsManager(context);
+                            stationsManagerFix.readStations();
+                            ArrayList<Weather.WeatherLocation> oldStations= StationFavorites.getFavorites(context);
+                            // extract names, which are in "description alternate" due to a shift in the string order
+                            ArrayList<Weather.WeatherLocation> newFavorites = new ArrayList<Weather.WeatherLocation>();
+                            for (int i=0; i<oldStations.size(); i++){
+                                int position = stationsManagerFix.getPositionFromName(oldStations.get(i).getDescriptionAlternate());
+                                newFavorites.add(stationsManagerFix.stations.get(position));
+                            }
+                            StationFavorites.saveFavorites(context,newFavorites);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(context,context.getResources().getString(R.string.favorites_rebuild_sucessfully),Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    };
+                    executor.execute(fixFavorites);
+                }
                 showWhatsNewDialog();
             }
             try {
@@ -745,8 +770,10 @@ public class MainActivity extends Activity {
                     }
                 }
             });
-            // we do not get the forecast data here since this triggers the preference-changed-listener. This
-            // listener takes care of the weather data update and updates widgets and gadgetbridge.
+            boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.CHECK_FOR_UPDATE,null);
+            if (!updated){
+                displayWeatherForecast();
+            }
         }
     }
 
@@ -783,12 +810,6 @@ public class MainActivity extends Activity {
         Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
         // check if alternate description exists, and find it if not.
         ArrayList<Weather.WeatherLocation> spinnerItems = StationFavorites.getFavorites(context);
-        /*
-        if (!currentStation.getName().equals(spinnerItems.get(0).getName())){
-            addToSpinner(currentStation);
-            return;
-        }
-        */
         ArrayList<String> spinnerDescriptions = Weather.WeatherLocation.getDescriptions(context,spinnerItems);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, spinnerDescriptions);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
@@ -852,7 +873,7 @@ public class MainActivity extends Activity {
             weatherCard = null;
             // set back the flag as update was done.
             WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
-            return;
+
         }
         if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS)){
             // set back the flag before recreate occurs
