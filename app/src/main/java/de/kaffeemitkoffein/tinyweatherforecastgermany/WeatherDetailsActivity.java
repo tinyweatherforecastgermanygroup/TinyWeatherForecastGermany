@@ -228,6 +228,7 @@ public class WeatherDetailsActivity extends Activity {
         actionBar.setCustomView(R.layout.actionbar_textforecastview);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         executor = Executors.newSingleThreadExecutor();
+        forecastIcons  = new ForecastIcons(context,weatherConditionIcon);
         if (savedInstanceState!=null){
             weatherPosition = savedInstanceState.getInt(SIS_POSITION);
         } else {
@@ -892,7 +893,6 @@ public class WeatherDetailsActivity extends Activity {
     protected void onResume() {
         super.onResume();
         registerForBroadcast();
-        forecastIcons  = new ForecastIcons(context,weatherConditionIcon);
     }
 
     @Override
