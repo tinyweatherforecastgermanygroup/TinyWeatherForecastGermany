@@ -441,7 +441,6 @@ public class MainActivity extends Activity {
             }
             context = getApplicationContext();
             thisActivity = this;
-            WeatherSettings weatherSettings = new WeatherSettings(context);
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
             setContentView(R.layout.activity_main);
             weatherList = (ListView) findViewById(R.id.main_listview);
@@ -475,9 +474,11 @@ public class MainActivity extends Activity {
             } catch (Exception e){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Preparing database failed on main thread.");
             }
-            if (weatherSettings.last_version_code != BuildConfig.VERSION_CODE){
+            // check for update procedures if not first install
+            if ((WeatherSettings.getLastAppVersionCode(context) != BuildConfig.VERSION_CODE) &&
+                    (WeatherSettings.getLastAppVersionCode(context)>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT)){
                 // remove old databases if previous version was older than 30
-                if (weatherSettings.last_version_code<30){
+                if (WeatherSettings.getLastAppVersionCode(context)<30){
                     // remove abandoned forecast database file
                     if (deleteDatabase("weatherforecast.db")) {
                         PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"remove abandoned forecast database file");
@@ -496,14 +497,13 @@ public class MainActivity extends Activity {
                     } else PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"no abandoned areas database file to remove!");
                 }
                 // remove shared preferences on app update if installed app is lower than build 20
-                if ((weatherSettings.last_version_code>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT) && (weatherSettings.last_version_code<20)){
+                if (WeatherSettings.getLastAppVersionCode(context)<20){
                     WeatherSettings.resetStationToDefault(getApplicationContext());
-                    WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
                     showWarning(R.mipmap.ic_warning_white_24dp,getResources().getString(R.string.warning_stationreset_title),getResources().getString(R.string.warning_stationreset_text));
                 }
                 // the station name K2226 has been changed to 10522, effective from 25.04.2022 9:00
                 // the old name does not exist in stations4.txt any more.
-                if (weatherSettings.last_version_code<34){
+                if (WeatherSettings.getLastAppVersionCode(context)<34){
                     Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(this);
                     if (currentStation.getName().equals("K2226")){
                         currentStation.setName("10522");
@@ -511,15 +511,16 @@ public class MainActivity extends Activity {
                     }
                 }
                 // fix possible (but very unlikely) unique notification ID in reserved area introduced in version 35
-                if (weatherSettings.last_version_code<35){
+                if (WeatherSettings.getLastAppVersionCode(context)<35){
                     WeatherSettings.fixUniqueNotificationIdentifier(context);
                 }
                 // delete favorites and restore current station from settings, because the order of the flattened
                 // strings has changed in the Weather.WeatherLocation class.
-                if (weatherSettings.last_version_code<46){
+                if (WeatherSettings.getLastAppVersionCode(context)<46){
                     StationFavorites.deleteList(context);
                 }
                 showWhatsNewDialog();
+                WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
             }
             try {
                 loadStationsSpinner();
@@ -845,12 +846,12 @@ public class MainActivity extends Activity {
             // in case of new station add it to the spinner list and update the spinner display
             if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)){
                 addToSpinner(WeatherSettings.getSetStationLocation(context));
+
             }
             // force a re-load of weather data using the station from settings
             weatherCard = null;
             // set back the flag as update was done.
             WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
-
         }
         if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS)){
             // set back the flag before recreate occurs
@@ -980,41 +981,41 @@ public class MainActivity extends Activity {
             textView_station_geo.setVisibility(View.GONE);
             textView_station_geo.invalidate();
         }
+    }
+
+    private void displayOverviewChart(final CurrentWeatherInfo currentWeatherInfo){
         final ImageView overviewChartImageView = (ImageView) findViewById(R.id.main_overview_chart);
         final LinearLayout main_leftcontainer = (LinearLayout) findViewById(R.id.main_leftcontainer);
         final boolean isLandscape = (main_leftcontainer!=null);
-            if (overviewChartImageView!=null){
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                int displayWidth  = Math.round(displayMetrics.widthPixels);
-                int displayHeight = Math.round(displayMetrics.heightPixels);
+        if (overviewChartImageView!=null){
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            if (WeatherSettings.displayOverviewChart(context)){
+                overviewChartImageView.setVisibility(View.VISIBLE);
+            }
+            if (!isLandscape){
                 if (WeatherSettings.displayOverviewChart(context)){
-                    overviewChartImageView.setVisibility(View.VISIBLE);
+                    Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,displayMetrics.heightPixels/10,currentWeatherInfo.forecast1hourly,localWarnings);
+                    if (overViewChartBitmap!=null){
+                        overviewChartImageView.setImageBitmap(overViewChartBitmap);
+                    }
+                } else {
+                    overviewChartImageView.setVisibility(View.GONE);
                 }
-                if (!isLandscape){
-                    if (WeatherSettings.displayOverviewChart(context)){
-                        Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,displayMetrics.heightPixels/10,currentWeatherInfo.forecast1hourly,localWarnings);
+            } else {
+                LinearLayout main_landscape_mainlinearlayout = (LinearLayout) findViewById(R.id.main_landscape_mainlinearlayout);
+                overviewChartImageView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        overviewChartImageView.measure(0,0);
+                        Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,overviewChartImageView.getWidth(),overviewChartImageView.getHeight(),currentWeatherInfo.forecast1hourly,localWarnings);
                         if (overViewChartBitmap!=null){
                             overviewChartImageView.setImageBitmap(overViewChartBitmap);
                         }
-                    } else {
-                        overviewChartImageView.setVisibility(View.GONE);
                     }
-                } else {
-                    LinearLayout main_landscape_mainlinearlayout = (LinearLayout) findViewById(R.id.main_landscape_mainlinearlayout);
-                    overviewChartImageView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            overviewChartImageView.measure(0,0);
-                            Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,overviewChartImageView.getWidth(),overviewChartImageView.getHeight(),currentWeatherInfo.forecast1hourly,localWarnings);
-                            if (overViewChartBitmap!=null){
-                                overviewChartImageView.setImageBitmap(overViewChartBitmap);
-                            }
-                        }
-                    });
-                }
+                });
             }
-
+        }
     }
 
     private int get24passedPosition(CurrentWeatherInfo currentWeatherInfo,int lasthourlypostion){
@@ -1063,6 +1064,11 @@ public class MainActivity extends Activity {
                 weatherCard = Weather.getCurrentWeatherInfo(context);
             }
         }
+        // it might happen that location changed, but no update of weather occured since then. We need to trigger
+        // an update if nothing is found in the database.
+        if (weatherCard==null){
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.CHECK_FOR_UPDATE,null);
+        }
         // if warnings enabled and area database in place
         if (!WeatherSettings.areWarningsDisabled(context) && WeatherSettings.isAreaDatabaseReady(context)) {
             // invalidate current warnings
@@ -1089,7 +1095,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void displayAdapter(CurrentWeatherInfo weatherCard){
+    private void displayAdapter(final CurrentWeatherInfo weatherCard){
         if (weatherCard!=null){
             displayUpdateTime(weatherCard);
             forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
@@ -1103,6 +1109,17 @@ public class MainActivity extends Activity {
             }
             weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
             weatherList.setOnItemClickListener(weatherItemDoubleClickListener);
+            weatherList.post(new Runnable() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayOverviewChart(weatherCard);
+                        }
+                    });
+                }
+            });
         }
    }
 

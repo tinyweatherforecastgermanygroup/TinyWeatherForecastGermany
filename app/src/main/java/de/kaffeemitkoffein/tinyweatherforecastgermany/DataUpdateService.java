@@ -468,18 +468,18 @@ public class DataUpdateService extends Service {
     }
 
     @SuppressLint("UnspecifiedImmutableFlag")
-    private static PendingIntent getWarningPendingIntent(Context context, WeatherWarning weatherWarning){
+    private static PendingIntent getWarningPendingIntent(Context context, WeatherWarning weatherWarning, int uniqueNotificationID){
         Intent intent = getWarningIntent(context,weatherWarning);
         PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= 23){
-            pendingIntent = PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_CANCEL_CURRENT);
+            pendingIntent = PendingIntent.getActivity(context,uniqueNotificationID,intent,PendingIntent.FLAG_IMMUTABLE|PendingIntent.FLAG_CANCEL_CURRENT);
         } else {
-            pendingIntent = PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+            pendingIntent = PendingIntent.getActivity(context,uniqueNotificationID,intent,PendingIntent.FLAG_CANCEL_CURRENT);
         }
         return pendingIntent;
     }
 
-    public static Notification getWarningNotification(Context context, NotificationManager notificationManager, WeatherWarning weatherWarning, String sortKey){
+    public static Notification getWarningNotification(Context context, NotificationManager notificationManager, WeatherWarning weatherWarning, String sortKey, int uniqueNotificationID){
         final String notificationChannelID = WeatherSettings.getNotificationChannelID(context);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel nc = new NotificationChannel(notificationChannelID,context.getResources().getString(R.string.preference_category_warnings),WARNING_NC_IMPORTANCE);
@@ -492,7 +492,7 @@ public class DataUpdateService extends Service {
             notificationManager.createNotificationChannel(nc);
         }
         Intent intent = new Intent(context,WeatherWarningActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context,uniqueNotificationID,intent,0);
         Bitmap warningIconBitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.warning_icon);
         Bitmap iconMutable = warningIconBitmap.copy(Bitmap.Config.ARGB_8888,true);
         ThemePicker.applyColor(iconMutable,weatherWarning.getWarningColor());
@@ -501,7 +501,7 @@ public class DataUpdateService extends Service {
         expires = expires.replaceFirst(String.valueOf(expires.charAt(0)),String.valueOf(expires.charAt(0)).toUpperCase());
         notificationBody = WeatherSettings.getSetStationLocation(context).getDescription(context).toUpperCase(Locale.getDefault())+": "+notificationBody + " ("+expires+".)";
         // construct pending intent for sharing
-        PendingIntent shareWarningPendingIntent = getWarningPendingIntent(context,weatherWarning);
+        PendingIntent shareWarningPendingIntent = getWarningPendingIntent(context,weatherWarning,uniqueNotificationID);
         Notification n;
         Notification.Builder notificationBuilder;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -563,7 +563,7 @@ public class DataUpdateService extends Service {
             if (warning.getSeverity()>=WeatherSettings.getWarningsNotifySeverity(this)){
                 if (discardAlreadyNotified || !WeatherWarnings.alreadyNotified(this,warning)){
                     int id = WeatherSettings.getUniqueNotificationIdentifier(this);
-                    Notification notification = getWarningNotification(this,notificationManager,warning,Integer.toString(i));
+                    Notification notification = getWarningNotification(this,notificationManager,warning,Integer.toString(i), id);
                     notificationManager.notify(id,notification);
                     notified = true;
                     WeatherWarnings.addToNotified(this,warning,id);

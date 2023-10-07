@@ -208,7 +208,7 @@ When you select to automatically update every 6 hours, the app tries to guess wh
 When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called every time to perform this task. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in *doze mode*, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
   
 If you encounter problems with GadgetBridge not updating, placing a widget on the home screen may help, since the widget will try to also update GadgetBridge every time the widget itself gets updated by the system.
-  
+
 ### Why is precipitation displayed in kg/m² instead of mm?
   
 This unit is more precise regarding solid precipitation (e.g. snow). Assuming rain, after some converting of units you will notice that the value is the same like "mm".

@@ -67,6 +67,7 @@ public class WeatherSettings {
     public static final String PREF_LATITUDE = "PREF_latitude";
     public static final String PREF_ALTITUDE = "PREF_altitude";
     public static final String PREF_STATIONTYPE = "PREF_stationtype";
+    public static final String PREF_STATION_TIME = "PREF_station_time";
     public static final String PREF_DISPLAY_STATION_GEO = "PREF_display_station_geo";
     public static final String PREF_DISPLAY_TYPE = "PREF_display_type";
     public static final String PREF_DISPLAY_LAYOUT = "PREF_display_layout";
@@ -176,6 +177,7 @@ public class WeatherSettings {
     public static final double PREF_LONGITUDE_DEFAULT = 9.98;
     public static final double PREF_ALTITUDE_DEFAULT = 8.0;
     public static final int PREF_STATIONTYPE_DEFAULT = RawWeatherInfo.Source.MOS;
+    public static final long PREF_STATION_TIME_DEFAULT = 0;
     public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
     public static final String PREF_DISPLAY_TYPE_DEFAULT = "3";
     public static final String PREF_DISPLAY_LAYOUT_DEFAULT = "0";
@@ -285,6 +287,7 @@ public class WeatherSettings {
     public double latitude = PREF_LATITUDE_DEFAULT;
     public double altitude = PREF_ALTITUDE_DEFAULT;
     public int stationType = PREF_STATIONTYPE_DEFAULT;
+    public long stationTime = PREF_STATION_TIME_DEFAULT;
     public boolean display_station_geo = PREF_DISPLAY_STATION_GEO_DEFAULT;
     public String display_type = PREF_DISPLAY_TYPE_DEFAULT;
     public String display_layout = PREF_DISPLAY_LAYOUT_DEFAULT;
@@ -399,6 +402,7 @@ public class WeatherSettings {
         this.latitude = readPreference(PREF_LATITUDE, PREF_LATITUDE_DEFAULT);
         this.altitude = readPreference(PREF_ALTITUDE, PREF_ALTITUDE_DEFAULT);
         this.stationType = readPreference(PREF_STATIONTYPE,PREF_STATIONTYPE_DEFAULT);
+        this.stationTime = readPreference(PREF_STATION_TIME,PREF_STATION_TIME_DEFAULT);
         this.setalarm = readPreference(PREF_SETALARM, PREF_SETALARM_DEFAULT);
         this.display_station_geo = readPreference(PREF_DISPLAY_STATION_GEO, PREF_DISPLAY_STATION_GEO_DEFAULT);
         this.display_type = readPreference(PREF_DISPLAY_TYPE, PREF_DISPLAY_TYPE_DEFAULT);
@@ -499,6 +503,7 @@ public class WeatherSettings {
         applyPreference(PREF_LATITUDE, this.latitude);
         applyPreference(PREF_ALTITUDE, this.altitude);
         applyPreference(PREF_STATIONTYPE,this.stationType);
+        applyPreference(PREF_STATION_TIME,this.stationTime);
         applyPreference(PREF_DISPLAY_STATION_GEO, this.display_station_geo);
         applyPreference(PREF_DISPLAY_TYPE, this.display_type);
         applyPreference(PREF_DISPLAY_LAYOUT,this.display_layout);
@@ -599,6 +604,7 @@ public class WeatherSettings {
         commitPreference(PREF_STATIONTYPE,this.stationType);
         commitPreference(PREF_DISPLAY_STATION_GEO, this.display_station_geo);
         commitPreference(PREF_DISPLAY_TYPE, this.display_type);
+        commitPreference(PREF_STATION_TIME,this.stationTime);
         commitPreference(PREF_DISPLAY_LAYOUT,this.display_layout);
         commitPreference(PREF_DISPLAY_BAR, this.display_bar);
         commitPreference(PREF_DISPLAY_SIMPLE_BAR,this.display_simple_bar);
@@ -804,6 +810,7 @@ public class WeatherSettings {
         weatherLocation.longitude = sharedPreferences.getFloat(PREF_LONGITUDE,(float) PREF_LONGITUDE_DEFAULT);
         weatherLocation.altitude = sharedPreferences.getFloat(PREF_ALTITUDE,(float) PREF_ALTITUDE_DEFAULT);
         weatherLocation.type = sharedPreferences.getInt(PREF_STATIONTYPE, PREF_STATIONTYPE_DEFAULT);
+        weatherLocation.time = sharedPreferences.getLong(PREF_STATION_TIME,PREF_STATION_TIME_DEFAULT);
         return weatherLocation;
     }
 
@@ -814,15 +821,16 @@ public class WeatherSettings {
         // remove alternate station description when a new station is set.
         // Reason: a station change may be triggered by the JobWorker / Broadcastreceiver
         // in the background doing passive location checks. Determining the alternate description may be
-        // resource intensive and runs at risk to be killed when not done in the foregroud. So this search
+        // resource intensive and runs at risk to be killed when not done in the foreground. So this search
         // is performed either when fetching new weather data (service) or when setting the station spinner in
-        // the main app. Both ensures that this action finishes sucessfully.
+        // the main app. Both ensures that this action finishes successfully.
         pref_editor.putString(PREF_LOCATION_DESC_ALTERNATE,PREF_LOCATION_DESC_ALTERNATE_DEFAULT);
         pref_editor.putString(PREF_STATION_NAME,weatherLocation.getName());
         pref_editor.putFloat(PREF_LATITUDE,(float) weatherLocation.latitude);
         pref_editor.putFloat(PREF_LONGITUDE,(float) weatherLocation.longitude);
         pref_editor.putFloat(PREF_ALTITUDE,(float) weatherLocation.altitude);
         pref_editor.putInt(PREF_STATIONTYPE, weatherLocation.type);
+        pref_editor.putLong(PREF_STATION_TIME,weatherLocation.time);
         pref_editor.apply();
         PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
         setPollenRegion(context,pollenArea);
@@ -849,6 +857,7 @@ public class WeatherSettings {
         pref_editor.putInt(PREF_STATIONTYPE,PREF_STATIONTYPE_DEFAULT);
         pref_editor.putString(PREF_FAVORITESDATA,PREF_FAVORITESDATA_DEFAULT);
         pref_editor.putString(PREF_LOCATION_DESCRIPTION,PREF_LOCATION_DESCRIPTION_DEFAULT);
+        pref_editor.putLong(PREF_STATION_TIME,PREF_STATION_TIME_DEFAULT);
         pref_editor.apply();
         resetUVHIUpdateAllowedTime(context);
     }
@@ -1053,6 +1062,11 @@ public class WeatherSettings {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_IS_FIRST_APP_LAUNCH, true);
         pref_editor.apply();
+    }
+
+    public static int getLastAppVersionCode(Context c){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
+        return sharedPreferences.getInt(PREF_LAST_VERSION_CODE, PREF_LAST_VERSION_CODE_DEFAULT);
     }
 
     public static void setCurrentAppVersionFlag(Context c){
