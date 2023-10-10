@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
@@ -375,17 +374,15 @@ public class WeatherDetailsActivity extends Activity {
 
     public void displayMoonPhase(final Weather.WeatherInfo weatherInfo, final Weather.WeatherLocation weatherLocation){
         if (moon!=null){
-            Log.v("twfg","has view");
-            if (Weather.isMoonVisible(weatherInfo,weatherLocation)){
-                Log.v("twfg","is night");
+            if (Weather.isMoonTime(weatherLocation,weatherInfo.getTimestamp())){
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
                         final Bitmap moonBitmap = forecastIcons.getDisposableMoonLayer(weatherInfo,weatherLocation);
+                        float position = Weather.getApproxMoonPositionOnSky(weatherLocation,weatherInfo.getTimestamp());
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Log.v("twfg","setting");
                                 moon.setVisibility(View.VISIBLE);
                                 moon.setImageBitmap(moonBitmap);
                             }

@@ -1756,6 +1756,45 @@ public final class Weather {
         return riseset;
     }
 
+    public static boolean isMoonTime(Weather.WeatherLocation weatherLocation, long time){
+        Astronomy.Riseset riseset = getRiseset(weatherLocation,time);
+        long moonRise = getMoonRiseInUTC(riseset,time);
+        long moonSet  = getMoonSetInUTC(riseset,time);
+        if (moonRise<moonSet){
+            if ((time>=moonRise) && (time<moonSet)){
+                return true;
+            }
+        }
+        if (moonSet<=moonRise){
+            if (!((time>=moonSet) && (time<=moonRise))){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static float getApproxMoonPositionOnSky(Weather.WeatherLocation weatherLocation, long time){
+        Astronomy.Riseset riseset = getRiseset(weatherLocation,time);
+        long moonRise = getMoonRiseInUTC(riseset,time);
+        long moonSet  = getMoonSetInUTC(riseset,time);
+        if (moonRise<moonSet){
+            if ((time>=moonRise) && (time<moonSet)){
+                float moonTimeDuration = moonSet-moonRise;
+                long moonTime = time - moonRise;
+                return moonTime/moonTimeDuration;
+            }
+        }
+        if (moonSet<=moonRise){
+            if (!((time>=moonSet) && (time<=moonRise))){
+                float moonTimeDuration = moonRise-moonSet;
+                long moonTime = time - moonSet;
+                return moonTime/moonTimeDuration;
+            }
+        }
+        return -1;
+    }
+
+
     public static boolean isDaytime(Weather.WeatherLocation weatherLocation, long time){
         if (usePreciseIsDaytime(weatherLocation)){
             Astronomy.Riseset riseset = getRiseset(weatherLocation,time);
@@ -1957,14 +1996,6 @@ public final class Weather {
         return (int) Math.round(degree);
     }
 
-    public static boolean isMoonVisible(WeatherInfo weatherInfo, WeatherLocation weatherLocation){
-        long moonRise = getMoonRiseInUTC(weatherLocation,weatherInfo.getTimestamp());
-        long moonSet  = getMoonSetInUTC(weatherLocation,weatherInfo.getTimestamp());
-        if ((weatherInfo.getTimestamp()>=moonRise) && (weatherInfo.getTimestamp()<=moonSet)){
-            return true;
-        }
-        return false;
-    }
 
     public static boolean isSunriseInIntervalUTC(Astronomy.Riseset riseset, long start, long stop){
         long sunrise = getSunriseInUTC(riseset,(start+stop)/2);
