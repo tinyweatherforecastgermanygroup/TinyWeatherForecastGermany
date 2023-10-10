@@ -537,6 +537,7 @@ public class WeatherContentManager {
         ContentValues contentValues = new ContentValues();
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_region_id,pollenArea.region_id);
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_partregion_id,pollenArea.partregion_id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_description,pollenArea.description);
         contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_polygonstring,pollenArea.polygonString);
         return contentValues;
     }
@@ -545,6 +546,7 @@ public class WeatherContentManager {
         PollenArea pollenArea = new PollenArea();
         pollenArea.region_id = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_region_id));
         pollenArea.partregion_id = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_partregion_id));
+        pollenArea.description = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_description));
         pollenArea.polygonString = c.getString(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_polygonstring));
         return pollenArea;
     }

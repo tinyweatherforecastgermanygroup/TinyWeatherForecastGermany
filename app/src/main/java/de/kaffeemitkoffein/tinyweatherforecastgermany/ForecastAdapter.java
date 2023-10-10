@@ -673,7 +673,12 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 @Override
                 public void run() {
                     Bitmap bitmap = forecastIcons.getIconBitmap(weatherInfo,weatherLocation);
-                    finalWeather_icon.setImageBitmap(bitmap);
+                    // needs a try-catch clause because adapter may close before this thread
+                    try {
+                        finalWeather_icon.setImageBitmap(bitmap);
+                    } catch (Exception e){
+                        // nothing to do
+                    }
                 }
             });
         thread.start();
@@ -884,7 +889,12 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                         .displaySimpleBar(displaySimpleBar)
                         .setWindDisplayType(display_wind_type)
                         .create(context);
-                finalImageView_forecastBar.setImageBitmap(forecastBitmap.getForecastBitmap());
+                // needs a try-catch clause because adapter may close before this thread
+                try {
+                    finalImageView_forecastBar.setImageBitmap(forecastBitmap.getForecastBitmap());
+                } catch (Exception e){
+                    // do nothing
+                }
             }
         });
         thread.start();

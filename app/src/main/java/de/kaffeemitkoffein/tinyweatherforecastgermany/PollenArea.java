@@ -13,18 +13,19 @@ public class PollenArea {
 
   // This is the known size of polygons from the GeoServer. This is used to check if the database integrity is given.
   public final static int POLYGON_DATABASE_COUNT = 120;
-
   int region_id;
   int partregion_id;
+  String description;
   Polygon geoPolygon;
   public String polygonString;
 
   public PollenArea(){
   }
 
-  public PollenArea(int region_id, int partregion_id){
+  public PollenArea(int region_id, int partregion_id, String description){
     this.region_id = region_id;
     this.partregion_id = partregion_id;
+    this.description = description;
   }
 
   public Polygon initPolygon(){
@@ -96,7 +97,7 @@ public class PollenArea {
     for (int i=0; i<pollenAreas.size(); i++){
       PollenArea pollenArea = pollenAreas.get(i);
       if (pollenArea.geoPolygon.isInPolygon(weatherLocation)){
-        PollenArea resultArea = new PollenArea(pollenArea.region_id,pollenArea.partregion_id);
+        PollenArea resultArea = new PollenArea(pollenArea.region_id,pollenArea.partregion_id, pollenArea.description);
         return resultArea;
       }
     }

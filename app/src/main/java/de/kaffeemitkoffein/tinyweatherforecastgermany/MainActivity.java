@@ -395,12 +395,18 @@ public class MainActivity extends Activity {
         } catch (Exception e){
             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when checking for warnings: "+e.getMessage());
         }
-        executor.execute(new Runnable() {
+        final Context applicationContext = this;
+        spinner.postDelayed(new Runnable() {
             @Override
             public void run() {
-                checkForBatteryOptimization(context);
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        checkForBatteryOptimization(applicationContext);
+                    }
+                });
             }
-        });
+        },6000);
         super.onResume();
     }
 
@@ -1434,7 +1440,7 @@ public class MainActivity extends Activity {
     TextView areaProgress_progressTextView;
 
     private void showAreaDatabaseProgress(int progress, String text){
-        String dataText = "";
+        String dataText = getApplicationContext().getString(R.string.areadatabasecreator_title);
         if ((areaProgress_relativeLayout==null) || (areaProgress_progressBar==null) || (areaProgress_progressTextView==null)) {
             areaProgress_relativeLayout = (RelativeLayout) findViewById(R.id.main_area_progress_holder);
             areaProgress_progressBar = (ProgressBar) findViewById(R.id.main_area_progress_bar);
@@ -1442,7 +1448,6 @@ public class MainActivity extends Activity {
             // Lock screen rotation during database processing to prevent activity being destroyed
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             areaProgress_relativeLayout.setVisibility(View.VISIBLE);
-            dataText = getApplicationContext().getString(R.string.areadatabasecreator_title);
         }
         areaProgress_progressBar.setProgress(progress);
         areaProgress_progressTextView.setText(dataText+": "+ text);
@@ -2103,17 +2108,17 @@ public class MainActivity extends Activity {
         finish();
     }
 
-    public static void checkForBatteryOptimization(final Context context){
+    public void checkForBatteryOptimization(final Context context){
         PowerManager powerManager = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             boolean isIgnoringBatteryOptimizations = powerManager.isIgnoringBatteryOptimizations(context.getApplicationContext().getPackageName());
-            if ((!isIgnoringBatteryOptimizations) && (!WeatherSettings.rejectedBatteryOptimiziaton(context))){
-                Settings.openBatteryOptimizationSettings(context);
-            }
-            // revert the rejected flag to false as the app has manually been excluded from battery optimization,
-            // and the user should be noted as soon as the system changes the user setting
-            if ((isIgnoringBatteryOptimizations) && (WeatherSettings.rejectedBatteryOptimiziaton(context))){
-                WeatherSettings.setRejectedBatteryOptimiziaton(context,false);
+            if ((!isIgnoringBatteryOptimizations) && (WeatherSettings.getBatteryOptimiziatonFlag(context)==WeatherSettings.BatteryFlag.AGREED)){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Settings.openBatteryOptimizationSettings(context);
+                    }
+                });
             }
         }
     }

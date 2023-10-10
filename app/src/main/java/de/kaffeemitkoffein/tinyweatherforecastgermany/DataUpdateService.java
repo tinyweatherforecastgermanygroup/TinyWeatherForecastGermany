@@ -32,6 +32,7 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
+
 import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -403,7 +404,9 @@ public class DataUpdateService extends Service {
                 executor.execute(notificationUpdater);
             }
             if (createAreaDatabase){
-                executor.execute(createAreaDatabaseRunnable);
+                if (!Areas.AreaDatabaseProgress.getInstance().isRunning()){
+                    executor.execute(createAreaDatabaseRunnable);
+                }
             }
             // clean up database if necessary
             executor.execute(cleanUpRunnable);

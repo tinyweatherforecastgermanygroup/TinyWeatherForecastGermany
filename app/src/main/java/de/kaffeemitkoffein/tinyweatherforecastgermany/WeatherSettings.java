@@ -150,6 +150,7 @@ public class WeatherSettings {
     public static final String PREF_LASTMAPDISPLAYED = "PREF_lastmapdisplayed";
     public static final String PREF_POLLENREGION_ID = "PREF_pollen_region_id";
     public static final String PREF_POLLENPARTREGION_ID = "PREF_pollen_partregion_id";
+    public static final String PREF_POLLENREGION_DESCRIPTION = "PREF_pollen_description";
     public static final String PREF_POLLEN_AMBROSIA = "PREF_pollen_ambrosia";
     public static final String PREF_POLLEN_BEIFUSS = "PREF_pollen_beifuss";
     public static final String PREF_POLLEN_ROGGEN = "PREF_pollen_roggen";
@@ -169,7 +170,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_WIND_IN_CHARTS = "PREF_wind_in_charts";
     public static final String PREF_DISPLAY_WIND_IN_CHARTS_MAX = "PREF_wind_in_charts_max";
     public static final String PREF_REPLACE_BY_MUNICIPALITY = "PREF_replace_by_municipality";
-    public static final String PREF_REJECTED_BATTERY_OPTIMIZIATON = "PREF_excl_battery_opt";
+    public static final String PREF_BATTERY_OPTIMIZATION_FLAG = "PREF_battery_opt_flag";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -259,8 +260,9 @@ public class WeatherSettings {
     public static final long PREF_MAPLASTUPDATETIME_DEFAULT = 0;
     public static final long PREF_LAYERTIME_DEFAULT = 0;
     public static final int PREF_LASTMAPDISPLAYED_DEFAULT = WeatherLayer.Layers.UVI_CLOUDS_0;
-    public static final int PREF_POLLENREGION_ID_DEFAULT = 1;
+    public static final int PREF_POLLENREGION_ID_DEFAULT = 10;
     public static final int PREF_POLLENPARTREGION_ID_DEFAULT = 12;
+    public static final String PREF_POLLENREGION_DESCRIPTION_DEFAULT = "Geest, Schleswig-Holstein und Hamburg";
     public static final boolean PREF_POLLEN_AMBROSIA_DEFAULT = true;
     public static final boolean PREF_POLLEN_BEIFUSS_DEFAULT = true;
     public static final boolean PREF_POLLEN_ROGGEN_DEFAULT = true;
@@ -280,7 +282,7 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT = false;
     public static final String PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT = "100";
     public static final boolean PREF_REPLACE_BY_MUNICIPALITY_DEFAULT = false;
-    public static final boolean PREF_REJECTED_BATTERY_OPTIMIZIATON_DEFAULT = false;
+    public static final int PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT = BatteryFlag.NOT_ASKED;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String location_desc_alternate = PREF_LOCATION_DESC_ALTERNATE_DEFAULT;
@@ -386,7 +388,7 @@ public class WeatherSettings {
     public boolean displayWindInCharts = PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT;
     public String windInChartsMax = PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT;
     public boolean replaceByMunicipality = PREF_REPLACE_BY_MUNICIPALITY_DEFAULT;
-    public boolean rejectedBatteryOptimization = PREF_REJECTED_BATTERY_OPTIMIZIATON_DEFAULT;
+    public int batteryOptimizationFlag = PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -496,7 +498,7 @@ public class WeatherSettings {
         this.displayWindInCharts = readPreference(PREF_DISPLAY_WIND_IN_CHARTS,PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT);
         this.windInChartsMax = readPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT);
         this.replaceByMunicipality = readPreference(PREF_REPLACE_BY_MUNICIPALITY,PREF_REPLACE_BY_MUNICIPALITY_DEFAULT);
-        this.rejectedBatteryOptimization = readPreference(PREF_REJECTED_BATTERY_OPTIMIZIATON,PREF_REJECTED_BATTERY_OPTIMIZIATON_DEFAULT);
+        this.batteryOptimizationFlag = readPreference(PREF_BATTERY_OPTIMIZATION_FLAG,PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT);
     }
 
     public void savePreferences() {
@@ -596,7 +598,7 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_WIND_IN_CHARTS,this.displayWindInCharts);
         applyPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,this.windInChartsMax);
         applyPreference(PREF_REPLACE_BY_MUNICIPALITY,this.replaceByMunicipality);
-        applyPreference(PREF_REJECTED_BATTERY_OPTIMIZIATON,this.rejectedBatteryOptimization);
+        applyPreference(PREF_BATTERY_OPTIMIZATION_FLAG,this.batteryOptimizationFlag);
     }
 
     public void commitPreferences() {
@@ -696,7 +698,7 @@ public class WeatherSettings {
         commitPreference(PREF_DISPLAY_WIND_IN_CHARTS,this.displayWindInCharts);
         commitPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,this.windInChartsMax);
         commitPreference(PREF_REPLACE_BY_MUNICIPALITY,this.replaceByMunicipality);
-        commitPreference(PREF_REJECTED_BATTERY_OPTIMIZIATON,this.rejectedBatteryOptimization);
+        commitPreference(PREF_BATTERY_OPTIMIZATION_FLAG,this.batteryOptimizationFlag);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -1759,10 +1761,11 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int pollenRegion = sharedPreferences.getInt(PREF_POLLENREGION_ID,PREF_POLLENREGION_ID_DEFAULT);
         int pollenPartRegion = sharedPreferences.getInt(PREF_POLLENPARTREGION_ID,PREF_POLLENPARTREGION_ID_DEFAULT);
+        String description = sharedPreferences.getString(PREF_POLLENREGION_DESCRIPTION,PREF_POLLENREGION_DESCRIPTION_DEFAULT);
         if (pollenRegion==-1){
             return null;
         }
-        return new PollenArea(pollenRegion,pollenPartRegion);
+        return new PollenArea(pollenRegion,pollenPartRegion,description);
     }
 
     public static void setPollenRegion(Context context, PollenArea pollenArea){
@@ -1771,9 +1774,11 @@ public class WeatherSettings {
         if (pollenArea==null){
             pref_editor.putInt(PREF_POLLENREGION_ID,-1);
             pref_editor.putInt(PREF_POLLENPARTREGION_ID,-1);
+            pref_editor.putString(PREF_POLLENREGION_DESCRIPTION,"");
         } else {
             pref_editor.putInt(PREF_POLLENREGION_ID,pollenArea.region_id);
             pref_editor.putInt(PREF_POLLENPARTREGION_ID,pollenArea.partregion_id);
+            pref_editor.putString(PREF_POLLENREGION_DESCRIPTION,pollenArea.description);
         }
         pref_editor.apply();
     }
@@ -1968,15 +1973,21 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_REPLACE_BY_MUNICIPALITY,PREF_REPLACE_BY_MUNICIPALITY_DEFAULT);
     }
 
-    public static boolean rejectedBatteryOptimiziaton(Context context){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getBoolean(PREF_REJECTED_BATTERY_OPTIMIZIATON,PREF_REJECTED_BATTERY_OPTIMIZIATON_DEFAULT);
+    public final static class BatteryFlag{
+        public final static int NOT_ASKED = 0;
+        public final static int AGREED = 1;
+        public final static int REJECTED = 2;
     }
 
-    public static void setRejectedBatteryOptimiziaton(Context context, boolean b){
+    public static int getBatteryOptimiziatonFlag(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_BATTERY_OPTIMIZATION_FLAG,PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT);
+    }
+
+    public static void setBatteryOptimiziatonFlag(Context context, int i){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putBoolean(PREF_REJECTED_BATTERY_OPTIMIZIATON,b);
+        pref_editor.putInt(PREF_BATTERY_OPTIMIZATION_FLAG,i);
         pref_editor.apply();
     }
 

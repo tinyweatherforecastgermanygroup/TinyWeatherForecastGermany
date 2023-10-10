@@ -1957,6 +1957,15 @@ public final class Weather {
         return (int) Math.round(degree);
     }
 
+    public static boolean isMoonVisible(WeatherInfo weatherInfo, WeatherLocation weatherLocation){
+        long moonRise = getMoonRiseInUTC(weatherLocation,weatherInfo.getTimestamp());
+        long moonSet  = getMoonSetInUTC(weatherLocation,weatherInfo.getTimestamp());
+        if ((weatherInfo.getTimestamp()>=moonRise) && (weatherInfo.getTimestamp()<=moonSet)){
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isSunriseInIntervalUTC(Astronomy.Riseset riseset, long start, long stop){
         long sunrise = getSunriseInUTC(riseset,(start+stop)/2);
         if ((sunrise>=start) && (sunrise<=stop)){

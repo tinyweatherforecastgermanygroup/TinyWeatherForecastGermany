@@ -1882,6 +1882,7 @@ public class APIReaders {
                             singlePollenAreaPolygon.polygonString = polygonData.toString();
                             singlePollenAreaPolygon.region_id = region_id;
                             singlePollenAreaPolygon.partregion_id = partregion_id;
+                            singlePollenAreaPolygon.description = GEN;
                             pollenPolygons.add(singlePollenAreaPolygon);
                         } else {
                             // this is MultiPolygon
@@ -1891,6 +1892,7 @@ public class APIReaders {
                                 singlePollenAreaPolygon.polygonString = coordinatePair.toString();
                                 singlePollenAreaPolygon.region_id = region_id;
                                 singlePollenAreaPolygon.partregion_id = partregion_id;
+                                singlePollenAreaPolygon.description = GEN;
                                 pollenPolygons.add(singlePollenAreaPolygon);
                             }
                         }

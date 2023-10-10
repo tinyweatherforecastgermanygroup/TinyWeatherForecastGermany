@@ -103,6 +103,38 @@ public class Areas {
 
     }
 
+    public static class AreaDatabaseProgress{
+        private int progress=0;
+        private String text="";
+        private boolean isRunning = false;
+        private static AreaDatabaseProgress areaDatabaseProgress = new AreaDatabaseProgress();
+
+        public void setProgress(int p, String s){
+            this.progress = p;
+            this.text = s;
+        }
+
+        public int getProgress(){
+            return this.progress;
+        }
+
+        public String getText(){
+            return this.text;
+        }
+
+        public void setRunning(boolean b){
+            this.isRunning = b;
+        }
+
+        public boolean isRunning(){
+            return this.isRunning;
+        }
+
+        public static AreaDatabaseProgress getInstance(){
+            return areaDatabaseProgress;
+        }
+    }
+
     public static class AreaDatabaseCreator{
 
         public final static int DATABASE_SIZE = 11676; // old in 2.0: 11638;
@@ -163,6 +195,8 @@ public class Areas {
         }
 
         public void showProgress(final int progress, final String text){
+            AreaDatabaseProgress.areaDatabaseProgress.progress = progress;
+            AreaDatabaseProgress.areaDatabaseProgress.text = text;
             /*
              * Override this in the main app to show the progress
              */
@@ -180,6 +214,7 @@ public class Areas {
         private final Runnable readAreasRunnable = new Runnable() {
             @Override
             public void run() {
+                AreaDatabaseProgress.areaDatabaseProgress.isRunning=true;
                 ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
                 //contentResolver.delete(AreaContentProvider.URI_AREADATA,null,null);
                 ArrayList<String> knownWarncellIDs = Areas.getAllWarncellIDs(context.getApplicationContext());
@@ -222,6 +257,7 @@ public class Areas {
                     }
                     showProgress(100,context.getResources().getString(R.string.welcome_ready));
                     onFinished();
+                    AreaDatabaseProgress.areaDatabaseProgress.isRunning=false;
                 } catch (Exception e){
                     // do nothing
                 }

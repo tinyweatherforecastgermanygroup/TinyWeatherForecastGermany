@@ -93,25 +93,30 @@
                               android:layout_marginRight="4dp"
                               android:text="-°"/>
 
-                    <TextView android:id="@+id/weatherdetails_temperature_highlow"
-                              android:textSize="@dimen/widget_textsize_medium"
-                              android:textColor="?attr/colorText"
-                              android:gravity="left"
-                              android:layout_alignTop="@id/weatherdetails_temperature"
-                              android:layout_toRightOf="@id/weatherdetails_temperature"
-                              android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
-                              android:text="-° | -°"/>
+                    <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/weatherdetails_temperature">
 
-                    <TextView android:id="@+id/weatherdetails_pressure"
-                              android:textSize="@dimen/widget_textsize_medium"
-                              android:textColor="?attr/colorText"
-                              android:layout_gravity="right"
-                              android:layout_toRightOf="@id/weatherdetails_temperature"
-                              android:layout_below="@id/weatherdetails_temperature_highlow"
-                              android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
-                              android:text="- hPa"/>
+                        <TextView android:id="@+id/weatherdetails_temperature_highlow"
+                                  android:textSize="@dimen/widget_textsize_medium"
+                                  android:textColor="?attr/colorText"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:text="-° | -°"/>
+
+                        <TextView android:id="@+id/weatherdetails_pressure"
+                                  android:textSize="@dimen/widget_textsize_medium"
+                                  android:textColor="?attr/colorText"
+                                  android:layout_gravity="right"
+                                  android:layout_below="@id/weatherdetails_temperature_highlow"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:text="- hPa"/>
+
+                    </RelativeLayout>
+
 
                     <LinearLayout
                             android:id="@+id/weatherdetails_bottom_text_container"
@@ -148,6 +153,15 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+
+                <ImageView
+                        android:id="@+id/weatherdetails_moon"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:paddingRight="8dp"
+                        android:paddingTop="8dp"/>
 
             </RelativeLayout>
 

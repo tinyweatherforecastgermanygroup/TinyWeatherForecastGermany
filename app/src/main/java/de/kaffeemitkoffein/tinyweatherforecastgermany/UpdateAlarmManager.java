@@ -355,7 +355,6 @@ public class UpdateAlarmManager {
 
     public static boolean prepareAreaDatabaseIfNecessary(Context context, int updateSource){
         ArrayList<String> tasks = new ArrayList<String>();
-
         if (MainActivity.prepareAreaDatabase(context)){
             tasks.add(DataUpdateService.SERVICEEXTRAS_CRATE_AREADATABASE);
         }

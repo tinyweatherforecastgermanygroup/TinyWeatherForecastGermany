@@ -96,6 +96,7 @@ public class WelcomeActivity extends Activity {
         }
         executor = Executors.newSingleThreadExecutor();
         // start area database creation of necessary.
+        UpdateAlarmManager.prepareAreaDatabaseIfNecessary(this,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
         force_replay = false;
         Intent intent = getIntent();
         if (intent != null) {

@@ -32,6 +32,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.*;
 import android.widget.Toast;
 
@@ -600,7 +601,12 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
         }
         if (permRequestCode == MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION){
             if (hasBackgroundLocationPermission){
-                openBatteryOptimizationSettings(context);
+                PowerManager powerManager = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    if (!powerManager.isIgnoringBatteryOptimizations(context.getApplicationContext().getPackageName())) {
+                        openBatteryOptimizationSettings(context);
+                    }
+                }
             } else {
                 if (Build.VERSION.SDK_INT >= 29) {
                     showPermissionsRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION, MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION);
@@ -655,18 +661,18 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             builder.setPositiveButton(R.string.allow, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    WeatherSettings.setRejectedBatteryOptimiziaton(context,false);
+                    dialogInterface.dismiss();
+                    WeatherSettings.setBatteryOptimiziatonFlag(context,WeatherSettings.BatteryFlag.AGREED);
                     Intent i3 = new Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                     i3.setData(Uri.fromParts("package",context.getPackageName(),null));
                     i3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i3);
-                    dialogInterface.dismiss();
                 }
             });
             builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    WeatherSettings.setRejectedBatteryOptimiziaton(context,true);
+                    WeatherSettings.setBatteryOptimiziatonFlag(context,WeatherSettings.BatteryFlag.REJECTED);
                     dialogInterface.dismiss();
                 }
             });

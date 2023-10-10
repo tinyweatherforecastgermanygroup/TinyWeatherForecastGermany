@@ -599,12 +599,14 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String KEY_POLLENAREA_id = "id";
         public static final String KEY_POLLENAREA_region_id = "region_id";
         public static final String KEY_POLLENAREA_partregion_id = "partregion_id";
+        public static final String KEY_POLLENAREA_description = "description";
         public static final String KEY_POLLENAREA_polygonstring = "polygonstring";
 
         public static final String SQL_COMMAND_CREATE_TABLE_POLLENAREAS = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_POLLENAREAS + "("
                 + KEY_POLLENAREA_id + " INTEGER PRIMARY KEY ASC,"
                 + KEY_POLLENAREA_region_id + " INTEGER,"
                 + KEY_POLLENAREA_partregion_id + " INTEGER,"
+                + KEY_POLLENAREA_description + " TEXT,"
                 + KEY_POLLENAREA_polygonstring + " TEXT"
                 + ");";
 

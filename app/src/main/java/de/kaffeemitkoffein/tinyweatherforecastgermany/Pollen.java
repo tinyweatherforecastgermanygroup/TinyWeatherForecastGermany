@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 public class Pollen {
@@ -188,7 +187,7 @@ public class Pollen {
                             return pollen;
                         }
                     } else {
-                        if (pollen.partregion_id == pollenArea.partregion_id){
+                        if ((pollen.partregion_id == pollenArea.partregion_id) && (pollen.region_id==pollenArea.region_id)){
                             cursor.close();
                             return pollen;
                         }

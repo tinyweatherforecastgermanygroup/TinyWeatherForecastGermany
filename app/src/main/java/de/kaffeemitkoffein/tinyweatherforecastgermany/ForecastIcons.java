@@ -195,7 +195,7 @@ public class ForecastIcons {
         return bitmap;
     }
 
-    private Bitmap getDisposableMoonLayer(Weather.WeatherInfo weatherInfo, Weather.WeatherLocation weatherLocation){
+    public Bitmap getDisposableMoonLayer(Weather.WeatherInfo weatherInfo, Weather.WeatherLocation weatherLocation){
         float moonPhase = (float) Weather.getMoonPhase(weatherInfo.getTimestamp());
         float moonDiameter = iconWidth * 204f/512f;
         float moonPositionX = iconWidth/2f - (moonPhase*moonDiameter*2);

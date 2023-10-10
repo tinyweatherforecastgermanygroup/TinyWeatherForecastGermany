@@ -1,5 +1,6 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.*;
@@ -8,6 +9,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
@@ -52,6 +54,7 @@ public class WeatherDetailsActivity extends Activity {
     FrameLayout precipitationChartFrame;
     LinearLayout valuesListPollen;
 
+    ImageView moon;
     ImageView weatherConditionIcon;
     TextView weatherConditionText;
     TextView stationDescription;
@@ -217,6 +220,7 @@ public class WeatherDetailsActivity extends Activity {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemePicker.SetTheme(this);
@@ -304,6 +308,7 @@ public class WeatherDetailsActivity extends Activity {
             }
         };
         scrollView.setOnTouchListener(swipeGestureDetector);
+        moon = (ImageView) findViewById(R.id.weatherdetails_moon);
     }
 
     @Override
@@ -364,7 +369,34 @@ public class WeatherDetailsActivity extends Activity {
         setDetails(weatherInfo);
         setValues(weatherInfo,currentWeatherInfo.weatherLocation);
         setPrecipitationChart(weatherInfo);
+        displayMoonPhase(weatherInfo,currentWeatherInfo.weatherLocation);
         viewIsBeingCreated = false;
+    }
+
+    public void displayMoonPhase(final Weather.WeatherInfo weatherInfo, final Weather.WeatherLocation weatherLocation){
+        if (moon!=null){
+            Log.v("twfg","has view");
+            if (Weather.isMoonVisible(weatherInfo,weatherLocation)){
+                Log.v("twfg","is night");
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        final Bitmap moonBitmap = forecastIcons.getDisposableMoonLayer(weatherInfo,weatherLocation);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.v("twfg","setting");
+                                moon.setVisibility(View.VISIBLE);
+                                moon.setImageBitmap(moonBitmap);
+                            }
+                        });
+                    }
+                });
+            } else {
+                moon.setImageBitmap(null);
+                moon.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     public void setWarnings(final Weather.WeatherInfo weatherInfo, final Weather.WeatherLocation weatherLocation) {
