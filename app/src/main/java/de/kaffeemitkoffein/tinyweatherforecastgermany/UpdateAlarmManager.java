@@ -62,6 +62,13 @@ public class UpdateAlarmManager {
     // update everything and all locations from history
     public static final int TRAVEL_UPDATE = 128;
 
+    public static final String EXTRA_UPDATE_SOURCE = "UPDATE_SOURCE";
+    public static final int UPDATE_FROM_UNSPECIFIED = -1;
+    public static final int UPDATE_FROM_ACTIVITY = 0;
+    public static final int UPDATE_FROM_WIDGET = 1;
+    public static final int UPDATE_FROM_JOB = 2;
+
+
     private UpdateAlarmManager(){
     }
 
@@ -76,11 +83,11 @@ public class UpdateAlarmManager {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static boolean updateAndSetAlarmsIfAppropriate(Context context, int update_mode, CurrentWeatherInfo weatherCard){
+    public static boolean updateAndSetAlarmsIfAppropriate(Context context, int updateSource, int update_mode, CurrentWeatherInfo weatherCard){
         adaptUpdateIntervalsToSettings(context);
         WeatherSettings weatherSettings = new WeatherSettings(context);
         if (weatherCard==null){
-            weatherCard = Weather.getCurrentWeatherInfo(context);
+            weatherCard = Weather.getCurrentWeatherInfo(context,updateSource);
         }
         boolean forceUpdate = (update_mode&FORCE_UPDATE)==FORCE_UPDATE;
         boolean travelUpdate = (update_mode&TRAVEL_UPDATE)==TRAVEL_UPDATE;
@@ -127,7 +134,7 @@ public class UpdateAlarmManager {
             // from the service. Therefore, views are only updated from here if the service has not been called.
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"triggering weather update from API...");
             try {
-                result = startDataUpdateService(context,true,WeatherSettings.updateWarnings(context),WeatherSettings.updateTextForecasts(context),travelUpdate);
+                result = startDataUpdateService(context,updateSource,true,WeatherSettings.updateWarnings(context),WeatherSettings.updateTextForecasts(context),travelUpdate);
             } catch (SecurityException e){
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather forecasts) not started because of a SecurityException: "+e.getMessage());
                 // views need to be updated from here, because starting service failed!
@@ -145,7 +152,7 @@ public class UpdateAlarmManager {
                ((weatherSettings.notify_warnings) && (WeatherSettings.areWarningsOutdated(context)))){
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"triggering warnings update from API...");
                 try {
-                    result = startDataUpdateService(context,false,true,false,false);
+                    result = startDataUpdateService(context,updateSource,false,true,false,false);
                 } catch (SecurityException e){
                     PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather warnings only for widgets) not started because of a SecurityException: "+e.getMessage());
                     // views need to be updated from here, because starting service failed!
@@ -205,10 +212,10 @@ public class UpdateAlarmManager {
         return result;
     }
 
-    public static boolean updateWarnings(Context context, boolean forceUpdate){
+    public static boolean updateWarnings(Context context, int updateSource, boolean forceUpdate){
         if ((WeatherSettings.areWarningsOutdated(context) || forceUpdate)){
             try {
-                startDataUpdateService(context,false,true,false,false);
+                startDataUpdateService(context,updateSource, false,true,false,false);
                 return true;
             } catch (SecurityException e){
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
@@ -226,9 +233,9 @@ public class UpdateAlarmManager {
         return false;
     }
 
-    public static boolean updateTexts(Context context){
+    public static boolean updateTexts(Context context, int updateSource){
         try {
-            startDataUpdateService(context,false,false,true,false);
+            startDataUpdateService(context,updateSource,false,false,true,false);
             return true;
         } catch (SecurityException e){
             PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
@@ -256,52 +263,63 @@ public class UpdateAlarmManager {
         weatherSettings.views_last_update_time = Calendar.getInstance().getTimeInMillis();
         //weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,weatherSettings.views_last_update_time);
         weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,Calendar.getInstance().getTimeInMillis());
-        // send broadcast to also update main app view
-
     }
 
-    public static boolean startDataUpdateService(final Context context, final ArrayList<String> tasks){
-        Intent intent = new Intent(context,DataUpdateService.class);
-        boolean noInternetConnRequired = false;
-        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER)){
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER,true);
-        }
-        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS)){
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS,true);
-        }
-        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS)){
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS,true);
-        }
-        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS)){
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS,true);
-        }
-        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN)){
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN,true);
-        }
-        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_RAINRADAR)){
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_RAINRADAR,true);
-        }
-        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST)){
-            ArrayList<Weather.WeatherLocation> weatherLocations = StationFavorites.getFavorites(context);
-            if (weatherLocations.size()>0){
-                intent = intent.putParcelableArrayListExtra(Weather.WeatherLocation.PARCELABLE_NAME,weatherLocations);
+    public static boolean startDataUpdateService(final Context context, int updateSource, final ArrayList<String> tasks){
+            Intent intent = new Intent(context,DataUpdateService.class);
+            intent.putExtra(EXTRA_UPDATE_SOURCE,updateSource);
+            boolean noInternetConnRequired = false;
+            if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER)){
+                intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER,true);
             }
-        }
-        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_CANCEL_NOTIFICATIONS) || WeatherSettings.notifyWarnings(context)){
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_CANCEL_NOTIFICATIONS,true);
-            noInternetConnRequired = true;
-        }
-        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS)){
-            intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS,true);
-            noInternetConnRequired = true;
-        }
-        if (DataUpdateService.suitableNetworkAvailable(context) || noInternetConnRequired){
-            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-            if (Build.VERSION.SDK_INT<26){
-                context.startService(intent);
-            } else {
-                context.startForegroundService(intent);
+            if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS)){
+                intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS,true);
             }
+            if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS)){
+                intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS,true);
+            }
+            if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS)){
+                intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS,true);
+            }
+            if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN)){
+                intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN,true);
+            }
+            if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_RAINRADAR)){
+                intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_RAINRADAR,true);
+            }
+            if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST)){
+                ArrayList<Weather.WeatherLocation> weatherLocations = StationFavorites.getFavorites(context);
+                if (weatherLocations.size()>0){
+                    intent = intent.putParcelableArrayListExtra(Weather.WeatherLocation.PARCELABLE_NAME,weatherLocations);
+                }
+            }
+            if (tasks.contains(DataUpdateService.SERVICEEXTRAS_CANCEL_NOTIFICATIONS) || WeatherSettings.notifyWarnings(context)){
+                intent.putExtra(DataUpdateService.SERVICEEXTRAS_CANCEL_NOTIFICATIONS,true);
+                noInternetConnRequired = true;
+            }
+            if (tasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS)){
+                intent.putExtra(DataUpdateService.SERVICEEXTRAS_UPDATE_NOTIFICATIONS,true);
+                noInternetConnRequired = true;
+            }
+        if (tasks.contains(DataUpdateService.SERVICEEXTRAS_CRATE_AREADATABASE)){
+            intent.putExtra(DataUpdateService.SERVICEEXTRAS_CRATE_AREADATABASE,true);
+                noInternetConnRequired = true;
+        }
+            if (DataUpdateService.suitableNetworkAvailable(context) || noInternetConnRequired){
+                intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+                final Intent intent2 = new Intent(intent);
+                Thread thread = new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        if (Build.VERSION.SDK_INT<26){
+                            context.startService(intent2);
+                        } else {
+                            context.startForegroundService(intent2);
+                        }
+                    }
+                };
+                thread.start();
             // animation progress disabled because too slow on legacy devices
             /*
             Intent mainAppProgressIntent = new Intent();
@@ -313,7 +331,7 @@ public class UpdateAlarmManager {
         return false;
     }
 
-    private static boolean startDataUpdateService(final Context context, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts, final boolean travelUpdate){
+    private static boolean startDataUpdateService(final Context context, int updateSource, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts, final boolean travelUpdate){
         ArrayList<String> tasks = new ArrayList<String>();
         if (updateWeather){
             tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
@@ -327,6 +345,21 @@ public class UpdateAlarmManager {
         if (travelUpdate){
             tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST);
         }
-        return startDataUpdateService(context,tasks);
+        /*
+        if (MainActivity.prepareAreaDatabase(context)){
+            tasks.add(DataUpdateService.SERVICEEXTRAS_CRATE_AREADATABASE);
+        }
+         */
+        return startDataUpdateService(context,updateSource,tasks);
     }
+
+    public static boolean prepareAreaDatabaseIfNecessary(Context context, int updateSource){
+        ArrayList<String> tasks = new ArrayList<String>();
+
+        if (MainActivity.prepareAreaDatabase(context)){
+            tasks.add(DataUpdateService.SERVICEEXTRAS_CRATE_AREADATABASE);
+        }
+        return startDataUpdateService(context,updateSource,tasks);
+    }
+
 }

@@ -212,7 +212,7 @@ public class WeatherLayersActivity extends Activity {
                 ArrayList<String> updateTasks = new ArrayList<String>();
                 updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS);
                 updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN);
-                UpdateAlarmManager.startDataUpdateService(context,updateTasks);
+                UpdateAlarmManager.startDataUpdateService(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks);
                 forceWeatherUpdateFlag = true;
             } else {
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.ERR,"Layer update already running. Ignoring new user request to do so.");
@@ -584,7 +584,7 @@ public class WeatherLayersActivity extends Activity {
     private void updateData(ArrayList<String> updateTasks){
         if (updateTasks!=null){
             if (updateTasks.size()>0){
-                UpdateAlarmManager.startDataUpdateService(context,updateTasks);
+                UpdateAlarmManager.startDataUpdateService(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks);
             }
         }
     }

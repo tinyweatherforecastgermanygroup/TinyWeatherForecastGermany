@@ -163,7 +163,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     };
 
     public void forcedWeatherUpdate(){
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE,null);
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.FORCE_UPDATE,null);
     }
 
     @Override
@@ -655,16 +655,18 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             builder.setPositiveButton(R.string.allow, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
+                    WeatherSettings.setRejectedBatteryOptimiziaton(context,false);
                     Intent i3 = new Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                     i3.setData(Uri.fromParts("package",context.getPackageName(),null));
                     i3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i3);
+                    dialogInterface.dismiss();
                 }
             });
             builder.setNegativeButton(R.string.geoinput_cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    WeatherSettings.setRejectedBatteryOptimiziaton(context,true);
                     dialogInterface.dismiss();
                 }
             });

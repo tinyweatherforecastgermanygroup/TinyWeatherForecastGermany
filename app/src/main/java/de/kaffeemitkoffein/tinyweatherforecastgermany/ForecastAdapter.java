@@ -75,6 +75,7 @@ private DisplayMetrics displayMetrics;
 private int screenDensity;
 private float screenWidthDP;
 private final int screenWidth;
+private int screenWidthInPixels;
 private final float fontScale;
 
 private ForecastIcons forecastIcons;
@@ -132,6 +133,10 @@ public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherFo
         }
     }
     this.fontScale = context.getResources().getConfiguration().fontScale;
+    this.screenWidthInPixels = ForecastBitmap.getScreenWidthInPixels(context);
+    if (this.screenWidthInPixels==0){
+        this.screenWidthInPixels=768;
+    }
 }
 
 public void setWarnings(ArrayList<WeatherWarning> warnings){
@@ -185,6 +190,9 @@ public void clearBitmapCache() {
     bitmapCache.clear();
     if (forecastIcons!=null){
         forecastIcons.clearCache();
+    }
+    if (forecastIconsBar!=null){
+            forecastIconsBar.clearCache();
     }
 }
 
@@ -351,7 +359,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     }
     // init forecastIcons on 1st call after we inflated the imageview size
     if (forecastIcons==null){
-        forecastIcons = new ForecastIcons(context,weather_icon);
+        forecastIcons = new ForecastIcons(context,screenWidthInPixels/3,screenWidthInPixels/3);
     }
     // now fill the item with content
     if (supermaincontainer==null) {
@@ -380,7 +388,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             main_container.setBackgroundColor(Color.argb(96,gradient,gradient,gradient));
         }
     }
-    Weather.WeatherInfo weatherInfo = weatherForecasts.get(i);
+    final Weather.WeatherInfo weatherInfo = weatherForecasts.get(i);
     // tint rh according to theme
     if (symbolRH==null){
         symbolRH = (ImageView) view.findViewById(R.id.fcitem_rh_label);
@@ -659,7 +667,16 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         viewHolder.weather_icon = weather_icon;
     }
     if (weather_icon!=null){
-            weather_icon.setImageBitmap(forecastIcons.getIconBitmap(weatherInfo,weatherLocation));
+        //weather_icon.setImageBitmap(forecastIcons.getIconBitmap(weatherInfo,weatherLocation));
+        final ImageView finalWeather_icon = weather_icon;
+        Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Bitmap bitmap = forecastIcons.getIconBitmap(weatherInfo,weatherLocation);
+                    finalWeather_icon.setImageBitmap(bitmap);
+                }
+            });
+        thread.start();
     }
     // right column
     if (textView_temp == null){
@@ -841,7 +858,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             increment = 4;
         }
         // construct arraylist with 0-6 items
-        ArrayList<Weather.WeatherInfo> baritems = new ArrayList<>();
+        final ArrayList<Weather.WeatherInfo> baritems = new ArrayList<>();
         for (int j=0; j<count; j++){
             baritems.add(weatherForecasts_hourly.get(offset+(j*increment)));
         }
@@ -855,6 +872,23 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             forecastIconsBar = new ForecastIcons(context,Math.round(forecastBarHeight*0.75f),Math.round(forecastBarHeight*0.75f));
         }
         // end new
+        final ImageView finalImageView_forecastBar = imageView_forecastBar;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final ForecastBitmap forecastBitmap = new ForecastBitmap.Builder()
+                        .setWetherInfos(baritems)
+                        .setAnticipatedWidth(6)
+                        .setForcastIconsClass(forecastIconsBar)
+                        .setWeatherLocation(weatherLocation)
+                        .displaySimpleBar(displaySimpleBar)
+                        .setWindDisplayType(display_wind_type)
+                        .create(context);
+                finalImageView_forecastBar.setImageBitmap(forecastBitmap.getForecastBitmap());
+            }
+        });
+        thread.start();
+        /*
         final ForecastBitmap forecastBitmap = new ForecastBitmap.Builder()
                 .setWetherInfos(baritems)
                 .setAnticipatedWidth(6)
@@ -864,6 +898,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 .setWindDisplayType(display_wind_type)
                 .create(context);
         imageView_forecastBar.setImageBitmap(forecastBitmap.getForecastBitmap());
+         */
     } else {
         // hide forecast bar when not needed
         setVisibility(imageView_forecastBar, View.GONE);

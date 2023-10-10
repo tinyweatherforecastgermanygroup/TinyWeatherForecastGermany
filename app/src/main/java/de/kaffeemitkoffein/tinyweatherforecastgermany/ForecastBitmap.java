@@ -422,6 +422,17 @@ public class ForecastBitmap{
         return 0;
     }
 
+    public static int getScreenWidthInPixels(Context context){
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (windowManager!=null) {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+            return displayMetrics.widthPixels;
+        }
+        return 0;
+    }
+
+
     public static int getDisplayOrientation(Context context){
         return context.getResources().getConfiguration().orientation;
     }

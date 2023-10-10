@@ -83,7 +83,7 @@ public class ClassicWidget extends AppWidgetProvider {
         PrivateLog.log(c,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widget (system): "+getClass().toString());
         // to make app launch faster, check if it is really needed to check for an update
         if (WeatherSettings.isWidgetForecastCheckDue(c)) {
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c, UpdateAlarmManager.WIDGET_UPDATE, null);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c, UpdateAlarmManager.UPDATE_FROM_WIDGET,UpdateAlarmManager.WIDGET_UPDATE, null);
         }
         updateWidgetDisplay(c,awm,widget_instances);
     }
@@ -457,7 +457,7 @@ public class ClassicWidget extends AppWidgetProvider {
     }
 
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
+        CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c,UpdateAlarmManager.UPDATE_FROM_WIDGET);
         if (weatherCard!=null){
             WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i=0; i<widget_instances.length; i++){

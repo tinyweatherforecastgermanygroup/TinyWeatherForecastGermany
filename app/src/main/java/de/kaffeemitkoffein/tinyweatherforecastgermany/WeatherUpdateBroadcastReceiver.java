@@ -40,7 +40,7 @@ public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
                 if (WeatherSettings.useBackgroundLocation(context)){
                     WeatherLocationManager.checkForBackgroundLocation(context);
                 }
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context, UpdateAlarmManager.CHECK_FOR_UPDATE, null);
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context, UpdateAlarmManager.UPDATE_FROM_JOB,UpdateAlarmManager.CHECK_FOR_UPDATE, null);
             }
         }
     }

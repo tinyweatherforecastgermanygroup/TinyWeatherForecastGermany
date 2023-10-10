@@ -265,12 +265,12 @@ public class WeatherDetailsActivity extends Activity {
         ArrayList<String> updateTasks = new ArrayList<String>();
         // Load weather data, fetch from DWD if necessary, establish alarm cycles
         try {
-            currentWeatherInfo = new Weather().getCurrentWeatherInfo(getApplicationContext());
+            currentWeatherInfo = new Weather().getCurrentWeatherInfo(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
         } catch (Exception e){
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
         }
         if (currentWeatherInfo!=null){
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,currentWeatherInfo);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.CHECK_FOR_UPDATE,currentWeatherInfo);
         } else {
             //UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,null);
             updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
@@ -883,7 +883,7 @@ public class WeatherDetailsActivity extends Activity {
     private void updateData(ArrayList<String> updateTasks){
         if (updateTasks!=null){
             if (updateTasks.size()>0){
-                UpdateAlarmManager.startDataUpdateService(context,updateTasks);
+                UpdateAlarmManager.startDataUpdateService(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks);
                 progressBar.setVisibility(View.VISIBLE);
             }
         }

@@ -277,7 +277,8 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
         if (WeatherLocationManager.hasBackgroundLocationPermission(context)){
             Location location = WeatherLocationManager.getLastKnownLocation(context);
             if (location!=null) {
-                Weather.WeatherLocation oldWeatherLocation = WeatherSettings.getLastPassiveLocation(context);
+                //Weather.WeatherLocation oldWeatherLocation = WeatherSettings.getLastPassiveLocation(context);
+                Weather.WeatherLocation oldWeatherLocation = WeatherSettings.getSetStationLocation(context);
                 Weather.WeatherLocation newWeatherLocation = new Weather.WeatherLocation(location);
                 if (newWeatherLocation.time > oldWeatherLocation.time) {
                     // check for distance significance

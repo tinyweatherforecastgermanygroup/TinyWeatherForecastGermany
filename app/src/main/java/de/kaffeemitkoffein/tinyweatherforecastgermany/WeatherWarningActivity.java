@@ -360,7 +360,7 @@ public class WeatherWarningActivity extends Activity {
                 zoomMapState = mapZoomable.saveZoomViewState();
             }
             PrivateLog.log(this, PrivateLog.WARNINGS,PrivateLog.INFO, "starting update of weather warnings");
-            if (UpdateAlarmManager.updateWarnings(getApplicationContext(),true)){
+            if (UpdateAlarmManager.updateWarnings(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,true)){
                 // returns true if update service was launched successfully
                 forceWeatherUpdateFlag = true;
                showProgressBar();
@@ -444,7 +444,7 @@ public class WeatherWarningActivity extends Activity {
     private void updateWarningsIfNeeded(){
         if (WeatherSettings.areWarningsOutdated(getApplicationContext())){
             PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"Warnings outdated, getting new ones.");
-            UpdateAlarmManager.updateWarnings(getApplicationContext(),false);
+            UpdateAlarmManager.updateWarnings(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,false);
         } else {
             PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"Warnings not outdated, recycling.");
             if (germany==null){
@@ -710,7 +710,7 @@ public class WeatherWarningActivity extends Activity {
                     if (WeatherSettings.displayWindInRadar(getApplicationContext())){
                         windiconContainer.setVisibility(View.VISIBLE);
                         final ImageView windiconBackground = (ImageView) findViewById(R.id.warningactivity_windicon_background);
-                        CurrentWeatherInfo currentWeatherInfo = new Weather().getCurrentWeatherInfo(context);
+                        CurrentWeatherInfo currentWeatherInfo = new Weather().getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
                         if (currentWeatherInfo!=null){
                             final Bitmap windiconBitmap = currentWeatherInfo.currentWeather.getWindSymbol(getApplicationContext(),WeatherSettings.getWindDisplayType(getApplicationContext()),false);
                             ThemePicker.applyColor(context,windiconBitmap,false);

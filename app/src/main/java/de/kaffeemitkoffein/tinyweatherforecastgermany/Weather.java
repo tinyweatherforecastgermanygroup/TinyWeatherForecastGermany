@@ -1610,7 +1610,7 @@ public final class Weather {
 
     }
 
-    public static CurrentWeatherInfo getCurrentWeatherInfo(Context context){
+    public static CurrentWeatherInfo getCurrentWeatherInfo(Context context, int updateSource){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         //WeatherSettings weatherSettings = new WeatherSettings(context);
         //String station_name = weatherSettings.station_name;
@@ -1625,7 +1625,7 @@ public final class Weather {
         if (cursor.moveToFirst()){
             CurrentWeatherInfo currentWeatherInfo = WeatherContentManager.getWeatherInfo(context,cursor);
             if (currentWeatherInfo.isOutdated(context)){
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.WIDGET_UPDATE,currentWeatherInfo);
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,updateSource,UpdateAlarmManager.WIDGET_UPDATE,currentWeatherInfo);
             }
             return currentWeatherInfo;
         }
@@ -2084,6 +2084,7 @@ public final class Weather {
         final static SimpleDateFormat DETAILED              = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
         final static SimpleDateFormat DETAILED_NO_SECONDS   = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm");
         final static SimpleDateFormat DATETIME              = new SimpleDateFormat("dd.MM, HH:mm");
+        final static SimpleDateFormat TIME_SEC              = new SimpleDateFormat("HH:mm:ss");
         final static SimpleDateFormat TIME                  = new SimpleDateFormat("HH:mm");
         final static SimpleDateFormat HOUR                  = new SimpleDateFormat("HH");
         final static SimpleDateFormat DAYOFWEEK             = new SimpleDateFormat("EE");

@@ -110,6 +110,7 @@ public class Areas {
         private final Context context;
         private final Executor executor;
         private String versionLine;
+        private int progressSteps = 50;
 
         public static int getAreaDataVersion(String versionLine){
             try {
@@ -148,9 +149,13 @@ public class Areas {
             return true;
         }
 
-        public AreaDatabaseCreator(Context context, Executor executor){
+        public AreaDatabaseCreator(Context context, final Executor executor){
             this.context = context;
             this.executor = executor;
+        }
+
+        public void setProgressSteps(int p){
+            this.progressSteps = p;
         }
 
         public void create() {
@@ -172,7 +177,7 @@ public class Areas {
             return s.replace("\"","");
         }
 
-        private Runnable readAreasRunnable = new Runnable() {
+        private final Runnable readAreasRunnable = new Runnable() {
             @Override
             public void run() {
                 ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
@@ -211,7 +216,7 @@ public class Areas {
                             contentResolver.insert(WeatherContentManager.AREA_URI_ALL,WeatherContentManager.getContentValuesFromArea(area));
                         }
                         i++;
-                        if ((i % 25) == 0) {
+                        if ((i % progressSteps) == 0) {
                             showProgress((i*100)/DATABASE_SIZE, area.name);
                         }
                     }

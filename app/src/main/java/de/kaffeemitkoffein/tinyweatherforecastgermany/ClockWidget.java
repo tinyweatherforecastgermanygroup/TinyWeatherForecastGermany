@@ -32,7 +32,7 @@ public class ClockWidget extends ClassicWidget {
 
     @Override
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances) {
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
+        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c,UpdateAlarmManager.UPDATE_FROM_WIDGET);
         if (weatherCard!=null){
             WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i = 0; i < widget_instances.length; i++) {

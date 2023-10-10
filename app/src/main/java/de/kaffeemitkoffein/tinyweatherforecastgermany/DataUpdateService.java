@@ -42,6 +42,7 @@ public class DataUpdateService extends Service {
     int notification_id;
     Notification notification;
     Notification.Builder notificationBuilder;
+    Executor executor;
 
     private static boolean serviceStarted = false;
 
@@ -61,6 +62,7 @@ public class DataUpdateService extends Service {
     public static String SERVICEEXTRAS_CANCEL_NOTIFICATIONS="SERVICEEXTRAS_CANCEL_NF";
     public static String SERVICEEXTRAS_UPDATE_NOTIFICATIONS="SERVICEEXTRAS_UPDATE_NF";
     public static String SERVICEEXTRAS_UPDATE_LOCATIONSLIST="SERVICEEXTRAS_LOCATIONS";
+    public static String SERVICEEXTRAS_CRATE_AREADATABASE="SERVICEEXTRAS_CREATE_AREADB";
 
     private ConnectivityManager connectivityManager;
 
@@ -104,7 +106,7 @@ public class DataUpdateService extends Service {
     private Runnable cleanUpRunnable = new Runnable() {
         @Override
         public void run() {
-            updateNotification(6);
+            updateNotification(7);
             try {
                 Weather.sanitizeDatabase(getApplicationContext());
                 TextForecasts.cleanTextForecastDatabase(getApplicationContext());
@@ -155,6 +157,7 @@ public class DataUpdateService extends Service {
         notification = getNotification();
         startForeground(notification_id, notification);
         PrivateLog.log(this, PrivateLog.SERVICE, PrivateLog.INFO, "Service is foreground now.");
+        executor = Executors.newSingleThreadExecutor();
         serviceStarted = false;
     }
 
@@ -165,7 +168,6 @@ public class DataUpdateService extends Service {
         if (!serviceStarted){
             serviceStarted = true;
             // create single thread
-            final Executor executor = Executors.newSingleThreadExecutor();
             boolean updateWeather = false;
             boolean updateWarnings = false;
             boolean updateTextForecasts = false;
@@ -173,6 +175,8 @@ public class DataUpdateService extends Service {
             boolean updatePollen = false;
             boolean updateRainRadar = false;
             boolean updateNotifications = false;
+            boolean createAreaDatabase = false;
+            int updateCaller = UpdateAlarmManager.UPDATE_FROM_UNSPECIFIED;
             ArrayList<Weather.WeatherLocation> weatherLocations = null;
             if (intent!=null){
                 updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
@@ -181,11 +185,13 @@ public class DataUpdateService extends Service {
                 updateLayers = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_LAYERS,false);
                 updatePollen = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_POLLEN,false);
                 updateRainRadar = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_RAINRADAR,false);
+                createAreaDatabase = intent.getBooleanExtra(SERVICEEXTRAS_CRATE_AREADATABASE,false);
                 // update warnings from existing data only allowed when warnings are not updated
                 if (!updateWarnings){
                     updateNotifications = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_NOTIFICATIONS, false);
                 }
                 weatherLocations = intent.getParcelableArrayListExtra(Weather.WeatherLocation.PARCELABLE_NAME);
+                updateCaller = intent.getIntExtra(UpdateAlarmManager.EXTRA_UPDATE_SOURCE,UpdateAlarmManager.UPDATE_FROM_UNSPECIFIED);
             }
             // cancel deprecated warnings
             if (WeatherSettings.notifyWarnings(this)){
@@ -302,6 +308,7 @@ public class DataUpdateService extends Service {
                             Intent intent = new Intent();
                             intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
                             intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT,true);
+                            PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Weather texts updated successfully.");
                             sendBroadcast(intent);
                             WeatherSettings.setLastTextForecastsUpdateTime(getApplicationContext(),Calendar.getInstance().getTimeInMillis());
                         }
@@ -319,6 +326,7 @@ public class DataUpdateService extends Service {
                             Intent intent = new Intent();
                             intent.setAction(WeatherLayersActivity.ACTION_UPDATE_LAYERS);
                             intent.putExtra(WeatherLayersActivity.UPDATE_LAYERS_RESULT,success);
+                            PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Layer images updated successfully.");
                             sendBroadcast(intent);
                         }
                     };
@@ -336,6 +344,7 @@ public class DataUpdateService extends Service {
                             Intent intent = new Intent();
                             intent.setAction(Pollen.ACTION_UPDATE_POLLEN);
                             intent.putExtra(Pollen.UPDATE_POLLEN_RESULT,success);
+                            PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Pollen data updated successfully.");
                             sendBroadcast(intent);
                         }
                     };
@@ -353,13 +362,13 @@ public class DataUpdateService extends Service {
                                 Intent intent = new Intent();
                                 intent.setAction(WeatherWarningActivity.ACTION_RAINRADAR_UPDATE);
                                 intent.putExtra(WeatherWarningActivity.RAINRADAR_UPDATE_RESULT,true);
+                                PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Rain radar updated successfully.");
                                 sendBroadcast(intent);
                             }
                         }
                     };
                     executor.execute(radarMNSetGeoserverRunnable);
                 }
-                executor.execute(cleanUpRunnable);
             } else {
                 if (updateWarnings){
                     // notify warnings activity that update was not successful.
@@ -367,10 +376,16 @@ public class DataUpdateService extends Service {
                     i.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
                     i.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
                     i.putExtra(StopReason.STOPREASON_EXTRA,StopReason.NONETWORK);
+                    PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.WARN, "Weather warnings not updated because no internet connection available.");
                     sendBroadcast(i);
                 }
                 // update app views with old data
-                UpdateAlarmManager.updateAppViews(context);
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        UpdateAlarmManager.updateAppViews(context);
+                    }
+                });
             }
             // this is for tasks without internet connection
             if (updateNotifications){
@@ -382,15 +397,30 @@ public class DataUpdateService extends Service {
                         ArrayList<WeatherWarning> warnings = WeatherWarnings.getCurrentWarnings(context,true);
                         ArrayList<WeatherWarning> locationWarnings = WeatherWarnings.getWarningsForLocation(context,warnings,weatherLocation);
                         launchWeatherWarningNotifications(locationWarnings,true);
+                        PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Notifications updated.");
                     }
                 };
                 executor.execute(notificationUpdater);
             }
+            if (createAreaDatabase){
+                executor.execute(createAreaDatabaseRunnable);
+            }
+            // clean up database if necessary
+            executor.execute(cleanUpRunnable);
             // queue service termination, this is always the last thing to do
             if (hasNetwork){
                 executor.execute(serviceTerminationRunnableNetwork);
             } else {
                 executor.execute(serviceTerminationRunnableNoNetwork);
+            }
+            // if update caller is an activity, we can safely terminate the service at once, since the executor
+            // will keep running as long as the app is in the foreground.
+            if (updateCaller==UpdateAlarmManager.UPDATE_FROM_ACTIVITY){
+                if (hasNetwork){
+                    serviceTerminationRunnableNetwork.run();
+                } else {
+                    serviceTerminationRunnableNoNetwork.run();
+                }
             }
         } else {
             PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.INFO,"Service already running.");
@@ -420,7 +450,11 @@ public class DataUpdateService extends Service {
         }
         // Generate a unique ID for the notification, derived from the current time. The tag ist static.
         Notification n;
-        notificationBuilder = new Notification.Builder(getApplicationContext());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationBuilder = new Notification.Builder(getApplicationContext(),IC_ID);
+        } else {
+            notificationBuilder = new Notification.Builder(getApplicationContext());
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             n = notificationBuilder
                     .setContentTitle(getResources().getString(R.string.service_notification_title))
@@ -428,7 +462,7 @@ public class DataUpdateService extends Service {
                     .setSmallIcon(R.mipmap.ic_launcher_bw)
                     .setAutoCancel(true)
                     .setOngoing(false)
-                    .setProgress(4,0,true)
+                    .setProgress(4,0,false)
                     .setChannelId(IC_ID)
                     .build();
         } else {
@@ -437,7 +471,7 @@ public class DataUpdateService extends Service {
                     .setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text0)))
                     // .setContentText(getResources().getString(R.string.service_notification_text0))
                     .setSmallIcon(R.mipmap.ic_launcher_bw)
-                    .setProgress(4,0,true)
+                    .setProgress(6,0,true)
                     .setAutoCancel(true)
                     .build();
         }
@@ -450,9 +484,11 @@ public class DataUpdateService extends Service {
             case 0: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text0))); break;
             case 1: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text1))); break;
             case 2: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text2))); break;
-            case 3: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text4)));
-            case 4: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text5)));
-            case 5: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text3)));
+            case 3: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text4))); break;
+            case 4: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.get_pollen_data))); break;
+            case 5: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text5))); break;
+            case 6: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.areadatabasecreator_title))); break;
+            case 7: notificationBuilder.setStyle(new Notification.BigTextStyle().bigText(getResources().getString(R.string.service_notification_text3)));
         }
         notificationManager.notify(notification_id,notificationBuilder.build());
     }
@@ -608,7 +644,7 @@ public class DataUpdateService extends Service {
                         PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkinfo obtained => assuming no suitable network available.");
                     }
                     return false;
-                // use connectivityManager on api 23 and higher
+                    // use connectivityManager on api 23 and higher
                 } else {
                     Network network = connectivityManager.getActiveNetwork();
                     NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
@@ -630,7 +666,7 @@ public class DataUpdateService extends Service {
             }
         } catch (Exception e){
             PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.WARN,"Error(s) occured when checking for a valid network: "+e.getMessage()+" => assuming there is a valid network connection.");
-       }
+        }
         return true;
     }
 
@@ -687,7 +723,7 @@ public class DataUpdateService extends Service {
                         PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkinfo obtained => assuming no suitable network available.");
                         return false;
                     }
-                // use connectivityManager on api 23 and higher
+                    // use connectivityManager on api 23 and higher
                 } else {
                     Network network = connectivityManager.getActiveNetwork();
                     NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
@@ -724,5 +760,39 @@ public class DataUpdateService extends Service {
         }
         return false;
     }
+
+    final Runnable createAreaDatabaseRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // update area database if:
+            // a) database does not exist
+            // b) if sql database is outdated
+            if ((!Areas.doesAreaDatabaseExist(getApplicationContext())) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(getApplicationContext()))){
+                PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Start building area database...");
+                Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(getApplicationContext(),executor){
+                    @Override
+                    public void showProgress(final int progress, final String text){
+                        Intent i = new Intent();
+                        i.setAction(MainActivity.MAINAPP_AREADB_PROGRESS);
+                        i.putExtra(MainActivity.EXTRA_AREADB_PROGRESS_VALUE,progress);
+                        i.putExtra(MainActivity.EXTRA_AREADB_PROGRESS_TEXT,text);
+                        sendBroadcast(i);
+                    }
+
+                    @Override
+                    public void onFinished(){
+                        super.onFinished();
+                        // notify warnings activity that update was not successful.
+                        Intent i = new Intent();
+                        i.setAction(MainActivity.MAINAPP_AREADB_READY);
+                        PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.WARN, "Area database created successfully.");
+                        sendBroadcast(i);
+                    }
+                };
+                areasDataBaseCreator.setProgressSteps(100);
+                areasDataBaseCreator.create();
+            }
+        }
+    };
 
 }

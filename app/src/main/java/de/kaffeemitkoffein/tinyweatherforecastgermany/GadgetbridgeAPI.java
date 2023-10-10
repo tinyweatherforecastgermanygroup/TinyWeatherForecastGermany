@@ -42,7 +42,7 @@ public class GadgetbridgeAPI {
 
     private void setWeatherData(){
         if (weatherCard==null){
-            weatherCard = new Weather().getCurrentWeatherInfo(context);
+            weatherCard = new Weather().getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_WIDGET);
         }
         if (weatherCard!=null){
             // build the WeatherSpec instance with current weather

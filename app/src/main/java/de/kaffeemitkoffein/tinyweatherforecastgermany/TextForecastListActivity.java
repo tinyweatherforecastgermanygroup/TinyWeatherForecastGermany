@@ -149,7 +149,7 @@ public class TextForecastListActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem mi) {
         int item_id = mi.getItemId();
         if (item_id == R.id.menu_refresh) {
-            if (UpdateAlarmManager.updateTexts(context)){
+            if (UpdateAlarmManager.updateTexts(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY)){
                 // returns true if update service was launched sucessfully
                 forceWeatherUpdateFlag = true;
                 showProgressBar();
@@ -161,7 +161,7 @@ public class TextForecastListActivity extends Activity {
 
     private void updateTextsIfOutdated(){
         if (WeatherSettings.areTextForecastsOutdated(this)){
-            UpdateAlarmManager.updateTexts(this);
+            UpdateAlarmManager.updateTexts(this,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
         }
     }
 

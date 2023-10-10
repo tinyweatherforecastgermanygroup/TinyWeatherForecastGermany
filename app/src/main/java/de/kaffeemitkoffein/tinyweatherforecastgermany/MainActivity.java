@@ -22,7 +22,6 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.*;
-import android.content.ClipboardManager;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -35,6 +34,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.*;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.text.*;
 import android.text.style.BulletSpan;
@@ -62,6 +62,11 @@ public class MainActivity extends Activity {
     public final static String MAINAPP_SSL_ERROR = "MAINAPP_SSL_ERROR";
     public final static String MAINAPP_SHOW_PROGRESS = "SHOW_PROGRESS";
     public final static String MAINAPP_HIDE_PROGRESS = "HIDE_PROGRESS";
+    public final static String MAINAPP_AREADB_PROGRESS = "AREADB_PROGRESS";
+    public final static String MAINAPP_AREADB_READY = "AREADB_READY";
+
+    public final static String EXTRA_AREADB_PROGRESS_VALUE = "AREADB_PRGS_VALUE";
+    public final static String EXTRA_AREADB_PROGRESS_TEXT = "AREADB_PRGS_TEXT";
 
     public final static boolean API_TESTING_ENABLED = false;
     private int test_position = 0;
@@ -148,7 +153,7 @@ public class MainActivity extends Activity {
                             // re-launch the weather update via http
                             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"SSL disabled permanently due to errors.");
                             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"re-launching weather update.");
-                            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,weatherCard);
+                            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.FORCE_UPDATE,weatherCard);
                             dialogInterface.dismiss();
                         }
                     });
@@ -177,6 +182,16 @@ public class MainActivity extends Activity {
                 if (forceWeatherUpdateFlag){
                     forceWeatherUpdateFlag = false;
                 }
+            }
+            if (intent.getAction().equals(MAINAPP_AREADB_PROGRESS)){
+                if (intent.hasExtra(MainActivity.EXTRA_AREADB_PROGRESS_TEXT) && (intent.hasExtra(MainActivity.EXTRA_AREADB_PROGRESS_VALUE))){
+                    Bundle bundle = intent.getExtras();
+                    showAreaDatabaseProgress(intent.getIntExtra(MainActivity.EXTRA_AREADB_PROGRESS_VALUE,0),intent.getStringExtra(MainActivity.EXTRA_AREADB_PROGRESS_TEXT));
+                }
+            }
+            if (intent.getAction().equals(MAINAPP_AREADB_READY)){
+                loadStationsData();
+                hideAreaDatabaseProgress();
             }
         }
     };
@@ -380,6 +395,12 @@ public class MainActivity extends Activity {
         } catch (Exception e){
             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when checking for warnings: "+e.getMessage());
         }
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                checkForBatteryOptimization(context);
+            }
+        });
         super.onResume();
     }
 
@@ -465,15 +486,22 @@ public class MainActivity extends Activity {
             // anchor long click update
             executor = Executors.newSingleThreadExecutor();
             try {
+                // prepareAreaDatabase(context);
+            } catch (Exception e){
+                // ignore
+            }
+            try {
                 loadStationsData();
             } catch (Exception e){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
             }
+
             try {
-                prepareAreaDatabase();
+                // prepareAreaDatabase(getApplicationContext());
             } catch (Exception e){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Preparing database failed on main thread.");
             }
+
             // check for update procedures if not first install
             if ((WeatherSettings.getLastAppVersionCode(context) != BuildConfig.VERSION_CODE) &&
                     (WeatherSettings.getLastAppVersionCode(context)>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT)){
@@ -751,10 +779,7 @@ public class MainActivity extends Activity {
                     }
                 }
             });
-            boolean updated = UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.CHECK_FOR_UPDATE,null);
-            if (!updated){
-                displayWeatherForecast();
-            }
+            displayWeatherForecast();
         }
     }
 
@@ -918,7 +943,12 @@ public class MainActivity extends Activity {
                    //Log.v(Tag.MAIN,"------------------------------------------");
                    //Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
                    //Log.v(Tag.MAIN,"-------------------------------------------");
-                    getWeatherForecast();
+                    weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
+                    if ((weatherCard == null) || (API_TESTING_ENABLED)){
+                        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.FORCE_UPDATE,weatherCard);
+                    } else {
+                        displayWeatherForecast();
+                    }
                 }
             },4000);
         } else {
@@ -1004,13 +1034,18 @@ public class MainActivity extends Activity {
                 }
             } else {
                 LinearLayout main_landscape_mainlinearlayout = (LinearLayout) findViewById(R.id.main_landscape_mainlinearlayout);
-                overviewChartImageView.post(new Runnable() {
+                executor.execute(new Runnable() {
                     @Override
                     public void run() {
                         overviewChartImageView.measure(0,0);
-                        Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,overviewChartImageView.getWidth(),overviewChartImageView.getHeight(),currentWeatherInfo.forecast1hourly,localWarnings);
+                        final Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,overviewChartImageView.getWidth(),overviewChartImageView.getHeight(),currentWeatherInfo.forecast1hourly,localWarnings);
                         if (overViewChartBitmap!=null){
-                            overviewChartImageView.setImageBitmap(overViewChartBitmap);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    overviewChartImageView.setImageBitmap(overViewChartBitmap);
+                                }
+                            });
                         }
                     }
                 });
@@ -1058,17 +1093,19 @@ public class MainActivity extends Activity {
     public void displayWeatherForecast() {
         // check if weather forecast in memory is outdated, fetch from database if necessary
         if (weatherCard==null){
-            weatherCard = Weather.getCurrentWeatherInfo(context);
+            weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
         } else {
             if (Weather.getPollingTime(context) > weatherCard.polling_time) {
-                weatherCard = Weather.getCurrentWeatherInfo(context);
+                weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
             }
         }
         // it might happen that location changed, but no update of weather occured since then. We need to trigger
         // an update if nothing is found in the database.
         if (weatherCard==null){
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.CHECK_FOR_UPDATE,null);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.CHECK_FOR_UPDATE,null);
         }
+        // recover area database if necessary
+        UpdateAlarmManager.prepareAreaDatabaseIfNecessary(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
         // if warnings enabled and area database in place
         if (!WeatherSettings.areWarningsDisabled(context) && WeatherSettings.isAreaDatabaseReady(context)) {
             // invalidate current warnings
@@ -1123,20 +1160,10 @@ public class MainActivity extends Activity {
         }
    }
 
-    public void getWeatherForecast(){
-        weatherCard = new Weather().getCurrentWeatherInfo(this);
-        if ((weatherCard == null) || (API_TESTING_ENABLED)){
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE,weatherCard);
-        } else {
-            displayWeatherForecast();
-        }
-    }
-
     public void forcedWeatherUpdate(){
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.FORCE_UPDATE,weatherCard);
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.FORCE_UPDATE,weatherCard);
         forceWeatherUpdateFlag = true;
     }
-
 
     private void checkIfWarningsAreOutdated(){
         if (WeatherSettings.areWarningsOutdated(context) && WeatherSettings.updateWarnings(context)){
@@ -1145,7 +1172,7 @@ public class MainActivity extends Activity {
                 @Override
                 public void run() {
                     PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Triggering update...");
-                    UpdateAlarmManager.updateWarnings(context,false);
+                    UpdateAlarmManager.updateWarnings(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,false);
                 }
             });
         } else {
@@ -1256,7 +1283,7 @@ public class MainActivity extends Activity {
             return true;
         }
         if (item_id == R.id.menu_travelupdate) {
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.FORCE_UPDATE|UpdateAlarmManager.TRAVEL_UPDATE,weatherCard);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context, UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.FORCE_UPDATE|UpdateAlarmManager.TRAVEL_UPDATE,weatherCard);
             return true;
         }
         if (item_id==R.id.menu_license) {
@@ -1402,24 +1429,56 @@ public class MainActivity extends Activity {
         contentResolver.delete(WeatherContentManager.AREA_URI_ALL,null,null);
     }
 
-    private void prepareAreaDatabase(){
-        if (WeatherSettings.areWarningsDisabled(this)){
-            deleteAreaDatabase(this);
+    RelativeLayout areaProgress_relativeLayout;
+    ProgressBar areaProgress_progressBar;
+    TextView areaProgress_progressTextView;
+
+    private void showAreaDatabaseProgress(int progress, String text){
+        String dataText = "";
+        if ((areaProgress_relativeLayout==null) || (areaProgress_progressBar==null) || (areaProgress_progressTextView==null)) {
+            areaProgress_relativeLayout = (RelativeLayout) findViewById(R.id.main_area_progress_holder);
+            areaProgress_progressBar = (ProgressBar) findViewById(R.id.main_area_progress_bar);
+            areaProgress_progressTextView = (TextView) findViewById(R.id.main_area_progress_text);
+            // Lock screen rotation during database processing to prevent activity being destroyed
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+            areaProgress_relativeLayout.setVisibility(View.VISIBLE);
+            dataText = getApplicationContext().getString(R.string.areadatabasecreator_title);
+        }
+        areaProgress_progressBar.setProgress(progress);
+        areaProgress_progressTextView.setText(dataText+": "+ text);
+    }
+
+    private void hideAreaDatabaseProgress(){
+        if (areaProgress_relativeLayout==null){
+            areaProgress_relativeLayout = (RelativeLayout) findViewById(R.id.main_area_progress_holder);
+        }
+        // Allow screen rotation within this app again
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        areaProgress_relativeLayout.setVisibility(View.GONE);
+        // release views as indicator that no database creation is running
+        areaProgress_relativeLayout = null; areaProgress_progressBar = null; areaProgress_progressTextView = null;
+    }
+
+    public static boolean prepareAreaDatabase(final Context context){
+        if (WeatherSettings.areWarningsDisabled(context)){
+            deleteAreaDatabase(context);
             PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"Area database will not be prepared because weather warnings are disabled.");
-            return;
+            return false;
         }
         // delete area database if it is too big due to some database errors. It will be
         // recreated then.
-        if (Areas.getAreaDatabaseSize(getApplicationContext())>Areas.AreaDatabaseCreator.DATABASE_SIZE){
-            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Area database size is: "+Areas.getAreaDatabaseSize(getApplicationContext())+", expected: "+Areas.AreaDatabaseCreator.DATABASE_SIZE);
+        if (Areas.getAreaDatabaseSize(context.getApplicationContext())>Areas.AreaDatabaseCreator.DATABASE_SIZE){
+            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Area database size is: "+Areas.getAreaDatabaseSize(context.getApplicationContext())+", expected: "+Areas.AreaDatabaseCreator.DATABASE_SIZE);
             PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Area database will be cleared...");
-            deleteAreaDatabase(this);
+            deleteAreaDatabase(context.getApplicationContext());
         }
         // update area database if:
         // a) database does not exist
         // b) if sql database is outdated
-        if ((!Areas.doesAreaDatabaseExist(this)) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(this))){
-            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Start building area database...");
+        if ((!Areas.doesAreaDatabaseExist(context.getApplicationContext())) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(context.getApplicationContext()))) {
+            return true;
+            /*
+            PrivateLog.log(context.getApplicationContext(), PrivateLog.MAIN, PrivateLog.INFO, "Start building area database...");
             // Lock screen rotation during database processing to prevent activity being destroyed
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             final RelativeLayout main_area_progress_holder = (RelativeLayout) findViewById(R.id.main_area_progress_holder);
@@ -1427,30 +1486,31 @@ public class MainActivity extends Activity {
             final ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_area_progress_bar);
             final TextView progressText = (TextView) findViewById(R.id.main_area_progress_text);
             final String dataText = getApplicationContext().getString(R.string.areadatabasecreator_title);
-            Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(context,executor){
+            Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(context, executor) {
                 @Override
-                public void showProgress(final int progress, final String text){
+                public void showProgress(final int progress, final String text) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             progressBar.setProgress(progress);
-                            progressText.setText(dataText+": "+ text);
+                            progressText.setText(dataText + ": " + text);
                         }
                     });
                 }
 
                 @Override
-                public void onFinished(){
+                public void onFinished() {
                     super.onFinished();
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"Area database has been built successfully.");
+                            PrivateLog.log(context.getApplicationContext(), PrivateLog.MAIN, PrivateLog.WARN, "Area database has been built successfully.");
                             // Allow screen rotation within this app again
                             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
                             main_area_progress_holder.setVisibility(View.GONE);
                             // after new database is available, the text search has more options and needs to
                             // be rebuilt
+                            Log.v("twfg","MAIN DURAZTION: "+(Calendar.getInstance().getTimeInMillis()-time)/1000);
                             loadStationsData();
                             // after new database is available, warnings need to be rebuilt and checked again
                             //checkIfWarningsApply();
@@ -1459,7 +1519,9 @@ public class MainActivity extends Activity {
                 }
             };
             areasDataBaseCreator.create();
+             */
         }
+        return false;
     }
 
     private void showWarning(int icon, String title, String text){
@@ -1525,6 +1587,8 @@ public class MainActivity extends Activity {
         filter.addAction(MAINAPP_HIDE_PROGRESS);
         filter.addAction(Intent.ACTION_BOOT_COMPLETED);
         filter.addAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
+        filter.addAction(MAINAPP_AREADB_READY);
+        filter.addAction(MAINAPP_AREADB_PROGRESS);
         registerReceiver(receiver,filter);
     }
 
@@ -2037,6 +2101,21 @@ public class MainActivity extends Activity {
         Intent i = new Intent(this, WelcomeActivity.class);
         startActivity(i);
         finish();
+    }
+
+    public static void checkForBatteryOptimization(final Context context){
+        PowerManager powerManager = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            boolean isIgnoringBatteryOptimizations = powerManager.isIgnoringBatteryOptimizations(context.getApplicationContext().getPackageName());
+            if ((!isIgnoringBatteryOptimizations) && (!WeatherSettings.rejectedBatteryOptimiziaton(context))){
+                Settings.openBatteryOptimizationSettings(context);
+            }
+            // revert the rejected flag to false as the app has manually been excluded from battery optimization,
+            // and the user should be noted as soon as the system changes the user setting
+            if ((isIgnoringBatteryOptimizations) && (WeatherSettings.rejectedBatteryOptimiziaton(context))){
+                WeatherSettings.setRejectedBatteryOptimiziaton(context,false);
+            }
+        }
     }
 
 }

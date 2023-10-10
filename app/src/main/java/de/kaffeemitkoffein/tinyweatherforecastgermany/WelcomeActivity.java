@@ -29,7 +29,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
 import java.util.concurrent.Executor;
@@ -96,6 +95,7 @@ public class WelcomeActivity extends Activity {
             }
         }
         executor = Executors.newSingleThreadExecutor();
+        // start area database creation of necessary.
         force_replay = false;
         Intent intent = getIntent();
         if (intent != null) {
