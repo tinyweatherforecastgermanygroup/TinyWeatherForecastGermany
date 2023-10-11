@@ -389,6 +389,10 @@ public class MainActivity extends Activity {
             }
         }
         // this is necessary if the update of weather data occurs while the app is in the background
+        boolean recreateWeatherAdapter = false;
+        if (forecastAdapter==null) {
+            recreateWeatherAdapter = true;
+        }
         loadCurrentWeather();
         try {
             checkIfWarningsAreOutdated();
@@ -891,7 +895,7 @@ public class MainActivity extends Activity {
             recreate();
             return;
         }
-        // display weather without any update mode active
+        // display weather without any update mode active, but only if adapter is empty
         displayWeatherForecast();
     }
 
@@ -1097,12 +1101,15 @@ public class MainActivity extends Activity {
     }
 
     public void displayWeatherForecast() {
+        boolean dataChanged = false;
         // check if weather forecast in memory is outdated, fetch from database if necessary
         if (weatherCard==null){
             weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
+            dataChanged = true;
         } else {
             if (Weather.getPollingTime(context) > weatherCard.polling_time) {
                 weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
+                dataChanged = true;
             }
         }
         // it might happen that location changed, but no update of weather occured since then. We need to trigger
@@ -1112,8 +1119,8 @@ public class MainActivity extends Activity {
         }
         // recover area database if necessary
         UpdateAlarmManager.prepareAreaDatabaseIfNecessary(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
-        // if warnings enabled and area database in place
-        if (!WeatherSettings.areWarningsDisabled(context) && WeatherSettings.isAreaDatabaseReady(context)) {
+        // if warnings enabled and area database in place and warnings in memory outdated
+        if (!WeatherSettings.areWarningsDisabled(context) && WeatherSettings.isAreaDatabaseReady(context) && (WeatherWarnings.areWarningsOutdated(context,localWarnings))) {
             // invalidate current warnings
             localWarnings = null;
             if (forecastAdapter != null) {
@@ -1134,7 +1141,10 @@ public class MainActivity extends Activity {
             };
             executor.execute(getWarningsForLocationRunnable);
         } else {
-            displayAdapter(weatherCard);
+            // refresh adapter if null OR data changed OR adapter older than weather data
+            if ((forecastAdapter==null) || (dataChanged) || (forecastAdapter.creationTime<weatherCard.polling_time)){
+                displayAdapter(weatherCard);
+            }
         }
     }
 

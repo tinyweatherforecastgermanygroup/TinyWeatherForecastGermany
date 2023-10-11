@@ -50,8 +50,6 @@ public class WeatherWarnings {
         } else {
             PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Nothing written to database, fetched warning list is empty.");
         }
-        WeatherSettings weatherSettings = new WeatherSettings(context);
-        weatherSettings.setWarningsLastUpdateTime();
     }
 
     public static ArrayList<WeatherWarning> getCurrentWarnings(Context context, boolean initPolygons){
@@ -131,6 +129,33 @@ public class WeatherWarnings {
             ArrayList<WeatherWarning> result = getWarningsForLocation(context,warnings,location);
             onResult(result);
         }
+    }
+
+    public static boolean areWarningsOutdated(Context context, ArrayList<WeatherWarning> weatherWarnings){
+        if (weatherWarnings!=null){
+            long lastWarningsUpdate = WeatherSettings.getWarningsLastUpdateTime(context);
+            if (weatherWarnings.size()>0){
+                // it is sufficient to check the first warning, since polling_time is the same in all elements
+                if (weatherWarnings.get(0).polling_time<lastWarningsUpdate){
+                    // yes, because warning is older than last polling time we know of
+                    return true;
+                } else {
+                    // not outdated
+                    return false;
+                }
+            } else {
+                // it might be that there are no warnings at all. In this case, we determine if an update was due
+                long warningsUpdateInterval = WeatherSettings.getWarningsUpdateIntervalInMillis(context);
+                // update was due, warnings are likely outdated
+                if (Calendar.getInstance().getTimeInMillis()>lastWarningsUpdate+warningsUpdateInterval){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        // return outdated if warnings list is null
+        return true;
     }
 
     public static final class WarningStringType{

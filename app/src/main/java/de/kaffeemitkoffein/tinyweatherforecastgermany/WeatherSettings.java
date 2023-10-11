@@ -1001,12 +1001,16 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_WARNINGS_DISABLE,PREF_WARNINGS_DISABLE_DEFAULT);
     }
 
-    public void setWarningsLastUpdateTime(long time) {
-        applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME, time);
+    public static void setWarningsLastUpdateTime(Context context, long time) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_WARNINGS_LAST_UPDATE_TIME, time);
+        pref_editor.apply();
     }
 
-    public void setWarningsLastUpdateTime() {
-        setWarningsLastUpdateTime(Calendar.getInstance().getTimeInMillis());
+    public static long getWarningsLastUpdateTime(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getLong(PREF_WARNINGS_LAST_UPDATE_TIME,PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
     }
 
     public static boolean notifyWarnings(Context context){

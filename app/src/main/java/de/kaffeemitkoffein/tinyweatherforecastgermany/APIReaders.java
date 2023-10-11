@@ -56,6 +56,9 @@ public class APIReaders {
        public Context context;
        public Weather.WeatherLocation weatherLocation;
 
+       // all polling times should be the same per poll to allow for logic checking if outdated
+       private final static long pollingTime = Calendar.getInstance().getTimeInMillis();
+
        public WeatherWarningsRunnable(Context context) {
            this.context = context;
            weatherLocation = WeatherSettings.getSetStationLocation(context);
@@ -89,7 +92,7 @@ public class APIReaders {
            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
            Document document = documentBuilder.parse(new InputSource(new StringReader(zipfile)));
            NodeList nl = document.getElementsByTagName("identifier");
-           warning.polling_time = Calendar.getInstance().getTimeInMillis();
+           warning.polling_time = pollingTime;
            for (int i=0;i<nl.getLength(); i++){
                // should be only one, but we take the latest
                Element elIdentifier = (Element) nl.item(i);
@@ -383,6 +386,7 @@ public class APIReaders {
            if (warnings!=null){
                WeatherWarnings.cleanWeatherWarningsDatabase(context);
                WeatherWarnings.writeWarningsToDatabase(context,warnings);
+               WeatherSettings.setWarningsLastUpdateTime(context,pollingTime);
                onPositiveResult(warnings);
            } else {
                PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"getting warnings failed.");

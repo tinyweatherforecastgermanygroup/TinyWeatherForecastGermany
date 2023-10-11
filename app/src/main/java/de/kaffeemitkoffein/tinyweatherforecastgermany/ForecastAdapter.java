@@ -81,6 +81,8 @@ private final float fontScale;
 private ForecastIcons forecastIcons;
 private ForecastIcons forecastIconsBar;
 
+public long creationTime = 0;
+
 private final SparseArray<Bitmap> bitmapCache = new SparseArray<>();
 
     private final SparseArray<Bitmap> forecastIconCache = new SparseArray<>();
@@ -137,6 +139,7 @@ public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherFo
     if (this.screenWidthInPixels==0){
         this.screenWidthInPixels=768;
     }
+    this.creationTime = Calendar.getInstance().getTimeInMillis();
 }
 
 public void setWarnings(ArrayList<WeatherWarning> warnings){
