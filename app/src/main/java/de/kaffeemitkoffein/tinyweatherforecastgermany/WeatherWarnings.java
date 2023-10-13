@@ -134,6 +134,7 @@ public class WeatherWarnings {
     public static boolean areWarningsOutdated(Context context, ArrayList<WeatherWarning> weatherWarnings){
         if (weatherWarnings!=null){
             long lastWarningsUpdate = WeatherSettings.getWarningsLastUpdateTime(context);
+            long warningsUpdateInterval = WeatherSettings.getWarningsUpdateIntervalInMillis(context);
             if (weatherWarnings.size()>0){
                 // it is sufficient to check the first warning, since polling_time is the same in all elements
                 if (weatherWarnings.get(0).polling_time<lastWarningsUpdate){
@@ -145,7 +146,6 @@ public class WeatherWarnings {
                 }
             } else {
                 // it might be that there are no warnings at all. In this case, we determine if an update was due
-                long warningsUpdateInterval = WeatherSettings.getWarningsUpdateIntervalInMillis(context);
                 // update was due, warnings are likely outdated
                 if (Calendar.getInstance().getTimeInMillis()>lastWarningsUpdate+warningsUpdateInterval){
                     return true;

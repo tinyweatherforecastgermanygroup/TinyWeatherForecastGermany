@@ -745,7 +745,6 @@ public class APIReaders {
          */
 
         public void onPositiveResult(){
-            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
         }
 
         public void onPositiveResult(ArrayList<RawWeatherInfo> rawWeatherInfos){
@@ -775,6 +774,8 @@ public class APIReaders {
                 for (int i=0; i<rawWeatherInfos.size(); i++){
                     addEntryToDatabase(rawWeatherInfos.get(i));
                 }
+                WeatherSettings.setLastWeatherUpdateTime(context);
+                WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
                 onPositiveResult(rawWeatherInfos);
             }
         }
@@ -2125,7 +2126,6 @@ public class APIReaders {
                     timeResult[position] = midnightTime;
                     result[position] = getUvIndex(midnightTime);
                 }
-                WeatherSettings.setUVHIUpdateAllowedTime(context);
                 onFinished(timeResult,result);
             } else {
                 onFinished(null,null);

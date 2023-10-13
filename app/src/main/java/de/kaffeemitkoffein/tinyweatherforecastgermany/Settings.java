@@ -36,6 +36,8 @@ import android.os.PowerManager;
 import android.preference.*;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 @SuppressWarnings("deprecation")
 public class Settings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -164,7 +166,10 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     };
 
     public void forcedWeatherUpdate(){
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.FORCE_UPDATE,null);
+        ArrayList<String> updateTasks = new ArrayList<String>();
+        updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
+        updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS);
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,null);
     }
 
     @Override
@@ -698,6 +703,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (permission.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)){
+                    WeatherSettings.setBatteryOptimiziatonFlag(context,WeatherSettings.BatteryFlag.REJECTED);
                     useBackgroundLocation.setChecked(false);
                 }
                 dialogInterface.dismiss();
@@ -710,6 +716,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                     requestLocationPermission(callback);
                 }
                 if (permission.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)){
+                    WeatherSettings.setBatteryOptimiziatonFlag(context,WeatherSettings.BatteryFlag.AGREED);
                     dialogInterface.dismiss();
                     openPermissionSettings();
                 }

@@ -571,7 +571,7 @@ public class CurrentWeatherInfo{
 
 
     public boolean isOutdated(Context context){
-        if (polling_time<Calendar.getInstance().getTimeInMillis()+WeatherSettings.getForecastUpdateIntervalInMillis(context)){
+        if (polling_time+WeatherSettings.getForecastUpdateIntervalInMillis(context)>Calendar.getInstance().getTimeInMillis()){
                 return false;
             } else {
                 return true;

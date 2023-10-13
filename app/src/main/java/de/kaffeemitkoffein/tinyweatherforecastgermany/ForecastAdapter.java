@@ -88,7 +88,7 @@ private final SparseArray<Bitmap> bitmapCache = new SparseArray<>();
     private final SparseArray<Bitmap> forecastIconCache = new SparseArray<>();
 
 
-public ForecastAdapter(Context context, ArrayList<Weather.WeatherInfo> weatherForecasts, ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, Weather.WeatherLocation weatherLocation) {
+public ForecastAdapter(final Context context, final ArrayList<Weather.WeatherInfo> weatherForecasts, final ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, final Weather.WeatherLocation weatherLocation) {
     this.context = context;
     this.weatherForecasts = weatherForecasts;
     this.weatherForecasts_hourly = weatherForecasts_hourly;
@@ -879,29 +879,6 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             }
             forecastIconsBar = new ForecastIcons(context,Math.round(forecastBarHeight*0.75f),Math.round(forecastBarHeight*0.75f));
         }
-        // end new
-        final ImageView finalImageView_forecastBar = imageView_forecastBar;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final ForecastBitmap forecastBitmap = new ForecastBitmap.Builder()
-                        .setWetherInfos(baritems)
-                        .setAnticipatedWidth(6)
-                        .setForcastIconsClass(forecastIconsBar)
-                        .setWeatherLocation(weatherLocation)
-                        .displaySimpleBar(displaySimpleBar)
-                        .setWindDisplayType(display_wind_type)
-                        .create(context);
-                // needs a try-catch clause because adapter may close before this thread
-                try {
-                    finalImageView_forecastBar.setImageBitmap(forecastBitmap.getForecastBitmap());
-                } catch (Exception e){
-                    // do nothing
-                }
-            }
-        });
-        thread.start();
-        /*
         final ForecastBitmap forecastBitmap = new ForecastBitmap.Builder()
                 .setWetherInfos(baritems)
                 .setAnticipatedWidth(6)
@@ -911,7 +888,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 .setWindDisplayType(display_wind_type)
                 .create(context);
         imageView_forecastBar.setImageBitmap(forecastBitmap.getForecastBitmap());
-         */
+
     } else {
         // hide forecast bar when not needed
         setVisibility(imageView_forecastBar, View.GONE);

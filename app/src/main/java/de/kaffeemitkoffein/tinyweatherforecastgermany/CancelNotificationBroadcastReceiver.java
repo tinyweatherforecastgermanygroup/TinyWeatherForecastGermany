@@ -25,6 +25,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 public class CancelNotificationBroadcastReceiver extends BroadcastReceiver {
 
     public final static String CANCEL_NOTIFICATIONS_ACTION = "de.kaffeemitkoffein.broadcast.CANCEL_NOTIFICATIONS";
@@ -39,8 +41,9 @@ public class CancelNotificationBroadcastReceiver extends BroadcastReceiver {
                     // this starts the service with the only action being canceling notifications.
                     // the UpdateAlarmManager will call setCancelNotificationAlarm if necessary
                     PrivateLog.log(context,PrivateLog.ALERTS,PrivateLog.INFO,"Starting service to remove a notification.");
-                    //UpdateAlarmManager.startDataUpdateService(context,false,false,false);
-                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.UPDATE_FROM_JOB,UpdateAlarmManager.CHECK_FOR_UPDATE,null);
+                    // start updater with an empty task list
+                    ArrayList<String> updateTasks = new ArrayList<String>();
+                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.UPDATE_FROM_JOB,updateTasks,null);
                 }
                 if (action.equalsIgnoreCase(CLEAR_NOTIFICATIONS_ACTION)){
                     WeatherWarnings.clearAllNotified(context);

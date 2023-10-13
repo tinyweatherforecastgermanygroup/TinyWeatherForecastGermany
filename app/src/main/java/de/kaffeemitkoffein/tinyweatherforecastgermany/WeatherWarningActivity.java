@@ -360,7 +360,9 @@ public class WeatherWarningActivity extends Activity {
                 zoomMapState = mapZoomable.saveZoomViewState();
             }
             PrivateLog.log(this, PrivateLog.WARNINGS,PrivateLog.INFO, "starting update of weather warnings");
-            if (UpdateAlarmManager.updateWarnings(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,true)){
+            ArrayList<String> updateTasks = new ArrayList<String>();
+            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS);
+            if (UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,null)){
                 // returns true if update service was launched successfully
                 forceWeatherUpdateFlag = true;
                showProgressBar();
@@ -444,7 +446,9 @@ public class WeatherWarningActivity extends Activity {
     private void updateWarningsIfNeeded(){
         if (WeatherSettings.areWarningsOutdated(getApplicationContext())){
             PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"Warnings outdated, getting new ones.");
-            UpdateAlarmManager.updateWarnings(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,false);
+            ArrayList<String> updateTasks = new ArrayList<String>();
+            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,null);
         } else {
             PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"Warnings not outdated, recycling.");
             if (germany==null){

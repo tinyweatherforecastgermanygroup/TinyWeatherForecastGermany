@@ -32,7 +32,6 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.IBinder;
-
 import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -45,13 +44,9 @@ public class DataUpdateService extends Service {
     Notification.Builder notificationBuilder;
     Executor executor;
 
-    private static boolean serviceStarted = false;
-
     public static String IC_ID = "WEATHER_NOTIFICATION";
-    public static int    IC_IMPORTANCE = NotificationManager.IMPORTANCE_LOW;
 
     public static String WARNING_NC_ID_SKELETON = "WEATHER_WARNING";
-    public static int    WARNING_NC_IMPORTANCE = NotificationManager.IMPORTANCE_HIGH;
     public static String WARNING_NC_GROUP = "de.kaffeemitkoffein.tinyweatherforecastgermany.WARNINGS";
 
     public static String SERVICEEXTRAS_UPDATE_WEATHER="SERVICEEXTRAS_UPDATE_WEATHER";
@@ -159,275 +154,268 @@ public class DataUpdateService extends Service {
         startForeground(notification_id, notification);
         PrivateLog.log(this, PrivateLog.SERVICE, PrivateLog.INFO, "Service is foreground now.");
         executor = Executors.newSingleThreadExecutor();
-        serviceStarted = false;
     }
 
     @TargetApi(Build.VERSION_CODES.N)
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
         final Context context = this;
-        if (!serviceStarted){
-            serviceStarted = true;
-            // create single thread
-            boolean updateWeather = false;
-            boolean updateWarnings = false;
-            boolean updateTextForecasts = false;
-            boolean updateLayers = false;
-            boolean updatePollen = false;
-            boolean updateRainRadar = false;
-            boolean updateNotifications = false;
-            boolean createAreaDatabase = false;
-            int updateCaller = UpdateAlarmManager.UPDATE_FROM_UNSPECIFIED;
-            ArrayList<Weather.WeatherLocation> weatherLocations = null;
-            if (intent!=null){
-                updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
-                updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
-                updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
-                updateLayers = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_LAYERS,false);
-                updatePollen = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_POLLEN,false);
-                updateRainRadar = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_RAINRADAR,false);
-                createAreaDatabase = intent.getBooleanExtra(SERVICEEXTRAS_CRATE_AREADATABASE,false);
-                // update warnings from existing data only allowed when warnings are not updated
-                if (!updateWarnings){
-                    updateNotifications = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_NOTIFICATIONS, false);
-                }
-                weatherLocations = intent.getParcelableArrayListExtra(Weather.WeatherLocation.PARCELABLE_NAME);
-                updateCaller = intent.getIntExtra(UpdateAlarmManager.EXTRA_UPDATE_SOURCE,UpdateAlarmManager.UPDATE_FROM_UNSPECIFIED);
+        // create single thread
+        boolean updateWeather = false;
+        boolean updateWarnings = false;
+        boolean updateTextForecasts = false;
+        boolean updateLayers = false;
+        boolean updatePollen = false;
+        boolean updateRainRadar = false;
+        boolean updateNotifications = false;
+        boolean createAreaDatabase = false;
+        int updateCaller = UpdateAlarmManager.UPDATE_FROM_UNSPECIFIED;
+        ArrayList<Weather.WeatherLocation> weatherLocations = null;
+        if (intent!=null){
+            updateWeather = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WEATHER,false);
+            updateWarnings = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_WARNINGS,false);
+            updateTextForecasts = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_TEXTFORECASTS,false);
+            updateLayers = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_LAYERS,false);
+            updatePollen = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_POLLEN,false);
+            updateRainRadar = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_RAINRADAR,false);
+            createAreaDatabase = intent.getBooleanExtra(SERVICEEXTRAS_CRATE_AREADATABASE,false);
+            // update warnings from existing data only allowed when warnings are not updated
+            if (!updateWarnings){
+                updateNotifications = intent.getBooleanExtra(SERVICEEXTRAS_UPDATE_NOTIFICATIONS, false);
             }
-            // cancel deprecated warnings
-            if (WeatherSettings.notifyWarnings(this)){
-                cancelDeprecatedWarningNotifications();
-            }
-            connectivityManager = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            // perform service task only if:
-            // 1) intent supplied telling what to do, AND
-            // 2) internet connection is present
-            boolean hasNetwork = false;
-            if (suitableNetworkAvailable(context)){
-                hasNetwork = true;
-                // put
-                if ((Build.VERSION.SDK_INT > 23) && (connectivityManager!=null)){
-                    networkCallback = new ConnectivityManager.NetworkCallback(){
-                        @Override
-                        public void onLost(Network network) {
-                            stopThisService(StopReason.NETWORK_LOSS);
-                        }
-                    };
-                    connectivityManager.registerDefaultNetworkCallback((ConnectivityManager.NetworkCallback) networkCallback);
-                } else {
-                    timer.schedule(timeOutTask,TIMEOUTTASK_DELAY);
-                }
-                // check if an arraylist of stations was provided, if not get the one from settings
-                boolean getLocationFromSettings = false;
-                if (weatherLocations==null){
-                    getLocationFromSettings = true;
-                } else {
-                    if (weatherLocations.size()==0){
-                        getLocationFromSettings = true;
-                    }
-                }
-                // when arrayList of stations is null or empty, get the station from settings
-                if (getLocationFromSettings){
-                    weatherLocations = new ArrayList<Weather.WeatherLocation>();
-                    weatherLocations.add(WeatherSettings.getSetStationLocation(context));
-                }
-                if ((updateWeather) && (WeatherSettings.isUVHIUpdateAllowed(context) || !WeatherSettings.UVHIfetchData(context))){
-                    APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(context, weatherLocations){
-                        @Override
-                        public void onStart(){
-                            updateNotification(0);
-                        }
-                        @Override
-                        public void onPositiveResult(){
-                            // update GadgetBridge and widgets
-                            UpdateAlarmManager.updateAppViews(context);
-                            // notify main class
-                            Intent intent = new Intent();
-                            intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
-                            sendBroadcast(intent);
-                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.INFO,"Weather update: success");
-                            super.onPositiveResult();
-                        }
-                        @Override
-                        public void onNegativeResult(){
-                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Weather update: failed, error.");
-                            if (ssl_exception){
-                                PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"SSL exception detected by service.");
-                                Intent ssl_intent = new Intent();
-                                ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
-                                sendBroadcast(ssl_intent);
-                            }
-                            // need to update main app with old data
-                            Intent intent = new Intent();
-                            intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
-                            sendBroadcast(intent);
-                            // need to update views with old data: GadgetBridge and widgets
-                            UpdateAlarmManager.updateAppViews(context);
-                        }
-                    };
-                    executor.execute(weatherForecastRunnable);
-                }
-                if (updateWarnings) {
-                    APIReaders.WeatherWarningsRunnable weatherWarningsRunnable = new APIReaders.WeatherWarningsRunnable(this){
-                        @Override
-                        public void onStart(){
-                            updateNotification(1);
-                        }
-                        @Override
-                        public void onPositiveResult(ArrayList<WeatherWarning> warnings){
-                            super.onPositiveResult(warnings);
-                            PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.INFO,"Warnings updated successfully.");
-                            // trigger update of views in activity
-                            Intent intent = new Intent();
-                            intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
-                            intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,true);
-                            sendBroadcast(intent);
-                            if (WeatherSettings.notifyWarnings(context)){
-                                UpdateAlarmManager.updateAppViews(context);
-                                launchWeatherWarningNotifications(warnings,false);
-                            }
-                        }
-                        public void onNegativeResult(){
-                            // trigger update of views in activity
-                            PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.ERR,"Getting warnings failed.");
-                            Intent intent = new Intent();
-                            intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
-                            intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
-                            sendBroadcast(intent);
-                        }
-                    };
-                    executor.execute(weatherWarningsRunnable);
-                }
-                if (updateTextForecasts){
-                    APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
-                        @Override
-                        public void onStart(){
-                            updateNotification(2);
-                        }
-                        @Override
-                        public void onPositiveResult(){
-                            Intent intent = new Intent();
-                            intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
-                            intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT,true);
-                            PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Weather texts updated successfully.");
-                            sendBroadcast(intent);
-                            WeatherSettings.setLastTextForecastsUpdateTime(getApplicationContext(),Calendar.getInstance().getTimeInMillis());
-                        }
-                    };
-                    executor.execute(textForecastRunnable);
-                }
-                if (updateLayers){
-                    APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,WeatherLayer.getLayers(context)){
-                        @Override
-                        public void onStart() {
-                            updateNotification(3);
-                        }
-                        @Override
-                        public void onFinished(boolean success) {
-                            Intent intent = new Intent();
-                            intent.setAction(WeatherLayersActivity.ACTION_UPDATE_LAYERS);
-                            intent.putExtra(WeatherLayersActivity.UPDATE_LAYERS_RESULT,success);
-                            PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Layer images updated successfully.");
-                            sendBroadcast(intent);
-                        }
-                    };
-                    getLayerImages.setForceUpdate(true);
-                    executor.execute(getLayerImages);
-                }
-                if (updatePollen){
-                    APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context){
-                        @Override
-                        public void onStart() {
-                            updateNotification(4);
-                        }
-                        @Override
-                        public void onFinished(boolean success) {
-                            Intent intent = new Intent();
-                            intent.setAction(Pollen.ACTION_UPDATE_POLLEN);
-                            intent.putExtra(Pollen.UPDATE_POLLEN_RESULT,success);
-                            PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Pollen data updated successfully.");
-                            sendBroadcast(intent);
-                        }
-                    };
-                    executor.execute(pollenReader);
-                }
-                if (updateRainRadar){
-                    APIReaders.RadarMNSetGeoserverRunnable radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(context){
-                        @Override
-                        public void onStart() {
-                            updateNotification(5);
-                        }
-                        @Override
-                        public void onFinished(long startTime, boolean success) {
-                            if (success){
-                                Intent intent = new Intent();
-                                intent.setAction(WeatherWarningActivity.ACTION_RAINRADAR_UPDATE);
-                                intent.putExtra(WeatherWarningActivity.RAINRADAR_UPDATE_RESULT,true);
-                                PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Rain radar updated successfully.");
-                                sendBroadcast(intent);
-                            }
-                        }
-                    };
-                    executor.execute(radarMNSetGeoserverRunnable);
-                }
-            } else {
-                if (updateWarnings){
-                    // notify warnings activity that update was not successful.
-                    Intent i = new Intent();
-                    i.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
-                    i.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
-                    i.putExtra(StopReason.STOPREASON_EXTRA,StopReason.NONETWORK);
-                    PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.WARN, "Weather warnings not updated because no internet connection available.");
-                    sendBroadcast(i);
-                }
-                // update app views with old data
-                executor.execute(new Runnable() {
+            weatherLocations = intent.getParcelableArrayListExtra(Weather.WeatherLocation.PARCELABLE_NAME);
+            updateCaller = intent.getIntExtra(UpdateAlarmManager.EXTRA_UPDATE_SOURCE,UpdateAlarmManager.UPDATE_FROM_UNSPECIFIED);
+        }
+        // cancel deprecated warnings
+        if (WeatherSettings.notifyWarnings(this)){
+            cancelDeprecatedWarningNotifications();
+        }
+        connectivityManager = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // perform service task only if:
+        // 1) intent supplied telling what to do, AND
+        // 2) internet connection is present
+        boolean hasNetwork = false;
+        if (suitableNetworkAvailable(context)){
+            hasNetwork = true;
+            // put
+            if ((Build.VERSION.SDK_INT > 23) && (connectivityManager!=null)){
+                networkCallback = new ConnectivityManager.NetworkCallback(){
                     @Override
-                    public void run() {
-                        UpdateAlarmManager.updateAppViews(context);
-                    }
-                });
-            }
-            // this is for tasks without internet connection
-            if (updateNotifications){
-                // update notifications from present data, e.g. when location changed
-                Runnable notificationUpdater=new Runnable() {
-                    @Override
-                    public void run() {
-                        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
-                        ArrayList<WeatherWarning> warnings = WeatherWarnings.getCurrentWarnings(context,true);
-                        ArrayList<WeatherWarning> locationWarnings = WeatherWarnings.getWarningsForLocation(context,warnings,weatherLocation);
-                        launchWeatherWarningNotifications(locationWarnings,true);
-                        PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Notifications updated.");
+                    public void onLost(Network network) {
+                        stopThisService(StopReason.NETWORK_LOSS);
                     }
                 };
-                executor.execute(notificationUpdater);
-            }
-            if (createAreaDatabase){
-                if (!Areas.AreaDatabaseProgress.getInstance().isRunning()){
-                    executor.execute(createAreaDatabaseRunnable);
-                }
-            }
-            // clean up database if necessary
-            executor.execute(cleanUpRunnable);
-            // queue service termination, this is always the last thing to do
-            if (hasNetwork){
-                executor.execute(serviceTerminationRunnableNetwork);
+                connectivityManager.registerDefaultNetworkCallback((ConnectivityManager.NetworkCallback) networkCallback);
             } else {
-                executor.execute(serviceTerminationRunnableNoNetwork);
+                timer.schedule(timeOutTask,TIMEOUTTASK_DELAY);
             }
-            // if update caller is an activity, we can safely terminate the service at once, since the executor
-            // will keep running as long as the app is in the foreground.
-            if (updateCaller==UpdateAlarmManager.UPDATE_FROM_ACTIVITY){
-                if (hasNetwork){
-                    serviceTerminationRunnableNetwork.run();
-                } else {
-                    serviceTerminationRunnableNoNetwork.run();
+            // check if an arraylist of stations was provided, if not get the one from settings
+            boolean getLocationFromSettings = false;
+            if (weatherLocations==null){
+                getLocationFromSettings = true;
+            } else {
+                if (weatherLocations.size()==0){
+                    getLocationFromSettings = true;
                 }
+            }
+            // when arrayList of stations is null or empty, get the station from settings
+            if (getLocationFromSettings){
+                weatherLocations = new ArrayList<Weather.WeatherLocation>();
+                weatherLocations.add(WeatherSettings.getSetStationLocation(context));
+            }
+            if ((updateWeather) && (WeatherSettings.isWeatherAndUVHIUpdateAllowed(context) || !WeatherSettings.UVHIfetchData(context))){
+                APIReaders.WeatherForecastRunnable weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(context, weatherLocations){
+                    @Override
+                    public void onStart(){
+                        updateNotification(0);
+                    }
+                    @Override
+                    public void onPositiveResult(){
+                        // update GadgetBridge and widgets
+                        UpdateAlarmManager.updateAppViews(context,null);
+                        // notify main class
+                        Intent intent = new Intent();
+                        intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+                        sendBroadcast(intent);
+                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.INFO,"Weather update: success");
+                        super.onPositiveResult();
+                    }
+                    @Override
+                    public void onNegativeResult(){
+                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Weather update: failed, error.");
+                        if (ssl_exception){
+                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"SSL exception detected by service.");
+                            Intent ssl_intent = new Intent();
+                            ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
+                            sendBroadcast(ssl_intent);
+                        }
+                        // need to update main app with old data
+                        Intent intent = new Intent();
+                        intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+                        sendBroadcast(intent);
+                        // need to update views with old data: GadgetBridge and widgets
+                        UpdateAlarmManager.updateAppViews(context,null);
+                    }
+                };
+                executor.execute(weatherForecastRunnable);
+            }
+            if (updateWarnings) {
+                APIReaders.WeatherWarningsRunnable weatherWarningsRunnable = new APIReaders.WeatherWarningsRunnable(this){
+                    @Override
+                    public void onStart(){
+                        updateNotification(1);
+                    }
+                    @Override
+                    public void onPositiveResult(ArrayList<WeatherWarning> warnings){
+                        super.onPositiveResult(warnings);
+                        PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.INFO,"Warnings updated successfully.");
+                        // trigger update of views in activity
+                        Intent intent = new Intent();
+                        intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
+                        intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,true);
+                        sendBroadcast(intent);
+                        if (WeatherSettings.notifyWarnings(context)){
+                            UpdateAlarmManager.updateAppViews(context,null);
+                            launchWeatherWarningNotifications(warnings,false);
+                        }
+                    }
+                    public void onNegativeResult(){
+                        // trigger update of views in activity
+                        PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.ERR,"Getting warnings failed.");
+                        Intent intent = new Intent();
+                        intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
+                        intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
+                        sendBroadcast(intent);
+                    }
+                };
+                executor.execute(weatherWarningsRunnable);
+            }
+            if (updateTextForecasts){
+                APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
+                    @Override
+                    public void onStart(){
+                        updateNotification(2);
+                    }
+                    @Override
+                    public void onPositiveResult(){
+                        Intent intent = new Intent();
+                        intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
+                        intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT,true);
+                        PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Weather texts updated successfully.");
+                        sendBroadcast(intent);
+                        WeatherSettings.setLastTextForecastsUpdateTime(getApplicationContext(),Calendar.getInstance().getTimeInMillis());
+                    }
+                };
+                executor.execute(textForecastRunnable);
+            }
+            if (updateLayers){
+                APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,WeatherLayer.getLayers(context)){
+                    @Override
+                    public void onStart() {
+                        updateNotification(3);
+                    }
+                    @Override
+                    public void onFinished(boolean success) {
+                        Intent intent = new Intent();
+                        intent.setAction(WeatherLayersActivity.ACTION_UPDATE_LAYERS);
+                        intent.putExtra(WeatherLayersActivity.UPDATE_LAYERS_RESULT,success);
+                        PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Layer images updated successfully.");
+                        sendBroadcast(intent);
+                    }
+                };
+                getLayerImages.setForceUpdate(true);
+                executor.execute(getLayerImages);
+            }
+            if (updatePollen){
+                APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context){
+                    @Override
+                    public void onStart() {
+                        updateNotification(4);
+                    }
+                    @Override
+                    public void onFinished(boolean success) {
+                        Intent intent = new Intent();
+                        intent.setAction(Pollen.ACTION_UPDATE_POLLEN);
+                        intent.putExtra(Pollen.UPDATE_POLLEN_RESULT,success);
+                        PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Pollen data updated successfully.");
+                        sendBroadcast(intent);
+                    }
+                };
+                executor.execute(pollenReader);
+            }
+            if (updateRainRadar){
+                APIReaders.RadarMNSetGeoserverRunnable radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(context){
+                    @Override
+                    public void onStart() {
+                        updateNotification(5);
+                    }
+                    @Override
+                    public void onFinished(long startTime, boolean success) {
+                        if (success){
+                            Intent intent = new Intent();
+                            intent.setAction(WeatherWarningActivity.ACTION_RAINRADAR_UPDATE);
+                            intent.putExtra(WeatherWarningActivity.RAINRADAR_UPDATE_RESULT,true);
+                            PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Rain radar updated successfully.");
+                            sendBroadcast(intent);
+                        }
+                    }
+                };
+                executor.execute(radarMNSetGeoserverRunnable);
             }
         } else {
-            PrivateLog.log(getApplicationContext(),PrivateLog.SERVICE,PrivateLog.INFO,"Service already running.");
-            // terminate, because service is already running
+            if (updateWarnings){
+                // notify warnings activity that update was not successful.
+                Intent i = new Intent();
+                i.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
+                i.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT,false);
+                i.putExtra(StopReason.STOPREASON_EXTRA,StopReason.NONETWORK);
+                PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.WARN, "Weather warnings not updated because no internet connection available.");
+                sendBroadcast(i);
+            }
+            // update app views with old data
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    UpdateAlarmManager.updateAppViews(context,null);
+                }
+            });
+        }
+        // this is for tasks without internet connection
+        if (updateNotifications){
+            // update notifications from present data, e.g. when location changed
+            Runnable notificationUpdater=new Runnable() {
+                @Override
+                public void run() {
+                    Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+                    ArrayList<WeatherWarning> warnings = WeatherWarnings.getCurrentWarnings(context,true);
+                    ArrayList<WeatherWarning> locationWarnings = WeatherWarnings.getWarningsForLocation(context,warnings,weatherLocation);
+                    launchWeatherWarningNotifications(locationWarnings,true);
+                    PrivateLog.log(getApplicationContext(), PrivateLog.SERVICE, PrivateLog.INFO, "Notifications updated.");
+                }
+            };
+            executor.execute(notificationUpdater);
+        }
+        if (createAreaDatabase){
+            if (!Areas.AreaDatabaseProgress.getInstance().isRunning()){
+                executor.execute(createAreaDatabaseRunnable);
+            }
+        }
+        // clean up database if necessary
+        executor.execute(cleanUpRunnable);
+        // queue service termination, this is always the last thing to do
+        if (hasNetwork){
+            executor.execute(serviceTerminationRunnableNetwork);
+        } else {
+            executor.execute(serviceTerminationRunnableNoNetwork);
+        }
+        // if update caller is an activity, we can safely terminate the service at once, since the executor
+        // will keep running as long as the app is in the foreground.
+        if (updateCaller==UpdateAlarmManager.UPDATE_FROM_ACTIVITY){
+            if (hasNetwork){
+                serviceTerminationRunnableNetwork.run();
+            } else {
+                serviceTerminationRunnableNoNetwork.run();
+            }
         }
         return START_NOT_STICKY;
     }
@@ -446,6 +434,8 @@ public class DataUpdateService extends Service {
 
     private Notification getNotification(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            final int IC_IMPORTANCE = NotificationManager.IMPORTANCE_LOW;
+            final int WARNING_NC_IMPORTANCE = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel nc = new NotificationChannel(IC_ID,getResources().getString(R.string.service_notification_categoryname),IC_IMPORTANCE);
             nc.setDescription(getResources().getString(R.string.service_notification_categoryname));
             nc.setShowBadge(true);
@@ -521,6 +511,7 @@ public class DataUpdateService extends Service {
     public static Notification getWarningNotification(Context context, NotificationManager notificationManager, WeatherWarning weatherWarning, String sortKey, int uniqueNotificationID){
         final String notificationChannelID = WeatherSettings.getNotificationChannelID(context);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            final int WARNING_NC_IMPORTANCE = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel nc = new NotificationChannel(notificationChannelID,context.getResources().getString(R.string.preference_category_warnings),WARNING_NC_IMPORTANCE);
             nc.setDescription(context.getResources().getString(R.string.preference_category_warnings));
             if (WeatherSettings.LEDEnabled(context)){

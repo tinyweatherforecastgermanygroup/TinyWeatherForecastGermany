@@ -75,7 +75,6 @@ public class MainActivity extends Activity {
 
     Context context;
     StationsManager stationsManager;
-    // ArrayList<Weather.WeatherLocation> spinnerItems;
     StationFavorites stationFavorites;
     Spinner spinner;
     ListView weatherList;
@@ -153,7 +152,7 @@ public class MainActivity extends Activity {
                             // re-launch the weather update via http
                             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"SSL disabled permanently due to errors.");
                             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"re-launching weather update.");
-                            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.FORCE_UPDATE,weatherCard);
+                            forcedWeatherUpdate();
                             dialogInterface.dismiss();
                         }
                     });
@@ -384,21 +383,10 @@ public class MainActivity extends Activity {
             if (WeatherSettings.useBackgroundLocation(context)){
                 if (WeatherLocationManager.checkForBackgroundLocation(context)){
                     WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
-                } else {
                 }
             }
         }
-        // this is necessary if the update of weather data occurs while the app is in the background
-        boolean recreateWeatherAdapter = false;
-        if (forecastAdapter==null) {
-            recreateWeatherAdapter = true;
-        }
         loadCurrentWeather();
-        try {
-            checkIfWarningsAreOutdated();
-        } catch (Exception e){
-            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN,PrivateLog.ERR,"Error in onResume when checking for warnings: "+e.getMessage());
-        }
         final Context applicationContext = this;
         spinner.postDelayed(new Runnable() {
             @Override
@@ -582,20 +570,6 @@ public class MainActivity extends Activity {
             if (WeatherSettings.GPSAuto(context) && (!WeatherLocationManager.hasLocationPermission(context))){
                 requestLocationPermission(PERMISSION_CALLBACK_LOCATION);
             }
-            // get new data from api or display present data.
-            /*
-            if (!API_TESTING_ENABLED){
-                if (weatherCard!=null){
-                    // check for update
-                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.CHECK_FOR_UPDATE,weatherCard);
-                    //displayWeatherForecast();
-                } else {
-                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,weatherCard);
-                }
-            }
-
-             */
-
             // test API
             if (API_TESTING_ENABLED){
                 testAPI_Init();
@@ -618,12 +592,6 @@ public class MainActivity extends Activity {
             if (intentLocation!=null){
                 launchStationSearchByLocation(intentLocation);
             }
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    UpdateAlarmManager.updateAppViews(context);
-                }
-            });
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
             popupHint();
             // create pollen area database
@@ -875,30 +843,6 @@ public class MainActivity extends Activity {
         loadStationsSpinner();
     }
 
-    private void loadCurrentWeather(){
-        if ((WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)) ||
-                (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA))){
-            // in case of new station add it to the spinner list and update the spinner display
-            if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)){
-                addToSpinner(WeatherSettings.getSetStationLocation(context));
-
-            }
-            // force a re-load of weather data using the station from settings
-            weatherCard = null;
-            // set back the flag as update was done.
-            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
-        }
-        if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS)){
-            // set back the flag before recreate occurs
-            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
-            // recreate the whole view
-            recreate();
-            return;
-        }
-        // display weather without any update mode active, but only if adapter is empty
-        displayWeatherForecast();
-    }
-
     public void loadStationsData(){
         StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(getApplicationContext()) {
             @Override
@@ -955,7 +899,9 @@ public class MainActivity extends Activity {
                    //Log.v(Tag.MAIN,"-------------------------------------------");
                     weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
                     if ((weatherCard == null) || (API_TESTING_ENABLED)){
-                        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.FORCE_UPDATE,weatherCard);
+                        ArrayList<String> updateTasks = new ArrayList<String>();
+                        updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
+                        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,weatherCard);
                     } else {
                         displayWeatherForecast();
                     }
@@ -1100,6 +1046,31 @@ public class MainActivity extends Activity {
         return weatherInfos;
     }
 
+    private void loadCurrentWeather(){
+        if ((WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)) ||
+                (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA))){
+            // in case of new station add it to the spinner list and update the spinner display
+            if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)){
+                addToSpinner(WeatherSettings.getSetStationLocation(context));
+            }
+            // force a re-load of weather data using the station from settings
+            weatherCard = null;
+            // set back the flag as update was done.
+            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
+        }
+        if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS)){
+            // set back the flag before recreate occurs
+            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
+            // recreate the whole view
+            recreate();
+            return;
+        }
+        // trigger one update unconditionally here
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,null,null);
+        // display weather without any update mode active, but only if adapter is empty
+        displayWeatherForecast();
+    }
+
     public void displayWeatherForecast() {
         boolean dataChanged = false;
         // check if weather forecast in memory is outdated, fetch from database if necessary
@@ -1112,39 +1083,9 @@ public class MainActivity extends Activity {
                 dataChanged = true;
             }
         }
-        // it might happen that location changed, but no update of weather occured since then. We need to trigger
-        // an update if nothing is found in the database.
-        if (weatherCard==null){
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.CHECK_FOR_UPDATE,null);
-        }
-        // recover area database if necessary
-        UpdateAlarmManager.prepareAreaDatabaseIfNecessary(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
-        // if warnings enabled and area database in place and warnings in memory outdated
-        if (!WeatherSettings.areWarningsDisabled(context) && WeatherSettings.isAreaDatabaseReady(context) && (WeatherWarnings.areWarningsOutdated(context,localWarnings))) {
-            // invalidate current warnings
-            localWarnings = null;
-            if (forecastAdapter != null) {
-                forecastAdapter.setWarnings(null);
-            }
-            // determine new warnings async
-            WeatherWarnings.getWarningsForLocationRunnable getWarningsForLocationRunnable = new WeatherWarnings.getWarningsForLocationRunnable(context, null, null) {
-                @Override
-                public void onResult(ArrayList<WeatherWarning> result) {
-                    localWarnings = result;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            displayAdapter(weatherCard);
-                        }
-                    });
-                }
-            };
-            executor.execute(getWarningsForLocationRunnable);
-        } else {
-            // refresh adapter if null OR data changed OR adapter older than weather data
-            if ((forecastAdapter==null) || (dataChanged) || (forecastAdapter.creationTime<weatherCard.polling_time)){
-                displayAdapter(weatherCard);
-            }
+        // refresh adapter if null OR data changed OR adapter older than weather data
+        if ((forecastAdapter==null) || (dataChanged) || (forecastAdapter.creationTime<weatherCard.polling_time)){
+            displayAdapter(weatherCard);
         }
     }
 
@@ -1177,24 +1118,11 @@ public class MainActivity extends Activity {
    }
 
     public void forcedWeatherUpdate(){
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.FORCE_UPDATE,weatherCard);
+        ArrayList<String> updateTasks = new ArrayList<String>();
+        updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
+        updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS);
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,weatherCard);
         forceWeatherUpdateFlag = true;
-    }
-
-    private void checkIfWarningsAreOutdated(){
-        if (WeatherSettings.areWarningsOutdated(context) && WeatherSettings.updateWarnings(context)){
-            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Warnings are outdated and need an update.");
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Triggering update...");
-                    UpdateAlarmManager.updateWarnings(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,false);
-                }
-            });
-        } else {
-            PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Warnings are up to date.");
-            //checkIfWarningsApply();
-        }
     }
 
     public static int getColorFromResource(Context context, int id){
@@ -1299,7 +1227,9 @@ public class MainActivity extends Activity {
             return true;
         }
         if (item_id == R.id.menu_travelupdate) {
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context, UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.FORCE_UPDATE|UpdateAlarmManager.TRAVEL_UPDATE,weatherCard);
+            ArrayList<String> updateTasks = new ArrayList<String>();
+            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context, UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,weatherCard);
             return true;
         }
         if (item_id==R.id.menu_license) {
@@ -1492,49 +1422,6 @@ public class MainActivity extends Activity {
         // b) if sql database is outdated
         if ((!Areas.doesAreaDatabaseExist(context.getApplicationContext())) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(context.getApplicationContext()))) {
             return true;
-            /*
-            PrivateLog.log(context.getApplicationContext(), PrivateLog.MAIN, PrivateLog.INFO, "Start building area database...");
-            // Lock screen rotation during database processing to prevent activity being destroyed
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-            final RelativeLayout main_area_progress_holder = (RelativeLayout) findViewById(R.id.main_area_progress_holder);
-            main_area_progress_holder.setVisibility(View.VISIBLE);
-            final ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_area_progress_bar);
-            final TextView progressText = (TextView) findViewById(R.id.main_area_progress_text);
-            final String dataText = getApplicationContext().getString(R.string.areadatabasecreator_title);
-            Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(context, executor) {
-                @Override
-                public void showProgress(final int progress, final String text) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setProgress(progress);
-                            progressText.setText(dataText + ": " + text);
-                        }
-                    });
-                }
-
-                @Override
-                public void onFinished() {
-                    super.onFinished();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            PrivateLog.log(context.getApplicationContext(), PrivateLog.MAIN, PrivateLog.WARN, "Area database has been built successfully.");
-                            // Allow screen rotation within this app again
-                            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-                            main_area_progress_holder.setVisibility(View.GONE);
-                            // after new database is available, the text search has more options and needs to
-                            // be rebuilt
-                            Log.v("twfg","MAIN DURAZTION: "+(Calendar.getInstance().getTimeInMillis()-time)/1000);
-                            loadStationsData();
-                            // after new database is available, warnings need to be rebuilt and checked again
-                            //checkIfWarningsApply();
-                        }
-                    });
-                }
-            };
-            areasDataBaseCreator.create();
-             */
         }
         return false;
     }
@@ -1568,7 +1455,7 @@ public class MainActivity extends Activity {
             StringBuilder stringBuilder= new StringBuilder();
             for (int i=0; i<text.length; i++){
                 stringBuilder.append(text[i]);
-                stringBuilder.append(System.getProperty("line.separator"));;
+                stringBuilder.append(System.getProperty("line.separator"));
             }
             builder.setMessage(stringBuilder.toString());
         }
@@ -1922,12 +1809,14 @@ public class MainActivity extends Activity {
                 textView_time.setText(getApplicationContext().getResources().getString(R.string.geoinput_reflocation_time)+" "+simpleDateFormat.format(new Date(time)));
             } else {
                 // do not display time if coordinates were entered manually
-                String s = own_location.getExtras().getString(Weather.WeatherLocation.EXTRAS_NAME,null);
-                if (s!=null){
-                    textView_time.setVisibility(View.VISIBLE);
-                    textView_time.setText(s);
-                } else {
-                    textView_time.setVisibility(View.GONE);
+                if (bundle!=null){
+                    String s = bundle.getString(Weather.WeatherLocation.EXTRAS_NAME,null);
+                    if (s!=null){
+                        textView_time.setVisibility(View.VISIBLE);
+                        textView_time.setText(s);
+                    } else {
+                        textView_time.setVisibility(View.GONE);
+                    }
                 }
             }
             builder.setView(view);

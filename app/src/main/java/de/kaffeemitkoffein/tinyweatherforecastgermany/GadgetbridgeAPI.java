@@ -32,17 +32,13 @@ public class GadgetbridgeAPI {
     public final static String WEATHER_EXTRA="WeatherSpec";
     public final static String WEATHER_ACTION="de.kaffeemitkoffein.broadcast.WEATHERDATA";
 
-    private WeatherSpec weatherSpec;
-    private Context context;
-    CurrentWeatherInfo weatherCard;
-
-    public GadgetbridgeAPI(Context context){
-        this.context = context;
+    private GadgetbridgeAPI(){
     }
 
-    private void setWeatherData(){
+    private static void sendWeatherData(Context context, CurrentWeatherInfo weatherCard){
+        WeatherSpec weatherSpec;
         if (weatherCard==null){
-            weatherCard = new Weather().getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_WIDGET);
+            weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_WIDGET);
         }
         if (weatherCard!=null){
             // build the WeatherSpec instance with current weather
@@ -157,7 +153,7 @@ public class GadgetbridgeAPI {
                     daily.windDirection = weatherInfo.getWindDirectionInt();
                 }
                 if (weatherInfo.hasUvHazardIndex()){
-                    daily.uvIndex = weatherInfo.getUV();
+                    daily.uvIndex = weatherInfo.getUvHazardIndex();
                 }
                 if (weatherInfo.hasProbPrecipitation()){
                     daily.precipProbability = weatherInfo.getProbPrecipitation();
@@ -192,12 +188,12 @@ public class GadgetbridgeAPI {
             for (int i=0; i<weatherSpec.forecasts.size(); i++){
                 PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecast #"+i+": Tmin/Tmax/Cond./RH: "+(weatherSpec.forecasts.get(i).minTemp)+"/"+(weatherSpec.forecasts.get(i).maxTemp)+"/"+weatherSpec.forecasts.get(i).conditionCode+"/"+weatherSpec.forecasts.get(i).humidity);
             }
+            sendWeatherBroadcast(context,weatherSpec);
         }
     }
 
-    private void sendWeatherBroadcast(){
+    private static void sendWeatherBroadcast(Context context, WeatherSpec weatherSpec){
         WeatherSettings weatherSettings = new WeatherSettings(context);
-        setWeatherData();
         if (weatherSpec!=null){
             Intent intent = new Intent();
             intent.putExtra(WEATHER_EXTRA, (Parcelable) weatherSpec);
@@ -215,15 +211,10 @@ public class GadgetbridgeAPI {
         }
     }
 
-    public final void sendWeatherBroadcastIfEnabled(){
+    public static void sendWeatherBroadcastIfEnabled(Context context,CurrentWeatherInfo currentWeatherInfo){
         if (WeatherSettings.serveGadgetBridge(context)){
-            sendWeatherBroadcast();
+            sendWeatherData(context,currentWeatherInfo);
         }
-    }
-
-    public final void sendWeatherBroadcastIfEnabled(CurrentWeatherInfo currentWeatherInfo){
-        this.weatherCard = currentWeatherInfo;
-        sendWeatherBroadcastIfEnabled();
     }
 
 }

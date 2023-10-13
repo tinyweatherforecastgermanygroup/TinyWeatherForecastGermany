@@ -92,7 +92,6 @@ public class WeatherSettings {
     public static final String PREF_SETALARM = "PREF_setalarm";
     public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
     public static final String PREF_LASTWEATHERUPDATETIME = "PREF_lastweatherupdatetime";
-    public static final String PREF_LASTWIDGETUPDATETIME = "PREF_lastwidgetupdatetime";
     public static final String PREF_UPDATE_WARNINGS = "PREF_update_warnings";
     public static final String PREF_UPDATE_TEXTFORECASTS = "PREF_update_textforecasts";
     public static final String PREF_WIDGET_OPACITY = "PREF_widget_opacity";
@@ -171,6 +170,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_WIND_IN_CHARTS_MAX = "PREF_wind_in_charts_max";
     public static final String PREF_REPLACE_BY_MUNICIPALITY = "PREF_replace_by_municipality";
     public static final String PREF_BATTERY_OPTIMIZATION_FLAG = "PREF_battery_opt_flag";
+    public static final String PREF_LAST_NOTIFICATIONS_UPDATE_TIME = "PREF_nf_updatetime";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -204,9 +204,9 @@ public class WeatherSettings {
     public static final boolean PREF_SETALARM_DEFAULT = true;
     public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
     public static final boolean PREF_UPDATE_TEXTFORECASTS_DEFAULT = true;
+    public static final long PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
     public static final long PREF_LASTWEATHERUPDATETIME_DEFAULT = 0;
-    public static final long PREF_LASTWIDGETUPDATETIME_DEFAULT = 0;
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "90";
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
     public static final boolean PREF_WIDGET_DISPLAYWARNINGS_DEFAULT = true;
@@ -230,7 +230,6 @@ public class WeatherSettings {
     public static final boolean PREF_GPSMANUAL_DEFAULT = false;
     public static final long PREF_LASTGPSFIX_DEFAULT = 0;
     public static final boolean PREF_DISABLE_TLS_DEFAULT = false;
-    public static final long PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final boolean PREF_TEXTFORECAST_FILTER_DEFAULT = false;
     public static final long PREF_RADAR_LASTDATAPOLL_DEFAULT = 0;
     public static final boolean PREF_RADAR_SHOW_DEFAULT = true;
@@ -283,6 +282,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT = "100";
     public static final boolean PREF_REPLACE_BY_MUNICIPALITY_DEFAULT = false;
     public static final int PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT = BatteryFlag.NOT_ASKED;
+    public static final long PREF_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT = 0;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String location_desc_alternate = PREF_LOCATION_DESC_ALTERNATE_DEFAULT;
@@ -316,7 +316,6 @@ public class WeatherSettings {
     public boolean setalarm = PREF_SETALARM_DEFAULT;
     public String updateinterval = PREF_UPDATEINTERVAL_DEFAULT;
     public long lastWeatherUpdateTime = PREF_LASTWEATHERUPDATETIME_DEFAULT;
-    public long lastWidgetUpdateTime = PREF_LASTWIDGETUPDATETIME_DEFAULT;
     public boolean update_warnings = PREF_UPDATE_WARNINGS_DEFAULT;
     public boolean update_textforecasts = PREF_UPDATE_TEXTFORECASTS_DEFAULT;
     public String widget_opacity = PREF_WIDGET_OPACITY_DEFAULT;
@@ -842,7 +841,7 @@ public class WeatherSettings {
         pref_editor.apply();
         PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
         setPollenRegion(context,pollenArea);
-        resetUVHIUpdateAllowedTime(context);
+        resetLastWeatherUpdateTime(context);
         // always set this to the last passive location, so that user choice overrides older location data
         // setLastPassiveLocation(context,weatherLocation);
     }
@@ -867,7 +866,7 @@ public class WeatherSettings {
         pref_editor.putString(PREF_LOCATION_DESCRIPTION,PREF_LOCATION_DESCRIPTION_DEFAULT);
         pref_editor.putLong(PREF_STATION_TIME,PREF_STATION_TIME_DEFAULT);
         pref_editor.apply();
-        resetUVHIUpdateAllowedTime(context);
+        resetLastWeatherUpdateTime(context);
     }
 
     public static String getFavorites2(Context context) {
@@ -920,6 +919,19 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_SERVE_GADGETBRIDGE,PREF_SERVE_GADGETBRIDGE_DEFAULT);
     }
 
+    public static long getViewsLastUpdateTime(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getLong(PREF_VIEWS_LAST_UPDATE_TIME,PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT);
+    }
+
+    public static void setViewsLastUpdateTime(Context context, long l){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_VIEWS_LAST_UPDATE_TIME, l);
+        pref_editor.apply();
+    }
+
+
     public static boolean fakeTimestampForGadgetBridge(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT);
@@ -951,24 +963,13 @@ public class WeatherSettings {
         return (long) getForecastUpdateInterval(context) * 60 * 60 * 1000;
     }
 
-    public static void setLastWidgetUpdateTime(Context context, long time){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putLong(PREF_LASTWIDGETUPDATETIME,time);
-        pref_editor.apply();
-    }
 
-    public static boolean isWidgetForecastCheckDue(Context context) {
+    public static boolean isForecastCheckDue(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        try {
-            int interval = Integer.parseInt(sharedPreferences.getString(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT));
-            long lastWidgetUpdateTime = sharedPreferences.getLong(PREF_LASTWIDGETUPDATETIME,PREF_LASTWIDGETUPDATETIME_DEFAULT);
-            long time = Calendar.getInstance().getTimeInMillis();
-            if (lastWidgetUpdateTime+interval > time) {
-                setLastWidgetUpdateTime(context,time);
-                return true;
-            }
-        } catch (NumberFormatException e){
+        long updateIntervalInMillis = getForecastUpdateIntervalInMillis(context);
+        long lastForecastUpdateTime = sharedPreferences.getLong(PREF_LASTWEATHERUPDATETIME,PREF_LASTWEATHERUPDATETIME_DEFAULT);
+        long time = Calendar.getInstance().getTimeInMillis();
+        if (lastForecastUpdateTime+updateIntervalInMillis<time) {
             return true;
         }
         return false;
@@ -978,7 +979,8 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         try {
             int i = Integer.parseInt(sharedPreferences.getString(PREF_WARNINGS_CACHETIME, PREF_WARNINGS_CACHETIME_DEFAULT));
-            return i * 60 * 1000;
+            i =  i * 60 * 1000;
+            return i;
         } catch (Exception e){
             return 30 * 60 * 1000;
         }
@@ -1567,6 +1569,19 @@ public class WeatherSettings {
         return sharedPreferences.getInt(PREF_ASKEDFORLOCATIONFLAG,PREF_ASKEDFORLOCATIONFLAG_DEFAULT);
     }
 
+    public static long getLastNotificationUpdateTime(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getLong(PREF_LAST_NOTIFICATIONS_UPDATE_TIME,PREF_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT);
+    }
+
+    public static void setLastNotificationUpdateTime(Context context, long l){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_LAST_NOTIFICATIONS_UPDATE_TIME,l);
+        pref_editor.apply();
+    }
+
+
     public final class DeviceRotation {
         final static String DEVICE = "0";
         final static String PORTRAIT = "1";
@@ -1873,29 +1888,29 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
-    public static long getLastUVHIUpdateTime(Context context){
+    public static long getLastWeatherUpdateTime(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(PREF_LASTWEATHERUPDATETIME,PREF_LASTWEATHERUPDATETIME_DEFAULT);
     }
 
-    public static void setLastUVHIUpdateTime(Context context, long l) {
+    public static void setLastWeatherUpdateTime(Context context, long l) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putLong(PREF_LASTWEATHERUPDATETIME, l);
         pref_editor.apply();
     }
 
-    public static boolean isUVHIUpdateAllowed(Context context){
-        long lastUpdate = getLastUVHIUpdateTime(context);
+    public static boolean isWeatherAndUVHIUpdateAllowed(Context context){
+        long lastUpdate = getLastWeatherUpdateTime(context);
         return (Calendar.getInstance().getTimeInMillis()>lastUpdate+POLLBLOCKTIME);
     }
 
-    public static void resetUVHIUpdateAllowedTime(Context context){
-        setLastUVHIUpdateTime(context,0);
+    public static void resetLastWeatherUpdateTime(Context context){
+        setLastWeatherUpdateTime(context,0);
     }
 
-    public static void setUVHIUpdateAllowedTime(Context context){
-        setLastUVHIUpdateTime(context,Calendar.getInstance().getTimeInMillis());
+    public static void setLastWeatherUpdateTime(Context context){
+        setLastWeatherUpdateTime(context,Calendar.getInstance().getTimeInMillis());
     }
 
     public final static class UpdateType {
@@ -1929,28 +1944,13 @@ public class WeatherSettings {
         int result = sharedPreferences.getInt(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT);
         return result;
     }
-/*
 
-    public static Weather.WeatherLocation getLastPassiveLocation(Context context){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return new Weather.WeatherLocation(sharedPreferences.getString(PREF_LAST_PASSIVE_LOCATION,PREF_LAST_PASSIVE_LOCATION_DEFAULT));
-    }
-
-    public static void setLastPassiveLocation(Context context, Weather.WeatherLocation weatherLocation){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putString(PREF_LAST_PASSIVE_LOCATION,weatherLocation.serializeToString());
-        pref_editor.apply();
-    }
-
-
- */
     public static boolean useBackgroundLocation(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_USE_BACKGROUND_LOCATION,PREF_USE_BACKGROUND_LOCATION_DEFAULT);
     }
 
-    public static void setuseBackgroundLocation(Context context, boolean b){
+    public static void setUseBackgroundLocation(Context context, boolean b){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_USE_BACKGROUND_LOCATION,b);

@@ -19,7 +19,6 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
@@ -33,7 +32,7 @@ import android.os.PersistableBundle;
 import android.os.SystemClock;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+
 
 public class UpdateAlarmManager {
 
@@ -49,18 +48,7 @@ public class UpdateAlarmManager {
     public static int VIEWS_UPDATE_INTERVAL         = VIEWS_UPDATE_INTERVAL_DEFAULT;
     // suppress any view update actions if this time did not pass since last view update
     public static int VIEWS_MAXUPDATETIME_DEFAULT   = 10*60*1000; // 10 minutes;
-    public static int VIEWS_MAXUPDATETIME   = VIEWS_MAXUPDATETIME_DEFAULT;
-
-    // used when no valid data available (anymore) from MainActivity, when update triggered by user
-    // or during API-testing
-    // meaning: always update
-    public static final int FORCE_UPDATE = 1;
-    // indicates update from widget
-    public static final int WIDGET_UPDATE = 2;
-    // called from MainActivtity, onBootComplete and/or if update has been requested by 3rd party app
-    public static final int CHECK_FOR_UPDATE = 4;
-    // update everything and all locations from history
-    public static final int TRAVEL_UPDATE = 128;
+    public static int VIEWS_MAXUPDATETIME           = VIEWS_MAXUPDATETIME_DEFAULT;
 
     public static final String EXTRA_UPDATE_SOURCE = "UPDATE_SOURCE";
     public static final int UPDATE_FROM_UNSPECIFIED = -1;
@@ -82,104 +70,141 @@ public class UpdateAlarmManager {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static boolean updateAndSetAlarmsIfAppropriate(Context context, int updateSource, int update_mode, CurrentWeatherInfo weatherCard){
+    public static boolean updateAndSetAlarmsIfAppropriate(final Context context, int updateSource, ArrayList<String> updateTasks, CurrentWeatherInfo weatherCard){
+        // updateTasks may be null, meaning there are no mandatory tasks to do. Create an empty list, then.
+        if (updateTasks==null){
+            updateTasks = new ArrayList<String>();
+        }
         adaptUpdateIntervalsToSettings(context);
-        WeatherSettings weatherSettings = new WeatherSettings(context);
         if (weatherCard==null){
             weatherCard = Weather.getCurrentWeatherInfo(context,updateSource);
         }
-        boolean forceUpdate = (update_mode&FORCE_UPDATE)==FORCE_UPDATE;
-        boolean travelUpdate = (update_mode&TRAVEL_UPDATE)==TRAVEL_UPDATE;
+        // add weather update task if not already in list AND
+        //   - (regular updates set in settings AND update is due) OR
+        //   - (no data) OR
+        //   - (serve gadgetbridge AND update is due) OR
+        //   - (is new server data expected AND update interval is 6h AND regular updates enabled in settings)
+        if (!updateTasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER) &&
+                ((WeatherSettings.getUpdateForecastRegularly(context) && WeatherSettings.isForecastCheckDue(context)) ||
+                 (weatherCard==null) ||
+                 (WeatherSettings.serveGadgetBridge(context) && WeatherSettings.isForecastCheckDue(context)) ||
+                 (weatherCard.isNewServerDataExpected(context) && WeatherSettings.forecastUpdateIntervalIs6h(context) && WeatherSettings.getUpdateForecastRegularly(context))
+                )
+           ){
+            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
+        }
+        // add warnings if enabled and if update is due
+        if (!updateTasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS)) {
+            if (!WeatherSettings.areWarningsDisabled(context) && WeatherSettings.areWarningsOutdated(context)) {
+                updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS);
+            }
+        }
+        if (!updateTasks.contains(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS)){
+            if (WeatherSettings.updateTextForecasts(context)){
+                if (WeatherSettings.areTextForecastsOutdated(context)) {
+                    updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS);
+                }
+            }
+        }
+
+        // let service build/recover area database if database damaged or not present
+        if (MainActivity.prepareAreaDatabase(context)){
+            if (!updateTasks.contains(DataUpdateService.SERVICEEXTRAS_CRATE_AREADATABASE)){
+                updateTasks.add(DataUpdateService.SERVICEEXTRAS_CRATE_AREADATABASE);
+            }
+        }
         /*
          * Create alarms to cancel notifications if applicable
          */
-        if (WeatherSettings.notifyWarnings(context)){
+        if (WeatherSettings.notifyWarnings(context)) {
             CancelNotificationBroadcastReceiver.setCancelNotificationsAlarm(context);
-        }
-        /*
-         * update_period: this is the update interval from the settings. It means how often
-         * data should be polled from the DWD API.
-         */
-        long update_period = WeatherSettings.getForecastUpdateIntervalInMillis(context);
-        // set time for timer to equal next interval as set up by user
-        // weatherCard can be null on first app launch or after clearing memory or if station
-        // was not used before.
-        // update_time_utc is used to calculate if an update from the DWD API is due.
-        long update_time_utc = 0; // set default to 1970 to force update if last update time is unknown
-        if (weatherCard != null){
-            update_time_utc = weatherCard.polling_time + update_period;
         }
         // Define alarm or job time for update.
         // note that realtime refers to device up time and not utc.
         long next_update_due_in_millis = VIEWS_UPDATE_INTERVAL;
         long next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
-        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Update interval: "+update_period/1000/60/60);
-        if (weatherCard!=null){
-            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Data issued: "+new Date(weatherCard.issue_time).toString());
-            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Last data poll: "+new Date(weatherCard.polling_time).toString());
-            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"New data expected: "+new Date(weatherCard.getWhenNewServerDataExpected(context)).toString());
+        /*
+         * Check if views need to be updated.
+         * Views means widgets and gadgetbridge.
+         */
+        if (WeatherSettings.getViewsLastUpdateTime(context) + VIEWS_MAXUPDATETIME < Calendar.getInstance().getTimeInMillis()) {
+            if (updateSource!=UPDATE_FROM_WIDGET){
+                updateAppViews(context,weatherCard);
+            } else {
+                // do not trigger back update to widget if call is from widget;
+                // update Gadgetbridge only
+                GadgetbridgeAPI.sendWeatherBroadcastIfEnabled(context,weatherCard);
+                WeatherSettings.setViewsLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
+            }
+        } else {
+            // set a shorter update period considering the time passed since last update
+            long millis_since_last_update = Calendar.getInstance().getTimeInMillis() - WeatherSettings.getViewsLastUpdateTime(context);
+            next_update_due_in_millis = VIEWS_UPDATE_INTERVAL - millis_since_last_update;
+            next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
         }
-        PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Next update due: "+new Date(update_time_utc).toString());
         boolean result = false;
-        if (    ((weatherCard==null)) ||
-                ((weatherSettings.serve_gadgetbridge) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
-                ((weatherSettings.setalarm) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
-                ((update_mode==CHECK_FOR_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
-                ((update_mode==WIDGET_UPDATE) && (update_time_utc <= Calendar.getInstance().getTimeInMillis())) ||
-                ((update_mode&FORCE_UPDATE)==FORCE_UPDATE) ||
-                (weatherCard.isNewServerDataExpected(context) && WeatherSettings.forecastUpdateIntervalIs6h(context) && (weatherSettings.setalarm))){
+        // only call service if list of tasks is not empty.
+        if (updateTasks.size()>0){
             // update now.
             // In case of success and failure of update the views (gadgetbridge and widgets) will get updated directly
             // from the service. Therefore, views are only updated from here if the service has not been called.
-            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"triggering weather update from API...");
             try {
-                result = startDataUpdateService(context,updateSource,true,WeatherSettings.updateWarnings(context),WeatherSettings.updateTextForecasts(context),travelUpdate);
-            } catch (SecurityException e){
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather forecasts) not started because of a SecurityException: "+e.getMessage());
+                result = startDataUpdateService(context,updateSource,updateTasks);
+                if (!result){
+                    PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.WARN, "DataUpdateService not started because of missing internet connection or errors.");
+                    updateAppViews(context,weatherCard);
+                }
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "DataUpdateService started with the given tasks: "+updateTasks.toString());
+            } catch (SecurityException e) {
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.WARN, "DataUpdateService not started because of a SecurityException: " + e.getMessage());
                 // views need to be updated from here, because starting service failed!
-                updateAppViews(context);
-            }
-            catch (IllegalStateException e){
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather forecasts) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
+                updateAppViews(context,weatherCard);
+            } catch (IllegalStateException e) {
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.WARN, "DataUpdateService not started because of an IllegalStateException, the device is probably in doze mode: " + e.getMessage());
                 // views need to be updated from here, because starting service failed!
-                updateAppViews(context);
+                updateAppViews(context,weatherCard);
             }
         } else {
-            // check if an update of warnings only for widgets applies
-            // or if notification is set
-            if (((update_mode==WIDGET_UPDATE) && (weatherSettings.widget_displaywarnings) && (WeatherSettings.areWarningsOutdated(context))) ||
-               ((weatherSettings.notify_warnings) && (WeatherSettings.areWarningsOutdated(context)))){
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"triggering warnings update from API...");
-                try {
-                    result = startDataUpdateService(context,updateSource,false,true,false,false);
-                } catch (SecurityException e){
-                    PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather warnings only for widgets) not started because of a SecurityException: "+e.getMessage());
-                    // views need to be updated from here, because starting service failed!
-                    updateAppViews(context);
-                }
-                catch (IllegalStateException e){
-                    PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (weather warnings only for widgets) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
-                    // views need to be updated from here, because starting service failed!
-                    updateAppViews(context);
-                }
-            } else {
-                // update not due, neither for forecasts nor for warnings (widgets)
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"update from API not due.");
-                result = false;
-                /*
-                 * Check if views need to be updated.
-                 * Views means widgets and gadgetbridge.
-                 */
-                if (weatherSettings.views_last_update_time + VIEWS_MAXUPDATETIME < Calendar.getInstance().getTimeInMillis()){
-                    updateAppViews(context);
-                } else {
-                    // set a shorter update period considering the time passed since last update
-                    long millis_since_last_update = Calendar.getInstance().getTimeInMillis() - weatherSettings.views_last_update_time;
-                    next_update_due_in_millis = VIEWS_UPDATE_INTERVAL - millis_since_last_update;
-                    next_update_time_realtime = SystemClock.elapsedRealtime() + next_update_due_in_millis;
+            // do nothing special if no tasks
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO," Service not called, since currently there are no tasks to perform.");
+        }
+        // Log data about update times if applicable; for efficacy reasons in if clause
+        if (WeatherSettings.loggingEnabled(context)){
+            String lineBreak = System.getProperty("line.separator");
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("----------------------------------"); stringBuilder.append(lineBreak);
+            stringBuilder.append("Updater has the following status: "); stringBuilder.append(lineBreak);
+            if (updateSource==UPDATE_FROM_ACTIVITY){
+                stringBuilder.append("* called from ACTIVITY"); stringBuilder.append(lineBreak);
+            }
+            if (updateSource==UPDATE_FROM_JOB){
+                stringBuilder.append("* called from JOB"); stringBuilder.append(lineBreak);
+            }
+            if (updateSource==UPDATE_FROM_WIDGET){
+                stringBuilder.append("* called from WIDGET"); stringBuilder.append(lineBreak);
+            }
+            stringBuilder.append(" * next updater job due in "); stringBuilder.append(String.valueOf(next_update_due_in_millis/1000/60)); stringBuilder.append(" minutes."); stringBuilder.append(lineBreak);
+            stringBuilder.append(" * last weather data update was "+Weather.SIMPLEDATEFORMATS.DETAILED.format(WeatherSettings.getLastWeatherUpdateTime(context))); stringBuilder.append(lineBreak);
+            if (weatherCard!=null){
+                stringBuilder.append(" * weather data for ["); stringBuilder.append(weatherCard.weatherLocation.getName()); stringBuilder.append("|"); stringBuilder.append(weatherCard.weatherLocation.getOriginalDescription()); stringBuilder.append("] is from "); stringBuilder.append(Weather.SIMPLEDATEFORMATS.DETAILED.format(weatherCard.polling_time)); stringBuilder.append(lineBreak);
+                if (WeatherSettings.forecastUpdateIntervalIs6h(context)){
+                    stringBuilder.append(" * new weather data is expected at "); stringBuilder.append(Weather.SIMPLEDATEFORMATS.DETAILED.format(weatherCard.getWhenNewServerDataExpected(context))); stringBuilder.append(". Due: "); stringBuilder.append(weatherCard.isNewServerDataExpected(context)); stringBuilder.append(lineBreak);
                 }
             }
+            stringBuilder.append(" * weather update period is every "); stringBuilder.append(WeatherSettings.getForecastUpdateIntervalInMillis(context)/1000/60/60); stringBuilder.append(" hours. Due: "); stringBuilder.append(WeatherSettings.isForecastCheckDue(context)); stringBuilder.append(lineBreak);
+            stringBuilder.append(" * weather warnings period is every "); stringBuilder.append(WeatherSettings.getWarningsUpdateIntervalInMillis(context)/1000/60); stringBuilder.append(" minutes. Due: "); stringBuilder.append(WeatherSettings.areWarningsOutdated(context)); stringBuilder.append(lineBreak);
+            if (WeatherSettings.serveGadgetBridge(context)){
+                stringBuilder.append(" * serving GadgetBridge."); stringBuilder.append(lineBreak);
+            }
+            if (WeatherSettings.updateTextForecasts(context)){
+                stringBuilder.append(" * last text update was "); stringBuilder.append(Weather.SIMPLEDATEFORMATS.DETAILED.format(WeatherSettings.getLastTextForecastsUpdateTime(context))); stringBuilder.append(". Due: "); stringBuilder.append(WeatherSettings.areTextForecastsOutdated(context)); stringBuilder.append(lineBreak);
+            }
+            stringBuilder.append(" * update tasks are: "); stringBuilder.append(updateTasks); stringBuilder.append(lineBreak);
+            if (updateTasks.size()>0){
+                stringBuilder.append(" * service started successfully: "); stringBuilder.append(result); stringBuilder.append(lineBreak);
+            }
+            stringBuilder.append("----------------------------------"); stringBuilder.append(lineBreak);
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,stringBuilder.toString());
         }
         /*
          * For API < 27 we use AlarmManager, for API equal or greater 27 we use JobSheduler with JobWorkItem.
@@ -212,57 +237,12 @@ public class UpdateAlarmManager {
         return result;
     }
 
-    public static boolean updateWarnings(Context context, int updateSource, boolean forceUpdate){
-        if ((WeatherSettings.areWarningsOutdated(context) || forceUpdate)){
-            try {
-                startDataUpdateService(context,updateSource, false,true,false,false);
-                return true;
-            } catch (SecurityException e){
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
-                // views need to be updated from here, because starting service failed!
-                updateAppViews(context);
-                return false;
-            }
-            catch (IllegalStateException e){
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
-                // views need to be updated from here, because starting service failed!
-                updateAppViews(context);
-                return false;
-            }
-        }
-        return false;
-    }
-
-    public static boolean updateTexts(Context context, int updateSource){
-        try {
-            startDataUpdateService(context,updateSource,false,false,true,false);
-            return true;
-        } catch (SecurityException e){
-            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of a SecurityException: "+e.getMessage());
-            // views need to be updated from here, because starting service failed!
-            updateAppViews(context);
-            return false;
-        }
-        catch (IllegalStateException e){
-            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.WARN,"WeatherUpdateService (warnings) not started because of an IllegalStateException, the device is probably in doze mode: "+e.getMessage());
-            // views need to be updated from here, because starting service failed!
-            updateAppViews(context);
-            return false;
-        }
-    }
-
-    public static void updateAppViews(Context context){
-        WeatherSettings weatherSettings = new WeatherSettings(context);
+    public static void updateAppViews(Context context, CurrentWeatherInfo weatherCard){
         // update GadgetBridge
-        if (weatherSettings.serve_gadgetbridge) {
-            GadgetbridgeAPI gadgetbridgeAPI = new GadgetbridgeAPI(context);
-            gadgetbridgeAPI.sendWeatherBroadcastIfEnabled();
-        }
+        GadgetbridgeAPI.sendWeatherBroadcastIfEnabled(context,weatherCard);
         WidgetRefresher.refresh(context);
         // save the last update time
-        weatherSettings.views_last_update_time = Calendar.getInstance().getTimeInMillis();
-        //weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,weatherSettings.views_last_update_time);
-        weatherSettings.applyPreference(WeatherSettings.PREF_VIEWS_LAST_UPDATE_TIME,Calendar.getInstance().getTimeInMillis());
+        WeatherSettings.setViewsLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
     }
 
     public static boolean startDataUpdateService(final Context context, int updateSource, final ArrayList<String> tasks){
@@ -305,21 +285,17 @@ public class UpdateAlarmManager {
             intent.putExtra(DataUpdateService.SERVICEEXTRAS_CRATE_AREADATABASE,true);
                 noInternetConnRequired = true;
         }
-            if (DataUpdateService.suitableNetworkAvailable(context) || noInternetConnRequired){
-                intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-                final Intent intent2 = new Intent(intent);
-                Thread thread = new Thread(){
-                    @Override
-                    public void run() {
-                        super.run();
-                        if (Build.VERSION.SDK_INT<26){
-                            context.startService(intent2);
-                        } else {
-                            context.startForegroundService(intent2);
-                        }
-                    }
-                };
-                thread.start();
+        if (DataUpdateService.suitableNetworkAvailable(context) || noInternetConnRequired){
+            intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            try {
+                if (Build.VERSION.SDK_INT < 26) {
+                    context.startService(intent);
+                } else {
+                    context.startForegroundService(intent);
+                }
+            } catch (Exception e) {
+                return false;
+            }
             // animation progress disabled because too slow on legacy devices
             /*
             Intent mainAppProgressIntent = new Intent();
@@ -331,34 +307,5 @@ public class UpdateAlarmManager {
         return false;
     }
 
-    private static boolean startDataUpdateService(final Context context, int updateSource, final boolean updateWeather, final boolean updateWarnings, final boolean updateTextForecasts, final boolean travelUpdate){
-        ArrayList<String> tasks = new ArrayList<String>();
-        if (updateWeather){
-            tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
-        }
-        if (updateWarnings){
-            tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS);
-        }
-        if (updateTextForecasts){
-            tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS);
-        }
-        if (travelUpdate){
-            tasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST);
-        }
-        /*
-        if (MainActivity.prepareAreaDatabase(context)){
-            tasks.add(DataUpdateService.SERVICEEXTRAS_CRATE_AREADATABASE);
-        }
-         */
-        return startDataUpdateService(context,updateSource,tasks);
-    }
-
-    public static boolean prepareAreaDatabaseIfNecessary(Context context, int updateSource){
-        ArrayList<String> tasks = new ArrayList<String>();
-        if (MainActivity.prepareAreaDatabase(context)){
-            tasks.add(DataUpdateService.SERVICEEXTRAS_CRATE_AREADATABASE);
-        }
-        return startDataUpdateService(context,updateSource,tasks);
-    }
 
 }

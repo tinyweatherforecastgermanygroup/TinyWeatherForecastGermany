@@ -31,6 +31,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
+
+import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -96,7 +98,7 @@ public class WelcomeActivity extends Activity {
         }
         executor = Executors.newSingleThreadExecutor();
         // start area database creation of necessary.
-        UpdateAlarmManager.prepareAreaDatabaseIfNecessary(this,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
+        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,null,null);
         force_replay = false;
         Intent intent = getIntent();
         if (intent != null) {

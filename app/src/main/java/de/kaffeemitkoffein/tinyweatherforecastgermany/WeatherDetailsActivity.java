@@ -273,7 +273,7 @@ public class WeatherDetailsActivity extends Activity {
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
         }
         if (currentWeatherInfo!=null){
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,UpdateAlarmManager.CHECK_FOR_UPDATE,currentWeatherInfo);
+            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,null,currentWeatherInfo);
         } else {
             //UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,null);
             updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);

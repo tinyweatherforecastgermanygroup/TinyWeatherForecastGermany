@@ -36,11 +36,11 @@ public class WeatherUpdateBroadcastReceiver extends BroadcastReceiver {
                 PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "+-> intent has an action.");
             }
             if (intent.getAction().equals(UPDATE_ACTION)) {
-                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "+-> action is a update request.");
+                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "+-> action is an update request.");
                 if (WeatherSettings.useBackgroundLocation(context)){
                     WeatherLocationManager.checkForBackgroundLocation(context);
                 }
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context, UpdateAlarmManager.UPDATE_FROM_JOB,UpdateAlarmManager.CHECK_FOR_UPDATE, null);
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context, UpdateAlarmManager.UPDATE_FROM_JOB,null, null);
             }
         }
     }
