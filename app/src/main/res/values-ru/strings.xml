@@ -431,7 +431,7 @@
     <string name="welcome_s4_showuv">Загрузка и отображение индекса опасности ультрафиолетового излучения для вашего местоположения.</string>
     <string name="preference_screen_pollen_rye_summary">Отображение прогноза количества пыльцы ржи.</string>
     <string name="wd_probablity_precipitation_amounts">Вероятность количества осадков</string>
-    <string name="preference_use_background_location_summary">Регулярно проверяйте местоположение, используя данные о местоположении, полученные другими приложениями.</string>
+    <string name="preference_use_background_location_summary">Регулярно проверяйте местоположение, используя имеющиеся данные о местоположении.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Места для совместного использования</string>
     <string name="preference_display_wind_in_charts_summary">Отображение скорости ветра на обзорном графике и в виджете графика.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Количество затрагиваемых местоположений для совместного использования. Введите ноль, чтобы открыть доступ ко всем. Текущее значение:</string>
@@ -445,4 +445,10 @@
     <string name="allow">Разрешить</string>
     <string name="always_allow">всегда позволять</string>
     <string name="opensettings">Открытые настройки</string>
+    <string name="favorites_rebuild_sucessfully">Фавориты были успешно перестроены!</string>
+    <string name="get_pollen_data">Получение данных о пыльце…</string>
+    <string name="preference_display_replace_summary">Показывать название муниципалитета вместо названия метеостанции, если оно доступно.</string>
+    <string name="preference_display_wind_in_charts_max_summary">Максимальное значение скорости ветра, отображаемое на графиках, вводится в километрах в час (км/ч). Текущее значение:</string>
+    <string name="preference_display_wind_in_charts_max_title">Шкала ветров на графиках</string>
+    <string name="preference_station_replace_title">Показать муниципалитет</string>
 </resources>
