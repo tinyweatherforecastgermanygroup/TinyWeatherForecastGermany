@@ -204,7 +204,9 @@ public class WeatherIcons {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),resource,options);
-        ThemePicker.applyColor(context,bitmap,fromWidget);
+        if (bitmap!=null){
+            ThemePicker.applyColor(context,bitmap,fromWidget);
+        }
         return bitmap;
     }
 

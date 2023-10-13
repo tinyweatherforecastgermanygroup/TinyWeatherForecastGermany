@@ -739,6 +739,7 @@ public class MainActivity extends Activity {
             // invalidate current weather data
             weatherCard = null;
             WeatherSettings.setStation(this,weatherLocation);
+            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+weatherLocation.getDescription(context));
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
@@ -757,7 +758,7 @@ public class MainActivity extends Activity {
                     }
                 }
             });
-            displayWeatherForecast();
+            loadCurrentWeather();
         }
     }
 

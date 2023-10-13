@@ -244,7 +244,6 @@ public final class ThemePicker {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         paint.setColor(color);
         canvas.drawRect(0,0,bitmap.getWidth(),bitmap.getHeight(),paint);
-
     }
 
     public static void applyColor(Context context, final Bitmap bitmap, boolean fromWidget){
