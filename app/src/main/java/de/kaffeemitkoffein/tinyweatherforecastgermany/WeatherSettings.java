@@ -995,7 +995,7 @@ public class WeatherSettings {
         long getWarningsLastUpdateTime = sharedPreferences.getLong(PREF_WARNINGS_LAST_UPDATE_TIME,PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
         long getWarningsUpdateIntervalInMillis = getWarningsUpdateIntervalInMillis(context);
         boolean result = getWarningsLastUpdateTime + getWarningsUpdateIntervalInMillis <= Calendar.getInstance().getTimeInMillis();
-        return  result;
+        return result;
     }
 
     public static boolean areWarningsDisabled(Context context){

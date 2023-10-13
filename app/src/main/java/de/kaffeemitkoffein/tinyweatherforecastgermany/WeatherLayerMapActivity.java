@@ -357,7 +357,14 @@ public class WeatherLayerMapActivity extends Activity {
             spinnerHolder.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
         }
         if ((pos1==-1) && (pos2==-1) && (spinnerHolder!=null)){
-            spinnerHolder.setVisibility(View.INVISIBLE);
+            spinnerHolder.setVisibility(View.GONE);
+            // adapt dwd notice to use complete width
+            TextView notice = (TextView) findViewById(R.id.wlm_reference_text);
+            if (notice!=null){
+                ViewGroup.LayoutParams layoutParams = notice.getLayoutParams();
+                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                notice.setLayoutParams(layoutParams);
+            }
         }
 
     }
