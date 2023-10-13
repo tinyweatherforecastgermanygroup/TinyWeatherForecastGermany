@@ -289,7 +289,7 @@
     <string name="preference_category_location">Ubicación</string>
     <string name="overview_button">Panorama general</string>
     <string name="preference_gpsmanual_title">Manual</string>
-    <string name="preference_gpsmanual_summary">Seleccione usted mismo la estación meteorológica de la lista de estaciones más cercanas.</string>
+    <string name="preference_gpsmanual_summary">Seleccione usted mismo la estación meteorológica de una lista de las estaciones más cercanas.</string>
     <string name="preference_gpsauto_title">Comprobar ubicación</string>
     <string name="preference_gpsauto_summary">Compruebe que la ubicación es correcta en cada puesta en marcha.</string>
     <string name="preference_display_rotation_title">Mostrar alineación</string>
@@ -431,7 +431,7 @@
     <string name="welcome_s4_showuv">Cargue y visualice el índice de peligrosidad UV de su ubicación.</string>
     <string name="preference_screen_pollen_rye_summary">Mostrar la previsión del recuento de polen de centeno.</string>
     <string name="wd_probablity_precipitation_amounts">Probabilidad de precipitaciones</string>
-    <string name="preference_use_background_location_summary">Comprueba regularmente la ubicación utilizando los datos de localización obtenidos por otras aplicaciones.</string>
+    <string name="preference_use_background_location_summary">Compruebe periódicamente la ubicación utilizando los datos de localización existentes.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Lugares para compartir</string>
     <string name="preference_display_wind_in_charts_summary">Muestra la velocidad del viento en el gráfico general y en el widget de gráfico.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Número de ubicaciones afectadas a compartir. Introduzca cero para compartir todas. Valor actual:</string>
@@ -445,4 +445,10 @@
     <string name="allow">Permitir</string>
     <string name="always_allow">permitir siempre</string>
     <string name="opensettings">Abrir ajustes</string>
+    <string name="favorites_rebuild_sucessfully">¡Los favoritos se reconstruyeron con éxito!</string>
+    <string name="get_pollen_data">Obtención de datos sobre el polen…</string>
+    <string name="preference_display_replace_summary">Mostrar el nombre del municipio en lugar del nombre de la estación meteorológica, si está disponible.</string>
+    <string name="preference_display_wind_in_charts_max_summary">Valor máximo de la velocidad del viento que aparece en las cartas, introducido en kilómetros por hora (km/h). Valor actual:</string>
+    <string name="preference_display_wind_in_charts_max_title">Escala del viento en las cartas</string>
+    <string name="preference_station_replace_title">Mostrar municipio</string>
 </resources>
