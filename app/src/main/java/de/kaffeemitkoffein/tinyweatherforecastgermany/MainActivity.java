@@ -744,21 +744,26 @@ public class MainActivity extends Activity {
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"New sensor: "+weatherLocation.getDescription(context));
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
             last_updateweathercall = Calendar.getInstance().getTimeInMillis();
-            addToSpinner(weatherLocation);
-            runOnUiThread(new Runnable() {
+            executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    if (autoCompleteTextView!=null){
-                        try {
-                            autoCompleteTextView.setText("");
-                            autoCompleteTextView.clearListSelection();
-                        } catch (Exception e){
-                            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"unable to clear autoCompleteTextView");
-                        }
+                    addToSpinner(weatherLocation);
+                    if (autoCompleteTextView!=null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    autoCompleteTextView.setText("");
+                                    autoCompleteTextView.clearListSelection();
+                                } catch (Exception e) {
+                                    PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.ERR, "unable to clear autoCompleteTextView");
+                                }
+                            }
+                        });
                     }
+                    loadCurrentWeather();
                 }
             });
-            loadCurrentWeather();
         }
     }
 
@@ -796,9 +801,14 @@ public class MainActivity extends Activity {
         // check if alternate description exists, and find it if not.
         ArrayList<Weather.WeatherLocation> spinnerItems = StationFavorites.getFavorites(context);
         ArrayList<String> spinnerDescriptions = Weather.WeatherLocation.getDescriptions(context,spinnerItems);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, spinnerDescriptions);
+        final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, spinnerDescriptions);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
-        spinner.setAdapter(spinnerArrayAdapter);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                spinner.setAdapter(spinnerArrayAdapter);
+            }
+        });
         final Context context = this;
         // for the spinner
         final SpinnerListener spinnerListener = new SpinnerListener() {
@@ -1088,7 +1098,12 @@ public class MainActivity extends Activity {
         }
         // refresh adapter if null OR data changed OR adapter older than weather data
         if ((forecastAdapter==null) || (dataChanged) || (forecastAdapter.creationTime<weatherCard.polling_time)){
-            displayAdapter(weatherCard);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    displayAdapter(weatherCard);
+                }
+            });
         }
     }
 
