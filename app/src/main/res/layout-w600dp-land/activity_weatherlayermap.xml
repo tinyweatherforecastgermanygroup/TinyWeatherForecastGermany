@@ -107,6 +107,7 @@
                   android:textColor="?attr/colorText"
                   android:textSize="@dimen/widget_textsize_medium"
                   android:visibility="visible"
+                  android:gravity="center_horizontal"
                   android:layout_gravity="center"
                   android:text="@string/dwd_notice"/>
 
