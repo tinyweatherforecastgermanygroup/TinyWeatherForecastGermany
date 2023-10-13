@@ -133,7 +133,7 @@
     <string name="preference_display_show_radar_by_default_title">Regenradar</string>
     <string name="preference_display_show_radar_by_default_summary">Immer automatisch anzeigen.</string>
     <string name="preference_setalarm_title">Immer aktualisieren</string>
-    <string name="preference_setalarm_summary">Halte die Wetterdaten auf den neuesten Stand.</string>
+    <string name="preference_setalarm_summary">Halte die Wetterdaten auf dem neuesten Stand.</string>
     <string name="preference_setalarm_notice">HINWEIS: Aktuell nicht verfügbar, da aktivierter Gadgetbridge-Support ohnehin automatische Aktualisierungen erfordert.</string>
     <string name="preference_display_station_geo_title">Geographische Koordinaten</string>
     <string name="preference_display_station_geo_summary">Geographische Koordinaten der Messstation anzeigen</string>
@@ -314,7 +314,7 @@
     <string name="preference_gpsauto_title">Standort suchen</string>
     <string name="preference_gpsauto_summary">Beim Start Standort überprüfen.</string>
     <string name="preference_gpsmanual_title">Manuell</string>
-    <string name="preference_gpsmanual_summary">Händisch eine Station aus einer Liste der nächst gelegenen Stationen auswählen.</string>
+    <string name="preference_gpsmanual_summary">Händisch eine Station aus einer Liste nächst gelegener Stationen auswählen.</string>
     <string name="preference_category_location">Standort</string>
     <string name="preference_usegps_title">Ortungsdienste nutzen</string>
     <string name="overview_button">Übersicht</string>
@@ -448,7 +448,7 @@
     <string name="clear_sky">klarer Himmel</string>
     <string name="welcome_s4_showuv">UV Gefahrenindex für die Wetterstation laden und anzeigen.</string>
     <string name="wd_probablity_precipitation_amounts">Wahrscheinlichkeit von Niederschlagsmengen</string>
-    <string name="preference_use_background_location_summary">Überprüfe den Standort regelmäßig anhand der von anderen Apps erhaltenen Standortdaten.</string>
+    <string name="preference_use_background_location_summary">Überprüfe den Standort regelmäßig anhand der vorhandenen Standortdaten.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Geteilte Orte</string>
     <string name="preference_display_wind_in_charts_summary">Anzeige der Windgeschwindigkeit in der Übersichtsgrafik und im Widget mit der Grafik.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Anzahl der betroffenen Orte, die geteilt werden sollen. Geben Sie Null ein, um alle zu teilen. Aktueller Wert:</string>
@@ -462,4 +462,10 @@
     <string name="allow">Erlauben</string>
     <string name="always_allow">immer erlauben</string>
     <string name="opensettings">Öffne die Einstellungen</string>
+    <string name="favorites_rebuild_sucessfully">Die Favoriten wurden erfolgreich wieder aufgebaut!</string>
+    <string name="get_pollen_data">Pollenflugdaten erhalten…</string>
+    <string name="preference_display_replace_summary">Zeigen Sie den Namen der Gemeinde anstelle des Namens der Wetterstation an, falls verfügbar.</string>
+    <string name="preference_display_wind_in_charts_max_summary">Maximaler Wert der Windgeschwindigkeit, der in den Diagrammen angezeigt wird, eingegeben in Kilometern pro Stunde (km/h). Aktueller Wert:</string>
+    <string name="preference_display_wind_in_charts_max_title">Windskala in Diagrammen</string>
+    <string name="preference_station_replace_title">Gemeinde anzeigen</string>
 </resources>
