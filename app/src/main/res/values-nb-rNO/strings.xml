@@ -290,7 +290,7 @@
     <string name="preference_meterednetwork_summary">Bruk også målenettverk for å få data.</string>
     <string name="preference_gpsauto_title">Sjekk plassering</string>
     <string name="preference_gpsmanual_title">Manuell</string>
-    <string name="preference_gpsmanual_summary">Velg værstasjonen fra en liste over nærmeste stasjoner selv.</string>
+    <string name="preference_gpsmanual_summary">Velg selv værstasjonen fra en liste over de nærmeste stasjonene.</string>
     <string name="preference_display_overviewchart_summary">Vis alltid diagrammet som viser temperatur, skyer og regn for de neste dagene. Når den er deaktivert, vil kartet bare være synlig i liggende modus, og bare hvis det er nok plass.</string>
     <string name="preference_meterednetwork_notice">Du kan gå glipp av værvarsler bare når du bruker umålte nettverk.</string>
     <string name="overview_button">Oversikt</string>
@@ -406,7 +406,7 @@
     <string name="clear_sky">klar himmel</string>
     <string name="welcome_s4_showuv">Last inn og vis UV-fareindeksen for stedet der du befinner deg.</string>
     <string name="wd_probablity_precipitation_amounts">Sannsynlighet for nedbørsmengder</string>
-    <string name="preference_use_background_location_summary">Kontroller posisjonen regelmessig ved hjelp av posisjonsdataene som er innhentet av andre apper.</string>
+    <string name="preference_use_background_location_summary">Kontroller posisjonen regelmessig ved hjelp av de eksisterende posisjonsdataene.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Steder å dele</string>
     <string name="preference_display_wind_in_charts_summary">Vis vindhastigheten i oversiktskartet og i kartwidgeten.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Antall berørte steder som skal deles. Angi null for å dele alle. Gjeldende verdi:</string>
@@ -420,4 +420,28 @@
     <string name="allow">Tillat</string>
     <string name="always_allow">alltid tillate</string>
     <string name="opensettings">Åpne innstillingene</string>
+    <string name="favorites_rebuild_sucessfully">Favorittene ble gjenoppbygget med suksess!</string>
+    <string name="wd_hcc">Høyt skydekke (høyere enn 7 km)</string>
+    <string name="wd_sun">Solskinnets varighet</string>
+    <string name="wd_bcc">Basishøyde på konvektive skyer</string>
+    <string name="wd_pt">Sannsynlighet for tordenvær</string>
+    <string name="next">neste</string>
+    <string name="wd_pv1">Sannsynlighet for sikt under én kilometer</string>
+    <string name="wd_t5">Temperatur 5 cm over bakkenivå</string>
+    <string name="wd_mcc">Middels skydekke (2 til 7 km)</string>
+    <string name="wd_pp">Sannsynlighet for nedbør</string>
+    <string name="back">tilbake</string>
+    <string name="get_pollen_data">Innhenting av pollendata…</string>
+    <string name="wd_ph">Sannsynlighet for hagl</string>
+    <string name="wd_ccb500">Skydekke under 152,4 m (500 fot)</string>
+    <string name="wd_lcc">Lavt skydekke (under 2 km)</string>
+    <string name="wd_pa">Nedbørmengde</string>
+    <string name="preference_display_replace_summary">Vis kommunenavnet i stedet for værstasjonens navn, hvis det er tilgjengelig.</string>
+    <string name="preference_display_wind_in_charts_max_summary">Maksimal vindhastighetsverdi som vises i kartene, angitt i kilometer i timen (km/t). Gjeldende verdi:</string>
+    <string name="preference_display_wind_in_charts_max_title">Vindskala i diagrammer</string>
+    <string name="wd_gusts">Vindkast</string>
+    <string name="wd_wevents">Værhendelser</string>
+    <string name="preference_screen_pollen_rye_summary">Vis prognosen for antall rugpollen.</string>
+    <string name="wd_cc">Skydekke</string>
+    <string name="preference_station_replace_title">Vis kommune</string>
 </resources>
