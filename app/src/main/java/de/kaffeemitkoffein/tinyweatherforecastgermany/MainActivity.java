@@ -386,19 +386,25 @@ public class MainActivity extends Activity {
                 }
             }
         }
-        loadCurrentWeather();
         final Context applicationContext = this;
-        spinner.postDelayed(new Runnable() {
+        executor.execute(new Runnable() {
             @Override
             public void run() {
-                executor.execute(new Runnable() {
+                loadCurrentWeather();
+                spinner.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        checkForBatteryOptimization(applicationContext);
+                        executor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                checkForBatteryOptimization(applicationContext);
+                            }
+                        });
                     }
-                });
+                },6000);
             }
-        },6000);
+        });
+
         super.onResume();
     }
 
@@ -460,6 +466,7 @@ public class MainActivity extends Activity {
             }
             context = getApplicationContext();
             thisActivity = this;
+            executor = Executors.newSingleThreadExecutor();
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
             setContentView(R.layout.activity_main);
             weatherList = (ListView) findViewById(R.id.main_listview);
@@ -482,7 +489,6 @@ public class MainActivity extends Activity {
             actionBar.setCustomView(R.layout.actionbar);
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
             // anchor long click update
-            executor = Executors.newSingleThreadExecutor();
             try {
                 // prepareAreaDatabase(context);
             } catch (Exception e){
@@ -493,13 +499,6 @@ public class MainActivity extends Activity {
             } catch (Exception e){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
             }
-
-            try {
-                // prepareAreaDatabase(getApplicationContext());
-            } catch (Exception e){
-                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Preparing database failed on main thread.");
-            }
-
             // check for update procedures if not first install
             if ((WeatherSettings.getLastAppVersionCode(context) != BuildConfig.VERSION_CODE) &&
                     (WeatherSettings.getLastAppVersionCode(context)>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT)){
@@ -549,7 +548,12 @@ public class MainActivity extends Activity {
                 WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
             }
             try {
-                loadStationsSpinner();
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadStationsSpinner();
+                    }
+                });
             } catch (Exception e){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading StationSpinner!");
             }
@@ -588,7 +592,6 @@ public class MainActivity extends Activity {
             // check if a geo intent was sent
 
             Location intentLocation = getLocationForGeoIntent(getIntent());
-
             if (intentLocation!=null){
                 launchStationSearchByLocation(intentLocation);
             }
@@ -601,7 +604,6 @@ public class MainActivity extends Activity {
                     APIReaders.PollenAreaReader pollenAreaReader = new APIReaders.PollenAreaReader(context){
                         @Override
                         public void onFinished() {
-                            Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
                             // PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
                             // todo: refresh view for pollen
                             super.onFinished();
@@ -797,7 +799,6 @@ public class MainActivity extends Activity {
         if (stationFavorites==null){
             stationFavorites = new StationFavorites(context);
         }
-        Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
         // check if alternate description exists, and find it if not.
         ArrayList<Weather.WeatherLocation> spinnerItems = StationFavorites.getFavorites(context);
         ArrayList<String> spinnerDescriptions = Weather.WeatherLocation.getDescriptions(context,spinnerItems);
@@ -1073,13 +1074,23 @@ public class MainActivity extends Activity {
             // set back the flag before recreate occurs
             WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
             // notify widgets (& Gadgetbridge), since such view changes may also affect widgets, e.g. overview chart
-            UpdateAlarmManager.updateAppViews(context,weatherCard);
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    UpdateAlarmManager.updateAppViews(context,weatherCard);
+                }
+            });
             // recreate the whole view
             recreate();
             return;
         }
         // trigger one update unconditionally here
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,null,null);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,null,null);
+            }
+        });
         // display weather without any update mode active, but only if adapter is empty
         displayWeatherForecast();
     }
@@ -1200,8 +1211,7 @@ public class MainActivity extends Activity {
             setOverflowMenuItemColor(this,menu,R.id.menu_whatsnew,R.string.whatsnew_button);
         }
         // disable weather warnings if desired by user
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-        if (weatherSettings.warnings_disabled){
+        if (WeatherSettings.areWarningsDisabled(context)){
             for (int i=0; i<menu.size(); i++){
                 if (menu.getItem(i).getItemId()==R.id.menu_warnings){
                     menu.getItem(i).setVisible(false);
