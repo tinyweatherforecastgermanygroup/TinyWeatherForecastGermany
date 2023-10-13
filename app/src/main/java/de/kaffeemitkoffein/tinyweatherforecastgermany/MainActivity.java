@@ -1061,6 +1061,8 @@ public class MainActivity extends Activity {
         if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS)){
             // set back the flag before recreate occurs
             WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
+            // notify widgets (& Gadgetbridge), since such view changes may also affect widgets, e.g. overview chart
+            UpdateAlarmManager.updateAppViews(context,weatherCard);
             // recreate the whole view
             recreate();
             return;
