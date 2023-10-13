@@ -445,7 +445,7 @@
     <string name="clear_sky">ciel dégagé</string>
     <string name="welcome_s4_showuv">Chargement et affichage de l\'indice de risque UV pour votre emplacement.</string>
     <string name="wd_probablity_precipitation_amounts">Probabilité de précipitations</string>
-    <string name="preference_use_background_location_summary">Vérifiez régulièrement l\'emplacement à l\'aide des données de localisation obtenues par d\'autres applications.</string>
+    <string name="preference_use_background_location_summary">Vérifier régulièrement la localisation à l\'aide des données de localisation en place.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Lieux à partager</string>
     <string name="preference_display_wind_in_charts_summary">Afficher la vitesse du vent dans la carte de synthèse et dans le widget de la carte.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Nombre de positions intéressées à partager. Saisir zéro pour tout partager. Valeur actuelle :</string>
@@ -459,4 +459,10 @@
     <string name="allow">Autoriser</string>
     <string name="always_allow">toujours permettre</string>
     <string name="opensettings">Ouvrir les paramètres</string>
+    <string name="favorites_rebuild_sucessfully">Les favoris ont été reconstruits avec succès !</string>
+    <string name="get_pollen_data">Obtenir des données sur le pollen…</string>
+    <string name="preference_display_replace_summary">Afficher le nom de la municipalité au lieu du nom de la station météorologique, si disponible.</string>
+    <string name="preference_display_wind_in_charts_max_summary">Valeur maximale de la vitesse du vent affichée sur les cartes, saisie en kilomètres par heure (km/h). Valeur actuelle :</string>
+    <string name="preference_display_wind_in_charts_max_title">L\'échelle des vents dans les cartes</string>
+    <string name="preference_station_replace_title">Commune d\'affichage</string>
 </resources>
