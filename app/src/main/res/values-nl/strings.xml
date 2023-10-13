@@ -292,7 +292,7 @@
     <string name="preference_gpsauto_summary">Controleer bij elke opstart of de locatie klopt.</string>
     <string name="preference_gpsmanual_title">Handmatig</string>
     <string name="preference_gpsauto_title">Locatie controleren</string>
-    <string name="preference_gpsmanual_summary">Kies zelf het weerstation van een lijst met dichtstbijzijnde stations.</string>
+    <string name="preference_gpsmanual_summary">Selecteer zelf het weerstation uit een lijst met de dichtstbijzijnde stations.</string>
     <string name="overview_button">Overzicht</string>
     <string name="preference_display_rotation_title">Uitlijnen</string>
     <string name="preference_display_rotation_summary">Hoe het scherm dient te worden uitgelijnd</string>
@@ -431,7 +431,7 @@
     <string name="preference_screen_uvhi_fetchData_summary">Haal naast de weersvoorspelling ook de voorspelling van de UV-risico-index voor jouw locatie op.</string>
     <string name="welcome_s4_showuv">De UV-risico-index voor uw locatie laden en weergeven.</string>
     <string name="wd_probablity_precipitation_amounts">Waarschijnlijkheid van neerslaghoeveelheden</string>
-    <string name="preference_use_background_location_summary">Controleer de locatie regelmatig met behulp van de locatiegegevens die door andere apps zijn verkregen.</string>
+    <string name="preference_use_background_location_summary">Controleer de locatie regelmatig aan de hand van de locatiegegevens.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Locaties om te delen</string>
     <string name="preference_display_wind_in_charts_summary">Geef de windsnelheid weer in de overzichtskaart en de kaartwidget.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Aantal geïnteresseerde posities dat gedeeld moet worden. Voer nul in om alles te delen. Huidige waarde:</string>
@@ -445,4 +445,10 @@
     <string name="allow">toestaan</string>
     <string name="always_allow">altijd toestaan</string>
     <string name="opensettings">Open de instellingen</string>
+    <string name="favorites_rebuild_sucessfully">De favorieten werden met succes herbouwd!</string>
+    <string name="get_pollen_data">Pollengegevens krijgen…</string>
+    <string name="preference_display_replace_summary">Toon de gemeentenaam in plaats van de naam van het weerstation, indien beschikbaar.</string>
+    <string name="preference_display_wind_in_charts_max_summary">Maximale windsnelheidswaarde weergegeven in de kaarten, ingevoerd in kilometers per uur (km/h). Huidige waarde:</string>
+    <string name="preference_display_wind_in_charts_max_title">Windschaal in diagrammen</string>
+    <string name="preference_station_replace_title">Gemeente weergeven</string>
 </resources>
