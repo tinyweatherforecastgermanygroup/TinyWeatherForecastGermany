@@ -431,7 +431,7 @@
     <string name="pollen_load5">keskitaso tai korkea</string>
     <string name="welcome_s4_showuv">Lataa ja näytä sijaintisi UV-vaaraindeksi.</string>
     <string name="wd_probablity_precipitation_amounts">Sademäärien todennäköisyys</string>
-    <string name="preference_use_background_location_summary">Tarkista sijainti säännöllisesti muiden sovellusten saamien sijaintitietojen avulla.</string>
+    <string name="preference_use_background_location_summary">Tarkista sijainti säännöllisesti paikannustietojen avulla.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Jaettavat sijainnit</string>
     <string name="preference_display_wind_in_charts_summary">Tuulen nopeuden näyttäminen yleiskartassa ja karttawidgetissä.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Kiinnostuneiden jaettavien työpaikkojen määrä. Syötä nolla, jos haluat jakaa kaikki. Nykyinen arvo:</string>
@@ -445,4 +445,10 @@
     <string name="allow">Salli</string>
     <string name="always_allow">sallia aina</string>
     <string name="opensettings">Avaa asetukset</string>
+    <string name="favorites_rebuild_sucessfully">Suosikit rakennettiin uudelleen onnistuneesti!</string>
+    <string name="get_pollen_data">Siitepölytietojen saaminen…</string>
+    <string name="preference_display_replace_summary">Näytä kunnan nimi sääaseman nimen sijasta, jos se on saatavilla.</string>
+    <string name="preference_display_wind_in_charts_max_summary">Kartoissa näkyvä suurin tuulennopeusarvo, joka syötetään kilometreinä tunnissa (km/h). Nykyinen arvo:</string>
+    <string name="preference_display_wind_in_charts_max_title">Tuuliasteikko kaavioissa</string>
+    <string name="preference_station_replace_title">Näytä kunta</string>
 </resources>
