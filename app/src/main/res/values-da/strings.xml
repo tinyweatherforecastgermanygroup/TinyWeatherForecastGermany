@@ -287,7 +287,7 @@
     <string name="preference_clearnotifications_message">Meddelelseshukommelse ryddet.</string>
     <string name="preference_display_overviewchart_summary">Vis altid diagrammet med temperatur, skyer og regn for de næste dage. Når den er deaktiveret, vil kortet kun være synligt i landskabstilstand, og kun hvis der er plads nok.</string>
     <string name="preference_category_location">Placering</string>
-    <string name="preference_gpsmanual_summary">Du kan selv vælge vejrstationen fra en liste over de nærmeste stationer.</string>
+    <string name="preference_gpsmanual_summary">Vælg selv vejrstationen fra en liste over de nærmeste stationer.</string>
     <string name="preference_gpsauto_title">Tjek placering</string>
     <string name="preference_usegps_title">Brug lokaliseringstjenester</string>
     <string name="preference_gpsauto_summary">Kontroller, at placeringen er korrekt ved hver opstart.</string>
@@ -431,7 +431,7 @@
     <string name="clear_sky">klar himmel</string>
     <string name="welcome_s4_showuv">Indlæs og vis UV-risikoindekset for din placering.</string>
     <string name="wd_probablity_precipitation_amounts">Sandsynlighed for nedbørsmængder</string>
-    <string name="preference_use_background_location_summary">Tjek placeringen regelmæssigt ved hjælp af placeringsdata fra andre apps.</string>
+    <string name="preference_use_background_location_summary">Kontroller placeringen regelmæssigt ved hjælp af de eksisterende placeringsdata.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Steder at dele</string>
     <string name="preference_display_wind_in_charts_summary">Vis vindhastigheden i oversigtsdiagrammet og diagrammets widget.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Antal interesserede positioner, der skal deles. Indtast nul for at dele alle. Nuværende værdi:</string>
@@ -445,4 +445,10 @@
     <string name="allow">Tillad</string>
     <string name="always_allow">altid tillade</string>
     <string name="opensettings">Åbn indstillingerne</string>
+    <string name="favorites_rebuild_sucessfully">Favoritterne blev genopbygget med succes!</string>
+    <string name="get_pollen_data">At få pollendata…</string>
+    <string name="preference_display_replace_summary">Vis kommunens navn i stedet for vejrstationens navn, hvis det er tilgængeligt.</string>
+    <string name="preference_display_wind_in_charts_max_summary">Maksimal vindhastighedsværdi, der vises i søkortet, angivet i kilometer i timen (km/t). Aktuel værdi:</string>
+    <string name="preference_display_wind_in_charts_max_title">Vindskala i diagrammer</string>
+    <string name="preference_station_replace_title">Vis kommune</string>
 </resources>
