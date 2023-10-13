@@ -206,7 +206,7 @@
     <string name="geoinput_longitude">Masukkan bujur (-180 ke 180):</string>
     <string name="geoinput_latitude">Masukkan lintang (-90 ke 90):</string>
     <string name="geoinput_gps">Gunakan layanan lokasi perangkat untuk menentukan lokasi Anda saat ini.</string>
-    <string name="geoinput_search">Mulai Pencarian</string>
+    <string name="geoinput_search">Mulai pencarian</string>
     <string name="geoinput_cancel">Batalkan</string>
     <string name="geoinput_select">Pilih salah satu stasiun cuaca:</string>
     <string name="geoinput_wrongvalue">Bujur harus di antara -180 dan +180, lintang harus di antara -90 dan +90. Mohon coba lagi.</string>
@@ -270,7 +270,7 @@
     <string name="preference_setalarm_notice">CATATAN: ini tidak tersedia saat ini, karena Gadgetbridge memaksa pembaruan otomatis saja.</string>
     <string name="preference_gpsauto_summary">Periksa bahwa lokasi benar pada setiap kali dimulai.</string>
     <string name="preference_gpsmanual_title">Manual</string>
-    <string name="preference_gpsmanual_summary">Pilih stasiun cuaca dari sebuah daftar stasiun terdekat oleh Anda sendiri.</string>
+    <string name="preference_gpsmanual_summary">Pilih sendiri stasiun cuaca dari daftar stasiun terdekat.</string>
     <string name="preference_display_station_geo_summary">Tampilkan koordinat geografis dari stasiun</string>
     <string name="preference_screen_gadgetbridge_summary">Opsi untuk mengintegrasi data cuaca dari aplikasi ini ke Gadgetbridge.</string>
     <string name="preference_gadgetbridge_packagename_summary">Anda dapat menetapkan nama paket kustom di sini, mis. ketika menggunakan fork dari Gadgetbridge. Hapus nama untuk mengembalikan ke nama paket bawaan.</string>
@@ -431,7 +431,7 @@
     <string name="clear_sky">langit cerah</string>
     <string name="welcome_s4_showuv">Memuat dan menampilkan indeks bahaya UV untuk lokasi Anda.</string>
     <string name="wd_probablity_precipitation_amounts">Probabilitas jumlah curah hujan</string>
-    <string name="preference_use_background_location_summary">Periksa lokasi secara teratur menggunakan data lokasi yang diperoleh dari aplikasi lain.</string>
+    <string name="preference_use_background_location_summary">Periksa lokasi secara teratur menggunakan data lokasi yang ada.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Lokasi untuk dibagikan</string>
     <string name="preference_display_wind_in_charts_summary">Menampilkan kecepatan angin di bagan ikhtisar dan widget bagan.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Jumlah posisi yang diminati untuk dibagikan. Masukkan nol untuk membagikan semua. Nilai saat ini:</string>
@@ -445,4 +445,10 @@
     <string name="allow">Izinkan</string>
     <string name="always_allow">selalu mengizinkan</string>
     <string name="opensettings">Buka pengaturan</string>
+    <string name="favorites_rebuild_sucessfully">Favorit berhasil dibangun kembali!</string>
+    <string name="get_pollen_data">Mendapatkan data serbuk sari…</string>
+    <string name="preference_display_replace_summary">Tampilkan nama kota, bukan nama stasiun cuaca, jika tersedia.</string>
+    <string name="preference_display_wind_in_charts_max_summary">Nilai kecepatan angin maksimum yang ditampilkan di dalam grafik, dimasukkan dalam kilometer per jam (km/jam). Nilai saat ini:</string>
+    <string name="preference_display_wind_in_charts_max_title">Skala angin dalam grafik</string>
+    <string name="preference_station_replace_title">Menampilkan kotamadya</string>
 </resources>
