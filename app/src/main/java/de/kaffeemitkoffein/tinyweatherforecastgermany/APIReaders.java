@@ -57,7 +57,7 @@ public class APIReaders {
        public Weather.WeatherLocation weatherLocation;
 
        // all polling times should be the same per poll to allow for logic checking if outdated
-       private final static long pollingTime = Calendar.getInstance().getTimeInMillis();
+       private long pollingTime = Calendar.getInstance().getTimeInMillis();
 
        public WeatherWarningsRunnable(Context context) {
            this.context = context;
@@ -397,6 +397,7 @@ public class APIReaders {
        @Override
        public void run() {
            onStart();
+           pollingTime = Calendar.getInstance().getTimeInMillis();
            ArrayList<WeatherWarning> weatherWarnings = doInBackground();
            onPostExecute(weatherWarnings);
        }
