@@ -431,7 +431,7 @@
     <string name="clear_sky">jasná obloha</string>
     <string name="welcome_s4_showuv">Načtení a zobrazení indexu UV nebezpečí pro vaši polohu.</string>
     <string name="wd_probablity_precipitation_amounts">Pravděpodobnost množství srážek</string>
-    <string name="preference_use_background_location_summary">Pravidelně kontrolujte polohu pomocí údajů o poloze získaných jinými aplikacemi.</string>
+    <string name="preference_use_background_location_summary">Pravidelně kontrolujte polohu pomocí zavedených údajů o poloze.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Místa ke sdílení</string>
     <string name="preference_display_wind_in_charts_summary">Zobrazení rychlosti větru v přehledovém grafu a widgetu grafu.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Počet pracovních míst, o která je zájem, která mají být sdílena. Chcete-li sdílet všechny, zadejte nulu. Aktuální hodnota:</string>
@@ -445,4 +445,10 @@
     <string name="allow">Povolit</string>
     <string name="always_allow">vždy povolit</string>
     <string name="opensettings">Otevřete nastavení</string>
+    <string name="favorites_rebuild_sucessfully">Oblíbená místa byla úspěšně obnovena!</string>
+    <string name="get_pollen_data">Získávání pylových dat…</string>
+    <string name="preference_display_replace_summary">Zobrazení názvu obce místo názvu meteorologické stanice, pokud je k dispozici.</string>
+    <string name="preference_display_wind_in_charts_max_summary">Maximální hodnota rychlosti větru zobrazená v grafech, zadaná v kilometrech za hodinu (km/h). Aktuální hodnota:</string>
+    <string name="preference_display_wind_in_charts_max_title">Větrná stupnice v grafech</string>
+    <string name="preference_station_replace_title">Zobrazení obce</string>
 </resources>
