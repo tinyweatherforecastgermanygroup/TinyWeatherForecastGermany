@@ -431,7 +431,7 @@
     <string name="clear_sky">tiszta égbolt</string>
     <string name="welcome_s4_showuv">Betölti és megjeleníti a helyére vonatkozó UV-veszélyességi indexet.</string>
     <string name="wd_probablity_precipitation_amounts">A csapadékmennyiségek valószínűsége</string>
-    <string name="preference_use_background_location_summary">Ellenőrizze a helyet rendszeresen a más alkalmazások által kapott helymeghatározási adatok segítségével.</string>
+    <string name="preference_use_background_location_summary">Ellenőrizze a helyet rendszeresen a helymeghatározási adatok segítségével.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Megosztandó helyszínek</string>
     <string name="preference_display_wind_in_charts_summary">A szélsebesség megjelenítése az áttekintő diagramon és a diagram widgeten.</string>
     <string name="preference_max_loc_in_shared_warnings_summary">A megosztandó érdekelt pozíciók száma. Az összes megosztásához nullát kell beírni. Jelenlegi érték:</string>
@@ -445,4 +445,10 @@
     <string name="allow">Engedélyezze a</string>
     <string name="always_allow">mindig engedje meg</string>
     <string name="opensettings">Nyissa meg a beállításokat</string>
+    <string name="favorites_rebuild_sucessfully">A kedvencek sikeresen átépültek!</string>
+    <string name="get_pollen_data">Pollenadatok gyűjtése…</string>
+    <string name="preference_display_replace_summary">A település nevének megjelenítése az időjárási állomás neve helyett, ha rendelkezésre áll.</string>
+    <string name="preference_display_wind_in_charts_max_summary">A táblázatokban megjelenített maximális szélsebesség értéke, kilométer/órában (km/h) megadva. Jelenlegi érték:</string>
+    <string name="preference_display_wind_in_charts_max_title">Szélskála a táblázatokban</string>
+    <string name="preference_station_replace_title">Önkormányzat megjelenítése</string>
 </resources>
