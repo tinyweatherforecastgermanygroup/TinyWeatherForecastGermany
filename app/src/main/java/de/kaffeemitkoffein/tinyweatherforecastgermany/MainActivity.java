@@ -40,6 +40,7 @@ import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -1113,7 +1114,7 @@ public class MainActivity extends Activity {
             reloadWarningsFromDatabase = true;
         } else {
             // local warnings not null
-            // it might me necessary to reload warnings if they were updated while app was in background
+            // it might be necessary to reload warnings if they were updated while app was in background
             if (localWarnings.size()>0){
                 // no adapter OR adapter creation older than warnings polling_time
                 if ((forecastAdapter==null) || (forecastAdapter.creationTime<localWarnings.get(0).polling_time)){
@@ -1125,10 +1126,11 @@ public class MainActivity extends Activity {
         if (reloadWarningsFromDatabase){
             WeatherWarnings.getWarningsForLocationRunnable getWarningsForLocationRunnable = new WeatherWarnings.getWarningsForLocationRunnable(context,null,null){
                 @Override
-                public void onResult(ArrayList<WeatherWarning> result) {
+                public void onResult(final ArrayList<WeatherWarning> result) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            localWarnings = result;
                             displayAdapter(weatherCard);
                         }
                     });
