@@ -1107,15 +1107,48 @@ public class MainActivity extends Activity {
                 dataChanged = true;
             }
         }
-        // refresh adapter if null OR data changed OR adapter older than weather data
-        if ((forecastAdapter==null) || (dataChanged) || (forecastAdapter.creationTime<weatherCard.polling_time)){
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    displayAdapter(weatherCard);
+        boolean reloadWarningsFromDatabase = false;
+        // re-load warnings if warnings null
+        if (localWarnings==null){
+            reloadWarningsFromDatabase = true;
+        } else {
+            // local warnings not null
+            // it might me necessary to reload warnings if they were updated while app was in background
+            if (localWarnings.size()>0){
+                // no adapter OR adapter creation older than warnings polling_time
+                if ((forecastAdapter==null) || (forecastAdapter.creationTime<localWarnings.get(0).polling_time)){
+                    reloadWarningsFromDatabase = true;
                 }
-            });
+            }
         }
+        // reload warnings and display adapter after re-load
+        if (reloadWarningsFromDatabase){
+            WeatherWarnings.getWarningsForLocationRunnable getWarningsForLocationRunnable = new WeatherWarnings.getWarningsForLocationRunnable(context,null,null){
+                @Override
+                public void onResult(ArrayList<WeatherWarning> result) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayAdapter(weatherCard);
+                        }
+                    });
+
+                }
+            };
+            executor.execute(getWarningsForLocationRunnable);
+        } else {
+            // no need to re-load warnings, check if we need to display the adapter
+            // refresh adapter if null OR data changed OR adapter older than weather data
+            if ((forecastAdapter==null) || (dataChanged) || (forecastAdapter.creationTime<weatherCard.polling_time)){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        displayAdapter(weatherCard);
+                    }
+                });
+            }
+        }
+
     }
 
     private void displayAdapter(final CurrentWeatherInfo weatherCard){

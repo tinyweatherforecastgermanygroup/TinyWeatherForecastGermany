@@ -5,7 +5,7 @@ Neu in dieser Version ([VERSION]):
 - Unterstützt WeatherSpec v4, womit auf einigen Wearables über Gadgetbridge deutlich mehr Wetterdaten angezeigt werden können als bisher
 - neue Taupunkt-Anzeige in den Wetterdetails
 - die Aufzählung der betroffenen Orte in geteilten Warnungen kann begrenzt werden
-- kleinere Fehlerbehebungen
+- kleinere Fehlerbehebungen und weitere Verbesserungen
 
 Neu in der vorherigen Version:
 
