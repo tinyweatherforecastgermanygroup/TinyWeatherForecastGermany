@@ -406,7 +406,7 @@ public class WeatherDetailsActivity extends Activity {
         ArrayList<WeatherWarning> applicableWarnings = new ArrayList<WeatherWarning>();
         for (int i = 0; i < warningsForLocation.size(); i++) {
             WeatherWarning warning = warningsForLocation.get(i);
-            if ((warning.onset <= itemStopTime) && (warning.expires >= itemStartTime)) {
+            if ((warning.onset <= itemStopTime) && (warning.getApplicableExpires() >= itemStartTime)) {
                 applicableWarnings.add(warning);
             }
         }

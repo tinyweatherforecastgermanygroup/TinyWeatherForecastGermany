@@ -98,6 +98,7 @@ public class WeatherWarnings {
                     result.add(warnings.get(i));
                 }
             }
+
         }
         return result;
     }
@@ -186,12 +187,13 @@ public class WeatherWarnings {
     }
 
     public static String getExpiresMiniString(Context context, WeatherWarning weatherWarning){
-        if (isMoreThan24hAway(weatherWarning.onset)){
-            return context.getResources().getString(R.string.ends)+" "+getTimeMiniString(weatherWarning.expires);
-        } else {
-            return context.getResources().getString(R.string.ends)+" "+getTimeMiniString(weatherWarning.expires);
-        }
-
+        if (weatherWarning.expires!=0){
+            if (isMoreThan24hAway(weatherWarning.onset)){
+                return context.getResources().getString(R.string.ends)+" "+getTimeMiniString(weatherWarning.expires);
+            } else {
+                return context.getResources().getString(R.string.ends)+" "+getTimeMiniString(weatherWarning.expires);
+            }
+        } else return "";
     }
 
     public static SpannableStringBuilder getMiniWarningsString(Context context, ArrayList<WeatherWarning> applicableWarnings, long itemStartTime, long itemStopTime, boolean multiLine, int textType){
@@ -212,8 +214,10 @@ public class WeatherWarnings {
             if (applicableWarnings.get(i).onset>itemStartTime){
                 text = getOnsetMiniString(context,applicableWarnings.get(i)) +": " + text;
             }
-            if (applicableWarnings.get(i).expires<itemStopTime){
-                text = text + " (" + getExpiresMiniString(context,applicableWarnings.get(i)) + ")";
+            if (applicableWarnings.get(i).expires!=0){
+                if (applicableWarnings.get(i).expires<itemStopTime){
+                    text = text + " (" + getExpiresMiniString(context,applicableWarnings.get(i)) + ")";
+                }
             }
             if ((!multiLine) && (applicableWarnings.size()>1)){
                 text = text + " …";
@@ -337,7 +341,7 @@ public class WeatherWarnings {
             WeatherWarning warning = weatherWarnings.get(i);
             Integer r = getNotificationIdFromWeatherWarning(warningNotifications,warning);
             if (r!=null){
-                if (warning.expires<currentTime){
+                if (warning.getApplicableExpires()<currentTime){
                     result.add(r);
                 }
             }

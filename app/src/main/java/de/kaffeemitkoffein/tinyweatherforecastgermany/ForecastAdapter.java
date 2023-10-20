@@ -85,9 +85,6 @@ public long creationTime = 0;
 
 private final SparseArray<Bitmap> bitmapCache = new SparseArray<>();
 
-    private final SparseArray<Bitmap> forecastIconCache = new SparseArray<>();
-
-
 public ForecastAdapter(final Context context, final ArrayList<Weather.WeatherInfo> weatherForecasts, final ArrayList<Weather.WeatherInfo> weatherForecasts_hourly, final Weather.WeatherLocation weatherLocation) {
     this.context = context;
     this.weatherForecasts = weatherForecasts;
@@ -1286,7 +1283,7 @@ private ArrayList<WeatherWarning> getApplicableWarnings(Weather.WeatherInfo weat
         long itemStartTime = neededHoursAgo(weatherInfo);
         long itemStopTime = weatherInfo.getTimestamp();
         for (int i=0; i<warnings.size(); i++){
-            if ((warnings.get(i).onset<=itemStopTime) && (warnings.get(i).expires>=itemStartTime)){
+            if ((warnings.get(i).onset<=itemStopTime) && (warnings.get(i).getApplicableExpires()>=itemStartTime)){
                 applicableWarnings.add(warnings.get(i));
             }
         }

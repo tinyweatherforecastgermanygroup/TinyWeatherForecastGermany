@@ -739,7 +739,7 @@ public class MainActivity extends Activity {
                 }
             });
             // invalidate current weather data
-            weatherCard = null;
+            weatherCard = null; localWarnings = null;
             WeatherSettings.setStation(this,weatherLocation);
             WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"-----------------------------------");
@@ -1166,13 +1166,19 @@ public class MainActivity extends Activity {
             }
             weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
             weatherList.setOnItemClickListener(weatherItemDoubleClickListener);
+            // display overview chart after adapter and queue it
             weatherList.post(new Runnable() {
                 @Override
                 public void run() {
-                    runOnUiThread(new Runnable() {
+                    executor.execute(new Runnable() {
                         @Override
                         public void run() {
-                            displayOverviewChart(weatherCard);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    displayOverviewChart(weatherCard);
+                                }
+                            });
                         }
                     });
                 }

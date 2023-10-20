@@ -22,7 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.graphics.Color;
 import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class WeatherWarning implements Comparable<WeatherWarning> {
@@ -86,9 +86,9 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
     String urgency;
     String severity;
     String certainty;
-    long effective;
-    long onset;
-    long expires;
+    long effective = 0;
+    long onset = 0;
+    long expires = 0;
     String senderName;
     String headline;
     String description;
@@ -113,7 +113,6 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
     public void initPolygons(Context context){
         polygonlist = new ArrayList<Polygon>();
         excluded_polygonlist = new ArrayList<Polygon>();
-
         if (polygons!=null){
             for (int j=0; j<polygons.size(); j++){
                 Polygon polygon = new Polygon(polygons.get(j));
@@ -134,7 +133,7 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         }
     }
 
-    public boolean isInPolygonGeo(float testy, float testx){
+    public boolean isInPolygonGeoOld(float testy, float testx){
         if (polygons==null){
             return false;
         }
@@ -151,6 +150,31 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         // return true if point is in polygon
         for (int j=0; j<polygons.size(); j++){
             Polygon polygon = new Polygon(polygons.get(j));
+            if (polygon.isInPolygon(testx,testy)){
+                return true;
+            }
+        }
+        // otherwise false
+        return false;
+    }
+
+    public boolean isInPolygonGeo(float testy, float testx){
+        if (polygonlist==null){
+            return false;
+        }
+        if (polygonlist.size()==0){
+            return false;
+        }
+        // return false if point is in excluded polygon; it is efficient to check this first.
+        for (int j=0; j<excluded_polygonlist.size(); j++){
+            Polygon polygon = excluded_polygonlist.get(j);
+            if (polygon.isInPolygon(testx,testy)){
+                return false;
+            }
+        }
+        // return true if point is in polygon
+        for (int j=0; j<polygonlist.size(); j++){
+            Polygon polygon = polygonlist.get(j);
             if (polygon.isInPolygon(testx,testy)){
                 return true;
             }
@@ -349,6 +373,22 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
             return 1;
         }
         return 0;
+    }
+
+    // some warnings may have no expiry date, we need to put fictional ones in for graphs & calculations if this
+    // warning applies
+
+    public long getApplicableExpires(){
+        if (expires==0){
+            // return 32503680000L; // 01.01.3000
+            if (onset!=0){
+                return onset + 1036800000L;  // plus 12 days in millis
+            } else {
+                return Calendar.getInstance().getTimeInMillis() + 1036800000L;
+            }
+        } else {
+            return expires;
+        }
     }
 
 }

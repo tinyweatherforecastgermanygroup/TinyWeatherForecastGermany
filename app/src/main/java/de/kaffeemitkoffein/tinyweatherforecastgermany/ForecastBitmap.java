@@ -798,12 +798,12 @@ public class ForecastBitmap{
              for (int i=0; i<warnings.size(); i++){
                  WeatherWarning warning = warnings.get(i);
                  // omit already expired warnings
-                 if (warning.expires>=chartTimeStart){
+                 if (warning.getApplicableExpires()>=chartTimeStart){
                      float x1 = xChartOffset + (warning.onset-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
                      if (x1<xChartOffset){
                          x1 = xChartOffset;
                      }
-                     float x2 = xChartOffset + (warning.expires-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
+                     float x2 = xChartOffset + (warning.getApplicableExpires()-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
                      int color = warning.getWarningColor();
                      float[] warningPolygonX = new float[5];
                      float[] warningPolygonY = new float[5];
