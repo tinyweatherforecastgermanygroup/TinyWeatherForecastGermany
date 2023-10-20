@@ -578,4 +578,12 @@ public class CurrentWeatherInfo{
             }
     }
 
+    public long getFirstTimestamp(){
+        return forecast1hourly.get(0).getTimestamp();
+    }
+
+    public long getLastTimestamp(){
+        return forecast1hourly.get(forecast1hourly.size()-1).getTimestamp();
+    }
+
 }

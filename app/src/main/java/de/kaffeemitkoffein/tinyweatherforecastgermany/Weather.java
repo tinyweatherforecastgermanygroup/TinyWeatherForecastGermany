@@ -1624,13 +1624,6 @@ public final class Weather {
         // Should there be more, take the most recent by polling time. The most recent entry is at position 1.
         if (cursor.moveToFirst()){
             CurrentWeatherInfo currentWeatherInfo = WeatherContentManager.getWeatherInfo(context,cursor);
-            /*
-            ArrayList<String> updateTasks = new ArrayList<String>();
-            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
-            if (currentWeatherInfo.isOutdated(context)){
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,updateSource,updateTasks,currentWeatherInfo);
-            }
-             */
             return currentWeatherInfo;
         }
         cursor.close();

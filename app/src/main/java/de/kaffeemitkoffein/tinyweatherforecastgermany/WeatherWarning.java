@@ -299,8 +299,10 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         stringBuilder.append(getUnderlineString(this.event,"="));
         stringBuilder.append(newLine);
         stringBuilder.append(WeatherWarningAdapter.formatTime(this.onset)); stringBuilder.append(" ");
-        stringBuilder.append(context.getResources().getString(R.string.warnings_until)); stringBuilder.append(" ");
-        stringBuilder.append(WeatherWarningAdapter.formatTime(this.expires));
+        if (this.expires!=0){
+            stringBuilder.append(context.getResources().getString(R.string.warnings_until)); stringBuilder.append(" ");
+            stringBuilder.append(WeatherWarningAdapter.formatTime(this.expires));
+        }
         stringBuilder.append(newLine);
         stringBuilder.append(this.urgency);  stringBuilder.append(" ");
         stringBuilder.append(this.severity); stringBuilder.append(" ");
@@ -380,7 +382,6 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
 
     public long getApplicableExpires(){
         if (expires==0){
-            // return 32503680000L; // 01.01.3000
             if (onset!=0){
                 return onset + 1036800000L;  // plus 12 days in millis
             } else {
