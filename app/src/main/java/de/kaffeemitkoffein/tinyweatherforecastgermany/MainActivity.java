@@ -1157,6 +1157,7 @@ public class MainActivity extends Activity {
             displayUpdateTime(weatherCard);
             forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
             forecastAdapter.setWarnings(localWarnings);
+            // weatherList.setFastScrollEnabled(true);
             weatherList.setAdapter(forecastAdapter);
             forecastAdapter.notifyDataSetChanged();
             if (WeatherSettings.loggingEnabled(this)){

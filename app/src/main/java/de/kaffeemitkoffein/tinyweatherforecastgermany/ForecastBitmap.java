@@ -432,7 +432,6 @@ public class ForecastBitmap{
         return 0;
     }
 
-
     public static int getDisplayOrientation(Context context){
         return context.getResources().getConfiguration().orientation;
     }

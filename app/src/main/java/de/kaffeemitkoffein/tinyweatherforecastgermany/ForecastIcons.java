@@ -220,6 +220,21 @@ public class ForecastIcons {
         return targetBitmap;
     }
 
+    private void paintSun(Canvas canvas, int weatherCondition){
+        int xOffset=0; int yOffset=0;
+        if ((weatherCondition==WeatherCodeContract.SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY) ||
+                (weatherCondition==WeatherCodeContract.SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT) ||
+                (weatherCondition==WeatherCodeContract.SNOW_SHOWERS_SLIGHT) ||
+                (weatherCondition==WeatherCodeContract.SNOW_SHOWERS_MODERATE_OR_HEAVY) ||
+                (weatherCondition==WeatherCodeContract.EXTREMELY_HEAVY_RAIN_SHOWER) ||
+                (weatherCondition==WeatherCodeContract.MODERATE_OR_HEAVY_RAIN_SHOWERS) ||
+                (weatherCondition==WeatherCodeContract.SLIGHT_RAIN_SHOWER)){
+                xOffset = iconHeight/4;
+                yOffset = -iconHeight/4;
+        }
+        canvas.drawBitmap(getLayer(Layer.SUN),xOffset,yOffset,paint);
+    }
+
     public Bitmap getIconBitmap(Weather.WeatherInfo weatherInfo, Weather.WeatherLocation weatherLocation){
         int condition = WeatherCodeContract.NOT_AVAILABLE;
         if (weatherInfo.hasCondition()) {
@@ -236,10 +251,12 @@ public class ForecastIcons {
                         //canvas.drawBitmap(getLayer(Layer.MOON),0,0,paint);
                         canvas.drawBitmap(getDisposableMoonLayer(weatherInfo,weatherLocation),0,0,paint);
                     } else {
-                        canvas.drawBitmap(getLayer(Layer.SUN),0,0,paint);
+                        //canvas.drawBitmap(getLayer(Layer.SUN),0,0,paint);
+                        paintSun(canvas,condition);
                     }
                 } else {
-                    canvas.drawBitmap(getLayer(Layer.SUN),0,0,paint);
+                    //canvas.drawBitmap(getLayer(Layer.SUN),0,0,paint);
+                    paintSun(canvas,condition);
                 }
             } else {
                 canvas.drawBitmap(getLayer(layers[0]),0,0,paint);
