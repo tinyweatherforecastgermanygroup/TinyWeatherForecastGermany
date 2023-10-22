@@ -292,9 +292,6 @@ public class MainActivity extends Activity {
         }
     };
 
-
-
-
     private void performTextSearch(){
     // weather settings must be read at the time of selection!
             WeatherSettings weatherSettings = new WeatherSettings(context);
@@ -800,8 +797,8 @@ public class MainActivity extends Activity {
             stationFavorites = new StationFavorites(context);
         }
         // check if alternate description exists, and find it if not.
-        ArrayList<Weather.WeatherLocation> spinnerItems = StationFavorites.getFavorites(context);
-        ArrayList<String> spinnerDescriptions = Weather.WeatherLocation.getDescriptions(context,spinnerItems);
+        final ArrayList<Weather.WeatherLocation> spinnerItems = StationFavorites.getFavorites(context);
+        final ArrayList<String> spinnerDescriptions = Weather.WeatherLocation.getDescriptions(context,spinnerItems);
         final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_item, spinnerDescriptions);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
         runOnUiThread(new Runnable() {
@@ -819,13 +816,24 @@ public class MainActivity extends Activity {
                 WeatherSettings weatherSettings = new WeatherSettings(context);
                 TextView tv = (TextView) view.findViewById(R.id.spinner_textitem);
                 String station_description = tv.getText().toString();
-                Integer station_pos = stationsManager.getPositionFromDescription(station_description);
-                if (station_pos != null) {
-                    if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))) {
-                        newWeatherRegionSelected(stationsManager.getLocationFromDescription(station_description));
+                String stationOriginalDescription = null;
+                for (int i=0; i<spinnerDescriptions.size(); i++){
+                    if (spinnerDescriptions.get(i).equals(station_description)){
+                        stationOriginalDescription = spinnerItems.get(i).getOriginalDescription();
+                    }
+                }
+                if (stationOriginalDescription!=null){
+                    Integer station_pos = stationsManager.getPositionFromDescription(stationOriginalDescription);
+                    if (station_pos != null) {
+                        if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))) {
+                            newWeatherRegionSelected(stationsManager.getLocationFromDescription(stationOriginalDescription));
+                        }
+                    } else {
+                        PrivateLog.log(context, PrivateLog.MAIN,PrivateLog.WARN, "Station from favorites not found! (1)");
+                        loadStationsSpinner();
                     }
                 } else {
-                    PrivateLog.log(context, PrivateLog.MAIN,PrivateLog.WARN, "Station from favorites not found!");
+                    PrivateLog.log(context, PrivateLog.MAIN,PrivateLog.WARN, "Station from favorites not found! (2)");
                     loadStationsSpinner();
                 }
                 super.handleItemSelected(adapterView, view, pos, l);

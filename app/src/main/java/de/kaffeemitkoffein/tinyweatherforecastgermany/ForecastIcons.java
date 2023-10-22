@@ -11,8 +11,9 @@ public class ForecastIcons {
 
     public static class Holidays{
 
-        public static boolean isChristmas(){
+        public static boolean isChristmas(long time){
             Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(time);
             if ((calendar.get(Calendar.MONTH)==Calendar.DECEMBER) && (calendar.get(Calendar.DAY_OF_MONTH)==24)){
                 return true;
             }
@@ -25,9 +26,14 @@ public class ForecastIcons {
             return false;
         }
 
-        public static boolean isHalloween(){
+        public static boolean isHalloween(long time){
             Calendar calendar = Calendar.getInstance();
-            if ((calendar.get(Calendar.MONTH)==Calendar.OCTOBER) && (calendar.get(Calendar.DAY_OF_MONTH)==31)){
+            calendar.setTimeInMillis(time);
+            if ((calendar.get(Calendar.MONTH)==Calendar.OCTOBER) && (calendar.get(Calendar.DAY_OF_MONTH)==31) && (calendar.get(Calendar.HOUR_OF_DAY)>12)){
+                return true;
+            }
+            // intervals ending with midnight (=next day) are also Halloween
+            if ((calendar.get(Calendar.MONTH)==Calendar.NOVEMBER) && (calendar.get(Calendar.DAY_OF_MONTH)==1) && (calendar.get(Calendar.HOUR_OF_DAY)<1)){
                 return true;
             }
             return false;
@@ -86,6 +92,7 @@ public class ForecastIcons {
         private final static int SUN = 18;
         private final static int MOON = 19;
         private final static int LIGHTNING = 20;
+        private final static int HALLOWEEN = 201;
     }
 
     private int getLayerResourceID(int layer){
@@ -110,6 +117,7 @@ public class ForecastIcons {
             case Layer.SUN       : return R.mipmap.mod_sun;
             case Layer.MOON      : return R.mipmap.mod_moon;
             case Layer.LIGHTNING : return R.mipmap.mod_lightning;
+            case Layer.HALLOWEEN : return R.mipmap.mod_halloween;
             default: return R.mipmap.not_available;
         }
     }
@@ -209,13 +217,17 @@ public class ForecastIcons {
         canvas.drawCircle(moonPositionX,iconHeight/2f,moonDiameter/2f,MoonFill);
         Bitmap solidBitmap = Bitmap.createBitmap(iconWidth,iconHeight, Bitmap.Config.ARGB_8888);
         canvas.drawBitmap(solidBitmap,0,0,MoonFill);
-        // make the eath transition also look right on the southern hemisphere
+        // make the earth transition also look right on the southern hemisphere
         if (weatherLocation!=null){
             if (weatherLocation.latitude<0){
                 Matrix matrix = new Matrix();
                 matrix.preScale(-1,1);
                 targetBitmap = Bitmap.createBitmap(targetBitmap,0,0,targetBitmap.getWidth(),targetBitmap.getHeight(),matrix,true);
             }
+        }
+        if (Holidays.isHalloween(weatherInfo.getTimestamp())){
+            Bitmap halloween = getLayer(Layer.HALLOWEEN);
+            canvas.drawBitmap(halloween,0,0,paint);
         }
         return targetBitmap;
     }
