@@ -186,20 +186,21 @@ public class UpdateAlarmManager {
             stringBuilder.append(" * next updater job due in "); stringBuilder.append(String.valueOf(next_update_due_in_millis/1000/60)); stringBuilder.append(" minutes."); stringBuilder.append(lineBreak);
             stringBuilder.append(" * last weather data update was "+Weather.SIMPLEDATEFORMATS.DETAILED.format(WeatherSettings.getLastWeatherUpdateTime(context))); stringBuilder.append(lineBreak);
             if (weatherCard!=null){
-                stringBuilder.append(" * weather data for ["); stringBuilder.append(weatherCard.weatherLocation.getName()); stringBuilder.append("|"); stringBuilder.append(weatherCard.weatherLocation.getOriginalDescription()); stringBuilder.append("] is from "); stringBuilder.append(Weather.SIMPLEDATEFORMATS.DETAILED.format(weatherCard.polling_time)); stringBuilder.append(lineBreak);
+                stringBuilder.append(" * weather data for ["); stringBuilder.append(weatherCard.weatherLocation.getName()); stringBuilder.append("|"); stringBuilder.append(weatherCard.weatherLocation.getOriginalDescription()); stringBuilder.append("] is from "); stringBuilder.append(Weather.SIMPLEDATEFORMATS.DETAILED.format(weatherCard.polling_time));                 stringBuilder.append(", issued by the DWD: "+Weather.SIMPLEDATEFORMATS.DETAILED.format(weatherCard.issue_time));
+                stringBuilder.append(lineBreak);
                 if (WeatherSettings.forecastUpdateIntervalIs6h(context)){
                     stringBuilder.append(" * new weather data is expected at "); stringBuilder.append(Weather.SIMPLEDATEFORMATS.DETAILED.format(weatherCard.getWhenNewServerDataExpected(context))); stringBuilder.append(". Due: "); stringBuilder.append(weatherCard.isNewServerDataExpected(context)); stringBuilder.append(lineBreak);
                 }
             }
             stringBuilder.append(" * weather update period is every "); stringBuilder.append(WeatherSettings.getForecastUpdateIntervalInMillis(context)/1000/60/60); stringBuilder.append(" hours. Due: "); stringBuilder.append(WeatherSettings.isForecastCheckDue(context)); stringBuilder.append(lineBreak);
-            stringBuilder.append(" * weather warnings period is every "); stringBuilder.append(WeatherSettings.getWarningsUpdateIntervalInMillis(context)/1000/60); stringBuilder.append(" minutes. Due: "); stringBuilder.append(WeatherSettings.areWarningsOutdated(context)); stringBuilder.append(lineBreak);
-            if (WeatherSettings.serveGadgetBridge(context)){
-                stringBuilder.append(" * serving GadgetBridge."); stringBuilder.append(lineBreak);
-            }
+            stringBuilder.append(" * weather warnings update period is every "); stringBuilder.append(WeatherSettings.getWarningsUpdateIntervalInMillis(context)/1000/60); stringBuilder.append(" minutes. Due: "); stringBuilder.append(WeatherSettings.areWarningsOutdated(context)); stringBuilder.append(lineBreak);
             if (WeatherSettings.updateTextForecasts(context)){
                 stringBuilder.append(" * last text update was "); stringBuilder.append(Weather.SIMPLEDATEFORMATS.DETAILED.format(WeatherSettings.getLastTextForecastsUpdateTime(context))); stringBuilder.append(". Due: "); stringBuilder.append(WeatherSettings.areTextForecastsOutdated(context)); stringBuilder.append(lineBreak);
             }
-            stringBuilder.append(" * update tasks are: "); stringBuilder.append(updateTasks); stringBuilder.append(lineBreak);
+            if (WeatherSettings.serveGadgetBridge(context)){
+                stringBuilder.append(" * serving GadgetBridge"); stringBuilder.append(lineBreak);
+            }
+            stringBuilder.append(" * current update tasks are: "); stringBuilder.append(updateTasks); stringBuilder.append(lineBreak);
             if (updateTasks.size()>0){
                 stringBuilder.append(" * service started successfully: "); stringBuilder.append(result); stringBuilder.append(lineBreak);
             }
