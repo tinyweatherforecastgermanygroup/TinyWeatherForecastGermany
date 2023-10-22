@@ -220,7 +220,7 @@ public class ForecastIcons {
         return targetBitmap;
     }
 
-    private void paintSun(Canvas canvas, int weatherCondition){
+    private void paintShower(Canvas canvas, int weatherCondition){
         int xOffset=0; int yOffset=0;
         if ((weatherCondition==WeatherCodeContract.SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY) ||
                 (weatherCondition==WeatherCodeContract.SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT) ||
@@ -240,6 +240,17 @@ public class ForecastIcons {
         if (weatherInfo.hasCondition()) {
             condition = weatherInfo.getCondition();
         }
+        int xOffset=0; int yOffset=0;
+        if ((condition==WeatherCodeContract.SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY) ||
+                (condition==WeatherCodeContract.SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT) ||
+                (condition==WeatherCodeContract.SNOW_SHOWERS_SLIGHT) ||
+                (condition==WeatherCodeContract.SNOW_SHOWERS_MODERATE_OR_HEAVY) ||
+                (condition==WeatherCodeContract.EXTREMELY_HEAVY_RAIN_SHOWER) ||
+                (condition==WeatherCodeContract.MODERATE_OR_HEAVY_RAIN_SHOWERS) ||
+                (condition==WeatherCodeContract.SLIGHT_RAIN_SHOWER)){
+            xOffset = iconHeight/4;
+            yOffset = -iconHeight/4;
+        }
         int[] layers = ConditionLayers.get(condition);
         if (layers != null) {
             Bitmap targetBitmap = Bitmap.createBitmap(iconWidth,iconHeight, Bitmap.Config.ARGB_8888);
@@ -248,15 +259,12 @@ public class ForecastIcons {
             if (layers[0] == Layer.SUN) {
                 if (weatherLocation != null) {
                     if (!weatherInfo.isDaytime(weatherLocation)) {
-                        //canvas.drawBitmap(getLayer(Layer.MOON),0,0,paint);
-                        canvas.drawBitmap(getDisposableMoonLayer(weatherInfo,weatherLocation),0,0,paint);
+                        canvas.drawBitmap(getDisposableMoonLayer(weatherInfo,weatherLocation),xOffset,yOffset,paint);
                     } else {
-                        //canvas.drawBitmap(getLayer(Layer.SUN),0,0,paint);
-                        paintSun(canvas,condition);
+                        canvas.drawBitmap(getLayer(Layer.SUN),xOffset,yOffset,paint);
                     }
                 } else {
-                    //canvas.drawBitmap(getLayer(Layer.SUN),0,0,paint);
-                    paintSun(canvas,condition);
+                    canvas.drawBitmap(getLayer(Layer.SUN),xOffset,yOffset,paint);
                 }
             } else {
                 canvas.drawBitmap(getLayer(layers[0]),0,0,paint);
