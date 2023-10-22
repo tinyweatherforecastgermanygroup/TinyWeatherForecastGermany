@@ -1,9 +1,11 @@
 Neu in dieser Version ([VERSION]):
 
+- schnellerer App-Start
 - die Windgeschwindigkeit kann nun in Diagrammen angezeigt werden
-- neue Bestimmung der nächsten Wetterstation im Hintergrund
-- Unterstützt WeatherSpec v4, womit auf einigen Wearables über Gadgetbridge deutlich mehr Wetterdaten angezeigt werden können als bisher
-- neue Taupunkt-Anzeige in den Wetterdetails
+- Bestimmung der nächsten Wetterstation im Hintergrund
+- verbesserte Gadgetbridge-Unterstützung (WeatherSpec v4)
+- Taupunkt-Anzeige in den Wetterdetails
+- überarbeitete Wetter-Icons, der Mond zeigt nun die Mondphase an
 - die Aufzählung der betroffenen Orte in geteilten Warnungen kann begrenzt werden
 - kleinere Fehlerbehebungen und weitere Verbesserungen
 

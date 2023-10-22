@@ -1081,7 +1081,12 @@ public class MainActivity extends Activity {
                 }
             });
             // recreate the whole view
-            recreate();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    recreate();
+                }
+            });
             return;
         }
         // trigger one update unconditionally here
