@@ -203,6 +203,8 @@ You see the last update time in the main app. *Long pressing* this text makes th
 
 When you select to automatically update every 6 hours, the app tries to guess when it is best to poll for new data to get in sync with the time the forecasts are made available by the DWD.
 
+Please note that the app blocks manual updates that occur within 90 seconds since the last update to limit server load at the DWD.
+
 ### How often does the GadgetBridge app gets updated (when this feature is enabled)?
 
 When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called every time to perform this task. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in *doze mode*, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
@@ -223,7 +225,9 @@ Icons refer to *significant weather conditions*. The idea is to show you the mos
 
 Usually, the weather conditions are *calculated by the DWD*. If a weather condition is not available in the forecast data, the app tries to calculate it from other items. If you are interested how this app calculates icons in this case, see [here](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/app/src/main/java/de/kaffeemitkoffein/tinyweatherforecastgermany/WeatherCodeContract.java) in the source code.
 
-Thresholds for significant weather conditions are subjective and perhaps debatable, but weather conditions calculated by the DWD have priority and always remain unmodified, if available. If you are interested in the priorities, see [this DWD document](https://www.dwd.de/DE/leistungen/opendata/help/schluessel_datenformate/kml/mosmix_element_weather_xls.xlsx?__blob=publicationFile&v=6).
+Thresholds for significant weather conditions are subjective and perhaps debatable, but weather conditions calculated by the DWD have priority and always remain unmodified (for one single exception, see below), if available. If you are interested in the priorities, see [this DWD document](https://www.dwd.de/DE/leistungen/opendata/help/schluessel_datenformate/kml/mosmix_element_weather_xls.xlsx?__blob=publicationFile&v=6).
+
+However, the official label for thunderstorms (having the highest priority available) is *slight or moderate thunderstorm with rain or snow*; to prevent confusion, Tiny Weather Forecast Germany shows lightning with rain if temperature is above 0° C *or* snowflakes if it is equal or below zero.
 
 ### Why does the app give a different value for some parameter (e.g. temperature) than the official station reading?
 
@@ -231,9 +235,9 @@ Tiny Weather Forecast Germany gives *forecasts*, not the current reading at some
 
 ### Where do the names come from that are offered in searches?
 
-Tiny Weather Forecast Germany uses *WarncellIDs* for the regions offered. These are closely related to the [Amtlicher Gemeindeschlüssel](https://www.destatis.de/DE/Themen/Laender-Regionen/Regionales/Gemeindeverzeichnis/_inhalt.html) (AGS) provided by destatis. Basically, the WarncellIDs are an extension of the AGS. WarncellIDs also feature human-readable names (e.g. "Landkreis Göttingen"). These names can be used while looking for a weather station. They *do not* refer to the names of weather stations. Once you select a name the app, depending on your setting, automatically determine the closest weather station or will give you a list of close by stations including their distance to choose from. This distance is derived from the center of the area polygon(s) associated with a given region. It may happen, that a WarncellID has more than one search key associated. E.g. searching for `Insel Helgoland` or `Gemeinde Helgoland` will show a list starting with `Helgoland` at an approximate distance of 0.4 km. Hence the weather station is actually just called `Helgoland`.
+Tiny Weather Forecast Germany uses *WarncellIDs* for the regions offered. These are closely related to the [Amtlicher Gemeindeschlüssel](https://www.destatis.de/DE/Themen/Laender-Regionen/Regionales/Gemeindeverzeichnis/_inhalt.html) (AGS) provided by [destatis](https://www.destatis.de/DE/Home/_inhalt.html). Basically, the WarncellIDs are an extension of the AGS. WarncellIDs also feature human-readable names (e.g. "Landkreis Göttingen"). These names can be used while looking for a weather station. They *do not* refer to the names of weather stations. Once you select a name, depending on your setting, Tiny Weather Forecast Germany will automatically determine the closest weather station or will give you a list of close by stations including their distance to choose from. This distance is derived from the centroid (the center of the area polygon(s)) associated with a given region. It may happen, that a WarncellID has more than one search key associated. E.g. searching for `Insel Helgoland` or `Gemeinde Helgoland` will show a list starting with `Helgoland` at an approximate distance of 0.4 km. Hence the weather station is actually just called `Helgoland`.
 
-*Note* more than one station will be shown if your search matches a search key. These stations are sorted by increasing distance from the initially searched entity. E.g. searching for `Insel Helgoland` in the above example will also show `Elbmuendung` (a sea area next to Cuxhaven) which is 23.4 km away, `UFS Deutsche Bucht` (an automatized weather station aboard a light vessel in the middle of the German Bight) already 29.3 km away, or `Wangerooge` (one of the East Frisian islands) at a distance of 29.4 km. (And of course many others even further away.) If `Helgoland` is searched however, it matches the station right away, and the app jumps to it immediately without a further selection.
+*Note*: more than one station will be shown if your search matches a search key. These stations are sorted by increasing distance from the initially searched entity. E.g. searching for `Insel Helgoland` in the above example will also show `Elbmuendung` (a sea area next to Cuxhaven) which is 23.4 km away, `UFS Deutsche Bucht` (an automatized weather station aboard a light vessel in the middle of the German Bight) already 29.3 km away, or `Wangerooge` (one of the East Frisian islands) at a distance of 29.4 km. (And of course many others even further away.) If `Helgoland` is searched however, it matches the station right away, and the app jumps to it immediately without a further selection.
 
 As a rule of thumb, when a name is written in capital letters (e.g. "BERLIN-ALEX."), it is the weather station. All other names help you find the proper weather station.
 
@@ -261,9 +265,9 @@ Select your new region and hit the clean button next to the regions title. Mind 
 
 Tiny Weather Forecast Germany tries to be very conservative with your download volume. For this reason it only updates the currently displayed region. All other regions in the regions drop down are merely places once visited and do not get any updates.
 
-*Note* the currently selected region is also the region displayed in any widget added to the home screen.
+*Note*: the currently selected region is also the region displayed in any widget added to the home screen.
 
-If you want all regions from the drop down menu to get updated, select *"Update everything"*.
+If you want all regions from the dropdown menu to get updated, select *"Update everything"*.
 
 ### How do I set the region to be displayed at the home screen widget?
 
@@ -315,7 +319,7 @@ Once you have been notified about a warning, you will also get notified about an
 
 To remind you about a persistent weather warning, the notification about this weather warning will be repeated after 12 hours.
 
-To be kept aware about current warnings, simply don't swipe them away. They wil automatically disappear from your notifications drawer once they expire.
+To be kept aware about current warnings, simply don't swipe them away. They wil automatically get updated and disappear from your notifications drawer once they expire.
 
 ### How quickly do I get a weather warning?
 
