@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="welcome_s1_text2">підтримує &gt; 5000 місць</string>
-    <string name="dwd_notice_app">Основні дані: Deutscher Wetterdienst, додано власний елемент, деякі дані усереднені за окремими значеннями. Попередження скорочено.</string>
+    <string name="dwd_notice_app">Основні дані: Deutscher Wetterdienst, додано власні елементи, деякі дані усереднені за окремими значеннями. Попередження скорочено.</string>
     <string name="license_button">Ліцензія</string>
     <string name="update_button">Оновити</string>
-    <string name="settings_button">Параметри</string>
+    <string name="settings_button">Налаштування</string>
     <string name="today">сьогодні</string>
     <string name="station">Станція</string>
     <string name="whatsnew_button">Що нового</string>
@@ -19,7 +19,7 @@
     <string name="boldwidget_description">Грубше</string>
     <string name="dwd_textforecast_notice">Основні дані: Deutscher Wetterdienst, додано власні елементи, змінено вигляд.</string>
     <string name="weathercode_FOG_SKY_NOT_RECOGNIZABLE">туман</string>
-    <string name="title_activity_settings">Параметри</string>
+    <string name="title_activity_settings">Налаштування</string>
     <string name="clouds">Хмари:</string>
     <string name="rain">Дощ:</string>
     <string name="preference_category_other">Інше</string>
@@ -31,14 +31,14 @@
     <string name="weathercode_MODERATE_RAIN_NOT_FREEZING_CONTINUOUS">помірний дощ, тривалий</string>
     <string name="weathercode_SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS">незначний дощ, тривалий</string>
     <string name="weathercode_ICE_FOG_SKY_NOT_RECOGNIZABLE">морозний туман</string>
-    <string name="weathercode_EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8">переважна хмарність</string>
+    <string name="weathercode_EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8">переважно хмарно</string>
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8">трохи хмарно</string>
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8">ясно</string>
     <string name="title_activity_warnings">Погодні попередження</string>
     <string name="title_activity_textlist">Тексти</string>
     <string name="preference_category_display">Відображення</string>
     <string name="preference_category_general">Дані погоди</string>
-    <string name="preference_category_widget">Параметри віджета</string>
+    <string name="preference_category_widget">Налаштування віджета</string>
     <string name="preference_category_warnings">Погодні попередження</string>
     <string name="favorites_cleared">Відібране видалено.</string>
     <string name="weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY">змішана злива зі снігом</string>
@@ -57,7 +57,7 @@
     <string name="preference_theme_summary">Оберіть кольорову палітру</string>
     <string name="preference_displaytype_title">Інтервали прогнозів</string>
     <string name="preference_screen_display_summary">Пристосування відображення прогнозу.</string>
-    <string name="preference_notify_warnings_title">Дозволити сповіщення</string>
+    <string name="preference_notify_warnings_title">Увімкнути сповіщення</string>
     <string name="preference_disable_warnings_summary">Не відображати попередження про погоду.</string>
     <string name="preference_screen_display_title">Параметри відображення</string>
     <string name="preference_displayvisibility_title">Видимість</string>
@@ -75,9 +75,9 @@
     <string name="preference_displaysimplebar_title">Проста панель</string>
     <string name="preference_displayvisibility_summary">Відображати видимість у прогнозах.</string>
     <string name="preference_displaysunrise_summary">Відображати години сходу, заходу і сутінок.</string>
-    <string name="preference_pdateinterval_summary">Виберіть, як часто потрібно оновляти погодні дані.</string>
-    <string name="preference_opacity_summary">Виберіть на скільки прозорим має бути віджет на головному екрані.</string>
-    <string name="preference_gadgetbridge_serve_title">Дозволити</string>
+    <string name="preference_pdateinterval_summary">Виберіть, як часто потрібно оновлювати погодні дані.</string>
+    <string name="preference_opacity_summary">Виберіть, наскільки прозорим має бути віджет на головному екрані.</string>
+    <string name="preference_gadgetbridge_serve_title">Увімкнути</string>
     <string name="preference_gadgetbridge_packagename_title">Назва пакунка</string>
     <string name="preference_ssl_title">Вимкнути SSL</string>
     <string name="alertdialog_yes">Так</string>
@@ -143,7 +143,7 @@
     <string name="areadatabasecreator_title">Підготовка даних</string>
     <string name="welcome_s4_displaytype">Оберіть як відображати прогноз погоди:</string>
     <string name="geoinput_button">Шукати за місцезнаходженням</string>
-    <string name="station_does_not_exist">Введена вами станція не існує. Будь ласка, виберіть станцію із запропонованих у списку.</string>
+    <string name="station_does_not_exist">Уведена Вами станція не існує. Будь ласка, виберіть станцію із запропонованих у списку.</string>
     <string name="weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8">помірна хмарність</string>
     <string name="preference_category_texts">Текстові прогнози</string>
     <string name="preference_displaywarninginwidget_summary">Відображати попередження для Вашого місцезнаходження у віджетах.</string>
@@ -151,7 +151,7 @@
     <string name="preference_displaysimplebar_summary">Показувати лише значок погоди і температуру на панелі.</string>
     <string name="dwd_warnings_notice">Основні дані: Deutscher Wetterdienst, відображення стислих попереджень.</string>
     <string name="weathercode_EXTREMELY_HEAVY_RAIN_SHOWER">надзвичайно сильні зливи</string>
-    <string name="dwd_notice">Основа даних: Deutscher Wetterdienst, додано власні елементи, деякі дані усереднені за окремими значеннями.</string>
+    <string name="dwd_notice">Основні дані: Deutscher Wetterdienst, додано власні елементи, деякі дані усереднені за окремими значеннями.</string>
     <string name="weathercode_SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT">змішані легкі зливи зі снігом</string>
     <string name="weathercode_HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS">сильна мряка, тривала</string>
     <string name="preference_update_textforecasts_summary">Зберігати погодні тексти актуальними</string>
@@ -163,7 +163,7 @@
     <string name="preference_clearnotifications_summary">Скиньте сповіщення для нагадувань про погоду. Усі правильні сповіщення відображатимуться знову.</string>
     <string name="weathercode_UNKNOWN">невідомо</string>
     <string name="weathercode_SNOW_SHOWERS_MODERATE_OR_HEAVY">снігопад</string>
-    <string name="preference_cache_warnings_summary">На скільки довго попередження відображатимуться без перезавантаження з Deutscher Wetterdienst.</string>
+    <string name="preference_cache_warnings_summary">Як довго попередження відображатимуться без перезавантаження з Deutscher Wetterdienst.</string>
     <string name="preference_viewmodel_title">Рівень деталізування</string>
     <string name="preference_viewmodel_summary">Показувати детальний або простий прогноз погоди.</string>
     <string name="preference_displayforecastbar_summary">Відображати панель із погодинними даними в 6-годинних прогнозах.</string>
@@ -267,7 +267,7 @@
     <string name="preference_log_to_logcat_summary">Вставте журнали в системний журнал на пристрої. Увага: це може бути витоком конфіденційності, інші програми можуть отримати доступ до системного журналу.</string>
     <string name="alertdialog_1_text">Реєстрація в logcat може призвести до витоку приватної інформації в інші програми. Ви впевнені і знаєте, що робите\?</string>
     <string name="alertdialog_2_text">Ця програма зараз пише в logcat. Запис в logcat буде вимкнено, оскільки ця функція не призначена для офіційних випусків.</string>
-    <string name="preference_setalarm_notice">ПРИМІТКА: зараз це недоступно, поки дозволена підтримка Gadgetbridge, яка все одно примушує автоматичні оновлення.</string>
+    <string name="preference_setalarm_notice">ПРИМІТКА: Зараз це недоступно, оскільки ввімкнено підтримку Gadgetbridge, яка все одно примушує автоматичні оновлення.</string>
     <string name="alertdialog_2_toast">Запис у Logcat деактивовано.</string>
     <string name="preference_gadgetbridge_packagename_summary">Ви можете вказати власну назву для пакунка, наприклад, коли використовуєте відгілку Gadgetbridge. Вилучіть назву, щоб повернутися до типової назви пакунка.</string>
     <string name="preference_gadgetbridge_faketimestamp_summary">Деякі носимі пристрої не приймають прогноз поточної погоди, натомість завжди надсилайте поточний час.</string>
@@ -278,7 +278,7 @@
     <string name="textforecasttype_maritime_german_north_and_baltic">Приморське німецьке Північне та Балтійське моря</string>
     <string name="warning_stationreset_text">Щоб виправити помилку вашу станцію та відібрані станції скинуто до типових.</string>
     <string name="geoinput_wrongformat">Координата не має правильний формат. Ви можете використовувати анотації, як-от +53.12345 для градусів, або -44.22:12.12345 для введення градусів і хвилин або 33.12.12345 для введення градусів, хвилин і секунд. Будь ласка, спробуйте ще раз.</string>
-    <string name="geoinput_rationale">Служби локації потрібні лише один раз, щоб знайти наступну метеостанцію. Після цього їх можна відключити. Крім того, ви можете ввести геокоординати вручну, щоб знайти наступну метеостанцію.</string>
+    <string name="geoinput_rationale">Щоб знайти найближчу метеостанцію, застосунок може використовувати служби локації Вашого пристрою. Крім того, Ви можете шукати метеостанцію самостійно, вводити координати вручну або ділитися місцем розташування з програми для мап. Якщо хочете, щоб цей застосунок шукав Ваше місцезнаходження, потрібен дозвіл на визначення місцезнаходження.</string>
     <string name="travel_button">Оновити все</string>
     <string name="welcome_s3_text5">Довге натискання на прогнозі відкриває детальний перегляд.</string>
     <string name="update_failed">Невдале оновлення:</string>
@@ -296,12 +296,12 @@
     <string name="overview_button">Огляд</string>
     <string name="preference_display_rotation_title">Вирівнювання екрану</string>
     <string name="preference_display_rotation_summary">Як вирівняти екран</string>
-    <string name="chartwidget_description">діаграма</string>
+    <string name="chartwidget_description">Діаграма</string>
     <string name="preference_display_overviewchart_days_title">Дні</string>
     <string name="preference_display_overviewchart_days_summary">Максимальна кількість днів, що відображається на оглядовому графіку.</string>
     <string name="preference_screen_overviewchart_summary">Налаштуйте оглядову діаграму.</string>
     <string name="preference_notifySeverity_title">Категорія попередження</string>
-    <string name="preference_notifySeverity_summary">Повідомляти про попередження категорії \"%1$s\" або вище.</string>
+    <string name="preference_notifySeverity_summary">Сповіщати про попередження категорії «%1$s» або вище.</string>
     <string name="issued">виданий</string>
     <string name="preference_map_show_admin_by_default_title">Адміністративна карта</string>
     <string name="preference_category_overviewchart_scale">Значення шкали</string>
@@ -321,8 +321,8 @@
     <string name="alertdialog_3_title">Скинути налаштування</string>
     <string name="alertdialog_3_text2">Ви впевнені, що хочете скинути налаштування\?</string>
     <string name="alertdialog_3_toast">Налаштування були скинуті.</string>
-    <string name="preference_screen_map_title">Карта</string>
-    <string name="preference_screen_map_summary">Налаштувати відображення карти.</string>
+    <string name="preference_screen_map_title">Мапа</string>
+    <string name="preference_screen_map_summary">Налаштувати відображення мапи.</string>
     <string name="preference_map_show_admin_by_default_summary">Автоматичне відображення адміністративних кордонів.</string>
     <string name="preference_map_display_municipalities_summary">Покажіть муніципалітети.</string>
     <string name="preference_map_display_sea_summary">Показати зони попередження на морі.</string>
@@ -338,7 +338,7 @@
     <string name="preference_notify_LEDcolor_title">Колір сповіщення</string>
     <string name="preference_notify_LEDcolor_summary">Виберіть колір світлодіода сповіщення.</string>
     <string name="preference_notify_LEDcolor_current">Поточний колір:</string>
-    <string name="preference_led_notice_title">Зауважте</string>
+    <string name="preference_led_notice_title">Зверніть увагу</string>
     <string name="preference_led_notice_summary">Лише на деяких пристроях є світлодіодний індикатор сповіщень. На інших пристроях ці параметри не впливають. Інші налаштування пристрою можуть перешкоджати блиманню індикатора сповіщень.</string>
     <string name="back">назад</string>
     <string name="next">наступний</string>
@@ -364,7 +364,7 @@
     <string name="wd_pf">Імовірність туману</string>
     <string name="wd_pd">Імовірність дощу</string>
     <string name="hint_1">Натисніть на індикатор часу внизу ліворуч, щоб встановити радар дощу на початок. Натисніть на легенду, щоб перемотати назад. Якщо радар не вдалося завантажити, індикатор часу буде жовтим. Якщо можна відобразити принаймні застаріле зображення, індикатор часу буде помаранчевим.</string>
-    <string name="preference_screen_pollen_hint_summary">Якщо ви деактивуєте певний пилок, він буде прихований у детальному прогнозі, списку мап та детальному перегляді мапи.</string>
+    <string name="preference_screen_pollen_hint_summary">Якщо Ви деактивуєте певний пилок, він буде прихований у детальному прогнозі, списку мап та детальному перегляді мапи.</string>
     <string name="preference_prefetch_maps_title">Негайно завантажуйте карти</string>
     <string name="preference_prefetch_maps_summary">Автоматичне оновлення погодних карт і прогнозу пилку після запуску програми. Покращує продуктивність, але споживає більше даних.</string>
     <string name="tomorrow">завтра</string>
@@ -374,7 +374,7 @@
     <string name="preference_screen_uvhi_showInMain_summary">Відображати індекс небезпеки ультрафіолетового випромінювання в головному вікні програми.</string>
     <string name="preference_wifionly_title">Використовуйте тільки Wi-Fi</string>
     <string name="preference_wifionly_summary">Обмежте використання мережі до Wi-Fi.</string>
-    <string name="preference_screen_uvhi_fetchData_summary">Окрім прогнозу погоди, також отримайте прогноз індексу небезпеки ультрафіолетового випромінювання для вашого місцезнаходження.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Окрім прогнозу погоди, також отримайте прогноз індексу небезпеки ультрафіолетового випромінювання для Вашого місцезнаходження.</string>
     <string name="preference_screen_uvhi_title">Індекс небезпеки ультрафіолетового випромінювання</string>
     <string name="preference_screen_uvhi_summary">Налаштуйте відображення індексу небезпеки ультрафіолетового випромінювання.</string>
     <string name="service_notification_text4">Отримання шарів карти…</string>
@@ -396,17 +396,17 @@
     <string name="temp_max">Максимальна температура</string>
     <string name="temp_min">Мінімальна температура</string>
     <string name="preference_screen_pollen_ambrosia_summary">Відображати прогноз кількості пилку амброзії.</string>
-    <string name="preference_screen_pollen_mugwort_summary">Відображати прогноз кількості пилку полинового пилку.</string>
-    <string name="preference_screen_pollen_rye_summary">Відобразити прогноз кількості пилку жита.</string>
-    <string name="preference_screen_pollen_ash_summary">Показує прогноз кількості пилку для попелу.</string>
-    <string name="preference_screen_pollen_birch_summary">Відобразити прогноз кількості пилку берези.</string>
-    <string name="preference_screen_pollen_hazel_summary">Відобразити прогноз кількості пилку ліщини.</string>
-    <string name="preference_screen_pollen_alder_summary">Відобразити прогноз кількості пилку вільхи.</string>
-    <string name="preference_screen_pollen_grasses_summary">Відображати прогноз кількості пилку в травах.</string>
+    <string name="preference_screen_pollen_mugwort_summary">Відображати прогноз кількості полинового пилку.</string>
+    <string name="preference_screen_pollen_rye_summary">Відображати прогноз кількості пилку жита.</string>
+    <string name="preference_screen_pollen_ash_summary">Відображати прогноз кількості пилку ясена.</string>
+    <string name="preference_screen_pollen_birch_summary">Відображати прогноз кількості пилку берези.</string>
+    <string name="preference_screen_pollen_hazel_summary">Відображати прогноз кількості пилку ліщини.</string>
+    <string name="preference_screen_pollen_alder_summary">Відображати прогноз кількості пилку вільхи.</string>
+    <string name="preference_screen_pollen_grasses_summary">Відображати прогноз кількості пилку трав.</string>
     <string name="preference_screen_pollen_hint_title">Підказка</string>
     <string name="pollen_mugwort">Полин</string>
-    <string name="pollen_rye">Житній.</string>
-    <string name="pollen_ash">Попіл</string>
+    <string name="pollen_rye">Жито</string>
+    <string name="pollen_ash">Ясен</string>
     <string name="pollen_birch">Береза</string>
     <string name="wm_maps">Карти погоди</string>
     <string name="wm_update_not_allowed_yet">Наступне оновлення можливе: %1$s</string>
@@ -418,10 +418,10 @@
     <string name="layerlabel_ts_max_0">Максимальна температура, зафіксована сьогодні</string>
     <string name="layerlabel_ts_max_1">Максимальна температура, що очікується завтра</string>
     <string name="layerlabel_ts_max_2">Максимальна температура очікується післязавтра</string>
-    <string name="pollen_hazel">Хейзел</string>
+    <string name="pollen_hazel">Ліщина</string>
     <string name="pollen_alder">Вільха</string>
     <string name="pollen_grasses">Трави</string>
-    <string name="pollen_load0">ні</string>
+    <string name="pollen_load0">немає</string>
     <string name="pollen_load1">від нуля до мінімуму</string>
     <string name="pollen_load2">низький</string>
     <string name="pollen_load3">від низького до середнього</string>
@@ -442,7 +442,7 @@
     <string name="backgroundGPS_settingshint">Щоб надати дозвіл на фонове розташування, потрібно відкрити налаштування програми: вибрати дозволи; вибрати розташування, дозволити</string>
     <string name="geoinput_settingshint">Щоб надати дозвіл на розташування, вам потрібно відкрити налаштування програми: вибрати дозволи; вибрати розташування, дозволити доступ до розташування.</string>
     <string name="backgroundGPS_rationale">Виберіть Завжди дозволяти дозвіл на визначення місцезнаходження, щоб місцезнаходження можна було оновлювати у фоновому режимі. Використовуватимуться лише ті місцезнаходження, які були визначені іншими програмами. Програма не буде активно визначати місцезнаходження у фоновому режимі, щоб не перевантажувати ваш акумулятор. Без цього дозволу програма не зможе коригувати місцезнаходження у фоновому режимі. Якщо ви не надасте цей дозвіл, на інші функції програми це не вплине.</string>
-    <string name="allow">Дозвольте</string>
+    <string name="allow">Дозволити</string>
     <string name="always_allow">завжди дозволяйте</string>
     <string name="opensettings">Відкрити налаштування</string>
     <string name="favorites_rebuild_sucessfully">Фаворити були успішно відновлені!</string>
