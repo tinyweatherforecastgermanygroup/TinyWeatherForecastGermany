@@ -26,6 +26,7 @@ public class WeatherDetailsActivity extends Activity {
     public static class ListItemType{
         public static final int Label = 0;
         public static final int Chart = 1;
+        public static final int MoonRise = 2;
     }
 
     Weather.WeatherInfo weatherInfo;
@@ -51,6 +52,7 @@ public class WeatherDetailsActivity extends Activity {
     LinearLayout valuesListIncidents;
     LinearLayout valuesListPrecipitation;
     FrameLayout precipitationChartFrame;
+    LinearLayout moonAndSun;
     LinearLayout valuesListPollen;
 
     ImageView moon;
@@ -64,6 +66,7 @@ public class WeatherDetailsActivity extends Activity {
     ProgressBar progressBar;
 
     int weatherPosition;
+    PhaseImages phaseImages;
 
     // flag to prevent too fast view changes
     boolean viewIsBeingCreated = false;
@@ -170,6 +173,14 @@ public class WeatherDetailsActivity extends Activity {
         boolean applyFilter;
         boolean smallHeading = false;
         View.OnLongClickListener onLongClickListener = null;
+        // for the sunrise/sunset moonrise/moonset element
+        String twilightMorning; String sunrise; String sunset; String twilightEvening; String moonrise; String moonset;
+
+        public DetailsElement(String heading, String twilightMorning, String sunrise, String sunset, String twilightEvening, String moonrise, String moonset, Bitmap bitmap, boolean applyFilter){
+            this.heading = heading;
+            this.twilightMorning = twilightMorning; this.sunrise = sunrise; this.sunset = sunset; this.twilightEvening=twilightEvening; this.moonrise = moonrise; this.moonset=moonset; this.bitmap = bitmap;
+            this.applyFilter = applyFilter;
+        }
 
         public DetailsElement(String heading, int icon, String value, String label, boolean applyFilter){
             this.heading = heading;
@@ -232,6 +243,7 @@ public class WeatherDetailsActivity extends Activity {
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         executor = Executors.newSingleThreadExecutor();
         forecastIcons  = new ForecastIcons(context,weatherConditionIcon);
+        phaseImages = new PhaseImages(context);
         if (savedInstanceState!=null){
             weatherPosition = savedInstanceState.getInt(SIS_POSITION);
         } else {
@@ -263,12 +275,13 @@ public class WeatherDetailsActivity extends Activity {
         precipitationChartFrame = (FrameLayout) findViewById(R.id.weatherdetails_precipitationchartframe);
         precipitationChart = (ImageView) findViewById(R.id.weatherdetails_precipitationchart);
         valuesListPollen = (LinearLayout) findViewById(R.id.weatherdetails_pollenvalues);
+        moonAndSun = (LinearLayout) findViewById(R.id.weatherdetails_moonandsun);
         progressBar = (ProgressBar) findViewById(R.id.weatherdetails_progressbar);
         // make a list what do update
         ArrayList<String> updateTasks = new ArrayList<String>();
         // Load weather data, fetch from DWD if necessary, establish alarm cycles
         try {
-            currentWeatherInfo = new Weather().getCurrentWeatherInfo(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
+            currentWeatherInfo = Weather.getCurrentWeatherInfo(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
         } catch (Exception e){
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
         }
@@ -287,7 +300,6 @@ public class WeatherDetailsActivity extends Activity {
             updateData(updateTasks);
         }
         // result will be received by a broadcast event
-        displayValues();
         TextView textViewNotice = (TextView) findViewById(R.id.weatherdetails_reference_text);
         if ((textViewNotice!=null) && (ForecastBitmap.getDisplayOrientation(context)== Configuration.ORIENTATION_LANDSCAPE)){
             float textSize = context.getResources().getDimension(R.dimen.fcmain_textsize_smaller);
@@ -360,6 +372,7 @@ public class WeatherDetailsActivity extends Activity {
         valuesListElements.removeAllViews();
         valuesListVisibility.removeAllViews();
         valuesListIncidents.removeAllViews();
+        moonAndSun.removeAllViews();
         valuesListPollen.removeAllViews();
         if (valuesListPrecipitation!=null){
             valuesListPrecipitation.removeAllViews();
@@ -374,25 +387,18 @@ public class WeatherDetailsActivity extends Activity {
 
     public void displayMoonPhase(final Weather.WeatherInfo weatherInfo, final Weather.WeatherLocation weatherLocation){
         if (moon!=null){
-            if (Weather.isMoonTime(weatherLocation,weatherInfo.getTimestamp())){
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        final Bitmap moonBitmap = forecastIcons.getDisposableMoonLayer(weatherInfo,weatherLocation);
-                        float position = Weather.getApproxMoonPositionOnSky(weatherLocation,weatherInfo.getTimestamp());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                moon.setVisibility(View.VISIBLE);
-                                moon.setImageBitmap(moonBitmap);
-                            }
-                        });
-                    }
-                });
-            } else {
-                moon.setImageBitmap(null);
-                moon.setVisibility(View.INVISIBLE);
-            }
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    final Bitmap bitmap = phaseImages.getMoonPhaseImage(weatherLocation,weatherInfo.getTimestamp());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            moon.setImageBitmap(bitmap);
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -462,6 +468,9 @@ public class WeatherDetailsActivity extends Activity {
         if (listItemType == ListItemType.Chart){
             resourceID = R.layout.detailslistitem2;
         }
+        if (listItemType == ListItemType.MoonRise){
+            resourceID = R.layout.detailslistitem3;
+        }
         View view = layoutInflater.inflate(resourceID,null);
         TextView heading = (TextView) view.findViewById(R.id.dl_heading);
         TextView label = (TextView) view.findViewById(R.id.dl_label);
@@ -489,6 +498,22 @@ public class WeatherDetailsActivity extends Activity {
             if ((detailsElement.icon==null) && (detailsElement.label==null) && (detailsElement.bitmap==null)){
                 hideLineContainer = true;
             }
+        }
+        if (listItemType == ListItemType.MoonRise){
+            chart = (ImageView) view.findViewById(R.id.dl_chart);
+            TextView twilightMorning = (TextView) view.findViewById(R.id.dl_sun_twilight_morning_value);
+            twilightMorning.setText(detailsElement.twilightMorning);
+            TextView sunrise = (TextView) view.findViewById(R.id.dl_sun_up_value);
+            sunrise.setText(detailsElement.sunrise);
+            TextView sunset  = (TextView) view.findViewById(R.id.dl_sun_down_value);
+            sunset.setText(detailsElement.sunset);
+            TextView twilightEvening = (TextView) view.findViewById(R.id.dl_sun_twilight_evening_value);
+            twilightEvening.setText(detailsElement.twilightEvening);
+            TextView moonrise = (TextView) view.findViewById(R.id.dl_moon_up_value);
+            moonrise.setText(detailsElement.moonrise);
+            TextView moonset  = (TextView) view.findViewById(R.id.dl_moon_down_value);
+            moonset.setText(detailsElement.moonset);
+            chart.setImageBitmap(detailsElement.bitmap);
         }
         if (heading!=null) {
             if (detailsElement.smallHeading){
@@ -546,10 +571,12 @@ public class WeatherDetailsActivity extends Activity {
         }
         // lineContainer is the horizontal (value) line below the heading. This needs to be hidden when no items
         // present but the heading itself.
-        if (hideLineContainer){
-            lineContainer.setVisibility(View.GONE);
-        } else {
-            lineContainer.setVisibility(View.VISIBLE);
+        if (lineContainer!=null){
+            if (hideLineContainer){
+                lineContainer.setVisibility(View.GONE);
+            } else {
+                lineContainer.setVisibility(View.VISIBLE);
+            }
         }
         if (chart!=null){
             chart.setOnLongClickListener(detailsElement.onLongClickListener);
@@ -709,11 +736,6 @@ public class WeatherDetailsActivity extends Activity {
             if (weatherInfo.hasProbVisibilityBelow1km()){
                 list.add(newDetail(null,null,(ForecastAdapter.getVisibilityBelow1kmCharSequence(weatherInfo)).toString(),getResources().getString(R.string.wd_pv1)));
             }
-            double RadS3;       // kJ/m²; short wave radiation balance during last 3h
-            double RRad1;       // % (0..80); global irradiance within the last hour
-            double Rad1h;       // kJ/m²; global irradiance
-            double RadL3;       // kJ/m²; long wave radiation balance during last 3h
-
             for (int i=0; i<list.size(); i++){
                 setDetail(valuesListVisibility,list.get(i),ListItemType.Label);
             }
@@ -745,6 +767,21 @@ public class WeatherDetailsActivity extends Activity {
             }
         } else {
             valuesListIncidents.setVisibility(View.GONE);
+        }
+        if (true){
+            moonAndSun.setVisibility(View.VISIBLE);
+            moonAndSun.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
+            Weather.RiseSetTimes riseSetTimes = new Weather.RiseSetTimes(currentWeatherInfo.weatherLocation,weatherInfo.getTimestamp());
+            final Bitmap bitmap = phaseImages.getMoonPhaseImage(currentWeatherInfo.weatherLocation,weatherInfo.getTimestamp());
+            DetailsElement detailsElement = new DetailsElement(context.getResources().getString(R.string.preference_displaysunrise_title),
+                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.sun[Weather.RiseSetTimes.TWILIGHT_MORNING]),
+                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.sun[Weather.RiseSetTimes.RISE]),
+                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.sun[Weather.RiseSetTimes.SET]),
+                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.sun[Weather.RiseSetTimes.TWILIGHT_EVENING]),
+                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.moon[Weather.RiseSetTimes.RISE]),
+                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.moon[Weather.RiseSetTimes.SET])
+                    ,bitmap,true);
+            setDetail(moonAndSun,detailsElement,ListItemType.MoonRise);
         }
         if (pollenArea!=null){
             final int relativeDay = weatherInfo.getRelativeDay();
@@ -922,6 +959,7 @@ public class WeatherDetailsActivity extends Activity {
     protected void onResume() {
         super.onResume();
         registerForBroadcast();
+        displayValues();
     }
 
     @Override

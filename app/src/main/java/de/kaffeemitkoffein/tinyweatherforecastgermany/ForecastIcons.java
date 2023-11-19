@@ -70,29 +70,29 @@ public class ForecastIcons {
     }
     private static final Paint MoonFill = new Paint();
 
-    private static class Layer{
-        private final static int NOT_AVAILABLE = 0;
-        private final static int DRIZZLE_1 = 1;
-        private final static int DRIZZLE_2 = 2;
-        private final static int DRIZZLE_3 = 3;
-        private final static int RAIN_1 = 4;
-        private final static int RAIN_2 = 5;
-        private final static int RAIN_3 = 6;
-        private final static int CLOUDS = 7;
-        private final static int CLOUD_1 = 8;
-        private final static int CLOUD_2 = 9;
-        private final static int CLOUD_3 = 10;
-        private final static int SNOW_1 = 11;
-        private final static int SNOW_2 = 12;
-        private final static int SNOW_3 = 13;
-        private final static int CLOUDY = 14;
-        private final static int FREEZING_1 = 15;
-        private final static int FREEZING_2 = 16;
-        private final static int FOG = 17;
-        private final static int SUN = 18;
-        private final static int MOON = 19;
-        private final static int LIGHTNING = 20;
-        private final static int HALLOWEEN = 201;
+    public static class Layer{
+        public final static int NOT_AVAILABLE = 0;
+        public final static int DRIZZLE_1 = 1;
+        public final static int DRIZZLE_2 = 2;
+        public final static int DRIZZLE_3 = 3;
+        public final static int RAIN_1 = 4;
+        public final static int RAIN_2 = 5;
+        public final static int RAIN_3 = 6;
+        public final static int CLOUDS = 7;
+        public final static int CLOUD_1 = 8;
+        public final static int CLOUD_2 = 9;
+        public final static int CLOUD_3 = 10;
+        public final static int SNOW_1 = 11;
+        public final static int SNOW_2 = 12;
+        public final static int SNOW_3 = 13;
+        public final static int CLOUDY = 14;
+        public final static int FREEZING_1 = 15;
+        public final static int FREEZING_2 = 16;
+        public final static int FOG = 17;
+        public final static int SUN = 18;
+        public final static int MOON = 19;
+        public final static int LIGHTNING = 20;
+        public final static int HALLOWEEN = 201;
     }
 
     private int getLayerResourceID(int layer){
@@ -183,7 +183,7 @@ public class ForecastIcons {
         initLayers();
     }
 
-    private Bitmap getLayer(int layer){
+    public Bitmap getLayer(int layer){
         Bitmap bitmap = bitmapCache.get(layer);
         if (bitmap==null){
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -204,7 +204,11 @@ public class ForecastIcons {
     }
 
     public Bitmap getDisposableMoonLayer(Weather.WeatherInfo weatherInfo, Weather.WeatherLocation weatherLocation){
-        float moonPhase = (float) Weather.getMoonPhase(weatherInfo.getTimestamp());
+        return getDisposableMoonLayer(weatherInfo.getTimestamp(),weatherLocation);
+    }
+
+    public Bitmap getDisposableMoonLayer(long time, Weather.WeatherLocation weatherLocation){
+        float moonPhase = (float) Weather.getMoonPhase(time);
         float moonDiameter = iconWidth * 204f/512f;
         float moonPositionX = iconWidth/2f - (moonPhase*moonDiameter*2);
         if (moonPhase>=0.5){
@@ -225,7 +229,7 @@ public class ForecastIcons {
                 targetBitmap = Bitmap.createBitmap(targetBitmap,0,0,targetBitmap.getWidth(),targetBitmap.getHeight(),matrix,true);
             }
         }
-        if (Holidays.isHalloween(weatherInfo.getTimestamp())){
+        if (Holidays.isHalloween(time)){
             Bitmap halloween = getLayer(Layer.HALLOWEEN);
             canvas.drawBitmap(halloween,0,0,paint);
         }

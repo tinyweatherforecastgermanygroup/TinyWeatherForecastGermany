@@ -1770,25 +1770,117 @@ public final class Weather {
         return false;
     }
 
-    public static float getApproxMoonPositionOnSky(Weather.WeatherLocation weatherLocation, long time){
-        Astronomy.Riseset riseset = getRiseset(weatherLocation,time);
-        long moonRise = getMoonRiseInUTC(riseset,time);
-        long moonSet  = getMoonSetInUTC(riseset,time);
-        if (moonRise<moonSet){
-            if ((time>=moonRise) && (time<moonSet)){
-                float moonTimeDuration = moonSet-moonRise;
-                long moonTime = time - moonRise;
-                return moonTime/moonTimeDuration;
+    public static long getMidnightTime(long time){
+        GregorianCalendar c1 = new GregorianCalendar();
+        c1.set(Calendar.HOUR,0);
+        c1.set(Calendar.MINUTE,0);
+        c1.set(Calendar.SECOND,0);
+        c1.set(Calendar.MILLISECOND,0);
+        return c1.getTimeInMillis();
+    }
+
+    public static long getNextMidnightTime(long time){
+        long mtime = getMidnightTime(time);
+        GregorianCalendar c1 = new GregorianCalendar();
+        c1.roll(Calendar.DAY_OF_MONTH,1);
+        return c1.getTimeInMillis();
+    }
+
+    private static long getVisibleDuration(WeatherLocation weatherLocation, long rise, long set, long nextSet){
+        // set is always after rise.
+        // However, the Astromomy class gives set & rise of the same day.
+        // if set is before rise in utc:
+        // -> in this case, move set 24h forward to make it match again for calculations.
+        long correctedSet = set;
+        if (set<rise){
+            correctedSet = nextSet;
+       }
+        return correctedSet-rise;
+    }
+
+    private static float getApproximatePositionOnSky(WeatherLocation weatherLocation, long rise, long set, long nextSet, long time){
+        long visibleDuration = getVisibleDuration(weatherLocation,rise,set,nextSet);
+        // check if time is between rise & set
+        if (((set>rise) && (time>=rise) && (time<=set)) ||
+           ((set<rise) && ((time<set) || (time>rise)))){
+            // set is always after rise.
+            // However, the Astromomy class gives set & rise of the same day.
+            // if set is before rise in utc:
+            // -> in this case, move time 24h forward to make it match again for calculations.
+            long correctedTime = time;
+            if ((set<rise) && (time<rise)){
+                correctedTime = time + 1000*60*60*24; // 24h in millis
             }
-        }
-        if (moonSet<=moonRise){
-            if (!((time>=moonSet) && (time<=moonRise))){
-                float moonTimeDuration = moonRise-moonSet;
-                long moonTime = time - moonSet;
-                return moonTime/moonTimeDuration;
-            }
+            float result = ((correctedTime-rise)/(float) visibleDuration);
+            return result;
         }
         return -1;
+    }
+
+    private static float getRawApproxMoonPositionOnSky(Weather.WeatherLocation weatherLocation, long time) {
+        Astronomy.Riseset riseset = getMoonRiseset(weatherLocation, time);
+        long rise = getMoonRiseInUTC(riseset, time);
+        long set = getMoonSetInUTC(riseset, time);
+        Astronomy.Riseset riseset2 = getMoonRiseset(weatherLocation,rise+1000*60*60*24);
+        long nextSet = getMoonSetInUTC(riseset2,rise+1000*60*60*24);
+        float approximatePosition = getApproximatePositionOnSky(weatherLocation,rise,set,nextSet,time);
+        return approximatePosition;
+    }
+
+    /**
+     * Determines the approximate position of the moon on the sky based on rise and set times.
+     * Note: to eliminate possible time shifts between rise sets of different days, in most cases this calculation
+     *       is averaged over three hours.
+     *
+     * @param weatherLocation the location to calculate the value for
+     * @param time the time in UTC (milliseconds)
+     * @return the approximate position, where 0 is rise and 1 is set. Returns -1 if the moon is
+     * not visible at the time.
+     */
+
+    public static float getApproxMoonPositionOnSky(Weather.WeatherLocation weatherLocation, long time) {
+        float moonPositionOnSky = Weather.getRawApproxMoonPositionOnSky(weatherLocation, time);
+        if (moonPositionOnSky!=-1){
+            float moonPositionOnSky0 = Weather.getRawApproxMoonPositionOnSky(weatherLocation, time-1000*60*60);
+            float moonPositionOnSky1 = Weather.getRawApproxMoonPositionOnSky(weatherLocation, time+1000*60*60);
+            if ((moonPositionOnSky0!=-1) && (moonPositionOnSky1!=-1)){
+                moonPositionOnSky = (moonPositionOnSky0 + +moonPositionOnSky+ moonPositionOnSky1)/3;
+            }
+        }
+        return moonPositionOnSky;
+    }
+
+    private static float getRawApproxSunPositionOnSky(Weather.WeatherLocation weatherLocation, long time) {
+        Astronomy.Riseset riseset = getRiseset(weatherLocation,time);
+        long rise = getSunriseInUTC(riseset,time);
+        long set  = getSunsetInUTC(riseset,time);
+        Astronomy.Riseset riseset2 = getRiseset(weatherLocation,rise+1000*60*60*24);
+        long nextSet = getSunsetInUTC(riseset2,rise+1000*60*60*24);
+        float approximatePosition = getApproximatePositionOnSky(weatherLocation,rise,set,nextSet,time);
+        return approximatePosition;
+    }
+
+    /**
+     * Determines the approximate position of the sun on the sky based on sunrise and sunset times.
+     * Note: to eliminate possible time shifts between rise sets of different days, in most cases this calculation
+     *       is averaged over three hours.
+     *
+     * @param weatherLocation the location to calculate the value for
+     * @param time the time in UTC (milliseconds)
+     * @return the approximate position, where 0 is sunrise, 0.5 is midday and 1 is sunset. Returns -1 if the sun is
+     * not visible at the time.
+     */
+
+    public static float getApproxSunPositionOnSky(Weather.WeatherLocation weatherLocation, long time) {
+        float sunPositionOnSky = getRawApproxSunPositionOnSky(weatherLocation,time);
+        if (sunPositionOnSky!=-1){
+            float sunPositionOnSky0 = getRawApproxSunPositionOnSky(weatherLocation,time-1000*60*60);
+            float sunPositionOnSky1 = getRawApproxSunPositionOnSky(weatherLocation,time+1000*60*60);
+            if ((sunPositionOnSky0!=-1) && (sunPositionOnSky1!=-1)){
+                sunPositionOnSky = (sunPositionOnSky0 + sunPositionOnSky + sunPositionOnSky1)/3;
+            }
+        }
+        return sunPositionOnSky;
     }
 
 
@@ -1896,7 +1988,7 @@ public final class Weather {
 
     public static long getCivilTwilightMorning(WeatherLocation weatherLocation, long time){
         Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,time);
-        return getCivilTwilightEvening(riseset,time);
+        return getCivilTwilightMorning(riseset,time);
     }
 
     public static long getCivilTwilightMorning(WeatherLocation weatherLocation, WeatherInfo weatherInfo){
@@ -1940,6 +2032,30 @@ public final class Weather {
 
     public static long getMoonSetInUTC(WeatherLocation weatherLocation, WeatherInfo weatherInfo){
         return getMoonSetInUTC(weatherLocation,weatherInfo.getTimestamp());
+    }
+
+    public static class RiseSetTimes {
+        public final static int RISE = 0;
+        public final static int SET = 1;
+        public final static int TWILIGHT_MORNING = 2;
+        public final static int TWILIGHT_EVENING = 3;
+        public long[] sun;
+        public long[] moon;
+
+        public RiseSetTimes(WeatherLocation weatherLocation, long time){
+            Astronomy.Riseset risesetSun  = Weather.getRiseset(weatherLocation,time);
+            Astronomy.Riseset risesetMoon = Weather.getMoonRiseset(weatherLocation,time);
+            sun  = new long[4];
+            moon = new long[4];
+            sun[RISE]              = Weather.getSunriseInUTC(risesetSun,time);
+            sun[SET]               = Weather.getSunsetInUTC(risesetSun,time);
+            sun[TWILIGHT_MORNING]  = Weather.getCivilTwilightMorning(risesetSun,time);
+            sun[TWILIGHT_EVENING]  = Weather.getCivilTwilightEvening(risesetSun,time);
+            moon[RISE]             = Weather.getMoonRiseInUTC(risesetMoon, time);
+            moon[SET]              = Weather.getMoonSetInUTC(risesetMoon, time);
+            moon[TWILIGHT_MORNING] = 0;
+            moon[TWILIGHT_EVENING] = 0;
+        }
     }
 
     // known new moon on 2023, Sept. 15 01:39 UTC, in seconds epoch time 1694785140 in millis 1694785140000

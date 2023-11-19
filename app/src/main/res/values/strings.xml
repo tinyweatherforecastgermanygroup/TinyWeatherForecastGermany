@@ -301,6 +301,8 @@
     <string name="direction_calm">-</string>
     <string name="sunset">Sunset</string>
     <string name="sunrise">Sunrise</string>
+    <string name="moonset">Moonset</string>
+    <string name="moonrise">Moonrise</string>
     <string name="twilight">Twilight</string>
     <string name="preference_feedback_title">Feedback</string>
     <string name="preference_feedback_summary">Give the developer some feedback by e-mail.</string>

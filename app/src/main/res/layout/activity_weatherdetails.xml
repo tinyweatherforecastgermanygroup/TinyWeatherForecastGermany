@@ -154,14 +154,32 @@
 
                 </RelativeLayout>
 
-                <ImageView
-                        android:id="@+id/weatherdetails_moon"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/fcmain_textsize_small"
+                        android:textColor="?attr/colorText"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
+                        android:textAlignment="center"
+                        android:text="Sun &amp; Moon"/>
+
+                <ImageView
+                        android:id="@+id/weatherdetails_moon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:scaleType="fitStart"
                         android:paddingRight="8dp"
                         android:paddingTop="8dp"/>
+
+                <ImageView android:layout_width="60dp"
+                           android:layout_height="1dp"
+                           android:layout_below="@id/weatherdetails_moon"
+                           android:layout_alignParentRight="true"
+                           android:paddingRight="8dp"
+                           android:background="@color/colorAccentBlue_Solarized"/>
 
             </RelativeLayout>
 
@@ -256,11 +274,21 @@
             </FrameLayout>
 
             <LinearLayout
-                    android:id="@+id/weatherdetails_pollen"
+                    android:id="@+id/weatherdetails_moonandsun"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_below="@id/weatherdetails_precipitationchartframe"
+                    android:layout_margin="3dp"
+                    android:padding="3dp">
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/weatherdetails_pollen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@id/weatherdetails_moonandsun"
                     android:layout_margin="3dp"
                     android:padding="3dp">
             </LinearLayout>

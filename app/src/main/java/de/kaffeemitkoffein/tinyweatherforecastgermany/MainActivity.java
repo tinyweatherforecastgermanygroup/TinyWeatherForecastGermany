@@ -662,7 +662,6 @@ public class MainActivity extends Activity {
                 // do nothing
             }
             // TESTING
-
         }
     }
 

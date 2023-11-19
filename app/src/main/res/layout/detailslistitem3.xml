@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020, 2021 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/dl_maincontainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/dl_heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_alignParentTop="true"
+            android:textColor="?attr/colorTextLight"
+            android:textSize="@dimen/fcmain_textsize_xl"/>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/dl_heading"
+            android:weightSum="3">
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="5">
+
+                    <ImageView
+                            android:id="@+id/dl_sun"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/fcmain_textsize_large"
+                            android:layout_gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/sunset"
+                            android:layout_marginBottom="@dimen/fcmain_textsize_small"
+                            android:gravity="center"/>
+
+                    <ImageView
+                            android:id="@+id/dl_sun_up"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/fcmain_textsize_medium"
+                            android:layout_alignParentTop="true"
+                            android:layout_gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/arrow_up"
+                            android:gravity="center"/>
+
+                    <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2">
+
+                        <TextView
+                                android:id="@+id/dl_sun_twilight_morning_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:textColor="?attr/colorTextLight"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:gravity="center"
+                                android:text="@string/twilight"
+                                android:layout_gravity="center"
+                                android:textAlignment="center"/>
+
+                        <TextView
+                                android:id="@+id/dl_sun_up_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/dl_sun_twilight_morning_label"
+                                android:textColor="?attr/colorTextLight"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:gravity="center"
+                                android:text="@string/sunrise"
+                                android:layout_gravity="center"
+                                android:textAlignment="center"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                        <TextView
+                                android:id="@+id/dl_sun_twilight_morning_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:textColor="?attr/colorTextLight"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:textAlignment="center"/>
+
+                        <TextView
+                                android:id="@+id/dl_sun_up_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/dl_sun_twilight_morning_value"
+                                android:textColor="?attr/colorTextLight"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:textAlignment="center"/>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="5">
+
+                    <ImageView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/fcmain_textsize_large"
+                            android:layout_gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/sunset"
+                            android:layout_marginBottom="@dimen/fcmain_textsize_small"
+                            android:visibility="invisible"
+                            android:gravity="center"/>
+
+                    <ImageView
+                            android:id="@+id/dl_sun_down"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/fcmain_textsize_medium"
+                            android:layout_alignParentBottom="true"
+                            android:layout_gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/arrow_down"
+                            android:gravity="center"/>
+
+                    <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2">
+
+                        <TextView
+                                android:id="@+id/dl_sun_down_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:textColor="?attr/colorTextLight"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:gravity="center"
+                                android:text="@string/sunset"
+                                android:layout_gravity="center"
+                                android:textAlignment="center"/>
+
+                        <TextView
+                                android:id="@+id/dl_sun_twilight_evening_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/dl_sun_down_label"
+                                android:textColor="?attr/colorTextLight"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:gravity="center"
+                                android:text="@string/twilight"
+                                android:layout_gravity="center"
+                                android:textAlignment="center"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                        <TextView
+                                android:id="@+id/dl_sun_down_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="?attr/colorTextLight"
+                                android:layout_alignParentTop="true"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:gravity="center"
+                                android:text="14:27"
+                                android:layout_gravity="center"
+                                android:textAlignment="center"/>
+
+                        <TextView
+                                android:id="@+id/dl_sun_twilight_evening_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="?attr/colorTextLight"
+                                android:layout_below="@id/dl_sun_down_value"
+                                android:textSize="@dimen/fcmain_textsize_medium"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:textAlignment="center"/>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="5">
+
+                    <ImageView
+                            android:id="@+id/dl_moon"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/fcmain_textsize_large"
+                            android:layout_gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/moonset"
+                            android:gravity="center"/>
+
+                    <ImageView
+                            android:id="@+id/dl_moon_up"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/fcmain_textsize_medium"
+                            android:layout_gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/arrow_up"
+                            android:gravity="center"/>
+
+                    <TextView
+                            android:id="@+id/dl_moon_up_label"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/colorTextLight"
+                            android:textSize="@dimen/fcmain_textsize_medium"
+                            android:gravity="left"
+                            android:text="@string/moonrise"
+                            android:layout_gravity="left"
+                            android:textAlignment="textStart"/>
+
+
+                    <TextView
+                            android:id="@+id/dl_moon_up_value"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/colorTextLight"
+                            android:textSize="@dimen/fcmain_textsize_medium"
+                            android:gravity="left"
+                            android:layout_gravity="left"
+                            android:textAlignment="textStart"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="5">
+
+                    <ImageView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/fcmain_textsize_large"
+                            android:layout_gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/moonset"
+                            android:visibility="invisible"
+                            android:gravity="center"/>
+
+                    <ImageView
+                            android:id="@+id/dl_moon_down"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/fcmain_textsize_medium"
+                            android:layout_gravity="center"
+                            android:scaleType="fitCenter"
+                            android:src="@mipmap/arrow_down"
+                            android:gravity="center"/>
+
+                    <TextView
+                            android:id="@+id/dl_moon_down_label"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/colorTextLight"
+                            android:textSize="@dimen/fcmain_textsize_medium"
+                            android:gravity="left"
+                            android:text="@string/moonset"
+                            android:layout_gravity="left"
+                            android:textAlignment="textStart"/>
+
+                    <TextView
+                            android:id="@+id/dl_moon_down_value"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/dl_moon_up_value"
+                            android:textColor="?attr/colorTextLight"
+                            android:textSize="@dimen/fcmain_textsize_medium"
+                            android:gravity="left"
+                            android:layout_gravity="left"
+                            android:textAlignment="textStart"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+            <ImageView
+                    android:id="@+id/dl_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="center"
+                    android:layout_marginLeft="14dp"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"/>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="?attr/colorTextLight"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
