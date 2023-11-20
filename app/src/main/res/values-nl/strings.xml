@@ -451,4 +451,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Maximale windsnelheidswaarde weergegeven in de kaarten, ingevoerd in kilometers per uur (km/h). Huidige waarde:</string>
     <string name="preference_display_wind_in_charts_max_title">Windschaal in diagrammen</string>
     <string name="preference_station_replace_title">Gemeente weergeven</string>
+    <string name="moonset">Maansondergang</string>
+    <string name="moonrise">Maanopkomst</string>
 </resources>
