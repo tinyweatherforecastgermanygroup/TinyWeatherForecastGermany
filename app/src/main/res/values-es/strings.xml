@@ -451,4 +451,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Valor máximo de la velocidad del viento que aparece en las cartas, introducido en kilómetros por hora (km/h). Valor actual:</string>
     <string name="preference_display_wind_in_charts_max_title">Escala del viento en las cartas</string>
     <string name="preference_station_replace_title">Mostrar municipio</string>
+    <string name="moonset">Puesta de luna</string>
+    <string name="moonrise">Salida de la luna</string>
 </resources>
