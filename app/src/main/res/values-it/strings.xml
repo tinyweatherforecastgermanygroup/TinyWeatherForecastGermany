@@ -452,4 +452,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Valore massimo della velocità del vento visualizzato nei grafici, inserito in chilometri orari (km/h). Valore attuale:</string>
     <string name="preference_display_wind_in_charts_max_title">Scala del vento nei grafici</string>
     <string name="preference_station_replace_title">Visualizza il comune</string>
+    <string name="moonset">Tramonto della luna</string>
+    <string name="moonrise">Sorgere della luna</string>
 </resources>
