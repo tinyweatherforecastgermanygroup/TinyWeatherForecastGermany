@@ -451,4 +451,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Maksymalna prędkość wiatru wyświetlana na wykresach, wprowadzana w kilometrach na godzinę (km/h). Bieżąca wartość:</string>
     <string name="preference_display_wind_in_charts_max_title">Skala wiatru na wykresach</string>
     <string name="preference_station_replace_title">Wyświetlanie gminy</string>
+    <string name="moonset">Zachód księżyca</string>
+    <string name="moonrise">Wschód księżyca</string>
 </resources>
