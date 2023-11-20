@@ -465,4 +465,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Valeur maximale de la vitesse du vent affichée sur les cartes, saisie en kilomètres par heure (km/h). Valeur actuelle :</string>
     <string name="preference_display_wind_in_charts_max_title">L\'échelle des vents dans les cartes</string>
     <string name="preference_station_replace_title">Commune d\'affichage</string>
+    <string name="moonset">Coucher de lune</string>
+    <string name="moonrise">Lever de lune</string>
 </resources>
