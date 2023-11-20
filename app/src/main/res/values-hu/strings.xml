@@ -451,4 +451,6 @@
     <string name="preference_display_wind_in_charts_max_summary">A táblázatokban megjelenített maximális szélsebesség értéke, kilométer/órában (km/h) megadva. Jelenlegi érték:</string>
     <string name="preference_display_wind_in_charts_max_title">Szélskála a táblázatokban</string>
     <string name="preference_station_replace_title">Önkormányzat megjelenítése</string>
+    <string name="moonset">Holdnyugta</string>
+    <string name="moonrise">Holdfelkelte</string>
 </resources>
