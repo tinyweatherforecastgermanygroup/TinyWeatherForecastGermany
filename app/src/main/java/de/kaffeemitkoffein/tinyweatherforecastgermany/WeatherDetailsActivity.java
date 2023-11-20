@@ -729,7 +729,7 @@ public class WeatherDetailsActivity extends Activity {
         if ((weatherInfo.hasVisibility()) || (weatherInfo.hasProbVisibilityBelow1km())){
             valuesListVisibility.setVisibility(View.VISIBLE);
             valuesListVisibility.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
-            list.add(newDetail("Sicht",null,null,null));
+            list.add(newDetail(context.getResources().getString(R.string.preference_displayvisibility_title),null,null,null));
             if (weatherInfo.hasVisibility()){
                 list.add(newDetail(null,WeatherIcons.BIOCULAR,(ForecastAdapter.getVisibilityCharSequence(weatherInfo,WeatherSettings.getDistanceDisplayUnit(context))).toString(),getResources().getString(R.string.preference_displayvisibility_title)));
             }
