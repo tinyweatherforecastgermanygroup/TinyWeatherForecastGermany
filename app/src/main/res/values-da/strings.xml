@@ -451,4 +451,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Maksimal vindhastighedsværdi, der vises i søkortet, angivet i kilometer i timen (km/t). Aktuel værdi:</string>
     <string name="preference_display_wind_in_charts_max_title">Vindskala i diagrammer</string>
     <string name="preference_station_replace_title">Vis kommune</string>
+    <string name="moonset">Månen går ned</string>
+    <string name="moonrise">Måneopgang</string>
 </resources>
