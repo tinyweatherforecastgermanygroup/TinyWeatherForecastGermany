@@ -451,4 +451,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Kartoissa näkyvä suurin tuulennopeusarvo, joka syötetään kilometreinä tunnissa (km/h). Nykyinen arvo:</string>
     <string name="preference_display_wind_in_charts_max_title">Tuuliasteikko kaavioissa</string>
     <string name="preference_station_replace_title">Näytä kunta</string>
+    <string name="moonset">Kuunlasku</string>
+    <string name="moonrise">Kuun nousu</string>
 </resources>
