@@ -132,4 +132,7 @@
     <string name="preference_display_wind_in_charts_max_title">Vindskala i sjökort</string>
     <string name="preference_display_distance_unit_title">Avstånd</string>
     <string name="preference_station_replace_title">Visa kommun</string>
+    <string name="preference_gadgetbridge_serve_title">Aktivera</string>
+    <string name="moonset">Månsken</string>
+    <string name="moonrise">Månuppgång</string>
 </resources>
