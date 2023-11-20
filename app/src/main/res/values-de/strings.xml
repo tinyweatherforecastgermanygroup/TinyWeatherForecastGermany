@@ -468,4 +468,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Maximaler Wert der Windgeschwindigkeit, der in den Diagrammen angezeigt wird, eingegeben in Kilometern pro Stunde (km/h). Aktueller Wert:</string>
     <string name="preference_display_wind_in_charts_max_title">Windskala in Diagrammen</string>
     <string name="preference_station_replace_title">Gemeinde anzeigen</string>
+    <string name="moonset">Monduntergang</string>
+    <string name="moonrise">Mondaufgang</string>
 </resources>
