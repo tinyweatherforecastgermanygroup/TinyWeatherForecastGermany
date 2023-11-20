@@ -451,4 +451,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Nilai kecepatan angin maksimum yang ditampilkan di dalam grafik, dimasukkan dalam kilometer per jam (km/jam). Nilai saat ini:</string>
     <string name="preference_display_wind_in_charts_max_title">Skala angin dalam grafik</string>
     <string name="preference_station_replace_title">Menampilkan kotamadya</string>
+    <string name="moonset">Bulan terbenam</string>
+    <string name="moonrise">Bulan terbit</string>
 </resources>
