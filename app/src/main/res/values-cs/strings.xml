@@ -451,4 +451,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Maximální hodnota rychlosti větru zobrazená v grafech, zadaná v kilometrech za hodinu (km/h). Aktuální hodnota:</string>
     <string name="preference_display_wind_in_charts_max_title">Větrná stupnice v grafech</string>
     <string name="preference_station_replace_title">Zobrazení obce</string>
+    <string name="moonset">Západ měsíce</string>
+    <string name="moonrise">Východ měsíce</string>
 </resources>
