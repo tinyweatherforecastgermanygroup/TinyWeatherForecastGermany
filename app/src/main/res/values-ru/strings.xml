@@ -451,4 +451,6 @@
     <string name="preference_display_wind_in_charts_max_summary">Максимальное значение скорости ветра, отображаемое на графиках, вводится в километрах в час (км/ч). Текущее значение:</string>
     <string name="preference_display_wind_in_charts_max_title">Шкала ветров на графиках</string>
     <string name="preference_station_replace_title">Показать муниципалитет</string>
+    <string name="moonset">заход луны</string>
+    <string name="moonrise">Восход луны</string>
 </resources>
