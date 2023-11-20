@@ -444,4 +444,6 @@
     <string name="preference_screen_pollen_rye_summary">Vis prognosen for antall rugpollen.</string>
     <string name="wd_cc">Skydekke</string>
     <string name="preference_station_replace_title">Vis kommune</string>
+    <string name="moonset">Månen går ned</string>
+    <string name="moonrise">Måneoppgang</string>
 </resources>
