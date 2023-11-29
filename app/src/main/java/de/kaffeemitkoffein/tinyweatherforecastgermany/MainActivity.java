@@ -40,6 +40,7 @@ import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -1046,6 +1047,7 @@ public class MainActivity extends Activity {
 
     private ArrayList<Weather.WeatherInfo> getCustomForecastWeatherInfoArray(CurrentWeatherInfo weatherCard){
         WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
+        Log.v("twfg","Display_type "+weatherSettings.getDisplayType());
         if (weatherSettings.getDisplayType() == WeatherSettings.DISPLAYTYPE_24HOURS){
             return weatherCard.forecast24hourly;
         }

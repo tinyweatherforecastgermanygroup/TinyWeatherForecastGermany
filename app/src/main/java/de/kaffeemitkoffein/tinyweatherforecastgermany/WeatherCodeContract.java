@@ -582,7 +582,7 @@ public final class  WeatherCodeContract {
          * freezing rain conditions
          */
         if (weatherInfo.hasProbFreezingRain()) {
-            if (weatherInfo.getProbFreezingRain() > 0) {
+            if (weatherInfo.getProbFreezingRain() > 10) {
                 condition = RAIN_FREEZING_SLIGHT;
                 if (weatherInfo.hasPrecipitation()) {
                     if (weatherInfo.getProbPrecipitation() >= 10) {

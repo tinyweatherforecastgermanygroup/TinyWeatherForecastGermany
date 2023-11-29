@@ -26,6 +26,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -389,6 +390,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         }
     }
     final Weather.WeatherInfo weatherInfo = weatherForecasts.get(i);
+    Log.v("twfg","Condition: "+weatherInfo.getCondition()+ " i: "+i);
     // tint rh according to theme
     if (symbolRH==null){
         symbolRH = (ImageView) view.findViewById(R.id.fcitem_rh_label);

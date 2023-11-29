@@ -150,7 +150,7 @@ public class ForecastIcons {
         ConditionLayers.put(WeatherCodeContract.HEAVY_RAIN_NOT_FREEZING_CONTINUOUS,new int[] {Layer.CLOUDS,Layer.RAIN_3});
         ConditionLayers.put(WeatherCodeContract.MODERATE_RAIN_NOT_FREEZING_CONTINUOUS,new int[] {Layer.CLOUDS,Layer.RAIN_2});
         ConditionLayers.put(WeatherCodeContract.SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS,new int[] {Layer.CLOUDS,Layer.RAIN_1});
-        ConditionLayers.put(WeatherCodeContract.ICE_FOG_SKY_NOT_RECOGNIZABLE,new int[] {Layer.FOG,R.mipmap.mod_freezing_1});
+        ConditionLayers.put(WeatherCodeContract.ICE_FOG_SKY_NOT_RECOGNIZABLE,new int[] {Layer.FOG,Layer.FREEZING_1});
         ConditionLayers.put(WeatherCodeContract.FOG_SKY_NOT_RECOGNIZABLE,new int[] {Layer.FOG});
         ConditionLayers.put(WeatherCodeContract.EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8,new int[] {Layer.CLOUDY});
         ConditionLayers.put(WeatherCodeContract.EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8,new int[] {Layer.SUN,Layer.CLOUD_2});
