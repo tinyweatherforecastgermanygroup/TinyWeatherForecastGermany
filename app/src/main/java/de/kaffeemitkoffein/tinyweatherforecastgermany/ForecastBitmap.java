@@ -25,6 +25,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -752,7 +753,7 @@ public class ForecastBitmap{
             deltaTemp = maxTemp;
         }
         int temp_scale_step_value = 5;
-        // if screen to narrow or deltaTemp too high, increase scale to 10°n
+        // if screen to narrow or deltaTemp too high, increase scale to 10°
         if ((chartHeight<100) || (deltaTemp>25)){
             temp_scale_step_value = 10;
         }
@@ -772,11 +773,11 @@ public class ForecastBitmap{
         while ((labelTextSize+4> ((float) chartHeight)/display_steps) && (labelTextSize>6)){
             labelTextSize--;
         }
-        for (int i=1; i<=display_steps; i++){
+        for (int i=0; i<=display_steps; i++){
             String s2 = String.valueOf((int) (temp_bottom_offset_value+temp_scale_step_value*i));
             textPaint.setTextSize(labelTextSize*yAxisFontSizeScaleFactor);
             textPaint.setFakeBoldText(false);
-            if ((i==1) || (i == display_steps)){
+            if ((i==0) || (i == display_steps)){
                 s2 = s2 + "°C";
                 textPaint.setFakeBoldText(true);
             }
@@ -784,7 +785,14 @@ public class ForecastBitmap{
             float x2 = width;
             float y1 = 100 / ((float) 100 / chartHeight) - (100f/display_steps*i/((float) 100 / chartHeight));
             canvas.drawLine(x1,y1,x2,y1,linePaint);
-            canvas.drawText(s2,x1+lineWidth+lineWidth/10f,y1+textPaint.getTextSize(),textPaint);
+            // when there are no steps between the min/max scale, display the bottom value above the line
+            // to make it visible
+            if ((display_steps==1) && (i==0)){
+                canvas.drawText(s2,x1+lineWidth+lineWidth/10f,y1,textPaint);
+            } else {
+                // default; display beneath the dotted, horizontal line
+                canvas.drawText(s2,x1+lineWidth+lineWidth/10f,y1+textPaint.getTextSize(),textPaint);
+            }
         }
         // paint warnings
         // the warnings arraylist may be empty at 1st call, but this will be called again once the main app knows
