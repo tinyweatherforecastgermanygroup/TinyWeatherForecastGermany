@@ -54,8 +54,6 @@ public class WeatherDetailsActivity extends Activity {
     FrameLayout precipitationChartFrame;
     LinearLayout moonAndSun;
     LinearLayout valuesListPollen;
-
-    ImageView moon;
     ImageView weatherConditionIcon;
     TextView weatherConditionText;
     TextView stationDescription;
@@ -319,7 +317,6 @@ public class WeatherDetailsActivity extends Activity {
             }
         };
         scrollView.setOnTouchListener(swipeGestureDetector);
-        moon = (ImageView) findViewById(R.id.weatherdetails_moon);
     }
 
     @Override
@@ -381,26 +378,9 @@ public class WeatherDetailsActivity extends Activity {
         setDetails(weatherInfo);
         setValues(weatherInfo,currentWeatherInfo.weatherLocation);
         setPrecipitationChart(weatherInfo);
-        displayMoonPhase(weatherInfo,currentWeatherInfo.weatherLocation);
         viewIsBeingCreated = false;
     }
 
-    public void displayMoonPhase(final Weather.WeatherInfo weatherInfo, final Weather.WeatherLocation weatherLocation){
-        if (moon!=null){
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    final Bitmap bitmap = phaseImages.getMoonPhaseImage(weatherLocation,weatherInfo.getTimestamp());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            moon.setImageBitmap(bitmap);
-                        }
-                    });
-                }
-            });
-        }
-    }
 
     public void setWarnings(final Weather.WeatherInfo weatherInfo, final Weather.WeatherLocation weatherLocation) {
         if (weatherWarnings==null){

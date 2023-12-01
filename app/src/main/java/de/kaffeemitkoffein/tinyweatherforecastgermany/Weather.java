@@ -1562,6 +1562,33 @@ public final class Weather {
             return false;
         }
 
+        /**
+         * Gets the most significant condition form the interval specified, or calculates it from other items
+         *
+         * @param forecast1hourly
+         * @param start
+         * @param stop
+         * @return  true if condition could be determined, otherwise false
+         */
+
+        public boolean calculateMissingCondition(final ArrayList<Weather.WeatherInfo> forecast1hourly, final int start, final int stop){
+            // highest DWD code is clear sky 29, but it might be that there are no conditions at all. NOT_AVAILABLE
+            // has a value of 999 so any lower code has a higher significance.
+            condition_code = WeatherCodeContract.NOT_AVAILABLE;
+            for (int i=start; (i<=stop) && (i<forecast1hourly.size()); i++){
+                if (forecast1hourly.get(i).hasCondition()){
+                    if (forecast1hourly.get(i).getCondition()<condition_code){
+                        condition_code = forecast1hourly.get(i).getCondition();
+                    }
+                }
+            }
+            // when there is no condition in the given interval, calculate from other weather items.
+            if (condition_code == WeatherCodeContract.NOT_AVAILABLE){
+                return this.calculateMissingCondition();
+            }
+            return true;
+        }
+
         public boolean isConditionCalculated(){
             return condition_is_calculated;
         }

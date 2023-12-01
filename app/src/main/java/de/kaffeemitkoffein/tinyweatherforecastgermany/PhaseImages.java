@@ -62,7 +62,7 @@ public class PhaseImages {
     public Bitmap getMoonPhaseImage(Weather.WeatherLocation weatherLocation, long time) {
         Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
         bitmap.eraseColor(Color.TRANSPARENT);
-        //bitmap.eraseColor(Color.TRANSPARENT);
+        //bitmap.eraseColor(Color.GREEN);
         Canvas canvas = new Canvas(bitmap);
         Paint linePaint = new Paint();
         linePaint.setStyle(Paint.Style.STROKE);
@@ -96,6 +96,10 @@ public class PhaseImages {
             canvas.drawBitmap(sunBitmap,xSun-sunBitmap.getWidth()/2f,ySun-sunBitmap.getHeight()/2f,paint);
             //canvas.drawCircle(xSun, ySun, iconRadius, paint2);
         }
+        Paint fillPaint = new Paint();
+        fillPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        fillPaint.setColor(ThemePicker.getWidgetTextColor(context));
+        canvas.drawRect(0,bitmapHeight-(bitmapHeight/100f)*1.5f,bitmapWidth,bitmapHeight,fillPaint);
         return bitmap;
     }
 }

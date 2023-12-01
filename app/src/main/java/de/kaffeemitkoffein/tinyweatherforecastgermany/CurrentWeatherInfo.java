@@ -19,7 +19,6 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
-import android.util.Log;
 import org.astronomie.info.Astronomy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -302,8 +301,7 @@ public class CurrentWeatherInfo{
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_6);
             wi.setTimestamp(timesteps[index]);
             wi.setConditionCode(getIntItem(rawWeatherInfo.W1W2[index]));
-            Log.v("twfg","RAWCOND: "+getIntItem(rawWeatherInfo.W1W2[index]));
-            // take significant weather, highest priority alternatively
+            // take significant weather, the highest priority alternatively
             if (preferAlternativeIcons || !wi.hasCondition()) {
                 wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
             }
@@ -370,8 +368,8 @@ public class CurrentWeatherInfo{
             wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td, start, index));
             //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
             if (!wi.hasCondition()) {
-                Log.v("twfg","calc");
-                wi.calculateMissingCondition();
+                // try to get the most significant condition code from the interval
+                wi.calculateMissingCondition(forecast1hourly,start,index);
             }
             //wi.setSunDuration(getSunDuration(start, index));
             wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
@@ -446,7 +444,7 @@ public class CurrentWeatherInfo{
             wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td,start,index));
             //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
             if (!wi.hasCondition()){
-                wi.calculateMissingCondition();
+                wi.calculateMissingCondition(forecast1hourly,start,index);
             }
             //wi.setSunDuration(getSunDuration(rawWeatherInfo,start,index));
             wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
