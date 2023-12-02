@@ -264,15 +264,7 @@ public class WeatherWarningActivity extends Activity {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if (germany!=null){
-                        mapcontainer.setVisibility(View.VISIBLE);
-                        mapcontainer.invalidate();
-                        map_collapsed_container.setVisibility(View.GONE);
-                        map_collapsed_container.invalidate();
-                        LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
-                        lop.height=0;
-                        lop.weight=6;
-                        weatherList.setLayoutParams(lop);
-                        weatherList.invalidate();
+                        showMap();
                     }
                     return true;
                 }
@@ -741,6 +733,49 @@ public class WeatherWarningActivity extends Activity {
         };
         scheduledExecutorService.execute(windRunnable);
     }
+
+    private boolean hideMap(){
+        germany.setVisibility(View.GONE);
+        germany.invalidate();
+        LinearLayout.LayoutParams rllp = (LinearLayout.LayoutParams) mapcontainer.getLayoutParams();
+        rllp.height=0;
+        rllp.weight=0;
+        mapcontainer.setLayoutParams(rllp);
+        mapcontainer.invalidate();
+        mapcontainer.setVisibility(View.GONE);
+        LinearLayout.LayoutParams mclp = (LinearLayout.LayoutParams) map_collapsed_container.getLayoutParams();
+        map_collapsed_container.setVisibility(View.VISIBLE);
+        mclp.weight=1;
+        map_collapsed_container.setLayoutParams(mclp);
+        map_collapsed_container.invalidate();
+        LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
+        lop.weight=19;
+        weatherList.setLayoutParams(lop);
+        weatherList.invalidate();
+        return true;
+    }
+
+    private boolean showMap(){
+        germany.setVisibility(View.VISIBLE);
+        mapcontainer.setVisibility(View.VISIBLE);
+        LinearLayout.LayoutParams rllp = (LinearLayout.LayoutParams) mapcontainer.getLayoutParams();
+        rllp.height=0;
+        rllp.weight=14;
+        mapcontainer.setLayoutParams(rllp);
+        mapcontainer.invalidate();
+        LinearLayout.LayoutParams mclp = (LinearLayout.LayoutParams) map_collapsed_container.getLayoutParams();
+        mclp.height=0;
+        mclp.weight=0;
+        map_collapsed_container.setLayoutParams(mclp);
+        map_collapsed_container.invalidate();
+        map_collapsed_container.setVisibility(View.GONE);
+        LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
+        lop.height=0;
+        lop.weight=6;
+        weatherList.setLayoutParams(lop);
+        weatherList.invalidate();
+        return true;
+    }
     
     private void displayMap(){
         germanyBitmap = loadBitmapMap(WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.GERMANY));
@@ -845,19 +880,7 @@ public class WeatherWarningActivity extends Activity {
             closeImageview.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    mapcontainer.setVisibility(View.GONE);
-                    mapcontainer.invalidate();
-                    map_collapsed_container.setVisibility(View.VISIBLE);
-                    map_collapsed_container.invalidate();
-                    LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
-                    if (lop!=null){
-                        lop.height=0;
-                        lop.weight=19;
-                        weatherList.setLayoutParams(lop);
-                        weatherList.invalidate();
-                        return true;
-                    }
-                    return false;
+                    return hideMap();
                 }
             });
         }
@@ -936,16 +959,7 @@ public class WeatherWarningActivity extends Activity {
                 float button_border_right  = (float) (germany.getMeasuredWidth() * 0.127427184);
                 float button_border_bottom = (float) (germany.getMeasuredHeight() * 0.10041841);
                 if ((e.getX()<button_border_right) && (e.getY()<button_border_bottom)){
-                    germany.setVisibility(View.GONE);
-                    germany.invalidate();
-                    map_collapsed_container.setVisibility(View.VISIBLE);
-                    map_collapsed_container.invalidate();
-                    LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
-                    lop.height=0;
-                    lop.weight=19;
-                    weatherList.setLayoutParams(lop);
-                    weatherList.invalidate();
-                    return true;
+                    return hideMap();
                 }
             }
             return false;

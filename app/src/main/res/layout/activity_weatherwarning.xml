@@ -20,11 +20,11 @@
 -->
 
 <RelativeLayout
-    android:id="@+id/warningactivity_main_relative_container"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="?attr/colorPrimary"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        android:id="@+id/warningactivity_main_relative_container"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="?attr/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <RelativeLayout
             android:id="@+id/gps_progress_holder"
@@ -70,23 +70,26 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/warningactivity_main_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/gps_progress_holder"
-        android:weightSum="20"
-        android:orientation="vertical">
+            android:id="@+id/warningactivity_main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/gps_progress_holder"
+            android:layout_alignWithParentIfMissing="true"
+            android:weightSum="20"
+            android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/warningactivity_map_collapsed_container"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp"
-            android:visibility="gone">
+                android:id="@+id/warningactivity_map_collapsed_container"
+                android:layout_width="match_parent"
+                android:layout_weight="0"
+                android:layout_height="0dp"
+                android:visibility="gone">
             <ImageView
                     android:id="@+id/warningactivity_map_collapsed"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
                     android:src="@drawable/map_collapsed"/>
             <ImageView
                     android:id="@+id/warningactivity_map_collapsed_icon"
@@ -98,10 +101,10 @@
         </RelativeLayout>
 
         <RelativeLayout
-                     android:id="@+id/warningactivity_mapcontainer"
-                     android:layout_width="match_parent"
-                     android:layout_height="0dp"
-                     android:layout_weight="14">
+                android:id="@+id/warningactivity_mapcontainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="14">
             <ImageView
                     android:id="@+id/warningactivity_map"
                     android:layout_width="match_parent"
@@ -226,64 +229,64 @@
 
 
         <ListView android:id="@+id/warningactivity_listview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6"
-            android:divider="?attr/colorTextDark"
-            android:dividerHeight="0dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="6"
+                  android:divider="?attr/colorTextDark"
+                  android:dividerHeight="0dp"
                   android:layout_marginLeft="@dimen/slider_marginDouble"
                   android:layout_marginRight="@dimen/slider_marginDouble"
                   android:footerDividersEnabled="true"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/warnings_outdated"
-            android:textColor="?attr/colorPrimaryDark"
-            android:background="@color/colorWarning_moderate"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:textSize="@dimen/fcmain_textsize_medium"
-            android:visibility="gone"
-            android:paddingTop="@dimen/warning_ip"
-            android:paddingBottom="@dimen/warning_ip"
-            android:id="@+id/warningactivity_warnings_deprecated"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/warnings_outdated"
+                android:textColor="?attr/colorPrimaryDark"
+                android:background="@color/colorWarning_moderate"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:visibility="gone"
+                android:paddingTop="@dimen/warning_ip"
+                android:paddingBottom="@dimen/warning_ip"
+                android:id="@+id/warningactivity_warnings_deprecated"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorPrimaryDark"
-            android:background="@color/colorWarning_clear"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:textSize="@dimen/fcmain_textsize_medium"
-            android:visibility="gone"
-            android:text="@string/warnings_none"
-            android:paddingTop="@dimen/warning_ip"
-            android:paddingBottom="@dimen/warning_ip"
-            android:id="@+id/warningactivity_no_warnings"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorPrimaryDark"
+                android:background="@color/colorWarning_clear"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:visibility="gone"
+                android:text="@string/warnings_none"
+                android:paddingTop="@dimen/warning_ip"
+                android:paddingBottom="@dimen/warning_ip"
+                android:id="@+id/warningactivity_no_warnings"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dwd_warnings_notice"
-            android:textColor="?attr/colorTextDark"
-            android:background="?attr/colorPrimary"
-            android:textAlignment="center"
-            android:layout_gravity="center"
-            android:textSize="@dimen/fcmain_textsize_medium"
-            android:id="@+id/warningactivity_notice_text"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dwd_warnings_notice"
+                android:textColor="?attr/colorTextDark"
+                android:background="?attr/colorPrimary"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:textSize="@dimen/fcmain_textsize_medium"
+                android:id="@+id/warningactivity_notice_text"/>
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/warningactivity_progressbar"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:indeterminate="true"
-        android:visibility="invisible"/>
+            android:id="@+id/warningactivity_progressbar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminate="true"
+            android:visibility="invisible"/>
 </RelativeLayout>
 
