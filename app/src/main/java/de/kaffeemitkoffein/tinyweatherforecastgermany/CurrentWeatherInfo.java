@@ -369,7 +369,12 @@ public class CurrentWeatherInfo{
             //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
             if (!wi.hasCondition()) {
                 // try to get the most significant condition code from the interval
-                wi.calculateMissingCondition(forecast1hourly,start,index);
+                int condition = getSignificantConditionFromHourlyInterval(rawWeatherInfo,start,index);
+                if (condition==WeatherCodeContract.NOT_AVAILABLE){
+                    wi.calculateMissingCondition();
+                } else {
+                    wi.setConditionCode(condition);
+                }
             }
             //wi.setSunDuration(getSunDuration(start, index));
             wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
@@ -444,7 +449,12 @@ public class CurrentWeatherInfo{
             wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td,start,index));
             //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
             if (!wi.hasCondition()){
-                wi.calculateMissingCondition(forecast1hourly,start,index);
+                int condition = getSignificantConditionFromHourlyInterval(rawWeatherInfo,start,index);
+                if (condition==WeatherCodeContract.NOT_AVAILABLE){
+                    wi.calculateMissingCondition();
+                } else {
+                    wi.setConditionCode(condition);
+                }
             }
             //wi.setSunDuration(getSunDuration(rawWeatherInfo,start,index));
             wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
@@ -539,6 +549,29 @@ public class CurrentWeatherInfo{
         }
         return result;
     }
+
+    /**
+     * Gets the most significant condition form the interval specified, or calculates it from other items
+     *
+     * @param rawWeatherInfo
+     * @param start
+     * @param stop
+     * @return  true if condition could be determined, otherwise false
+     */
+
+    public int getSignificantConditionFromHourlyInterval(final RawWeatherInfo rawWeatherInfo, final int start, final int stop){
+        int [] conditions = rawWeatherInfo.toIntArray(rawWeatherInfo.ww);
+        // highest DWD code is clear sky 29, but it might be that there are no conditions at all. NOT_AVAILABLE
+        // has a value of 999 so any lower code has a higher significance.
+        int condition_code = WeatherCodeContract.NOT_AVAILABLE;
+        for (int i=start; (i<=stop) && (i<conditions.length); i++){
+                if (conditions[i]<condition_code){
+                    condition_code = conditions[i];
+            }
+        }
+        return condition_code;
+    }
+
 
     /**
      * Checks if new Mosmix data can be expected on the DWD server.
