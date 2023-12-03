@@ -96,7 +96,7 @@ Translations:
 * Russian: Wirdi51
 * Spanish: eUgEntOptIc44, hegondev
 * Swedish: tygyh
-* Ukrainian: eUgEntOptIc44, Andrij Mizyk
+* Ukrainian: eUgEntOptIc44, Andrij Mizyk, SomeTr
 
 Get involved in *Tiny Weather Forecast Germany* and [help to translate it into more languages or complete existing translations](https://translate.codeberg.org/engage/tiny-weather-forecast-germany/).
 
