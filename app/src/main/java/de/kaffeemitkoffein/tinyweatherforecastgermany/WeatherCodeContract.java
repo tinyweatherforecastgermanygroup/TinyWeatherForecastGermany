@@ -18,9 +18,10 @@
  */
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class  WeatherCodeContract {
     public final static int NOT_AVAILABLE = 999;
@@ -53,6 +54,47 @@ public final class  WeatherCodeContract {
     public final static int EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8 = 02;
     public final static int EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8 = 01;
     public final static int EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8 = 00;
+
+    public static final int[] CodePriorityList= new int [] {SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW, DRIZZLE_FREEZING_MODERATE_OR_HEAVY, DRIZZLE_FREEZING_SLIGHT, RAIN_FREEZING_MODERATE_OR_HEAVY,
+    RAIN_FREEZING_SLIGHT, SNOW_SHOWERS_MODERATE_OR_HEAVY, SNOW_SHOWERS_SLIGHT, SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY,
+    SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT, EXTREMELY_HEAVY_RAIN_SHOWER, MODERATE_OR_HEAVY_RAIN_SHOWERS, SLIGHT_RAIN_SHOWER, HEAVY_SNOWFALL_CONTINUOUS,
+    MODERATE_SNOWFALL_CONTINUOUS, SLIGHT_SNOWFALL_CONTINUOUS, MODERATE_OR_HEAVY_RAIN_AND_SNOW, SLIGHT_RAIN_AND_SNOW, HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS,
+    MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS, SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS, HEAVY_RAIN_NOT_FREEZING_CONTINUOUS, MODERATE_RAIN_NOT_FREEZING_CONTINUOUS,
+    SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS, ICE_FOG_SKY_NOT_RECOGNIZABLE, FOG_SKY_NOT_RECOGNIZABLE, EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8,
+    EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8, EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8, EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8};
+
+    public static final Map<Integer, Integer> CodePriorities = Collections.unmodifiableMap(
+            new HashMap<Integer, Integer>() {{
+                put(SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW,1);
+                put( DRIZZLE_FREEZING_MODERATE_OR_HEAVY , 2);
+                put( DRIZZLE_FREEZING_SLIGHT , 3);
+                put( RAIN_FREEZING_MODERATE_OR_HEAVY , 4);
+                put( RAIN_FREEZING_SLIGHT , 5);
+                put( SNOW_SHOWERS_MODERATE_OR_HEAVY , 6);
+                put( SNOW_SHOWERS_SLIGHT , 7);
+                put( SHOWERS_OF_RAIN_AND_SNOW_MIXED_MODERATE_OR_HEAVY , 8);
+                put( SHOWERS_OF_RAIN_AND_SNOW_MIXED_SLIGHT , 9);
+                put( EXTREMELY_HEAVY_RAIN_SHOWER , 10);
+                put( MODERATE_OR_HEAVY_RAIN_SHOWERS , 11);
+                put( SLIGHT_RAIN_SHOWER , 12);
+                put( HEAVY_SNOWFALL_CONTINUOUS , 13);
+                put( MODERATE_SNOWFALL_CONTINUOUS , 14);
+                put( SLIGHT_SNOWFALL_CONTINUOUS , 15);
+                put( MODERATE_OR_HEAVY_RAIN_AND_SNOW , 16);
+                put( SLIGHT_RAIN_AND_SNOW , 17);
+                put( HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS , 18);
+                put( MODERATE_DRIZZLE_NOT_FREEZING_CONTINUOUS , 19);
+                put( SLIGHT_DRIZZLE_NOT_FREEZING_CONTINUOUS , 20);
+                put( HEAVY_RAIN_NOT_FREEZING_CONTINUOUS , 21);
+                put( MODERATE_RAIN_NOT_FREEZING_CONTINUOUS , 22);
+                put( SLIGHT_RAIN_NOT_FREEZING_CONTINUOUS , 23);
+                put( ICE_FOG_SKY_NOT_RECOGNIZABLE , 24);
+                put( FOG_SKY_NOT_RECOGNIZABLE , 25);
+                put( EFFECTIVE_CLOUD_COVER_AT_LEAST_7_8 , 26);
+                put( EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8 , 27);
+                put( EFFECTIVE_CLOUD_COVER_BETWEEN_1_8_AND_45_8 , 28);
+                put( EFFECTIVE_CLOUD_COVER_LESS_THAN_1_8 , 29);
+            }});
 
     public static final class LineageOsWeatherContract {
         public final static int BLUSTERY = 22;
@@ -389,6 +431,21 @@ public final class  WeatherCodeContract {
                 break;
         }
         return result;
+    }
+
+    public static int getCodePriority(int conditionCode){
+        Integer i = CodePriorities.get(conditionCode);
+        if (i==null){
+            return NOT_AVAILABLE;  // 999 = pretty low priority
+        }
+        else return i;
+    }
+
+    public static boolean hasHigherPriority(int codeA, int codeB){
+        int a = getCodePriority(codeA);
+        int b = getCodePriority(codeB);
+        // lower number means higher priority
+        return (a<b);
     }
 
     public static boolean hasSufficientDataForIconCalculation(Weather.WeatherInfo weatherInfo) {

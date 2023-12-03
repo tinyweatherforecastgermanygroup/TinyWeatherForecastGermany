@@ -401,7 +401,16 @@ public class MainActivity extends Activity {
                 },6000);
             }
         });
-
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    loadStationsData();
+                } catch (Exception e){
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
+                }
+            }
+        });
         super.onResume();
     }
 
@@ -490,11 +499,6 @@ public class MainActivity extends Activity {
                 // prepareAreaDatabase(context);
             } catch (Exception e){
                 // ignore
-            }
-            try {
-                loadStationsData();
-            } catch (Exception e){
-                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
             }
             // check for update procedures if not first install
             if ((WeatherSettings.getLastAppVersionCode(context) != BuildConfig.VERSION_CODE) &&

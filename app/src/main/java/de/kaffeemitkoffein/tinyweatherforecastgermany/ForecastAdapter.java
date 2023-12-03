@@ -848,24 +848,47 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     if (((weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_6) || (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_24)) && (display_bar) && (imageView_forecastBar!=null)){
         setVisibility(imageView_forecastBar, View.VISIBLE);
         // calculate offset
-        int start  = getLastHourlyForecast();
-        int offset = getHourlyOffset(start,i);
+        //int start  = getLastHourlyForecast();
+        int currentPosition = getHourlyPositionFrom6h(i);
+        int offsetPosition = currentPosition - 5;
         int count = 6;
         int increment = 1;
-        if (offset<start){
-            count = 6 - (start-offset);
-            offset = start;
+        if (offsetPosition<0){
+            count = 6 - (-offsetPosition/increment);
+            offsetPosition = currentPosition - (count-1)*increment;;
         }
         if (weatherInfo.getForecastType() == Weather.WeatherInfo.ForecastType.HOURS_24){
-            start = get24BarStart(i);
-            offset = get24BarOffset(start,i);
-            count = get24BarItemCount(offset);
+            currentPosition = getHourlyPositionFrom24h(i);
+            offsetPosition  = currentPosition - 20 ;
+            count = 6;
             increment = 4;
+            if (offsetPosition<0){
+                count = 5 -(-offsetPosition/increment);
+                offsetPosition = currentPosition - (count-1)*increment;
+            }
         }
         // construct arraylist with 0-6 items
         final ArrayList<Weather.WeatherInfo> baritems = new ArrayList<>();
-        for (int j=0; j<count; j++){
-            baritems.add(weatherForecasts_hourly.get(offset+(j*increment)));
+        for (int j=0; (j<count) && (offsetPosition+(j*increment))<weatherForecasts_hourly.size(); j++){
+            baritems.add(weatherForecasts_hourly.get(offsetPosition+(j*increment)));
+            // if more than 1 hour intervals, replace the displayed condition with the most significant from
+            // this interval if possible
+            if (increment>1){
+                ArrayList<Integer> previousConditions = new ArrayList<Integer>();
+                for (int k=0; k<increment; k++){
+                    int position = offsetPosition + j*increment - k;
+                    if ((position>0) && (position<weatherForecasts_hourly.size())){
+                        Weather.WeatherInfo weatherInfo1 = weatherForecasts_hourly.get(position);
+                        if (weatherInfo1.hasCondition()){
+                            previousConditions.add(weatherInfo1.getCondition());
+                        }
+                    }
+                };
+                Integer newCondition = CurrentWeatherInfo.getMostSignificantCondition(previousConditions);
+                if (newCondition!=null){
+                    baritems.get(j).setConditionCode(newCondition);
+                }
+            }
         }
         if (forecastIconsBar==null){
             // try to get the real hight of the forecast bar if already inflated
@@ -1075,17 +1098,24 @@ private static TextView getTextView(View view, int pos, TextView[] labels, ViewH
     return labels[pos];
 }
 
-private int get24BarStart(int currentPosition){
-    long time24 = weatherForecasts.get(currentPosition).getTimestamp();
-    long target = weatherForecasts.get(currentPosition).getTimestamp() - 20*60*60*1000;  // one day
-    int position = weatherForecasts_hourly.size()-1;
-    while ((weatherForecasts_hourly.get(position).getTimestamp()>target) && position>0){
+private int get24BarStart(int currentPosition) {
+    long target = weatherForecasts.get(currentPosition).getTimestamp() - 20 * 60 * 60 * 1000;  // one day
+    int position = weatherForecasts_hourly.size() - 1;
+    while ((weatherForecasts_hourly.get(position).getTimestamp() > target) && position > 0) {
         position--;
     }
     return position;
 }
 
-    private int get24BarOffset(int start, int position24h){
+    private int getHourlyPositionFrom24h(int currentPosition) {
+        int position = weatherForecasts_hourly.size() - 1;
+        while ((weatherForecasts_hourly.get(position).getTimestamp() > weatherForecasts.get(currentPosition).getTimestamp()) && position > 0) {
+            position--;
+        }
+        return position;
+    }
+
+    private int get24PositionOLD(int start, int position24h){
         int currentPosition = start;
         // calculates corresponding position in hourly forecasts that corresponds to 24-hourly forecast.
         while (weatherForecasts_hourly.get(currentPosition).getTimestamp()<weatherForecasts.get(position24h).getTimestamp()){
@@ -1134,7 +1164,7 @@ private int getHourlyOffset(int start, int position6h){
     return position - 6; // display 6 hours before
 }
 
-    private int getHourlyPosition(int position6h){
+    private int getHourlyPositionFrom6h(int position6h){
         int position = 0;
         // calculates corresponding position in hourly forecasts that corresponds to 6-hourly forecasts.
         while (weatherForecasts_hourly.get(position).getTimestamp()<weatherForecasts.get(position6h).getTimestamp() && position<weatherForecasts_hourly.size()-1){

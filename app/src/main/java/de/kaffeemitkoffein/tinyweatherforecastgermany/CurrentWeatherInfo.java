@@ -168,11 +168,6 @@ public class CurrentWeatherInfo{
         int current_weather_position = rawWeatherInfo.getCurrentForecastPosition();
         int next_midnight_position   = rawWeatherInfo.getNextMidnightAfterCurrentForecastPosition();
         currentWeather.setTimestamp(timesteps[current_weather_position]);
-        currentWeather.setConditionCode(getIntItem((rawWeatherInfo.ww[current_weather_position])));
-        // take significant weather, the highest priority alternatively
-        if (preferAlternativeIcons || !currentWeather.hasCondition()) {
-            currentWeather.setConditionCode(getIntItem((rawWeatherInfo.WPc11[current_weather_position])));
-        }
         currentWeather.setClouds(getIntItem(rawWeatherInfo.N[current_weather_position]));
         currentWeather.setClouds_N05(getIntItem(rawWeatherInfo.N05[current_weather_position]));
         currentWeather.setClouds_Nl(getIntItem(rawWeatherInfo.Nl[current_weather_position]));
@@ -202,11 +197,19 @@ public class CurrentWeatherInfo{
         currentWeather.setUV(getDoubleItem(rawWeatherInfo.RRad1[current_weather_position]));
         currentWeather.setTd(getDoubleItem(rawWeatherInfo.Td[current_weather_position]));
         currentWeather.setPrecipitationDetails(getProbOfPrecipitation(rawWeatherInfo,current_weather_position));
-        // if calculating fails, interpolate condition from higher time intervals
+        currentWeather.setConditionCode(getIntItem((rawWeatherInfo.ww[current_weather_position])));
+        // take significant weather, the highest priority alternatively
+        if (preferAlternativeIcons || !currentWeather.hasCondition()) {
+            Integer condition = getIntItem((rawWeatherInfo.WPc11[current_weather_position]));
+            if (condition!=null){
+                currentWeather.setConditionCode(condition);
+            }
+        }
+        // if condition could not be directly taken from the timpepoint, interpolate condition from higher time intervals
         if (!currentWeather.hasCondition()){
             currentWeather.setConditionCode(getIntItem(interpolateConditionFromHigherIntervals(current_weather_position,rawWeatherInfo)));
         }
-        // try to calculate the condition
+        // try to calculate the condition if it is still unknown
         if (!currentWeather.hasCondition()){
             currentWeather.calculateMissingCondition();
         }
@@ -222,11 +225,6 @@ public class CurrentWeatherInfo{
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.ONE_HOUR);
             wi.setTimestamp(timesteps[index]);
-            wi.setConditionCode(getIntItem(rawWeatherInfo.ww[index]));
-            // take significant weather, highest priority alternatively
-            if (preferAlternativeIcons || !wi.hasCondition()){
-                wi.setConditionCode(getIntItem((rawWeatherInfo.WPc11[index])));
-            }
             wi.setClouds(getIntItem(rawWeatherInfo.N[index]));
             wi.setClouds_N05(getIntItem(rawWeatherInfo.N05[index]));
             wi.setClouds_Nl(getIntItem(rawWeatherInfo.Nl[index]));
@@ -260,16 +258,25 @@ public class CurrentWeatherInfo{
             wi.setUV(getDoubleItem(rawWeatherInfo.RRad1[index]));
             wi.setTd(getDoubleItem(rawWeatherInfo.Td[index]));
             wi.setPrecipitationDetails(getProbOfPrecipitation(rawWeatherInfo,index));
-            // if calculating fails, interpolate condition from higher time intervals
+            wi.setConditionCode(getIntItem((rawWeatherInfo.ww[index])));
+            // take significant weather, the highest priority alternatively
+            if (preferAlternativeIcons || !wi.hasCondition()) {
+                Integer significantCondition = getIntItem((rawWeatherInfo.WPc11[index]));
+                if (significantCondition!=null){
+                    wi.setConditionCode(significantCondition);
+                }
+            }
+            // if condition could not be directly taken from the timepoint, interpolate condition from higher time intervals
             if (!wi.hasCondition()){
                 wi.setConditionCode(getIntItem(interpolateConditionFromHigherIntervals(current_weather_position,rawWeatherInfo)));
             }
+            // try to calculate the condition if it is still unknown
             if (!wi.hasCondition()){
                 wi.calculateMissingCondition();
             }
             wi.setSunDuration(getIntItem(rawWeatherInfo.D1[index]));
             if (!wi.hasSunDuration()){
-                // add clculated values to rawWeatherInfo to make correct intervals possible later
+                // add calculated values to rawWeatherInfo to make correct intervals possible later
                 rawWeatherInfo.D1[index] = String.valueOf(setSunDurationFromClouds(wi));
             }
             wi.setIsDayTime(isDayTimeArray[index]);
@@ -300,11 +307,6 @@ public class CurrentWeatherInfo{
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_6);
             wi.setTimestamp(timesteps[index]);
-            wi.setConditionCode(getIntItem(rawWeatherInfo.W1W2[index]));
-            // take significant weather, the highest priority alternatively
-            if (preferAlternativeIcons || !wi.hasCondition()) {
-                wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
-            }
             wi.setClouds(rawWeatherInfo.getAverageClouds(start, index));
             wi.setClouds_N05(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.N05, start, index));
             wi.setClouds_Nl(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nl, start, index));
@@ -367,13 +369,23 @@ public class CurrentWeatherInfo{
             wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1, start, index));
             wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td, start, index));
             //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
+            wi.setConditionCode(getIntItem(rawWeatherInfo.W1W2[index]));
+            // take significant weather, the highest priority alternatively
+            if (preferAlternativeIcons || !wi.hasCondition()) {
+                wi.setConditionCode(getIntItem(rawWeatherInfo.WPc61[index]));
+            }
             if (!wi.hasCondition()) {
-                // try to get the most significant condition code from the interval
-                int condition = getSignificantConditionFromHourlyInterval(rawWeatherInfo,start,index);
-                if (condition==WeatherCodeContract.NOT_AVAILABLE){
+                // try to get the condition code from hourly values, either normal or significant weather
+                wi.setConditionCode(getConditionFromHourlyCondition(rawWeatherInfo,start,index));
+                if ((!wi.hasCondition()) || (preferAlternativeIcons)){
+                    Integer significantCondition = getConditionFromHourlySignificantCondition(rawWeatherInfo,start,index);
+                    if (significantCondition!=null){
+                        wi.setConditionCode(significantCondition);
+                    }
+                }
+                // calculate the condition if it could not be derived from the hourly values at all
+                if (!wi.hasCondition()){
                     wi.calculateMissingCondition();
-                } else {
-                    wi.setConditionCode(condition);
                 }
             }
             //wi.setSunDuration(getSunDuration(start, index));
@@ -396,7 +408,6 @@ public class CurrentWeatherInfo{
             Weather.WeatherInfo wi = new Weather.WeatherInfo();
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_24);
             wi.setTimestamp(timesteps[index]);
-            wi.setConditionCode(getIntItem(rawWeatherInfo.WPcd1[index]));
             wi.setClouds(rawWeatherInfo.getAverageClouds(start,index));
             wi.setClouds_N05(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.N05,start,index));
             wi.setClouds_Nl(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nl,start,index));
@@ -448,12 +459,19 @@ public class CurrentWeatherInfo{
             wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1,start,index));
             wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td,start,index));
             //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
-            if (!wi.hasCondition()){
-                int condition = getSignificantConditionFromHourlyInterval(rawWeatherInfo,start,index);
-                if (condition==WeatherCodeContract.NOT_AVAILABLE){
+            wi.setConditionCode(getIntItem(rawWeatherInfo.WPcd1[index]));
+            if (!wi.hasCondition()) {
+                // try to get the condition code from hourly values, either normal or significant weather
+                wi.setConditionCode(getConditionFromHourlyCondition(rawWeatherInfo,start,index));
+                if ((!wi.hasCondition()) || (preferAlternativeIcons)){
+                    Integer significantCondition = getConditionFromHourlySignificantCondition(rawWeatherInfo,start,index);
+                    if (significantCondition!=null){
+                        wi.setConditionCode(significantCondition);
+                    }
+                }
+                // calculate the condition if it could not be derived from the hourly values at all
+                if (!wi.hasCondition()){
                     wi.calculateMissingCondition();
-                } else {
-                    wi.setConditionCode(condition);
                 }
             }
             //wi.setSunDuration(getSunDuration(rawWeatherInfo,start,index));
@@ -559,19 +577,56 @@ public class CurrentWeatherInfo{
      * @return  true if condition could be determined, otherwise false
      */
 
-    public int getSignificantConditionFromHourlyInterval(final RawWeatherInfo rawWeatherInfo, final int start, final int stop){
+    public Integer getConditionFromHourlyCondition(final RawWeatherInfo rawWeatherInfo, final int start, final int stop){
         int [] conditions = rawWeatherInfo.toIntArray(rawWeatherInfo.ww);
         // highest DWD code is clear sky 29, but it might be that there are no conditions at all. NOT_AVAILABLE
         // has a value of 999 so any lower code has a higher significance.
-        int condition_code = WeatherCodeContract.NOT_AVAILABLE;
-        for (int i=start; (i<=stop) && (i<conditions.length); i++){
-                if (conditions[i]<condition_code){
-                    condition_code = conditions[i];
+        int condition_code = conditions[start];
+        for (int i=start+1; (i<=stop) && (i<conditions.length); i++){
+            // 0 in array means that there was no value
+            if (conditions[i]!=0){
+               if (WeatherCodeContract.hasHigherPriority(conditions[i],condition_code)){
+                     condition_code = conditions[i];
+                }
             }
+        }
+        if (condition_code==0){
+            return null;
         }
         return condition_code;
     }
 
+    public Integer getConditionFromHourlySignificantCondition(final RawWeatherInfo rawWeatherInfo, final int start, final int stop){
+        int [] conditions = rawWeatherInfo.toIntArray(rawWeatherInfo.WPc11);
+        // highest DWD code is clear sky 29, but it might be that there are no conditions at all. NOT_AVAILABLE
+        // has a value of 999 so any lower code has a higher significance.
+        int condition_code = conditions[start];
+        for (int i=start+1; (i<=stop) && (i<conditions.length); i++){
+            // 0 in array means that there was no value
+            if (conditions[i]!=0){
+                if (WeatherCodeContract.hasHigherPriority(conditions[i],condition_code)){
+                    condition_code = conditions[i];
+                }
+            }
+        }
+        if (condition_code==0){
+            return null;
+        }
+        return condition_code;
+    }
+
+    public static Integer getMostSignificantCondition(ArrayList<Integer> conditions){
+        int result = WeatherCodeContract.NOT_AVAILABLE;
+        for (int i=0; i<conditions.size(); i++){
+            if (WeatherCodeContract.hasHigherPriority(conditions.get(i),result)){
+                result = conditions.get(i);
+            }
+        }
+        if (result==WeatherCodeContract.NOT_AVAILABLE){
+            return null;
+        }
+        return result;
+    }
 
     /**
      * Checks if new Mosmix data can be expected on the DWD server.
