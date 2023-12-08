@@ -1,0 +1,7 @@
+- sunrise, sunset, moonrise and moonset and twilight times are displayed in the weather details
+- improved weather condition calculation, particularly in 6h & 24 intervals
+- improved intervals displayed in the forecast bar
+- make temperature interval visible in the overview chart when no intermediary steps are drawn
+- fixed broken layout in weather warnings on some legacy devices when hiding/opening the map
+- slightly improved launch time
+- improved translations

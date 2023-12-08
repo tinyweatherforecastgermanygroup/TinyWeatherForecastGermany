@@ -1,0 +1,7 @@
+- Sonnenaufgang, Sonnenuntergang, Mondaufgang und Monduntergang sowie Dämmerungszeiten werden in den Wetterdetails angezeigt
+- verbesserte Berechnung der Wetterlage, insbesondere in 6h- und 24h-Intervallen
+- verbesserte Anzeige der Intervalle in der Vorhersageleiste
+- Temperaturintervall im Übersichtsdiagramm wird angezeigt, wenn keine Zwischenschritte eingezeichnet werden
+- fehlerhaftes Layout der Wetterwarnungen auf einigen älteren Geräten beim Ausblenden/Öffnen der Karte behoben
+- die Startzeit wurde leicht verbessert
+- verbesserte Übersetzungen
