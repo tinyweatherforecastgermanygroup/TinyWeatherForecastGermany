@@ -40,6 +40,7 @@ import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -782,6 +783,7 @@ public class MainActivity extends Activity {
         }
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            Log.v("twfg","SpinnerListener");
             if (user_touched_spinner){
                 handleItemSelected(adapterView, view,  i, l);
             }
@@ -815,31 +817,12 @@ public class MainActivity extends Activity {
         final SpinnerListener spinnerListener = new SpinnerListener() {
             @Override
             public void handleItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                // weather settings must be read at the time of selection!
-                WeatherSettings weatherSettings = new WeatherSettings(context);
-                TextView tv = (TextView) view.findViewById(R.id.spinner_textitem);
-                String station_description = tv.getText().toString();
-                String stationOriginalDescription = null;
-                for (int i=0; i<spinnerDescriptions.size(); i++){
-                    if (spinnerDescriptions.get(i).equals(station_description)){
-                        stationOriginalDescription = spinnerItems.get(i).getOriginalDescription();
-                    }
+                // the items in the spinner have the same numbering as in the spinnerItems arraylist.
+                if (pos<spinnerItems.size()){
+                    Weather.WeatherLocation newWeatherLocation = spinnerItems.get(pos);
+                    newWeatherRegionSelected(spinnerItems.get(pos));
+                    super.handleItemSelected(adapterView, view, pos, l);
                 }
-                if (stationOriginalDescription!=null){
-                    Integer station_pos = stationsManager.getPositionFromDescription(stationOriginalDescription);
-                    if (station_pos != null) {
-                        if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))) {
-                            newWeatherRegionSelected(stationsManager.getLocationFromDescription(stationOriginalDescription));
-                        }
-                    } else {
-                        PrivateLog.log(context, PrivateLog.MAIN,PrivateLog.WARN, "Station from favorites not found! (1)");
-                        loadStationsSpinner();
-                    }
-                } else {
-                    PrivateLog.log(context, PrivateLog.MAIN,PrivateLog.WARN, "Station from favorites not found! (2)");
-                    loadStationsSpinner();
-                }
-                super.handleItemSelected(adapterView, view, pos, l);
             }
         };
         spinner.setOnItemSelectedListener(spinnerListener);
