@@ -40,7 +40,6 @@ import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -201,11 +200,6 @@ public class MainActivity extends Activity {
         public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
             // weather settings must be read at the time of selection!
             WeatherSettings weatherSettings = new WeatherSettings(context);
-            /*
-             * We found a bug; compare to https://developer.android.com/reference/android/widget/AdapterView.OnItemClickListener.
-             * pos is the same as id, returning the position of the clicked item from top like shown on the screen, but
-             * NOT the position in the adapter. We therefore have to get it manually from our own StationsManager class.
-             */
             TextView tv = (TextView) view.findViewById(R.id.dropdown_textitem);
             String station_description = tv.getText().toString();
             Integer station_pos = stationsManager.getPositionFromDescription(station_description,true);
@@ -783,7 +777,6 @@ public class MainActivity extends Activity {
         }
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            Log.v("twfg","SpinnerListener");
             if (user_touched_spinner){
                 handleItemSelected(adapterView, view,  i, l);
             }
@@ -819,7 +812,6 @@ public class MainActivity extends Activity {
             public void handleItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 // the items in the spinner have the same numbering as in the spinnerItems arraylist.
                 if (pos<spinnerItems.size()){
-                    Weather.WeatherLocation newWeatherLocation = spinnerItems.get(pos);
                     newWeatherRegionSelected(spinnerItems.get(pos));
                     super.handleItemSelected(adapterView, view, pos, l);
                 }
