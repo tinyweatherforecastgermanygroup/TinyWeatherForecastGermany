@@ -453,4 +453,7 @@
     <string name="preference_station_replace_title">Gemeente weergeven</string>
     <string name="moonset">Maansondergang</string>
     <string name="moonrise">Maanopkomst</string>
+    <string name="preference_boldwiget_vertical_bar_title">Afzonderlijke voorspelling</string>
+    <string name="miscellaneous">Diverse</string>
+    <string name="preference_boldwiget_vertical_bar_summary">Scheid in de vetgedrukte widget de voorspelling voor vandaag van die voor de volgende dagen met een verticale lijn.</string>
 </resources>
