@@ -453,4 +453,7 @@
     <string name="preference_station_replace_title">Näytä kunta</string>
     <string name="moonset">Kuunlasku</string>
     <string name="moonrise">Kuun nousu</string>
+    <string name="preference_boldwiget_vertical_bar_title">Erillinen ennuste</string>
+    <string name="miscellaneous">Sekalaiset</string>
+    <string name="preference_boldwiget_vertical_bar_summary">Erottele tämän päivän ennuste seuraavien päivien ennusteista lihavoidussa widgetissä pystyviivalla.</string>
 </resources>
