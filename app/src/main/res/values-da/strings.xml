@@ -453,4 +453,7 @@
     <string name="preference_station_replace_title">Vis kommune</string>
     <string name="moonset">Månen går ned</string>
     <string name="moonrise">Måneopgang</string>
+    <string name="preference_boldwiget_vertical_bar_title">Særskilt prognose</string>
+    <string name="miscellaneous">Diverse</string>
+    <string name="preference_boldwiget_vertical_bar_summary">I den fede widget adskiller du prognosen for i dag fra de næste dage med en lodret linje.</string>
 </resources>
