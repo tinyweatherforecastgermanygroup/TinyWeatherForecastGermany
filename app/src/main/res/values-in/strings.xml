@@ -453,4 +453,7 @@
     <string name="preference_station_replace_title">Menampilkan kotamadya</string>
     <string name="moonset">Bulan terbenam</string>
     <string name="moonrise">Bulan terbit</string>
+    <string name="preference_boldwiget_vertical_bar_title">Perkiraan terpisah</string>
+    <string name="miscellaneous">Lain-lain</string>
+    <string name="preference_boldwiget_vertical_bar_summary">Pada widget yang dicetak tebal, pisahkan prakiraan untuk hari ini dengan hari-hari berikutnya dengan garis vertikal.</string>
 </resources>
