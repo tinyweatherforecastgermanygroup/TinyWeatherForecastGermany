@@ -135,4 +135,7 @@
     <string name="preference_gadgetbridge_serve_title">Aktivera</string>
     <string name="moonset">Månsken</string>
     <string name="moonrise">Månuppgång</string>
+    <string name="preference_boldwiget_vertical_bar_title">Separata prognoser</string>
+    <string name="miscellaneous">Diverse</string>
+    <string name="preference_boldwiget_vertical_bar_summary">I den fetstilta widgeten separerar du prognosen för idag från de kommande dagarna med en vertikal linje.</string>
 </resources>
