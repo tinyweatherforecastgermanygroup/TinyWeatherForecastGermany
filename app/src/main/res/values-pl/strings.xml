@@ -453,4 +453,7 @@
     <string name="preference_station_replace_title">Wyświetlanie gminy</string>
     <string name="moonset">Zachód księżyca</string>
     <string name="moonrise">Wschód księżyca</string>
+    <string name="preference_boldwiget_vertical_bar_title">Oddzielna prognoza</string>
+    <string name="miscellaneous">Różne</string>
+    <string name="preference_boldwiget_vertical_bar_summary">W pogrubionym widżecie oddziel prognozę na dziś od kolejnych dni pionową linią.</string>
 </resources>
