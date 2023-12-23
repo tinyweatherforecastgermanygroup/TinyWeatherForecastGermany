@@ -453,4 +453,7 @@
     <string name="preference_station_replace_title">Показать муниципалитет</string>
     <string name="moonset">заход луны</string>
     <string name="moonrise">Восход луны</string>
+    <string name="preference_boldwiget_vertical_bar_title">Отдельный прогноз</string>
+    <string name="miscellaneous">Разное</string>
+    <string name="preference_boldwiget_vertical_bar_summary">В жирном виджете отделите прогноз на сегодня от прогнозов на последующие дни вертикальной линией.</string>
 </resources>
