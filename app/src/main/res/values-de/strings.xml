@@ -470,4 +470,7 @@
     <string name="preference_station_replace_title">Gemeinde anzeigen</string>
     <string name="moonset">Monduntergang</string>
     <string name="moonrise">Mondaufgang</string>
+    <string name="preference_boldwiget_vertical_bar_title">Getrennte Vorhersage</string>
+    <string name="miscellaneous">Verschiedenes</string>
+    <string name="preference_boldwiget_vertical_bar_summary">Im kräftigen Widget die Vorhersage für den heutigen Tag durch eine vertikale Linie von den nächsten Tagen trennen.</string>
 </resources>
