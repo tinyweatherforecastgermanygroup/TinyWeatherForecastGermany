@@ -467,4 +467,7 @@
     <string name="preference_station_replace_title">Commune d\'affichage</string>
     <string name="moonset">Coucher de lune</string>
     <string name="moonrise">Lever de lune</string>
+    <string name="preference_boldwiget_vertical_bar_title">Prévisions séparées</string>
+    <string name="miscellaneous">Divers</string>
+    <string name="preference_boldwiget_vertical_bar_summary">Dans le widget en gras, séparez les prévisions pour aujourd\'hui de celles pour les jours suivants par une ligne verticale.</string>
 </resources>
