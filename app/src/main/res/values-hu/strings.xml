@@ -453,4 +453,7 @@
     <string name="preference_station_replace_title">Önkormányzat megjelenítése</string>
     <string name="moonset">Holdnyugta</string>
     <string name="moonrise">Holdfelkelte</string>
+    <string name="preference_boldwiget_vertical_bar_title">Külön előrejelzés</string>
+    <string name="miscellaneous">Különféle</string>
+    <string name="preference_boldwiget_vertical_bar_summary">I den fetstilta widgeten separerar du prognosen för idag från de kommande dagarna med en vertikal linje.</string>
 </resources>
