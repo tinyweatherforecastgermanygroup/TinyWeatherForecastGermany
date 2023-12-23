@@ -106,159 +106,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <ImageView
-            android:id="@+id/boldwidget_center"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"/>
-
-    <!--
-    LEFT WIDGET SIDE
-     -->
-
-    <!--
-    FC 1st DAY
-    -->
-
-    <RelativeLayout
-            android:id="@+id/boldwidget_fc1_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/widget_reference_text"
-            android:layout_below="@id/widget_warningcontainer"
-            android:layout_toLeftOf="@id/boldwidget_center"
-            android:layout_centerVertical="true">
-
-        <ImageView
-                android:id="@+id/boldwidget_fc1_verticalline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/white_bar_vertical"/>
-
-        <ImageView android:id="@+id/boldwidget_fc1_weatherconditionicon"
-                   android:layout_width="@dimen/widget_weathericon_medium"
-                   android:layout_height="@dimen/widget_weathericon_medium"
-                   android:layout_toRightOf="@+id/boldwidget_fc1_verticalline"
-                   android:paddingLeft="8dp"
-                   android:layout_centerVertical="true"
-                   android:src="@mipmap/not_available" />
-
-        <ImageView
-                android:id="@+id/boldwidget_fc1_whitebar"
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_toRightOf="@id/boldwidget_fc1_weatherconditionicon"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/white_bar"/>
-
-        <TextView android:id="@+id/boldwidget_fc1_max"
-                  android:textSize="@dimen/widget_textsize_large"
-                  android:textColor="@color/colorTextWidget"
-                  android:layout_above="@id/boldwidget_fc1_whitebar"
-                  android:layout_alignLeft="@id/boldwidget_fc1_whitebar"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="-°"/>
-
-
-        <TextView android:id="@+id/boldwidget_fc1_min"
-                  android:textSize="@dimen/widget_textsize_large"
-                  android:textColor="@color/colorTextWidget"
-                  android:layout_below="@id/boldwidget_fc1_whitebar"
-                  android:layout_alignLeft="@id/boldwidget_fc1_whitebar"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="-°"/>
-
-        <TextView android:id="@+id/boldwidget_dayofweek_fc1"
-                  android:textSize="@dimen/widget_textsize_large"
-                  android:textColor="@color/colorTextWidget"
-                  android:layout_alignParentBottom="true"
-                  android:layout_alignParentLeft="true"
-                  android:paddingLeft="8dp"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="-"/>
-
-    </RelativeLayout>
-
-
-    <!--
-        TODAY
-     -->
-
-    <RelativeLayout
-            android:id="@+id/boldwidget_current_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/widget_reference_text"
-            android:layout_below="@id/widget_warningcontainer"
-            android:layout_toLeftOf="@id/boldwidget_fc1_container"
-            android:paddingRight="8dp"
-            android:layout_centerVertical="true">
-
-        <TextView
-                android:id="@+id/boldwidget_current_temperature"
-                android:textSize="@dimen/widget_textsize_verylarge"
-                android:textColor="@color/colorTextWidget"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="-°"/>
-
-        <ImageView
-                android:id="@+id/boldwidget_today_condition"
-                android:layout_width="@dimen/widget_weathericon_medium"
-                android:layout_height="@dimen/widget_weathericon_medium"
-                android:layout_toRightOf="@id/boldwidget_current_temperature"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/not_available" />
-
-        <ImageView
-                android:id="@+id/boldwidget_today_whitebar"
-                android:layout_width="wrap_content"
-                android:layout_height="3dp"
-                android:layout_marginLeft="0dp"
-                android:layout_toRightOf="@id/boldwidget_today_condition"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/white_bar"/>
-
-        <TextView android:id="@+id/boldwidget_today_max"
-                  android:textSize="@dimen/widget_textsize_large"
-                  android:textColor="@color/colorTextWidget"
-                  android:layout_above="@id/boldwidget_today_whitebar"
-                  android:layout_alignLeft="@id/boldwidget_today_whitebar"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="-°"/>
-
-        <TextView android:id="@+id/boldwidget_today_min"
-                  android:textSize="@dimen/widget_textsize_large"
-                  android:textColor="@color/colorTextWidget"
-                  android:layout_below="@id/boldwidget_today_whitebar"
-                  android:layout_alignLeft="@id/boldwidget_today_whitebar"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="-°"/>
-
-        <TextView android:id="@+id/boldwidget_dayofweek_today"
-                  android:textSize="@dimen/widget_textsize_large"
-                  android:textColor="@color/colorTextWidget"
-                  android:layout_alignParentBottom="true"
-                  android:layout_alignLeft="@id/boldwidget_today_condition"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/today"/>
-
-    </RelativeLayout>
-
-
-    <!--
-    RIGHT WIDGET SIDE
-    -->
+    <!-- CENTER ELEMENT -->
 
     <!--
     FC 2nd DAY
@@ -267,11 +115,13 @@
     <RelativeLayout
             android:id="@+id/boldwidget_fc2_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_above="@id/widget_reference_text"
+            android:layout_alignWithParentIfMissing="true"
             android:layout_below="@id/widget_warningcontainer"
-            android:layout_toRightOf="@id/boldwidget_center"
             android:paddingLeft="8dp"
+            android:layout_marginRight="@dimen/widget_margin"
+            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true">
 
         <ImageView android:id="@+id/boldwidget_fc2_weatherconditionicon"
@@ -320,14 +170,158 @@
 
     </RelativeLayout>
 
+    <!-- LEFT SIDE -->
+
     <!--
-FC 3rd DAY
--->
+    FC 1st DAY
+    -->
+
+    <RelativeLayout
+            android:id="@+id/boldwidget_fc1_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="15dp"
+            android:layout_above="@id/widget_reference_text"
+            android:layout_below="@id/widget_warningcontainer"
+            android:layout_toLeftOf="@id/boldwidget_fc2_container"
+            android:layout_centerVertical="true">
+
+        <ImageView
+                android:id="@+id/boldwidget_fc1_verticalline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/white_bar_vertical"/>
+
+        <ImageView
+                android:id="@+id/boldwidget_fc1_weatherconditionicon"
+                android:layout_width="@dimen/widget_weathericon_medium"
+                android:layout_height="@dimen/widget_weathericon_medium"
+                android:layout_toRightOf="@+id/boldwidget_fc1_verticalline"
+                android:paddingLeft="8dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/not_available" />
+
+        <ImageView
+                android:id="@+id/boldwidget_fc1_whitebar"
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:layout_toRightOf="@id/boldwidget_fc1_weatherconditionicon"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/white_bar"/>
+
+        <TextView android:id="@+id/boldwidget_fc1_max"
+                  android:textSize="@dimen/widget_textsize_large"
+                  android:textColor="@color/colorTextWidget"
+                  android:layout_above="@id/boldwidget_fc1_whitebar"
+                  android:layout_alignLeft="@id/boldwidget_fc1_whitebar"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="-°"/>
+
+
+        <TextView android:id="@+id/boldwidget_fc1_min"
+                  android:textSize="@dimen/widget_textsize_large"
+                  android:textColor="@color/colorTextWidget"
+                  android:layout_below="@id/boldwidget_fc1_whitebar"
+                  android:layout_alignLeft="@id/boldwidget_fc1_whitebar"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="-°"/>
+
+        <TextView android:id="@+id/boldwidget_dayofweek_fc1"
+                  android:textSize="@dimen/widget_textsize_large"
+                  android:textColor="@color/colorTextWidget"
+                  android:layout_alignParentBottom="true"
+                  android:layout_alignLeft="@id/boldwidget_fc1_weatherconditionicon"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="-"/>
+
+    </RelativeLayout>
+
+    <!--
+        TODAY
+     -->
+
+    <RelativeLayout
+            android:id="@+id/boldwidget_current_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/boldwidget_fc1_container"
+            android:layout_above="@id/widget_reference_text"
+            android:layout_below="@id/widget_warningcontainer"
+            android:layout_marginLeft="@dimen/widget_margin"
+            android:paddingRight="8dp"
+            android:layout_centerVertical="true">
+
+        <TextView
+                android:id="@+id/boldwidget_current_temperature"
+                android:textSize="@dimen/widget_textsize_verylarge"
+                android:textColor="@color/colorTextWidget"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="-°"/>
+
+        <ImageView
+                android:id="@+id/boldwidget_today_condition"
+                android:layout_width="@dimen/widget_weathericon_medium"
+                android:layout_height="@dimen/widget_weathericon_medium"
+                android:layout_toRightOf="@id/boldwidget_current_temperature"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/not_available" />
+
+        <ImageView
+                android:id="@+id/boldwidget_today_whitebar"
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:layout_marginLeft="0dp"
+                android:layout_toRightOf="@id/boldwidget_today_condition"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/white_bar"/>
+
+        <TextView android:id="@+id/boldwidget_today_max"
+                  android:textSize="@dimen/widget_textsize_large"
+                  android:textColor="@color/colorTextWidget"
+                  android:layout_above="@id/boldwidget_today_whitebar"
+                  android:layout_alignLeft="@id/boldwidget_today_whitebar"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="-°"/>
+
+        <TextView android:id="@+id/boldwidget_today_min"
+                  android:textSize="@dimen/widget_textsize_large"
+                  android:textColor="@color/colorTextWidget"
+                  android:layout_below="@id/boldwidget_today_whitebar"
+                  android:layout_alignLeft="@id/boldwidget_today_whitebar"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="-°"/>
+
+        <TextView android:id="@+id/boldwidget_dayofweek_today"
+                  android:textSize="@dimen/widget_textsize_large"
+                  android:textColor="@color/colorTextWidget"
+                  android:layout_alignParentBottom="true"
+                  android:layout_alignLeft="@id/boldwidget_today_condition"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/today"/>
+
+    </RelativeLayout>
+
+    <!-- RIGHT SIDE -->
+
+    <!--
+    FC 3nd DAY
+    -->
 
     <RelativeLayout
             android:id="@+id/boldwidget_fc3_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_above="@id/widget_reference_text"
             android:layout_below="@id/widget_warningcontainer"
             android:layout_toRightOf="@id/boldwidget_fc2_container"
@@ -377,6 +371,66 @@ FC 3rd DAY
                   android:text="-"/>
 
     </RelativeLayout>
+
+    <!--
+    FC 4rd DAY
+    -->
+
+    <RelativeLayout
+            android:id="@+id/boldwidget_fc4_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_above="@id/widget_reference_text"
+            android:layout_below="@id/widget_warningcontainer"
+            android:layout_toRightOf="@id/boldwidget_fc3_container"
+            android:paddingLeft="8dp"
+            android:layout_centerVertical="true">
+
+        <ImageView android:id="@+id/boldwidget_fc4_weatherconditionicon"
+                   android:layout_width="@dimen/widget_weathericon_medium"
+                   android:layout_height="@dimen/widget_weathericon_medium"
+                   android:layout_alignParentLeft="true"
+                   android:layout_centerVertical="true"
+                   android:src="@mipmap/not_available" />
+
+        <ImageView
+                android:id="@+id/boldwidget_fc4_whitebar"
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:layout_toRightOf="@id/boldwidget_fc4_weatherconditionicon"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/white_bar"/>
+
+        <TextView android:id="@+id/boldwidget_fc4_max"
+                  android:textSize="@dimen/widget_textsize_large"
+                  android:textColor="@color/colorTextWidget"
+                  android:layout_above="@id/boldwidget_fc4_whitebar"
+                  android:layout_alignLeft="@id/boldwidget_fc4_whitebar"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="-°"/>
+
+        <TextView android:id="@+id/boldwidget_fc4_min"
+                  android:textSize="@dimen/widget_textsize_large"
+                  android:textColor="@color/colorTextWidget"
+                  android:layout_below="@id/boldwidget_fc4_whitebar"
+                  android:layout_alignLeft="@id/boldwidget_fc4_whitebar"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="-°"/>
+
+        <TextView android:id="@+id/boldwidget_dayofweek_fc4"
+                  android:textSize="@dimen/widget_textsize_large"
+                  android:textColor="@color/colorTextWidget"
+                  android:layout_alignParentBottom="true"
+                  android:layout_alignLeft="@id/boldwidget_fc4_weatherconditionicon"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="-"/>
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>
 

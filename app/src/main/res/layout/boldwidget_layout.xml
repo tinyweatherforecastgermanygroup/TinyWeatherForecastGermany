@@ -119,6 +119,7 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/widget_warningcontainer"
         android:layout_marginLeft="@dimen/widget_margin"
+        android:paddingRight="8dp"
         android:layout_centerVertical="true">
 
         <TextView
@@ -127,8 +128,8 @@
             android:textColor="@color/colorTextWidget"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:text="-°"/>
 
         <ImageView
@@ -185,7 +186,7 @@
     <RelativeLayout
         android:id="@+id/boldwidget_fc1_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:paddingLeft="15dp"
         android:layout_above="@id/widget_reference_text"
@@ -193,12 +194,22 @@
         android:layout_below="@id/widget_warningcontainer"
         android:layout_centerVertical="true">
 
-        <ImageView android:id="@+id/boldwidget_fc1_weatherconditionicon"
-            android:layout_width="@dimen/widget_weathericon_medium"
-            android:layout_height="@dimen/widget_weathericon_medium"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/not_available" />
+        <ImageView
+                android:id="@+id/boldwidget_fc1_verticalline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/white_bar_vertical"/>
+
+        <ImageView
+                android:id="@+id/boldwidget_fc1_weatherconditionicon"
+                android:layout_width="@dimen/widget_weathericon_medium"
+                android:layout_height="@dimen/widget_weathericon_medium"
+                android:layout_toRightOf="@+id/boldwidget_fc1_verticalline"
+                android:paddingLeft="8dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/not_available" />
 
         <ImageView
             android:id="@+id/boldwidget_fc1_whitebar"
@@ -231,7 +242,8 @@
             android:textSize="@dimen/widget_textsize_large"
             android:textColor="@color/colorTextWidget"
             android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@id/boldwidget_fc1_weatherconditionicon"
+            android:layout_toRightOf="@id/boldwidget_fc1_verticalline"
+            android:paddingLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-"/>
@@ -246,11 +258,12 @@
     <RelativeLayout
         android:id="@+id/boldwidget_fc2_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_above="@id/widget_reference_text"
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/widget_warningcontainer"
+        android:paddingLeft="8dp"
         android:layout_marginRight="@dimen/widget_margin"
         android:layout_centerVertical="true">
 

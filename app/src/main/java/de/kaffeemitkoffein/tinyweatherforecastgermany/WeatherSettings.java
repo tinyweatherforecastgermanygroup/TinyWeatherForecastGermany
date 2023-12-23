@@ -171,6 +171,7 @@ public class WeatherSettings {
     public static final String PREF_REPLACE_BY_MUNICIPALITY = "PREF_replace_by_municipality";
     public static final String PREF_BATTERY_OPTIMIZATION_FLAG = "PREF_battery_opt_flag";
     public static final String PREF_LAST_NOTIFICATIONS_UPDATE_TIME = "PREF_nf_updatetime";
+    public static final String PREF_BOLDWIDGET_VERTICAL_BAR = "PREF_boldwidget_vertical_bar";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -283,6 +284,7 @@ public class WeatherSettings {
     public static final boolean PREF_REPLACE_BY_MUNICIPALITY_DEFAULT = false;
     public static final int PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT = BatteryFlag.NOT_ASKED;
     public static final long PREF_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT = 0;
+    public static final boolean PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT = false;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String location_desc_alternate = PREF_LOCATION_DESC_ALTERNATE_DEFAULT;
@@ -1993,6 +1995,11 @@ public class WeatherSettings {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putInt(PREF_BATTERY_OPTIMIZATION_FLAG,i);
         pref_editor.apply();
+    }
+
+    public static boolean displayBoldwidgetVerticalBar(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_BOLDWIDGET_VERTICAL_BAR,PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT);
     }
 
 }

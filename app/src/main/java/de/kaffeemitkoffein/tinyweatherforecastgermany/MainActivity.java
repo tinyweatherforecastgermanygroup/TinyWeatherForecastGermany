@@ -378,7 +378,24 @@ public class MainActivity extends Activity {
                 }
             }
         }
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    loadStationsData();
+                } catch (Exception e){
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
+                }
+            }
+        });
         final Context applicationContext = this;
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                PrivateLog.log(applicationContext,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widgets from main activity...");
+                WidgetRefresher.refresh(applicationContext);
+            }
+        });
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -394,16 +411,6 @@ public class MainActivity extends Activity {
                         });
                     }
                 },6000);
-            }
-        });
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    loadStationsData();
-                } catch (Exception e){
-                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
-                }
             }
         });
         super.onResume();

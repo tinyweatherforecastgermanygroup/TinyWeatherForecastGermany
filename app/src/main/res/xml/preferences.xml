@@ -51,33 +51,6 @@
                 android:title="@string/preference_screen_display_title"
                 android:summary="@string/preference_screen_display_summary">
 
-            <!--
-
-            <CheckBoxPreference
-                    android:key="PREF_display_bar"
-                    android:title="@string/preference_displayforecastbar_title"
-                    android:summary="@string/preference_displayforecastbar_summary"
-                    android:defaultValue="true"/>
-
-            <CheckBoxPreference
-                    android:key="PREF_display_simple_bar"
-                    android:title="@string/preference_displaysimplebar_title"
-                    android:summary="@string/preference_displaysimplebar_summary"
-                    android:defaultValue="false"/>
-
-            <CheckBoxPreference
-                    android:key="PREF_display_pressure"
-                    android:title="@string/preference_displaypressure_title"
-                    android:summary="@string/preference_displaypressure_summary"
-                    android:defaultValue="true"/>
-
-            <CheckBoxPreference
-                    android:key="PREF_display_visibility"
-                    android:title="@string/preference_displayvisibility_title"
-                    android:summary="@string/preference_displayvisibility_summary"
-                    android:defaultValue="true"/>
-
-            -->
 
             <CheckBoxPreference
                     android:key="PREF_display_sunrise"
@@ -347,27 +320,38 @@
 
             </PreferenceScreen>
 
+            <PreferenceScreen
+                    android:key="PREF_screen_miscellaneous"
+                    android:title="@string/miscellaneous">
 
-            <CheckBoxPreference
-                    android:key="PREF_display_station_geo"
-                    android:title="@string/preference_display_station_geo_title"
-                    android:summary="@string/preference_display_station_geo_summary"
-                    android:defaultValue="true"/>
+                <CheckBoxPreference
+                        android:key="PREF_display_station_geo"
+                        android:title="@string/preference_display_station_geo_title"
+                        android:summary="@string/preference_display_station_geo_summary"
+                        android:defaultValue="true"/>
 
 
-            <CheckBoxPreference
-                    android:key="PREF_replace_by_municipality"
-                    android:title="@string/preference_station_replace_title"
-                    android:summary="@string/preference_display_replace_summary"
-                    android:defaultValue="false"/>
+                <CheckBoxPreference
+                        android:key="PREF_replace_by_municipality"
+                        android:title="@string/preference_station_replace_title"
+                        android:summary="@string/preference_display_replace_summary"
+                        android:defaultValue="false"/>
 
-            <ListPreference
-                    android:key="PREF_rotationmode"
-                    android:title="@string/preference_display_rotation_title"
-                    android:summary="@string/preference_display_rotation_summary"
-                    android:entries="@array/display_rotation_text"
-                    android:entryValues="@array/display_rotation_values"
-                    android:defaultValue="0"/>
+                <ListPreference
+                        android:key="PREF_rotationmode"
+                        android:title="@string/preference_display_rotation_title"
+                        android:summary="@string/preference_display_rotation_summary"
+                        android:entries="@array/display_rotation_text"
+                        android:entryValues="@array/display_rotation_values"
+                        android:defaultValue="0"/>
+
+                <CheckBoxPreference
+                        android:key="PREF_boldwidget_vertical_bar"
+                        android:title="@string/preference_boldwiget_vertical_bar_title"
+                        android:summary="@string/preference_boldwiget_vertical_bar_summary"
+                        android:defaultValue="false"/>
+
+            </PreferenceScreen>
 
         </PreferenceScreen>
 

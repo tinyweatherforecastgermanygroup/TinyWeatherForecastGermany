@@ -105,7 +105,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                     setNotifyWarnings();
                     setNotifySeverity();
                 }
-                if (s.equals(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS)) {
+                if (s.equals(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS) || (s.equals(WeatherSettings.PREF_BOLDWIDGET_VERTICAL_BAR))) {
                     setShowWarningsInWidgetAllowed();
                     WidgetRefresher.refresh(context);
                 }

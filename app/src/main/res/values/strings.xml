@@ -84,6 +84,7 @@
     <string name="title_activity_textlist">Texts</string>
     <string name="clouds">Clouds:</string>
     <string name="rain">Rain:</string>
+    <string name="miscellaneous">Miscellaneous</string>
     <string name="preference_category_display">Display</string>
     <string name="preference_category_general">Weather data</string>
     <string name="preference_category_widget">Widget settings</string>
@@ -113,6 +114,8 @@
     <string name="preference_notify_LEDcolor_current">Current color: </string>
     <string name="preference_led_notice_title">Notice</string>
     <string name="preference_led_notice_summary">Only some devices have a notification LED. On other devices, these options have no effect. Other device settings may prevent the notification LED from blinking.</string>
+    <string name="preference_boldwiget_vertical_bar_title">Separate forecast</string>
+    <string name="preference_boldwiget_vertical_bar_summary">In the bold widget, separate the forecast for today from the next days with a vertical line.</string>
     <string name="preference_displaynoteinwidget_title">Display DWD note</string>
     <string name="preference_displaynoteinwidget_summary">Show the data source string.</string>
     <string name="preference_cache_warnings_title">Cache warnings</string>

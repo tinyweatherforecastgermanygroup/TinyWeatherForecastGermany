@@ -1,0 +1,5 @@
+- the bold widget now displays the forecast for more days, depending on the widget size
+- fixed location and weather condition display truncated in the bold widget on some devices
+- fixed a bug that displayed a wrong weather station when selecting a "SWIS-PUNKT" from the favorites
+- added workaround that prevents the package installer from crashing when installing and/or updating the app
+- widgets are now always updated upon app launch

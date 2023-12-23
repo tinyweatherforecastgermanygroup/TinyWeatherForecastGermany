@@ -79,8 +79,17 @@ public class BoldWidget extends ClassicWidget {
                 int widgetResource = R.layout.boldwidget_layout;
                 if (widgetWidth>=280){
                     forecastDays = 3;
-                    widgetResource = R.layout.boldwidget_layout2;
+                    widgetResource = R.layout.boldwidget_layout3;
                 }
+                if (widgetWidth>=335){
+                    forecastDays = 4;
+                    widgetResource = R.layout.boldwidget_layout4;
+                }
+                if (widgetWidth>=430){
+                    forecastDays = 5;
+                    widgetResource = R.layout.boldwidget_layout5;
+                }
+                PrivateLog.log(c,PrivateLog.WIDGET, PrivateLog.INFO," Bold widget id "+widget_instances[i]+" size: "+widgetWidth+"/"+widgetHeight+" dp, showing "+forecastDays+" forecast days.");
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), widgetResource);
                 fillBoldWidgetItems(c, remoteViews, weatherSettings, weatherCard,forecastDays);
                 setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
@@ -103,6 +112,12 @@ public class BoldWidget extends ClassicWidget {
             remoteViews.setTextColor(R.id.widget_reference_text,ThemePicker.getWidgetTextColor(c));
         } else {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.GONE);
+        }
+        // handle optional vertical line
+        if (WeatherSettings.displayBoldwidgetVerticalBar(c)){
+            remoteViews.setViewVisibility(R.id.boldwidget_fc1_verticalline,View.VISIBLE);
+        } else {
+            remoteViews.setViewVisibility(R.id.boldwidget_fc1_verticalline,View.INVISIBLE);
         }
         if (currentWeatherInfo.currentWeather.hasTemperature()) {
             remoteViews.setTextViewText(R.id.boldwidget_current_temperature, currentWeatherInfo.currentWeather.getTemperatureInCelsiusInt() + "°");
@@ -211,46 +226,57 @@ public class BoldWidget extends ClassicWidget {
             remoteViews.setTextViewText(R.id.boldwidget_fc2_min, NOT_AVAILABLE);
             remoteViews.setTextColor(R.id.boldwidget_fc2_min,ThemePicker.getWidgetTextColor(c));
         }
-        // optinal 3rd day forecast
-        if ((currentWeatherInfo.forecast24hourly.size() >= 4) && (forecastDays>=3)){
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE");
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE");
+        for (int forecastDay=3; (forecastDay<=forecastDays); forecastDay++){
             // the timestamp will always be midnight. When we derive the day of week from it, it will be misleading, since
             // we want to show the day *before* this midnight position.
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(currentWeatherInfo.forecast24hourly.get(3).getTimestamp());
-            calendar.add(Calendar.DAY_OF_WEEK,-1);
-            String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
-            remoteViews.setTextViewText(R.id.boldwidget_dayofweek_fc3, weekday);
-            remoteViews.setTextColor(R.id.boldwidget_dayofweek_fc3,ThemePicker.getWidgetTextColor(c));
-            if (currentWeatherInfo.forecast24hourly.get(3).hasCondition()) {
-                remoteViews.setImageViewBitmap(R.id.boldwidget_fc3_weatherconditionicon,forecastIcons.getIconBitmap(currentWeatherInfo.forecast24hourly.get(3),currentWeatherInfo.weatherLocation));
-            } else {
-                remoteViews.setImageViewBitmap(R.id.boldwidget_fc3_weatherconditionicon,WeatherIcons.getIconBitmap(c,WeatherIcons.NOT_AVAILABLE,true));
+            int dayOfWeekID     = R.id.boldwidget_dayofweek_fc3;
+            int conditionIconID = R.id.boldwidget_fc3_weatherconditionicon;
+            int maxTempID       = R.id.boldwidget_fc3_max;
+            int minTempID       = R.id.boldwidget_fc3_min;
+            if (forecastDay==4){
+                dayOfWeekID     = R.id.boldwidget_dayofweek_fc4;
+                conditionIconID = R.id.boldwidget_fc4_weatherconditionicon;
+                maxTempID       = R.id.boldwidget_fc4_max;
+                minTempID       = R.id.boldwidget_fc4_min;
             }
-            if (currentWeatherInfo.forecast24hourly.get(3).hasMaxTemperature()) {
-                remoteViews.setTextViewText(R.id.boldwidget_fc3_max, currentWeatherInfo.forecast24hourly.get(3).getMaxTemperatureInCelsiusInt() + "°");
-                remoteViews.setTextColor(R.id.boldwidget_fc3_max,ThemePicker.getWidgetTextColor(c));
-            } else {
-                remoteViews.setTextViewText(R.id.boldwidget_fc3_max, NOT_AVAILABLE);
-                remoteViews.setTextColor(R.id.boldwidget_fc3_max,ThemePicker.getWidgetTextColor(c));
+            if (forecastDay==5){
+                dayOfWeekID     = R.id.boldwidget_dayofweek_fc5;
+                conditionIconID = R.id.boldwidget_fc5_weatherconditionicon;
+                maxTempID       = R.id.boldwidget_fc5_max;
+                minTempID       = R.id.boldwidget_fc5_min;
             }
-            if (currentWeatherInfo.forecast24hourly.get(3).hasMinTemperature()) {
-                remoteViews.setTextViewText(R.id.boldwidget_fc3_min, currentWeatherInfo.forecast24hourly.get(3).getMinTemperatureInCelsiusInt() + "°");
-                remoteViews.setTextColor(R.id.boldwidget_fc3_min,ThemePicker.getWidgetTextColor(c));
+            if (currentWeatherInfo.forecast24hourly.size() >= forecastDay+1){
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(currentWeatherInfo.forecast24hourly.get(forecastDay).getTimestamp());
+                calendar.add(Calendar.DAY_OF_WEEK,-1);
+                String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
+                remoteViews.setTextViewText(dayOfWeekID, weekday);
+                remoteViews.setTextColor(dayOfWeekID,ThemePicker.getWidgetTextColor(c));
+                remoteViews.setTextColor(maxTempID,ThemePicker.getWidgetTextColor(c));
+                remoteViews.setTextColor(minTempID,ThemePicker.getWidgetTextColor(c));
+                if (currentWeatherInfo.forecast24hourly.get(forecastDay).hasCondition()) {
+                    remoteViews.setImageViewBitmap(conditionIconID,forecastIcons.getIconBitmap(currentWeatherInfo.forecast24hourly.get(forecastDay),currentWeatherInfo.weatherLocation));
+                } else {
+                    remoteViews.setImageViewBitmap(conditionIconID,WeatherIcons.getIconBitmap(c,WeatherIcons.NOT_AVAILABLE,true));
+                }
+                if (currentWeatherInfo.forecast24hourly.get(forecastDay).hasMaxTemperature()) {
+                    remoteViews.setTextViewText(maxTempID, currentWeatherInfo.forecast24hourly.get(forecastDay).getMaxTemperatureInCelsiusInt() + "°");
+                } else {
+                    remoteViews.setTextViewText(maxTempID, NOT_AVAILABLE);
+                }
+                if (currentWeatherInfo.forecast24hourly.get(forecastDay).hasMinTemperature()) {
+                    remoteViews.setTextViewText(minTempID, currentWeatherInfo.forecast24hourly.get(forecastDay).getMinTemperatureInCelsiusInt() + "°");
+                } else {
+                    remoteViews.setTextViewText(minTempID, NOT_AVAILABLE);
+                }
             } else {
-                remoteViews.setTextViewText(R.id.boldwidget_fc3_min, NOT_AVAILABLE);
-                remoteViews.setTextColor(R.id.boldwidget_fc3_min,ThemePicker.getWidgetTextColor(c));
+                remoteViews.setTextViewText(dayOfWeekID, NOT_AVAILABLE);
+                remoteViews.setImageViewResource(conditionIconID, R.mipmap.not_available);
+                remoteViews.setTextViewText(maxTempID, NOT_AVAILABLE);
+                remoteViews.setTextViewText(minTempID, NOT_AVAILABLE);
             }
-        } else {
-            remoteViews.setTextViewText(R.id.boldwidget_dayofweek_fc3, NOT_AVAILABLE);
-            remoteViews.setTextColor(R.id.boldwidget_dayofweek_fc3,ThemePicker.getWidgetTextColor(c));
-            remoteViews.setImageViewResource(R.id.boldwidget_fc3_weatherconditionicon, R.mipmap.not_available);
-            remoteViews.setTextViewText(R.id.boldwidget_fc3_max, NOT_AVAILABLE);
-            remoteViews.setTextColor(R.id.boldwidget_fc3_max,ThemePicker.getWidgetTextColor(c));
-            remoteViews.setTextViewText(R.id.boldwidget_fc3_min, NOT_AVAILABLE);
-            remoteViews.setTextColor(R.id.boldwidget_fc3_min,ThemePicker.getWidgetTextColor(c));
         }
-
         // set opacity
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
         remoteViews.setImageViewResource(R.id.widget_backgroundimage,ThemePicker.getWidgetBackgroundDrawableRessource(c));
