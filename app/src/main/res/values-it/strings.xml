@@ -454,4 +454,7 @@
     <string name="preference_station_replace_title">Visualizza il comune</string>
     <string name="moonset">Tramonto della luna</string>
     <string name="moonrise">Sorgere della luna</string>
+    <string name="preference_boldwiget_vertical_bar_title">Previsione separata</string>
+    <string name="miscellaneous">Varie</string>
+    <string name="preference_boldwiget_vertical_bar_summary">Nel widget in grassetto, separare le previsioni per oggi dai giorni successivi con una linea verticale.</string>
 </resources>
