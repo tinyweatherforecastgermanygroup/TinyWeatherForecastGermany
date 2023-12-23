@@ -453,4 +453,7 @@
     <string name="preference_station_replace_title">Mostrar municipio</string>
     <string name="moonset">Puesta de luna</string>
     <string name="moonrise">Salida de la luna</string>
+    <string name="preference_boldwiget_vertical_bar_title">Previsión separada</string>
+    <string name="miscellaneous">Varios</string>
+    <string name="preference_boldwiget_vertical_bar_summary">En el widget en negrita, separe la previsión para hoy de la de los próximos días con una línea vertical.</string>
 </resources>
