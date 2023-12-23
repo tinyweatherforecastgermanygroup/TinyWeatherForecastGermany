@@ -453,4 +453,7 @@
     <string name="preference_station_replace_title">Zobrazení obce</string>
     <string name="moonset">Západ měsíce</string>
     <string name="moonrise">Východ měsíce</string>
+    <string name="preference_boldwiget_vertical_bar_title">Oddělená předpověď</string>
+    <string name="miscellaneous">Různé</string>
+    <string name="preference_boldwiget_vertical_bar_summary">V tučném widgetu oddělte předpověď pro dnešní den od předpovědi pro následující dny svislou čarou.</string>
 </resources>
