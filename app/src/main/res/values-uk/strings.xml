@@ -453,4 +453,7 @@
     <string name="preference_station_replace_title">Показати муніципалітет</string>
     <string name="moonset">Захід місяця</string>
     <string name="moonrise">Схід місяця</string>
+    <string name="preference_boldwiget_vertical_bar_title">Окремий прогноз</string>
+    <string name="miscellaneous">Різне</string>
+    <string name="preference_boldwiget_vertical_bar_summary">У віджеті, виділеному жирним шрифтом, відокремте прогноз на сьогодні від наступних днів вертикальною лінією.</string>
 </resources>
