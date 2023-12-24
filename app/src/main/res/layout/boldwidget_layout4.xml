@@ -248,7 +248,7 @@
     <RelativeLayout
             android:id="@+id/boldwidget_current_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_toLeftOf="@id/boldwidget_fc1_container"
             android:layout_above="@id/widget_reference_text"
             android:layout_below="@id/widget_warningcontainer"
@@ -263,7 +263,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="-°"/>
 
         <ImageView
