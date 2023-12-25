@@ -26,7 +26,7 @@ Please note that the builds linked here are not signed by the F-Droid key, so yo
 
 ## License
 
-Copyright (c) 2020, 2021, 2022 Pawel Dube
+Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the

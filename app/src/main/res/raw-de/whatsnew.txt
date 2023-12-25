@@ -1,16 +1,8 @@
 Neu in dieser Version ([VERSION]):
 
-- schnellerer App-Start
-- die Windgeschwindigkeit kann nun in Diagrammen angezeigt werden
-- Bestimmung der nächsten Wetterstation im Hintergrund
-- verbesserte Gadgetbridge-Unterstützung (WeatherSpec v4)
-- Taupunkt-Anzeige in den Wetterdetails
-- überarbeitete Wetter-Icons, der Mond zeigt nun die Mondphase an
-- die Aufzählung der betroffenen Orte in geteilten Warnungen kann begrenzt werden
-- kleinere Fehlerbehebungen und weitere Verbesserungen
-
-Neu in der vorherigen Version:
-
-- neu: Wetterkarten, Pollen-Vorhersage, UV-Gefahrenindex
-- unterstützt UV-Gefahrenindex und Niederschlag auf Wearables über Gadgetbridge
-- zahlreiche, weitere Verbesserungen
+- das kräftige Widget zeigt nun die Vorhersage für mehr Tage an, je nach Größe des Widgets
+- mehrere Layout-Probleme im kräftigen Widget behoben
+- Fehler behoben, der zur Anzeige einer falschen Wetterstation führte, falls ein "SWIS-PUNKT" aus den Favoriten ausgewählt wurde
+- Workaround hinzugefügt, um zu verhindern, dass der Paket-Installer abstürzt
+- Widgets werden nun immer beim Start der Anwendung aktualisiert
+- einige Anzeigeoptionen in "Verschiedenes" verschoben
