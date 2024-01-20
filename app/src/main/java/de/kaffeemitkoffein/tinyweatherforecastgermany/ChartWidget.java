@@ -23,8 +23,11 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.os.Build;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
@@ -37,13 +40,33 @@ public class ChartWidget extends ClassicWidget{
 
     @Override
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances) {
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c,UpdateAlarmManager.UPDATE_FROM_WIDGET);
+        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i = 0; i < widget_instances.length; i++) {
+                // determine widget diameters in pixels
+                Bundle appWidgetOptions = awm.getAppWidgetOptions(widget_instances[i]);
+                // diameters in portrait mode
+                int widthPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                int heightPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+                // diameters in landscape mode
+                int widthLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+                int heightLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+                int orientation = c.getResources().getConfiguration().orientation;
+                int widgetWidth = widthPortrait; int widgetHeight = heightPortrait;
+                if (orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    widgetWidth = widthLandscape;
+                    widgetHeight = heightLandscape;
+                }
+                //Log.v("widget","Widget = "+widgetWidth+" / "+widgetHeight);
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c, MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
+                PendingIntent pendingIntent;
+                if (Build.VERSION.SDK_INT>=23){
+                    pendingIntent = PendingIntent.getActivity(c, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+                } else {
+                    pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
+                }
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.chartwidget_layout);
                 fillChartWidgetItems(c, awm, widget_instances[i], remoteViews, weatherSettings, weatherCard);
                 remoteViews.setOnClickPendingIntent(R.id.chartwidget_maincontainer, pendingIntent);
@@ -97,8 +120,8 @@ public class ChartWidget extends ClassicWidget{
         remoteViews.setImageViewBitmap(R.id.chartwidget_chart,bitmap);
         // set opacity
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
-        remoteViews.setImageViewResource(R.id.widget_backgroundimage,ThemePicker.getWidgetBackgroundDrawableRessource(context));
-        remoteViews.setInt(R.id.widget_backgroundimage,"setImageAlpha",Math.round(opacity*2.55f));
+        remoteViews.setImageViewResource(android.R.id.background,ThemePicker.getWidgetBackgroundDrawableRessource(context));
+        remoteViews.setInt(android.R.id.background,"setImageAlpha",Math.round(opacity*2.55f));
     }
 
 }

@@ -106,4 +106,8 @@
     <dimen name="forcecastadapterPadding">4dp</dimen>
     <dimen name="forcecastadapterPaddingDouble">8dp</dimen>
 
+    <dimen name="widget_preview_dayofweek">10dp</dimen>
+    <dimen name="widget_preview_weathericon">24dp</dimen>
+    <dimen name="widget_preview_temperature">14dp</dimen>
+
 </resources>

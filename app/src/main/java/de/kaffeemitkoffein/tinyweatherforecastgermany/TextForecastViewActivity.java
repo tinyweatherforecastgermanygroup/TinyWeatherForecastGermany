@@ -249,7 +249,7 @@ public class TextForecastViewActivity extends Activity {
             typeView.setText(TextForecasts.getTypeString(context,textForecast));
         }
         if (issuedView!=null){
-            final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+            final SimpleDateFormat simpleDateFormat = Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED_NO_SECONDS);
             issuedView.setText(simpleDateFormat.format(new Date(textForecast.issued)));
         }
     }

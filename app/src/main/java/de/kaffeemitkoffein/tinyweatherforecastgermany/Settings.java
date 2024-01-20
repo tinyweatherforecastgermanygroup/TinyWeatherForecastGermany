@@ -22,10 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.Manifest;
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -148,7 +145,8 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 }
                 if (s.equals(WeatherSettings.PREF_UVHI_FETCH_DATA)){
                     if (!Weather.hasUVHIData(context)){
-                            forcedWeatherUpdate();
+                        SyncRequest syncRequest = MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_WEATHER);
+                        ContentResolver.requestSync(syncRequest);
                     }
                 }
                 if (s.equals(WeatherSettings.PREF_USE_BACKGROUND_LOCATION)){
@@ -164,16 +162,14 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 if (s.equals(WeatherSettings.PREF_DISPLAY_WIND_IN_CHARTS) || s.equals(WeatherSettings.PREF_DISPLAY_WIND_IN_CHARTS_MAX)){
                     WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
                 }
+                if (s.equals(WeatherSettings.Updates.PREF_UPDATE_WEATHER_INTERVAL) ||
+                    s.equals(WeatherSettings.Updates.PREF_UPDATE_WARNINGS_INTERVAL)){
+                    MainActivity.registerSyncAdapter(context);
+                }
             }
         }
     };
 
-    public void forcedWeatherUpdate(){
-        ArrayList<String> updateTasks = new ArrayList<String>();
-        updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
-        updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS);
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,null);
-    }
 
     @Override
     @SuppressWarnings("deprecation")
@@ -253,7 +249,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     @SuppressWarnings("deprecation")
     public void setAlarmSettingAllowed() {
         WeatherSettings weatherSettings = new WeatherSettings(context);
-        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_SETALARM);
+        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.Updates.PREF_UPDATE_WEATHER_SYNC);
         if (checkBoxPreference != null) {
             checkBoxPreference.setEnabled(!weatherSettings.serve_gadgetbridge);
             checkBoxPreference.setShouldDisableView(true);
@@ -488,7 +484,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
          for api above 22 we check for metered/unmetered networks.
          One of the preferences always needs to be removed.
          */
-        PreferenceCategory preferenceCategoryGeneral = (PreferenceCategory) findPreference(WeatherSettings.PREF_CATEGORY_GENERAL);
+        final PreferenceCategory preferenceCategoryGeneral = (PreferenceCategory) findPreference(WeatherSettings.PREF_CATEGORY_GENERAL);
         CheckBoxPreference wifiOnly = (CheckBoxPreference) findPreference(WeatherSettings.PREF_USE_WIFI_ONLY);
         CheckBoxPreference useMeteredNetworks = (CheckBoxPreference) findPreference(WeatherSettings.PREF_USE_METERED_NETWORKS);
         if (Build.VERSION.SDK_INT < 23){
@@ -500,6 +496,39 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 preferenceCategoryGeneral.removePreference(wifiOnly);
             }
         }
+        final Preference syncOffHint = (Preference) findPreference("PREF_sync_off_hint");
+        if (syncOffHint!=null){
+            if (MainActivity.isSyncAccountEnabled(context)){
+                preferenceCategoryGeneral.removePreference(syncOffHint);
+            } else {
+                syncOffHint.setSummary(String.format(context.getResources().getString(R.string.sync_off_notice),context.getResources().getString(R.string.app_name))+" "+String.format(context.getResources().getString(R.string.sync_enable_notice),context.getResources().getString(R.string.app_name)));
+                syncOffHint.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        MainActivity.askDialog(context,
+                                WeatherIcons.getIconResource(context,WeatherIcons.IC_REFRESH),
+                                context.getResources().getString(R.string.sync_enable),
+                                new String[]{String.format(context.getResources().getString(R.string.sync_enable_question), context.getResources().getString(R.string.app_name))},
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        MainActivity.setSyncAccountEnabled(context,MainActivity.getWeatherAccount(context),true);
+                                        preferenceCategoryGeneral.removePreference(syncOffHint);
+                                    }
+                                });
+                        return true;
+                    }
+                });
+            }
+        }
+        ListPreference weatherSyncInterval = (ListPreference) findPreference(WeatherSettings.Updates.PREF_UPDATE_WEATHER_INTERVAL);
+        weatherSyncInterval.setSummary(context.getResources().getString(R.string.preference_sync_weather_summary)+
+                                        " "+
+                                        String.format(context.getResources().getString(R.string.sync_interval),getUpdateIntervallString(WeatherSettings.Updates.Category.WEATHER)));
+        ListPreference warningsSyncInterval = (ListPreference) findPreference(WeatherSettings.Updates.PREF_UPDATE_WARNINGS_INTERVAL);
+        warningsSyncInterval.setSummary(context.getResources().getString(R.string.preference_sync_warnings_summary)+
+                " "+
+                String.format(context.getResources().getString(R.string.sync_interval),getUpdateIntervallString(WeatherSettings.Updates.Category.WARNINGS)));
         NumberPickerPreference locationsToShare = (NumberPickerPreference) findPreference(WeatherSettings.PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS);
         if (locationsToShare!=null){
             locationsToShare.setSummary(getResources().getString(R.string.preference_max_loc_in_shared_warnings_summary)+" "+WeatherSettings.getMaxLocationsInSharedWarnings(context));
@@ -551,7 +580,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             }
         } else {
             // ask for simple foreground location permission, since this is missing.
-            // on sdk below 28, this is enoungh.
+            // on sdk below 28, this is enough.
             // on sdk 29 and above, we need to return here from onRequestPermissionResult
             requestLocationPermission(MainActivity.PERMISSION_CALLBACK_LOCATION_BEFORE_BACKGROUND);
             WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.LOCATION);
@@ -735,6 +764,43 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
         AlertDialog alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
         alertDialog.show();
+    }
+
+    private String getUpdateIntervallString(int category){
+        int interval = WeatherSettings.Updates.getSyncInterval(context,category);
+        String timeUnit = context.getResources().getString(R.string.hours);
+        String timeValue = "24";
+        if  (interval==WeatherSettings.Updates.Intervals.MIN15){
+            timeUnit = context.getResources().getString(R.string.hour);
+            timeValue = "¼";
+        } else
+        if  (interval==WeatherSettings.Updates.Intervals.MIN30){
+            timeUnit = context.getResources().getString(R.string.hour);
+            timeValue = "½";
+        } else
+        if  (interval==WeatherSettings.Updates.Intervals.HOUR1){
+            timeUnit = context.getResources().getString(R.string.hour);
+            timeValue = "1";
+        } else
+        if  (interval==WeatherSettings.Updates.Intervals.HOUR2){
+            timeValue = "2";
+        } else
+        if  (interval==WeatherSettings.Updates.Intervals.HOUR3){
+            timeValue = "3";
+        } else
+        if  (interval==WeatherSettings.Updates.Intervals.HOUR6){
+            timeValue = "6";
+        } else
+        if  (interval==WeatherSettings.Updates.Intervals.HOUR12){
+            timeValue = "12";
+        } else
+        if  (interval==WeatherSettings.Updates.Intervals.HOUR18){
+            timeValue = "18";
+        } else
+        if  (interval==WeatherSettings.Updates.Intervals.HOUR24){
+            timeValue = "24";
+        }
+        return timeValue+" "+timeUnit;
     }
 
 

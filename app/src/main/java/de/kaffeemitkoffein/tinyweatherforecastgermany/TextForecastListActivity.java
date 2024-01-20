@@ -21,10 +21,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -36,6 +33,7 @@ import android.widget.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -52,19 +50,12 @@ public class TextForecastListActivity extends Activity {
     Context context;
     ActionBar actionBar;
     boolean forceWeatherUpdateFlag = false;
+    Executor executor;
+    APIReaders.TextForecastRunnable textForecastRunnable;
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent intent) {
-            final String errorText = DataUpdateService.StopReason.getStopReasonErrorText(context,intent);
-            if ((errorText!=null) && (forceWeatherUpdateFlag)){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
             if (intent.getAction().equals(ACTION_UPDATE_TEXTS)){
                 hideProgressBar();
                 showList();
@@ -99,8 +90,13 @@ public class TextForecastListActivity extends Activity {
     @Override
     protected void onResume() {
         registerForBroadcast();
-        updateTextsIfOutdated();
-        //showList();
+        if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.TEXTS)){
+            PrivateLog.log(context,PrivateLog.TEXTS,PrivateLog.INFO,"Weather texts are outdated, updating data.");
+            executor.execute(textForecastRunnable);
+        } else {
+            PrivateLog.log(context,PrivateLog.TEXTS,PrivateLog.INFO,"Weather texts are oup to date, showing available data.");
+            showList();
+        }
         super.onResume();
     }
 
@@ -118,24 +114,31 @@ public class TextForecastListActivity extends Activity {
         WeatherSettings.setRotationMode(this);
         setContentView(R.layout.activity_textforecastlist);
         registerForBroadcast();
+        executor = Executors.newSingleThreadExecutor();
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         displayFloatButton();
         floatButton.setOnClickListener(floatClickListener);
-        APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(this){
+        textForecastRunnable = new APIReaders.TextForecastRunnable(this){
             @Override
             public void onPositiveResult(){
+               WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.TEXTS,Calendar.getInstance().getTimeInMillis());
                showList();
+               // trigger a sync request to update other items if necessary.
+               // Texts will not be updated again because setLastUpdate was called. When no syncs are due, nothing
+               // will happen at all.
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
+                    }
+                });
             }
             @Override
             public void onNegativeResult(){
-
+                // do nothing
             }
         };
-        RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.textforcasts_activity_main_relative_container);
-        if (DataUpdateService.suitableNetworkAvailable(context)){
-            mainLayout.post(textForecastRunnable);
-        }
     }
 
     @Override
@@ -149,23 +152,28 @@ public class TextForecastListActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem mi) {
         int item_id = mi.getItemId();
         if (item_id == R.id.menu_refresh) {
-            ArrayList<String> updateTasks = new ArrayList<String>();
-            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS);
-            if (UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,null)){
-                // returns true if update service was launched sucessfully
-                forceWeatherUpdateFlag = true;
-                showProgressBar();
-            }
+            APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(context) {
+                @Override
+                public void onPositiveResult() {
+                    Intent intent = new Intent();
+                    intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
+                    intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT, true);
+                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Weather texts updated successfully.");
+                    context.sendBroadcast(intent);
+                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.TEXTS, Calendar.getInstance().getTimeInMillis());
+                }
+
+                @Override
+                public void onNegativeResult() {
+                    super.onNegativeResult();
+                    hideProgressBar();
+                }
+            };
+            showProgressBar();
+            executor.execute(textForecastRunnable);
             return true;
         }
         return super.onOptionsItemSelected(mi);
-    }
-
-    private void updateTextsIfOutdated(){
-        if (WeatherSettings.areTextForecastsOutdated(this)){
-            ArrayList<String> updateTasks = new ArrayList<String>();
-            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_TEXTFORECASTS);
-        }
     }
 
     private void showList(){
@@ -180,7 +188,7 @@ public class TextForecastListActivity extends Activity {
                 }
                 // update action bar
                 final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
-                actionBar.setSubtitle(simpleDateFormat.format(new Date(WeatherSettings.getLastTextForecastsUpdateTime(context)))+" ("+textForecasts.size()+")");
+                actionBar.setSubtitle(simpleDateFormat.format(new Date(WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.TEXTS)))+" ("+textForecasts.size()+")");
                 // set adapter
                 textForecastAdapter = new TextForecastAdapter(getBaseContext(),textForecasts);
                 textforecasts_listview = (ListView) findViewById(R.id.textforecasts_listview);

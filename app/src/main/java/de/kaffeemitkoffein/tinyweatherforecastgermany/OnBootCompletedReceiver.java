@@ -19,9 +19,12 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.accounts.Account;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 public class OnBootCompletedReceiver extends BroadcastReceiver {
     @Override
@@ -33,7 +36,7 @@ public class OnBootCompletedReceiver extends BroadcastReceiver {
                 PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"+-> intent has action");
                 if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
                     PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"+-> action is ACTION_BOOT_COMPLETED, triggering alarm update.");
-                    UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.UPDATE_FROM_JOB,null,null);
+                    MainActivity.registerSyncAdapter(context);
                     int i = WeatherWarnings.clearAllNotified(context);
                     PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"Cleared list of notified warnings: "+i+" warnings removed from list.");
                     if (WeatherSettings.notifyWarnings(context)){

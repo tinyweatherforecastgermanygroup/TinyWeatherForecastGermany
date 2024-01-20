@@ -38,7 +38,7 @@ public class GadgetbridgeAPI {
     private static void sendWeatherData(Context context, CurrentWeatherInfo weatherCard){
         WeatherSpec weatherSpec;
         if (weatherCard==null){
-            weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_WIDGET);
+            weatherCard = Weather.getCurrentWeatherInfo(context);
         }
         if (weatherCard!=null){
             // build the WeatherSpec instance with current weather
@@ -83,7 +83,7 @@ public class GadgetbridgeAPI {
                 weatherSpec.dewPoint = (int) Math.round(weatherCard.currentWeather.getTd());
             }
             if (weatherCard.currentWeather.hasPressure()){
-                weatherSpec.pressure = weatherCard.currentWeather.getPressure();
+                weatherSpec.pressure = weatherCard.currentWeather.getPressure()/100f; // convert to hPa/mbar
             }
             if (weatherCard.currentWeather.hasClouds()){
                 weatherSpec.cloudCover = weatherCard.currentWeather.getClouds();
@@ -183,10 +183,11 @@ public class GadgetbridgeAPI {
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Windspeed direct.  : "+weatherSpec.windDirection);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"% of precipitation : "+weatherSpec.precipProbability);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"UV hazard index    : "+weatherSpec.uvIndex);
-
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Pressure           : "+weatherSpec.pressure);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Visibility         : "+weatherSpec.visibility);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecasts:");
             for (int i=0; i<weatherSpec.forecasts.size(); i++){
-                PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecast #"+i+": Tmin/Tmax/Cond./RH: "+(weatherSpec.forecasts.get(i).minTemp)+"/"+(weatherSpec.forecasts.get(i).maxTemp)+"/"+weatherSpec.forecasts.get(i).conditionCode+"/"+weatherSpec.forecasts.get(i).humidity);
+                PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecast #"+i+": Tmin: "+(weatherSpec.forecasts.get(i).minTemp)+" Tmax: "+(weatherSpec.forecasts.get(i).maxTemp)+" Cond.: "+weatherSpec.forecasts.get(i).conditionCode+" RH: "+weatherSpec.forecasts.get(i).humidity);
             }
             sendWeatherBroadcast(context,weatherSpec);
         }

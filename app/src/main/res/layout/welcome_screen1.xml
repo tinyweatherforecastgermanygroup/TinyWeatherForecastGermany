@@ -28,92 +28,84 @@
     android:background="?attr/colorWelcomeBackground"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/welcome_screen1_linear_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_alignParentTop="true"
-        android:paddingBottom="40dp"
-        android:weightSum="20"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/welcome_screen1_image"
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="visible"
-            android:layout_weight="8"
-            android:src="@mipmap/ic_launcher">
-        </ImageView>
+            android:layout_height="match_parent"
+    >
 
-        <TextView
-            android:id="@+id/welcome_screen1_text1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:text="@string/welcome_s1_text1"
-            android:textSize="@dimen/welcome_text_size"
-            android:paddingBottom="@dimen/welcome_text_padding"/>
-
-        <ImageView
-                android:id="@+id/welcome_screen1_gplimage"
-                android:layout_width="100dp"
+        <LinearLayout
+                android:id="@+id/welcome_screen1_linear_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="12dp"
-                android:src="@drawable/gplv3"/>
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_alignParentTop="true"
+                android:paddingBottom="40dp"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/welcome_screen1_text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:text="@string/welcome_s1_text2"
-            android:textSize="@dimen/welcome_text_size"
-            android:paddingBottom="@dimen/welcome_text_padding"/>
+            <ImageView
+                    android:id="@+id/welcome_screen1_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:src="@mipmap/ic_launcher">
+            </ImageView>
 
-        <TextView
-            android:id="@+id/welcome_screen1_text3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:text="@string/welcome_s1_text3"
-            android:textSize="@dimen/welcome_text_size"
-            android:paddingBottom="@dimen/welcome_text_padding"/>
+            <TextView
+                    android:id="@+id/welcome_screen1_text1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_s1_text1"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:paddingBottom="@dimen/welcome_text_padding"/>
 
-        <TextView
-            android:id="@+id/welcome_screen1_text4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:text="@string/welcome_s1_text4"
-            android:textSize="@dimen/welcome_text_size"
-            android:paddingBottom="@dimen/welcome_text_padding"/>
+            <ImageView
+                    android:id="@+id/welcome_screen1_gplimage"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="12dp"
+                    android:src="@drawable/gplv3"/>
 
-        <TextView
-            android:id="@+id/welcome_screen1_text5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorText"
-            android:text="@string/welcome_s1_text5"
-            android:textSize="@dimen/welcome_text_size"
-            android:paddingBottom="@dimen/welcome_text_padding"/>
+            <TextView
+                    android:id="@+id/welcome_screen1_text2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_s1_text2"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:paddingBottom="@dimen/welcome_text_padding"/>
 
-    </LinearLayout>
+            <TextView
+                    android:id="@+id/welcome_screen1_text3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_s1_text3"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:paddingBottom="@dimen/welcome_text_padding"/>
 
-    <TextView
-        android:id="@+id/welcome_screen1_next"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:textColor="?attr/colorText"
-        android:text="@string/welcome_next"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textSize="@dimen/welcome_action_size"
-        android:paddingBottom="@dimen/welcome_action_padding"/>
+            <TextView
+                    android:id="@+id/welcome_screen1_text4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_s1_text4"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:paddingBottom="@dimen/welcome_text_padding"/>
 
+            <TextView
+                    android:id="@+id/welcome_screen1_text5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/colorText"
+                    android:text="@string/welcome_s1_text5"
+                    android:textSize="@dimen/welcome_text_size"
+                    android:paddingBottom="@dimen/welcome_text_padding"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

@@ -18,6 +18,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --><resources>
     <string name="app_name">Tiny Weather Forecast Germany</string>
+    <string name="account_type">de.kaffeemitkoffein.tinyweatherforecastgermany</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Last Update:</string>
     <string name="main_wait_for_gps_fix">Location is being determinded…</string>
@@ -40,11 +41,20 @@
     <string name="dayaftertomorrow">day after tomorrow</string>
     <string name="station">Station</string>
     <string name="whatsnew_button">What\'s new</string>
-    <string name="boldwidget_description">Bold</string>
-    <string name="classicwidget_description">Classic</string>
-    <string name="largewidget_description">Large</string>
-    <string name="clockwidget_description">Clock &amp; Weather</string>
-    <string name="chartwidget_description">Chart</string>
+
+    <string name="classicwidget_description">Weather in Detail</string>
+    <string name="classicwidget_description_detailed">Current weather and detailed forecast for the next days.</string>
+
+    <string name="boldwidget_description">Compact Weather</string>
+    <string name="boldwidget_description_detailed">A compact summary of the most important weather information for today and the next few days.</string>
+
+    <string name="clockwidget_description">Weather and Time</string>
+    <string name="clockwidget_description_detailed">Detailed weather information for today with date, clock and alarm clock.</string>
+
+    <string name="chartwidget_description">Weather Chart</string>
+    <string name="chartwidget_description_detailed">The weather forecast for the next few days as a diagram.</string>
+    <string name="largewidget_description">Large</string> <!-- deprecated -->
+    <string name="preview_fake_warning_text">WIND GUSTS</string>
     <string name="station_does_not_exist">The station you have entered does not exist. Please select from the suggested stations in the list.</string>
     <string name="favorites_cleared">Favorites are deleted.</string>
     <string name="actionbar_textinput_title">Enter place here:</string>
@@ -90,10 +100,22 @@
     <string name="preference_category_widget">Widget settings</string>
     <string name="preference_category_warnings">Weather warnings</string>
     <string name="preference_category_texts">Text forecasts</string>
+    <string name="preference_sync_weather_title">Sync weather</string>
+    <string name="preference_sync_weather_summary">Regularly update the weather forecast.</string>
+    <string name="preference_sync_warnings_title">Sync warnings</string>
+    <string name="preference_sync_warnings_summary">Regularly update the weather warnings.</string>
+    <string name="preference_sync_textforecasts_title">Sync texts</string>
+    <string name="preference_sync_textforecasts_summary">Regularly update the weather texts.</string>
+    <string name="preference_sync_maps_title">Sync maps</string>
+    <string name="preference_sync_maps_summary">Regularly update the weather maps.</string>
+    <string name="preference_sync_pollen_title">Sync pollen count</string>
+    <string name="preference_sync_pollen_summary">Regularly update the pollen count forecast.</string>
+    <string name="preference_sync_notice">You can customize the sync settings inside the app.</string>
+    <string name="preference_category_sync">Sync settings</string>
     <string name="preference_category_other">Other</string>
     <string name="preference_theme_title">Design</string>
     <string name="preference_theme_summary">Chose the color palette</string>
-    <string name="preference_updateinterval_title">Update interval</string>
+    <string name="preference_updateinterval_title">Interval: weather</string>
     <string name="preference_pdateinterval_summary">Select how often the weather data should be updated.</string>
     <string name="preference_update_textforecasts_title">Update texts</string>
     <string name="preference_update_textforecasts_summary">Keep weather texts updated</string>
@@ -118,8 +140,8 @@
     <string name="preference_boldwiget_vertical_bar_summary">In the bold widget, separate the forecast for today from the next days with a vertical line.</string>
     <string name="preference_displaynoteinwidget_title">Display DWD note</string>
     <string name="preference_displaynoteinwidget_summary">Show the data source string.</string>
-    <string name="preference_cache_warnings_title">Cache warnings</string>
-    <string name="preference_cache_warnings_summary">How long warnings should be displayed without re-loading from the Deutscher Wetterdienst.</string>
+    <string name="preference_cache_warnings_title">Interval: warnings</string>
+    <string name="preference_cache_warnings_summary">Select how often weather warnings should be updated.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Locations to share</string>
     <string name="preference_max_loc_in_shared_warnings_summary">Number of affected locations to share. Enter zero to share all. Current value:</string>
     <string name="preference_disable_warnings_title">Disable warnings</string>
@@ -480,5 +502,12 @@
     <string name="clear_sky">clear sky</string>
     <string name="favorites_rebuild_sucessfully">The favorites were rebuilt successfully!</string>
     <string name="get_pollen_data">Getting pollen data…</string>
+    <string name="sync_off_notice">Sync is disabled for %1$s in your account settings.</string>
+    <string name="sync_enable">Enable sync?</string>
+    <string name="sync_enable_question">Enable sync for %1$s ?</string>
+    <string name="sync_enable_notice">Click here to enable sync for %1$s.</string>
+    <string name="sync_interval">Currently every %1$s.</string>
+    <string name="hours">hours</string>
+    <string name="hour">hour</string>
 
 </resources>

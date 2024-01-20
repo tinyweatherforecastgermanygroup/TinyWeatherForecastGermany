@@ -32,7 +32,6 @@ public class CurrentWeatherInfo{
     public final static int MOSMIX_PUBLICATION_DELAY = 1*60*60*1000; // 1 hour in millis
     public final static int DMO_UPDATE_INTERVAL = 12*60*60*1000; // 12 hours in millis
     public final static int DMO_PUBLICATION_DELAY = 1*60*60*1000; // 1 hour in millis
-    public final SimpleDateFormat dateAndHourDateFormat = new SimpleDateFormat("dd. MMM yyyy HH:mm");
     Weather.WeatherLocation weatherLocation;
     long polling_time = Calendar.getInstance().getTimeInMillis();
     long issue_time = 0;
@@ -651,28 +650,7 @@ public class CurrentWeatherInfo{
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(issue_time);
         Date date = calendar.getTime();
-        return dateAndHourDateFormat.format(date);
-    }
-
-    public String getHumanReadablePollingTime(){
-        return dateAndHourDateFormat.format(new Date(issue_time));
-    }
-
-
-    public boolean isOutdated(Context context){
-        if (polling_time+WeatherSettings.getForecastUpdateIntervalInMillis(context)>Calendar.getInstance().getTimeInMillis()){
-                return false;
-            } else {
-                return true;
-            }
-    }
-
-    public long getFirstTimestamp(){
-        return forecast1hourly.get(0).getTimestamp();
-    }
-
-    public long getLastTimestamp(){
-        return forecast1hourly.get(forecast1hourly.size()-1).getTimestamp();
+        return Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DATEYEARTIME).format(date);
     }
 
 }

@@ -24,18 +24,23 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
 
     <application android:allowBackup="true" android:icon="@mipmap/ic_launcher"
                  android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher" android:supportsRtl="false">
         <activity android:name=".MainActivity"
                   android:screenOrientation="locked"
                   android:theme="@style/AppTheme_SolarizedDark"
-                  android:windowSoftInputMode="stateAlwaysHidden">
+                  android:windowSoftInputMode="stateAlwaysHidden"
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -101,26 +106,20 @@
         <provider android:name=".WeatherContentProvider"
                   android:authorities="de.kaffeemitkoffein.tinyweatherforecastgermany" android:enabled="true"
                   android:exported="false" android:grantUriPermissions="false" android:multiprocess="false"
-                  android:syncable="false" />
+                  android:syncable="true" />
 
         <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClassicWidget" android:icon="@drawable/widget_preview"
-                  android:label="@string/classicwidget_description">
+                  android:label="@string/classicwidget_description"
+                  android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/classicwidget"></meta-data>
         </receiver>
 
-        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.LargeWidget" android:icon="@drawable/widget_preview_large"
-                  android:label="@string/largewidget_description">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider" android:resource="@xml/largewidget" />
-        </receiver>
-
         <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.BoldWidget" android:icon="@drawable/widget_preview_bold"
-                  android:label="@string/boldwidget_description">
+                  android:label="@string/boldwidget_description"
+                  android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -128,7 +127,9 @@
         </receiver>
 
         <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClockWidget" android:icon="@drawable/widget_preview_clock"
-                  android:label="@string/clockwidget_description">
+                  android:label=
+                          "@string/clockwidget_description"
+                  android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -136,17 +137,12 @@
         </receiver>
 
         <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ChartWidget" android:icon="@drawable/widget_preview_chart"
-                  android:label="@string/preference_display_overviewchart_title">
+                  android:label="@string/chartwidget_description"
+                  android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/chartwidget" />
-        </receiver>
-
-        <receiver android:name=".WeatherUpdateBroadcastReceiver" android:exported="true">
-            <intent-filter>
-                <action android:name="de.kaffeemitkoffein.broadcast.REQUEST_UPDATE" />
-            </intent-filter>
         </receiver>
 
         <receiver android:name=".AlarmClockUpdatedReceiver" android:exported="true">
@@ -168,8 +164,27 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".DataUpdateService" android:enabled="true" android:exported="false" />
-        <service android:name=".UpdateJobService" android:enabled="true" android:exported="false" android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name=".CreateAreasDatabaseService" android:enabled="true" android:exported="false" />
+        <service android:name=".WeatherAuthenticatorService"
+                 android:exported="false">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                    android:name="android.accounts.AccountAuthenticator"
+                    android:resource="@xml/authenticator"/>
+        </service>
+        <service android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.WeatherSyncService"
+                 android:exported="false"
+                 android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter"/>
+        </service>
+
     </application>
 
 </manifest>

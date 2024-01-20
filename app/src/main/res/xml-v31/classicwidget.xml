@@ -18,15 +18,21 @@
 -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="250dp"
-    android:minHeight="60dp"
-    android:minResizeWidth="40dp"
-    android:minResizeHeight="60dp"
+    android:minWidth="285dp"
+    android:minResizeWidth="285dp"
+    android:maxResizeWidth="520dp"
+    android:minHeight="90dp"
+    android:minResizeHeight="40dp"
+    android:maxResizeHeight="263dp"
+    android:targetCellWidth="4"
+    android:targetCellHeight="2"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:updatePeriodMillis="1800000"
-    android:previewImage="@drawable/widget_preview_large"
-    android:initialLayout="@layout/largewidget_layout"
+    android:previewImage="@drawable/widget_preview"
+    android:previewLayout="@layout/preview_classic_widget"
+    android:initialLayout="@layout/classicwidget_layout"
     android:resizeMode="horizontal|vertical"
+    android:description="@string/classicwidget_description_detailed"
     android:widgetCategory="home_screen">
 </appwidget-provider>

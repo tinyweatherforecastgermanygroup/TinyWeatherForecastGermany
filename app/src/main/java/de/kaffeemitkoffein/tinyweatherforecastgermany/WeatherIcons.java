@@ -108,6 +108,8 @@ public class WeatherIcons {
     final static int WARNING_ICON = 1105;
     final static int IC_IMAGE_NOT_SUPPORTED = 1106;
     final static int IC_SHARE = 1107;
+    final static int IC_REFRESH = 1108;
+    final static int IC_WARNING = 1109;
 
     public static int getIconResource(Context context, int icon) {
         int result = 0;
@@ -149,11 +151,13 @@ public class WeatherIcons {
             case RADIO_BUTTON_UNCHECKED: result = R.mipmap.ic_radio_button_unchecked_white_24dp; break;
             case RADIO_BUTTON_CHECKED: result = R.mipmap.ic_radio_button_checked_white_24dp; break;
             case IC_INFO_OUTLINE: result = R.mipmap.ic_info_outline_white_24dp; break;
+            case IC_WARNING: result = R.mipmap.ic_warning_white_24dp; break;
             case IC_GPS_FIXED: result = R.mipmap.ic_gps_fixed_white_24dp; break;
             case IC_ANNOUNCEMENT: result = R.mipmap.ic_announcement_white_24dp; break;
             case WARNING_ICON: result = R.mipmap.warning_icon; break;
             case IC_SHARE: result = R.mipmap.ic_share_white_24dp; break;
             case IC_IMAGE_NOT_SUPPORTED: result = R.mipmap.ic_image_not_supported_24dp;
+            case IC_REFRESH: result = R.mipmap.ic_refresh_white_24dp;
         }
         // override with dark variants if applicable
         if (!ThemePicker.isDarkTheme(context)) {
@@ -189,11 +193,13 @@ public class WeatherIcons {
                 case RADIO_BUTTON_UNCHECKED: result = R.mipmap.ic_radio_button_unchecked_black_24dp; break;
                 case RADIO_BUTTON_CHECKED: result = R.mipmap.ic_radio_button_checked_black_24dp; break;
                 case IC_INFO_OUTLINE: result = R.mipmap.ic_info_outline_black_24dp; break;
+                case IC_WARNING: result = R.mipmap.ic_warning_black_24dp; break;
                 case IC_GPS_FIXED: result = R.mipmap.ic_gps_fixed_black_24dp; break;
                 case IC_ANNOUNCEMENT: result = R.mipmap.ic_announcement_black_24dp; break;
                 case WARNING_ICON: result = R.mipmap.warning_icon_black; break;
                 case IC_SHARE: result = R.mipmap.ic_share_black_24dp; break;
                 case IC_IMAGE_NOT_SUPPORTED: result = R.mipmap.ic_image_not_supported_black_24dp;
+                case IC_REFRESH: result = R.mipmap.ic_refresh_black_24dp;
             }
         }
         return result;

@@ -1,0 +1,38 @@
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020, 2021 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="285dp"
+    android:minResizeWidth="285dp"
+    android:maxResizeWidth="520dp"
+    android:minHeight="110dp"
+    android:minResizeHeight="53dp"
+    android:maxResizeHeight="193dp"
+    android:targetCellWidth="4"
+    android:targetCellHeight="1"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:updatePeriodMillis="1800000"
+    android:previewImage="@drawable/widget_preview_bold"
+    android:previewLayout="@layout/preview_bold_widget"
+    android:initialLayout="@layout/boldwidget_layout"
+    android:description="@string/boldwidget_description_detailed"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen">
+</appwidget-provider>

@@ -24,12 +24,14 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class BoldWidget extends ClassicWidget {
 
@@ -54,7 +56,7 @@ public class BoldWidget extends ClassicWidget {
 
     @Override
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances) {
-        CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c,UpdateAlarmManager.UPDATE_FROM_WIDGET);
+        CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i = 0; i < widget_instances.length; i++) {
@@ -74,7 +76,13 @@ public class BoldWidget extends ClassicWidget {
                 }
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c, MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
+                PendingIntent pendingIntent;
+                // mutable/immutable flags are available since sdk 23
+                if (Build.VERSION.SDK_INT>=23){
+                    pendingIntent = PendingIntent.getActivity(c, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+                } else {
+                    pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
+                }
                 int forecastDays = 2; // default
                 int widgetResource = R.layout.boldwidget_layout;
                 if (widgetWidth>=280){
@@ -89,6 +97,7 @@ public class BoldWidget extends ClassicWidget {
                     forecastDays = 5;
                     widgetResource = R.layout.boldwidget_layout5;
                 }
+                // Log.v("widget","Widget = "+widgetWidth+" / "+widgetHeight);
                 PrivateLog.log(c,PrivateLog.WIDGET, PrivateLog.INFO," Bold widget id "+widget_instances[i]+" size: "+widgetWidth+"/"+widgetHeight+" dp, showing "+forecastDays+" forecast days.");
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), widgetResource);
                 fillBoldWidgetItems(c, remoteViews, weatherSettings, weatherCard,forecastDays);
@@ -152,7 +161,7 @@ public class BoldWidget extends ClassicWidget {
         }
         // FORECAST 1st DAY
         if (currentWeatherInfo.forecast24hourly.size() >= 2) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE", Locale.getDefault());
             // the timestamp will always be midnight. When we derive the day of week from it, it will be misleading, since
             // we want to show the day *before* this midnight position.
             Calendar calendar = Calendar.getInstance();
@@ -189,7 +198,7 @@ public class BoldWidget extends ClassicWidget {
         }
         // FORECAST 2nd DAY
         if (currentWeatherInfo.forecast24hourly.size() >= 3) {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE",Locale.getDefault());
             // the timestamp will always be midnight. When we derive the day of week from it, it will be misleading, since
             // we want to show the day *before* this midnight position.
             Calendar calendar = Calendar.getInstance();
@@ -226,7 +235,7 @@ public class BoldWidget extends ClassicWidget {
             remoteViews.setTextViewText(R.id.boldwidget_fc2_min, NOT_AVAILABLE);
             remoteViews.setTextColor(R.id.boldwidget_fc2_min,ThemePicker.getWidgetTextColor(c));
         }
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE");
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE",Locale.getDefault());
         for (int forecastDay=3; (forecastDay<=forecastDays); forecastDay++){
             // the timestamp will always be midnight. When we derive the day of week from it, it will be misleading, since
             // we want to show the day *before* this midnight position.
@@ -279,8 +288,8 @@ public class BoldWidget extends ClassicWidget {
         }
         // set opacity
         int opacity = Integer.parseInt(weatherSettings.widget_opacity);
-        remoteViews.setImageViewResource(R.id.widget_backgroundimage,ThemePicker.getWidgetBackgroundDrawableRessource(c));
-        remoteViews.setInt(R.id.widget_backgroundimage,"setImageAlpha",Math.round(opacity*2.55f));
+        remoteViews.setImageViewResource(android.R.id.background,ThemePicker.getWidgetBackgroundDrawableRessource(c));
+        remoteViews.setInt(android.R.id.background,"setImageAlpha",Math.round(opacity*2.55f));
     }
 
     @Override

@@ -89,11 +89,6 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE = "PREF_display_overviewchart_mmu";
     public static final String PREF_DISPLAY_OVERVIEWCHART_MIN = "PREF_display_overviewchart_min";
     public static final String PREF_DISPLAY_OVERVIEWCHART_MAX = "PREF_display_overviewchart_max";
-    public static final String PREF_SETALARM = "PREF_setalarm";
-    public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
-    public static final String PREF_LASTWEATHERUPDATETIME = "PREF_lastweatherupdatetime";
-    public static final String PREF_UPDATE_WARNINGS = "PREF_update_warnings";
-    public static final String PREF_UPDATE_TEXTFORECASTS = "PREF_update_textforecasts";
     public static final String PREF_WIDGET_OPACITY = "PREF_widget_opacity";
     public static final String PREF_WIDGET_SHOWDWDNOTE = "PREF_widget_showdwdnote";
     public static final String PREF_WIDGET_DISPLAYWARNINGS = "PREF_widget_displaywarnings";
@@ -107,7 +102,6 @@ public class WeatherSettings {
     public static final String PREF_LOG_TO_LOGCAT = "PREF_log_to_logcat";
     public static final String PREF_FAVORITESDATA = "PREF_favoritesdata";
     public static final String PREF_FAVORITESDATA2 = "PREF_favoritesdata2";
-    public static final String PREF_WARNINGS_CACHETIME = "PREF_warnings_cachetime";
     public static final String PREF_WARNINGS_DISABLE = "PREF_warnings_diable";
     public static final String PREF_WARNINGS_LAST_UPDATE_TIME = "PREF_warnings_last_update_time";
     public static final String PREF_WARNINGS_NOTIFY_SEVERITY = "PREF_warnings_notify_severity";
@@ -117,7 +111,6 @@ public class WeatherSettings {
     public static final String PREF_GPSMANUAL = "PREF_gpsmanual";
     public static final String PREF_LASTGPSFIX = "PREF_lastgpsfix";
     public static final String PREF_DISABLE_TLS = "PREF_disable_tls";
-    public static final String PREF_TEXTFORECAST_LAST_UPDATE_TIME = "PREF_textforecast_last_update_time";
     public static final String PREF_TEXTFORECAST_FILTER = "PREF_textforecast_filter";
     public static final String PREF_RADAR_LASTDATAPOLL = "PREF_radar_lastdatapoll";
     public static final String PREF_RADAR_SHOW = "PREF_radar_show";
@@ -145,7 +138,6 @@ public class WeatherSettings {
     public static final String PREF_WARNINGS_NOTIFY_LED = "PREF_warnings_notify_LED";
     public static final String PREF_HINTCOUNTER1 = "PREF_hintcounter1";
     public static final String PREF_HINTCOUNTER2 = "PREF_hintcounter2";
-    public static final String PREF_MAPLASTUPDATETIME = "PREF_maplastupdatetime";
     public static final String PREF_LASTMAPDISPLAYED = "PREF_lastmapdisplayed";
     public static final String PREF_POLLENREGION_ID = "PREF_pollen_region_id";
     public static final String PREF_POLLENPARTREGION_ID = "PREF_pollen_partregion_id";
@@ -172,6 +164,7 @@ public class WeatherSettings {
     public static final String PREF_BATTERY_OPTIMIZATION_FLAG = "PREF_battery_opt_flag";
     public static final String PREF_LAST_NOTIFICATIONS_UPDATE_TIME = "PREF_nf_updatetime";
     public static final String PREF_BOLDWIDGET_VERTICAL_BAR = "PREF_boldwidget_vertical_bar";
+    public static final String PREF_AREADATABASE_LOCK = "PREF_areadatabase_lock";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -221,7 +214,6 @@ public class WeatherSettings {
     public static final boolean PREF_LOG_TO_LOGCAT_DEFAULT = false;
     public static final String PREF_FAVORITESDATA_DEFAULT = PREF_STATION_NAME_DEFAULT;
     public static final String PREF_FAVORITESDATA_DEFAULT2 = "";
-    public static final String PREF_WARNINGS_CACHETIME_DEFAULT = "30";
     public static final boolean PREF_WARNINGS_DISABLE_DEFAULT = false;
     public static final long PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_WARNINGS_NOTIFY_SEVERITY_DEFAULT = WeatherWarning.Severity.MINOR;
@@ -335,7 +327,6 @@ public class WeatherSettings {
     public boolean log_to_logcat = PREF_LOG_TO_LOGCAT_DEFAULT;
     public String favoritesdata = PREF_FAVORITESDATA_DEFAULT;
     public String favoritesdata2 = PREF_FAVORITESDATA_DEFAULT2;
-    public String warnings_cache_time = PREF_WARNINGS_CACHETIME_DEFAULT;
     public boolean warnings_disabled = PREF_WARNINGS_DISABLE_DEFAULT;
     public boolean is_first_app_launch = true;
     public boolean usegps = PREF_USEGPS_DEFAULT;
@@ -409,7 +400,7 @@ public class WeatherSettings {
         this.altitude = readPreference(PREF_ALTITUDE, PREF_ALTITUDE_DEFAULT);
         this.stationType = readPreference(PREF_STATIONTYPE,PREF_STATIONTYPE_DEFAULT);
         this.stationTime = readPreference(PREF_STATION_TIME,PREF_STATION_TIME_DEFAULT);
-        this.setalarm = readPreference(PREF_SETALARM, PREF_SETALARM_DEFAULT);
+        //this.setalarm = readPreference(PREF_SETALARM, PREF_SETALARM_DEFAULT);
         this.display_station_geo = readPreference(PREF_DISPLAY_STATION_GEO, PREF_DISPLAY_STATION_GEO_DEFAULT);
         this.display_type = readPreference(PREF_DISPLAY_TYPE, PREF_DISPLAY_TYPE_DEFAULT);
         this.display_layout = readPreference(PREF_DISPLAY_LAYOUT,PREF_DISPLAY_LAYOUT_DEFAULT);
@@ -431,9 +422,9 @@ public class WeatherSettings {
         this.displayOverviewChartUseMinMax = readPreference(PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT);
         this.displayOverviewChartMin = readPreference(PREF_DISPLAY_OVERVIEWCHART_MIN,PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT);
         this.displayOverviewChartMax = readPreference(PREF_DISPLAY_OVERVIEWCHART_MAX,PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT);
-        this.updateinterval = readPreference(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT);
-        this.update_warnings = readPreference(PREF_UPDATE_WARNINGS,PREF_UPDATE_WARNINGS_DEFAULT);
-        this.update_textforecasts = readPreference(PREF_UPDATE_TEXTFORECASTS,PREF_UPDATE_TEXTFORECASTS_DEFAULT);
+        //this.updateinterval = readPreference(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT);
+        //this.update_warnings = readPreference(PREF_UPDATE_WARNINGS,PREF_UPDATE_WARNINGS_DEFAULT);
+        //this.update_textforecasts = readPreference(PREF_UPDATE_TEXTFORECASTS,PREF_UPDATE_TEXTFORECASTS_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY, PREF_WIDGET_OPACITY_DEFAULT);
         this.widget_showdwdnote = readPreference(PREF_WIDGET_SHOWDWDNOTE, PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
         this.widget_displaywarnings = readPreference(PREF_WIDGET_DISPLAYWARNINGS,PREF_WIDGET_DISPLAYWARNINGS_DEFAULT);
@@ -447,7 +438,6 @@ public class WeatherSettings {
         this.log_to_logcat = readPreference(PREF_LOG_TO_LOGCAT, PREF_LOG_TO_LOGCAT_DEFAULT);
         this.favoritesdata = readPreference(PREF_FAVORITESDATA, PREF_FAVORITESDATA_DEFAULT);
         this.favoritesdata = readPreference(PREF_FAVORITESDATA2, PREF_FAVORITESDATA_DEFAULT2);
-        this.warnings_cache_time = readPreference(PREF_WARNINGS_CACHETIME, PREF_WARNINGS_CACHETIME_DEFAULT);
         this.warnings_disabled = readPreference(PREF_WARNINGS_DISABLE, PREF_WARNINGS_DISABLE_DEFAULT);
         this.warnings_last_update_time = readPreference(PREF_WARNINGS_LAST_UPDATE_TIME, PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
         this.notifySeverity = readPreference(PREF_WARNINGS_NOTIFY_SEVERITY,PREF_WARNINGS_NOTIFY_SEVERITY_DEFAULT);
@@ -456,7 +446,7 @@ public class WeatherSettings {
         this.gpsauto = readPreference(PREF_GPSAUTO,PREF_GPSAUTO_DEFAULT);
         this.gpsmanual = readPreference(PREF_GPSMANUAL,PREF_GPSMANUAL_DEFAULT);
         this.disable_tls = readPreference(PREF_DISABLE_TLS,PREF_DISABLE_TLS_DEFAULT);
-        this.textforecast_last_update_time = readPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
+        //this.textforecast_last_update_time = readPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
         this.textforecast_filter = readPreference(PREF_TEXTFORECAST_FILTER,PREF_TEXTFORECAST_FILTER_DEFAULT);
         this.radar_lastdatapoll = readPreference(PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
         this.radar_show = readPreference(PREF_RADAR_SHOW,PREF_RADAR_SHOW_DEFAULT);
@@ -481,7 +471,7 @@ public class WeatherSettings {
         this.useLED = readPreference(PREF_WARNINGS_NOTIFY_LED,PREF_WARNINGS_NOTIFY_LED_DEFAULT);
         this.hintCounter1 = readPreference(PREF_HINTCOUNTER1,PREF_HINTCOUNTER1_DEFAULT);
         this.hintCounter2 = readPreference(PREF_HINTCOUNTER2,PREF_HINTCOUNTER2_DEFAULT);
-        this.uviLastUpdateTime = readPreference(PREF_MAPLASTUPDATETIME,PREF_MAPLASTUPDATETIME_DEFAULT);
+        //this.uviLastUpdateTime = readPreference(PREF_MAPLASTUPDATETIME,PREF_MAPLASTUPDATETIME_DEFAULT);
         this.pollenAmbrosia = readPreference(PREF_POLLEN_AMBROSIA,PREF_POLLEN_AMBROSIA_DEFAULT);
         this.pollenBeifuss = readPreference(PREF_POLLEN_BEIFUSS,PREF_POLLEN_BEIFUSS_DEFAULT);
         this.pollenRoggen = readPreference(PREF_POLLEN_ROGGEN,PREF_POLLEN_ROGGEN_DEFAULT);
@@ -532,10 +522,10 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,this.displayOverviewChartUseMinMax);
         applyPreference(PREF_DISPLAY_OVERVIEWCHART_MIN,this.displayOverviewChartMin);
         applyPreference(PREF_DISPLAY_OVERVIEWCHART_MAX,this.displayOverviewChartMax);
-        applyPreference(PREF_SETALARM, this.setalarm);
-        applyPreference(PREF_UPDATEINTERVAL, this.updateinterval);
-        applyPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
-        applyPreference(PREF_UPDATE_TEXTFORECASTS, this.update_textforecasts);
+        //applyPreference(PREF_SETALARM, this.setalarm);
+        //applyPreference(PREF_UPDATEINTERVAL, this.updateinterval);
+        //applyPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
+        //applyPreference(PREF_UPDATE_TEXTFORECASTS, this.update_textforecasts);
         applyPreference(PREF_WIDGET_OPACITY, this.widget_opacity);
         applyPreference(PREF_WIDGET_SHOWDWDNOTE, this.widget_showdwdnote);
         applyPreference(PREF_WIDGET_DISPLAYWARNINGS,this.widget_displaywarnings);
@@ -547,7 +537,6 @@ public class WeatherSettings {
         applyPreference(PREF_VIEWS_LAST_UPDATE_TIME, this.views_last_update_time);
         applyPreference(PREF_LOGGING, this.logging);
         applyPreference(PREF_LOG_TO_LOGCAT, this.log_to_logcat);
-        applyPreference(PREF_WARNINGS_CACHETIME, this.warnings_cache_time);
         applyPreference(PREF_WARNINGS_DISABLE, this.warnings_disabled);
         applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME, this.warnings_last_update_time);
         applyPreference(PREF_WARNINGS_NOTIFY_SEVERITY,this.notifySeverity);
@@ -556,7 +545,7 @@ public class WeatherSettings {
         applyPreference(PREF_GPSAUTO,this.gpsauto);
         applyPreference(PREF_GPSMANUAL,this.gpsmanual);
         applyPreference(PREF_DISABLE_TLS,this.disable_tls);
-        applyPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,this.textforecast_last_update_time);
+        //applyPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,this.textforecast_last_update_time);
         applyPreference(PREF_TEXTFORECAST_FILTER,this.textforecast_filter);
         applyPreference(PREF_RADAR_LASTDATAPOLL,this.radar_lastdatapoll);
         applyPreference(PREF_RADAR_SHOW,this.radar_show);
@@ -581,7 +570,7 @@ public class WeatherSettings {
         applyPreference(PREF_WARNINGS_NOTIFY_LED,useLED);
         applyPreference(PREF_HINTCOUNTER1,hintCounter1);
         applyPreference(PREF_HINTCOUNTER2,hintCounter2);
-        applyPreference(PREF_MAPLASTUPDATETIME,uviLastUpdateTime);
+        //applyPreference(PREF_MAPLASTUPDATETIME,uviLastUpdateTime);
         applyPreference(PREF_POLLEN_AMBROSIA,pollenAmbrosia);
         applyPreference(PREF_POLLEN_BEIFUSS,pollenBeifuss);
         applyPreference(PREF_POLLEN_ROGGEN,pollenRoggen);
@@ -602,105 +591,6 @@ public class WeatherSettings {
         applyPreference(PREF_BATTERY_OPTIMIZATION_FLAG,this.batteryOptimizationFlag);
     }
 
-    public void commitPreferences() {
-        commitPreference(PREF_LOCATION_DESCRIPTION, this.location_description);
-        commitPreference(PREF_STATION_NAME, this.station_name);
-        commitPreference(PREF_LOCATION_DESC_ALTERNATE,this.location_desc_alternate);
-        commitPreference(PREF_LONGITUDE, this.longitude);
-        commitPreference(PREF_LATITUDE, this.latitude);
-        commitPreference(PREF_ALTITUDE, this.altitude);
-        commitPreference(PREF_STATIONTYPE,this.stationType);
-        commitPreference(PREF_DISPLAY_STATION_GEO, this.display_station_geo);
-        commitPreference(PREF_DISPLAY_TYPE, this.display_type);
-        commitPreference(PREF_STATION_TIME,this.stationTime);
-        commitPreference(PREF_DISPLAY_LAYOUT,this.display_layout);
-        commitPreference(PREF_DISPLAY_BAR, this.display_bar);
-        commitPreference(PREF_DISPLAY_SIMPLE_BAR,this.display_simple_bar);
-        commitPreference(PREF_DISPLAY_PRESSURE, this.display_pressure);
-        commitPreference(PREF_DISPLAY_VISIBILITY, this.display_visibility);
-        commitPreference(PREF_DISPLAY_SUNRISE, this.display_sunrise);
-        commitPreference(PREF_DISPLAY_ENDOFDAY_BAR, this.display_endofday_bar);
-        commitPreference(PREF_DISPLAY_GRADIENT, this.display_gradient);
-        commitPreference(PREF_DISPLAY_WIND_ARC,this.display_wind_arc);
-        commitPreference(PREF_DISPLAY_WIND_ARC_PERIOD,this.display_wind_arc_period);
-        commitPreference(PREF_DISPLAY_WIND_TYPE,this.display_wind_type);
-        commitPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
-        commitPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
-        commitPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,this.cropPrecipitationChart);
-        commitPreference(PREF_DISPLAY_OVERVIEWCHART,this.displayOverviewChart);
-        commitPreference(PREF_DISPLAY_OVERVIEWCHART_DAYS,this.displayOverviewChartDays);
-        commitPreference(PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,this.displayOverviewChartUseMinMax);
-        commitPreference(PREF_DISPLAY_OVERVIEWCHART_MIN,this.displayOverviewChartMin);
-        commitPreference(PREF_DISPLAY_OVERVIEWCHART_MAX,this.displayOverviewChartMax);
-        commitPreference(PREF_SETALARM, this.setalarm);
-        commitPreference(PREF_UPDATEINTERVAL, this.updateinterval);
-        commitPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
-        commitPreference(PREF_UPDATE_TEXTFORECASTS, this.update_textforecasts);
-        commitPreference(PREF_WIDGET_OPACITY, this.widget_opacity);
-        commitPreference(PREF_WIDGET_SHOWDWDNOTE, this.widget_showdwdnote);
-        commitPreference(PREF_WIDGET_DISPLAYWARNINGS,this.widget_displaywarnings);
-        commitPreference(PREF_NOTIFY_WARNINGS,this.notify_warnings);
-        commitPreference(PREF_LAST_VERSION_CODE, this.last_version_code);
-        commitPreference(PREF_SERVE_GADGETBRIDGE, this.serve_gadgetbridge);
-        commitPreference(PREF_GADGETBRIDGE_PACKAGENAME,this.gadgetbridge_packagename);
-        commitPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP, this.gadgetbridge_fake_timestamp);
-        commitPreference(PREF_VIEWS_LAST_UPDATE_TIME, this.views_last_update_time);
-        commitPreference(PREF_LOGGING, this.logging);
-        commitPreference(PREF_LOG_TO_LOGCAT, this.log_to_logcat);
-        commitPreference(PREF_WARNINGS_CACHETIME, this.warnings_cache_time);
-        commitPreference(PREF_WARNINGS_DISABLE, this.warnings_disabled);
-        commitPreference(PREF_WARNINGS_LAST_UPDATE_TIME, this.warnings_last_update_time);
-        commitPreference(PREF_WARNINGS_NOTIFY_SEVERITY,this.notifySeverity);
-        commitPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
-        commitPreference(PREF_USEGPS,this.usegps);
-        commitPreference(PREF_GPSAUTO,this.gpsauto);
-        commitPreference(PREF_GPSMANUAL,this.gpsmanual);
-        commitPreference(PREF_DISABLE_TLS,this.disable_tls);
-        commitPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,this.textforecast_last_update_time);
-        commitPreference(PREF_TEXTFORECAST_FILTER,this.textforecast_filter);
-        commitPreference(PREF_RADAR_LASTDATAPOLL,this.radar_lastdatapoll);
-        commitPreference(PREF_RADAR_SHOW,this.radar_show);
-        commitPreference(PREF_ADMINMAP_SHOW,this.adminmap_show);
-        commitPreference(PREF_MAP_DISPLAY_MUNICIPALITIES,this.mapDisplayMunicipalities);
-        commitPreference(PREF_MAP_DISPLAY_COUNTIES,this.mapDisplayCounties);
-        commitPreference(PREF_MAP_DISPLAY_STATES,this.mapDisplayStates);
-        commitPreference(PREF_MAP_DISPLAY_SEA_AREAS,this.mapDisplaySeaAreas);
-        commitPreference(PREF_MAP_DISPLAY_COAST_AREAS,this.mapDisplayCoastAreas);
-        commitPreference(PREF_FORCE_NO_MENU_ICONS,this.forceNoMenuIcons);
-        commitPreference(PREF_DISPLAY_WIND_IN_RADAR,this.display_wind_in_radar);
-        commitPreference(PREF_AREA_DATABASE_READY,this.area_database_ready);
-        commitPreference(PREF_AREA_DATABASE_VERSION,this.area_database_version);
-        commitPreference(PREF_VIEWMODEL,this.viewModel);
-        commitPreference(PREF_THEME,this.theme);
-        commitPreference(PREF_ALTERNATIVE_ICONS,this.preferAlternativeIcons);
-        commitPreference(PREF_USE_METERED_NETWORKS,this.useMeteredNetworks);
-        commitPreference(PREF_USE_WIFI_ONLY,this.useWifiOnly);
-        commitPreference(PREF_NOTIFICATION_IDENTIFIER,this.notificationIdentifier);
-        commitPreference(PREF_ROTATIONMODE,rotationMode);
-        commitPreference(PREF_NC_CHANNEL_DETAIL,ncChannelDetail);
-        commitPreference(PREF_WARNINGS_NOTIFY_LED,useLED);
-        commitPreference(PREF_HINTCOUNTER1,hintCounter1);
-        commitPreference(PREF_HINTCOUNTER2,hintCounter2);
-        commitPreference(PREF_MAPLASTUPDATETIME,uviLastUpdateTime);
-        commitPreference(PREF_POLLEN_AMBROSIA,pollenAmbrosia);
-        commitPreference(PREF_POLLEN_BEIFUSS,pollenBeifuss);
-        commitPreference(PREF_POLLEN_ROGGEN,pollenRoggen);
-        commitPreference(PREF_POLLEN_ESCHE,pollenEsche);
-        commitPreference(PREF_POLLEN_BIRKE,pollenBirke);
-        commitPreference(PREF_POLLEN_HASEL,pollenHasel);
-        commitPreference(PREF_POLLEN_ERLE,pollenErle);
-        commitPreference(PREF_POLLEN_GRAESER,pollenGraeser);
-        commitPreference(PREF_PREFETCH_MAPS,preFetchMaps);
-        commitPreference(PREF_UVHI_FETCH_DATA,UVHIfetch);
-        commitPreference(PREF_UVHI_MAINDISPLAY,UVHIdisplayMain);
-        commitPreference(PREF_WEATHERUPDATEDFLAG,weatherUpdatedFlag);
-        commitPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,maxLocationsInSharedWarnings);
-        commitPreference(PREF_LAST_PASSIVE_LOCATION,lastPassiveLocation.serializeToString());
-        commitPreference(PREF_DISPLAY_WIND_IN_CHARTS,this.displayWindInCharts);
-        commitPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,this.windInChartsMax);
-        commitPreference(PREF_REPLACE_BY_MUNICIPALITY,this.replaceByMunicipality);
-        commitPreference(PREF_BATTERY_OPTIMIZATION_FLAG,this.batteryOptimizationFlag);
-    }
 
     public static void resetPreferencesToDefault(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -843,7 +733,7 @@ public class WeatherSettings {
         pref_editor.apply();
         PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
         setPollenRegion(context,pollenArea);
-        resetLastWeatherUpdateTime(context);
+        //resetLastWeatherUpdateTime(context);
         // always set this to the last passive location, so that user choice overrides older location data
         // setLastPassiveLocation(context,weatherLocation);
     }
@@ -868,7 +758,7 @@ public class WeatherSettings {
         pref_editor.putString(PREF_LOCATION_DESCRIPTION,PREF_LOCATION_DESCRIPTION_DEFAULT);
         pref_editor.putLong(PREF_STATION_TIME,PREF_STATION_TIME_DEFAULT);
         pref_editor.apply();
-        resetLastWeatherUpdateTime(context);
+        //resetLastWeatherUpdateTime(context);
     }
 
     public static String getFavorites2(Context context) {
@@ -939,33 +829,43 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_GADGETBRIDGE_FAKE_TIMESTAMP,PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT);
     }
 
+    /*
     public static boolean getUpdateForecastRegularly(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_SETALARM,PREF_SETALARM_DEFAULT);
     }
+     */
 
+    /*
     public static void setUpdateForecastRegularly(Context context, boolean b){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_SETALARM, b);
         pref_editor.apply();
     }
+     */
 
+    /*
     public static int getForecastUpdateInterval(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int i = Integer.parseInt(sharedPreferences.getString(PREF_UPDATEINTERVAL,PREF_UPDATEINTERVAL_DEFAULT));
         return i;
     }
+     */
 
+    /*
     public static boolean forecastUpdateIntervalIs6h(Context context){
         return (getForecastUpdateInterval(context)==6);
     }
+     */
 
+    /*
     public static long getForecastUpdateIntervalInMillis(Context context) {
         return (long) getForecastUpdateInterval(context) * 60 * 60 * 1000;
     }
+     */
 
-
+    /*
     public static boolean isForecastCheckDue(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         long updateIntervalInMillis = getForecastUpdateIntervalInMillis(context);
@@ -1000,11 +900,14 @@ public class WeatherSettings {
         return result;
     }
 
+     */
+
     public static boolean areWarningsDisabled(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_WARNINGS_DISABLE,PREF_WARNINGS_DISABLE_DEFAULT);
     }
 
+    /*
     public static void setWarningsLastUpdateTime(Context context, long time) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
@@ -1016,6 +919,7 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(PREF_WARNINGS_LAST_UPDATE_TIME,PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
     }
+     */
 
     public static boolean notifyWarnings(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1050,16 +954,20 @@ public class WeatherSettings {
         return WeatherWarning.Severity.toInt(result);
     }
 
+    /*
     public static long getTextForecastLastUpdateTimeInMillis(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(PREF_TEXTFORECAST_LAST_UPDATE_TIME,PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
     }
+     */
 
+    /*
     public static final long TEXTFORECASTS_UPDATE_INTERVAL = 12*60*60*1000;
 
     public static boolean areTextForecastsOutdated(Context context){
         return getTextForecastLastUpdateTimeInMillis(context) + TEXTFORECASTS_UPDATE_INTERVAL <= Calendar.getInstance().getTimeInMillis();
     }
+     */
 
     public static boolean isFirstAppLaunch(Context c) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
@@ -1243,6 +1151,7 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    /*
     public static void setLastTextForecastsUpdateTime(Context context, long time){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
@@ -1254,6 +1163,7 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(PREF_TEXTFORECAST_LAST_UPDATE_TIME, PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
     }
+     */
 
     public static boolean isTextForecastFilterEnabled(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1267,6 +1177,7 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    /*
     public static boolean updateWarnings(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (sharedPreferences.getBoolean(PREF_WARNINGS_DISABLE, PREF_WARNINGS_DISABLE_DEFAULT)) {
@@ -1274,11 +1185,15 @@ public class WeatherSettings {
         }
         else return sharedPreferences.getBoolean(PREF_UPDATE_WARNINGS, PREF_UPDATE_WARNINGS_DEFAULT);
     }
+     */
 
+    /*
     public static boolean updateTextForecasts(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_UPDATE_TEXTFORECASTS, PREF_UPDATE_TEXTFORECASTS_DEFAULT);
     }
+
+     */
 
     public static void setPrefRadarLastdatapoll(Context context, long l){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1448,7 +1363,9 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
-    public static int getWarningsUpdateIntervalMenuPosition(Context context){
+    /*
+
+        public static int getWarningsUpdateIntervalMenuPosition(Context context){
         int getWarningsUpdateIntervalInMillis = (int) (getWarningsUpdateIntervalInMillis(context)/1000/60); // in minutes
         int result = 1;
         switch (getWarningsUpdateIntervalInMillis){
@@ -1469,6 +1386,8 @@ public class WeatherSettings {
         pref_editor.putString(PREF_WARNINGS_CACHETIME,s);
         pref_editor.apply();
     }
+
+     */
 
     public class Theme{
         final static String FOLLOW_DEVICE = "FOLLOW_DEVICE";
@@ -1646,7 +1565,7 @@ public class WeatherSettings {
     }
 
     public static String getNotificationChannelID(long identifier){
-        return DataUpdateService.WARNING_NC_ID_SKELETON + String.valueOf(identifier);
+        return WeatherSyncAdapter.WARNING_NC_ID_SKELETON + String.valueOf(identifier);
     }
 
     public static String getNotificationChannelID(Context context) {
@@ -1732,6 +1651,7 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    /*
     public static long getMapLastUpdateTime(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(PREF_MAPLASTUPDATETIME,PREF_MAPLASTUPDATETIME_DEFAULT);
@@ -1757,6 +1677,8 @@ public class WeatherSettings {
         String key = "PREF_LAYERTIME_"+position;
         return sharedPreferences.getLong(key,PREF_LAYERTIME_DEFAULT);
     }
+
+     */
 
     public static void setLayerTime(Context context, int position, long time){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1890,6 +1812,7 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    /*
     public static long getLastWeatherUpdateTime(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(PREF_LASTWEATHERUPDATETIME,PREF_LASTWEATHERUPDATETIME_DEFAULT);
@@ -1907,6 +1830,7 @@ public class WeatherSettings {
         return (Calendar.getInstance().getTimeInMillis()>lastUpdate+POLLBLOCKTIME);
     }
 
+
     public static void resetLastWeatherUpdateTime(Context context){
         setLastWeatherUpdateTime(context,0);
     }
@@ -1914,6 +1838,8 @@ public class WeatherSettings {
     public static void setLastWeatherUpdateTime(Context context){
         setLastWeatherUpdateTime(context,Calendar.getInstance().getTimeInMillis());
     }
+
+     */
 
     public final static class UpdateType {
         public final static int NONE = 0;
@@ -2000,6 +1926,298 @@ public class WeatherSettings {
     public static boolean displayBoldwidgetVerticalBar(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_BOLDWIDGET_VERTICAL_BAR,PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT);
+    }
+
+    public static void lockAreaDatabase(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_AREADATABASE_LOCK,true);
+        pref_editor.apply();
+    }
+
+    public static void unlockAreaDatabase(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_AREADATABASE_LOCK,false);
+        pref_editor.apply();
+    }
+
+    public static boolean isAreaDatabaseLocked(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_AREADATABASE_LOCK,false);
+    }
+
+
+
+    public static class Updates{
+
+        public static long getMillis(int interval) {
+            switch (interval) {
+                case Updates.Intervals.MIN15:
+                    return 1000 * 60 * 15;
+                case Updates.Intervals.MIN30:
+                    return 1000 * 60 * 30;
+                case Updates.Intervals.HOUR1:
+                    return 1000 * 60 * 60;
+                case Updates.Intervals.HOUR2:
+                    return 1000 * 60 * 60 * 2;
+                case Updates.Intervals.HOUR3:
+                    return 1000 * 60 * 60 * 3;
+                case Updates.Intervals.HOUR6:
+                    return 1000 * 60 * 60 * 6;
+                case Updates.Intervals.HOUR12:
+                    return 1000 * 60 * 60 * 12;
+                case Updates.Intervals.HOUR18:
+                    return 1000 * 60 * 60 * 18;
+                case Updates.Intervals.HOUR24:
+                    return 1000 * 60 * 60 * 24;
+                default:
+                    return 0;
+            }
+        }
+
+        public final class Intervals{
+
+            public static final int NEVER = -1;
+            public static final int MIN15 = 1;
+            public static final int MIN30 = 2;
+            public static final int HOUR1 = 10;
+            public static final int HOUR2 = 11;
+            public static final int HOUR3 = 12;
+            public static final int HOUR6 = 13;
+            public static final int HOUR12 = 14;
+            public static final int HOUR18 = 15;
+            public static final int HOUR24 = 16;
+        }
+
+        public final class Category{
+            public static final int WEATHER = 0;
+            public static final int WARNINGS = 1;
+            public static final int TEXTS = 2;
+            public static final int POLLEN = 3;
+            public static final int LAYERS = 4;
+        }
+
+        public static final int CategoryItemsCount = 5;
+
+        public static final String PREF_UPDATE_WEATHER_SYNC = "PREF_update_weather_sync";
+        public static final String PREF_UPDATE_WEATHER_INTERVAL = "PREF_update_weather_interval";
+        public static final String PREF_UPDATE_WEATHER_LASTUPDATE = "PREF_update_weather_lastupdate";
+        public static final String PREF_UPDATE_WARNINGS_SYNC = "PREF_update_warnings_sync";
+        public static final String PREF_UPDATE_WARNINGS_INTERVAL = "PREF_update_warnings_interval";
+        public static final String PREF_UPDATE_WARNINGS_LASTUPDATE = "PREF_update_warnings_lastupdate";
+        public static final String PREF_UPDATE_TEXTS_SYNC = "PREF_update_texts_sync";
+        public static final String PREF_UPDATE_TEXTS_INTERVAL = "PREF_update_texts_interval";
+        public static final String PREF_UPDATE_TEXTS_LASTUPDATE = "PREF_update_texts_lastupdate";
+        public static final String PREF_UPDATE_POLLEN_SYNC = "PREF_update_pollen_sync";
+        public static final String PREF_UPDATE_POLLEN_INTERVAL = "PREF_update_pollen_interval";
+        public static final String PREF_UPDATE_POLLEN_LASTUPDATE = "PREF_update_pollen_lastupdate";
+        public static final String PREF_UPDATE_LAYERS_SYNC = "PREF_update_layers_sync";
+        public static final String PREF_UPDATE_LAYERS_INTERVAL = "PREF_update_layers_interval";
+        public static final String PREF_UPDATE_LAYERS_LASTUPDATE = "PREF_update_layers_lastupdate";
+
+        private static String getSyncPreference(int category){
+            String preference  = PREF_UPDATE_WEATHER_SYNC;
+            switch (category){
+                case Category.WARNINGS: preference  = PREF_UPDATE_WARNINGS_SYNC; break;
+                case Category.TEXTS: preference  = PREF_UPDATE_TEXTS_SYNC; break;
+                case Category.POLLEN: preference  = PREF_UPDATE_POLLEN_SYNC; break;
+                case Category.LAYERS: preference  = PREF_UPDATE_LAYERS_SYNC; break;
+                default: preference  = PREF_UPDATE_WEATHER_SYNC; break;
+            }
+            return preference;
+        }
+
+        private static boolean getSyncPreferenceDefault(int category){
+            String preference  = PREF_UPDATE_WEATHER_SYNC;
+            switch (category){
+                case Category.TEXTS:
+                case Category.LAYERS:
+                case Category.POLLEN:
+                    return false;
+                default: return true;
+            }
+        }
+
+        private static String getIntervalPreference(int category){
+            String preference  = PREF_UPDATE_WEATHER_INTERVAL;
+            switch (category){
+                case Category.WARNINGS: preference  = PREF_UPDATE_WARNINGS_INTERVAL; break;
+                case Category.TEXTS: preference  = PREF_UPDATE_TEXTS_INTERVAL; break;
+                case Category.POLLEN: preference  = PREF_UPDATE_POLLEN_INTERVAL; break;
+                case Category.LAYERS: preference  = PREF_UPDATE_LAYERS_INTERVAL; break;
+                default: preference  = PREF_UPDATE_WEATHER_INTERVAL; break;
+            }
+            return preference;
+        }
+
+        private static int getIntervalPreferenceDefault(int category){
+            String preference  = PREF_UPDATE_WEATHER_INTERVAL;
+            switch (category){
+                case Category.WARNINGS: return Intervals.MIN30;
+                default: return Intervals.HOUR24;
+            }
+        }
+
+        private static String getLastUpdatePreference(int category){
+            String preference  = PREF_UPDATE_WEATHER_LASTUPDATE;
+            switch (category){
+                case Category.WARNINGS: preference  = PREF_UPDATE_WARNINGS_LASTUPDATE; break;
+                case Category.TEXTS: preference  = PREF_UPDATE_TEXTS_LASTUPDATE; break;
+                case Category.POLLEN: preference  = PREF_UPDATE_POLLEN_LASTUPDATE; break;
+                case Category.LAYERS: preference  = PREF_UPDATE_LAYERS_LASTUPDATE; break;
+                default: preference  = PREF_UPDATE_WEATHER_LASTUPDATE; break;
+            }
+            return preference;
+        }
+
+        public static boolean isSyncEnabled(Context context, int category){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            return sharedPreferences.getBoolean(getSyncPreference(category),getSyncPreferenceDefault(category));
+        }
+
+        public static void setSyncEnabled(Context context, int category, boolean enabled){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+            pref_editor.putBoolean(getSyncPreference(category),enabled);
+            pref_editor.apply();
+        }
+
+        public static int getSyncInterval(Context context, int category){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String s = sharedPreferences.getString(getIntervalPreference(category),Integer.toString(getIntervalPreferenceDefault(category)));
+            try {
+                int i = Integer.parseInt(s);
+                return i;
+            } catch (NumberFormatException e){
+                return getIntervalPreferenceDefault(category);
+            }
+        }
+
+        public static void setSyncInterval(Context context, int category, int interval){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+            pref_editor.putString(getIntervalPreference(category),Integer.toString(interval));
+            pref_editor.apply();
+        }
+
+        public static long getIntervalMillis(Context context, int category){
+            return getMillis(getSyncInterval(context,category));
+        }
+
+        public static long getLastUpdate(Context context, int category){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            return sharedPreferences.getLong(getLastUpdatePreference(category),0);
+        }
+
+        public static void setLastUpdate(Context context, int category, long updateTime){
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+            pref_editor.putLong(getLastUpdatePreference(category),updateTime);
+            pref_editor.apply();
+        }
+
+        public static boolean isSyncDue(Context context, int category){
+            float lastUpdateTime = getLastUpdate(context,category);
+            if (Calendar.getInstance().getTimeInMillis() > lastUpdateTime + getIntervalMillis(context,category)){
+                return true;
+            }
+            return false;
+        }
+
+        private static long getIntervalLong(Context context, int category){
+            if (Updates.isSyncEnabled(context,category)){
+                return Updates.getIntervalMillis(context,category);
+            }
+            return Intervals.NEVER;
+        }
+
+        public static long getSyncAdapterIntervalInMillis(Context context){
+            ArrayList<Long> intervalSyncTimes = new ArrayList<Long>();
+            for (int category=0; category<CategoryItemsCount; category++){
+                long syncTime = getIntervalLong(context,category);
+                if (syncTime!=Intervals.NEVER){
+                    intervalSyncTimes.add(syncTime);
+                }
+            }
+            if (intervalSyncTimes.size()>0){
+                long result = intervalSyncTimes.get(0);
+                for (int i=1; i<intervalSyncTimes.size(); i++){
+                    if (intervalSyncTimes.get(i)<result){
+                        result = intervalSyncTimes.get(i);
+                    }
+                }
+                return result;
+            }
+            return Intervals.NEVER;
+        }
+
+        public static int getSyncAdapterIntervalInSeconds(Context context){
+            return (int) (getSyncAdapterIntervalInMillis(context)/1000);
+        }
+
+        public static boolean isSyncNecessary(Context context){
+            return ((isSyncDue(context, Category.WEATHER)) ||
+                    (isSyncDue(context,Category.WARNINGS)) ||
+                    (isSyncDue(context,Category.TEXTS)) ||
+                    (isSyncDue(context,Category.POLLEN)) ||
+                    (isSyncDue(context,Category.LAYERS)) ||
+                    (!Weather.hasCurrentWeatherInfo(context)));
+        }
+
+        public static class DeprecatedPreferences{
+            public static final String PREF_SETALARM = "PREF_setalarm";
+            public static final String PREF_UPDATEINTERVAL = "PREF_updateinterval";
+            public static final String PREF_LASTWEATHERUPDATETIME = "PREF_lastweatherupdatetime";
+            public static final String PREF_UPDATE_WARNINGS = "PREF_update_warnings";
+            public static final String PREF_WARNINGS_CACHETIME = "PREF_warnings_cachetime";
+            public static final String PREF_UPDATE_TEXTFORECASTS = "PREF_update_textforecasts";
+            public static final String PREF_MAPLASTUPDATETIME = "PREF_maplastupdatetime";
+            public static final String PREF_TEXTFORECAST_LAST_UPDATE_TIME = "PREF_textforecast_last_update_time";
+
+            public static void migrateDeprecatedSyncSettings(Context context){
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                // migrate weather updates
+                Updates.setSyncEnabled(context, Category.WEATHER,sharedPreferences.getBoolean(DeprecatedPreferences.PREF_SETALARM,true));
+                String updateIntervalWeather = sharedPreferences.getString(DeprecatedPreferences.PREF_UPDATEINTERVAL,"24");
+                if (updateIntervalWeather.equals("6")){
+                    Updates.setSyncInterval(context,Category.WEATHER, Intervals.HOUR6);
+                } else
+                if (updateIntervalWeather.equals("12")){
+                    Updates.setSyncInterval(context,Category.WEATHER, Intervals.HOUR12);
+                } else
+                if (updateIntervalWeather.equals("18")){
+                    Updates.setSyncInterval(context,Category.WEATHER, Intervals.HOUR18);
+                } else {
+                    Updates.setSyncInterval(context,Category.WEATHER, Intervals.HOUR24);
+                }
+                // migrate warnings
+                Updates.setSyncEnabled(context,Category.WARNINGS,sharedPreferences.getBoolean(DeprecatedPreferences.PREF_UPDATE_WARNINGS,true));
+                String warningsUpdateTime = sharedPreferences.getString(DeprecatedPreferences.PREF_WARNINGS_CACHETIME,"30");
+                if (warningsUpdateTime.equals("15")){
+                    Updates.setSyncInterval(context,Category.WARNINGS,Intervals.MIN15);
+                } else
+                if (warningsUpdateTime.equals("30")){
+                    Updates.setSyncInterval(context,Category.WARNINGS,Intervals.MIN30);
+                } else
+                if (warningsUpdateTime.equals("60")){
+                    Updates.setSyncInterval(context,Category.WARNINGS,Intervals.HOUR1);
+                } else
+                if (warningsUpdateTime.equals("120")){
+                    Updates.setSyncInterval(context,Category.WARNINGS,Intervals.HOUR2);
+                } else
+                if (warningsUpdateTime.equals("180")){
+                    Updates.setSyncInterval(context,Category.WARNINGS,Intervals.HOUR3);
+                } else
+                if (warningsUpdateTime.equals("360")){
+                    Updates.setSyncInterval(context,Category.WARNINGS,Intervals.HOUR6);
+                } else {
+                    Updates.setSyncInterval(context,Category.WARNINGS,Intervals.MIN30);
+                }
+                // migrate texts
+                Updates.setSyncEnabled(context,Category.TEXTS,sharedPreferences.getBoolean(DeprecatedPreferences.PREF_UPDATE_TEXTFORECASTS,false));
+            }
+        }
     }
 
 }

@@ -105,7 +105,7 @@
        }
 
        public static String formatTime(long time){
-           SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd.MM.yyyy HH:mm:ss");
+           SimpleDateFormat simpleDateFormat = Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED);
            return simpleDateFormat.format(new Date(time));
        }
 
@@ -193,7 +193,7 @@
                 viewHolder.shareIcon.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
-                        Intent intent = DataUpdateService.getWarningIntent(context,warning);
+                        Intent intent = WeatherSyncAdapter.getWarningIntent(context,warning);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                         return true;

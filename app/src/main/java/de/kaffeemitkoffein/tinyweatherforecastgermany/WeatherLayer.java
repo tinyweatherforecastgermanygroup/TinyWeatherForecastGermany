@@ -666,7 +666,7 @@ public class WeatherLayer {
             saveLayerBitmapToCache(context,layerBitmap);
             timestamp = Pollen.getLastPollenUpdateTime(context)+(long) getPollenTimeParam()*24*60*60*1000;
         } else {
-            long originalTimestamp = WeatherSettings.getLayerTime(context,layer);
+            long originalTimestamp = WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.LAYERS);
             // take timestamp from settings only if bitmap decoding was successful and time is not 0
             if ((layerBitmap!=null) && (originalTimestamp!=0)){
                 timestamp = originalTimestamp;

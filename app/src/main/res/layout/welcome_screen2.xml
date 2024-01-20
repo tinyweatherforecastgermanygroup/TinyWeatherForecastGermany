@@ -28,23 +28,10 @@
     android:background="?attr/colorWelcomeBackground"
     android:orientation="vertical">
 
-    <TextView
-            android:id="@+id/welcome_screen2_next"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:textColor="?attr/colorText"
-            android:text="@string/welcome_next"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="@dimen/welcome_action_size"
-            android:paddingBottom="@dimen/welcome_action_padding"/>
-
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:layout_above="@id/welcome_screen2_next"
     >
 
         <LinearLayout

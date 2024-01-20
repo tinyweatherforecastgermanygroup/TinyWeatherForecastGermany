@@ -24,12 +24,6 @@
         <item>18 Stunden</item>
         <item>24 Stunden</item>
     </string-array>
-    <string-array name="updateinterval_values">
-        <item>6</item>
-        <item>12</item>
-        <item>18</item>
-        <item>24</item>
-    </string-array>
     <string-array name="widget_opacity_text">
         <item>0 (transparent)</item>
         <item>10 %</item>

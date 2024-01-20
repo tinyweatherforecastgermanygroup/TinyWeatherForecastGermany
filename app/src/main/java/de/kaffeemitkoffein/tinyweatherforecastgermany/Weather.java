@@ -24,6 +24,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.*;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import org.astronomie.info.Astronomy;
@@ -951,7 +956,7 @@ public final class Weather {
                 Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bitmap),Math.round(height_bitmap), Bitmap.Config.ARGB_8888);
                 bitmap.eraseColor(Color.TRANSPARENT);
                 String windsting = getWindDirectionString(context);
-                float max_fontsize = LargeWidget.getMaxPossibleFontsize(windsting,width_bitmap,height_bitmap,null);
+                float max_fontsize = ClassicWidget.getMaxPossibleFontsize(windsting,width_bitmap,height_bitmap,null);
                 Paint paint = new Paint();
                 paint.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
                 paint.setTextSize(max_fontsize);
@@ -1610,10 +1615,23 @@ public final class Weather {
 
     }
 
-    public static CurrentWeatherInfo getCurrentWeatherInfo(Context context, int updateSource){
+    public static boolean hasCurrentWeatherInfo(Context context){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
-        //WeatherSettings weatherSettings = new WeatherSettings(context);
-        //String station_name = weatherSettings.station_name;
+        String station_name = WeatherSettings.getSetStationLocation(context).name;
+        Cursor cursor;
+        String[] selectionArg={station_name};
+        String orderBy=""+WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time+" DESC";
+        cursor = contentResolver.query(WeatherContentManager.FORECAST_URI_ALL,
+                null,WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_name+" = ?",selectionArg,orderBy);
+        // read only fist element. Database should not hold more than one data set for one station.
+        // Should there be more, take the most recent by polling time. The most recent entry is at position 1.
+        boolean result = cursor.moveToFirst();
+        cursor.close();
+        return result;
+    }
+
+    public static CurrentWeatherInfo getCurrentWeatherInfo(Context context){
+        ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
         String station_name = WeatherSettings.getSetStationLocation(context).name;
         Cursor cursor;
         String[] selectionArg={station_name};
@@ -2233,19 +2251,102 @@ public final class Weather {
         return null;
     }
 
-    final static class SIMPLEDATEFORMATS {
-        final static SimpleDateFormat DETAILED              = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
-        final static SimpleDateFormat DETAILED_NO_SECONDS   = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm");
-        final static SimpleDateFormat DATETIME              = new SimpleDateFormat("dd.MM, HH:mm");
-        final static SimpleDateFormat TIME_SEC              = new SimpleDateFormat("HH:mm:ss");
-        final static SimpleDateFormat TIME                  = new SimpleDateFormat("HH:mm");
-        final static SimpleDateFormat HOUR                  = new SimpleDateFormat("HH");
-        final static SimpleDateFormat DAYOFWEEK             = new SimpleDateFormat("EE");
+    public final static class SimpleDateFormats {
+        final static int DETAILED              = 0;
+        final static int DETAILED_NO_SECONDS   = 1;
+        final static int DATETIME              = 2;
+        final static int DATEYEARTIME          = 3;
+        final static int TIME_SEC              = 4;
+        final static int TIME                  = 5;
+        final static int HOUR                  = 6;
+        final static int DAYOFWEEK             = 7;
+    }
+
+    public static SimpleDateFormat getSimpleDateFormat(int format){
+        switch (format){
+            case SimpleDateFormats.DETAILED_NO_SECONDS  : return new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm",Locale.getDefault());
+            case SimpleDateFormats.DATEYEARTIME         : return new SimpleDateFormat("dd.MM.yyyy, HH:mm",Locale.getDefault());
+            case SimpleDateFormats.DATETIME             : return new SimpleDateFormat("dd.MM, HH:mm",Locale.getDefault());
+            case SimpleDateFormats.TIME_SEC             : return new SimpleDateFormat("HH:mm:ss",Locale.getDefault());
+            case SimpleDateFormats.TIME                 : return new SimpleDateFormat("HH:mm",Locale.getDefault());
+            case SimpleDateFormats.HOUR                 : return new SimpleDateFormat("HH",Locale.getDefault());
+            case SimpleDateFormats.DAYOFWEEK            : return new SimpleDateFormat("EE",Locale.getDefault());
+            default                                     : return new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss",Locale.getDefault());
+        }
     }
 
     public static String GetDateString(SimpleDateFormat simpleDateFormat, long time){
         return simpleDateFormat.format(time);
     }
+
+    public static boolean suitableNetworkAvailable(Context context){
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager!=null){
+                // use networkInfo for api below 23
+                if (Build.VERSION.SDK_INT < 23){
+                    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                    if (networkInfo != null) {
+                        if  (networkInfo.isConnected()){
+                            if (networkInfo.getType()==ConnectivityManager.TYPE_WIFI){
+                                // for api below 23, Wi-Fi means unmetered, is ok!
+                                return true;
+                            } else {
+                                // api below 23 and network is NOT Wi-Fi, check if allowed by user
+                                if (WeatherSettings.useWifiOnly(context)){
+                                    // other than Wi-Fi not allowed, return negative
+                                    return false;
+                                } else {
+                                    // other than wifi allowed, is ok
+                                    return true;
+                                }
+                            }
+                        } else {
+                            // no active connection
+                            return false;
+                        }
+                    } else {
+                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkinfo obtained => assuming no suitable network available.");
+                        return false;
+                    }
+                    // use connectivityManager on api 23 and higher
+                } else {
+                    Network network = connectivityManager.getActiveNetwork();
+                    NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+                    if (networkCapabilities==null) {
+                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkCapabilities obtained => assuming no suitable network available.");
+                        return false;
+                    } else {
+                        //if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))){
+                        if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)){
+                            // internet conn present, check for metering
+                            if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)){
+                                // not metered, means always ok!
+                                return true;
+                            } else {
+                                // network might be metered or is metered.
+                                // check if this is allowed by user.
+                                if (WeatherSettings.useMeteredNetworks(context)){
+                                    // allowed to use metered, is ok!
+                                    return true;
+                                } else {
+                                    // metered forbidden, negative.
+                                    return false;
+                                }
+                            }
+                        } else {
+                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Network detected, but does not have internet access => assuming no suitable network available.");
+                            return false;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.WARN,"Error(s) occured when checking for a valid network: "+e.getMessage()+" => assuming there is no valid network connection.");
+        }
+        return false;
+    }
+
 
 }
 

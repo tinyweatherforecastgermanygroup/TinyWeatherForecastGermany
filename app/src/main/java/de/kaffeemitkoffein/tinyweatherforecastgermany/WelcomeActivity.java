@@ -22,6 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -31,8 +32,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
-
-import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -53,6 +52,7 @@ public class WelcomeActivity extends Activity {
     ImageView arrow_right;
     ImageView arrow_left;
     TextView skip;
+    TextView next;
 
     ArrayAdapter arrayAdapter1;
     Spinner spinner1;
@@ -97,8 +97,10 @@ public class WelcomeActivity extends Activity {
             }
         }
         executor = Executors.newSingleThreadExecutor();
-        // start area database creation of necessary.
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,null,null);
+        MainActivity.registerSyncAdapter(getApplicationContext());
+        if (WeatherSettings.Updates.isSyncNecessary(getApplicationContext())){
+            ContentResolver.requestSync(MainActivity.getManualSyncRequest(getApplicationContext(),WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
+        }
         force_replay = false;
         Intent intent = getIntent();
         if (intent != null) {
@@ -173,6 +175,18 @@ public class WelcomeActivity extends Activity {
                 }
             });
             pager.setOnClickListener(pagerClickListener);
+            next = (TextView) findViewById(R.id.welcome_next);
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (page < 5) {
+                        page++;
+                        setPage(page);
+                    } else {
+                        startMainActivityAndShowCircle();
+                    }
+                }
+            });
             setPage(page);
             arrow_right.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -317,11 +331,11 @@ public class WelcomeActivity extends Activity {
                 }
             });
             checkBox2 = result_view.findViewById(R.id.welcome_screen4_check2);
-            checkBox2.setChecked(WeatherSettings.getUpdateForecastRegularly(getApplicationContext()));
+            checkBox2.setChecked(WeatherSettings.Updates.isSyncEnabled(getApplicationContext(),WeatherSettings.Updates.Category.WEATHER));
             checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    WeatherSettings.setUpdateForecastRegularly(getApplicationContext(),b);
+                    WeatherSettings.Updates.setSyncEnabled(getApplicationContext(),WeatherSettings.Updates.Category.WEATHER,b);
                 }
             });
             checkBox3 = result_view.findViewById(R.id.welcome_screen4_check3);
@@ -359,18 +373,18 @@ public class WelcomeActivity extends Activity {
             arrayAdapter2.setDropDownViewResource(R.layout.welcome_dropdownitem);
             spinner2 = (Spinner) result_view.findViewById(R.id.welcome_screen5_spinner);
             spinner2.setAdapter(arrayAdapter2);
-            spinner2.setSelection(WeatherSettings.getWarningsUpdateIntervalMenuPosition(this));
+            spinner2.setSelection(getWarningsUpdateIntervalMenuPosition());
             final Context context = this;
             MainActivity.SpinnerListener spinnerListener2 = new MainActivity.SpinnerListener(){
                 @Override
                 public void handleItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     switch (i){
-                        case 0: WeatherSettings.setWarningsUpdateInterval(context,"15"); break;
-                        case 1: WeatherSettings.setWarningsUpdateInterval(context,"30"); break;
-                        case 2: WeatherSettings.setWarningsUpdateInterval(context,"60"); break;
-                        case 3: WeatherSettings.setWarningsUpdateInterval(context,"120"); break;
-                        case 4: WeatherSettings.setWarningsUpdateInterval(context,"180"); break;
-                        case 5: WeatherSettings.setWarningsUpdateInterval(context,"360"); break;
+                        case 0: WeatherSettings.Updates.setSyncInterval(context,WeatherSettings.Updates.Category.WARNINGS,WeatherSettings.Updates.Intervals.MIN15); break;
+                        case 1: WeatherSettings.Updates.setSyncInterval(context,WeatherSettings.Updates.Category.WARNINGS,WeatherSettings.Updates.Intervals.MIN30); break;
+                        case 2: WeatherSettings.Updates.setSyncInterval(context,WeatherSettings.Updates.Category.WARNINGS,WeatherSettings.Updates.Intervals.HOUR1); break;
+                        case 3: WeatherSettings.Updates.setSyncInterval(context,WeatherSettings.Updates.Category.WARNINGS,WeatherSettings.Updates.Intervals.HOUR2); break;
+                        case 4: WeatherSettings.Updates.setSyncInterval(context,WeatherSettings.Updates.Category.WARNINGS,WeatherSettings.Updates.Intervals.HOUR3); break;
+                        case 5: WeatherSettings.Updates.setSyncInterval(context,WeatherSettings.Updates.Category.WARNINGS,WeatherSettings.Updates.Intervals.HOUR6); break;
                     }
                     super.handleItemSelected(adapterView, view, i, l);
                 }
@@ -410,6 +424,19 @@ public class WelcomeActivity extends Activity {
             pager.setOnClickListener(pagerClickListener);
         }
         return result_view;
+    }
+
+    private int getWarningsUpdateIntervalMenuPosition(){
+        int interval = WeatherSettings.Updates.getSyncInterval(getApplicationContext(),WeatherSettings.Updates.Category.WARNINGS);
+        switch (interval){
+            case WeatherSettings.Updates.Intervals.MIN15: return 1;
+            case WeatherSettings.Updates.Intervals.HOUR1: return 3;
+            case WeatherSettings.Updates.Intervals.HOUR2: return 4;
+            case WeatherSettings.Updates.Intervals.HOUR3: return 5;
+            case WeatherSettings.Updates.Intervals.HOUR6: return 6;
+            default: return 2;
+
+        }
     }
 
     private void startMainActivity() {

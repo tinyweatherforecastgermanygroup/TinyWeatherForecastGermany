@@ -20,13 +20,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 33
+    buildToolsVersion '33.0.1'
 
     defaultConfig {
         applicationId "de.kaffeemitkoffein.tinyweatherforecastgermany"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 48
         versionName "0.61.4"
     }

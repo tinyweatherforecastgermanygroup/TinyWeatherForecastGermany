@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ This file is part of TinyWeatherForecastGermany.
+
+ Copyright (c) 2020, 2021 Pawel Dube
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/widget_maincontainer"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+
+    <ImageView android:id="@+id/widget_backgroundimage"
+               android:background="@color/colorWidgetBackground_SolarizedDark"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"/>
+
+    <ImageView android:id="@+id/widget_warningsymbol"
+               android:layout_marginTop="2dp"
+               android:layout_marginRight="8dp"
+               android:layout_width="@dimen/widget_textsize_verylarge"
+               android:layout_height="@dimen/widget_textsize_verylarge"
+               android:layout_alignParentRight="true"
+               android:layout_alignParentTop="true"
+               android:src="@mipmap/warning_icon"
+    />
+
+    <LinearLayout
+            android:id="@+id/large_widget_mainviewscontainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/widget_margin"
+            android:layout_marginRight="@dimen/widget_margin"
+            android:weightSum="20">
+
+        <LinearLayout
+                android:id="@+id/classicwidget_linearlayout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_weight="10"
+                android:weightSum="3"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="0dp">
+
+            <LinearLayout android:id="@+id/classicwidget_leftcontainer"
+                          android:layout_width="0dp"
+                          android:layout_height="match_parent"
+                          android:layout_weight="1"
+                          android:gravity="center"
+                          android:orientation="vertical">
+
+                <TextView android:id="@+id/classicwidget_locationtext"
+                          android:textSize="@dimen/widget_textsize_large"
+                          android:textColor="@color/colorTextWidget"
+                          android:layout_gravity="center"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginLeft="2dp"
+                          android:text="HAMBURG INNENSTADT"/>
+
+                <TextView android:id="@+id/classicwidget_weatherconditiontext"
+                          android:textSize="@dimen/widget_textsize_medium"
+                          android:textColor="@color/colorTextWidget"
+                          android:layout_gravity="center"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginLeft="2dp"
+                          android:text="@string/weathercode_EFFECTIVE_CLOUD_COVER_BETWEEN_46_8_AND_6_8"/>
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/classicwidget_centercontainer"
+                          android:layout_width="0dp"
+                          android:layout_height="match_parent"
+                          android:layout_weight="1"
+                          android:gravity="center"
+                          android:orientation="vertical">
+
+                <ImageView android:id="@+id/classicwidget_weatherconditionicon"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:layout_gravity="center"
+                           android:src="@drawable/preview_element_weathericon1" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/classicwidget_rightcontainer"
+                          android:layout_width="0dp"
+                          android:layout_height="match_parent"
+                          android:layout_weight="1"
+                          android:gravity="center"
+                          android:orientation="vertical">
+
+                <TextView android:id="@+id/classicwidget_temperature"
+                          android:textSize="@dimen/widget_textsize_large"
+                          android:textColor="@color/colorTextWidget"
+                          android:gravity="center"
+                          android:textAlignment="center"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:text="14°"/>
+
+                <TextView android:id="@+id/classicwidget_temperature_highlow"
+                          android:textSize="@dimen/widget_textsize_large"
+                          android:textColor="@color/colorTextWidget"
+                          android:gravity="center"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:text="12° | 18°"/>
+
+                <LinearLayout
+                        android:id="@+id/classicwidget_wind_horizontal_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                    <ImageView
+                            android:id="@+id/classicwidget_windarrow"
+                            android:layout_width="@dimen/widget_textsize_large"
+                            android:layout_height="@dimen/widget_textsize_large"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/arrow">
+                    </ImageView>
+
+                    <TextView android:id="@+id/classicwidget_wind"
+                              android:textSize="@dimen/widget_textsize_medium"
+                              android:textColor="@color/colorTextWidget"
+                              android:gravity="center"
+                              android:layout_marginLeft="2dp"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="12 (24)"/>
+
+                    <TextView android:id="@+id/classicwidget_wind_unit"
+                              android:textSize="@dimen/widget_textsize_medium"
+                              android:textColor="@color/colorTextWidget"
+                              android:gravity="center"
+                              android:text="km/h"
+                              android:layout_marginLeft="2dp"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_weight="10"
+                android:weightSum="9"
+                android:orientation="horizontal"
+        >
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_day1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:textSize="@dimen/widget_preview_dayofweek"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Mon"/>
+
+                <ImageView
+                        android:id="@+id/preview_classic_image1"
+                        android:layout_width="@dimen/widget_textsize_verylarge"
+                        android:layout_height="@dimen/widget_preview_weathericon"
+                        android:layout_below="@id/preview_classic_fake_day1"
+                        android:layout_gravity="center"
+                        android:src="@drawable/preview_element_weathericon1">
+                </ImageView>
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_max1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_image1"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="22°"/>
+                <TextView
+                        android:id="@+id/preview_classic_fake_min1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_fake_max1"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="14°"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_day2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:textSize="@dimen/widget_preview_dayofweek"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Tue"/>
+
+                <ImageView
+                        android:id="@+id/preview_classic_image2"
+                        android:layout_width="@dimen/widget_textsize_verylarge"
+                        android:layout_height="@dimen/widget_preview_weathericon"
+                        android:layout_below="@id/preview_classic_fake_day2"
+                        android:layout_gravity="center"
+                        android:src="@drawable/preview_element_weathericon2">
+                </ImageView>
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_max2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_image2"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="24°"/>
+                <TextView
+                        android:id="@+id/preview_classic_fake_min2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_fake_max2"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="18°"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_day3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:textSize="@dimen/widget_preview_dayofweek"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Wed"/>
+
+                <ImageView
+                        android:id="@+id/preview_classic_image3"
+                        android:layout_width="@dimen/widget_textsize_verylarge"
+                        android:layout_height="@dimen/widget_preview_weathericon"
+                        android:layout_below="@id/preview_classic_fake_day3"
+                        android:layout_gravity="center"
+                        android:src="@drawable/preview_element_weathericon1">
+                </ImageView>
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_max3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_image3"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="20°"/>
+                <TextView
+                        android:id="@+id/preview_classic_fake_min3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_fake_max3"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="16°"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_day4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:textSize="@dimen/widget_preview_dayofweek"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Thu"/>
+
+                <ImageView
+                        android:id="@+id/preview_classic_image4"
+                        android:layout_width="@dimen/widget_textsize_verylarge"
+                        android:layout_height="@dimen/widget_preview_weathericon"
+                        android:layout_below="@id/preview_classic_fake_day4"
+                        android:layout_gravity="center"
+                        android:src="@drawable/preview_element_weathericon1">
+                </ImageView>
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_max4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_image4"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="24°"/>
+                <TextView
+                        android:id="@+id/preview_classic_fake_min4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_fake_max4"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="18°"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_day5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:textSize="@dimen/widget_preview_dayofweek"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Fri"/>
+
+                <ImageView
+                        android:id="@+id/preview_classic_image5"
+                        android:layout_width="@dimen/widget_textsize_verylarge"
+                        android:layout_height="@dimen/widget_preview_weathericon"
+                        android:layout_below="@id/preview_classic_fake_day5"
+                        android:layout_gravity="center"
+                        android:src="@drawable/preview_element_weathericon1">
+                </ImageView>
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_max5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_image5"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="22°"/>
+                <TextView
+                        android:id="@+id/preview_classic_fake_min5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_fake_max5"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="12°"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_day6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:textSize="@dimen/widget_preview_dayofweek"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Sat"/>
+
+                <ImageView
+                        android:id="@+id/preview_classic_image6"
+                        android:layout_width="@dimen/widget_textsize_verylarge"
+                        android:layout_height="@dimen/widget_preview_weathericon"
+                        android:layout_below="@id/preview_classic_fake_day6"
+                        android:layout_gravity="center"
+                        android:src="@drawable/preview_element_weathericon3">
+                </ImageView>
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_max6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_image6"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="26°"/>
+                <TextView
+                        android:id="@+id/preview_classic_fake_min6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_fake_max6"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="18°"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_day7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:textSize="@dimen/widget_preview_dayofweek"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Sun"/>
+
+                <ImageView
+                        android:id="@+id/preview_classic_image7"
+                        android:layout_width="@dimen/widget_textsize_verylarge"
+                        android:layout_height="@dimen/widget_preview_weathericon"
+                        android:layout_below="@id/preview_classic_fake_day7"
+                        android:layout_gravity="center"
+                        android:src="@drawable/preview_element_weathericon2">
+                </ImageView>
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_max7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_image7"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="22°"/>
+                <TextView
+                        android:id="@+id/preview_classic_fake_min7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_fake_max7"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="14°"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_day8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:textSize="@dimen/widget_preview_dayofweek"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Mon"/>
+
+                <ImageView
+                        android:id="@+id/preview_classic_image8"
+                        android:layout_width="@dimen/widget_textsize_verylarge"
+                        android:layout_height="@dimen/widget_preview_weathericon"
+                        android:layout_below="@id/preview_classic_fake_day8"
+                        android:layout_gravity="center"
+                        android:src="@drawable/preview_element_weathericon2">
+                </ImageView>
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_max8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_image8"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="24°"/>
+                <TextView
+                        android:id="@+id/preview_classic_fake_min8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_fake_max8"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="16°"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1">
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_day9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:textSize="@dimen/widget_preview_dayofweek"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="Tue"/>
+
+                <ImageView
+                        android:id="@+id/preview_classic_image9"
+                        android:layout_width="@dimen/widget_textsize_verylarge"
+                        android:layout_height="@dimen/widget_preview_weathericon"
+                        android:layout_below="@id/preview_classic_fake_day9"
+                        android:layout_gravity="center"
+                        android:src="@drawable/preview_element_weathericon1">
+                </ImageView>
+
+                <TextView
+                        android:id="@+id/preview_classic_fake_max9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_image9"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="26°"/>
+                <TextView
+                        android:id="@+id/preview_classic_fake_min9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/preview_classic_fake_max9"
+                        android:textSize="@dimen/widget_preview_temperature"
+                        android:textColor="@color/colorTextWidget"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:text="18°"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView android:id="@+id/widget_reference_text"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentBottom="true"
+                  android:layout_alignParentRight="true"
+                  android:layout_marginLeft="8dp"
+                  android:layout_marginRight="8dp"
+                  android:textColor="@color/colorTextWidget"
+                  android:textSize="@dimen/widget_textsize_small"
+                  android:visibility="visible"
+                  android:gravity="center"
+                  android:text="@string/dwd_notice"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

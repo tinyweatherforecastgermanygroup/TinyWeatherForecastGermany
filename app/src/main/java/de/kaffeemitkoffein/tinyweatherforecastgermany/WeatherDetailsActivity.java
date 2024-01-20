@@ -13,6 +13,7 @@ import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -37,6 +38,7 @@ public class WeatherDetailsActivity extends Activity {
     LayoutInflater layoutInflater;
     ActionBar actionBar;
     Executor executor;
+    APIReaders.PollenReader pollenReader;
     ForecastIcons forecastIcons;
 
     CurrentWeatherInfo currentWeatherInfo;
@@ -76,15 +78,6 @@ public class WeatherDetailsActivity extends Activity {
         public void onReceive(Context c, Intent intent) {
             progressBar.setVisibility(View.INVISIBLE);
             if (intent != null) {
-                final String errorText = DataUpdateService.StopReason.getStopReasonErrorText(context, intent);
-                if ((errorText != null)) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
                if (((intent.getAction().equals(Pollen.ACTION_UPDATE_POLLEN)) && (intent.getBooleanExtra(Pollen.ACTION_UPDATE_POLLEN,true)))
                        || (intent.getAction().equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE))
                        || (intent.getAction().equals(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION)))
@@ -240,6 +233,20 @@ public class WeatherDetailsActivity extends Activity {
         actionBar.setCustomView(R.layout.actionbar_textforecastview);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         executor = Executors.newSingleThreadExecutor();
+        pollenReader = new APIReaders.PollenReader(context) {
+            @Override
+            public void onStart() {
+            }
+            @Override
+            public void onFinished(boolean success) {
+                if (success){
+                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN, Calendar.getInstance().getTimeInMillis());
+                    displayValues();
+                    // check for other updates
+                    ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
+                }
+            }
+        };
         forecastIcons  = new ForecastIcons(context,weatherConditionIcon);
         phaseImages = new PhaseImages(context);
         if (savedInstanceState!=null){
@@ -276,28 +283,21 @@ public class WeatherDetailsActivity extends Activity {
         moonAndSun = (LinearLayout) findViewById(R.id.weatherdetails_moonandsun);
         progressBar = (ProgressBar) findViewById(R.id.weatherdetails_progressbar);
         // make a list what do update
-        ArrayList<String> updateTasks = new ArrayList<String>();
         // Load weather data, fetch from DWD if necessary, establish alarm cycles
         try {
-            currentWeatherInfo = Weather.getCurrentWeatherInfo(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
+            currentWeatherInfo = Weather.getCurrentWeatherInfo(getApplicationContext());
         } catch (Exception e){
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
         }
-        if (currentWeatherInfo!=null){
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.UPDATE_FROM_ACTIVITY,null,currentWeatherInfo);
-        } else {
-            //UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(),UpdateAlarmManager.FORCE_UPDATE,null);
-            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
-        }
+
         pollenArea = WeatherSettings.getPollenRegion(context);
         if (pollenArea!=null){
             pollen = Pollen.GetPollenData(context,pollenArea);
             if ((pollen==null) || (Pollen.isUpdateDue(context))){
-                updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN);
+                SyncRequest syncRequest = MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_POLLEN);
+                ContentResolver.requestSync(syncRequest);
             }
-            updateData(updateTasks);
         }
-        // result will be received by a broadcast event
         TextView textViewNotice = (TextView) findViewById(R.id.weatherdetails_reference_text);
         if ((textViewNotice!=null) && (ForecastBitmap.getDisplayOrientation(context)== Configuration.ORIENTATION_LANDSCAPE)){
             float textSize = context.getResources().getDimension(R.dimen.fcmain_textsize_smaller);
@@ -362,7 +362,7 @@ public class WeatherDetailsActivity extends Activity {
         viewIsBeingCreated = true;
         weatherInfo = currentWeatherInfo.forecast1hourly.get(weatherPosition);
         actionBar.setTitle(currentWeatherInfo.weatherLocation.getDescription(context));
-        actionBar.setSubtitle(Weather.SIMPLEDATEFORMATS.DETAILED_NO_SECONDS.format(new Date(weatherInfo.getTimestamp())));
+        actionBar.setSubtitle(Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED_NO_SECONDS).format(new Date(weatherInfo.getTimestamp())));
         valuesListWarnings.removeAllViews();
         valuesListClouds.removeAllViews();
         valuesListWind.removeAllViews();
@@ -754,12 +754,12 @@ public class WeatherDetailsActivity extends Activity {
             Weather.RiseSetTimes riseSetTimes = new Weather.RiseSetTimes(currentWeatherInfo.weatherLocation,weatherInfo.getTimestamp());
             final Bitmap bitmap = phaseImages.getMoonPhaseImage(currentWeatherInfo.weatherLocation,weatherInfo.getTimestamp());
             DetailsElement detailsElement = new DetailsElement(context.getResources().getString(R.string.preference_displaysunrise_title),
-                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.sun[Weather.RiseSetTimes.TWILIGHT_MORNING]),
-                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.sun[Weather.RiseSetTimes.RISE]),
-                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.sun[Weather.RiseSetTimes.SET]),
-                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.sun[Weather.RiseSetTimes.TWILIGHT_EVENING]),
-                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.moon[Weather.RiseSetTimes.RISE]),
-                    Weather.SIMPLEDATEFORMATS.TIME.format(riseSetTimes.moon[Weather.RiseSetTimes.SET])
+                    Weather.getSimpleDateFormat(Weather.SimpleDateFormats.TIME).format(riseSetTimes.sun[Weather.RiseSetTimes.TWILIGHT_MORNING]),
+                    Weather.getSimpleDateFormat(Weather.SimpleDateFormats.TIME).format(riseSetTimes.sun[Weather.RiseSetTimes.RISE]),
+                    Weather.getSimpleDateFormat(Weather.SimpleDateFormats.TIME).format(riseSetTimes.sun[Weather.RiseSetTimes.SET]),
+                    Weather.getSimpleDateFormat(Weather.SimpleDateFormats.TIME).format(riseSetTimes.sun[Weather.RiseSetTimes.TWILIGHT_EVENING]),
+                    Weather.getSimpleDateFormat(Weather.SimpleDateFormats.TIME).format(riseSetTimes.moon[Weather.RiseSetTimes.RISE]),
+                    Weather.getSimpleDateFormat(Weather.SimpleDateFormats.TIME).format(riseSetTimes.moon[Weather.RiseSetTimes.SET])
                     ,bitmap,true);
             setDetail(moonAndSun,detailsElement,ListItemType.MoonRise);
         }
@@ -926,20 +926,17 @@ public class WeatherDetailsActivity extends Activity {
         }
     }
 
-    private void updateData(ArrayList<String> updateTasks){
-        if (updateTasks!=null){
-            if (updateTasks.size()>0){
-                UpdateAlarmManager.startDataUpdateService(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks);
-                progressBar.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         registerForBroadcast();
-        displayValues();
+        if (WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN)){
+            PrivateLog.log(context,PrivateLog.TEXTS,PrivateLog.INFO,"Pollen data outdated, updating data.");
+            executor.execute(pollenReader);
+        } else {
+            PrivateLog.log(context,PrivateLog.TEXTS,PrivateLog.INFO,"Pollen data is up to date, using data available.");
+            displayValues();
+        }
     }
 
     @Override

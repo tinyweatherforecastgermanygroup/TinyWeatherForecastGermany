@@ -1,4 +1,4 @@
-/**
+ /**
  * This file is part of TinyWeatherForecastGermany.
  *
  * Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
@@ -21,10 +21,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.graphics.*;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,6 +31,7 @@ import android.view.View;
 import android.widget.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Executor;
@@ -52,8 +50,11 @@ public class WeatherLayersActivity extends Activity {
     TableRow tableRowAmbrosia; TableRow tableRowBeifuss; TableRow tableRowRoggen; TableRow tableRowEsche;
     TableRow tableRowBirke; TableRow tableRowHazel; TableRow tableRowErle; TableRow tableRowGraeser;
     boolean forceWeatherUpdateFlag = false;
-    TextView wm_heading_4_1;
-    TextView wm_heading_5_1;
+    APIReaders.PollenReader pollenReader;
+    APIReaders.getLayerImages getLayerImages;
+    Runnable conditionalUpdater;
+    Runnable unconditionalUpdater;
+    long unconditionalUpdateTime = 0;
 
     public class DisplayLayer{
         WeatherLayer weatherLayer;
@@ -80,15 +81,6 @@ public class WeatherLayersActivity extends Activity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent intent) {
-            final String errorText = DataUpdateService.StopReason.getStopReasonErrorText(context,intent);
-            if ((errorText!=null) && (forceWeatherUpdateFlag)){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
             if (intent!=null){
                 if (intent.getAction().equals(ACTION_UPDATE_LAYERS) || (intent.getAction().equals(Pollen.ACTION_UPDATE_POLLEN))){
                     boolean result = false;
@@ -105,14 +97,6 @@ public class WeatherLayersActivity extends Activity {
                 if (intent.getAction().equals(MainActivity.MAINAPP_HIDE_PROGRESS)){
                     forceWeatherUpdateFlag = false;
                 }
-                if (intent.getAction().equals(ACTION_UPDATE_FORBIDDEN)){
-                    long nextUpdateTime = WeatherSettings.getMapLastUpdateTime(context)+1000*60*5;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-                    String timeString = simpleDateFormat.format(new Date(nextUpdateTime));
-                    String text = "\u29d6 "+String.format(context.getResources().getString(R.string.wm_update_not_allowed_yet),timeString);
-                    Toast.makeText(context,text,Toast.LENGTH_LONG).show();
-                }
-
             }
         }
     };
@@ -128,6 +112,7 @@ public class WeatherLayersActivity extends Activity {
     @Override
     protected void onResume() {
         registerForBroadcast();
+        executor.execute(conditionalUpdater);
         super.onResume();
     }
 
@@ -152,15 +137,100 @@ public class WeatherLayersActivity extends Activity {
         actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         executor = Executors.newSingleThreadExecutor();
+        pollenReader = new APIReaders.PollenReader(context) {
+            @Override
+            public void onFinished(boolean success) {
+                if (success){
+                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN,Calendar.getInstance().getTimeInMillis());
+                    PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Pollen data updated.");
+                } else {
+                    PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.ERR,"Updating pollen data failed.");
+                }
+            }
+        };
+        getLayerImages = new APIReaders.getLayerImages(context, WeatherLayer.getLayers(context)) {
+            @Override
+            public void onFinished(boolean success) {
+                if (success){
+                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.LAYERS,Calendar.getInstance().getTimeInMillis());
+                    PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Layer data updated.");
+                } else {
+                    PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.ERR,"Updating layer data failed.");
+                }
+            }
+        };
+        getLayerImages.setForceUpdate(true);
+        conditionalUpdater = new Runnable() {
+            @Override
+            public void run() {
+                if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.POLLEN)){
+                    PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Pollen data is outdated, updating pollen data...");
+                    executor.execute(pollenReader);
+                } else {
+                    PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Pollen data up to date, using present data.");
+                }
+                if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.LAYERS)){
+                    PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Layer data is outdated, updating layers...");
+                    executor.execute(getLayerImages);
+                } else {
+                    PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Layers are up to date, using present data.");
+                }
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateDisplay();
+                            }
+                        });
+                        ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
+                        forceWeatherUpdateFlag = false;
+                    }
+                });
+            }
+        };
+        unconditionalUpdater = new Runnable() {
+            @Override
+            public void run() {
+                unconditionalUpdateTime = Calendar.getInstance().getTimeInMillis();
+                PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Updating pollen data & layers unconditionally...");
+                executor.execute(pollenReader);
+                executor.execute(getLayerImages);
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateDisplay();
+                            }
+                        });
+                        ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
+                        forceWeatherUpdateFlag = false;
+                    }
+                });
+            }
+        };
         // make a list what do update
-        ArrayList<String> updateTasks = new ArrayList<String>();
         // check for pollen update
         PollenArea pollenArea = WeatherSettings.getPollenRegion(context);
         Pollen pollen = Pollen.GetPollenData(context,pollenArea);
         if ((pollen==null) || (Pollen.isUpdateDue(context))){
-            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN);
+            APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context) {
+                @Override
+                public void onFinished(boolean success) {
+                    Intent intent = new Intent();
+                    intent.setAction(Pollen.ACTION_UPDATE_POLLEN);
+                    intent.putExtra(Pollen.UPDATE_POLLEN_RESULT, success);
+                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Pollen data updated successfully.");
+                    context.sendBroadcast(intent);
+                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN, Calendar.getInstance().getTimeInMillis());
+
+                }
+            };
+            executor.execute(pollenReader);
         }
-        updateData(updateTasks);
         weatherLayers = WeatherLayer.getLayers(context);
         getViewIDs();
         APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,weatherLayers){
@@ -173,7 +243,6 @@ public class WeatherLayersActivity extends Activity {
                     }
                 });
             }
-
             @Override
             public void onFinished(boolean result){
                 runOnUiThread(new Runnable() {
@@ -208,11 +277,9 @@ public class WeatherLayersActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem mi) {
         int item_id = mi.getItemId();
         if (item_id == R.id.wl_refresh) {
-            if (!forceWeatherUpdateFlag){
-                ArrayList<String> updateTasks = new ArrayList<String>();
-                updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_LAYERS);
-                updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_POLLEN);
-                UpdateAlarmManager.startDataUpdateService(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks);
+            // forbid parallel sync, forbid update within last 90 sec
+            if ((!forceWeatherUpdateFlag) && (Calendar.getInstance().getTimeInMillis()>unconditionalUpdateTime*90*1000)){
+                executor.execute(unconditionalUpdater);
                 forceWeatherUpdateFlag = true;
             } else {
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.ERR,"Layer update already running. Ignoring new user request to do so.");
@@ -577,14 +644,6 @@ public class WeatherLayersActivity extends Activity {
             TableRow tableRow1 = (TableRow) findViewById(id);
             if (tableRow1!=null){
                 tableRow1.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
-            }
-        }
-    }
-
-    private void updateData(ArrayList<String> updateTasks){
-        if (updateTasks!=null){
-            if (updateTasks.size()>0){
-                UpdateAlarmManager.startDataUpdateService(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks);
             }
         }
     }

@@ -24,6 +24,9 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Build;
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
@@ -32,21 +35,47 @@ public class ClockWidget extends ClassicWidget {
 
     @Override
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances) {
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c,UpdateAlarmManager.UPDATE_FROM_WIDGET);
+        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i = 0; i < widget_instances.length; i++) {
+                // determine widget diameters in pixels
+                Bundle appWidgetOptions = awm.getAppWidgetOptions(widget_instances[i]);
+                // diameters in portrait mode
+                int widthPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                int heightPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+                // diameters in landscape mode
+                int widthLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+                int heightLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+                int orientation = c.getResources().getConfiguration().orientation;
+                int widgetWidth = widthPortrait; int widgetHeight = heightPortrait;
+                if (orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    widgetWidth = widthLandscape;
+                    widgetHeight = heightLandscape;
+                }
+                //Log.v("widget","Widget = "+widgetWidth+" / "+widgetHeight);
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.clockwidget_layout);
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent_weather = new Intent(c, MainActivity.class);
-                PendingIntent pendingIntent_weather = PendingIntent.getActivity(c, 0, intent_weather, 0);
+                // mutable/immutable flags are available since sdk 23
+                PendingIntent pendingIntent_weather;
+                if (Build.VERSION.SDK_INT>=23){
+                    pendingIntent_weather = PendingIntent.getActivity(c, 0, intent_weather, PendingIntent.FLAG_IMMUTABLE);
+                } else {
+                    pendingIntent_weather = PendingIntent.getActivity(c, 0, intent_weather, 0);
+                }
                 remoteViews.setOnClickPendingIntent(R.id.clockwidget_weather_container, pendingIntent_weather);
                 //sets 2nd pending intent to go to clock alarms when clock is touched.
                 Intent intent_clock = new Intent(Intent.ACTION_MAIN);
                 intent_clock.addCategory(Intent.CATEGORY_LAUNCHER);
                 ComponentName componentName = new ComponentName("com.android.deskclock", "com.android.deskclock.DeskClock");
                 intent_clock.setComponent(componentName);
-                PendingIntent pendingIntent_clock = PendingIntent.getActivity(c, 0, intent_clock, 0);
+                PendingIntent pendingIntent_clock;
+                if (Build.VERSION.SDK_INT>=23){
+                    pendingIntent_clock = PendingIntent.getActivity(c, 0, intent_clock, PendingIntent.FLAG_IMMUTABLE);
+                } else {
+                    pendingIntent_clock = PendingIntent.getActivity(c, 0, intent_clock, 0);
+                }
                 remoteViews.setOnClickPendingIntent(R.id.clockwidget_clock, pendingIntent_clock);
                 remoteViews.setOnClickPendingIntent(R.id.widget_date, pendingIntent_clock);
                 remoteViews.setOnClickPendingIntent(R.id.widget_nextalarm, pendingIntent_clock);

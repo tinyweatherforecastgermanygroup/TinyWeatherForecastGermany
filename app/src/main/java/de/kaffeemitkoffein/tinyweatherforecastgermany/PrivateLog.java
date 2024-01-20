@@ -48,6 +48,7 @@ public class PrivateLog {
     public static final String ONBOOT = "onboot";
     public static final String GB = "wearable";
     public static final String UPDATER = "updater";
+    public static final String SYNC = "sync";
     public static final String DATA = "data";
     public static final String WARNINGS = "warnings";
     public static final String WIDGET = "widget";
@@ -55,6 +56,7 @@ public class PrivateLog {
     public static final String STATIONS = "stations";
     public static final String RADAR  = "radar";
     public static final String ALERTS  = "alerts";
+    public static final String LAYERS  = "layers";
 
     public static final int INFO = 0;
     public static final int WARN = 1;

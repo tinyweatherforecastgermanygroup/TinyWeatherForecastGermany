@@ -20,6 +20,8 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.content.*;
 import android.content.pm.ActivityInfo;
@@ -33,9 +35,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.*;
-import android.os.Handler;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
 import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
@@ -81,7 +81,7 @@ public class MainActivity extends Activity {
     AutoCompleteTextView autoCompleteTextView;
     StationSearchEngine stationSearchEngine;
 
-    public static final SimpleDateFormat hourMinuteSecondMilliSecDateFormat = new SimpleDateFormat("HH:mm:ss:SSS");
+    public static final SimpleDateFormat hourMinuteSecondMilliSecDateFormat = new SimpleDateFormat("HH:mm:ss:SSS",Locale.getDefault());
 
     CurrentWeatherInfo weatherCard;
 
@@ -109,26 +109,15 @@ public class MainActivity extends Activity {
 
     private Activity thisActivity;
 
+    APIReaders.WeatherForecastRunnable weatherForecastRunnable;
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent intent) {
-            final String errorText = DataUpdateService.StopReason.getStopReasonErrorText(context,intent);
-            if ((errorText!=null) && (forceWeatherUpdateFlag)){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, errorText, Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
             if (intent.getAction().equals(MAINAPP_CUSTOM_REFRESH_ACTION)){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"received broadcast => custom refresh action");
                 displayWeatherForecast();
                 forceWeatherUpdateFlag = false;
-                if (API_TESTING_ENABLED){
-                    test_position ++;
-                    testAPI_Call();
-                }
             }
             if (intent.getAction().equals(MAINAPP_SSL_ERROR)){
                 PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"received broadcast => ssl error intent received by main app.");
@@ -152,7 +141,7 @@ public class MainActivity extends Activity {
                             // re-launch the weather update via http
                             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"SSL disabled permanently due to errors.");
                             PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"re-launching weather update.");
-                            forcedWeatherUpdate();
+                            forcedOverallUpdate();
                             dialogInterface.dismiss();
                         }
                     });
@@ -369,48 +358,36 @@ public class MainActivity extends Activity {
     protected void onResume(){
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app resumed.");
         registerForBroadcast();
-        if (WeatherSettings.GPSAuto(context)){
-            weatherLocationManager.checkLocation();
-        } else {
-            if (WeatherSettings.useBackgroundLocation(context)){
-                if (WeatherLocationManager.checkForBackgroundLocation(context)){
-                    WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
-                }
-            }
-        }
+        final Context applicationContext = this;
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                try {
-                    loadStationsData();
-                } catch (Exception e){
-                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
+                if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)){
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is outdated, getting new weather data.");
+                    executor.execute(weatherForecastRunnable);
+                } else {
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is up to date, no need to fetch new data.");
+                    loadCurrentWeather();
                 }
             }
         });
-        final Context applicationContext = this;
+        if ((stationsManager==null) || (!stationsManager.loaded)){
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        loadStationsData();
+                    } catch (Exception e){
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
+                    }
+                }
+            });
+        }
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 PrivateLog.log(applicationContext,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widgets from main activity...");
                 WidgetRefresher.refresh(applicationContext);
-            }
-        });
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                loadCurrentWeather();
-                spinner.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        executor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                checkForBatteryOptimization(applicationContext);
-                            }
-                        });
-                    }
-                },6000);
             }
         });
         super.onResume();
@@ -452,9 +429,13 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // remove area database lock if necessary
+        context = getApplicationContext();
+        if (WeatherSettings.isAreaDatabaseLocked(context)){
+            WeatherSettings.unlockAreaDatabase(context);
+        }
         if (WeatherSettings.isFirstAppLaunch(this)){
             super.onCreate(savedInstanceState);
-            context = getApplicationContext();
             // init Preference
             WeatherSettings weatherSettings = new WeatherSettings(context);
             weatherSettings.savePreferences();
@@ -472,11 +453,52 @@ public class MainActivity extends Activity {
                     performingFirstAppLaunch = intent.getBooleanExtra(WelcomeActivity.WA_EXTRA_ISFIRSTAPPLAUNCH,false);
                 }
             }
-            context = getApplicationContext();
             thisActivity = this;
             executor = Executors.newSingleThreadExecutor();
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
             setContentView(R.layout.activity_main);
+            registerSyncAdapter(context);
+            weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(context, null) {
+                @Override
+                public void onStart() {
+                    super.onStart();
+                    // do nothing
+                }
+                @Override
+                public void onPositiveResult() {
+                    // update GadgetBridge and widgets
+                    MainActivity.updateAppViews(context, null);
+                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Weather update: success");
+                    super.onPositiveResult();
+                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,Calendar.getInstance().getTimeInMillis());
+                    // finally, do a sync of other conditions. Weather will not by updated, since setLastUpdate was called.
+                    // If no sync is due, nothing will happen.
+                    executor.execute(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    ContentResolver.requestSync(getManualSyncRequest(context, WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
+                                }
+                            });
+                    loadCurrentWeather();
+                }
+                @Override
+                public void onNegativeResult() {
+                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.ERR, "Weather update: failed, error.");
+                    if (ssl_exception) {
+                        PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.ERR, "SSL exception detected by service.");
+                        Intent ssl_intent = new Intent();
+                        ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
+                        context.sendBroadcast(ssl_intent);
+                    }
+                    // need to update main app with old data
+                    Intent intent = new Intent();
+                    intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
+                    context.sendBroadcast(intent);
+                    // need to update views with old data: GadgetBridge and widgets
+                    MainActivity.updateAppViews(context, null);
+                }
+            };
             weatherList = (ListView) findViewById(R.id.main_listview);
             stationsManager = new StationsManager(context);
             autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
@@ -498,7 +520,10 @@ public class MainActivity extends Activity {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
             // anchor long click update
             try {
-                // prepareAreaDatabase(context);
+                if (prepareAreaDatabase(context)){
+                    Intent serviceStartIntent = new Intent(context,CreateAreasDatabaseService.class);
+                    startService(serviceStartIntent);
+                }
             } catch (Exception e){
                 // ignore
             }
@@ -547,6 +572,10 @@ public class MainActivity extends Activity {
                 if (WeatherSettings.getLastAppVersionCode(context)<46){
                     StationFavorites.deleteList(context);
                 }
+                // migrate old sync settings to new class WeatherSettings.Updates
+                if (WeatherSettings.getLastAppVersionCode(context)<35){
+                    WeatherSettings.Updates.DeprecatedPreferences.migrateDeprecatedSyncSettings(context);
+                }
                 showWhatsNewDialog();
                 WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
             }
@@ -574,13 +603,6 @@ public class MainActivity extends Activity {
             getApplication().registerActivityLifecycleCallbacks(weatherLocationManager);
             weatherLocationManager.setView((RelativeLayout) findViewById(R.id.gps_progress_holder));
             weatherLocationManager.registerCancelButton((Button) findViewById(R.id.cancel_gps));
-            if (WeatherSettings.GPSAuto(context) && (!WeatherLocationManager.hasLocationPermission(context))){
-                requestLocationPermission(PERMISSION_CALLBACK_LOCATION);
-            }
-            // test API
-            if (API_TESTING_ENABLED){
-                testAPI_Init();
-            }
             // register view to clear favorites
             ImageView reset_favorites_imageview = (ImageView) findViewById(R.id.main_reset_favorites);
             if (reset_favorites_imageview!=null){
@@ -593,17 +615,27 @@ public class MainActivity extends Activity {
                 });
             }
             // check if a geo intent was sent
-
             Location intentLocation = getLocationForGeoIntent(getIntent());
             if (intentLocation!=null){
                 launchStationSearchByLocation(intentLocation);
             }
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
-            popupHint();
+            // check for permissions
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    weatherList.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            requestPermissionsAndShowHints();
+                        }
+                    });
+                }
+            });
             // create pollen area database
             if (!PollenArea.IsPollenAreaDatabaseComplete(context)){
                 PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Pollen areas database is empty or corrupt and needs to be fetched from the geoserver.");
-                if (DataUpdateService.suitableNetworkAvailable(context)){
+                if (Weather.suitableNetworkAvailable(context)){
                     APIReaders.PollenAreaReader pollenAreaReader = new APIReaders.PollenAreaReader(context){
                         @Override
                         public void onFinished() {
@@ -619,7 +651,7 @@ public class MainActivity extends Activity {
             }
             // Prefetch maps for better performance. This may be turned off later by the user.
             // This will be done at a maximum of once per hour, see WeatherSettings.preFetchMaps.
-            if (((performingFirstAppLaunch) || (WeatherSettings.preFetchMaps(context))) && DataUpdateService.suitableNetworkAvailable(context)){
+            if (((performingFirstAppLaunch) || (WeatherSettings.preFetchMaps(context))) && Weather.suitableNetworkAvailable(context)){
                 // read pollen data to be able to pre-generate pollen maps
                 final APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context){
                     @Override
@@ -857,6 +889,7 @@ public class MainActivity extends Activity {
                     stationsManager = new StationsManager(context);
                 }
                 stationsManager.stations = stations;
+                stationsManager.loaded = true;
                 stationSearchEngine = new StationSearchEngine(context,executor,null,stationsManager){
                     @Override
                     public void newEntries(ArrayList<String> newEntries){
@@ -887,68 +920,9 @@ public class MainActivity extends Activity {
         executor.execute(stationsReader);
     }
 
-    private void testAPI_Worker(){
-        if (test_position<stationsManager.getStationCount()){
-            final WeatherSettings weatherSettings = new WeatherSettings(this);
-            weatherSettings.station_name = stationsManager.getName(test_position);
-            weatherSettings.applyPreference(WeatherSettings.PREF_STATION_NAME,weatherSettings.station_name);
-            final String name = stationsManager.getName(test_position);
-            final String description = stationsManager.getDescription(test_position);
-            Handler handler = new Handler();
-            //Log.v(Tag.MAIN,"Waiting.");
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                   //Log.v(Tag.MAIN,"------------------------------------------");
-                   //Log.v(Tag.MAIN,"Testing station # "+test_position+" named "+name+ " described as "+description);
-                   //Log.v(Tag.MAIN,"-------------------------------------------");
-                    weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
-                    if ((weatherCard == null) || (API_TESTING_ENABLED)){
-                        ArrayList<String> updateTasks = new ArrayList<String>();
-                        updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
-                        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,weatherCard);
-                    } else {
-                        displayWeatherForecast();
-                    }
-                }
-            },4000);
-        } else {
-             //Log.v(Tag.MAIN,"Testing finished.");
-        }
-    }
-
-    private void testAPI_Call(){
-        final Context context = this;
-        registerForBroadcast();
-        if (stationsManager.getStationCount()==0){
-            StationsManager.StationsReader stationsReader = new StationsManager.StationsReader(context) {
-                @Override
-                public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> stations) {
-                    super.onLoadingListFinished(stations);
-                    testAPI_Worker();
-                }
-            };
-            executor.execute(stationsReader);
-        } else {
-            testAPI_Worker();
-        }
-    }
-
-    private void testAPI_Init(){
-        // reset preferences
-        PreferenceManager.getDefaultSharedPreferences(this).edit().clear().commit();
-        // set start position
-        final WeatherSettings weatherSettings = new WeatherSettings(this);
-        // disable gadgetbridge support for testing und set start position in settings
-        weatherSettings.serve_gadgetbridge = false;
-        weatherSettings.station_name = stationsManager.getName(test_position);
-        weatherSettings.applyPreference(WeatherSettings.PREF_SERVE_GADGETBRIDGE,false);
-        weatherSettings.applyPreference(WeatherSettings.PREF_STATION_NAME,weatherSettings.station_name);
-        testAPI_Call();
-    }
 
     public void displayUpdateTime(final CurrentWeatherInfo currentWeatherInfo){
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
+        final SimpleDateFormat simpleDateFormat = Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED_NO_SECONDS);
         String updatetime = simpleDateFormat.format(new Date(currentWeatherInfo.polling_time));
         TextView textView_update_time = (TextView) findViewById(R.id.main_update_time);
         textView_update_time.setText(getApplicationContext().getResources().getString(R.string.main_updatetime)+" "+updatetime);
@@ -1070,7 +1044,7 @@ public class MainActivity extends Activity {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    UpdateAlarmManager.updateAppViews(context,weatherCard);
+                    updateAppViews(context,weatherCard);
                 }
             });
             // recreate the whole view
@@ -1082,13 +1056,6 @@ public class MainActivity extends Activity {
             });
             return;
         }
-        // trigger one update unconditionally here
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY,null,null);
-            }
-        });
         // display weather without any update mode active, but only if adapter is empty
         displayWeatherForecast();
     }
@@ -1096,12 +1063,16 @@ public class MainActivity extends Activity {
     public void displayWeatherForecast() {
         boolean dataChanged = false;
         // check if weather forecast in memory is outdated, fetch from database if necessary
+        if (!Weather.hasCurrentWeatherInfo(context)){
+            ContentResolver.requestSync(MainActivity.getManualSyncRequest(getApplicationContext(),
+                    WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_WEATHER));
+        }
         if (weatherCard==null){
-            weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
+            weatherCard = Weather.getCurrentWeatherInfo(context);
             dataChanged = true;
         } else {
             if (Weather.getPollingTime(context) > weatherCard.polling_time) {
-                weatherCard = Weather.getCurrentWeatherInfo(context,UpdateAlarmManager.UPDATE_FROM_ACTIVITY);
+                weatherCard = Weather.getCurrentWeatherInfo(context);
                 dataChanged = true;
             }
         }
@@ -1147,7 +1118,6 @@ public class MainActivity extends Activity {
                 });
             }
         }
-
     }
 
     private void displayAdapter(final CurrentWeatherInfo weatherCard){
@@ -1185,12 +1155,11 @@ public class MainActivity extends Activity {
         }
    }
 
-    public void forcedWeatherUpdate(){
-        ArrayList<String> updateTasks = new ArrayList<String>();
-        updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WEATHER);
-        updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_WARNINGS);
-        UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(getApplicationContext(), UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,weatherCard);
+    public void forcedOverallUpdate(){
         forceWeatherUpdateFlag = true;
+        executor.execute(weatherForecastRunnable);
+        SyncRequest syncRequest = getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_FORCE);
+        ContentResolver.requestSync(syncRequest);
     }
 
     public static int getColorFromResource(Context context, int id){
@@ -1276,7 +1245,7 @@ public class MainActivity extends Activity {
         int item_id = mi.getItemId();
         if (item_id == R.id.menu_refresh){
             PrivateLog.log(this,PrivateLog.MAIN,PrivateLog.INFO,"user requests update => force update");
-            forcedWeatherUpdate();
+            executor.execute(weatherForecastRunnable);
             return true;
         }
         if (item_id == R.id.menu_warnings) {
@@ -1294,9 +1263,7 @@ public class MainActivity extends Activity {
             return true;
         }
         if (item_id == R.id.menu_travelupdate) {
-            ArrayList<String> updateTasks = new ArrayList<String>();
-            updateTasks.add(DataUpdateService.SERVICEEXTRAS_UPDATE_LOCATIONSLIST);
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(context, UpdateAlarmManager.UPDATE_FROM_ACTIVITY,updateTasks,weatherCard);
+            ContentResolver.requestSync(getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_FAVORITES));
             return true;
         }
         if (item_id==R.id.menu_license) {
@@ -1483,6 +1450,7 @@ public class MainActivity extends Activity {
             PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Area database size is: "+Areas.getAreaDatabaseSize(context.getApplicationContext())+", expected: "+Areas.AreaDatabaseCreator.DATABASE_SIZE);
             PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.ERR,"Area database will be cleared...");
             deleteAreaDatabase(context.getApplicationContext());
+            return true;
         }
         // update area database if:
         // a) database does not exist
@@ -1510,7 +1478,7 @@ public class MainActivity extends Activity {
         ThemePicker.tintAlertDialogButtons(context,alertDialog);
     }
 
-    public static void askDialog(Context context, Integer icon, String title, String[] text,  DialogInterface.OnClickListener positiveListener){
+    public static void askDialog(Context context, Integer icon, String title, String[] text, DialogInterface.OnClickListener positiveListener){
         AlertDialog.Builder builder = new AlertDialog.Builder(context,0);
         if (icon!=null){
             builder.setIcon(icon);
@@ -1708,7 +1676,7 @@ public class MainActivity extends Activity {
             text_latitude.setText(new DecimalFormat("00.00000").format(location.getLatitude()));
             TextView gps_known_knote = view.findViewById(R.id.geoinput_known_note);
             gps_known_knote.setVisibility(View.VISIBLE);
-            final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy, HH:mm:ss");
+            final SimpleDateFormat simpleDateFormat = Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED_NO_SECONDS);
             gps_known_knote.setText(getApplicationContext().getResources().getString(R.string.geoinput_known_note)+" "+simpleDateFormat.format(location.getTime()));
         }
         text_latitude.setTag("autofill"); text_longitude.setTag("autofill");
@@ -1936,25 +1904,71 @@ public class MainActivity extends Activity {
             }
         }
     }
-
+    public static final int PERMISSION_CALLBACK_ALL                        = 120;
     public static final int PERMISSION_CALLBACK_LOCATION                   = 121;
     public static final int PERMISSION_CALLBACK_LOCATION_BEFORE_BACKGROUND = 122;
     public static final int PERMISSION_CALLBACK_BACKGROUND_LOCATION        = 123;
+    public static final int PERMISSION_CALLBACK_POST_NOTIFICATIONS         = 124;
     public static final String LOCATION_DENIED                             = "android.permission.LOCATION_DENIED";
 
     private void requestLocationPermission(int callback){
         // below SDK 23, permissions are granted at app install.
-        if (android.os.Build.VERSION.SDK_INT >=23){
+        if (Build.VERSION.SDK_INT >=23){
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},callback);
             WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.LOCATION);
         }
     }
 
+    private boolean requestNotificationPermission(){
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)!=PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS},PERMISSION_CALLBACK_POST_NOTIFICATIONS);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void requestPermissionsAndShowHints(){
+        // below SDK 23, permissions are granted at app install.
+        ArrayList<String> permissionsToRequest = new ArrayList<String>();
+        if (Build.VERSION.SDK_INT >=23){
+            // first, handle notifications; only relevant for sdk >= 33
+            if ((WeatherSettings.notifyWarnings(context)) && (Build.VERSION.SDK_INT >= 33)){
+                if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)!=PackageManager.PERMISSION_GRANTED){
+                    permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS);
+                }
+            }
+            if (WeatherSettings.GPSAuto(context) && (!WeatherLocationManager.hasLocationPermission(context))){
+                permissionsToRequest.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+                permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
+                WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.LOCATION);
+            }
+            if (permissionsToRequest.size()>0){
+                String[] perms = new String[permissionsToRequest.size()];
+                for (int i=0; i<permissionsToRequest.size(); i++){
+                    perms[i] = permissionsToRequest.get(i);
+                }
+                requestPermissions(perms,PERMISSION_CALLBACK_ALL);
+            }
+        }
+        if (permissionsToRequest.size()==0){
+            popupHint();
+            if (MainActivity.prepareAreaDatabase(getApplicationContext())){
+                Intent serviceStartIntent = new Intent(this,CreateAreasDatabaseService.class);
+                startService(serviceStartIntent);
+            } else {
+                // nothing to do
+            }
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void onRequestPermissionsResult(int permRequestCode, String perms[], int[] grantRes){
+    public void onRequestPermissionsResult(int permRequestCode, String[] perms, int[] grantRes){
         boolean hasLocationPermission = false;
         boolean hasBackgroundLocationPermission = false;
+        boolean hasPostNotificationsPermission = false;
         for (int i=0; i<grantRes.length; i++){
             if ((perms[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
                 hasLocationPermission = true;
@@ -1965,6 +1979,9 @@ public class MainActivity extends Activity {
             if ((perms[i].equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
                 hasLocationPermission = true;
             }
+            if ((perms[i].equals(Manifest.permission.POST_NOTIFICATIONS)) && (grantRes[i]==PackageManager.PERMISSION_GRANTED)){
+                hasPostNotificationsPermission = true;
+            }
         }
         // on sdk below 29, background permission is not present/always true if normal, foreground permission was granted.
         // the above loop will result in "false" for sdk below 29, and this needs to be fixed.
@@ -1973,7 +1990,7 @@ public class MainActivity extends Activity {
                 hasBackgroundLocationPermission=true;
             }
         }
-        if (permRequestCode == PERMISSION_CALLBACK_LOCATION){
+        if ((permRequestCode == PERMISSION_CALLBACK_LOCATION) || (permRequestCode==PERMISSION_CALLBACK_ALL)){
             if (hasLocationPermission){
                 weatherLocationManager.startGPSLocationSearch();
             } else {
@@ -1985,6 +2002,16 @@ public class MainActivity extends Activity {
                     }
                 }
             }
+        }
+        if ((permRequestCode == PERMISSION_CALLBACK_POST_NOTIFICATIONS) || (permRequestCode==PERMISSION_CALLBACK_ALL)){
+            // re-do notify current warnings
+
+        }
+        if (MainActivity.prepareAreaDatabase(getApplicationContext())){
+            Intent serviceStartIntent = new Intent(this,CreateAreasDatabaseService.class);
+            startService(serviceStartIntent);
+        } else {
+            // nothing to do
         }
     }
 
@@ -2074,10 +2101,30 @@ public class MainActivity extends Activity {
         finish();
     }
 
-    public void checkForBatteryOptimization(final Context context){
-        PowerManager powerManager = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
+    /**
+     * Checks if battery optimizations are ignored.
+     *
+     * Returns true if ignored or not in place (api below 23), returns false if in place or powerManager not
+     * accessible.
+     *
+     * @param context
+     * @return
+     */
+
+    public static boolean isIgnoringBatteryOptimizations(Context context){
+        if (android.os.Build.VERSION.SDK_INT >= 23){
+            PowerManager powerManager = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
+            if (powerManager!=null){
+                return powerManager.isIgnoringBatteryOptimizations(context.getApplicationContext().getPackageName());
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkForBatteryOptimizationForLocation(final Context context){
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            boolean isIgnoringBatteryOptimizations = powerManager.isIgnoringBatteryOptimizations(context.getApplicationContext().getPackageName());
+            boolean isIgnoringBatteryOptimizations = isIgnoringBatteryOptimizations(context);
             if ((!isIgnoringBatteryOptimizations) && (WeatherSettings.getBatteryOptimiziatonFlag(context)==WeatherSettings.BatteryFlag.AGREED)){
                 runOnUiThread(new Runnable() {
                     @Override
@@ -2085,8 +2132,72 @@ public class MainActivity extends Activity {
                         Settings.openBatteryOptimizationSettings(context);
                     }
                 });
+                return true;
             }
         }
+        return false;
+    }
+
+    public static void updateAppViews(Context context, CurrentWeatherInfo weatherCard){
+        // update GadgetBridge
+        GadgetbridgeAPI.sendWeatherBroadcastIfEnabled(context,weatherCard);
+        WidgetRefresher.refresh(context);
+        // save the last update time
+        WeatherSettings.setViewsLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
+    }
+
+
+    public final static String DUMMY_ACCOUNT_NAME = "Weather";
+    public final static String DUMMY_ACCOUNT_PASS = "somePassword";
+
+    public static Account getWeatherAccount(Context context){
+        return new Account(DUMMY_ACCOUNT_NAME,context.getResources().getString(R.string.account_type));
+    }
+
+    public static boolean isSyncAccountEnabled(Context context){
+        // getSyncAutomatically requires the READ_SYNC_SETTINGS permission
+        Account account = getWeatherAccount(context);
+        boolean syncAutomatically = ContentResolver.getSyncAutomatically(account,WeatherContentProvider.AUTHORITY);
+        return syncAutomatically;
+    }
+
+    public static void setSyncAccountEnabled(Context context, Account account, boolean enable){
+        ContentResolver.setSyncAutomatically(account,WeatherContentProvider.AUTHORITY,enable);
+    }
+
+    public static void registerSyncAdapter(Context context){
+        AccountManager accountManager = AccountManager.get(context);
+        Account account = getWeatherAccount(context);
+        // addAccountExplicitly needs the AUTHENTICATE_ACCOUNTS permission for api <= 22
+        boolean accountAddResult = accountManager.addAccountExplicitly(account,null,null);
+        if (accountAddResult){
+            // setIsSyncable & setSyncAutomatically needs the WRITE_SYNC_SETTINGS permission
+            ContentResolver.setIsSyncable(account,WeatherContentProvider.AUTHORITY,1);
+            setSyncAccountEnabled(context,account,true);
+            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Sync account added.");
+        } else {
+            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Sync account already exists.");
+        }
+        long necessarySyncInterval = WeatherSettings.Updates.getSyncAdapterIntervalInSeconds(context);
+        // addPeriodicSync requires the WRITE_SYNC_SETTINGS permission
+        ContentResolver.addPeriodicSync(account,
+                WeatherContentProvider.AUTHORITY,
+                Bundle.EMPTY,
+                necessarySyncInterval);
+        PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Sync adapter registered, interval: "+necessarySyncInterval+" sec");
+    }
+
+    public static SyncRequest getManualSyncRequest(Context context, int updateFlags){
+        Bundle bundle = new Bundle();
+        bundle.putInt(WeatherSyncAdapter.EXTRAS_UPDATE_FLAG,updateFlags);
+        SyncRequest syncRequest = new SyncRequest.Builder()
+                .setSyncAdapter(getWeatherAccount(context),WeatherContentProvider.AUTHORITY)
+                .setDisallowMetered(!WeatherSettings.useMeteredNetworks(context))
+                .setExtras(bundle)
+                .setManual(true)
+                .setNoRetry(true)
+                .syncOnce().build();
+        return syncRequest;
     }
 
 }

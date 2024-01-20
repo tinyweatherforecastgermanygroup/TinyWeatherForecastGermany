@@ -54,6 +54,7 @@
         <item name="ic_list">@mipmap/ic_list_black_24dp</item>
         <item name="ic_gps_fixed">@mipmap/ic_gps_fixed_black_24dp</item>
         <item name="ic_info_outline">@mipmap/ic_info_outline_black_24dp</item>
+        <item name="ic_warning">@mipmap/ic_warning_black_24dp</item>
         <item name="ic_copyright">@mipmap/ic_copyright_black_24dp</item>
         <item name="ic_announcement">@mipmap/ic_announcement_black_24dp</item>
         <item name="ic_chevron_left">@mipmap/ic_chevron_left_black_24dp</item>
@@ -178,6 +179,7 @@
         <item name="ic_list">@mipmap/ic_list_white_24dp</item>
         <item name="ic_gps_fixed">@mipmap/ic_gps_fixed_white_24dp</item>
         <item name="ic_info_outline">@mipmap/ic_info_outline_white_24dp</item>
+        <item name="ic_warning">@mipmap/ic_warning_white_24dp</item>
         <item name="ic_copyright">@mipmap/ic_copyright_white_24dp</item>
         <item name="ic_announcement">@mipmap/ic_announcement_white_24dp</item>
         <item name="ic_chevron_left">@mipmap/ic_chevron_left_white_24dp</item>

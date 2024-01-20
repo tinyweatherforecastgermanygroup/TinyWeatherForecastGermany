@@ -359,19 +359,59 @@
 
     <PreferenceCategory
         android:key="PREF_category_general"
-        android:title="@string/preference_category_general">
+        android:title="@string/preference_category_sync">
+
+        <Preference
+                android:key="PREF_sync_off_hint"
+                android:summary="@string/sync_off_notice"
+                android:icon="?attr/ic_warning">
+        </Preference>
 
         <CheckBoxPreference
-            android:key="PREF_setalarm"
-            android:title="@string/preference_setalarm_title"
-            android:summary="@string/preference_setalarm_summary"
-            android:defaultValue="true"/>
-
-        <CheckBoxPreference
-                android:key="PREF_prefetch_maps"
-                android:title="@string/preference_prefetch_maps_title"
-                android:summary="@string/preference_prefetch_maps_summary"
+                android:key="PREF_update_weather_sync"
+                android:title="@string/preference_sync_weather_title"
+                android:summary="@string/preference_sync_weather_summary"
                 android:defaultValue="true"/>
+
+        <CheckBoxPreference
+                android:key="PREF_update_warnings_sync"
+                android:title="@string/preference_sync_warnings_title"
+                android:summary="@string/preference_sync_warnings_summary"
+                android:defaultValue="true"/>
+
+        <CheckBoxPreference
+                android:key="PREF_update_pollen_sync"
+                android:title="@string/preference_sync_pollen_title"
+                android:summary="@string/preference_sync_pollen_summary"
+                android:defaultValue="false"/>
+
+        <CheckBoxPreference
+                android:key="PREF_update_texts_sync"
+                android:title="@string/preference_sync_textforecasts_title"
+                android:summary="@string/preference_sync_textforecasts_summary"
+                android:defaultValue="false"/>
+
+        <CheckBoxPreference
+                android:key="PREF_update_layers_sync"
+                android:title="@string/preference_sync_maps_title"
+                android:summary="@string/preference_sync_maps_summary"
+                android:defaultValue="false"/>
+
+        <ListPreference
+            android:key="PREF_update_weather_interval"
+            android:title="@string/preference_updateinterval_title"
+            android:summary="@string/preference_pdateinterval_summary"
+            android:entries="@array/updateinterval_text"
+            android:entryValues="@array/updateinterval_values"
+            android:defaultValue="16"/>
+
+        <ListPreference
+                android:key="PREF_update_warnings_interval"
+                android:title="@string/preference_cache_warnings_title"
+                android:summary="@string/preference_cache_warnings_summary"
+                android:entries="@array/cache_warnings_time_text"
+                android:entryValues="@array/cache_warnings_time_values"
+                android:defaultValue="2"/>
 
         <CheckBoxPreference
                 android:key="PREF_use_metered_networks"
@@ -385,14 +425,6 @@
                 android:summary="@string/preference_wifionly_summary"
                 android:defaultValue="false"/>
 
-        <ListPreference
-            android:key="PREF_updateinterval"
-            android:title="@string/preference_updateinterval_title"
-            android:summary="@string/preference_pdateinterval_summary"
-            android:entries="@array/updateinterval_text"
-            android:entryValues="@array/updateinterval_values"
-            android:defaultValue="24"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -403,14 +435,6 @@
                 android:title="@string/preference_disable_warnings_title"
                 android:summary="@string/preference_disable_warnings_summary"
                 android:defaultValue="false"/>
-
-        <ListPreference
-            android:key="PREF_warnings_cachetime"
-            android:title="@string/preference_cache_warnings_title"
-            android:summary="@string/preference_cache_warnings_summary"
-            android:entries="@array/cache_warnings_time_text"
-            android:entryValues="@array/cache_warnings_time_values"
-            android:defaultValue="30"/>
 
         <PreferenceScreen
                 android:key="PREF_screen_notification"
@@ -466,17 +490,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="@string/preference_category_texts">
-
-        <CheckBoxPreference
-                android:key="PREF_update_textforecasts"
-                android:title="@string/preference_update_textforecasts_title"
-                android:summary="@string/preference_update_textforecasts_summary"
-                android:defaultValue="true"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="@string/preference_category_widget">
 
         <CheckBoxPreference
@@ -526,6 +539,12 @@
 
     <PreferenceCategory
         android:title="@string/preference_category_other">
+
+        <CheckBoxPreference
+                android:key="PREF_prefetch_maps"
+                android:title="@string/preference_prefetch_maps_title"
+                android:summary="@string/preference_prefetch_maps_summary"
+                android:defaultValue="true"/>
 
         <PreferenceScreen
             android:key="PREF_screen_gadgetbridge"

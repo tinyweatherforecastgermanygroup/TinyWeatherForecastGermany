@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class ForecastBitmap{
 
@@ -264,7 +265,7 @@ public class ForecastBitmap{
         int position = weatherInfos.size()-1;
         while (position>=0){
             // draw timestamp
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
             Date date = new Date();
             date.setTime(weatherInfos.get(position).getTimestamp());
             String timetext = format.format(date);
@@ -885,7 +886,7 @@ public class ForecastBitmap{
                 }
                 // is noon?
                 if ((weatherInfo1.getTimestamp()%43200000==0) && (weatherInfo1.getTimestamp()%86400000!=0)){
-                    String dayOfWeek = Weather.GetDateString(Weather.SIMPLEDATEFORMATS.DAYOFWEEK,weatherInfo1.getTimestamp());
+                    String dayOfWeek = Weather.GetDateString(Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DAYOFWEEK),weatherInfo1.getTimestamp());
                     float DOWWidth = textPaint.measureText(dayOfWeek);
                     float startDOWX = x1 - DOWWidth/2;
                     // do not draw text if it starts left of the y-axis or if it is trimmed at the right bitmap border

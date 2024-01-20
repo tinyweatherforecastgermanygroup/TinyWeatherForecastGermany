@@ -29,17 +29,14 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 public class WeatherWarnings {
 
     public final static int COMMUNEUNION_DWD_DIFF = 0;
     public final static int COMMUNEUNION_DWD_STAT = 1;
-    public final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-    public final static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE HH:mm");
+    public final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    public final static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE HH:mm",Locale.getDefault());
 
     public static void writeWarningsToDatabase(Context context, ArrayList<WeatherWarning> warnings){
         ContentResolver contentResolver = context.getApplicationContext().getContentResolver();
@@ -132,6 +129,7 @@ public class WeatherWarnings {
         }
     }
 
+    /*
     public static boolean areWarningsOutdated(Context context, ArrayList<WeatherWarning> weatherWarnings){
         if (weatherWarnings!=null){
             long lastWarningsUpdate = WeatherSettings.getWarningsLastUpdateTime(context);
@@ -158,6 +156,8 @@ public class WeatherWarnings {
         // return outdated if warnings list is null
         return true;
     }
+
+     */
 
     public static final class WarningStringType{
         public static final int HEADLINE = 0;
@@ -197,8 +197,8 @@ public class WeatherWarnings {
     }
 
     public static SpannableStringBuilder getMiniWarningsString(Context context, ArrayList<WeatherWarning> applicableWarnings, long itemStartTime, long itemStopTime, boolean multiLine, int textType){
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        final SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE. HH:mm");
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm",Locale.getDefault());
+        final SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE. HH:mm",Locale.getDefault());
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
         int textPosition = 0;
         int warningsEnd = applicableWarnings.size();

@@ -31,15 +31,23 @@ public class StationsManager {
 
     private Context context;
     public ArrayList<Weather.WeatherLocation> stations = new ArrayList<Weather.WeatherLocation>();
+    public boolean loaded = false;
 
     public StationsManager(Context context){
         this.context = context;
         stations = new ArrayList<Weather.WeatherLocation>();
+        this.loaded = false;
     }
 
     public StationsManager(Context context, ArrayList<Weather.WeatherLocation> stations){
         this.context = context;
         this.stations = stations;
+        this.loaded = false;
+        if (stations!=null){
+            if (stations.size()>0){
+                this.loaded = true;
+            }
+        }
     }
 
     private static String getStationsStringFromResource(Context context){
@@ -93,6 +101,7 @@ public class StationsManager {
 
     public void readStations(){
         stations = readStations(context);
+        loaded = true;
     }
 
     /*

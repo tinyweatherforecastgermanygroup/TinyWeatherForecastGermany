@@ -411,9 +411,9 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         viewHolder.textView_heading = textView_heading;
     }
     long six_hours_ago = neededHoursAgo(weatherInfo);
-    SimpleDateFormat format1 = new SimpleDateFormat("EE, dd.MM., HH:mm");
+    SimpleDateFormat format1 = new SimpleDateFormat("EE, dd.MM., HH:mm",Locale.getDefault());
     String timetext1 = format1.format(new Date(six_hours_ago));
-    SimpleDateFormat format2 = new SimpleDateFormat("HH:mm");
+    SimpleDateFormat format2 = new SimpleDateFormat("HH:mm",Locale.getDefault());
     String timetext2 = format2.format(new Date(weatherInfo.getTimestamp()));
     textView_heading.setText(timetext1+" - "+timetext2);
     // handle warnings

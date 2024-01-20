@@ -24,12 +24,6 @@
         <item>18 heures</item>
         <item>24 heures</item>
     </string-array>
-    <string-array name="updateinterval_values">
-        <item>6</item>
-        <item>12</item>
-        <item>18</item>
-        <item>24</item>
-    </string-array>
     <string-array name="widget_opacity_text">
         <item>0 (transparent)</item>
         <item>10 %</item>
@@ -63,14 +57,6 @@
         <item>2 heures</item>
         <item>3 heures</item>
         <item>6 heures</item>
-    </string-array>
-    <string-array name="cache_warnings_time_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>120</item>
-        <item>180</item>
-        <item>360</item>
     </string-array>
 
     <string-array name="display_type_text">

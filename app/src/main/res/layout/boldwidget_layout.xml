@@ -25,7 +25,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <ImageView android:id="@+id/widget_backgroundimage"
+    <ImageView android:id="@android:id/background"
                android:layout_width="match_parent"
                android:layout_height="match_parent"/>
 
@@ -37,6 +37,8 @@
         android:gravity="center_horizontal"
         android:textColor="@color/colorTextWidget"
         android:textSize="@dimen/widget_textsize_small"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:visibility="visible"
         android:text="@string/dwd_notice"/>
 
@@ -47,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-              android:layout_marginLeft="@dimen/widget_radius"
+        android:layout_marginLeft="8dp"
         android:text="-"/>
 
     <TextView android:id="@+id/classicwidget_locationtext"
@@ -57,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-              android:layout_marginRight="@dimen/widget_radius"
+        android:layout_marginRight="@dimen/widget_radius"
         android:text="HAMBURG INNENSTADT"/>
 
     <!--

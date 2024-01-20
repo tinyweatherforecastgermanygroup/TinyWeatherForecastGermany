@@ -27,8 +27,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.*;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -83,9 +82,6 @@ public class ClassicWidget extends AppWidgetProvider {
         PrivateLog.log(c,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widget (system): "+getClass().toString());
         // to make app launch faster, check if it is really needed to check for an update
         // check for update if weather forecast outdated since last check
-        if (WeatherSettings.isForecastCheckDue(c) || (!WeatherSettings.areWarningsDisabled(c) && WeatherSettings.areWarningsOutdated(c))) {
-            UpdateAlarmManager.updateAndSetAlarmsIfAppropriate(c, UpdateAlarmManager.UPDATE_FROM_WIDGET,null, null);
-        }
         updateWidgetDisplay(c,awm,widget_instances);
     }
 
@@ -231,7 +227,7 @@ public class ClassicWidget extends AppWidgetProvider {
                 AlarmManager.AlarmClockInfo alarmClockInfo = alarmManager.getNextAlarmClock();
                 if (alarmClockInfo != null) {
                     long l = alarmClockInfo.getTriggerTime();
-                    final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, HH:mm",context.getResources().getConfiguration().locale);
+                    final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, HH:mm",Locale.getDefault());
                     simpleDateFormat.setTimeZone(TimeZone.getDefault());
                     alarm_string = simpleDateFormat.format(new Date(l));
                 }
@@ -443,8 +439,8 @@ public class ClassicWidget extends AppWidgetProvider {
         } catch (Exception e){
             // do nothing
         }
-        remoteViews.setImageViewResource(R.id.widget_backgroundimage,ThemePicker.getWidgetBackgroundDrawableRessource(c));
-        remoteViews.setInt(R.id.widget_backgroundimage,"setImageAlpha",Math.round(opacity*2.55f));
+        remoteViews.setImageViewResource(android.R.id.background,ThemePicker.getWidgetBackgroundDrawableRessource(c));
+        remoteViews.setInt(android.R.id.background,"setImageAlpha",Math.round(opacity*2.55f));
         if (weatherSettings.widget_showdwdnote) {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.VISIBLE);
             remoteViews.setTextColor(R.id.widget_reference_text,ThemePicker.getWidgetTextColor(c));
@@ -458,14 +454,49 @@ public class ClassicWidget extends AppWidgetProvider {
     }
 
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
-        CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c,UpdateAlarmManager.UPDATE_FROM_WIDGET);
+        CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i=0; i<widget_instances.length; i++){
+                // determine widget diameters in pixels
+                Bundle appWidgetOptions = awm.getAppWidgetOptions(widget_instances[i]);
+                // diameters in portrait mode
+                int widthPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                int heightPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+                // diameters in landscape mode
+                int widthLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+                int heightLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+                int orientation = c.getResources().getConfiguration().orientation;
+                int widgetWidth = widthPortrait; int widgetHeight = heightPortrait;
+                if (orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    widgetWidth = widthLandscape;
+                    widgetHeight = heightLandscape;
+                }
+                //Log.v("widget","Widget = "+widgetWidth+" / "+widgetHeight);
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c,MainActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(c,0,intent,0);
-                RemoteViews remoteViews = new RemoteViews(c.getPackageName(),R.layout.classicwidget_layout);
+                PendingIntent pendingIntent;
+                if (Build.VERSION.SDK_INT>=23){
+                    pendingIntent = PendingIntent.getActivity(c,0,intent,PendingIntent.FLAG_IMMUTABLE);
+                } else {
+                    pendingIntent = PendingIntent.getActivity(c,0,intent,0);
+                }
+                int widgetResource = R.layout.classicwidget_layout;
+                int lines = 1;
+                if (widgetHeight>120){
+                    lines = 2;
+                    widgetResource = R.layout.largewidget_layout;
+                }
+                if (widgetHeight>240){
+                    lines = 3;
+                }
+                RemoteViews remoteViews = new RemoteViews(c.getPackageName(),widgetResource);
+                if (lines==2){
+                    remoteViews.setImageViewBitmap(R.id.largewidget_10daysbitmap, get10DaysForecastBar(c,awm,widget_instances[i],weatherCard,false));
+                }
+                if (lines==3){
+                    remoteViews.setImageViewBitmap(R.id.largewidget_10daysbitmap, get10DaysForecastBar(c,awm,widget_instances[i],weatherCard,true));
+                }
                 remoteViews.setOnClickPendingIntent(R.id.widget_maincontainer,pendingIntent);
                 setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
                 awm.updateAppWidget(widget_instances[i],remoteViews);
@@ -480,6 +511,220 @@ public class ClassicWidget extends AppWidgetProvider {
             updateWidgetDisplay(c,awm,wi);
         }
     }
+
+    // bitmap functions for the lower part of the widget
+
+    private int getDailyItemCount(Weather.WeatherInfo weatherInfo, boolean showTemperatures){
+        if (weatherInfo == null) {
+            return 0;
+        }
+        int item_count = 0;
+        if (weatherInfo.hasCondition()){
+            item_count ++;
+        }
+        if (showTemperatures){
+            if (weatherInfo.hasMinTemperature()){
+                item_count ++;
+            }
+            if (weatherInfo.hasMaxTemperature()){
+                item_count ++;
+            }
+        }
+        return item_count;
+    }
+
+    private final static float OFFSET_FONTSIZE = 60;
+    private final static float FONTSIZESTEP = 1;
+
+    public static float getMaxPossibleFontsize(String string, float max_width, float max_height, Float offset){
+        if (offset==null){
+            if (max_width>max_height){
+                offset = max_width;
+            } else {
+                offset = max_height;
+            }
+        }
+        float textsize = offset;
+        Paint paint = new Paint();
+        paint.setTextSize(textsize);
+        while ((textsize>0) && (paint.measureText(string)>max_width)){
+            textsize = textsize - FONTSIZESTEP;
+            paint.setTextSize(textsize);
+        }
+        while ((textsize>0) && (paint.getTextSize()>max_height)){
+            textsize = textsize - FONTSIZESTEP;
+            paint.setTextSize(textsize);
+        }
+        return textsize;
+    }
+
+    private float fontsize_temperature = OFFSET_FONTSIZE;
+    private float fontsize_dayofweek = OFFSET_FONTSIZE;
+
+    private void determineMaxFontSizes(CurrentWeatherInfo currentWeatherInfo, float max_width, float max_height, boolean showTemperatures){
+        int item_count=0;
+        for (int i=0; i<currentWeatherInfo.forecast24hourly.size(); i++){
+            if (getDailyItemCount(currentWeatherInfo.forecast24hourly.get(i),showTemperatures)>item_count){
+                item_count = getDailyItemCount(currentWeatherInfo.forecast24hourly.get(i),showTemperatures);
+            }
+            String min_temp = "-°";
+            if (currentWeatherInfo.forecast24hourly.get(i).hasMinTemperature()){
+                min_temp = currentWeatherInfo.forecast24hourly.get(i).getMinTemperatureInCelsiusInt()+"°";
+            }
+            String max_temp = "-°";
+            if (currentWeatherInfo.forecast24hourly.get(i).hasMaxTemperature()){
+                max_temp = currentWeatherInfo.forecast24hourly.get(i).getMaxTemperatureInCelsiusInt()+"°";
+            }
+            Paint p_temp = new Paint();
+            p_temp.setTextSize(fontsize_temperature);
+            float mf1 = getMaxPossibleFontsize(min_temp,max_width,(max_height/(item_count+1))*0.95f,OFFSET_FONTSIZE);
+            if (mf1<fontsize_temperature){
+                fontsize_temperature = mf1;
+            }
+            float mf2 = getMaxPossibleFontsize(max_temp,max_width,(max_height/(item_count+1))*0.95f,OFFSET_FONTSIZE);
+            if (mf2<fontsize_temperature){
+                fontsize_temperature = mf2;
+            }
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
+        for (int i=0; i<currentWeatherInfo.forecast24hourly.size(); i++){
+            String day      = simpleDateFormat.format(new Date(currentWeatherInfo.forecast24hourly.get(i).getTimestamp()));
+            Paint p_day = new Paint();
+            p_day.setTextSize(fontsize_dayofweek);
+            float mf3 = getMaxPossibleFontsize(day,max_width,(max_height/(item_count+1))*0.95f,OFFSET_FONTSIZE);
+            if (mf3<fontsize_dayofweek){
+                fontsize_dayofweek = mf3;
+            }
+        }
+        fontsize_temperature = (float) (fontsize_temperature * 0.85);
+        fontsize_dayofweek = (float) (fontsize_dayofweek * 0.85);
+    }
+
+    private Bitmap getDailyBar(Context context, float width_bar, float height_bar, Weather.WeatherInfo weatherInfo, boolean showTemperatures){
+        ForecastIcons forecastIcons = new ForecastIcons(context,null);
+        // create an empty bitmap with black being the transparent color
+        Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bar),Math.round(height_bar),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        bitmap.eraseColor(Color.TRANSPARENT);
+        // return empty, transparent bitmap if no weather data present
+        if (weatherInfo == null) {
+            return bitmap;
+        }
+        int item_count = getDailyItemCount(weatherInfo,showTemperatures);
+        // return empty, transparent bitmap if no suitable weather data present
+        if (item_count==0){
+            return bitmap;
+        }
+        // weekday also is an item
+        float height_item = (height_bar / (item_count+1));
+        // *** draw the weekday ***
+        // get the day of week string
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
+        // the timestamp will always be midnight. When we derive the day of week from it, it will be misleading, since
+        // we want to show the day *before* this midnight position.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(weatherInfo.getTimestamp());
+        calendar.add(Calendar.DAY_OF_WEEK,-1);
+        //String weekday = simpleDateFormat.format(new Date(weatherInfo.getTimestamp()));
+        String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
+        // determine max. possible fontsize
+        Paint paint_weekday = new Paint();
+        paint_weekday.setColor(ThemePicker.getWidgetTextColor(context));
+        paint_weekday.setAntiAlias(true);
+        paint_weekday.setTextSize(fontsize_dayofweek);
+        float x_offset_day = (width_bar - paint_weekday.measureText(weekday))/2;
+        float y_offset_day = height_item - paint_weekday.getTextSize()/2;
+        canvas.drawText(weekday,x_offset_day,y_offset_day,paint_weekday);
+        // number of items may vary, so we need to iterate the y offset
+        float y_offset_counter = height_item;
+        // *** draw the weather icon ***
+        if (weatherInfo.hasCondition()){
+            //Bitmap condition_icon = BitmapFactory.decodeResource(context.getResources(),WeatherCodeContract.getWeatherConditionDrawableResource(context,weatherInfo.getCondition(),true));
+            Bitmap condition_icon = forecastIcons.getIconBitmap(weatherInfo,null);
+            // determine the necessary icon size, the icon ratio is always 1:1
+            float max_icon_diameter = width_bar;
+            if (height_item<width_bar){
+                max_icon_diameter = height_item;
+            }
+            // scale the bitmap
+            condition_icon = Bitmap.createScaledBitmap(condition_icon,(int) max_icon_diameter,(int) max_icon_diameter,false);
+            float x_offset_condition = (width_bar - condition_icon.getWidth())/2;
+            float y_offset_condition = y_offset_counter;
+            canvas.drawBitmap(condition_icon,x_offset_condition,y_offset_condition,null);
+            // iterate offset
+            y_offset_counter = y_offset_counter + height_item;
+        }
+        // *** draw max. temperature ***
+        if (weatherInfo.hasMaxTemperature()){
+            String max_temperature_string = String.valueOf(weatherInfo.getMaxTemperatureInCelsiusInt())+"°";
+            Paint paint_maxtemp = new Paint();
+            paint_maxtemp.setColor(ThemePicker.getWidgetTextColor(context));
+            paint_maxtemp.setAntiAlias(true);
+            paint_maxtemp.setTextSize(fontsize_temperature);
+            float x_offset_maxtemp = (width_bar - paint_weekday.measureText(max_temperature_string))/2;
+            float y_offset_maxtemp = y_offset_counter - paint_maxtemp.getTextSize()/2;
+            canvas.drawText(max_temperature_string,x_offset_maxtemp,y_offset_maxtemp+height_item,paint_maxtemp);
+            // iterate offset
+            y_offset_counter = y_offset_counter + height_item;
+        }
+        // *** draw min. temperature ***
+        if (weatherInfo.hasMinTemperature()){
+            String min_temperature_string = String.valueOf(weatherInfo.getMinTemperatureInCelsiusInt())+"°";
+            Paint paint_mintemp = new Paint();
+            paint_mintemp.setColor(ThemePicker.getWidgetTextColor(context));
+            paint_mintemp.setAntiAlias(true);
+            paint_mintemp.setTextSize(fontsize_temperature);
+            float x_offset_mintemp = (width_bar - paint_weekday.measureText(min_temperature_string))/2;
+            float y_offset_mintemp = y_offset_counter - paint_mintemp.getTextSize()/2;
+            canvas.drawText(min_temperature_string,x_offset_mintemp,y_offset_mintemp+height_item,paint_mintemp);
+            // iterate offset
+            y_offset_counter = y_offset_counter + height_item;
+        }
+        return bitmap;
+    }
+
+    private Bitmap get10DaysForecastBar(Context context, AppWidgetManager awm, int widget_instance, CurrentWeatherInfo currentWeatherInfo, boolean showTemperatures){
+        /*
+         * Determine the approximate diameters of the bitmap.
+         *
+         * The /2 is hardcoded from the largewidget_layout.xml: the forecast bitmap holding the 10 days
+         * forecast takes the lower half of the forecast bar.
+         *
+         * It may be a little bit smaller in fact if the reference text is displayed. However, this will be
+         * adapted by the system and/or launcher when the widget view gets inflated. It is the better choice to
+         * assume the larger size (image gets downscaled) than a too small size (image gets upscaled and may look
+         * awful).
+         */
+        WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(context, awm,widget_instance);
+        float width_bitmap = widgetDimensionManager.getWidgetWidth();
+        float height_bitmap = widgetDimensionManager.getWidgetHeight()/2;
+        if ((width_bitmap<=0) || (height_bitmap<=0)){
+            // make some fallback values if the widget dimensions remain unknown
+            width_bitmap = 500;
+            height_bitmap = 250;
+        }
+        // create an empty, transparent bitmap
+        Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bitmap),Math.round(height_bitmap),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        bitmap.eraseColor(Color.TRANSPARENT);
+        // return empty, transparent bitmap if no weather data present
+        if (currentWeatherInfo==null){
+            return bitmap;
+        }
+        int number_of_forecast_days = currentWeatherInfo.forecast24hourly.size();
+        if (number_of_forecast_days==0){
+            return bitmap;
+        }
+        float width_oneday = width_bitmap / (number_of_forecast_days-1);
+        float height_oneday = height_bitmap;
+        determineMaxFontSizes(currentWeatherInfo,width_oneday,height_oneday,showTemperatures);
+        for (int i=1; i<number_of_forecast_days; i++){
+            Bitmap item = getDailyBar(context,width_oneday,height_oneday,currentWeatherInfo.forecast24hourly.get(i),showTemperatures);
+            canvas.drawBitmap(item,(i-1)*width_oneday,0,null);
+        }
+        return bitmap;
+    }
+
 
     /**
      * This class provides some methods to determine the approximate current size of a widget in pixels.
