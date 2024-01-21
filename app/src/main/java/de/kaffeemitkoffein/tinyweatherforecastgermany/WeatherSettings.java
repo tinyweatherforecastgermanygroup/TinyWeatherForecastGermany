@@ -2147,7 +2147,13 @@ public class WeatherSettings {
                         result = intervalSyncTimes.get(i);
                     }
                 }
+                if (serveGadgetBridge(context) && (result<60*60)){
+                    result = 60*60;
+                }
                 return result;
+            }
+            if (serveGadgetBridge(context)){
+                return 60*60;
             }
             return Intervals.NEVER;
         }

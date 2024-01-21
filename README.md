@@ -176,11 +176,15 @@ Since *DMO* forecasts get updated every 12 hours only, periodic updates automati
 
 ### My widgets don't get updated (unless I open the app).
 
-Home screen widgets usually get updated every 30 minutes by the system. 
+Home screen widgets usually get updated every 30 minutes by the system. However, to take into account some manufacturer and/or rom limitations, the sync adapter also updates the widgets.
 
-The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
+Make sure that you did not *disable the syncs manually* in the account settings. Furthermore, some device options like the battery saver may turn off syncs temporarily (e.g. until the device gets charged again). 
+
+ If widget updates do not happen at all or only happen when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
 
 You may try to disable battery optimization for Tiny Weatherforecast Germany.
+
+Again, make sure that in Settings -> Passwords & accounts -> Weather -> Account sync is *not disabled*.
 
 ### My widgets don't update the station automatically when I am on travel.
 
@@ -192,31 +196,53 @@ You may try to disable battery optimization for Tiny Weatherforecast Germany.
 
 Should all of this not help: this functionality may be broken due to energy saving apps or roms breaking expected functionality. See above "my widgets don't get updated (unless I open the app)". 
 
-### How often does the app update the weather forecast?
+### How often does the app update weather data?
 
-This mainly depends on your setup. In the settings, you can set up the update interval. This interval can be between 6 and 24 hours. The Deutscher Wetterdienst updates the forecast data that is used every 6 hours for *Mosmix* locations (most of the locations available), and every 12 hours for *DMO* locations. Therefore, it does not make sense to pull weather data more frequently than every 6 or 12 hours, depending on your chosen location.
+Preface: the Deutscher Wetterdienst updates the forecast data that is used every 6 hours for *Mosmix* locations (most of the locations available), and every 12 hours for *DMO* locations. Therefore, it does not make sense to pull weather data more frequently than every 6 or 12 hours, depending on your chosen location.
 
-Since *DMO* forecasts get updated every 12 hours only, periodic updates automatically get postponed should you have set a 6-hourly update cycle and did choose a *DMO* location.
+Before getting any data from the internet, the app always tries to reuse the data in place and performs syncs only when necessary.
 
-The app updates the forecast data regulary, when one of the following conditions is met:
+You can set up the sync options in detail in the app settings. For the most use-cases, you should enable sync for weather and warnings, and keep it disabled for pollen count, texts and maps since the latter information is not displayed on the main screen and in the home screen widgets.
 
-* you placed a widget on your home screen
-* you enabled "always update" in the settings
-* you enabled Gadgetbridge support
+For a scenario with only intermittent and/or limited access to the internet, e.g. when using unmetered networks only, you may also consider enabling automatic sync for pollen count, texts and maps. 
 
-A manual data update triggered by the user's selection in the main app always forces an update of forecast data. The forecast data covers the next ten days. So it is pretty feasible to present a weather forecast for some time without polling new data.
+The sync intervals for weather forcasts may be set to 6, 12, 18 or 24 hours.
 
-You see the last update time in the main app. *Long pressing* this text makes the app display the time the weather forecast was *issued* by the DWD.
+The sync intervals for weather warnings may be set to 15 minutes, 30 minutes, 1 hour, 2 hours, 3 hours or 6 hours.
 
-When you select to automatically update every 6 hours, the app tries to guess when it is best to poll for new data to get in sync with the time the forecasts are made available by the DWD.
+A sane compromise between battery use, network use and up-to-date information is to sync weather forecasts every 24h and warnings every 30 minutes.
 
-Please note that the app blocks manual updates that occur within 90 seconds since the last update to limit server load at the DWD.
+The background sync interval for texts, pollen count and maps is every 24 hours, if enabled. You can trigger a forced update of this information from inside the app in the respective view. 
+
+You see the last update time of the weather forecasts in the main app. *Long pressing* this text makes the app display the time the weather forecast was *issued* by the DWD.
+
+The app uses a sync adapter that runs in the background. This sync adapter is triggered periodically by the system based on your settings (e.g. every 30 minutes to update warnings). The timing is *inexact*, so that the system can combine various sync requests to safe your battery. The system won't call the sync adapter when no suitable network is available and/or other system settings like the battery saver prevent background syncs. Syncs may also not take place when the device is idle, e.g. in "doze mode". 
+
+### What can I do if the app does not sync data at all?
+
+Please make sure that:
+- syncs are *enabled* in the app settings,
+- sync is *enabled* in Settings -> Passwords & accounts -> Weather,
+- you have *not turned on* the battery saver.
+
+Contrary to previous app versions, putting a widget on the home screen has no influence on sync intervals.
+
+When the above fails, you may try the following:
+- grant the app the "allow all the time" location permission,
+- allow the app to run in the background (exclude it from battery optimization).
 
 ### How often does the GadgetBridge app gets updated (when this feature is enabled)?
 
-When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately every 30 minutes using forecast data that is already in place, meaning that the DWD API will not be called every time to perform this task. However, on devices with API 23 or higher, such updates might not occur that regularly when the device goes in *doze mode*, but should be launched in the so-called “maintenance window”, and it is difficult to say what this really means in manners of time. This will likely mean very different things depending on the device and/or ROM.
-  
-If you encounter problems with GadgetBridge not updating, placing a widget on the home screen may help, since the widget will try to also update GadgetBridge every time the widget itself gets updated by the system.
+When GadgetBridge support is **enabled**, the app will update GadgetBridge simultaneously when performing syncs.
+
+With enabled GadgetBridge support, the sync adapter will be called at least once per hour to check if updates are necessary and will send data to GadgetBridge. 
+
+Please note that GadgetBridge will not get updated according to the user settings when:
+- no suitable network is available to perform syncs, 
+- the device is in "doze mode" (idle), 
+- sync is disabled in Settings -> Passwords & accounts -> Weather.
+
+**Since the update logic changed with version 0.62.0 to better account for battery use, users are encouraged to file bug reports should GadgetBridge updates not work like expected.**
 
 ### Why is precipitation displayed in kg/m² instead of mm?
   
