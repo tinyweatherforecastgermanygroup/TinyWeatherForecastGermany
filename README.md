@@ -168,17 +168,17 @@ Since version 0.59.4, Tiny Weather Forecast Germany also includes [some of the D
 
 Therefore, Tiny Weather Forecast Germany currently only includes a small subset of available *DMO* locations and limits it to locations not already well-represented by the Mosmix data. In particular, *DMO* locations with the same name already present in the Mosmix data and/or within +/- 0.02 longitude and latitude are ignored.
 
-Currently (version 0.59.4), Tiny Weather Forecast Germany uses only 195 of the 3541 *DMO* locations in total, since all other locations meet the criteria above having a much better Mosmix forecast point available instead.
+Currently (since version 0.59.4), Tiny Weather Forecast Germany uses only 195 of the 3541 *DMO* locations in total, since all other locations meet the criteria above having a much better Mosmix forecast point available instead.
 
 Should you have *"Geographic coordinates"* enabled (geographic coordinates of the weather station are displayed in the app), *DMO* stations are indicated by "*(DMO)*" in the app.
 
-Since *DMO* forecasts get updated every 12 hours only, periodic updates automatically get postponed should you have set a 6-hourly update cycle and did choose a *DMO* location.
+Since *DMO* forecasts get updated every 12 hours only, syncs of weather forecast data automatically get postponed should you have set a 6-hourly update cycle and did choose a *DMO* location.
 
 ### My widgets don't get updated (unless I open the app).
 
 Home screen widgets usually get updated every 30 minutes by the system. However, to take into account some manufacturer and/or rom limitations, the sync adapter also updates the widgets.
 
-Make sure that you did not *disable the syncs manually* in the account settings. Furthermore, some device options like the battery saver may turn off syncs temporarily (e.g. until the device gets charged again). 
+Make sure that you did not *disable the syncs manually* in the account settings. Furthermore, some device options like the battery saver or data saver may turn off syncs temporarily (e.g. until the device gets charged again). 
 
  If widget updates do not happen at all or only happen when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
 
@@ -216,14 +216,15 @@ The background sync interval for texts, pollen count and maps is every 24 hours,
 
 You see the last update time of the weather forecasts in the main app. *Long pressing* this text makes the app display the time the weather forecast was *issued* by the DWD.
 
-The app uses a sync adapter that runs in the background. This sync adapter is triggered periodically by the system based on your settings (e.g. every 30 minutes to update warnings). The timing is *inexact*, so that the system can combine various sync requests to safe your battery. The system won't call the sync adapter when no suitable network is available and/or other system settings like the battery saver prevent background syncs. Syncs may also not take place when the device is idle, e.g. in "doze mode". 
+The app uses a sync adapter that runs in the background. This sync adapter is triggered periodically by the system based on your settings (e.g. every 30 minutes to update warnings). The timing is *inexact*, so that the system can combine various sync requests to save your battery. The system won't call the sync adapter when no suitable network is available and/or other system settings like the battery saver or data saver prevent background syncs. Syncs may also not take place when the device is idle, e.g. in "doze mode". 
 
 ### What can I do if the app does not sync data at all?
 
 Please make sure that:
 - syncs are *enabled* in the app settings,
 - sync is *enabled* in Settings -> Passwords & accounts -> Weather,
-- you have *not turned on* the battery saver.
+- you have **not turned on** the battery saver,
+- you have **not turned on** the data saver.
 
 Contrary to previous app versions, putting a widget on the home screen has no influence on sync intervals.
 
@@ -233,9 +234,12 @@ When the above fails, you may try the following:
 
 ### How often does the GadgetBridge app gets updated (when this feature is enabled)?
 
-When GadgetBridge support is **enabled**, the app will update GadgetBridge simultaneously when performing syncs **and** updating widgets. This ensures regular updates.
+When GadgetBridge support is **enabled**, the app will update GadgetBridge once per hour.
 
-Should you experience that the Gadgetbridge update occurs too rarely, place a weather widget on your home screen. 
+Should you experience that the Gadgetbridge update occurs too rarely, the following things may help:
+- change app battery usage: go to the app info screen by long-pressing the app icon in the launcher, select app battery usage and select "unrestricted" (on older devices: turn off battery optimization for the app to allow it to run in the background),
+- place a weather widget on your home screen,
+- make sure you have the "battery saver" and the "data saver" disabled.
 
 ### Why is precipitation displayed in kg/m² instead of mm?
   
@@ -281,7 +285,7 @@ It is also implemented this way to quickly delete a presumptive travel history. 
 
 ### Why aren't all locations in my bookmarks?
 
-When on travel and with the passive location checks in the background enabled, the weather station may switch multiple times before you open the app. To prevent the app from recording a detailed travel history, only locations that applied when you actively opened the app are added to the bookmarks. PLease also note that the number of bookmarks is limited to 10. 
+When on travel and with the passive location checks in the background enabled, the weather station may switch multiple times before you open the app. To prevent the app from recording a detailed travel history, only locations that applied when you actively opened the app are added to the bookmarks. Please also note that the number of bookmarks is limited to 10. 
 
 ### How do I delete a location?
 
@@ -335,7 +339,7 @@ It shows the direction of the wind change during the next `Wind forecast period`
 
 ### When do I get a notification about a weather warning?
 
-First of all, you need to enable this feature in the settings. Second, you need to specify how often the app will update the weather warnings (see below). Then, you will get notifications about weather warnings issued for the selected location. **The app will not check for warnings when the device is in doze mode**. You will also get no notifications when your device is offline. You may also miss some notifications when you restrict the app to use *un*metered networks only. So do not expect to get woken up in the middle of the night when a weather warning gets issued.
+First of all, you need to enable this feature in the settings. Second, you need to specify how often the app will sync the weather warnings (see below). Then, you will get notifications about weather warnings issued for the selected location. **The app may not check for warnings when the device is in doze mode, no suitable network is available, you have turned off sync, enabled the battery saver or the data saver**. You will also get no notifications when your device is offline. You may also miss some notifications when you restrict the app to use *un*metered networks only. So do not expect to get woken up in the middle of the night when a weather warning gets issued.
 
 The notifications include weather warnings with a future onset once they get issued and weather warnings that are already ongoing.
 
@@ -349,9 +353,9 @@ To be kept aware about current warnings, simply don't swipe them away. They wil 
 
 ### How quickly do I get a weather warning?
 
-In the settings, you can set up how often warnings are checked. The default is every 30 minutes. Please note that the interval specified may have quite an implact on battery drain and data volume use. As a rule of thumb, the warning data that gets downloaded may be about 300 Kb or even more in size when weather conditions are heavy.
+In the settings, you can set up how often warnings are synced. The default is every 30 minutes. Please note that the interval specified may have quite an impact on battery drain and data volume use. As a rule of thumb, the warning data that gets downloaded may be about 300 Kb or even more in size when weather conditions are heavy.
 
-To get an immediate and current weather warning status, go to the app and hit "update".
+To get an immediate and current weather warning status, go to the warnings within the app and hit "update".
 
 ### How do I provide a crash log?
 

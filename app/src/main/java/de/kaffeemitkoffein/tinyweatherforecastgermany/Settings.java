@@ -96,6 +96,9 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 }
                 if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)) {
                     setAlarmSettingAllowed();
+                    if (WeatherSettings.serveGadgetBridge(context)){
+                        GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
+                    }
                 }
                 if (s.equals(WeatherSettings.PREF_WARNINGS_DISABLE)) {
                     setShowWarningsInWidgetAllowed();
