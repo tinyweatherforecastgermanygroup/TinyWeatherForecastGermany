@@ -24,7 +24,7 @@ You get userdebug builds for testing here: <https://kaffeemitkoffein.de/nextclou
 
 Please note that the builds linked here are not signed by the F-Droid key, so you basically need to uninstall the F-Droid versions before installing them and vice versa.
 
-For a detailed list of recent changes, see [the changelog](https://codeberg.org/Starfish/TinyWeatherForecastGermany/changelog.txt). 
+For a detailed list of recent changes, see [the changelog](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/changelog.txt). 
 
 ## License
 
