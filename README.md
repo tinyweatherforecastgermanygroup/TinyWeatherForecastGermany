@@ -116,14 +116,14 @@ The idea is to create a simple, floss and light-weight weather forecast app with
 
 The app uses the following permissions:
 
-INTERNET: needed to get forecast data from the DWD.
-ACCESS_NETWORK_STATE: query network state before getting data.
-RECEIVE_BOOT_COMPLETED: the app needs to know about a reboot to restart periodic syncs of weather data.
-ACCESS_COARSE_LOCATION & ACCESS_FINE_LOCATION: used to determine the closest weather sensors to your position. This permission needs not to be granted if this feature is not used or if the search is performed based on manually entered geo-coordinates.
-ACCESS_BACKGROUND_LOCATION: used to passively check the location while the app is not running and switch to a closer weather station if appropriate. This permission needs not to be granted if this feature is not used.
-REQUEST_IGNORE_BATTERY_OPTIMIZATIONS: needed to present a user-friendly dialog to optionally disable battery optimization. This is only necessary when enabling location checks in the background.
-POST_NOTIFICATIONS: needed to post notifications about weather warnings.
-AUTHENTICATE_ACCOUNTS, WRITE_SYNC_SETTINGS, READ_SYNC_SETTINGS: used to automatically create a sync account to perform background syncs of weather data. The information synced can be configured in detail on the app settings.
+- INTERNET: needed to get weather data from the DWD.
+- ACCESS_NETWORK_STATE: query network state before getting data.
+- RECEIVE_BOOT_COMPLETED: the app needs to know about a reboot to restart periodic syncs of weather data.
+- ACCESS_COARSE_LOCATION & ACCESS_FINE_LOCATION: used to optionally determine the closest weather sensors to your position. This permission needs not to be granted if this feature is not used or if the search is performed based on manually entered geo-coordinates.
+- ACCESS_BACKGROUND_LOCATION: optionally used to passively check the location while the app is not running and switch to a closer weather station if appropriate. This permission needs not to be granted if this feature is not used.
+- REQUEST_IGNORE_BATTERY_OPTIMIZATIONS: needed to present a user-friendly dialog to optionally disable battery optimization. This is only necessary when enabling location checks in the background.
+- POST_NOTIFICATIONS: needed to post notifications about weather warnings.
+- AUTHENTICATE_ACCOUNTS, WRITE_SYNC_SETTINGS & READ_SYNC_SETTINGS: used to automatically create a sync account to perform background syncs of weather data. The information synced can be configured in detail in the app settings.
 
 Since version 0.62.0, the FOREGROUND_SERVICE permission is no longer necessary and was removed.
 
