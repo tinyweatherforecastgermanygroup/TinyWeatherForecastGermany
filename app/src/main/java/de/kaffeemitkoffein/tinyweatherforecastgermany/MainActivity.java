@@ -747,6 +747,14 @@ public class MainActivity extends Activity {
                     }
                 });
             }
+            if (WeatherSettings.serveGadgetBridge(context)){
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
+                    }
+                });
+            }
             // TESTING
         }
     }
@@ -2226,7 +2234,7 @@ public class MainActivity extends Activity {
         } else {
             PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Sync account already exists.");
         }
-        long necessarySyncInterval = WeatherSettings.Updates.getSyncAdapterIntervalInSeconds(context);
+        long necessarySyncInterval = WeatherSettings.Updates.getSyncAdapterIntervalInSeconds(context,WeatherSettings.getSetStationLocation(context));
         // addPeriodicSync requires the WRITE_SYNC_SETTINGS permission
         ContentResolver.addPeriodicSync(account,
                 WeatherContentProvider.AUTHORITY,

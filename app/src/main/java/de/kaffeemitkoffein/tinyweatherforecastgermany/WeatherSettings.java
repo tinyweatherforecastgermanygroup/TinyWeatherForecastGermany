@@ -98,6 +98,7 @@ public class WeatherSettings {
     public static final String PREF_VIEWS_LAST_UPDATE_TIME = "PREF_views_last_update_time";
     public static final String PREF_GADGETBRIDGE_PACKAGENAME = "PREF_gadgetbridge_packagename";
     public static final String PREF_GADGETBRIDGE_FAKE_TIMESTAMP = "PREF_gadgetbridge_fake_timestamp";
+    public static final String PREF_GADGETBRIDGE_LASTUPDATE = "PREF_gadgetbridge_lastupdate";
     public static final String PREF_LOGGING = "PREF_logging";
     public static final String PREF_LOG_TO_LOGCAT = "PREF_log_to_logcat";
     public static final String PREF_FAVORITESDATA = "PREF_favoritesdata";
@@ -811,6 +812,18 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_SERVE_GADGETBRIDGE,PREF_SERVE_GADGETBRIDGE_DEFAULT);
     }
 
+    public static long getGadgetBridgeLastUpdateTime(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getLong(PREF_GADGETBRIDGE_LASTUPDATE,0);
+    }
+
+    public static void setGadgetBridgeLastUpdateTime(Context context, long l){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putLong(PREF_GADGETBRIDGE_LASTUPDATE, l);
+        pref_editor.apply();
+    }
+    
     public static long getViewsLastUpdateTime(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getLong(PREF_VIEWS_LAST_UPDATE_TIME,PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT);
@@ -2132,10 +2145,16 @@ public class WeatherSettings {
             return Intervals.NEVER;
         }
 
-        public static long getSyncAdapterIntervalInMillis(Context context){
+        public final static int GADGETBRIDGE_UPDATE_INTERVAL = 60*60*1000;  // in millis
+
+        public static long getSyncAdapterIntervalInMillis(Context context, Weather.WeatherLocation weatherLocation){
             ArrayList<Long> intervalSyncTimes = new ArrayList<Long>();
             for (int category=0; category<CategoryItemsCount; category++){
                 long syncTime = getIntervalLong(context,category);
+                // tweak weather sync time from 6 to 12 h if station is DMO
+                if ((category==Category.WEATHER) && (weatherLocation.isDMO()) && (syncTime<CurrentWeatherInfo.DMO_UPDATE_INTERVAL)){
+                        syncTime = CurrentWeatherInfo.DMO_UPDATE_INTERVAL;
+                    }
                 if (syncTime!=Intervals.NEVER){
                     intervalSyncTimes.add(syncTime);
                 }
@@ -2147,19 +2166,19 @@ public class WeatherSettings {
                         result = intervalSyncTimes.get(i);
                     }
                 }
-                if (serveGadgetBridge(context) && (result<60*60)){
-                    result = 60*60;
+                if (serveGadgetBridge(context) && (result<GADGETBRIDGE_UPDATE_INTERVAL)){
+                    result = GADGETBRIDGE_UPDATE_INTERVAL;
                 }
                 return result;
             }
             if (serveGadgetBridge(context)){
-                return 60*60;
+                return GADGETBRIDGE_UPDATE_INTERVAL;
             }
             return Intervals.NEVER;
         }
 
-        public static int getSyncAdapterIntervalInSeconds(Context context){
-            return (int) (getSyncAdapterIntervalInMillis(context)/1000);
+        public static int getSyncAdapterIntervalInSeconds(Context context, Weather.WeatherLocation weatherLocation){
+            return (int) (getSyncAdapterIntervalInMillis(context,weatherLocation)/1000);
         }
 
         public static boolean isSyncNecessary(Context context){

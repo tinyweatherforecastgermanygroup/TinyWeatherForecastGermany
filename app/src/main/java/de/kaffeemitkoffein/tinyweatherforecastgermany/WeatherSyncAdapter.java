@@ -429,6 +429,9 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
             };
             pollenReader.run();
         }
+        if (WeatherSettings.useBackgroundLocation(context)){
+            WeatherLocationManager.checkForBackgroundLocation(context);
+        }
         MainActivity.updateAppViews(context,null);
         Runnable cleanUpRunnable = new Runnable() {
             @Override

@@ -80,9 +80,12 @@ public class ClassicWidget extends AppWidgetProvider {
         // refresh widgets, if no update was made.
         // in case of an update, the widgets are refreshed by a callback of WIDGET_CUSTOM_REFRESH_ACTION
         PrivateLog.log(c,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widget (system): "+getClass().toString());
-        // to make app launch faster, check if it is really needed to check for an update
-        // check for update if weather forecast outdated since last check
         updateWidgetDisplay(c,awm,widget_instances);
+        // serve GadgetBridge if necessary
+        if (WeatherSettings.serveGadgetBridge(c)){
+            GadgetbridgeAPI.sendWeatherBroadcastIfEnabled(c,null);
+            GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(c);
+        }
     }
 
     /**

@@ -190,6 +190,7 @@ public class GadgetbridgeAPI {
                 PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecast #"+i+": Tmin: "+(weatherSpec.forecasts.get(i).minTemp)+" Tmax: "+(weatherSpec.forecasts.get(i).maxTemp)+" Cond.: "+weatherSpec.forecasts.get(i).conditionCode+" RH: "+weatherSpec.forecasts.get(i).humidity);
             }
             sendWeatherBroadcast(context,weatherSpec);
+            WeatherSettings.setGadgetBridgeLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
         }
     }
 

@@ -233,16 +233,9 @@ When the above fails, you may try the following:
 
 ### How often does the GadgetBridge app gets updated (when this feature is enabled)?
 
-When GadgetBridge support is **enabled**, the app will update GadgetBridge simultaneously when performing syncs.
+When GadgetBridge support is **enabled**, the app will update GadgetBridge simultaneously when performing syncs **and** updating widgets. This ensures regular updates.
 
-With enabled GadgetBridge support, the sync adapter will be called at least once per hour to check if updates are necessary and will send data to GadgetBridge. 
-
-Please note that GadgetBridge will not get updated according to the user settings when:
-- no suitable network is available to perform syncs, 
-- the device is in "doze mode" (idle), 
-- sync is disabled in Settings -> Passwords & accounts -> Weather.
-
-**Since the update logic changed with version 0.62.0 to better account for battery use, users are encouraged to file bug reports should GadgetBridge updates not work like expected.**
+Should you experience that the Gadgetbridge update occurs too rarely, place a weather widget on your home screen. 
 
 ### Why is precipitation displayed in kg/m² instead of mm?
   

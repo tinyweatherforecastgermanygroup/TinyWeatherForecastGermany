@@ -35,8 +35,13 @@ public class OnBootCompletedReceiver extends BroadcastReceiver {
             if (intent.getAction()!=null){
                 PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"+-> intent has action");
                 if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
-                    PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"+-> action is ACTION_BOOT_COMPLETED, triggering alarm update.");
+                    PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"+-> action is ACTION_BOOT_COMPLETED.");
                     MainActivity.registerSyncAdapter(context);
+                    PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"+-> periodic sync registered.");
+                    if (WeatherSettings.serveGadgetBridge(context)){
+                        long time = GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
+                        PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"+-> set next Gadgetbridge update to run at "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.TIME_SEC).format(time));
+                    }
                     int i = WeatherWarnings.clearAllNotified(context);
                     PrivateLog.log(context,PrivateLog.ONBOOT,PrivateLog.INFO,"Cleared list of notified warnings: "+i+" warnings removed from list.");
                     if (WeatherSettings.notifyWarnings(context)){
