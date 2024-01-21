@@ -180,13 +180,28 @@ Home screen widgets usually get updated every 30 minutes by the system. However,
 
 Make sure that you did not *disable the syncs manually* in the account settings. Furthermore, some device options like the battery saver or data saver may turn off syncs temporarily (e.g. until the device gets charged again). 
 
- If widget updates do not happen at all or only happen when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
+Please see the question below (My widgets don't update) for a detailed list of things you should check.
 
-You may try to disable battery optimization for Tiny Weatherforecast Germany.
+If widget updates do not happen at all or only happen when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
 
-Again, make sure that in Settings -> Passwords & accounts -> Weather -> Account sync is *not disabled*.
+### My widgets don't update, the weather forecasts do not get updated in the background and/or warnings do not pop up - what can I do?
 
-### My widgets don't update the station automatically when I am on travel.
+Since version 0.62.0, Tiny Weather Forecast Germany mostly abandoned custom update routines and syncs data in the background using a sync adapter, allowing the user to far better customize the app behaviour than before.
+
+Please check the following points:
+1. Make sure you have **not enabled** the system-wide *battery saver*. If enabled, turn it off.
+2. Make sure you have **not enabled** the system-wide *data saver*. If enabled, turn it off.
+3. Make sure that in Settings -> Passwords & accounts -> Weather -> Account sync is **enabled**.
+4. Check in the settings of Tiny Weather Forecast Germany that you have **enabled sync** for the desired data (e.g. weather, warnings and perhaps other categories).
+5. Make sure that you have **not restricted battery use** for Tiny Weather Forecast Germany. To check, go to the app info screen by long-pressing the app icon in the launcher, select app battery usage and select "unrestricted" (on older devices: turn off battery optimization for the app). 
+6. For weather warnings, make sure you have **not disabled notifications** for Tiny Weather Forecast Germany and you have **granted the notification permission**. You can check both in the app info.
+
+When the above fails, you may try the following:
+- grant the app the "allow all the time" location permission.
+
+When you use the Gadgetbridge support and notice that updates only occur rarely, you may, in addition to the points above, put a weather widget on your home screen.
+
+### My widgets don't change the station automatically when I am on travel.
 
 1. You need to grand the _background location permission_. Please note on some devices you must grant the general location permission before you can grant the background permission. The app asks all of this is the appropriate order. Should you have declined any of the location permissions, you can grant them in the app settings.
 2. You also need to enable background location checks in the app settings.
@@ -216,30 +231,16 @@ The background sync interval for texts, pollen count and maps is every 24 hours,
 
 You see the last update time of the weather forecasts in the main app. *Long pressing* this text makes the app display the time the weather forecast was *issued* by the DWD.
 
-The app uses a sync adapter that runs in the background. This sync adapter is triggered periodically by the system based on your settings (e.g. every 30 minutes to update warnings). The timing is *inexact*, so that the system can combine various sync requests to save your battery. The system won't call the sync adapter when no suitable network is available and/or other system settings like the battery saver or data saver prevent background syncs. Syncs may also not take place when the device is idle, e.g. in "doze mode". 
+The app uses a sync adapter that runs in the background. This sync adapter is triggered periodically by the system based on your settings (e.g. every 30 minutes to update warnings). The timing is *inexact*, so that the system can combine various sync requests to save your battery. 
 
-### What can I do if the app does not sync data at all?
-
-Please make sure that:
-- syncs are *enabled* in the app settings,
-- sync is *enabled* in Settings -> Passwords & accounts -> Weather,
-- you have **not turned on** the battery saver,
-- you have **not turned on** the data saver.
-
-Contrary to previous app versions, putting a widget on the home screen has no influence on sync intervals.
-
-When the above fails, you may try the following:
-- grant the app the "allow all the time" location permission,
-- allow the app to run in the background (exclude it from battery optimization).
+The system won't call the sync adapter when no suitable network is available and/or other settings prevent background syncs. See "My widgets don't update" above for a list of things that may affect background syncs. Syncs also will get postponed when the device is in 
+"doze mode".
 
 ### How often does the GadgetBridge app gets updated (when this feature is enabled)?
 
-When GadgetBridge support is **enabled**, the app will update GadgetBridge once per hour.
+When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately once per hour.
 
-Should you experience that the Gadgetbridge update occurs too rarely, the following things may help:
-- change app battery usage: go to the app info screen by long-pressing the app icon in the launcher, select app battery usage and select "unrestricted" (on older devices: turn off battery optimization for the app to allow it to run in the background),
-- place a weather widget on your home screen,
-- make sure you have the "battery saver" and the "data saver" disabled.
+If updates do not occur as frequent as expected, see "My widgets don't update" above for things you should check.
 
 ### Why is precipitation displayed in kg/m² instead of mm?
   
@@ -339,7 +340,7 @@ It shows the direction of the wind change during the next `Wind forecast period`
 
 ### When do I get a notification about a weather warning?
 
-First of all, you need to enable this feature in the settings. Second, you need to specify how often the app will sync the weather warnings (see below). Then, you will get notifications about weather warnings issued for the selected location. **The app may not check for warnings when the device is in doze mode, no suitable network is available, you have turned off sync, enabled the battery saver or the data saver**. You will also get no notifications when your device is offline. You may also miss some notifications when you restrict the app to use *un*metered networks only. So do not expect to get woken up in the middle of the night when a weather warning gets issued.
+First of all, you need to enable this feature in the settings. Second, you need to specify how often the app will sync the weather warnings (see below). Then, you will get notifications about weather warnings issued for the selected location. **The app may not check for warnings when the device is in doze mode, no suitable network is available, you have turned off sync, enabled the battery saver or the data saver**. Also make sure you did not disable/silence the notifications, you can check this in the app info. You will also get no notifications when your device is offline. You may also miss some notifications when you restrict the app to use *un*metered networks only. So do not expect to get woken up in the middle of the night when a weather warning gets issued.
 
 The notifications include weather warnings with a future onset once they get issued and weather warnings that are already ongoing.
 
