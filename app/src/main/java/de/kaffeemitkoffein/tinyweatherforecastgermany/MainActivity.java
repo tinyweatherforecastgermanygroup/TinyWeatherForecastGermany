@@ -23,6 +23,8 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.TargetApi;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -80,8 +82,6 @@ public class MainActivity extends Activity {
     ListView weatherList;
     AutoCompleteTextView autoCompleteTextView;
     StationSearchEngine stationSearchEngine;
-
-    public static final SimpleDateFormat hourMinuteSecondMilliSecDateFormat = new SimpleDateFormat("HH:mm:ss:SSS",Locale.getDefault());
 
     CurrentWeatherInfo weatherCard;
 
@@ -698,6 +698,40 @@ public class MainActivity extends Activity {
                 },15000);
             } else {
                 // do nothing
+            }
+            if ((WeatherSettings.loggingEnabled(context)) && (android.os.Build.VERSION.SDK_INT >= 33)){
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        // this may fail on locked devices
+                        try {
+                            UsageStatsManager usageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
+                            int standbyBucket = usageStatsManager.getAppStandbyBucket();
+                            switch (standbyBucket) {
+                                case UsageStatsManager.STANDBY_BUCKET_FREQUENT:
+                                    PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.WARN, "App standby bucket is FREQUENT");
+                                    break;
+                                case UsageStatsManager.STANDBY_BUCKET_RARE:
+                                    PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.WARN, "App standby bucket is RARE");
+                                    break;
+                                case UsageStatsManager.STANDBY_BUCKET_RESTRICTED:
+                                    PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.WARN, "App standby bucket is RESTRICTED.");
+                                    break;
+                                case UsageStatsManager.STANDBY_BUCKET_WORKING_SET:
+                                    PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.WARN, "App standby bucket is WORKING SET.");
+                                    break;
+                                case UsageStatsManager.STANDBY_BUCKET_ACTIVE:
+                                    PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.INFO, "App standby bucket is ACTIVE.");
+                                    break;
+                                default:
+                                    PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.ERR, "App standby bucket is UNKNOWN (" + standbyBucket + ").");
+                                    break;
+                            }
+                        } catch (Exception e){
+                            PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.ERR,"Unable to get usage stats: "+e.getMessage());
+                        }
+                    }
+                });
             }
             // TESTING
         }

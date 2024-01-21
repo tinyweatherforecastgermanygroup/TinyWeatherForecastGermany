@@ -117,7 +117,6 @@ public class WeatherWarningActivity extends Activity {
 
     private int nextRainSlide = 0;
     private long rainSlidesStartTime = 0;
-    private long lastTimeSlideDrawn = 0;
     private boolean cancelRainSlides = false;
     private boolean validSlideSetObtained = false;
     public final static int RAINSLIDEDELAY=750;
@@ -179,6 +178,7 @@ public class WeatherWarningActivity extends Activity {
 
     @Override
     protected void onResume() {
+        super.onResume();
         registerForBroadcast();
         if (germany==null){
             germany = (ImageView) findViewById(R.id.warningactivity_map);
@@ -198,7 +198,6 @@ public class WeatherWarningActivity extends Activity {
             PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Weather warnings are up to date, showing the data available.");
             displayWarnings();
         }
-        super.onResume();
     }
 
     @Override
@@ -333,7 +332,6 @@ public class WeatherWarningActivity extends Activity {
                 showProgressBar();
                 super.onStart();
             }
-
             @Override
             public void onNegativeResult() {
                 hideProgressBar();
@@ -341,14 +339,15 @@ public class WeatherWarningActivity extends Activity {
                 PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.ERR,"Getting warnings failed.");
                 super.onNegativeResult();
             }
-
             @Override
             public void onPositiveResult(ArrayList<WeatherWarning> warnings) {
                 hideProgressBar();
                 WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS,Calendar.getInstance().getTimeInMillis());
-                PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.ERR,"Updated warnings: "+warnings.size()+" records.");
+                PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Updated warnings: "+warnings.size()+" records.");
                 weatherWarnings = warnings;
-                displayWarnings();
+                for (int i=0; i<weatherWarnings.size(); i++){
+                    weatherWarnings.get(i).initPolygons(context);
+                }
                 super.onPositiveResult(warnings);
                 // finally do a sync of other parameters; if nothing is due, nothing will happen
                 // warnings will be also ignored, because setLastUpdate was called.
@@ -358,6 +357,7 @@ public class WeatherWarningActivity extends Activity {
                         ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
                     }
                 });
+                displayWarnings();
             }
         };
         WeatherSettings.saveGPSfixtime(context,0);
@@ -415,11 +415,9 @@ public class WeatherWarningActivity extends Activity {
     }
 
     public void updateActionBarLabels(){
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         final SimpleDateFormat simpleDateFormat = Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DATEYEARTIME);
         String update = simpleDateFormat.format(WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS));
         if (weatherWarnings!=null){
-            //actionBar.setSubtitle(getApplicationContext().getResources().getString(R.string.warnings)+": "+update+" ("+weatherWarnings.size()+")");
             actionBar.setSubtitle(update+" ("+weatherWarnings.size()+")");
         } else {
             actionBar.setSubtitle(getApplicationContext().getResources().getString(R.string.warnings_update_fail));
@@ -428,7 +426,12 @@ public class WeatherWarningActivity extends Activity {
 
     private void displayWarnings(){
         if (weatherWarnings!=null){
-            updateActionBarLabels();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateActionBarLabels();
+                }
+            });
             TextView noWarnings = (TextView) findViewById(R.id.warningactivity_no_warnings);
             if (weatherWarnings.size()==0){
                 noWarnings.setVisibility(View.VISIBLE);
@@ -454,13 +457,19 @@ public class WeatherWarningActivity extends Activity {
                         weatherWarningAdapter.setLocalWarnings(localWarnings);
                         weatherList.setAdapter(weatherWarningAdapter);
                         weatherList.setSelection(WeatherWarnings.getFirstWarningPosition(weatherWarnings,localWarnings));
+                        weatherList.invalidate();
                     }
                 });
             }
         };
         scheduledExecutorService.execute(getWarningsForLocationRunnable);
         if (weatherWarnings!=null){
-            displayMap();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    displayMap();
+                }
+            });
         }
     }
 

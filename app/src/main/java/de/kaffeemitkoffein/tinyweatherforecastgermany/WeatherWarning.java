@@ -133,31 +133,6 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         }
     }
 
-    public boolean isInPolygonGeoOld(float testy, float testx){
-        if (polygons==null){
-            return false;
-        }
-        if (polygons.size()==0){
-            return false;
-        }
-        // return false if point is in excluded polygon; it is efficient to check this first.
-        for (int j=0; j<excluded_polygons.size(); j++){
-            Polygon polygon = new Polygon(excluded_polygons.get(j));
-            if (polygon.isInPolygon(testx,testy)){
-                return false;
-            }
-        }
-        // return true if point is in polygon
-        for (int j=0; j<polygons.size(); j++){
-            Polygon polygon = new Polygon(polygons.get(j));
-            if (polygon.isInPolygon(testx,testy)){
-                return true;
-            }
-        }
-        // otherwise false
-        return false;
-    }
-
     public boolean isInPolygonGeo(float testy, float testx){
         if (polygonlist==null){
             return false;

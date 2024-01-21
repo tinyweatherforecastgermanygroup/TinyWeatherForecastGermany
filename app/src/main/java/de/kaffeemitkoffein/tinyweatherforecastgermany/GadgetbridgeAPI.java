@@ -167,7 +167,7 @@ public class GadgetbridgeAPI {
             }
             String timestampHumanReadable = "";
             try {
-                timestampHumanReadable = MainActivity.hourMinuteSecondMilliSecDateFormat.format((long) weatherSpec.timestamp*1000);
+                timestampHumanReadable = Weather.getSimpleDateFormat(Weather.SimpleDateFormats.TIME_SEC).format(weatherSpec.timestamp);
             } catch (IllegalArgumentException e){
                 // do nothing
             }
