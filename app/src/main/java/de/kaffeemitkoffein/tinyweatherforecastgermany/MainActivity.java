@@ -609,8 +609,22 @@ public class MainActivity extends Activity {
                 reset_favorites_imageview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        clearFavorites();
-                        Toast.makeText(context,getApplicationContext().getResources().getString(R.string.favorites_cleared),Toast.LENGTH_LONG).show();
+                        askDialog(thisActivity,
+                                WeatherIcons.getIconResource(context, WeatherIcons.IC_INFO_OUTLINE),
+                                getResources().getString(R.string.favorites_delete_title),
+                                new String[]{getResources().getString(R.string.favorites_delete_summary)},
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        clearFavorites();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(context,getApplicationContext().getResources().getString(R.string.favorites_cleared),Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+                                });
                     }
                 });
             }

@@ -57,6 +57,8 @@
     <string name="preview_fake_warning_text">WIND GUSTS</string>
     <string name="station_does_not_exist">The station you have entered does not exist. Please select from the suggested stations in the list.</string>
     <string name="favorites_cleared">Favorites are deleted.</string>
+    <string name="favorites_delete_title">Delete favorites</string>
+    <string name="favorites_delete_summary">Remove all favorites except the current weather location?</string>
     <string name="actionbar_textinput_title">Enter place here:</string>
     <string name="actionbar_textinput_hint">Try country specific notations</string>
     <string name="weathercode_UNKNOWN">unknown</string>
