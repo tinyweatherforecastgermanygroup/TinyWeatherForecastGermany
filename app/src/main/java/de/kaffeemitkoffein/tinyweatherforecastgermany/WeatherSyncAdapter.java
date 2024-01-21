@@ -312,7 +312,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 @Override
                 public void onPositiveResult() {
                     // update GadgetBridge and widgets
-                    MainActivity.updateAppViews(context, null);
+                    // MainActivity.updateAppViews(context, null);
                     // notify main class
                     Intent intent = new Intent();
                     intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
@@ -335,7 +335,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
                     context.sendBroadcast(intent);
                     // need to update views with old data: GadgetBridge and widgets
-                    MainActivity.updateAppViews(context, null);
+                    // MainActivity.updateAppViews(context, null);
                 }
             };
             weatherForecastRunnable.run();
@@ -356,7 +356,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT, true);
                     context.sendBroadcast(intent);
                     if (WeatherSettings.notifyWarnings(context)) {
-                        MainActivity.updateAppViews(context, null);
+                        // MainActivity.updateAppViews(context, null);
                         launchWeatherWarningNotifications(context, warnings, false);
                     }
                 }
@@ -429,6 +429,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
             };
             pollenReader.run();
         }
+        MainActivity.updateAppViews(context,null);
         Runnable cleanUpRunnable = new Runnable() {
             @Override
             public void run() {

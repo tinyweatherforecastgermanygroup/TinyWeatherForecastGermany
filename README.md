@@ -176,6 +176,8 @@ Since *DMO* forecasts get updated every 12 hours only, periodic updates automati
 
 ### My widgets don't get updated (unless I open the app).
 
+Home screen widgets usually get updated every 30 minutes by the system. 
+
 The widgets get updated every 15-30 minutes. If this does not happen at all or only happens when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
 
 You may try to disable battery optimization for Tiny Weatherforecast Germany.
