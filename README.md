@@ -209,10 +209,10 @@ When you use the Gadgetbridge support and notice that updates only occur rarely,
 1. You need to grand the _background location permission_. Please note on some devices you must grant the general location permission before you can grant the background permission. The app asks all of this is the appropriate order. Should you have declined any of the location permissions, you can grant them in the app settings.
 2. You also need to enable background location checks in the app settings.
 3. To save your battery, the app never starts an active location fix in the background. It only re-uses locations obtained by other apps, e.g. map applications. Simply start the location search in any app on your device or search actively for the closest station within the app. All of this will make the widgets change to the closest station.
-4. Please also note that the background-checks are performed every 15-30 minutes only. 
+4. Please also note that the background-checks are only performed when other tasks are due to save battery, e.g. when updating widgets or syncing data.
 5. Open the app to immediately check for known, passive locations.
 
-Should all of this not help: this functionality may be broken due to energy saving apps or roms breaking expected functionality. See above "my widgets don't get updated (unless I open the app)". 
+Should all of this not help: this functionality may be broken due to energy saving apps or roms breaking expected functionality. See above "weather forecasts do not get updated". 
 
 ### How often does the app update weather data?
 
@@ -222,7 +222,7 @@ Before getting any data from the internet, the app always tries to reuse the dat
 
 You can set up the sync options in detail in the app settings. For the most use-cases, you should enable sync for weather and warnings, and keep it disabled for pollen count, texts and maps since the latter information is not displayed on the main screen and in the home screen widgets.
 
-For a scenario with only intermittent and/or limited access to the internet, e.g. when using unmetered networks only, you may also consider enabling automatic sync for pollen count, texts and maps. 
+For a scenario with only intermittent and/or limited access to the internet, e.g. when using unmetered networks only or traveling in areas without comprehensive network coverage, you may also consider enabling automatic sync for pollen count, texts and maps. 
 
 The sync intervals for weather forcasts may be set to 6, 12, 18 or 24 hours.
 
@@ -230,20 +230,21 @@ The sync intervals for weather warnings may be set to 15 minutes, 30 minutes, 1 
 
 A sane compromise between battery use, network use and up-to-date information is to sync weather forecasts every 24h and warnings every 30 minutes.
 
-The background sync interval for texts, pollen count and maps is every 24 hours, if enabled. You can trigger a forced update of this information from inside the app in the respective view. 
+The background sync interval for texts, pollen count and maps is every 24 hours, if enabled. You can trigger a forced update of this information from inside the app in the respective views. 
 
 You see the last update time of the weather forecasts in the main app. *Long pressing* this text makes the app display the time the weather forecast was *issued* by the DWD.
 
 The app uses a sync adapter that runs in the background. This sync adapter is triggered periodically by the system based on your settings (e.g. every 30 minutes to update warnings). The timing is *inexact*, so that the system can combine various sync requests to save your battery. 
 
-The system won't call the sync adapter when no suitable network is available and/or other settings prevent background syncs. See "My widgets don't update" above for a list of things that may affect background syncs. Syncs also will get postponed when the device is in 
-"doze mode".
+The system won't call the sync adapter when no suitable network is available and/or other settings prevent background syncs. See "weather forecasts do not get updated" above for a list of things that may affect background syncs. Syncs also will get postponed when the device is in "doze mode".
 
 ### How often does the GadgetBridge app gets updated (when this feature is enabled)?
 
 When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately once per hour.
 
-If updates do not occur as frequent as expected, see ("weather forecasts do not get updated") above for things you should check.
+Should you have placed a weather widget on your homescreen, Tiny Weather Forecast Germany will also always update Gadgetbridge together with the widgets. 
+
+If updates do not occur as frequent as expected, see ("weather forecasts do not get updated") above for things you should check. Specifically, consider putting a weather widget on your home screen.
 
 ### Why is precipitation displayed in kg/m² instead of mm?
   
@@ -309,7 +310,7 @@ Just select it as current region in the app. The region displayed in the app and
 
 ### How can I fetch weather for a different location if I go on travel?
 
-If you want to update a different location e.g. before travelling, select it first and update the data. (If `Always update` is not set you may do this manually.) You can then revert to your standard location. Tiny Weather Forecast Germany will remove data only once it got invalid over time, but keep all fetched data in it's internal cache.
+If you want to update a different location e.g. before travelling, select it first and update the data. (If `sync weather` is not set you may do this manually.) You can then revert to your standard location. Tiny Weather Forecast Germany will remove data only once it got invalid over time, but keep all fetched data in it's internal cache.
 
 If you want all regions from the drop down menu to get updated, select *"Update everything"*.
 

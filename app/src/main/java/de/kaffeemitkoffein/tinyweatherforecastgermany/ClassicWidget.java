@@ -86,6 +86,9 @@ public class ClassicWidget extends AppWidgetProvider {
             GadgetbridgeAPI.sendWeatherBroadcastIfEnabled(c,null);
             GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(c);
         }
+        if (WeatherSettings.useBackgroundLocation(c)){
+            WeatherLocationManager.checkForBackgroundLocation(c);
+        }
     }
 
     /**
