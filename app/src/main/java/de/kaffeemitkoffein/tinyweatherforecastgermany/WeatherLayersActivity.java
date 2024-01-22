@@ -223,7 +223,7 @@ public class WeatherLayersActivity extends Activity {
                     Intent intent = new Intent();
                     intent.setAction(Pollen.ACTION_UPDATE_POLLEN);
                     intent.putExtra(Pollen.UPDATE_POLLEN_RESULT, success);
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Pollen data updated successfully.");
+                    PrivateLog.log(context, PrivateLog.LAYERS, PrivateLog.INFO, "Pollen data updated successfully.");
                     context.sendBroadcast(intent);
                     WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN, Calendar.getInstance().getTimeInMillis());
 

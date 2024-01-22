@@ -237,10 +237,10 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
             for (int i = 0; i < expiredNotificationIDs.size(); i++) {
                 int id = expiredNotificationIDs.get(i);
                 notificationManager.cancel(id);
-                PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Cancelled expired notification #" + id);
+                PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Cancelled expired notification #" + id);
             }
         } else {
-            PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.ERR, "NotificationManager is null, cannot cancel expired notifications.");
+            PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.ERR, "NotificationManager is null, cannot cancel expired notifications.");
         }
     }
 
@@ -317,15 +317,15 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     Intent intent = new Intent();
                     intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
                     context.sendBroadcast(intent);
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Weather update: success");
+                    PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Weather update: success");
                     super.onPositiveResult();
                     WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,Calendar.getInstance().getTimeInMillis());
                 }
                 @Override
                 public void onNegativeResult() {
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.ERR, "Weather update: failed, error.");
+                    PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.ERR, "Weather update: failed, error.");
                     if (ssl_exception) {
-                        PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.ERR, "SSL exception detected by service.");
+                        PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.ERR, "SSL exception detected by service.");
                         Intent ssl_intent = new Intent();
                         ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
                         context.sendBroadcast(ssl_intent);
@@ -349,7 +349,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 public void onPositiveResult(ArrayList<WeatherWarning> warnings) {
                     super.onPositiveResult(warnings);
                     WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS,Calendar.getInstance().getTimeInMillis());
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Warnings updated successfully.");
+                    PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Warnings updated successfully.");
                     // trigger update of views in activity
                     Intent intent = new Intent();
                     intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
@@ -362,7 +362,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 }
                 public void onNegativeResult() {
                     // trigger update of views in activity
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.ERR, "Getting warnings failed.");
+                    PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.ERR, "Getting warnings failed.");
                     Intent intent = new Intent();
                     intent.setAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
                     intent.putExtra(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE_RESULT, false);
@@ -384,7 +384,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     Intent intent = new Intent();
                     intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
                     intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT, true);
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Weather texts updated successfully.");
+                    PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Weather texts updated successfully.");
                     context.sendBroadcast(intent);
                     WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.TEXTS,Calendar.getInstance().getTimeInMillis());
                 }
@@ -400,7 +400,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     Intent intent = new Intent();
                     intent.setAction(WeatherLayersActivity.ACTION_UPDATE_LAYERS);
                     intent.putExtra(WeatherLayersActivity.UPDATE_LAYERS_RESULT, success);
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Layer images updated successfully.");
+                    PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Layer images updated successfully.");
                     context.sendBroadcast(intent);
                     WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.LAYERS,Calendar.getInstance().getTimeInMillis());
                 }
@@ -421,7 +421,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     Intent intent = new Intent();
                     intent.setAction(Pollen.ACTION_UPDATE_POLLEN);
                     intent.putExtra(Pollen.UPDATE_POLLEN_RESULT, success);
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Pollen data updated successfully.");
+                    PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Pollen data updated successfully.");
                     context.sendBroadcast(intent);
                     WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN,Calendar.getInstance().getTimeInMillis());
 

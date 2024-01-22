@@ -166,6 +166,7 @@ public class WeatherSettings {
     public static final String PREF_LAST_NOTIFICATIONS_UPDATE_TIME = "PREF_nf_updatetime";
     public static final String PREF_BOLDWIDGET_VERTICAL_BAR = "PREF_boldwidget_vertical_bar";
     public static final String PREF_AREADATABASE_LOCK = "PREF_areadatabase_lock";
+    public static final String PREF_BATTERY = "PREF_battery";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";

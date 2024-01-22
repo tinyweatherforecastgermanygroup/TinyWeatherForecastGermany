@@ -20,7 +20,9 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.*;
 import android.content.pm.PackageManager;
@@ -31,8 +33,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.*;
+import android.util.Log;
 import android.widget.Toast;
 
+import java.lang.ref.PhantomReference;
 import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
@@ -97,6 +101,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)) {
                     setAlarmSettingAllowed();
                     if (WeatherSettings.serveGadgetBridge(context)){
+                        GadgetbridgeAPI.sendWeatherBroadcastIfEnabled(context,null);
                         GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
                     }
                 }
@@ -384,6 +389,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             useBackgroundLocation.setChecked(true);
         }
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(listener);
+        updateValuesDisplay();
     }
 
     @Override
@@ -397,6 +403,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
 
     @SuppressWarnings("deprecation")
     private void updateValuesDisplay(){
+        final PreferenceCategory preferenceCategoryGeneral = (PreferenceCategory) findPreference(WeatherSettings.PREF_CATEGORY_GENERAL);
         if (!WeatherSettings.appReleaseIsUserdebug()){
             disableLogCatLogging();
             //disableClearNotifications();
@@ -487,7 +494,6 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
          for api above 22 we check for metered/unmetered networks.
          One of the preferences always needs to be removed.
          */
-        final PreferenceCategory preferenceCategoryGeneral = (PreferenceCategory) findPreference(WeatherSettings.PREF_CATEGORY_GENERAL);
         CheckBoxPreference wifiOnly = (CheckBoxPreference) findPreference(WeatherSettings.PREF_USE_WIFI_ONLY);
         CheckBoxPreference useMeteredNetworks = (CheckBoxPreference) findPreference(WeatherSettings.PREF_USE_METERED_NETWORKS);
         if (Build.VERSION.SDK_INT < 23){
@@ -540,6 +546,26 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
         EditTextPreference maxWindScaleInChartsPreference = (EditTextPreference) findPreference(WeatherSettings.PREF_DISPLAY_WIND_IN_CHARTS_MAX);
         if (maxWindScaleInChartsPreference!=null){
             maxWindScaleInChartsPreference.setSummary(context.getResources().getString(R.string.preference_display_wind_in_charts_max_summary)+ " "+ WeatherSettings.getWindInChartsMaxKmh(context)+ " km/h");
+        }
+        Preference batteryPreference = (Preference) findPreference(WeatherSettings.PREF_BATTERY);
+        if (batteryPreference!=null){
+            if (MainActivity.isIgnoringBatteryOptimizations(context) || ((android.os.Build.VERSION.SDK_INT<23))){
+                preferenceCategoryGeneral.removePreference(batteryPreference);
+            } else {
+                final Activity thisActivity = this;
+                batteryPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        WeatherSettings.setBatteryOptimiziatonFlag(context,WeatherSettings.BatteryFlag.AGREED);
+                        @SuppressLint("BatteryLife") Intent i3 = new Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                        i3.setData(Uri.fromParts("package",context.getPackageName(),null));
+                        i3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i3);
+                        recreate();
+                        return false;
+                    }
+                });
+            }
         }
      }
 

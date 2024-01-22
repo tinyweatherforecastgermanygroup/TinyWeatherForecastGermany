@@ -2306,7 +2306,7 @@ public final class Weather {
                             return false;
                         }
                     } else {
-                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkinfo obtained => assuming no suitable network available.");
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"No networkinfo obtained => assuming no suitable network available.");
                         return false;
                     }
                     // use connectivityManager on api 23 and higher
@@ -2314,7 +2314,7 @@ public final class Weather {
                     Network network = connectivityManager.getActiveNetwork();
                     NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
                     if (networkCapabilities==null) {
-                        PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"No networkCapabilities obtained => assuming no suitable network available.");
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"No networkCapabilities obtained => assuming no suitable network available.");
                         return false;
                     } else {
                         //if (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && (networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED))){
@@ -2335,14 +2335,14 @@ public final class Weather {
                                 }
                             }
                         } else {
-                            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.ERR,"Network detected, but does not have internet access => assuming no suitable network available.");
+                            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Network detected, but does not have internet access => assuming no suitable network available.");
                             return false;
                         }
                     }
                 }
             }
         } catch (Exception e){
-            PrivateLog.log(context,PrivateLog.SERVICE,PrivateLog.WARN,"Error(s) occured when checking for a valid network: "+e.getMessage()+" => assuming there is no valid network connection.");
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Error(s) occured when checking for a valid network: "+e.getMessage()+" => assuming there is no valid network connection.");
         }
         return false;
     }

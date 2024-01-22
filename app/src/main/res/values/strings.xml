@@ -511,5 +511,7 @@
     <string name="sync_interval">Currently every %1$s.</string>
     <string name="hours">hours</string>
     <string name="hour">hour</string>
-
+    <string name="battery_title">Battery optimization</string>
+    <string name="battery_summary">Deactivate battery optimization for this app so that weather data can be synchronized reliably.</string>
+    <string name="battery_rationale">To update weather warnings and weather forecasts regularly, the app should be allowed to always run in the background.</string>
 </resources>

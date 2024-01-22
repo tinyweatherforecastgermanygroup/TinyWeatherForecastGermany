@@ -20,6 +20,8 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -28,6 +30,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -219,6 +223,12 @@ public class WelcomeActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        setPage(page);
+        super.onResume();
+    }
+
     private View setPage(int page) {
         if (result_view!=null){
             pager.setOnClickListener(null);
@@ -407,6 +417,25 @@ public class WelcomeActivity extends Activity {
                     WeatherSettings.setDisplayWarningsInWidget(getApplicationContext(),b);
                 }
             });
+            Button batteryButton = (Button) findViewById(R.id.welcome_screen5_batteryButton);
+            if (batteryButton!=null){
+                if (MainActivity.isIgnoringBatteryOptimizations(context) || ((android.os.Build.VERSION.SDK_INT<23))){
+                   batteryButton.setVisibility(View.GONE);
+                } else {
+                    batteryButton.setVisibility(View.VISIBLE);
+                    batteryButton.setOnClickListener(new View.OnClickListener() {
+                        @TargetApi(Build.VERSION_CODES.M)
+                        @Override
+                        public void onClick(View view) {
+                            WeatherSettings.setBatteryOptimiziatonFlag(context,WeatherSettings.BatteryFlag.AGREED);
+                            @SuppressLint("BatteryLife") Intent i3 = new Intent(android.provider.Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                            i3.setData(Uri.fromParts("package",context.getPackageName(),null));
+                            i3.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(i3);
+                        }
+                    });
+                }
+            }
         }
         if (page == 6) {
             result_view = layoutInflater.inflate(R.layout.welcome_spinner, pager, true);

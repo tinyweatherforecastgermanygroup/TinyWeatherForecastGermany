@@ -468,7 +468,7 @@ public class MainActivity extends Activity {
                 public void onPositiveResult() {
                     // update GadgetBridge and widgets
                     MainActivity.updateAppViews(context, null);
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Weather update: success");
+                    PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.INFO, "Weather update: success");
                     super.onPositiveResult();
                     WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,Calendar.getInstance().getTimeInMillis());
                     // finally, do a sync of other conditions. Weather will not by updated, since setLastUpdate was called.
@@ -484,9 +484,9 @@ public class MainActivity extends Activity {
                 }
                 @Override
                 public void onNegativeResult() {
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.ERR, "Weather update: failed, error.");
+                    PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.ERR, "Weather update: failed, error.");
                     if (ssl_exception) {
-                        PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.ERR, "SSL exception detected by service.");
+                        PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.ERR, "SSL exception detected.");
                         Intent ssl_intent = new Intent();
                         ssl_intent.setAction(MainActivity.MAINAPP_SSL_ERROR);
                         context.sendBroadcast(ssl_intent);

@@ -14,7 +14,7 @@ public class CreateAreasDatabaseService extends Service {
 
     @Override
     public void onCreate(){
-        PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Service started.");
+        PrivateLog.log(this,PrivateLog.SERVICE,PrivateLog.INFO,"Area database ervice started.");
         executor = Executors.newSingleThreadExecutor();
         context = this;
     }

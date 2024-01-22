@@ -241,7 +241,12 @@ public class WeatherDetailsActivity extends Activity {
             public void onFinished(boolean success) {
                 if (success){
                     WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN, Calendar.getInstance().getTimeInMillis());
-                    displayValues();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayValues();
+                        }
+                    });
                     // check for other updates
                     ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
                 }

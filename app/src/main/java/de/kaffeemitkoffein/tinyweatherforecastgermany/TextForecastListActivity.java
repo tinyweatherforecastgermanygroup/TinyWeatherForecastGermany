@@ -158,7 +158,7 @@ public class TextForecastListActivity extends Activity {
                     Intent intent = new Intent();
                     intent.setAction(TextForecastListActivity.ACTION_UPDATE_TEXTS);
                     intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT, true);
-                    PrivateLog.log(context, PrivateLog.SERVICE, PrivateLog.INFO, "Weather texts updated successfully.");
+                    PrivateLog.log(context, PrivateLog.TEXTS, PrivateLog.INFO, "Weather texts updated successfully.");
                     context.sendBroadcast(intent);
                     WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.TEXTS, Calendar.getInstance().getTimeInMillis());
                 }

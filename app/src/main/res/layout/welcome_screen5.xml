@@ -108,6 +108,16 @@
                       android:paddingBottom="@dimen/welcome_action_padding"
                       android:enabled="true"/>
 
+            <Button
+                    android:id="@+id/welcome_screen5_batteryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/welcome_setup_size"
+                    android:textColor="?attr/colorText"
+                    android:layout_marginBottom="@dimen/welcome_action_padding"
+                    android:text="@string/battery_summary"
+                    />
+
             <TextView
                     android:id="@+id/welcome_screen5_intervaltext"
                     android:layout_width="wrap_content"

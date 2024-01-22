@@ -30,3 +30,5 @@ Changes in version 0.62.0:
 - the settings for syncs are now unified in a new category called "sync settings"
 - the user-triggered updates now only reload the data necessary for the view visible
 - added dialog to ask if the favorites should be really deleted
+- added button in welcome activity to optionally opt out from battery saving
+- added setting to optionally opt out from battery saving
