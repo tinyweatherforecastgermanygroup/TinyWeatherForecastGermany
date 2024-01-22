@@ -180,24 +180,27 @@ Home screen widgets usually get updated every 30 minutes by the system. However,
 
 Make sure that you did not *disable the syncs manually* in the account settings. Furthermore, some device options like the battery saver or data saver may turn off syncs temporarily (e.g. until the device gets charged again). 
 
-Please see the question below (My widgets don't update) for a detailed list of things you should check.
+Please see the question below ("weather forecasts do not get updated") for a detailed list of things you should check.
 
 If widget updates do not happen at all or only happen when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
 
-### My widgets don't update, the weather forecasts do not get updated in the background and/or warnings do not pop up - what can I do?
+### The weather forecasts do not get updated in the background and/or warnings do not pop up - what can I do?
 
-Since version 0.62.0, Tiny Weather Forecast Germany mostly abandoned custom update routines and syncs data in the background using a sync adapter, allowing the user to far better customize the app behaviour than before.
+Since version 0.62.0, Tiny Weather Forecast Germany mostly abandoned custom update routines and syncs data in the background using a sync adapter, allowing the user to far better customize the app behaviour than before. As a result, less battery is consumed and the updates are better adapted to the availability of a suitable Internet connection.
+
+The user has multiple sane possibilities to control the use of resources on the mobile device, which are now all well-respected by Tiny Weather Forecast Germany. However, some of them will by their nature limit background syncs.
 
 Please check the following points:
 1. Make sure you have **not enabled** the system-wide *battery saver*. If enabled, turn it off.
-2. Make sure you have **not enabled** the system-wide *data saver*. If enabled, turn it off.
-3. Make sure that in Settings -> Passwords & accounts -> Weather -> Account sync is **enabled**.
+2. Make sure you have **not enabled** the system-wide *data saver*. If you use it, consider adding Tiny Weather Forecast Germany to the list of apps with *unrestricted data*.
+3. Make sure that in Settings -> Passwords & accounts -> Weather -> Account sync is **enabled** (default), and you did not turn it off.
 4. Check in the settings of Tiny Weather Forecast Germany that you have **enabled sync** for the desired data (e.g. weather, warnings and perhaps other categories).
 5. Make sure that you have **not restricted battery use** for Tiny Weather Forecast Germany. To check, go to the app info screen by long-pressing the app icon in the launcher, select app battery usage and select "unrestricted" (on older devices: turn off battery optimization for the app). 
-6. For weather warnings, make sure you have **not disabled notifications** for Tiny Weather Forecast Germany and you have **granted the notification permission**. You can check both in the app info.
+6. For weather warnings, make sure you have **not disabled notifications** for Tiny Weather Forecast Germany and you have **not denied the notification permission**. You can check both in the app info.
 
 When the above fails, you may try the following:
 - grant the app the "allow all the time" location permission.
+- try interacting with the app by opening it.
 
 When you use the Gadgetbridge support and notice that updates only occur rarely, you may, in addition to the points above, put a weather widget on your home screen.
 
@@ -240,7 +243,7 @@ The system won't call the sync adapter when no suitable network is available and
 
 When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately once per hour.
 
-If updates do not occur as frequent as expected, see "My widgets don't update" above for things you should check.
+If updates do not occur as frequent as expected, see ("weather forecasts do not get updated") above for things you should check.
 
 ### Why is precipitation displayed in kg/m² instead of mm?
   
