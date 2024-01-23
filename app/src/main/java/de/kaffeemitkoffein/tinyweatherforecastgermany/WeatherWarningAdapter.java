@@ -169,6 +169,9 @@
             if (ThemePicker.GetTheme(context) == R.style.AppTheme_Solarized) {
                 colorFactor = 1.2f;
             }
+            if (ThemePicker.GetTheme(context) == R.style.AppTheme_Light) {
+                colorFactor = 1.2f;
+            }
             color = Color.rgb(Math.round(Color.red(color) / colorFactor), Math.round(Color.green(color) / colorFactor), Math.round(Color.blue(color) / colorFactor));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Drawable drawable = context.getDrawable(ThemePicker.getWidgetBackgroundDrawableRessource(context));

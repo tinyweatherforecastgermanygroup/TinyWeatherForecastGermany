@@ -32,3 +32,4 @@ Changes in version 0.62.0:
 - added dialog to ask if the favorites should be really deleted
 - added button in welcome activity to optionally opt out from battery saving
 - added setting to optionally opt out from battery saving
+- the travel update now also does a force update for weather forecasts, weather warnings, texts, pollen count and maps

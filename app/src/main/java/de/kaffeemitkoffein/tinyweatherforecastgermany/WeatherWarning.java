@@ -21,6 +21,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -163,6 +165,7 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
     }
 
     public int getWarningColor(){
+        Log.v("twfg","AREA COLOR: "+area_color);
         String[] colors = area_color.trim().split("\\s+");
         int result = Color.rgb(Integer.parseInt(colors[0]),Integer.parseInt(colors[1]),Integer.parseInt(colors[2]));
         return result;

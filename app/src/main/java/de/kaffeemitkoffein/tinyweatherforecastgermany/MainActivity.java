@@ -1319,7 +1319,7 @@ public class MainActivity extends Activity {
             return true;
         }
         if (item_id == R.id.menu_travelupdate) {
-            ContentResolver.requestSync(getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_FAVORITES));
+            ContentResolver.requestSync(getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_FAVORITES|WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_FORCE));
             return true;
         }
         if (item_id==R.id.menu_license) {
