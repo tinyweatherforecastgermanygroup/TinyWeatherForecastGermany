@@ -492,9 +492,13 @@ public class MainActivity extends Activity {
                         context.sendBroadcast(ssl_intent);
                     }
                     // need to update main app with old data
+                    /*
                     Intent intent = new Intent();
                     intent.setAction(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION);
                     context.sendBroadcast(intent);
+                     */
+                    // display old values, if available
+                    loadCurrentWeather();
                     // need to update views with old data: GadgetBridge and widgets
                     MainActivity.updateAppViews(context, null);
                 }

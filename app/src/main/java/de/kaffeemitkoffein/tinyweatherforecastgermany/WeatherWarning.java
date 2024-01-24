@@ -165,7 +165,6 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
     }
 
     public int getWarningColor(){
-        Log.v("twfg","AREA COLOR: "+area_color);
         String[] colors = area_color.trim().split("\\s+");
         int result = Color.rgb(Integer.parseInt(colors[0]),Integer.parseInt(colors[1]),Integer.parseInt(colors[2]));
         return result;
