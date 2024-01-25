@@ -26,6 +26,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -434,6 +435,10 @@ public class APIReaders {
             this.weatherLocations = weatherLocations;
         }
 
+        public void setWeatherLocations(ArrayList<Weather.WeatherLocation> weatherLocations) {
+            this.weatherLocations = weatherLocations;
+        }
+
         public String getLastestDMOUrl(Context context, String stationName) throws IOException {
             String basicUrl        = "https://opendata.dwd.de/weather/local_forecasts/dmo/icon-eu/single_stations/" + stationName + "/kmz/";
             String basicUrlLegacy = "http://opendata.dwd.de/weather/local_forecasts/dmo/icon-eu/single_stations/" + stationName + "/kmz/";
@@ -783,6 +788,7 @@ public class APIReaders {
             onStart();
             ArrayList<RawWeatherInfo> rawWeatherInfos = new ArrayList<RawWeatherInfo>();
             if (weatherLocations!=null){
+                Log.v("twfg","API locations not nuill");
                 for (int i=0; i<weatherLocations.size(); i++){
                     final RawWeatherInfo rawWeatherInfo = updateWeatherLocationData(weatherLocations.get(i));
                     if (rawWeatherInfo!=null){
@@ -808,6 +814,8 @@ public class APIReaders {
                         rawWeatherInfos.add(rawWeatherInfo);
                     }
                 }
+            } else {
+                Log.v("twfg","API location null");
             }
             onPostExecute(rawWeatherInfos);
         }

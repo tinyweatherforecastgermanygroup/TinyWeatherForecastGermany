@@ -42,6 +42,7 @@ import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -364,6 +365,7 @@ public class MainActivity extends Activity {
             public void run() {
                 if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)){
                     PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is outdated, getting new weather data.");
+                    weatherForecastRunnable.setWeatherLocations(null);
                     executor.execute(weatherForecastRunnable);
                 } else {
                     PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is up to date, no need to fetch new data.");
@@ -461,6 +463,10 @@ public class MainActivity extends Activity {
             weatherForecastRunnable = new APIReaders.WeatherForecastRunnable(context, null) {
                 @Override
                 public void onStart() {
+                    Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+                    ArrayList<Weather.WeatherLocation> weatherLocations = new ArrayList<Weather.WeatherLocation>();
+                    weatherLocations.add(weatherLocation);
+                    setWeatherLocations(weatherLocations);
                     super.onStart();
                     // do nothing
                 }
@@ -857,9 +863,13 @@ public class MainActivity extends Activity {
                             }
                         });
                     }
-                    loadCurrentWeather();
+                    // loadCurrentWeather();
                 }
             });
+            ArrayList<Weather.WeatherLocation> weatherLocations = new ArrayList<Weather.WeatherLocation>();
+            weatherLocations.add(weatherLocation);
+            weatherForecastRunnable.setWeatherLocations(weatherLocations);
+            executor.execute(weatherForecastRunnable);
         }
     }
 
@@ -1101,12 +1111,7 @@ public class MainActivity extends Activity {
             // set back the flag before recreate occurs
             WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
             // notify widgets (& Gadgetbridge), since such view changes may also affect widgets, e.g. overview chart
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    updateAppViews(context,weatherCard);
-                }
-            });
+            updateAppViews(context,weatherCard);
             // recreate the whole view
             runOnUiThread(new Runnable() {
                 @Override
@@ -1217,6 +1222,7 @@ public class MainActivity extends Activity {
 
     public void forcedOverallUpdate(){
         forceWeatherUpdateFlag = true;
+        weatherForecastRunnable.setWeatherLocations(null);
         executor.execute(weatherForecastRunnable);
         SyncRequest syncRequest = getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_FORCE);
         ContentResolver.requestSync(syncRequest);
@@ -1305,6 +1311,7 @@ public class MainActivity extends Activity {
         int item_id = mi.getItemId();
         if (item_id == R.id.menu_refresh){
             PrivateLog.log(this,PrivateLog.MAIN,PrivateLog.INFO,"user requests update => force update");
+            weatherForecastRunnable.setWeatherLocations(null);
             executor.execute(weatherForecastRunnable);
             return true;
         }
