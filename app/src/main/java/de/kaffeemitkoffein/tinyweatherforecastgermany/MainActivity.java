@@ -373,6 +373,7 @@ public class MainActivity extends Activity {
                 }
             }
         });
+        /*
         if ((stationsManager==null) || (!stationsManager.loaded)){
             executor.execute(new Runnable() {
                 @Override
@@ -384,6 +385,19 @@ public class MainActivity extends Activity {
                     }
                 }
             });
+        }
+         */
+        if ((stationsManager==null) || (!stationsManager.loaded)){
+            weatherList.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        loadStationsData();
+                    } catch (Exception e){
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
+                    }
+                }
+            },6000);
         }
         executor.execute(new Runnable() {
             @Override
