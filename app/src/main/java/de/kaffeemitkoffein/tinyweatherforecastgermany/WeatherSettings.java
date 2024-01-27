@@ -2160,6 +2160,9 @@ public class WeatherSettings {
                     intervalSyncTimes.add(syncTime);
                 }
             }
+            if (serveGadgetBridge(context)) {
+                intervalSyncTimes.add((long) GADGETBRIDGE_UPDATE_INTERVAL);
+            }
             if (intervalSyncTimes.size()>0){
                 long result = intervalSyncTimes.get(0);
                 for (int i=1; i<intervalSyncTimes.size(); i++){
@@ -2167,13 +2170,7 @@ public class WeatherSettings {
                         result = intervalSyncTimes.get(i);
                     }
                 }
-                if (serveGadgetBridge(context) && (result<GADGETBRIDGE_UPDATE_INTERVAL)){
-                    result = GADGETBRIDGE_UPDATE_INTERVAL;
-                }
                 return result;
-            }
-            if (serveGadgetBridge(context)){
-                return GADGETBRIDGE_UPDATE_INTERVAL;
             }
             return Intervals.NEVER;
         }
