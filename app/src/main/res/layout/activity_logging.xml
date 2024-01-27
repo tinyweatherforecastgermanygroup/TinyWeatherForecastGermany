@@ -22,19 +22,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+    <ImageButton android:id="@+id/logging_button_down"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:src="?attr/ic_keyboard_arrow_down"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+
+    <ImageButton android:id="@+id/logging_button_up"
+                 android:layout_width="wrap_content"
+                 android:layout_height="20dp"
+                 android:gravity="center"
+                 android:src="?attr/ic_keyboard_arrow_up"
+                 android:layout_above="@id/logging_button_down"
+                 android:layout_alignParentRight="true"/>
+
 
     <Button android:id="@+id/logging_button_back"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             android:gravity="center"
             android:textSize="@dimen/fcmain_textsize_medium"
             android:textColor="?attr/colorText"
             android:drawableLeft="@mipmap/ic_chevron_left_white_24dp"
-            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/logging_button_down"
             android:layout_alignParentBottom="true"
             android:text="@string/logging_button_back"/>
 
-    <ScrollView android:id="@+id/infoScrollView"
+    <ScrollView android:id="@+id/loggingScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"

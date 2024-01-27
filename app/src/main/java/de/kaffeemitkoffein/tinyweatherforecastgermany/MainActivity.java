@@ -2265,7 +2265,7 @@ public class MainActivity extends Activity {
                 WeatherContentProvider.AUTHORITY,
                 Bundle.EMPTY,
                 necessarySyncInterval);
-        PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Sync adapter registered, interval: "+necessarySyncInterval+" sec");
+        PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Sync adapter registered, interval: "+necessarySyncInterval+" sec ("+necessarySyncInterval/60+" minutes).");
     }
 
     public static SyncRequest getManualSyncRequest(Context context, int updateFlags){

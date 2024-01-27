@@ -50,7 +50,9 @@ public class LoggingActivity extends Activity {
     ActionBar actionBar;
     int level0=0; int level1=0; int level2=0; int level3=0; long logSize=0;
     final static int[] levelColor ={Color.GREEN,Color.YELLOW,Color.RED,Color.MAGENTA};
+    ScrollView logScrolliew;
     TextView logview; TextView TvLevel0; TextView TvLevel1; TextView TvLevel2; TextView TvLevel3; TextView TvRAMavail; TextView TvRAMtotal; TextView TvRAMlow; TextView TvLogSize;
+    ImageButton scrollBottomButton; ImageButton scrollTopButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,31 @@ public class LoggingActivity extends Activity {
         TvRAMavail = (TextView) findViewById(R.id.actionbar_logging_ramAvail);
         TvRAMtotal = (TextView) findViewById(R.id.actionbar_logging_ramTotal);
         TvRAMlow = (TextView) findViewById(R.id.actionbar_logging_ramLow);
+        logScrolliew = (ScrollView) findViewById(R.id.loggingScrollView);
+        scrollBottomButton = (ImageButton) findViewById(R.id.logging_button_down);
+        scrollBottomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logview.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        logScrolliew.fullScroll(View.FOCUS_DOWN);
+                    }
+                });
+            }
+        });
+        scrollTopButton = (ImageButton) findViewById(R.id.logging_button_up);
+        scrollTopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logview.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        logScrolliew.fullScroll(View.FOCUS_UP);
+                    }
+                });
+            }
+        });
         logview = (TextView) findViewById(R.id.logging_infoTextView);
         logview.setText("Loading...");
         // Read the logs asynchronously
@@ -175,6 +202,11 @@ public class LoggingActivity extends Activity {
             }
         }
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

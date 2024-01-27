@@ -68,5 +68,7 @@
     <attr name="white_bar" format="reference"/>
     <attr name="binocular" format="reference"/>
     <attr name="symbol_sun" format="reference"/>
+    <attr name="ic_keyboard_arrow_down" format="reference"/>
+    <attr name="ic_keyboard_arrow_up" format="reference"/>
 
 </resources>
