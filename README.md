@@ -121,9 +121,9 @@ The app uses the following permissions:
 - RECEIVE_BOOT_COMPLETED: the app needs to know about a reboot to restart periodic syncs of weather data.
 - ACCESS_COARSE_LOCATION & ACCESS_FINE_LOCATION: used to optionally determine the closest weather sensors to your position. This permission needs not to be granted if this feature is not used or if the search is performed based on manually entered geo-coordinates.
 - ACCESS_BACKGROUND_LOCATION: optionally used to passively check the location while the app is not running and switch to a closer weather station if appropriate. This permission needs not to be granted if this feature is not used.
-- REQUEST_IGNORE_BATTERY_OPTIMIZATIONS: needed to present a user-friendly dialog to optionally disable battery optimization. This is only necessary when enabling location checks in the background.
+- REQUEST_IGNORE_BATTERY_OPTIMIZATIONS: needed to present a user-friendly dialog to optionally disable battery optimization. This is only necessary when enabling location checks in the background and/or regular syncs fail.
 - POST_NOTIFICATIONS: needed to post notifications about weather warnings.
-- AUTHENTICATE_ACCOUNTS, WRITE_SYNC_SETTINGS & READ_SYNC_SETTINGS: used to automatically create a sync account to perform background syncs of weather data. The information synced can be configured in detail in the app settings.
+- AUTHENTICATE_ACCOUNTS, WRITE_SYNC_SETTINGS & READ_SYNC_SETTINGS: used to automatically create a sync account to perform background syncs of weather data. Also used to enable syncs by the user from the settings. The information synced can be configured in detail in the app settings.
 
 Since version 0.62.0, the FOREGROUND_SERVICE permission is no longer necessary and was removed.
 
@@ -137,7 +137,7 @@ The app always displays the date & time of your device (and locale). Example: yo
 
 The widget icon, the weather description and the current temperature refer to the weather forecast that can be expected until the next full hour. The low and high temperatures refer to the values that can be expected to occur from now to midnight.
 
-When showing more days (bold widget, large widget), the min and max values and the weather symbol refer to the whole day.
+When showing more days, the min and max values and the weather symbol refer to the whole day.
 
 Since version 0.58.0 onward, this app can display weather warnings in widgets. To display weather warnings in widgets, you need to enable this feature in the settings. When a warning is issued for your chosen location, the classic widget and the large widget display a warning symbol. The clock widget and the bold widget also display a small text indicating the warning category of the *most severe* weather warning issued for your location. When there are multiple warnings issued, this is indicated by three dots ("...") and a plus ("+"). You have to go to the app to see them all.  
 
@@ -178,20 +178,18 @@ Since *DMO* forecasts get updated every 12 hours only, syncs of weather forecast
 
 Home screen widgets usually get updated every 30 minutes by the system. However, to take into account some manufacturer and/or rom limitations, the sync adapter also updates the widgets.
 
-Make sure that you did not *disable the syncs manually* in the account settings. Furthermore, some device options like the battery saver or data saver may turn off syncs temporarily (e.g. until the device gets charged again). 
-
-Please see the question below ("weather forecasts do not get updated") for a detailed list of things you should check.
+Should you encounter issues with the widgets not updating, please see the question below ("weather forecasts do not get updated") for a detailed list of things you can check.
 
 If widget updates do not happen at all or only happen when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
 
 ### The weather forecasts do not get updated in the background and/or warnings do not pop up - what can I do?
 
-Since version 0.62.0, Tiny Weather Forecast Germany mostly abandoned custom update routines and syncs data in the background using a sync adapter, allowing the user to far better customize the app behaviour than before. As a result, less battery is consumed and the updates are better adapted to the availability of a suitable Internet connection.
+Since version 0.62.0, Tiny Weather Forecast Germany mostly abandoned custom update routines and syncs data in the background using a sync adapter, allowing the user to far better customize the app behaviour than before. As a result, less battery is consumed and the updates are better adapted to the availability of a suitable network connection.
 
-The user has multiple sane possibilities to control the use of resources on the mobile device, which are now all well-respected by Tiny Weather Forecast Germany. However, some of them will by their nature limit background syncs.
+The user has multiple possibilities to control the use of resources on the mobile device, which are now all well-respected by Tiny Weather Forecast Germany. However, some of them will by their nature limit background syncs.
 
 Please check the following points:
-1. Make sure you have **not enabled** the system-wide *battery saver*. If enabled, turn it off.
+1. Make sure you have **not enabled** the system-wide *battery saver*. If enabled, consider to turn it off.
 2. Make sure you have **not enabled** the system-wide *data saver*. If you use it, consider adding Tiny Weather Forecast Germany to the list of apps with *unrestricted data*.
 3. Make sure that in Settings -> Passwords & accounts -> Weather -> Account sync is **enabled** (default), and you did not turn it off.
 4. Check in the settings of Tiny Weather Forecast Germany that you have **enabled sync** for the desired data (e.g. weather, warnings and perhaps other categories).
@@ -212,11 +210,11 @@ When you use the Gadgetbridge support and notice that updates only occur rarely,
 4. Please also note that the background-checks are only performed when other tasks are due to save battery, e.g. when updating widgets or syncing data.
 5. Open the app to immediately check for known, passive locations.
 
-Should all of this not help: this functionality may be broken due to energy saving apps or roms breaking expected functionality. See above "weather forecasts do not get updated". 
+Should all of this not help: this functionality may be broken due to battery saving apps or roms breaking expected functionality. See above "weather forecasts do not get updated". 
 
 ### How often does the app update weather data?
 
-Preface: the Deutscher Wetterdienst updates the forecast data that is used every 6 hours for *Mosmix* locations (most of the locations available), and every 12 hours for *DMO* locations. Therefore, it does not make sense to pull weather data more frequently than every 6 or 12 hours, depending on your chosen location.
+Preface: the Deutscher Wetterdienst updates the forecast data used every 6 hours for *Mosmix* locations (most of the locations available), and every 12 hours for *DMO* locations. Therefore, it does not make sense to pull weather data more frequently than every 6 or 12 hours, depending on your chosen location.
 
 Before getting any data from the internet, the app always tries to reuse the data in place and performs syncs only when necessary.
 
@@ -232,11 +230,13 @@ A sane compromise between battery use, network use and up-to-date information is
 
 The background sync interval for texts, pollen count and maps is every 24 hours, if enabled. You can trigger a forced update of this information from inside the app in the respective views. 
 
+To force-update all categories, select *Update everything* in the app.
+
 You see the last update time of the weather forecasts in the main app. *Long pressing* this text makes the app display the time the weather forecast was *issued* by the DWD.
 
 The app uses a sync adapter that runs in the background. This sync adapter is triggered periodically by the system based on your settings (e.g. every 30 minutes to update warnings). The timing is *inexact*, so that the system can combine various sync requests to save your battery. 
 
-The system won't call the sync adapter when no suitable network is available and/or other settings prevent background syncs. See "weather forecasts do not get updated" above for a list of things that may affect background syncs. Syncs also will get postponed when the device is in "doze mode".
+The system won't call the sync adapter when no suitable network is available and/or other settings prevent background syncs. See "weather forecasts do not get updated" above for a list of things that may affect background syncs. Syncs also will get postponed when the device is idle.
 
 ### How often does the GadgetBridge app gets updated (when this feature is enabled)?
 
@@ -244,7 +244,7 @@ When GadgetBridge support is **enabled**, the app will update GadgetBridge appro
 
 Should you have placed a weather widget on your homescreen, Tiny Weather Forecast Germany will also always update Gadgetbridge together with the widgets. 
 
-If updates do not occur as frequent as expected, see ("weather forecasts do not get updated") above for things you should check. Specifically, consider putting a weather widget on your home screen.
+If updates do not occur as frequent as expected, see "weather forecasts do not get updated" above for things you should check. Specifically, consider putting a weather widget on your home screen.
 
 ### Why is precipitation displayed in kg/m² instead of mm?
   
@@ -266,7 +266,7 @@ However, the official label for thunderstorms (having the highest priority avail
 
 ### Why does the app give a different value for some parameter (e.g. temperature) than the official station reading?
 
-Tiny Weather Forecast Germany gives *forecasts*, not the current reading at some weather station. If the displayed value in Tiny Weather Forecast Germany differs from an official reading at some spot, the forecast was just off.
+Tiny Weather Forecast Germany gives *forecasts*, not the current reading at some weather station. If the displayed value in Tiny Weather Forecast Germany differs from an official reading at same spot, the forecast was just off.
 
 ### Where do the names come from that are offered in searches?
 
