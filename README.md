@@ -28,7 +28,7 @@ For a detailed list of recent changes, see [the changelog](https://codeberg.org/
 
 ## License
 
-Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
+Copyright (c) 2020, 2021, 2022, 2023, 2024 Pawel Dube
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the

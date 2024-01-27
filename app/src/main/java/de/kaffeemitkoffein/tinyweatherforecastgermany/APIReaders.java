@@ -1,7 +1,7 @@
 /**
  * This file is part of TinyWeatherForecastGermany.
  *
- * Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
+ * Copyright (c) 2020, 2021, 2022, 2023, 2024 Pawel Dube
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1588,34 +1588,28 @@ public class APIReaders {
         public boolean readLayer(WeatherLayer weatherLayer){
             // read outdated images from geoServer. Ignore pollen layers, because they are generated locally.
             if ((weatherLayer.isOutdated(context) && !weatherLayer.isPollen()) || (forceUpdate)){
-                // only update if an suitable internet connection available
-                if (Weather.suitableNetworkAvailable(context)){
-
-                    try {
-                        File cacheDir = context.getCacheDir();
-                        File targetFile = new File(cacheDir,weatherLayer.getCacheFilename());
-                        InputStream layerInputStream = getLayerInputStream(weatherLayer);
-                        //Log.v("weather","Layer "+weatherLayer.layer+" fetching from GeoServer. File is "+targetFile.toString()+" and time is "+weatherLayer.timestamp);
-                        boolean result = readImage(layerInputStream,targetFile);
-                        if ((result) && (weatherLayer.timestamp!=null)) {
-                            // save the layer "midnight" time (this is the requested time)
-                            WeatherSettings.setLayerTime(context,weatherLayer.layer,weatherLayer.timestamp);
-                        }
-                    } catch (Exception e){
-                        PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"i/o error while fetching layers: "+e.getMessage());
-                        return false;
+                try {
+                    File cacheDir = context.getCacheDir();
+                    File targetFile = new File(cacheDir,weatherLayer.getCacheFilename());
+                    InputStream layerInputStream = getLayerInputStream(weatherLayer);
+                    //Log.v("weather","Layer "+weatherLayer.layer+" fetching from GeoServer. File is "+targetFile.toString()+" and time is "+weatherLayer.timestamp);
+                    boolean result = readImage(layerInputStream,targetFile);
+                    if ((result) && (weatherLayer.timestamp!=null)) {
+                        // save the layer "midnight" time (this is the requested time)
+                        WeatherSettings.setLayerTime(context,weatherLayer.layer,weatherLayer.timestamp);
                     }
-                    // recursively iterate through dependant atop-layers, in case any of them is missing.
-                    // Reason: this class may also be initiated with a layer-subset or a single layer.
-                    if (weatherLayer.atop!=null){
-                        for (int i=0; i<weatherLayer.atop.length; i++){
-                            if (weatherLayer.atop[i]!=weatherLayer.layer){
-                                readLayer(new WeatherLayer(weatherLayer.atop[i]));
-                            }
+                } catch (Exception e){
+                    PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"i/o error while fetching layers: "+e.getMessage());
+                    return false;
+                }
+                // recursively iterate through dependant atop-layers, in case any of them is missing.
+                // Reason: this class may also be initiated with a layer-subset or a single layer.
+                if (weatherLayer.atop!=null){
+                    for (int i=0; i<weatherLayer.atop.length; i++){
+                        if (weatherLayer.atop[i]!=weatherLayer.layer){
+                            readLayer(new WeatherLayer(weatherLayer.atop[i]));
                         }
                     }
-                } else {
-                    PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"Layer "+weatherLayer.layer+" is outdated, but no suitable internet connection found.");
                 }
             } else {
                 // layer in place. Do nothing special here.

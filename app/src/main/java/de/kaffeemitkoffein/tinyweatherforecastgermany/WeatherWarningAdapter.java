@@ -1,7 +1,7 @@
-	/**
+	/*
      * This file is part of TinyWeatherForecastGermany.
      *
-     * Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
+     * Copyright (c) 2020, 2021, 2022, 2023, 2024 Pawel Dube
      *
      * This program is free software: you can redistribute it and/or modify
      * it under the terms of the GNU General Public License as published by
@@ -102,12 +102,12 @@
 
             public ViewHolder() {
             }
-       }
+        }
 
-       public static String formatTime(long time){
-           SimpleDateFormat simpleDateFormat = Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED);
-           return simpleDateFormat.format(new Date(time));
-       }
+        public static String formatTime(long time){
+            SimpleDateFormat simpleDateFormat = Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED);
+            return simpleDateFormat.format(new Date(time));
+        }
 
         @Override
         public int getCount() {

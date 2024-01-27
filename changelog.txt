@@ -1,18 +1,18 @@
 Changes in version 0.62.0:
 
 - added a PendingIntent.FLAG_IMMUTABLE to all intents on devices with sdk>=23
-- all exact alarms were removed from the app to keep compliant with the sdk changes
+- exact alarms changed to inexact when battery saving present to keep compliant with the sdk changes
 - added the missing permission ACCESS_COARSE_LOCATION needed to properly check the location
 - added the handling for the new permission POST_NOTIFICATION
 - unified the permission requests to one call in onCreate
 - fixed app icon being very small and items not centered in 1st welcome screen
 - fixed some missing touch responses in the intro
 - improved Gadgetbridge logging
-- fixed WeatherSpec bug regarding air pressure (pressure was displayed x100 too high)
+- fixed WeatherSpec bug regarding air pressure
 - improved app launch time by preventing multiple initializations of the stations list
 - improved stability by introducing a lock to ensure that the area database is only built once
 - added widget margins to avoid cropping of content in the rounded widget corners
-- modified widget backgrounds to comply with the sdk recommendations
+- modified widget backgrounds to comply with new sdk recommendations
 - the classic widget is now dynamic and shows the information of the former large widget if there is enough space
 - the large widget got retired (merged with classic widget)
 - added dynamic widget preview layouts and new widget descriptions
@@ -22,9 +22,10 @@ Changes in version 0.62.0:
 - fixed date & time not updated correctly at various places inside the app when the locale changed while the app was running
 - removed the data update logic based on AlarmManager and JobWorker using a foreground service for updates
 - implemented new update logic based on sync adapter
-- now necessary new permissions to manage the sync adapter: AUTHENTICATE_ACCOUNTS, WRITE_SYNC_SETTINGS, READ_SYNC_SETTINGS
+- new necessary permissions to manage the sync adapter: AUTHENTICATE_ACCOUNTS, WRITE_SYNC_SETTINGS, READ_SYNC_SETTINGS
 - syncs in the background won't waste battery when no suitable network is available or when the device is idle
 - syncs won't occur when the user disables background syncs
+- added setting to warn about disabled sync, pressing it allows to enable sync from inside the app
 - to better adapt to other apps and their data sync, the sync intervals are now inexact
 - the user can now decide in detail which data should be synced in the background
 - the settings for syncs are now unified in a new category called "sync settings"
@@ -33,3 +34,6 @@ Changes in version 0.62.0:
 - added button in welcome activity to optionally opt out from battery saving
 - added setting to optionally opt out from battery saving
 - the travel update now also does a force update for weather forecasts, weather warnings, texts, pollen count and maps
+- add buttons to logging activity to scroll to the top & bottom of the text
+- rewritten update logic for Gadgetbridge based on AlarmManager/JobWorker and widgets
+- regular Gadgetbridge updates are now performed independently of data syncs, at least every 60 minutes

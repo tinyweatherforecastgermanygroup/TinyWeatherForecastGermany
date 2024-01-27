@@ -1,7 +1,7 @@
 /*
  * This file is part of TinyWeatherForecastGermany.
  *
- * Copyright (c) 2020, 2021, 2022, 2023 Pawel Dube
+ * Copyright (c) 2020, 2021, 2022, 2023, 2024 Pawel Dube
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -2146,8 +2146,6 @@ public class WeatherSettings {
             return Intervals.NEVER;
         }
 
-        public final static int GADGETBRIDGE_UPDATE_INTERVAL = 60*60*1000;  // in millis
-
         public static long getSyncAdapterIntervalInMillis(Context context, Weather.WeatherLocation weatherLocation){
             ArrayList<Long> intervalSyncTimes = new ArrayList<Long>();
             for (int category=0; category<CategoryItemsCount; category++){
@@ -2159,9 +2157,6 @@ public class WeatherSettings {
                 if (syncTime!=Intervals.NEVER){
                     intervalSyncTimes.add(syncTime);
                 }
-            }
-            if (serveGadgetBridge(context)) {
-                intervalSyncTimes.add((long) GADGETBRIDGE_UPDATE_INTERVAL);
             }
             if (intervalSyncTimes.size()>0){
                 long result = intervalSyncTimes.get(0);
