@@ -51,7 +51,6 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -452,6 +451,15 @@ public class MainActivity extends Activity {
             ThemePicker.SetTheme(this);
             WeatherSettings.setRotationMode(this);
             super.onCreate(savedInstanceState);
+            // init area database if needed
+            try {
+                if (prepareAreaDatabase(context)){
+                    Intent serviceStartIntent = new Intent(context,CreateAreasDatabaseService.class);
+                    startService(serviceStartIntent);
+                }
+            } catch (Exception e){
+                // ignore
+            }
             // check from intent if the WelcomeActivity tells us this is the first app launch
             Intent intent = getIntent();
             if (intent!=null){
@@ -532,15 +540,6 @@ public class MainActivity extends Activity {
             ActionBar actionBar = getActionBar();
             actionBar.setCustomView(R.layout.actionbar);
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM|ActionBar.DISPLAY_SHOW_HOME);
-            // anchor long click update
-            try {
-                if (prepareAreaDatabase(context)){
-                    Intent serviceStartIntent = new Intent(context,CreateAreasDatabaseService.class);
-                    startService(serviceStartIntent);
-                }
-            } catch (Exception e){
-                // ignore
-            }
             // check for update procedures if not first install
             if ((WeatherSettings.getLastAppVersionCode(context) != BuildConfig.VERSION_CODE) &&
                     (WeatherSettings.getLastAppVersionCode(context)>WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT)){
