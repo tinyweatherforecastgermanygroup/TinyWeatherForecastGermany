@@ -40,7 +40,7 @@
               android:textSize="@dimen/widget_textsize_small"
               android:visibility="visible"
               android:gravity="center"
-              android:text="@string/dwd_notice"/>
+              android:text="@string/dwd_notice_app"/>
 
     <TextClock
             android:id="@+id/clockwidget_clock"

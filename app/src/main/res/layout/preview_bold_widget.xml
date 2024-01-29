@@ -41,7 +41,7 @@
               android:layout_marginLeft="8dp"
               android:layout_marginRight="8dp"
               android:visibility="visible"
-              android:text="@string/dwd_notice"/>
+              android:text="@string/dwd_notice_app"/>
 
     <TextView android:id="@+id/classicwidget_weatherconditiontext"
               android:textSize="@dimen/widget_textsize_small"

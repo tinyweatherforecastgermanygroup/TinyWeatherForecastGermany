@@ -30,17 +30,17 @@
                android:layout_height="match_parent"/>
 
     <TextView android:id="@+id/widget_reference_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:textColor="@color/colorTextWidget"
-        android:textSize="@dimen/widget_textsize_small"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:visibility="visible"
-        android:text="@string/dwd_notice"/>
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentBottom="true"
+              android:layout_centerHorizontal="true"
+              android:gravity="center_horizontal"
+              android:textColor="@color/colorTextWidget"
+              android:textSize="@dimen/widget_textsize_small"
+              android:layout_marginLeft="8dp"
+              android:layout_marginRight="8dp"
+              android:visibility="visible"
+              android:text="@string/dwd_notice_app"/>
 
     <TextView android:id="@+id/classicwidget_weatherconditiontext"
         android:textSize="@dimen/widget_textsize_small"

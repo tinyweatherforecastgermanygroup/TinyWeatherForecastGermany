@@ -41,7 +41,7 @@
               android:textColor="@color/colorTextWidget"
               android:textSize="@dimen/widget_textsize_small"
               android:visibility="visible"
-              android:text="@string/dwd_notice"/>
+              android:text="@string/dwd_notice_app"/>
 
     <ImageView
             android:id="@+id/chartwidget_chart"

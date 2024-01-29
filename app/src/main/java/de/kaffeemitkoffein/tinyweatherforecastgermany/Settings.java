@@ -33,27 +33,44 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.*;
-import android.util.Log;
 import android.widget.Toast;
-
-import java.lang.ref.PhantomReference;
-import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
 public class Settings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private Context context;
-
     private CheckBoxPreference useBackgroundLocation;
+    private boolean ignoreNextPrefUpdate = false;
 
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-            if ((sharedPreferences != null) && (s != null)) {
+            if ((sharedPreferences != null) && (s != null) && (!ignoreNextPrefUpdate)) {
                 updateValuesDisplay();
                 if (s.equals(WeatherSettings.PREF_LOG_TO_LOGCAT)) {
-                    WeatherSettings ws = new WeatherSettings(context);
-                    if (ws.log_to_logcat) {
+                    if (WeatherSettings.loggingToLogcatEnabled(context)) {
+                        // set back to false unless the user actively hits "ok" below
+                        WeatherSettings.setLoggingToLogcat(context,false);
+                        final CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_LOG_TO_LOGCAT);
+                        checkBoxPreference.setChecked(false);
+                        MainActivity.askDialog(context,
+                                WeatherIcons.getIconResource(context, WeatherIcons.IC_WARNING),
+                                context.getResources().getString(R.string.alertdialog_1_title),
+                                new String[]{context.getResources().getString(R.string.alertdialog_1_text)},
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        // enable logging to logcat after user confirmation
+                                        ignoreNextPrefUpdate = true;
+                                        WeatherSettings.setLoggingToLogcat(context,true);
+                                        checkBoxPreference.setChecked(true);
+                                        dialogInterface.dismiss();
+                                    }
+                                }
+                        );
+                        // set back to false unless the user actively hits "ok" below
+                        /*
+                        WeatherSettings.setLoggingToLogcat(context,false);
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle(context.getResources().getString(R.string.alertdialog_1_title));
                         builder.setMessage(context.getResources().getString(R.string.alertdialog_1_text));
@@ -79,7 +96,12 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         AlertDialog alertDialog = builder.create();
                         alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
                         alertDialog.show();
+                         */
                     }
+                }
+                if (s.equals(WeatherSettings.PREF_USE_METERED_NETWORKS)){
+                    // on any change, update the periodic sync settings
+                    MainActivity.registerSyncAdapter(context);
                 }
                 if ((s.equals(WeatherSettings.PREF_USE_METERED_NETWORKS) && (!WeatherSettings.useMeteredNetworks(context))) ||
                         ((s.equals(WeatherSettings.PREF_USE_WIFI_ONLY)) && (WeatherSettings.useWifiOnly(context)))
@@ -175,6 +197,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                     MainActivity.registerSyncAdapter(context);
                 }
             }
+            ignoreNextPrefUpdate = false;
         }
     };
 

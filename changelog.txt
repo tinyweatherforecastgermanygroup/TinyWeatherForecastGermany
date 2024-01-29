@@ -36,4 +36,5 @@ Changes in version 0.62.0:
 - the travel update now also does a force update for weather forecasts, weather warnings, texts, pollen count and maps
 - add buttons to logging activity to scroll to the top & bottom of the text
 - rewritten update logic for Gadgetbridge based on AlarmManager/JobWorker and widgets
-- regular Gadgetbridge updates are now performed independently of data syncs, at least every 60 minutes
+- regular Gadgetbridge updates occur together with widget updates
+- additionally, regular Gadgetbridge updates are now performed independently of data syncs, at least every 60 minutes

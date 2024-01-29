@@ -42,7 +42,6 @@ import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -54,6 +53,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,7 +97,7 @@ public class MainActivity extends Activity {
     private AlertDialog whatsNewDialog;
     private boolean whatsNewDialogVisible=false;
 
-    Executor executor;
+    ScheduledExecutorService executor;
 
     ArrayList<WeatherWarning> localWarnings;
 
@@ -358,35 +359,19 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume(){
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app resumed.");
+        long estimatedAdapterLayoutTimeMillis = getEstimatedAdapterLayoutTimeInMillis(context);
+        PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Estimated weather adapter layout time is: "+timerDecimalFormat.format(estimatedAdapterLayoutTimeMillis/1000f)+ " sec");
+        //PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Entering onResume at "+timerDecimalFormat.format((Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f)+" sec from app launch.");
+        if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)) {
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is outdated, getting new weather data.");
+            weatherForecastRunnable.setWeatherLocations(null);
+            executor.execute(weatherForecastRunnable);
+        } else {
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is up to date, no need to fetch new data.");
+            loadCurrentWeather();
+        }
         registerForBroadcast();
         final Context applicationContext = this;
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)){
-                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is outdated, getting new weather data.");
-                    weatherForecastRunnable.setWeatherLocations(null);
-                    executor.execute(weatherForecastRunnable);
-                } else {
-                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is up to date, no need to fetch new data.");
-                    loadCurrentWeather();
-                }
-            }
-        });
-        /*
-        if ((stationsManager==null) || (!stationsManager.loaded)){
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        loadStationsData();
-                    } catch (Exception e){
-                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
-                    }
-                }
-            });
-        }
-         */
         if ((stationsManager==null) || (!stationsManager.loaded)){
             weatherList.postDelayed(new Runnable() {
                 @Override
@@ -397,15 +382,18 @@ public class MainActivity extends Activity {
                         PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading stations data!");
                     }
                 }
-            },6000);
+            }, Math.round(estimatedAdapterLayoutTimeMillis));
         }
-        executor.execute(new Runnable() {
+        executor.schedule(new Runnable() {
             @Override
             public void run() {
-                PrivateLog.log(applicationContext,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widgets from main activity...");
+                PrivateLog.log(applicationContext, PrivateLog.WIDGET, PrivateLog.INFO, "Updating widgets from main activity...");
                 WidgetRefresher.refresh(applicationContext);
+                if (WeatherSettings.serveGadgetBridge(context)) {
+                    GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
+                }
             }
-        });
+        },Math.round(estimatedAdapterLayoutTimeMillis*1.1f),TimeUnit.MILLISECONDS);
         super.onResume();
     }
 
@@ -442,6 +430,8 @@ public class MainActivity extends Activity {
     }
 
     long launchTimer;
+    int launchItemsCounter = 0;
+    final DecimalFormat timerDecimalFormat = new DecimalFormat("000.000");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -470,7 +460,7 @@ public class MainActivity extends Activity {
                 }
             }
             thisActivity = this;
-            executor = Executors.newSingleThreadExecutor();
+            executor = Executors.newSingleThreadScheduledExecutor();
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Main activity started.");
             setContentView(R.layout.activity_main);
             registerSyncAdapter(context);
@@ -771,16 +761,16 @@ public class MainActivity extends Activity {
                     }
                 });
             }
-            if (WeatherSettings.serveGadgetBridge(context)){
-                executor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
-                    }
-                });
-            }
             // TESTING
         }
+    }
+
+    public static long getEstimatedAdapterLayoutTimeInMillis(Context context){
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+        activityManager.getMemoryInfo(memoryInfo);
+        long ramInMb = memoryInfo.totalMem / (1024 * 1024);
+        return Math.round((10000f/ramInMb)*1000*2.2f);
     }
 
     /**
@@ -1206,11 +1196,21 @@ public class MainActivity extends Activity {
             forecastAdapter.setWarnings(localWarnings);
             // weatherList.setFastScrollEnabled(true);
             weatherList.setAdapter(forecastAdapter);
+            /*
+            weatherList.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    long time = Calendar.getInstance().getTimeInMillis()-launchTimer;
+                    launchItemsCounter++;
+                    //PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Adapter item #"+launchItemsCounter+" finished layout at "+timerDecimalFormat.format(time/1000f)+" sec from app launch.");
+                    //WeatherSettings.LaunchTimer.updateLaunchTimes(context,time,launchItemsCounter);
+                }
+            });
+             */
             forecastAdapter.notifyDataSetChanged();
             if (WeatherSettings.loggingEnabled(this)){
                 float time = (Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f;
-                DecimalFormat decimalFormat = new DecimalFormat("000.000");
-                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Timer: adapter set "+decimalFormat.format(time)+" sec from app launch.");
+                //PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Timer: adapter set "+timerDecimalFormat.format(time/1000f)+" sec from app launch.");
             }
             weatherList.setOnItemLongClickListener(weatherItemLongClickListener);
             weatherList.setOnItemClickListener(weatherItemDoubleClickListener);
