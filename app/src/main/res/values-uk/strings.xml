@@ -68,7 +68,7 @@
     <string name="preference_displaywarninginwidget_title">Показувати попередження у віджеті</string>
     <string name="preference_displaynoteinwidget_title">Відображати нотатки DWD</string>
     <string name="preference_displaynoteinwidget_summary">Показувати рядок джерела даних.</string>
-    <string name="preference_cache_warnings_title">Попередження кешу</string>
+    <string name="preference_cache_warnings_title">Інтервал: попередження</string>
     <string name="preference_display_layout_title">Час дня</string>
     <string name="preference_display_layout_summary">Як відображати дані погоди.</string>
     <string name="preference_displayforecastbar_title">Погодинний прогноз</string>
@@ -126,7 +126,7 @@
     <string name="main_updatetime">Востаннє оновлено:</string>
     <string name="clockwidget_description">Погода і час</string>
     <string name="weathercode_MODERATE_OR_HEAVY_RAIN_AND_SNOW">дощ зі снігом</string>
-    <string name="preference_updateinterval_title">Інтервал оновлення</string>
+    <string name="preference_updateinterval_title">Інтервал: погода</string>
     <string name="preference_opacity_title">Прозорість віджета</string>
     <string name="preference_disable_warnings_title">Вимкнути попередження</string>
     <string name="preference_displaysunrise_title">Схід і захід</string>
@@ -163,7 +163,7 @@
     <string name="preference_clearnotifications_summary">Скиньте сповіщення для нагадувань про погоду. Усі правильні сповіщення відображатимуться знову.</string>
     <string name="weathercode_UNKNOWN">невідомо</string>
     <string name="weathercode_SNOW_SHOWERS_MODERATE_OR_HEAVY">снігопад</string>
-    <string name="preference_cache_warnings_summary">Як довго попередження відображатимуться без перезавантаження з Deutscher Wetterdienst.</string>
+    <string name="preference_cache_warnings_summary">Виберіть, як часто потрібно оновлювати попередження про погоду.</string>
     <string name="preference_viewmodel_title">Рівень деталізування</string>
     <string name="preference_viewmodel_summary">Показувати детальний або простий прогноз погоди.</string>
     <string name="preference_displayforecastbar_summary">Відображати панель із погодинними даними в 6-годинних прогнозах.</string>
@@ -458,4 +458,5 @@
     <string name="preference_boldwiget_vertical_bar_summary">У віджеті, виділеному жирним шрифтом, відокремте прогноз на сьогодні від наступних днів вертикальною лінією.</string>
     <string name="boldwidget_description_detailed">Стислий виклад найважливішої інформації про погоду на сьогодні та наступні кілька днів.</string>
     <string name="classicwidget_description_detailed">Поточна погода та детальний прогноз на найближчі дні.</string>
+    <string name="preview_fake_warning_text">ПОРИВИ ВІТРУ</string>
 </resources>
