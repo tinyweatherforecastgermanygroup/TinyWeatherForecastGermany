@@ -16,7 +16,7 @@
     <string name="texts_button">Тексти</string>
     <string name="classicwidget_description">Класичний</string>
     <string name="largewidget_description">Великий</string>
-    <string name="boldwidget_description">Грубше</string>
+    <string name="boldwidget_description">Компактна погода</string>
     <string name="dwd_textforecast_notice">Основні дані: Deutscher Wetterdienst, додано власні елементи, змінено вигляд.</string>
     <string name="weathercode_FOG_SKY_NOT_RECOGNIZABLE">туман</string>
     <string name="title_activity_settings">Налаштування</string>
@@ -124,7 +124,7 @@
     <string name="welcome_s3_text1">Клацніть/Торкніться значка у верхньому лівому куті, щоб згорнути мапу.</string>
     <string name="main_selectstation">Регіон:</string>
     <string name="main_updatetime">Востаннє оновлено:</string>
-    <string name="clockwidget_description">Годинник і погода</string>
+    <string name="clockwidget_description">Погода і час</string>
     <string name="weathercode_MODERATE_OR_HEAVY_RAIN_AND_SNOW">дощ зі снігом</string>
     <string name="preference_updateinterval_title">Інтервал оновлення</string>
     <string name="preference_opacity_title">Прозорість віджета</string>
@@ -456,4 +456,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Окремий прогноз</string>
     <string name="miscellaneous">Різне</string>
     <string name="preference_boldwiget_vertical_bar_summary">У віджеті, виділеному жирним шрифтом, відокремте прогноз на сьогодні від наступних днів вертикальною лінією.</string>
+    <string name="boldwidget_description_detailed">Стислий виклад найважливішої інформації про погоду на сьогодні та наступні кілька днів.</string>
+    <string name="classicwidget_description_detailed">Поточна погода та детальний прогноз на найближчі дні.</string>
 </resources>
