@@ -46,7 +46,7 @@
     <string name="whatsnew_button">Wijzigingslog</string>
     <string name="classicwidget_description">Klassiek</string>
     <string name="station">Station</string>
-    <string name="boldwidget_description">Vetgedrukt</string>
+    <string name="boldwidget_description">Compact Weer</string>
     <string name="favorites_cleared">De favorieten worden gewist.</string>
     <string name="actionbar_textinput_title">Voer een plaatsnaam in:</string>
     <string name="actionbar_textinput_hint">Probeer landspecifieke spellingen</string>
@@ -456,4 +456,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Afzonderlijke voorspelling</string>
     <string name="miscellaneous">Diverse</string>
     <string name="preference_boldwiget_vertical_bar_summary">Scheid in de vetgedrukte widget de voorspelling voor vandaag van die voor de volgende dagen met een verticale lijn.</string>
+    <string name="boldwidget_description_detailed">Een compacte samenvatting van de belangrijkste weersinformatie voor vandaag en de komende dagen.</string>
+    <string name="classicwidget_description_detailed">Huidig weer en gedetailleerde weersverwachting voor de komende dagen.</string>
 </resources>
