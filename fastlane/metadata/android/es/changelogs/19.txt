@@ -1,0 +1,18 @@
+Versión 0.54.0:
+- ahora otras aplicaciones pueden compartir coordenadas geográficas con esta aplicación
+- mejoras significativas en el rendimiento de la aplicación principal con el nuevo almacenamiento en caché de mapas de bits (¡gracias a Marc Nause!)
+- la latitud se muestra ahora por encima de la longitud
+- nuevo widget con el reloj y el tiempo
+- Mejora del diseño del cuadro de diálogo de búsqueda.
+- Mejorado el diseño del widget grande, especialmente en lo que se refiere a la información que se corta en los dispositivos más antiguos.
+- Arreglada la temperatura máxima demasiado alta en la primera entrada de 6 horas en la aplicación principal.
+- Corrección de comas no aceptadas en las coordenadas geográficas.
+- Corrección de la condición de niebla helada que no se mostraba correctamente.
+- otras correcciones menores
+
+Versión 0.54.1:
+- Arregladas las superposiciones en el diálogo de búsqueda
+- Corregidos errores en varios widgets
+- arreglado que la intro se inicie más de una vez
+
+Aviso: la versión 0.54.0 no se compiló en fdroid debido a errores en el repositorio de aplicaciones.

@@ -1,0 +1,6 @@
+- nuevo idioma: Holandés (¡gracias a Mondstern!)
+- lista actualizada de estaciones meteorológicas / ubicaciones
+- varias correcciones de errores, algunos de los cuales pueden provocar un bloqueo de la aplicación
+- corregido el tamaño de letra demasiado grande del día de la semana en el widget grande
+- arreglado el etiquetado incorrecto del día en el widget grande y en el widget en negrita
+- arreglado el solapamiento de las previsiones en la aplicación principal en algunos dispositivos

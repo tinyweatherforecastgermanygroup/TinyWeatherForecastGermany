@@ -1,0 +1,5 @@
+- corregida la falta de actualización de los avisos en la aplicación principal
+- Corregidos errores de análisis de fechas en las previsiones de texto.
+- Arreglada la fuente demasiado grande en el widget grande
+- el widget en negrita vuelve a ampliar la información al máximo disponible
+- los avisos meteorológicos ahora se desplazan más rápido

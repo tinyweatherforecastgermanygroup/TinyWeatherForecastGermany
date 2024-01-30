@@ -1,0 +1,5 @@
+- nuevas previsiones en texto
+- avisos meteorológicos mejorados
+- el icono del viento puede mostrar una previsión del viento
+- widget de negrita revisado y actualizado
+- corrección de errores

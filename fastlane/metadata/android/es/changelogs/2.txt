@@ -1,0 +1,4 @@
+- ahora la instalación de la aplicación se fuerza en el almacenamiento interno (corrige el widget no disponible cuando la aplicación se instala en la tarjeta SD)
+- añadido "lo que es nuevo" pantalla
+- añadido soporte experimental para Gadgetbridge (¡todavía no funcional!)
+- corregidos los errores de análisis en la información del viento

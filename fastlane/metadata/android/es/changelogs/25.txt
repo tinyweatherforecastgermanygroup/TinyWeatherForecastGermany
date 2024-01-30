@@ -1,0 +1,6 @@
+- la búsqueda ahora incluye ciudades, comunidades, estados federales, lagos y zonas marítimas
+- la búsqueda es ahora más indulgente con las diéresis
+- se han corregido los datos de las zonas y se han eliminado las lagunas en la visualización de las zonas marítimas y costeras
+- las actualizaciones ya no se inician cuando no hay conexión a Internet
+- las actualizaciones automáticas de los textos meteorológicos pueden desactivarse en las opciones
+- varias correcciones de errores menores y mejoras en la visualización

@@ -1,0 +1,5 @@
+- se ha añadido una función para encontrar los sensores meteorológicos más cercanos mediante las coordenadas geográficas o los servicios de localización del dispositivo
+- se ha añadido la opción http sin ssl, si falla una conexión cifrada en dispositivos muy antiguos (p. ej. 4.x.x) debido a la falta de paquetes de cifrado
+- los intervalos de tiempo incompletos (6h, 24h) descartan ahora los datos pasados en los cálculos siempre que sea posible
+- corregido error en el cálculo de las temperaturas mín. y máx. (podían ser demasiado altas y demasiado bajas)
+- corrección de varios errores menores
