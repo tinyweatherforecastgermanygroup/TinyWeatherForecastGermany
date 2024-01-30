@@ -27,7 +27,7 @@
     <string name="dwd_warnings_notice">Basis data: Deutscher Wetterdienst, menampilkan peringatan yang dikecilkan.</string>
     <string name="new_station">Wilayah diubah ke</string>
     <string name="settings_button">Pengaturan</string>
-    <string name="boldwidget_description">Banyak</string>
+    <string name="boldwidget_description">Cuaca Ringkas</string>
     <string name="station_does_not_exist">Stasiun yang Anda masukkan tidak ada. Silakan pilih dari stasiun yang disarankan dari daftar.</string>
     <string name="actionbar_textinput_title">Masukkan tempat di sini:</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">hujan badai</string>
@@ -456,4 +456,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Perkiraan terpisah</string>
     <string name="miscellaneous">Lain-lain</string>
     <string name="preference_boldwiget_vertical_bar_summary">Pada widget yang dicetak tebal, pisahkan prakiraan untuk hari ini dengan hari-hari berikutnya dengan garis vertikal.</string>
+    <string name="boldwidget_description_detailed">Rangkuman ringkas dari informasi cuaca yang paling penting untuk hari ini dan beberapa hari ke depan.</string>
+    <string name="classicwidget_description_detailed">Cuaca saat ini dan prakiraan cuaca terperinci untuk beberapa hari ke depan.</string>
 </resources>
