@@ -7,10 +7,10 @@
     <string name="today">i dag</string>
     <string name="station">Stasjon</string>
     <string name="whatsnew_button">Nyheter</string>
-    <string name="boldwidget_description">Fet</string>
+    <string name="boldwidget_description">Kompakt vær</string>
     <string name="classicwidget_description">Klassisk</string>
     <string name="largewidget_description">Stor</string>
-    <string name="clockwidget_description">Klokke og vær</string>
+    <string name="clockwidget_description">Vær og tid</string>
     <string name="favorites_cleared">Favoritter slettet.</string>
     <string name="weathercode_UNKNOWN">ukjent</string>
     <string name="weathercode_SLIGHT_OR_MODERATE_THUNDERSTORM_WITH_RAIN_OR_SNOW">tordenstorm</string>
@@ -449,4 +449,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Separat prognose</string>
     <string name="miscellaneous">Diverse</string>
     <string name="preference_boldwiget_vertical_bar_summary">I den fete widgeten skiller du prognosen for i dag fra de neste dagene med en vertikal linje.</string>
+    <string name="boldwidget_description_detailed">En kompakt oppsummering av den viktigste værinformasjonen for i dag og de neste dagene.</string>
+    <string name="classicwidget_description_detailed">Aktuelt vær og detaljert værvarsel for de neste dagene.</string>
 </resources>
