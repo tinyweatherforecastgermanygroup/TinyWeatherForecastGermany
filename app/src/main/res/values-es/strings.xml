@@ -29,10 +29,10 @@
     <string name="today">hoy</string>
     <string name="station">Estación</string>
     <string name="whatsnew_button">Qué hay de nuevo</string>
-    <string name="boldwidget_description">Negrita</string>
+    <string name="boldwidget_description">Clima compacto</string>
     <string name="classicwidget_description">El tiempo en detalle</string>
     <string name="largewidget_description">Grande</string>
-    <string name="clockwidget_description">Reloj y tiempo</string>
+    <string name="clockwidget_description">Tiempo y hora</string>
     <string name="station_does_not_exist">La estación que has introducido no existe. Por favor, seleccione una de las estaciones sugeridas en la lista.</string>
     <string name="favorites_cleared">Los favoritos se han eliminado.</string>
     <string name="actionbar_textinput_title">Ingresa el lugar aquí:</string>
@@ -484,4 +484,6 @@
     <string name="preview_fake_warning_text">RACHAS DE VIENTO</string>
     <string name="account_type">de.kaffeemitkoffein.tinyweatherforecastgermany</string>
     <string name="preference_category_sync">Ajustes de sincronización</string>
+    <string name="boldwidget_description_detailed">Un resumen compacto de la información meteorológica más importante para hoy y los próximos días.</string>
+    <string name="classicwidget_description_detailed">Tiempo actual y previsión detallada para los próximos días.</string>
 </resources>
