@@ -16,10 +16,10 @@
     <string name="today">dzisiaj</string>
     <string name="station">Stacja</string>
     <string name="whatsnew_button">Co nowego</string>
-    <string name="boldwidget_description">Pogrubiona</string>
+    <string name="boldwidget_description">Kompaktowa pogoda</string>
     <string name="classicwidget_description">Klasyka</string>
     <string name="largewidget_description">Duży</string>
-    <string name="clockwidget_description">Zegar &amp; Pogoda</string>
+    <string name="clockwidget_description">Pogoda i czas</string>
     <string name="favorites_cleared">Ulubione są usuwane.</string>
     <string name="actionbar_textinput_title">Wpisz tutaj miejsce:</string>
     <string name="actionbar_textinput_hint">Spróbuj zapisów specyficznych dla danego kraju</string>
@@ -456,4 +456,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Oddzielna prognoza</string>
     <string name="miscellaneous">Różne</string>
     <string name="preference_boldwiget_vertical_bar_summary">W pogrubionym widżecie oddziel prognozę na dziś od kolejnych dni pionową linią.</string>
+    <string name="boldwidget_description_detailed">Kompaktowe podsumowanie najważniejszych informacji pogodowych na dziś i kilka następnych dni.</string>
+    <string name="classicwidget_description_detailed">Aktualna pogoda i szczegółowa prognoza na najbliższe dni.</string>
 </resources>
