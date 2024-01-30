@@ -32,7 +32,7 @@
     <string name="today">aujourd\'hui</string>
     <string name="station">Poste</string>
     <string name="whatsnew_button">Quoi de neuf</string>
-    <string name="boldwidget_description">Gras</string>
+    <string name="boldwidget_description">Météo compacte</string>
     <string name="classicwidget_description">Classique</string>
     <string name="largewidget_description">Grand</string>
     <string name="clockwidget_description">Horloge et météo</string>
@@ -470,4 +470,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Prévisions séparées</string>
     <string name="miscellaneous">Divers</string>
     <string name="preference_boldwiget_vertical_bar_summary">Dans le widget en gras, séparez les prévisions pour aujourd\'hui de celles pour les jours suivants par une ligne verticale.</string>
+    <string name="boldwidget_description_detailed">Un résumé compact des informations météorologiques les plus importantes pour aujourd\'hui et les jours suivants.</string>
+    <string name="classicwidget_description_detailed">Météo actuelle et prévisions détaillées pour les prochains jours.</string>
 </resources>
