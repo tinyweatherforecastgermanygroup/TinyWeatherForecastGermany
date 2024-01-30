@@ -15,7 +15,7 @@
     <string name="today">tänään</string>
     <string name="station">Asema</string>
     <string name="whatsnew_button">Mitä uutta</string>
-    <string name="boldwidget_description">Rohkea</string>
+    <string name="boldwidget_description">Kompakti sää</string>
     <string name="classicwidget_description">Klassinen</string>
     <string name="main_wait_for_gps_fix">Sijainti määräytyy parhaillaan…</string>
     <string name="dwd_notice">Tietoperusta: Deutscher Wetterdienst, omat elementit lisätty, jotkut tiedot keskiarvoistettu yksittäisistä arvoista.</string>
@@ -456,4 +456,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Erillinen ennuste</string>
     <string name="miscellaneous">Sekalaiset</string>
     <string name="preference_boldwiget_vertical_bar_summary">Erottele tämän päivän ennuste seuraavien päivien ennusteista lihavoidussa widgetissä pystyviivalla.</string>
+    <string name="boldwidget_description_detailed">Tiivis yhteenveto tämän päivän ja lähipäivien tärkeimmistä säätiedoista.</string>
+    <string name="classicwidget_description_detailed">Tämänhetkinen sää ja yksityiskohtainen ennuste seuraaville päiville.</string>
 </resources>
