@@ -43,7 +43,7 @@
     <string name="warnings_button">Upozornění na počasí</string>
     <string name="texts_button">Texty</string>
     <string name="whatsnew_button">Co je nového</string>
-    <string name="boldwidget_description">Odvážný</string>
+    <string name="boldwidget_description">Kompaktní počasí</string>
     <string name="classicwidget_description">Klasický</string>
     <string name="largewidget_description">Velký</string>
     <string name="clockwidget_description">Hodiny &amp; Počasí</string>
@@ -456,4 +456,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Oddělená předpověď</string>
     <string name="miscellaneous">Různé</string>
     <string name="preference_boldwiget_vertical_bar_summary">V tučném widgetu oddělte předpověď pro dnešní den od předpovědi pro následující dny svislou čarou.</string>
+    <string name="boldwidget_description_detailed">Kompaktní shrnutí nejdůležitějších informací o počasí pro dnešní den a několik příštích dní.</string>
+    <string name="classicwidget_description_detailed">Aktuální počasí a podrobná předpověď na následující dny.</string>
 </resources>
