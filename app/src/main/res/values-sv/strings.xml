@@ -138,4 +138,8 @@
     <string name="preference_boldwiget_vertical_bar_title">Separata prognoser</string>
     <string name="miscellaneous">Diverse</string>
     <string name="preference_boldwiget_vertical_bar_summary">I den fetstilta widgeten separerar du prognosen för idag från de kommande dagarna med en vertikal linje.</string>
+    <string name="boldwidget_description_detailed">En kompakt sammanfattning av den viktigaste väderinformationen för idag och de närmaste dagarna.</string>
+    <string name="classicwidget_description_detailed">Aktuellt väder och detaljerad prognos för de kommande dagarna.</string>
+    <string name="boldwidget_description">Kompakt väder</string>
+    <string name="clockwidget_description">Väder och tid</string>
 </resources>
