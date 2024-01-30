@@ -36,7 +36,7 @@
     <string name="texts_button">Texte</string>
     <string name="today">heute</string>
     <string name="station">Ort</string>
-    <string name="boldwidget_description">Kräftig</string>
+    <string name="boldwidget_description">Kompaktes Wetter</string>
     <string name="classicwidget_description">Klassisch</string>
     <string name="largewidget_description">Groß</string>
     <string name="clockwidget_description">Uhr und Wetter</string>
@@ -473,4 +473,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Getrennte Vorhersage</string>
     <string name="miscellaneous">Verschiedenes</string>
     <string name="preference_boldwiget_vertical_bar_summary">Im kräftigen Widget die Vorhersage für den heutigen Tag durch eine vertikale Linie von den nächsten Tagen trennen.</string>
+    <string name="boldwidget_description_detailed">Eine kompakte Zusammenfassung der wichtigsten Wetterinformationen für heute und die nächsten Tage.</string>
+    <string name="classicwidget_description_detailed">Aktuelles Wetter und detaillierte Vorhersage für die nächsten Tage.</string>
 </resources>
