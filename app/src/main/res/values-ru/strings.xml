@@ -16,9 +16,9 @@
     <string name="today">сегодня</string>
     <string name="station">Станция</string>
     <string name="whatsnew_button">Что нового</string>
-    <string name="boldwidget_description">Жирный</string>
+    <string name="boldwidget_description">Компактная погода</string>
     <string name="classicwidget_description">Классический</string>
-    <string name="clockwidget_description">Часы и Погода</string>
+    <string name="clockwidget_description">Погода и время</string>
     <string name="chartwidget_description">График</string>
     <string name="favorites_cleared">Избранное удаляется.</string>
     <string name="actionbar_textinput_title">Укажите место:</string>
@@ -456,4 +456,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Отдельный прогноз</string>
     <string name="miscellaneous">Разное</string>
     <string name="preference_boldwiget_vertical_bar_summary">В жирном виджете отделите прогноз на сегодня от прогнозов на последующие дни вертикальной линией.</string>
+    <string name="boldwidget_description_detailed">Компактная сводка наиболее важной информации о погоде на сегодня и ближайшие несколько дней.</string>
+    <string name="classicwidget_description_detailed">Текущая погода и подробный прогноз на ближайшие дни.</string>
 </resources>
