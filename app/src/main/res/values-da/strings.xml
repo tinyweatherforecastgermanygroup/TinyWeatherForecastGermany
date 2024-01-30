@@ -17,7 +17,7 @@
     <string name="warnings_button">Advarsler om vejret</string>
     <string name="today">i dag</string>
     <string name="whatsnew_button">Hvad er nyt</string>
-    <string name="boldwidget_description">Fed</string>
+    <string name="boldwidget_description">Kompakt vejr</string>
     <string name="classicwidget_description">Klassisk</string>
     <string name="largewidget_description">Stor</string>
     <string name="clockwidget_description">Ur og vejr</string>
@@ -456,4 +456,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Særskilt prognose</string>
     <string name="miscellaneous">Diverse</string>
     <string name="preference_boldwiget_vertical_bar_summary">I den fede widget adskiller du prognosen for i dag fra de næste dage med en lodret linje.</string>
+    <string name="boldwidget_description_detailed">En kompakt oversigt over de vigtigste vejrinformationer for i dag og de næste par dage.</string>
+    <string name="classicwidget_description_detailed">Aktuelt vejr og detaljeret prognose for de næste dage.</string>
 </resources>
