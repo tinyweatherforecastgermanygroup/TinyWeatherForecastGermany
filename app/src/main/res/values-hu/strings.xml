@@ -22,7 +22,7 @@
     <string name="texts_button">Szövegek</string>
     <string name="today">ma</string>
     <string name="classicwidget_description">Klasszikus</string>
-    <string name="boldwidget_description">Feltűnő</string>
+    <string name="boldwidget_description">Kompakt időjárás</string>
     <string name="actionbar_textinput_title">Ide írd be a helyet:</string>
     <string name="favorites_cleared">A kedvencek törlődnek.</string>
     <string name="actionbar_textinput_hint">Próbálja ki az országspecifikus jelöléseket</string>
@@ -456,4 +456,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Külön előrejelzés</string>
     <string name="miscellaneous">Különféle</string>
     <string name="preference_boldwiget_vertical_bar_summary">I den fetstilta widgeten separerar du prognosen för idag från de kommande dagarna med en vertikal linje.</string>
+    <string name="boldwidget_description_detailed">A mai és a következő napok legfontosabb időjárási információinak kompakt összefoglalója.</string>
+    <string name="classicwidget_description_detailed">Aktuális időjárás és részletes előrejelzés a következő napokra.</string>
 </resources>
