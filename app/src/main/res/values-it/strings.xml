@@ -43,7 +43,7 @@
     <string name="today">oggi</string>
     <string name="station">Stazione</string>
     <string name="whatsnew_button">Cosa c\'è di nuovo</string>
-    <string name="boldwidget_description">Audace</string>
+    <string name="boldwidget_description">Tempo compatto</string>
     <string name="classicwidget_description">Classic</string>
     <string name="largewidget_description">Grande</string>
     <string name="clockwidget_description">Orologio e meteo</string>
@@ -457,4 +457,6 @@
     <string name="preference_boldwiget_vertical_bar_title">Previsione separata</string>
     <string name="miscellaneous">Varie</string>
     <string name="preference_boldwiget_vertical_bar_summary">Nel widget in grassetto, separare le previsioni per oggi dai giorni successivi con una linea verticale.</string>
+    <string name="boldwidget_description_detailed">Una sintesi compatta delle informazioni meteorologiche più importanti per oggi e per i prossimi giorni.</string>
+    <string name="classicwidget_description_detailed">Tempo attuale e previsioni dettagliate per i prossimi giorni.</string>
 </resources>
