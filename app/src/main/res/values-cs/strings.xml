@@ -459,4 +459,5 @@
     <string name="boldwidget_description_detailed">Kompaktní shrnutí nejdůležitějších informací o počasí pro dnešní den a několik příštích dní.</string>
     <string name="classicwidget_description_detailed">Aktuální počasí a podrobná předpověď na následující dny.</string>
     <string name="clockwidget_description_detailed">Podrobné informace o počasí na dnešní den s datem, hodinami a budíkem.</string>
+    <string name="chartwidget_description_detailed">Předpověď počasí na příštích několik dní jako diagram.</string>
 </resources>
