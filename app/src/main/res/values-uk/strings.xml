@@ -459,4 +459,5 @@
     <string name="boldwidget_description_detailed">Стислий виклад найважливішої інформації про погоду на сьогодні та наступні кілька днів.</string>
     <string name="classicwidget_description_detailed">Поточна погода та детальний прогноз на найближчі дні.</string>
     <string name="preview_fake_warning_text">ПОРИВИ ВІТРУ</string>
+    <string name="clockwidget_description_detailed">Детальна інформація про погоду на сьогодні з датою, годинником і будильником.</string>
 </resources>
