@@ -451,4 +451,5 @@
     <string name="preference_boldwiget_vertical_bar_summary">I den fete widgeten skiller du prognosen for i dag fra de neste dagene med en vertikal linje.</string>
     <string name="boldwidget_description_detailed">En kompakt oppsummering av den viktigste værinformasjonen for i dag og de neste dagene.</string>
     <string name="classicwidget_description_detailed">Aktuelt vær og detaljert værvarsel for de neste dagene.</string>
+    <string name="clockwidget_description_detailed">Detaljert værinformasjon for i dag med dato, klokke og vekkerklokke.</string>
 </resources>
