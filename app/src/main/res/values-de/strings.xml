@@ -475,4 +475,5 @@
     <string name="preference_boldwiget_vertical_bar_summary">Im kräftigen Widget die Vorhersage für den heutigen Tag durch eine vertikale Linie von den nächsten Tagen trennen.</string>
     <string name="boldwidget_description_detailed">Eine kompakte Zusammenfassung der wichtigsten Wetterinformationen für heute und die nächsten Tage.</string>
     <string name="classicwidget_description_detailed">Aktuelles Wetter und detaillierte Vorhersage für die nächsten Tage.</string>
+    <string name="clockwidget_description_detailed">Detaillierte Wetterinformationen für den heutigen Tag mit Datum, Uhr und Wecker.</string>
 </resources>
