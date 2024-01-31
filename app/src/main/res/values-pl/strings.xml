@@ -458,4 +458,5 @@
     <string name="preference_boldwiget_vertical_bar_summary">W pogrubionym widżecie oddziel prognozę na dziś od kolejnych dni pionową linią.</string>
     <string name="boldwidget_description_detailed">Kompaktowe podsumowanie najważniejszych informacji pogodowych na dziś i kilka następnych dni.</string>
     <string name="classicwidget_description_detailed">Aktualna pogoda i szczegółowa prognoza na najbliższe dni.</string>
+    <string name="clockwidget_description_detailed">Szczegółowe informacje o pogodzie na dziś z datą, zegarem i budzikiem.</string>
 </resources>
