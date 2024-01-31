@@ -458,4 +458,5 @@
     <string name="preference_boldwiget_vertical_bar_summary">I den fetstilta widgeten separerar du prognosen för idag från de kommande dagarna med en vertikal linje.</string>
     <string name="boldwidget_description_detailed">A mai és a következő napok legfontosabb időjárási információinak kompakt összefoglalója.</string>
     <string name="classicwidget_description_detailed">Aktuális időjárás és részletes előrejelzés a következő napokra.</string>
+    <string name="clockwidget_description_detailed">Részletes időjárási információk a mai napra vonatkozóan dátummal, órával és ébresztőórával.</string>
 </resources>
