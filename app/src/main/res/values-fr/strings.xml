@@ -472,4 +472,5 @@
     <string name="preference_boldwiget_vertical_bar_summary">Dans le widget en gras, séparez les prévisions pour aujourd\'hui de celles pour les jours suivants par une ligne verticale.</string>
     <string name="boldwidget_description_detailed">Un résumé compact des informations météorologiques les plus importantes pour aujourd\'hui et les jours suivants.</string>
     <string name="classicwidget_description_detailed">Météo actuelle et prévisions détaillées pour les prochains jours.</string>
+    <string name="clockwidget_description_detailed">Informations météorologiques détaillées pour aujourd\'hui avec date, horloge et réveil.</string>
 </resources>
