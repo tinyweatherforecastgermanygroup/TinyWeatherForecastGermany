@@ -458,4 +458,5 @@
     <string name="preference_boldwiget_vertical_bar_summary">Erottele tämän päivän ennuste seuraavien päivien ennusteista lihavoidussa widgetissä pystyviivalla.</string>
     <string name="boldwidget_description_detailed">Tiivis yhteenveto tämän päivän ja lähipäivien tärkeimmistä säätiedoista.</string>
     <string name="classicwidget_description_detailed">Tämänhetkinen sää ja yksityiskohtainen ennuste seuraaville päiville.</string>
+    <string name="clockwidget_description_detailed">Yksityiskohtaiset säätiedot tälle päivälle päivämäärän, kellon ja herätyskellon kanssa.</string>
 </resources>
