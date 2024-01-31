@@ -459,4 +459,5 @@
     <string name="boldwidget_description_detailed">En kompakt oversigt over de vigtigste vejrinformationer for i dag og de næste par dage.</string>
     <string name="classicwidget_description_detailed">Aktuelt vejr og detaljeret prognose for de næste dage.</string>
     <string name="clockwidget_description_detailed">Detaljeret vejrinformation for i dag med dato, ur og vækkeur.</string>
+    <string name="chartwidget_description_detailed">Vejrudsigten for de næste par dage som et diagram.</string>
 </resources>
