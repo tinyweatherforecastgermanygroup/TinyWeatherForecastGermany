@@ -458,4 +458,5 @@
     <string name="preference_boldwiget_vertical_bar_summary">Scheid in de vetgedrukte widget de voorspelling voor vandaag van die voor de volgende dagen met een verticale lijn.</string>
     <string name="boldwidget_description_detailed">Een compacte samenvatting van de belangrijkste weersinformatie voor vandaag en de komende dagen.</string>
     <string name="classicwidget_description_detailed">Huidig weer en gedetailleerde weersverwachting voor de komende dagen.</string>
+    <string name="clockwidget_description_detailed">Gedetailleerde weersinformatie voor vandaag met datum, klok en wekker.</string>
 </resources>
