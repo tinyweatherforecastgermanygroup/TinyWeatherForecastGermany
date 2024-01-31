@@ -479,4 +479,5 @@
     <string name="favorites_delete_title">Favoriten Entfernen</string>
     <string name="favorites_delete_summary">Sollen alle Favoriten entfernt werden, außer die jetzt genutzte Wetterumgebung?</string>
     <string name="preference_category_sync">Synchronisations-Einstellungen</string>
+    <string name="chartwidget_description_detailed">Die Wettervorhersage für die nächsten Tage als Diagramm.</string>
 </resources>
