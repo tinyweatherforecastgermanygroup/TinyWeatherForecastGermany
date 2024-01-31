@@ -142,4 +142,5 @@
     <string name="classicwidget_description_detailed">Aktuellt väder och detaljerad prognos för de kommande dagarna.</string>
     <string name="boldwidget_description">Kompakt väder</string>
     <string name="clockwidget_description">Väder och tid</string>
+    <string name="clockwidget_description_detailed">Detaljerad väderinformation för idag med datum, klocka och väckarklocka.</string>
 </resources>
