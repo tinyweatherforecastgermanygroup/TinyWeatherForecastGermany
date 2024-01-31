@@ -459,4 +459,5 @@
     <string name="boldwidget_description_detailed">Kompaktowe podsumowanie najważniejszych informacji pogodowych na dziś i kilka następnych dni.</string>
     <string name="classicwidget_description_detailed">Aktualna pogoda i szczegółowa prognoza na najbliższe dni.</string>
     <string name="clockwidget_description_detailed">Szczegółowe informacje o pogodzie na dziś z datą, zegarem i budzikiem.</string>
+    <string name="chartwidget_description_detailed">Prognoza pogody na kilka następnych dni w formie wykresu.</string>
 </resources>
