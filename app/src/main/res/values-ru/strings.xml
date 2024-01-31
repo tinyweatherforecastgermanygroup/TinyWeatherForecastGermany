@@ -458,4 +458,5 @@
     <string name="preference_boldwiget_vertical_bar_summary">В жирном виджете отделите прогноз на сегодня от прогнозов на последующие дни вертикальной линией.</string>
     <string name="boldwidget_description_detailed">Компактная сводка наиболее важной информации о погоде на сегодня и ближайшие несколько дней.</string>
     <string name="classicwidget_description_detailed">Текущая погода и подробный прогноз на ближайшие дни.</string>
+    <string name="clockwidget_description_detailed">Подробная информация о погоде на сегодня с датой, часами и будильником.</string>
 </resources>
