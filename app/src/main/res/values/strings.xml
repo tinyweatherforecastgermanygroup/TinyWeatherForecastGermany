@@ -18,7 +18,7 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --><resources>
     <string name="app_name">Tiny Weather Forecast Germany</string>
-    <string name="account_type">de.kaffeemitkoffein.tinyweatherforecastgermany</string>
+    <string name="account_type" translatable="false">de.kaffeemitkoffein.tinyweatherforecastgermany</string>
     <string name="main_selectstation">Region:</string>
     <string name="main_updatetime">Last Update:</string>
     <string name="main_wait_for_gps_fix">Location is being determinded…</string>
