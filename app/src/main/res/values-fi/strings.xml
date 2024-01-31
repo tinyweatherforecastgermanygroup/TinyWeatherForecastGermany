@@ -459,4 +459,5 @@
     <string name="boldwidget_description_detailed">Tiivis yhteenveto tämän päivän ja lähipäivien tärkeimmistä säätiedoista.</string>
     <string name="classicwidget_description_detailed">Tämänhetkinen sää ja yksityiskohtainen ennuste seuraaville päiville.</string>
     <string name="clockwidget_description_detailed">Yksityiskohtaiset säätiedot tälle päivälle päivämäärän, kellon ja herätyskellon kanssa.</string>
+    <string name="chartwidget_description_detailed">Seuraavien päivien sääennuste kaaviona.</string>
 </resources>
