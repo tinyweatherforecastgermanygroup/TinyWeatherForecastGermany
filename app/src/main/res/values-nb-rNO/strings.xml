@@ -452,4 +452,5 @@
     <string name="boldwidget_description_detailed">En kompakt oppsummering av den viktigste værinformasjonen for i dag og de neste dagene.</string>
     <string name="classicwidget_description_detailed">Aktuelt vær og detaljert værvarsel for de neste dagene.</string>
     <string name="clockwidget_description_detailed">Detaljert værinformasjon for i dag med dato, klokke og vekkerklokke.</string>
+    <string name="chartwidget_description_detailed">Værmeldingen for de neste dagene som et diagram.</string>
 </resources>
