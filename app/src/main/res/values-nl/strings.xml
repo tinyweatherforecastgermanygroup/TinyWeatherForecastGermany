@@ -459,4 +459,5 @@
     <string name="boldwidget_description_detailed">Een compacte samenvatting van de belangrijkste weersinformatie voor vandaag en de komende dagen.</string>
     <string name="classicwidget_description_detailed">Huidig weer en gedetailleerde weersverwachting voor de komende dagen.</string>
     <string name="clockwidget_description_detailed">Gedetailleerde weersinformatie voor vandaag met datum, klok en wekker.</string>
+    <string name="chartwidget_description_detailed">De weersverwachting voor de komende dagen als diagram.</string>
 </resources>
