@@ -484,4 +484,5 @@
     <string name="preference_sync_notice">Ви можете налаштувати параметри синхронізації в програмі.</string>
     <string name="battery_summary">Для надійної синхронізації даних про погоду вимкніть оптимізацію акумулятора для цієї програми.</string>
     <string name="preference_category_sync">Налаштування синхронізації</string>
+    <string name="chartwidget_description_detailed">Прогноз погоди на найближчі кілька днів у вигляді діаграми.</string>
 </resources>
