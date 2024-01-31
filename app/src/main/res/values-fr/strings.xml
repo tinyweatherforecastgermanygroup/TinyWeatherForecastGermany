@@ -473,4 +473,5 @@
     <string name="boldwidget_description_detailed">Un résumé compact des informations météorologiques les plus importantes pour aujourd\'hui et les jours suivants.</string>
     <string name="classicwidget_description_detailed">Météo actuelle et prévisions détaillées pour les prochains jours.</string>
     <string name="clockwidget_description_detailed">Informations météorologiques détaillées pour aujourd\'hui avec date, horloge et réveil.</string>
+    <string name="chartwidget_description_detailed">Les prévisions météorologiques pour les prochains jours sous forme de diagramme.</string>
 </resources>
