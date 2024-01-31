@@ -459,4 +459,5 @@
     <string name="preference_boldwiget_vertical_bar_summary">Nel widget in grassetto, separare le previsioni per oggi dai giorni successivi con una linea verticale.</string>
     <string name="boldwidget_description_detailed">Una sintesi compatta delle informazioni meteorologiche più importanti per oggi e per i prossimi giorni.</string>
     <string name="classicwidget_description_detailed">Tempo attuale e previsioni dettagliate per i prossimi giorni.</string>
+    <string name="clockwidget_description_detailed">Informazioni meteo dettagliate per oggi con data, orologio e sveglia.</string>
 </resources>
