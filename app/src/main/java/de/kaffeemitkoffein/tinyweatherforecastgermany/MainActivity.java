@@ -23,7 +23,6 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.TargetApi;
-import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.*;
 import android.content.pm.ActivityInfo;
@@ -71,15 +70,13 @@ public class MainActivity extends Activity {
     public final static String EXTRA_AREADB_PROGRESS_VALUE = "AREADB_PRGS_VALUE";
     public final static String EXTRA_AREADB_PROGRESS_TEXT = "AREADB_PRGS_TEXT";
 
-    public final static boolean API_TESTING_ENABLED = false;
-    private int test_position = 0;
-
     private ForecastAdapter forecastAdapter;
 
     Context context;
     StationsManager stationsManager;
     StationFavorites stationFavorites;
     Spinner spinner;
+    ProgressBar progressBar;
     ListView weatherList;
     AutoCompleteTextView autoCompleteTextView;
     StationSearchEngine stationSearchEngine;
@@ -111,6 +108,9 @@ public class MainActivity extends Activity {
     private Activity thisActivity;
 
     APIReaders.WeatherForecastRunnable weatherForecastRunnable;
+
+    long estimatedAdapterLayoutTimeMillis = 0;
+
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -370,7 +370,6 @@ public class MainActivity extends Activity {
             loadCurrentWeather();
         }
         registerForBroadcast();
-        final Context applicationContext = this;
         if ((stationsManager==null) || (!stationsManager.loaded)){
             weatherList.postDelayed(new Runnable() {
                 @Override
@@ -383,16 +382,7 @@ public class MainActivity extends Activity {
                 }
             }, Math.round(estimatedAdapterLayoutTimeMillis));
         }
-        executor.schedule(new Runnable() {
-            @Override
-            public void run() {
-                PrivateLog.log(applicationContext, PrivateLog.WIDGET, PrivateLog.INFO, "Updating widgets from main activity...");
-                WidgetRefresher.refresh(applicationContext);
-                if (WeatherSettings.serveGadgetBridge(context)) {
-                    GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
-                }
-            }
-        },Math.round(estimatedAdapterLayoutTimeMillis*1.1f),TimeUnit.MILLISECONDS);
+        updateAppViews(weatherCard);
         super.onResume();
     }
 
@@ -436,6 +426,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         // remove area database lock if necessary
         context = getApplicationContext();
+        estimatedAdapterLayoutTimeMillis = getEstimatedAdapterLayoutTimeInMillis(context);
         if (WeatherSettings.isAreaDatabaseLocked(context)){
             WeatherSettings.unlockAreaDatabase(context);
         }
@@ -479,13 +470,15 @@ public class MainActivity extends Activity {
                     ArrayList<Weather.WeatherLocation> weatherLocations = new ArrayList<Weather.WeatherLocation>();
                     weatherLocations.add(weatherLocation);
                     setWeatherLocations(weatherLocations);
+                    showMainappProgress();
                     super.onStart();
                     // do nothing
                 }
                 @Override
                 public void onPositiveResult() {
                     // update GadgetBridge and widgets
-                    MainActivity.updateAppViews(context, null);
+                    //MainActivity.updateAppViews(context, null);
+                    updateAppViews(null);
                     PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.INFO, "Weather update: success");
                     super.onPositiveResult();
                     WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,Calendar.getInstance().getTimeInMillis());
@@ -497,7 +490,7 @@ public class MainActivity extends Activity {
                                 public void run() {
                                     ContentResolver.requestSync(getManualSyncRequest(context, WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
                                 }
-                            });
+                            });;
                     loadCurrentWeather();
                 }
                 @Override
@@ -518,10 +511,11 @@ public class MainActivity extends Activity {
                     // display old values, if available
                     loadCurrentWeather();
                     // need to update views with old data: GadgetBridge and widgets
-                    MainActivity.updateAppViews(context, null);
+                    updateAppViews(weatherCard);
                 }
             };
             weatherList = (ListView) findViewById(R.id.main_listview);
+            progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
             stationsManager = new StationsManager(context);
             autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.actionbar_textview);
             // disable log to logcat if release is not a userdebug
@@ -869,10 +863,24 @@ public class MainActivity extends Activity {
                     // loadCurrentWeather();
                 }
             });
-            ArrayList<Weather.WeatherLocation> weatherLocations = new ArrayList<Weather.WeatherLocation>();
-            weatherLocations.add(weatherLocation);
-            weatherForecastRunnable.setWeatherLocations(weatherLocations);
-            executor.execute(weatherForecastRunnable);
+            // check if we have good data in place
+            weatherCard = Weather.getCurrentWeatherInfo(context);
+            if (weatherCard!=null){
+                // replace update time from the data polling time after changing station
+                WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,weatherCard.polling_time);
+            } else {
+                // when no weather data available in database, set last update time to 1970-01-01
+                WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,0);
+            }
+            if (WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WEATHER)){
+                ArrayList<Weather.WeatherLocation> weatherLocations = new ArrayList<Weather.WeatherLocation>();
+                weatherLocations.add(weatherLocation);
+                weatherForecastRunnable.setWeatherLocations(weatherLocations);
+                executor.execute(weatherForecastRunnable);
+            } else {
+                // do not load data, just show new location
+                loadCurrentWeather();
+            }
         }
     }
 
@@ -1114,7 +1122,7 @@ public class MainActivity extends Activity {
             // set back the flag before recreate occurs
             WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
             // notify widgets (& Gadgetbridge), since such view changes may also affect widgets, e.g. overview chart
-            updateAppViews(context,weatherCard);
+            updateAppViews(weatherCard);
             // recreate the whole view
             runOnUiThread(new Runnable() {
                 @Override
@@ -1230,6 +1238,7 @@ public class MainActivity extends Activity {
                     });
                 }
             });
+            hideMainappProgress();
         }
    }
 
@@ -2220,12 +2229,24 @@ public class MainActivity extends Activity {
 
     public static void updateAppViews(Context context, CurrentWeatherInfo weatherCard){
         // update GadgetBridge
-        GadgetbridgeAPI.sendWeatherBroadcastIfEnabled(context,weatherCard);
+        if (WeatherSettings.serveGadgetBridge(context)) {
+            GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
+        }
         WidgetRefresher.refresh(context);
         // save the last update time
         WeatherSettings.setViewsLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
     }
 
+    public void updateAppViews(final CurrentWeatherInfo weatherCard){
+        executor.schedule(new Runnable() {
+            @Override
+            public void run() {
+                PrivateLog.log(thisActivity, PrivateLog.WIDGET, PrivateLog.INFO, "Updating widgets from main activity...");
+                updateAppViews(getApplicationContext(),weatherCard);
+            }
+        },Math.round(estimatedAdapterLayoutTimeMillis*1.1f),TimeUnit.MILLISECONDS);
+
+    }
 
     public final static String DUMMY_ACCOUNT_NAME = "Weather";
     public final static String DUMMY_ACCOUNT_PASS = "somePassword";
@@ -2280,6 +2301,27 @@ public class MainActivity extends Activity {
         return syncRequest;
     }
 
+    public void showMainappProgress(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (progressBar!=null){
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    public void hideMainappProgress(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (progressBar!=null){
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
 }
 
 

@@ -735,9 +735,8 @@ public class WeatherSettings {
         pref_editor.apply();
         PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
         setPollenRegion(context,pollenArea);
-        //resetLastWeatherUpdateTime(context);
-        // always set this to the last passive location, so that user choice overrides older location data
-        // setLastPassiveLocation(context,weatherLocation);
+        // reset update time so a sync will occur next time
+        Updates.setLastUpdate(context, Updates.Category.WEATHER,0);
     }
 
     public static void setDescriptionAlternate(Context context, String newName){

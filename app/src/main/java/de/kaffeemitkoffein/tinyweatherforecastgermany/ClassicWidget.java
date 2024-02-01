@@ -24,6 +24,7 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -509,6 +510,9 @@ public class ClassicWidget extends AppWidgetProvider {
                 setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
                 awm.updateAppWidget(widget_instances[i],remoteViews);
             }
+        } else {
+            // sync weather if no information is present
+            ContentResolver.requestSync(MainActivity.getManualSyncRequest(c,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_WEATHER));
         }
     }
 
