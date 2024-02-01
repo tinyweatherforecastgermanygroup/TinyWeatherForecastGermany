@@ -476,4 +476,7 @@
     <string name="boldwidget_description_detailed">Eine kompakte Zusammenfassung der wichtigsten Wetterinformationen für heute und die nächsten Tage.</string>
     <string name="classicwidget_description_detailed">Aktuelles Wetter und detaillierte Vorhersage für die nächsten Tage.</string>
     <string name="clockwidget_description_detailed">Detaillierte Wetterinformationen für den heutigen Tag mit Datum, Uhr und Wecker.</string>
+    <string name="favorites_delete_title">Favoriten Entfernen</string>
+    <string name="favorites_delete_summary">Sollen alle Favoriten entfernt werden, außer die jetzt genutzte Wetterumgebung?</string>
+    <string name="preference_category_sync">Synchronisations-Einstellungen</string>
 </resources>
