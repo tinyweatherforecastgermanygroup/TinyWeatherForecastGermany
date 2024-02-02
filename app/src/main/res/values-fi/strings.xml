@@ -460,4 +460,17 @@
     <string name="classicwidget_description_detailed">Tämänhetkinen sää ja yksityiskohtainen ennuste seuraaville päiville.</string>
     <string name="clockwidget_description_detailed">Yksityiskohtaiset säätiedot tälle päivälle päivämäärän, kellon ja herätyskellon kanssa.</string>
     <string name="chartwidget_description_detailed">Seuraavien päivien sääennuste kaaviona.</string>
+    <string name="hours">Tunnit</string>
+    <string name="sync_off_notice">Synkronointi on poistettu käytöstä %1$s:n osalta tilisi asetuksissa.</string>
+    <string name="battery_rationale">Jotta säävaroituksia ja sääennusteita voidaan päivittää säännöllisesti, sovelluksen on sallittava toimia aina taustalla.</string>
+    <string name="hour">tunti</string>
+    <string name="preference_sync_weather_title">Synkronoi sää</string>
+    <string name="sync_enable_notice">Ota synkronointi käyttöön %1$s:n osalta napsauttamalla tätä.</string>
+    <string name="battery_title">Akun optimointi</string>
+    <string name="sync_interval">Tällä hetkellä joka %1$s.</string>
+    <string name="sync_enable">Ota synkronointi käyttöön?</string>
+    <string name="sync_enable_question">Ota synkronointi käyttöön %1$s:lle ?</string>
+    <string name="preference_sync_weather_summary">Päivitä sääennuste säännöllisesti.</string>
+    <string name="battery_summary">Ota tämän sovelluksen akun optimointi pois käytöstä, jotta säätiedot voidaan synkronoida luotettavasti.</string>
+    <string name="preview_fake_warning_text">TUULIPURJEET</string>
 </resources>
