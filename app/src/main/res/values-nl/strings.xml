@@ -460,4 +460,17 @@
     <string name="classicwidget_description_detailed">Huidig weer en gedetailleerde weersverwachting voor de komende dagen.</string>
     <string name="clockwidget_description_detailed">Gedetailleerde weersinformatie voor vandaag met datum, klok en wekker.</string>
     <string name="chartwidget_description_detailed">De weersverwachting voor de komende dagen als diagram.</string>
+    <string name="hours">Uren</string>
+    <string name="sync_off_notice">Synchronisatie is uitgeschakeld voor %1$s in uw accountinstellingen.</string>
+    <string name="battery_rationale">Om weerwaarschuwingen en weersvoorspellingen regelmatig bij te werken, moet de app altijd op de achtergrond kunnen draaien.</string>
+    <string name="hour">uur</string>
+    <string name="preference_sync_weather_title">Weer synchroniseren</string>
+    <string name="sync_enable_notice">Klik hier om synchronisatie in te schakelen voor %1$s.</string>
+    <string name="battery_title">Batterij optimaliseren</string>
+    <string name="sync_interval">Momenteel elke %1$s.</string>
+    <string name="sync_enable">Synchronisatie inschakelen?</string>
+    <string name="sync_enable_question">Synchronisatie inschakelen voor %1$s ?</string>
+    <string name="preference_sync_weather_summary">Werk de weersvoorspelling regelmatig bij.</string>
+    <string name="battery_summary">Deactiveer batterijoptimalisatie voor deze app zodat weergegevens betrouwbaar kunnen worden gesynchroniseerd.</string>
+    <string name="preview_fake_warning_text">WINDSTORMEN</string>
 </resources>
