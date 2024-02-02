@@ -453,4 +453,17 @@
     <string name="classicwidget_description_detailed">Aktuelt vær og detaljert værvarsel for de neste dagene.</string>
     <string name="clockwidget_description_detailed">Detaljert værinformasjon for i dag med dato, klokke og vekkerklokke.</string>
     <string name="chartwidget_description_detailed">Værmeldingen for de neste dagene som et diagram.</string>
+    <string name="hours">Timer</string>
+    <string name="sync_off_notice">Synkronisering er deaktivert for %1$s i kontoinnstillingene.</string>
+    <string name="battery_rationale">For å kunne oppdatere værvarsler og værmeldinger regelmessig, bør appen alltid kunne kjøre i bakgrunnen.</string>
+    <string name="hour">time</string>
+    <string name="preference_sync_weather_title">Synkroniser vær</string>
+    <string name="sync_enable_notice">Klikk her for å aktivere synkronisering for %1$s.</string>
+    <string name="battery_title">Optimalisering av batteriet</string>
+    <string name="sync_interval">For øyeblikket hver %1$s.</string>
+    <string name="sync_enable">Aktivere synkronisering?</string>
+    <string name="sync_enable_question">Aktivere synkronisering for %1$s ?</string>
+    <string name="preference_sync_weather_summary">Oppdater værmeldingen regelmessig.</string>
+    <string name="battery_summary">Deaktiver batterioptimalisering for denne appen slik at værdata kan synkroniseres på en pålitelig måte.</string>
+    <string name="preview_fake_warning_text">VINDKAST</string>
 </resources>
