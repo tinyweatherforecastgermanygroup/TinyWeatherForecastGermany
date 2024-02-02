@@ -460,4 +460,17 @@
     <string name="classicwidget_description_detailed">Текущая погода и подробный прогноз на ближайшие дни.</string>
     <string name="clockwidget_description_detailed">Подробная информация о погоде на сегодня с датой, часами и будильником.</string>
     <string name="chartwidget_description_detailed">Прогноз погоды на ближайшие несколько дней в виде диаграммы.</string>
+    <string name="hours">Часы</string>
+    <string name="sync_off_notice">Синхронизация отключена для %1$s в настройках вашей учетной записи.</string>
+    <string name="battery_rationale">Чтобы регулярно обновлять предупреждения и прогнозы погоды, приложение должно постоянно работать в фоновом режиме.</string>
+    <string name="hour">час</string>
+    <string name="preference_sync_weather_title"></string>
+    <string name="sync_enable_notice">Нажмите здесь, чтобы включить синхронизацию для %1$s.</string>
+    <string name="battery_title">Оптимизация работы аккумулятора</string>
+    <string name="sync_interval">В настоящее время каждые %1$s.</string>
+    <string name="sync_enable">Включить синхронизацию?</string>
+    <string name="sync_enable_question">Включить синхронизацию для %1$s?</string>
+    <string name="preference_sync_weather_summary">Регулярно обновляйте прогноз погоды.</string>
+    <string name="battery_summary">Отключите оптимизацию заряда батареи для этого приложения, чтобы обеспечить надежную синхронизацию погодных данных.</string>
+    <string name="preview_fake_warning_text">ПОРЫВЫ ВЕТРА</string>
 </resources>
