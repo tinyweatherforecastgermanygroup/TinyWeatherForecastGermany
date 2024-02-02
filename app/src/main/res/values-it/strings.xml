@@ -461,4 +461,17 @@
     <string name="classicwidget_description_detailed">Tempo attuale e previsioni dettagliate per i prossimi giorni.</string>
     <string name="clockwidget_description_detailed">Informazioni meteo dettagliate per oggi con data, orologio e sveglia.</string>
     <string name="chartwidget_description_detailed">Le previsioni del tempo per i prossimi giorni come diagramma.</string>
+    <string name="hours">Orario</string>
+    <string name="sync_off_notice">La sincronizzazione è disattivata per %1$s nelle impostazioni dell\'account.</string>
+    <string name="battery_rationale">Per aggiornare regolarmente gli avvisi e le previsioni del tempo, l\'app deve essere sempre in esecuzione in background.</string>
+    <string name="hour">ora</string>
+    <string name="preference_sync_weather_title">Sincronizzazione meteo</string>
+    <string name="sync_enable_notice">Fare clic qui per attivare la sincronizzazione per %1$s.</string>
+    <string name="battery_title">Ottimizzazione della batteria</string>
+    <string name="sync_interval">Attualmente ogni %1$s.</string>
+    <string name="sync_enable">Attivare la sincronizzazione?</string>
+    <string name="sync_enable_question">Attivare la sincronizzazione per %1$s?</string>
+    <string name="preference_sync_weather_summary">Aggiornare regolarmente le previsioni del tempo.</string>
+    <string name="battery_summary">Disattivare l\'ottimizzazione della batteria per questa applicazione in modo che i dati meteo possano essere sincronizzati in modo affidabile.</string>
+    <string name="preview_fake_warning_text">VENTO</string>
 </resources>
