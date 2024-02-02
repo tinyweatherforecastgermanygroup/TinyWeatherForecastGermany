@@ -460,4 +460,17 @@
     <string name="classicwidget_description_detailed">Cuaca saat ini dan prakiraan cuaca terperinci untuk beberapa hari ke depan.</string>
     <string name="clockwidget_description_detailed">Informasi cuaca terperinci untuk hari ini dengan tanggal, jam, dan jam alarm.</string>
     <string name="chartwidget_description_detailed">Prakiraan cuaca untuk beberapa hari ke depan dalam bentuk diagram.</string>
+    <string name="hours">Jam</string>
+    <string name="sync_off_notice">Sinkronisasi dinonaktifkan untuk %1$s di pengaturan akun Anda.</string>
+    <string name="battery_rationale">Untuk memperbarui peringatan cuaca dan prakiraan cuaca secara teratur, aplikasi harus dibiarkan selalu berjalan di latar belakang.</string>
+    <string name="hour">jam</string>
+    <string name="preference_sync_weather_title">Sinkronisasi cuaca</string>
+    <string name="sync_enable_notice">Klik di sini untuk mengaktifkan sinkronisasi untuk %1$s.</string>
+    <string name="battery_title">Optimalisasi baterai</string>
+    <string name="sync_interval">Saat ini setiap %1$s.</string>
+    <string name="sync_enable">Mengaktifkan sinkronisasi?</string>
+    <string name="sync_enable_question">Aktifkan sinkronisasi untuk %1$s ?</string>
+    <string name="preference_sync_weather_summary">Perbarui prakiraan cuaca secara teratur.</string>
+    <string name="battery_summary">Nonaktifkan pengoptimalan baterai untuk aplikasi ini agar data cuaca dapat disinkronkan dengan andal.</string>
+    <string name="preview_fake_warning_text">ANGIN ANGIN</string>
 </resources>
