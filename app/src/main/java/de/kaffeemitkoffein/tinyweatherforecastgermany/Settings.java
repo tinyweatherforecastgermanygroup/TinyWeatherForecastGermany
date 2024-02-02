@@ -134,7 +134,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 }
                 if (s.equals(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS) || (s.equals(WeatherSettings.PREF_BOLDWIDGET_VERTICAL_BAR))) {
                     setShowWarningsInWidgetAllowed();
-                    WidgetRefresher.refresh(context);
+                    WidgetRefresher.refresh(context,WidgetRefresher.FROM_SETTINGS);
                 }
                 if (s.equals(WeatherSettings.PREF_NOTIFY_WARNINGS)) {
                     setNotifyWarnings();
@@ -144,11 +144,11 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN)) ||
                         (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX))) {
                     setUseMinMax();
-                    WidgetRefresher.refreshChartWidget(context);
+                    WidgetRefresher.refreshChartWidget(context,WidgetRefresher.FROM_SETTINGS);
                 }
                 if (s.equals(WeatherSettings.PREF_THEME)) {
                     WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
-                    WidgetRefresher.refresh(context);
+                    WidgetRefresher.refresh(context,WidgetRefresher.FROM_SETTINGS);
                     recreate();
                 }
                 if (s.equals(WeatherSettings.PREF_ROTATIONMODE)) {
@@ -156,10 +156,10 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 }
                 // values with impact on main activity & widgets
                 if (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS)) {
-                    WidgetRefresher.refreshChartWidget(context);
+                    WidgetRefresher.refreshChartWidget(context,WidgetRefresher.FROM_SETTINGS);
                 }
                 if (s.equals(WeatherSettings.PREF_WIDGET_SHOWDWDNOTE) || (s.equals(WeatherSettings.PREF_WIDGET_OPACITY))){
-                    WidgetRefresher.refresh(context.getApplicationContext());
+                    WidgetRefresher.refresh(context.getApplicationContext(),WidgetRefresher.FROM_SETTINGS);
                 }
                 // invalidate weather display because the display options have changed
                 if (s.equals(WeatherSettings.PREF_DISPLAY_TYPE) || (s.equals(WeatherSettings.PREF_DISPLAY_BAR)) || (s.equals(WeatherSettings.PREF_DISPLAY_PRESSURE)) ||
@@ -170,7 +170,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
                     // invalidate weather display and widgets
                     if ((s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
-                        WidgetRefresher.refresh(getApplicationContext());
+                        WidgetRefresher.refresh(getApplicationContext(),WidgetRefresher.FROM_SETTINGS);
                     }
                 }
                 if (s.equals(WeatherSettings.PREF_UVHI_FETCH_DATA)){

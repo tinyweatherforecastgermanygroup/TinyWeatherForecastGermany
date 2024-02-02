@@ -72,7 +72,7 @@ public class ClassicWidget extends AppWidgetProvider {
     public void onAppWidgetOptionsChanged(Context c, AppWidgetManager awm, int appWidgetID, Bundle newOptions){
         int[] idarray = new int[1];
         idarray[0]=appWidgetID;
-        updateWidgetDisplay(c,awm,idarray);
+        updateWidgetDisplay(c,awm,idarray,WidgetRefresher.FROM_SYSTEM);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ClassicWidget extends AppWidgetProvider {
         // refresh widgets, if no update was made.
         // in case of an update, the widgets are refreshed by a callback of WIDGET_CUSTOM_REFRESH_ACTION
         PrivateLog.log(c,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widget (system): "+getClass().toString());
-        updateWidgetDisplay(c,awm,widget_instances);
+        updateWidgetDisplay(c,awm,widget_instances,WidgetRefresher.FROM_SYSTEM);
         // serve GadgetBridge if necessary
         if (WeatherSettings.serveGadgetBridge(c)){
             GadgetbridgeAPI.sendWeatherBroadcastIfEnabled(c,null);
@@ -107,9 +107,10 @@ public class ClassicWidget extends AppWidgetProvider {
         super.onReceive(c, i);
         if (i != null){
             String action = i.getAction();
-            if (action.equals(WIDGET_CUSTOM_REFRESH_ACTION) || action.equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE)){
+            if (action.equals(WIDGET_CUSTOM_REFRESH_ACTION)){
                 PrivateLog.log(c,PrivateLog.WIDGET,PrivateLog.INFO,"Updating widget (app, custom): "+getClass().toString());
-                widgetRefreshAction(c,i);
+                int source = i.getIntExtra(WidgetRefresher.EXTRA_SOURCE,WidgetRefresher.FROM_SYSTEM);
+                widgetRefreshAction(c,i,source);
             }
       }
     }
@@ -462,7 +463,7 @@ public class ClassicWidget extends AppWidgetProvider {
         setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c,false);
     }
 
-    public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances){
+    public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances, int source){
         CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             WeatherSettings weatherSettings = new WeatherSettings(c);
@@ -510,17 +511,19 @@ public class ClassicWidget extends AppWidgetProvider {
                 setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
                 awm.updateAppWidget(widget_instances[i],remoteViews);
             }
-        } else {
-            // sync weather if no information is present
+        } else
+        // sync weather if no information is present, however do not loop syncs if widget update was already
+        // triggered by the sync adapter.
+        if (source!=WidgetRefresher.FROM_SYNCADAPTER){
             ContentResolver.requestSync(MainActivity.getManualSyncRequest(c,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_WEATHER));
         }
     }
 
-    public void widgetRefreshAction(Context c, Intent i){
+    public void widgetRefreshAction(Context c, Intent i, int source){
         AppWidgetManager awm = AppWidgetManager.getInstance(c);
         int[] wi = awm.getAppWidgetIds(new ComponentName(c,this.getClass().getName()));
         if (wi.length>0){
-            updateWidgetDisplay(c,awm,wi);
+            updateWidgetDisplay(c,awm,wi,source);
         }
     }
 

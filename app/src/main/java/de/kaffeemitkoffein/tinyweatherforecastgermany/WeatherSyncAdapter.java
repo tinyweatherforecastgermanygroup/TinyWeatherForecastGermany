@@ -451,7 +451,6 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
         if (WeatherSettings.useBackgroundLocation(context)){
             WeatherLocationManager.checkForBackgroundLocation(context);
         }
-        MainActivity.updateAppViews(context,null);
         Runnable cleanUpRunnable = new Runnable() {
             @Override
             public void run() {
@@ -464,6 +463,14 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
             }
         };
         cleanUpRunnable.run();
+        // update GadgetBridge
+        if (WeatherSettings.serveGadgetBridge(context)) {
+            GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
+        }
+        WidgetRefresher.refresh(context,WidgetRefresher.FROM_SYNCADAPTER);
+        // save the last update time
+        WeatherSettings.setViewsLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
+
     }
 }
 

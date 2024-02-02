@@ -21,6 +21,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 public class ChartWidget extends ClassicWidget{
 
     @Override
-    public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances) {
+    public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances, int source) {
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             WeatherSettings weatherSettings = new WeatherSettings(c);
@@ -72,7 +73,12 @@ public class ChartWidget extends ClassicWidget{
                 remoteViews.setOnClickPendingIntent(R.id.chartwidget_maincontainer, pendingIntent);
                 awm.updateAppWidget(widget_instances[i], remoteViews);
             }
-        }
+        } else
+            // sync weather if no information is present, however do not loop syncs if widget update was already
+            // triggered by the sync adapter.
+            if (source!=WidgetRefresher.FROM_SYNCADAPTER){
+                ContentResolver.requestSync(MainActivity.getManualSyncRequest(c,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_WEATHER));
+            }
     }
 
     private void fillChartWidgetItems(Context context, AppWidgetManager awm, int widgetInstance, RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo currentWeatherInfo) {

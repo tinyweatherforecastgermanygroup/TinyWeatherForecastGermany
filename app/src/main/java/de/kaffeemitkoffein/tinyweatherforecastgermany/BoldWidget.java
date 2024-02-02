@@ -21,6 +21,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -49,13 +50,13 @@ public class BoldWidget extends ClassicWidget {
             widgetWidth = widthLandscape;
             widgetHeight = heightLandscape;
         }
-        updateWidgetDisplay(c,awm,new int[] {appWidgetID});
+        updateWidgetDisplay(c,awm,new int[] {appWidgetID},WidgetRefresher.FROM_SYSTEM);
         super.onAppWidgetOptionsChanged(c,awm,appWidgetID,appWidgetOptions);
     }
 
 
     @Override
-    public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances) {
+    public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances, int source) {
         CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             WeatherSettings weatherSettings = new WeatherSettings(c);
@@ -105,7 +106,13 @@ public class BoldWidget extends ClassicWidget {
                 remoteViews.setOnClickPendingIntent(R.id.boldwidget_maincontainer, pendingIntent);
                 awm.updateAppWidget(widget_instances[i], remoteViews);
             }
+        } else
+        // sync weather if no information is present, however do not loop syncs if widget update was already
+        // triggered by the sync adapter.
+        if (source!=WidgetRefresher.FROM_SYNCADAPTER){
+            ContentResolver.requestSync(MainActivity.getManualSyncRequest(c,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_WEATHER));
         }
+
     }
 
     private void fillBoldWidgetItems(Context c, RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo currentWeatherInfo, int forecastDays) {

@@ -2232,7 +2232,7 @@ public class MainActivity extends Activity {
         if (WeatherSettings.serveGadgetBridge(context)) {
             GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
         }
-        WidgetRefresher.refresh(context);
+        WidgetRefresher.refresh(context,WidgetRefresher.FROM_MAIN_APP);
         // save the last update time
         WeatherSettings.setViewsLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());
     }

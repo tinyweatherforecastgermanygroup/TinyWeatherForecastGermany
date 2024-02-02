@@ -24,33 +24,50 @@ import android.content.Intent;
 
 public class WidgetRefresher {
 
-    public static void refresh(Context context){
-        // update classic widget
-        Intent intent1 = new Intent(context,ClassicWidget.class);
-        intent1.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
-        context.sendBroadcast(intent1);
+    public final static String EXTRA_SOURCE = "extra_source";
+    public final static int FROM_SYSTEM = 0;
+    public final static int FROM_MAIN_APP = 1;
+    public final static int FROM_SYNCADAPTER = 2;
+    public final static int FROM_SETTINGS = 3;
+    public final static int FROM_ALARMCLOCK = 4;
+
+    public static void refresh(Context context, int source){
+        refreshBoldWidget(context,source);
+        refreshClassicWidget(context,source);
+        refreshClockWidget(context,source);
+        refreshChartWidget(context,source);
+    }
+
+    public static void refreshBoldWidget(Context context, int source){
         // update bold widget
-        Intent intent3 = new Intent(context,BoldWidget.class);
-        intent3.setAction(BoldWidget.WIDGET_CUSTOM_REFRESH_ACTION);
-        context.sendBroadcast(intent3);
-        // update clock widget
-        refreshClockWidget(context);
-        // update chart widget
-        refreshChartWidget(context);
+        Intent intent = new Intent(context,BoldWidget.class);
+        intent.setAction(BoldWidget.WIDGET_CUSTOM_REFRESH_ACTION);
+        intent.putExtra(EXTRA_SOURCE,source);
+        context.sendBroadcast(intent);
     }
 
-    public static void refreshClockWidget(Context context){
-        // update clock widget
-        Intent intent4 = new Intent(context,ClockWidget.class);
-        intent4.setAction(ClockWidget.WIDGET_CUSTOM_REFRESH_ACTION);
-        context.sendBroadcast(intent4);
+    public static void refreshClassicWidget(Context context, int source){
+        // update classic widget
+        Intent intent = new Intent(context,ClassicWidget.class);
+        intent.setAction(ClassicWidget.WIDGET_CUSTOM_REFRESH_ACTION);
+        intent.putExtra(EXTRA_SOURCE,source);
+        context.sendBroadcast(intent);
     }
 
-    public static void refreshChartWidget(Context context){
+    public static void refreshClockWidget(Context context, int source){
         // update clock widget
-        Intent intent5 = new Intent(context,ChartWidget.class);
-        intent5.setAction(ClockWidget.WIDGET_CUSTOM_REFRESH_ACTION);
-        context.sendBroadcast(intent5);
+        Intent intent = new Intent(context,ClockWidget.class);
+        intent.setAction(ClockWidget.WIDGET_CUSTOM_REFRESH_ACTION);
+        intent.putExtra(EXTRA_SOURCE,source);
+        context.sendBroadcast(intent);
+    }
+
+    public static void refreshChartWidget(Context context, int source){
+        // update clock widget
+        Intent intent = new Intent(context,ChartWidget.class);
+        intent.setAction(ClockWidget.WIDGET_CUSTOM_REFRESH_ACTION);
+        intent.putExtra(EXTRA_SOURCE,source);
+        context.sendBroadcast(intent);
     }
 
 }
