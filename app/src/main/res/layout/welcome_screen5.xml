@@ -115,6 +115,7 @@
                     android:textSize="@dimen/welcome_setup_size"
                     android:textColor="?attr/colorText"
                     android:layout_marginBottom="@dimen/welcome_action_padding"
+                    android:drawableLeft="?attr/ic_battery_alert"
                     android:text="@string/battery_summary"
                     />
 

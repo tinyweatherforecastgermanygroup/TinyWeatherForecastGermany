@@ -70,5 +70,6 @@
     <attr name="symbol_sun" format="reference"/>
     <attr name="ic_keyboard_arrow_down" format="reference"/>
     <attr name="ic_keyboard_arrow_up" format="reference"/>
+    <attr name="ic_battery_alert" format="reference"/>
 
 </resources>

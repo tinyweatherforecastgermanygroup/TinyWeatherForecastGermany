@@ -290,6 +290,8 @@ public class ForecastIcons {
         if (layers != null) {
             Bitmap targetBitmap = Bitmap.createBitmap(iconWidth,iconHeight, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(targetBitmap);
+            //Paint pnt = new Paint(); pnt.setTextSize(48); pnt.setColor(Color.YELLOW);
+            //canvas.drawText("C: "+condition,10,iconHeight,pnt);
             // modify for day/night
             if (layers[0] == Layer.SUN) {
                 if (weatherLocation != null) {

@@ -189,15 +189,15 @@ Since version 0.62.0, Tiny Weather Forecast Germany mostly abandoned custom upda
 The user has multiple possibilities to control the use of resources on the mobile device, which are now all well-respected by Tiny Weather Forecast Germany. However, some of them will by their nature limit background syncs.
 
 Please check the following points:
-1. Make sure you have **not enabled** the system-wide *battery saver*. If enabled, consider to turn it off.
+1. Make sure you have **not enabled** the system-wide *battery saver*. If enabled, consider to turn it off. If you want to keep using it, turn off *battery optimization* for Tiny Weater Forecast Germany (see below) to allow the app to still sync data.
 2. Make sure you have **not enabled** the system-wide *data saver*. If you use it, consider adding Tiny Weather Forecast Germany to the list of apps with *unrestricted data*.
 3. Make sure that in Settings -> Passwords & accounts -> Weather -> Account sync is **enabled** (default), and you did not turn it off.
 4. Check in the settings of Tiny Weather Forecast Germany that you have **enabled sync** for the desired data (e.g. weather, warnings and perhaps other categories).
 5. Make sure that you have **not restricted battery use** for Tiny Weather Forecast Germany. To check, go to the app info screen by long-pressing the app icon in the launcher, select app battery usage and select "unrestricted" (on older devices: turn off battery optimization for the app). 
 6. For weather warnings, make sure you have **not disabled notifications** for Tiny Weather Forecast Germany and you have **not denied the notification permission**. You can check both in the app info.
 
-When the above fails, you may try the following:
-- grant the app the "allow all the time" location permission.
+You may also try the following:
+- make sure battery use is **not** *optimized* or *restricted* for Tiny Weather Forecast Germany. To check, go to the app settings. In the sync settings, you may see an option named "Battery optimization". If you see it, click it and allow to "always run in background".
 - try interacting with the app by opening it.
 
 When you use the Gadgetbridge support and notice that updates only occur rarely, you may, in addition to the points above, put a weather widget on your home screen.
