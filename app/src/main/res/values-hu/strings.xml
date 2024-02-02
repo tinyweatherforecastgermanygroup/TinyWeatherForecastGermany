@@ -460,4 +460,17 @@
     <string name="classicwidget_description_detailed">Aktuális időjárás és részletes előrejelzés a következő napokra.</string>
     <string name="clockwidget_description_detailed">Részletes időjárási információk a mai napra vonatkozóan dátummal, órával és ébresztőórával.</string>
     <string name="chartwidget_description_detailed">A következő napok időjárás-előrejelzése diagram formájában.</string>
+    <string name="hours">Órák</string>
+    <string name="sync_off_notice">A szinkronizálás le van tiltva %1$s esetében a fiókbeállításokban.</string>
+    <string name="battery_rationale">Az időjárási figyelmeztetések és időjárás-előrejelzések rendszeres frissítéséhez az alkalmazásnak mindig a háttérben kell futnia.</string>
+    <string name="hour">óra</string>
+    <string name="preference_sync_weather_title">Időjárás szinkronizálása</string>
+    <string name="sync_enable_notice">Kattintson ide a %1$s szinkronizálás engedélyezéséhez.</string>
+    <string name="battery_title">Az akkumulátor optimalizálása</string>
+    <string name="sync_interval">Jelenleg minden %1$s.</string>
+    <string name="sync_enable">Szinkronizálás engedélyezése?</string>
+    <string name="sync_enable_question">Szinkronizálás engedélyezése %1$s számára ?</string>
+    <string name="preference_sync_weather_summary">Rendszeresen frissítse az időjárás-előrejelzést.</string>
+    <string name="battery_summary">Kapcsolja ki az alkalmazás akkumulátor-optimalizálását, hogy az időjárási adatok megbízhatóan szinkronizálhatók legyenek.</string>
+    <string name="preview_fake_warning_text">SZÉLLÖKÉSEK</string>
 </resources>
