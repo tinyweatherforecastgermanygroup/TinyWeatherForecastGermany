@@ -144,4 +144,16 @@
     <string name="clockwidget_description">Väder och tid</string>
     <string name="clockwidget_description_detailed">Detaljerad väderinformation för idag med datum, klocka och väckarklocka.</string>
     <string name="chartwidget_description_detailed">Väderprognosen för de närmaste dagarna i form av ett diagram.</string>
+    <string name="hours">Timmar</string>
+    <string name="sync_off_notice">Synkronisering är inaktiverad för %1$s i dina kontoinställningar.</string>
+    <string name="battery_rationale">För att vädervarningar och väderprognoser ska kunna uppdateras regelbundet bör appen tillåtas att alltid köras i bakgrunden.</string>
+    <string name="hour">timme</string>
+    <string name="preference_sync_weather_title">Synkronisera väder</string>
+    <string name="sync_enable_notice">Klicka här för att aktivera synkronisering för %1$s.</string>
+    <string name="battery_title">Optimering av batteriet</string>
+    <string name="sync_interval">För närvarande varje %1$s.</string>
+    <string name="sync_enable">Aktivera synkronisering?</string>
+    <string name="sync_enable_question">Aktivera synkronisering för %1$s?</string>
+    <string name="preference_sync_weather_summary">Uppdatera väderprognosen regelbundet.</string>
+    <string name="preview_fake_warning_text">VIND GUSTS</string>
 </resources>
