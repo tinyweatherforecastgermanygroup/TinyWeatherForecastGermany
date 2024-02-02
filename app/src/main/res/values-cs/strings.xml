@@ -460,4 +460,17 @@
     <string name="classicwidget_description_detailed">Aktuální počasí a podrobná předpověď na následující dny.</string>
     <string name="clockwidget_description_detailed">Podrobné informace o počasí na dnešní den s datem, hodinami a budíkem.</string>
     <string name="chartwidget_description_detailed">Předpověď počasí na příštích několik dní jako diagram.</string>
+    <string name="hours">Hodiny</string>
+    <string name="sync_off_notice">Synchronizace je pro %1$s v nastavení účtu zakázána.</string>
+    <string name="battery_rationale">Aby bylo možné pravidelně aktualizovat výstrahy a předpovědi počasí, měla by aplikace vždy běžet na pozadí.</string>
+    <string name="hour">hodina</string>
+    <string name="preference_sync_weather_title">Synchronizace počasí</string>
+    <string name="sync_enable_notice">Kliknutím sem povolíte synchronizaci pro %1$s.</string>
+    <string name="battery_title">Optimalizace baterie</string>
+    <string name="sync_interval">Aktuálně každých %1$s.</string>
+    <string name="sync_enable">Povolit synchronizaci?</string>
+    <string name="sync_enable_question">Povolit synchronizaci pro %1$s ?</string>
+    <string name="preference_sync_weather_summary">Pravidelně aktualizujte předpověď počasí.</string>
+    <string name="battery_summary">Deaktivujte optimalizaci baterie pro tuto aplikaci, aby bylo možné spolehlivě synchronizovat data o počasí.</string>
+    <string name="preview_fake_warning_text">VĚTRNÉ PORYVY</string>
 </resources>
