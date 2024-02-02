@@ -460,4 +460,17 @@
     <string name="classicwidget_description_detailed">Aktuelt vejr og detaljeret prognose for de næste dage.</string>
     <string name="clockwidget_description_detailed">Detaljeret vejrinformation for i dag med dato, ur og vækkeur.</string>
     <string name="chartwidget_description_detailed">Vejrudsigten for de næste par dage som et diagram.</string>
+    <string name="hours">Timer</string>
+    <string name="sync_off_notice">Synkronisering er deaktiveret for %1$s i dine kontoindstillinger.</string>
+    <string name="battery_rationale">For at kunne opdatere vejrvarsler og vejrudsigter regelmæssigt skal appen have lov til altid at køre i baggrunden.</string>
+    <string name="hour">time</string>
+    <string name="preference_sync_weather_title">Synkroniser vejret</string>
+    <string name="sync_enable_notice">Klik her for at aktivere synkronisering for %1$s.</string>
+    <string name="battery_title">Optimering af batteriet</string>
+    <string name="sync_interval">I øjeblikket hver %1$s.</string>
+    <string name="sync_enable">Aktiverer du synkronisering?</string>
+    <string name="sync_enable_question">Aktiver synkronisering for %1$s?</string>
+    <string name="preference_sync_weather_summary">Opdater regelmæssigt vejrudsigten.</string>
+    <string name="battery_summary">Deaktiver batterioptimering for denne app, så vejrdata kan synkroniseres pålideligt.</string>
+    <string name="preview_fake_warning_text">VINDSTØD</string>
 </resources>
