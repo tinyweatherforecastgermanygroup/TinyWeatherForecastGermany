@@ -1,7 +1,7 @@
 Tiny Weather Forecast Germany
 =================================
 
-Copyright © 2020, 2021, 2022, 2023 Pawel Dube
+Copyright © 2020, 2021, 2022, 2023, 2024 Pawel Dube
 
 Version: [VERSION]
 
@@ -34,7 +34,7 @@ The following persons contributed to this project:
  - Janis Bitta (app icon)
  - Jonas Lochmann (.gitignore)
  - Marc Nause (code improvements, bitmap caching)
- - arwanger (README.md, images)
+ - arwanger (README, images)
  - maximilianovermeyer (fix of geo-intent-handling)
  - eUgEntOptIc44 (javadoc improvements)
 

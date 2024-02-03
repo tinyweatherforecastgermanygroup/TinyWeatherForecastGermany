@@ -52,6 +52,8 @@
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
+            android:autoLink="web|email"
+            android:focusable="true"
         />
 
     </ScrollView>

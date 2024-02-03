@@ -1,7 +1,7 @@
 Kleine Wettervorschau Deutschland
 =================================
 
-Copyright © 2020, 2021, 2022, 2023 Pawel Dube
+Copyright © 2020, 2021, 2022, 2023, 2024 Pawel Dube
 
 Version: [VERSION]
 
@@ -34,7 +34,7 @@ Folgende Personen haben zum Projekt beigetragen:
  - Janis Bitta (app icon)
  - Jonas Lochmann (.gitignore)
  - Marc Nause (code improvements, bitmap caching)
- - arwanger (README.md)
+ - arwanger (README, Bilder)
   - maximilianovermeyer (fix of geo-intent-handling)
   - eUgEntOptIc44 (javadoc improvements)
 
@@ -45,7 +45,7 @@ Folgende Personen haben zum Projekt beigetragen:
 * English: Allan Nordhøy
 * French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
 * Finnish: eUgEntOptIc44, mondstern
-* German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, mondstern, silmaril, w4ts0n
+* German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, MaxK, mondstern, silmaril, w4ts0n
 * Hungarian: eUgEntOptIc44, Gőz Barnabás
 * Indonesian: Linerly
 * Italian: mondstern, eUgEntOptIc44
@@ -53,9 +53,9 @@ Folgende Personen haben zum Projekt beigetragen:
 * Norwegian Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
 * Polish: eUgEntOptIc44, Eryk Michalak, ewm, mondstern
 * Russian: Wirdi51
-* Spanish: eUgEntOptIc44, hegondev
+* Spanish: eUgEntOptIc44, gallegonovato, hegondev
 * Swedish: tygyh
-* Ukrainian: eUgEntOptIc44, Andrij Mizyk
+* Ukrainian: eUgEntOptIc44, Andrij Mizyk, SomeTr
 
 Lizenz:
 --------

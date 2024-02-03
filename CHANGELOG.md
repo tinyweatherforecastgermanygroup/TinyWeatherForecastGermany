@@ -26,7 +26,6 @@
 - new necessary permissions to manage the sync adapter: AUTHENTICATE_ACCOUNTS, WRITE_SYNC_SETTINGS, READ_SYNC_SETTINGS
 - syncs in the background won't waste battery when no suitable network is available or when the device is idle
 - syncs won't occur when the user disables background syncs
-- added setting to warn about disabled sync, pressing it allows to enable sync from inside the app
 - to better adapt to other apps and their data sync, the sync intervals are now inexact
 - the user can now decide in detail which data should be synced in the background
 - the settings for syncs are now unified in a new category called "sync settings"
@@ -42,3 +41,4 @@
 - updates of widgets and Gadgetbridge from the main app are delayed, so that they do not slow down the user interface upon app launch
 - added button in welcome activity to opt out from battery optimization
 - added warnings in settings if sync is disabled and/or battery optimization enabled
+- links and e-mail addresses are now clickable in the popups

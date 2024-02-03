@@ -458,12 +458,12 @@ public class WelcomeActivity extends Activity {
     private int getWarningsUpdateIntervalMenuPosition(){
         int interval = WeatherSettings.Updates.getSyncInterval(getApplicationContext(),WeatherSettings.Updates.Category.WARNINGS);
         switch (interval){
-            case WeatherSettings.Updates.Intervals.MIN15: return 1;
-            case WeatherSettings.Updates.Intervals.HOUR1: return 3;
-            case WeatherSettings.Updates.Intervals.HOUR2: return 4;
-            case WeatherSettings.Updates.Intervals.HOUR3: return 5;
-            case WeatherSettings.Updates.Intervals.HOUR6: return 6;
-            default: return 2;
+            case WeatherSettings.Updates.Intervals.MIN15: return 0;
+            case WeatherSettings.Updates.Intervals.HOUR1: return 2;
+            case WeatherSettings.Updates.Intervals.HOUR2: return 3;
+            case WeatherSettings.Updates.Intervals.HOUR3: return 4;
+            case WeatherSettings.Updates.Intervals.HOUR6: return 5;
+            default: return 1;
 
         }
     }

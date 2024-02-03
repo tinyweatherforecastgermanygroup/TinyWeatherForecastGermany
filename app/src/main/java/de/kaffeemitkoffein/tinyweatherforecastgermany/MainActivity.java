@@ -1494,6 +1494,7 @@ public class MainActivity extends Activity {
         textView.setText(readTextFileFromResources("whatsnew"));
     }
 
+
     public static void deleteAreaDatabase(Context context){
         PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"Area database has been cleared.");
         ContentResolver contentResolver = context.getContentResolver();

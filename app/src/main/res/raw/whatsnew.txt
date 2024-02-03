@@ -1,11 +1,9 @@
-New in version ([VERSION]):
+New in version [VERSION]:
 
-- the bold widget now displays the forecast for more days, depending on the widget size
-- fixed multiple layout issues in the bold widget
-- fixed a bug that displayed a wrong weather station when re-selecting a "SWIS-PUNKT" from the favorites
-- added workaround to prevent the package installer from crashing when installing and/or updating the app
-- widgets are now always updated upon app launch
-- some display options moved to "miscellaneous"
+- improved home screen widgets, data syncs, translations and Gadgetbridge support
+- new settings to better control data syncs
+- reduced app launch time
+- fixed broken background location checks
+- fixed bug regarding air pressure on wearables
 
-For a list of changes,
-
+For a detailed list of changes, see https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md.
