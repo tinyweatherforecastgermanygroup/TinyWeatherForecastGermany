@@ -193,7 +193,7 @@ If this does not help, check the following:
 3. Check in the settings of Tiny Weather Forecast Germany that you really have **enabled sync** for the desired data (e.g. weather, warnings and perhaps other categories).
 4. For weather warnings, make sure you have **not disabled notifications** for Tiny Weather Forecast Germany and you have **not denied the notification permission**. You can check both in the app info.
 
-You may also try interacting with the app by opening it. Should Tiny Weather Forecast Germany have been put into [app hibernation](https://developer.android.com/topic/performance/app-hibernation), this will help to get Tiny Weather Forecast Germany out of it.
+You may also try interacting with the app by opening it. Should Tiny Weather Forecast Germany have been put into [app hibernation](https://developer.android.com/topic/performance/app-hibernation), this will help to get Tiny Weather Forecast Germany out of it. This may happen if you do not interact with the app for a long time.
 
 When you use the Gadgetbridge support and notice that updates only occur rarely, you may, in addition to the points above, put a weather widget on your home screen.
 
@@ -201,7 +201,7 @@ When you use the Gadgetbridge support and notice that updates only occur rarely,
 
 Home screen widgets usually get updated every 30 minutes by the system. However, to take into account some manufacturer and/or rom limitations, the sync adapter also updates the widgets.
 
-Should you encounter issues with the widgets not updating, please see the question below ("weather forecasts do not get updated") for a detailed list of things you can check.
+Should you encounter issues with the widgets not updating, please see the question above ("The weather forecasts do not get updated - what can I do?") for a detailed list of things you can check.
 
 If widget updates do not happen at all or only happen when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
 
