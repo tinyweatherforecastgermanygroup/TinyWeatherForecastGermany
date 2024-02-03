@@ -42,15 +42,10 @@ public class GadgetbridgeBroadcastReceiver  extends BroadcastReceiver{
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "received a broadcast to update weather data.");
+        PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "received a broadcast to update Gadgetbridge.");
         if (intent != null) {
-            PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "+-> intent not null.");
             String action = intent.getAction();
-            if (action != null) {
-                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "+-> intent has an action.");
-            }
             if (intent.getAction().equals(UPDATE_ACTION)) {
-                PrivateLog.log(context, PrivateLog.UPDATER, PrivateLog.INFO, "+-> action is an update request.");
                 if (WeatherSettings.useBackgroundLocation(context)){
                     WeatherLocationManager.checkForBackgroundLocation(context);
                 }

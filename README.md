@@ -88,7 +88,7 @@ Translations:
 * English: Allan Nordhøy
 * French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
 * Finnish: eUgEntOptIc44, mondstern
-* German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, mondstern, silmaril, w4ts0n
+* German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, MaxK, mondstern, silmaril, w4ts0n
 * Hungarian: eUgEntOptIc44, Gőz Barnabás
 * Indonesian: Linerly
 * Italian: mondstern, eUgEntOptIc44
@@ -96,7 +96,7 @@ Translations:
 * Norwegian Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
 * Polish: eUgEntOptIc44, Eryk Michalak, ewm, mondstern
 * Russian: Wirdi51
-* Spanish: eUgEntOptIc44, hegondev
+* Spanish: eUgEntOptIc44, gallegonovato, hegondev
 * Swedish: tygyh
 * Ukrainian: eUgEntOptIc44, Andrij Mizyk, SomeTr
 
@@ -174,15 +174,7 @@ Should you have *"Geographic coordinates"* enabled (geographic coordinates of th
 
 Since *DMO* forecasts get updated every 12 hours only, syncs of weather forecast data automatically get postponed should you have set a 6-hourly update cycle and did choose a *DMO* location.
 
-### My widgets don't get updated (unless I open the app).
-
-Home screen widgets usually get updated every 30 minutes by the system. However, to take into account some manufacturer and/or rom limitations, the sync adapter also updates the widgets.
-
-Should you encounter issues with the widgets not updating, please see the question below ("weather forecasts do not get updated") for a detailed list of things you can check.
-
-If widget updates do not happen at all or only happen when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
-
-### The weather forecasts do not get updated in the background and/or warnings do not pop up - what can I do?
+### The weather forecasts do not get updated - what can I do?
 
 Since version 0.62.0, Tiny Weather Forecast Germany mostly abandoned custom update routines and syncs data in the background using a sync adapter, allowing the user to far better customize the app behaviour than before. As a result, less battery is consumed and the updates are better adapted to the availability of a suitable network connection.
 
@@ -201,6 +193,14 @@ You may also try the following:
 - try interacting with the app by opening it.
 
 When you use the Gadgetbridge support and notice that updates only occur rarely, you may, in addition to the points above, put a weather widget on your home screen.
+
+### My widgets don't get update (unless I open the app).
+
+Home screen widgets usually get updated every 30 minutes by the system. However, to take into account some manufacturer and/or rom limitations, the sync adapter also updates the widgets.
+
+Should you encounter issues with the widgets not updating, please see the question below ("weather forecasts do not get updated") for a detailed list of things you can check.
+
+If widget updates do not happen at all or only happen when you open the app, then you likely have a device that prefers battery life over proper functionality. Likely, some so-called *battery saving feature* kills the components of the app and breaks the updates. See [this page](https://dontkillmyapp.com/) to check if you own such a device and what you can do.
 
 ### My widgets don't change the station automatically when I am on travel.
 

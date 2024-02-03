@@ -272,7 +272,7 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
      */
 
     public static boolean checkForBackgroundLocation(Context context) {
-        String message = "* LOCATION CHECK: " + Weather.getSimpleDateFormat(Weather.SimpleDateFormats.TIME).format(new Date(Calendar.getInstance().getTimeInMillis()));
+        String message = "* Background location check: " + Weather.getSimpleDateFormat(Weather.SimpleDateFormats.TIME).format(new Date(Calendar.getInstance().getTimeInMillis()));
         PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,message);
         if (WeatherLocationManager.hasBackgroundLocationPermission(context)){
             Location location = WeatherLocationManager.getLastKnownLocation(context);
