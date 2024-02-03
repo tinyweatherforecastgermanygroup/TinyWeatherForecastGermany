@@ -24,7 +24,7 @@ You get userdebug builds for testing here: <https://kaffeemitkoffein.de/nextclou
 
 Please note that the builds linked here are not signed by the F-Droid key, so you basically need to uninstall the F-Droid versions before installing them and vice versa.
 
-For a detailed list of recent changes, see [the changelog](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/changelog.txt). 
+For a detailed list of recent changes, see [the changelog](https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md). 
 
 ## License
 
@@ -178,7 +178,7 @@ Since *DMO* forecasts get updated every 12 hours only, syncs of weather forecast
 
 Since version 0.62.0, Tiny Weather Forecast Germany mostly abandoned custom update routines and syncs data in the background using a sync adapter, allowing the user to far better customize the app behaviour than before. As a result, less battery is consumed and the updates are better adapted to the availability of a suitable network connection.
 
-The user has multiple possibilities to control the use of resources on the mobile device, which are now all well-respected by Tiny Weather Forecast Germany. However, some of them will by their nature limit background syncs.
+The user has multiple possibilities to control the use of resources on the mobile device, which are all respected by Tiny Weather Forecast Germany. However, some of them will by their nature limit background syncs.
 
 First of all, **check in the app settings of Tiny Weather Forecast Germany if you see any of the two warnings**:
 
@@ -196,6 +196,22 @@ If this does not help, check the following:
 You may also try interacting with the app by opening it. Should Tiny Weather Forecast Germany have been put into [app hibernation](https://developer.android.com/topic/performance/app-hibernation), this will help to get Tiny Weather Forecast Germany out of it. This may happen if you do not interact with the app for a long time.
 
 When you use the Gadgetbridge support and notice that updates only occur rarely, you may, in addition to the points above, put a weather widget on your home screen.
+
+### I deleted my sync account. 
+
+Please note that no data sync will take place when the account has been deleted and not yet restored.
+
+<img src="https://blog.sodamail.de/resources/sync_account.png" height="40" alt="Weather: Tiny Weather Forecast Germany"/>
+
+How to restore it:
+
+In Settings -> Passwords & accounts, hit **+** *Add account* and select *"Tiny Weather Forecast Germany", 
+
+*or*
+
+launch the Tiny Weather Forecast Germany app. The app will silently re-create the account, if it is missing.
+
+In either case, you don't need any credentials.
 
 ### My widgets don't get update (unless I open the app).
 

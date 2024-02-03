@@ -7,3 +7,5 @@ New in version ([VERSION]):
 - widgets are now always updated upon app launch
 - some display options moved to "miscellaneous"
 
+For a list of changes,
+

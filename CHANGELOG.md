@@ -1,4 +1,5 @@
-Changes in version 0.62.0:
+# Changelog 
+## Version 0.62.0:
 
 - added a PendingIntent.FLAG_IMMUTABLE to all intents on devices with sdk>=23
 - exact alarms changed to inexact when battery saving present to keep compliant with the sdk changes
@@ -37,4 +38,7 @@ Changes in version 0.62.0:
 - add buttons to logging activity to scroll to the top & bottom of the text
 - rewritten update logic for Gadgetbridge based on AlarmManager/JobWorker and widgets
 - regular Gadgetbridge updates occur together with widget updates
-- additionally, regular Gadgetbridge updates are now performed independently of data syncs, at least every 60 minutes
+- additionally, regular Gadgetbridge updates are now performed independently of data syncs, at least every 60 minutes, but not more frequent than every 30 minutes
+- updates of widgets and Gadgetbridge from the main app are delayed, so that they do not slow down the user interface upon app launch
+- added button in welcome activity to opt out from battery optimization
+- added warnings in settings if sync is disabled and/or battery optimization enabled
