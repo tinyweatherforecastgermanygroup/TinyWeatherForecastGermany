@@ -23,6 +23,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -277,7 +278,6 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
         if (WeatherLocationManager.hasBackgroundLocationPermission(context)){
             Location location = WeatherLocationManager.getLastKnownLocation(context);
             if (location!=null) {
-                //Weather.WeatherLocation oldWeatherLocation = WeatherSettings.getLastPassiveLocation(context);
                 Weather.WeatherLocation oldWeatherLocation = WeatherSettings.getSetStationLocation(context);
                 Weather.WeatherLocation newWeatherLocation = new Weather.WeatherLocation(location);
                 if (newWeatherLocation.time > oldWeatherLocation.time) {
@@ -294,6 +294,7 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
                                 WeatherSettings.setStation(context,closestStation);
                                 // set flag so that at next app start the new location will be added to the spinner
                                 WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
+                                ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT|WeatherSyncAdapter.UpdateFlags.FLAG_NO_LOCATION_CHECK));
                                 return true;
                             }
                         }

@@ -51,6 +51,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
         public static final int FLAG_UPDATE_LAYERS = 16;
         public static final int FLAG_UPDATE_FAVORITES = 32;
         public static final int FLAG_UPDATE_FORCE = 1024;
+        public static final int FLAG_NO_LOCATION_CHECK = 2048;
     }
 
 
@@ -282,6 +283,12 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
         if (bundle!=null){
             updateFlags = bundle.getInt(EXTRAS_UPDATE_FLAG);
         }
+        // check for location, unless sync adapter call was triggered by checkForBackgroundLocation
+        if ((WeatherSettings.useBackgroundLocation(context)) &&
+                (!((updateFlags&UpdateFlags.FLAG_NO_LOCATION_CHECK)==UpdateFlags.FLAG_NO_LOCATION_CHECK))){
+            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"not checking for location change, since sync adapter was called from location check.");
+            WeatherLocationManager.checkForBackgroundLocation(context);
+        }
         boolean update_weather = ((updateFlags&UpdateFlags.FLAG_UPDATE_WEATHER)==UpdateFlags.FLAG_UPDATE_WEATHER);
         boolean update_warnings = ((updateFlags&UpdateFlags.FLAG_UPDATE_WARNINGS)==UpdateFlags.FLAG_UPDATE_WARNINGS);
         boolean update_texts = ((updateFlags&UpdateFlags.FLAG_UPDATE_TEXTS)==UpdateFlags.FLAG_UPDATE_TEXTS);
@@ -447,9 +454,6 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             };
             pollenReader.run();
-        }
-        if (WeatherSettings.useBackgroundLocation(context)){
-            WeatherLocationManager.checkForBackgroundLocation(context);
         }
         Runnable cleanUpRunnable = new Runnable() {
             @Override
