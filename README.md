@@ -180,11 +180,11 @@ Since version 0.62.0, Tiny Weather Forecast Germany mostly abandoned custom upda
 
 The user has multiple possibilities to control the use of resources on the mobile device, which are now all well-respected by Tiny Weather Forecast Germany. However, some of them will by their nature limit background syncs.
 
-First of all, check in the app settings of Tiny Weather Forecast Germany if you see any of the two warnings:
+First of all, **check in the app settings of Tiny Weather Forecast Germany if you see any of the two warnings**:
 
-<img src="https://blog.sodamail.de/resources/sync_battery_warning.png"/>
+<img src="https://blog.sodamail.de/resources/sync_battery_warning.png" height="150" alt="Sync settings: Sync is disabled for Tiny Weather Forecast Germany in your account settings. Click here to enable sync for Tiny Weather Forecast Germany. Battery optimization: Deactivate battery optimization for this app so that weather data can de synchronized reliably."/>
 
-If you see one of them or both, click on the respective notice and solve the issue following the instructions.
+If you see one of them or both, **click on the respective notice and solve the issue** by following the instructions.
 
 If this does not help, check the following:
 
