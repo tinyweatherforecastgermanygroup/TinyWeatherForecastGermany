@@ -74,6 +74,8 @@
         <item name="ic_keyboard_arrow_down">@mipmap/ic_keyboard_arrow_down_black_24dp</item>
         <item name="ic_keyboard_arrow_up">@mipmap/ic_keyboard_arrow_up_black_24dp</item>
         <item name="ic_battery_alert">@mipmap/ic_battery_alert_black_24dp</item>
+        <item name="ic_sync">@mipmap/ic_sync_black_24dp</item>
+        <item name="ic_sync_problem">@mipmap/ic_sync_problem_black_24dp</item>
 
         <item name="white_bar">@mipmap/white_bar_black</item>
         <item name="binocular">@mipmap/biocular_black</item>
@@ -202,6 +204,8 @@
         <item name="ic_keyboard_arrow_down">@mipmap/ic_keyboard_arrow_down_white_24dp</item>
         <item name="ic_keyboard_arrow_up">@mipmap/ic_keyboard_arrow_up_white_24dp</item>
         <item name="ic_battery_alert">@mipmap/ic_battery_alert_white_24dp</item>
+        <item name="ic_sync">@mipmap/ic_sync_white_24dp</item>
+        <item name="ic_sync_problem">@mipmap/ic_sync_problem_white_24dp</item>
 
         <item name="white_bar">@mipmap/white_bar</item>
         <item name="binocular">@mipmap/biocular</item>

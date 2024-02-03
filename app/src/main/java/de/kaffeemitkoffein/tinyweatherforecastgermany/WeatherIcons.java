@@ -110,6 +110,9 @@ public class WeatherIcons {
     final static int IC_SHARE = 1107;
     final static int IC_REFRESH = 1108;
     final static int IC_WARNING = 1109;
+    final static int IC_BATTERY_ALERT = 1110;
+    final static int IC_SYNC = 1111;
+    final static int IC_SYNC_PROBLEM = 1112;
 
     public static int getIconResource(Context context, int icon) {
         int result = 0;
@@ -156,8 +159,12 @@ public class WeatherIcons {
             case IC_ANNOUNCEMENT: result = R.mipmap.ic_announcement_white_24dp; break;
             case WARNING_ICON: result = R.mipmap.warning_icon; break;
             case IC_SHARE: result = R.mipmap.ic_share_white_24dp; break;
-            case IC_IMAGE_NOT_SUPPORTED: result = R.mipmap.ic_image_not_supported_24dp;
-            case IC_REFRESH: result = R.mipmap.ic_refresh_white_24dp;
+            case IC_IMAGE_NOT_SUPPORTED: result = R.mipmap.ic_image_not_supported_24dp; break;
+            case IC_REFRESH: result = R.mipmap.ic_refresh_white_24dp; break;
+            case IC_BATTERY_ALERT: result = R.mipmap.ic_battery_alert_white_24dp; break;
+            case IC_SYNC: result = R.mipmap.ic_sync_white_24dp; break;
+            case IC_SYNC_PROBLEM: result = R.mipmap.ic_sync_problem_white_24dp;
+
         }
         // override with dark variants if applicable
         if (!ThemePicker.isDarkTheme(context)) {
@@ -198,8 +205,11 @@ public class WeatherIcons {
                 case IC_ANNOUNCEMENT: result = R.mipmap.ic_announcement_black_24dp; break;
                 case WARNING_ICON: result = R.mipmap.warning_icon_black; break;
                 case IC_SHARE: result = R.mipmap.ic_share_black_24dp; break;
-                case IC_IMAGE_NOT_SUPPORTED: result = R.mipmap.ic_image_not_supported_black_24dp;
-                case IC_REFRESH: result = R.mipmap.ic_refresh_black_24dp;
+                case IC_IMAGE_NOT_SUPPORTED: result = R.mipmap.ic_image_not_supported_black_24dp; break;
+                case IC_REFRESH: result = R.mipmap.ic_refresh_black_24dp; break;
+                case IC_BATTERY_ALERT: result = R.mipmap.ic_battery_alert_black_24dp; break;
+                case IC_SYNC: result = R.mipmap.ic_sync_black_24dp; break;
+                case IC_SYNC_PROBLEM: result = R.mipmap.ic_sync_problem_black_24dp;
             }
         }
         return result;

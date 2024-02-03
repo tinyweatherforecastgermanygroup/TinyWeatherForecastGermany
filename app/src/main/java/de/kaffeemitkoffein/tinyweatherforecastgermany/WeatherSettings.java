@@ -737,6 +737,10 @@ public class WeatherSettings {
         setPollenRegion(context,pollenArea);
         // reset update time so a sync will occur next time
         Updates.setLastUpdate(context, Updates.Category.WEATHER,0);
+        // also reset Gadgetbridge update time if necessary
+        if (WeatherSettings.serveGadgetBridge(context)){
+            setGadgetBridgeLastUpdateTime(context,0);
+        }
     }
 
     public static void setDescriptionAlternate(Context context, String newName){

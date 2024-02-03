@@ -22,6 +22,7 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.util.Log;
 import nodomain.freeyourgadget.gadgetbridge.model.WeatherSpec;
 
 import java.util.ArrayList;
@@ -215,7 +216,15 @@ public class GadgetbridgeAPI {
 
     public static void sendWeatherBroadcastIfEnabled(Context context,CurrentWeatherInfo currentWeatherInfo){
         if (WeatherSettings.serveGadgetBridge(context)){
-            sendWeatherData(context,currentWeatherInfo);
+            long timeSinceLastUpdateInMinutes = (Calendar.getInstance().getTimeInMillis() - WeatherSettings.getGadgetBridgeLastUpdateTime(context))/1000/60;
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Time since last Gadgetbridge update: "+timeSinceLastUpdateInMinutes+ " min.");
+            // do not send data more often than 30 minutes.
+            if (timeSinceLastUpdateInMinutes>=30){
+                PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"+-> updating.");
+                sendWeatherData(context,currentWeatherInfo);
+            } else {
+                PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"+-> not sending data, since 30 min did not pass since last update.");
+            }
         }
     }
 

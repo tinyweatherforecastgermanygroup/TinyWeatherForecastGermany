@@ -102,7 +102,7 @@
                     android:layout_below="@id/welcome_screen3_text3"
                     android:gravity="center"
                     android:layout_marginBottom="12dp"
-                    android:src="@drawable/widget_preview"/>
+                    android:src="@drawable/widget_preview_bold"/>
 
             <ImageView
                     android:id="@+id/welcome_screen3_bar_image"

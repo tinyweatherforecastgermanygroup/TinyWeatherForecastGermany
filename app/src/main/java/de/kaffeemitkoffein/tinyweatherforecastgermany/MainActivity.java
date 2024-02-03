@@ -492,6 +492,8 @@ public class MainActivity extends Activity {
                                 }
                             });;
                     loadCurrentWeather();
+                    // also update the widgets & Gadgetbridge with new data. This will take place with a delay.
+                    updateAppViews(null);
                 }
                 @Override
                 public void onNegativeResult() {
@@ -2230,6 +2232,7 @@ public class MainActivity extends Activity {
     public static void updateAppViews(Context context, CurrentWeatherInfo weatherCard){
         // update GadgetBridge
         if (WeatherSettings.serveGadgetBridge(context)) {
+            GadgetbridgeAPI.sendWeatherBroadcastIfEnabled(context,weatherCard);
             GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
         }
         WidgetRefresher.refresh(context,WidgetRefresher.FROM_MAIN_APP);

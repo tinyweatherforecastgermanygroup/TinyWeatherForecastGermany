@@ -538,7 +538,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         MainActivity.askDialog(context,
-                                WeatherIcons.getIconResource(context,WeatherIcons.IC_REFRESH),
+                                WeatherIcons.getIconResource(context,WeatherIcons.IC_SYNC),
                                 context.getResources().getString(R.string.sync_enable),
                                 new String[]{String.format(context.getResources().getString(R.string.sync_enable_question), context.getResources().getString(R.string.app_name))},
                                 new DialogInterface.OnClickListener() {
