@@ -32,6 +32,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -2212,6 +2213,20 @@ public class MainActivity extends Activity {
             return false;
         }
         return true;
+    }
+
+    public static boolean isDataSaverActive(Context context){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivityManager!=null){
+                int result = connectivityManager.getRestrictBackgroundStatus();
+                if (result==ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED){
+                    return true;
+                }
+                // otherwise ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED or _WHITELISTED
+            }
+        }
+        return false;
     }
 
     public boolean checkForBatteryOptimizationForLocation(final Context context){

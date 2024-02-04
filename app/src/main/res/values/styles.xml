@@ -76,6 +76,7 @@
         <item name="ic_battery_alert">@mipmap/ic_battery_alert_black_24dp</item>
         <item name="ic_sync">@mipmap/ic_sync_black_24dp</item>
         <item name="ic_sync_problem">@mipmap/ic_sync_problem_black_24dp</item>
+        <item name="ic_data_usage">@mipmap/ic_data_usage_black_24dp</item>
 
         <item name="white_bar">@mipmap/white_bar_black</item>
         <item name="binocular">@mipmap/biocular_black</item>
@@ -206,6 +207,7 @@
         <item name="ic_battery_alert">@mipmap/ic_battery_alert_white_24dp</item>
         <item name="ic_sync">@mipmap/ic_sync_white_24dp</item>
         <item name="ic_sync_problem">@mipmap/ic_sync_problem_white_24dp</item>
+        <item name="ic_data_usage">@mipmap/ic_data_usage_white_24dp</item>
 
         <item name="white_bar">@mipmap/white_bar</item>
         <item name="binocular">@mipmap/biocular</item>

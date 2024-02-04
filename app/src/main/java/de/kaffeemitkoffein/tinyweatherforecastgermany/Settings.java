@@ -590,6 +590,34 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 });
             }
         }
+        Preference dataSaverPreference = (Preference) findPreference(WeatherSettings.PREF_DATA_SAVER);
+        if (dataSaverPreference!=null){
+            if (MainActivity.isDataSaverActive(context)){
+                dataSaverPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        MainActivity.askDialog(context,
+                                WeatherIcons.getIconResource(context, WeatherIcons.IC_DATA_USAGE),
+                                context.getResources().getString(R.string.datasaver_enable_unrestricted_title),
+                                new String[]{context.getResources().getString(R.string.datasaver_enable_unrestricted_text)},
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        Uri uri = Uri.parse("package:"+getPackageName());
+                                        intent.putExtra(Intent.EXTRA_PACKAGE_NAME,uri);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        intent.setData(uri);
+                                        startActivity(intent);
+                                    }
+                                });
+                        return true;
+                    }
+                });
+            } else {
+                preferenceCategoryGeneral.removePreference(dataSaverPreference);
+            }
+        }
      }
 
     @Override
@@ -615,20 +643,23 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 // on sdk 29 and above try the permission dialog exactly once
                 if (WeatherSettings.getAskedForLocationFlag(context)<WeatherSettings.AskedLocationFlag.BACKGROUND_LOCATION) {
                     // ask exactly once
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION);
+                    // put dialog to explain what to click, take only 1st sentence of rationale string
+                    MainActivity.askDialog(context,
+                            WeatherIcons.getIconResource(context, WeatherIcons.IC_GPS_FIXED),
+                            getResources().getString(R.string.preference_use_background_location_title),
+                            new String[]{getResources().getString(R.string.backgroundGPS_rationale).substring(0,getResources().getString(R.string.backgroundGPS_rationale).indexOf(".")+1)},
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},MainActivity.PERMISSION_CALLBACK_BACKGROUND_LOCATION);
+                                }
+                            });
                     // remember that we asked for it
                     WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.BACKGROUND_LOCATION);
                 } else {
                     // go to the settings if already asked once
                     openPermissionSettings();
                 }
-
-                // on sdk above 29, always go directly to the settings
-                /*
-                if (android.os.Build.VERSION.SDK_INT>29) {
-                    openPermissionSettings();
-                }
-                 */
             }
         } else {
             // ask for simple foreground location permission, since this is missing.

@@ -73,5 +73,6 @@
     <attr name="ic_battery_alert" format="reference"/>
     <attr name="ic_sync" format="reference"/>
     <attr name="ic_sync_problem" format="reference"/>
+    <attr name="ic_data_usage" format="reference"/>
 
 </resources>

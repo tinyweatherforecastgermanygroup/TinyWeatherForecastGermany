@@ -113,6 +113,7 @@ public class WeatherIcons {
     final static int IC_BATTERY_ALERT = 1110;
     final static int IC_SYNC = 1111;
     final static int IC_SYNC_PROBLEM = 1112;
+    final static int IC_DATA_USAGE = 1113;
 
     public static int getIconResource(Context context, int icon) {
         int result = 0;
@@ -163,7 +164,8 @@ public class WeatherIcons {
             case IC_REFRESH: result = R.mipmap.ic_refresh_white_24dp; break;
             case IC_BATTERY_ALERT: result = R.mipmap.ic_battery_alert_white_24dp; break;
             case IC_SYNC: result = R.mipmap.ic_sync_white_24dp; break;
-            case IC_SYNC_PROBLEM: result = R.mipmap.ic_sync_problem_white_24dp;
+            case IC_SYNC_PROBLEM: result = R.mipmap.ic_sync_problem_white_24dp; break;
+            case IC_DATA_USAGE: result = R.mipmap.ic_data_usage_white_24dp;
 
         }
         // override with dark variants if applicable
@@ -209,7 +211,8 @@ public class WeatherIcons {
                 case IC_REFRESH: result = R.mipmap.ic_refresh_black_24dp; break;
                 case IC_BATTERY_ALERT: result = R.mipmap.ic_battery_alert_black_24dp; break;
                 case IC_SYNC: result = R.mipmap.ic_sync_black_24dp; break;
-                case IC_SYNC_PROBLEM: result = R.mipmap.ic_sync_problem_black_24dp;
+                case IC_SYNC_PROBLEM: result = R.mipmap.ic_sync_problem_black_24dp; break;
+                case IC_DATA_USAGE: result = R.mipmap.ic_data_usage_black_24dp;
             }
         }
         return result;

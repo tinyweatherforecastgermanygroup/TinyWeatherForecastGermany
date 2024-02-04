@@ -284,6 +284,8 @@
     <string name="preference_ssl_summary">Disable encryption over https when polling weather data.</string>
     <string name="preference_reset_title">Reset</string>
     <string name="preference_reset_summary">Set all settings to the default values.</string>
+    <string name="preference_datasaver_title">Data saver enabled</string>
+    <string name="preference_datasaver_summary">Currently, no data can be synced when using metered networks. Consider adding Tiny Weather Forecast Germany to the list of apps with unrestricted data.</string>
     <string name="alertdialog_3_title">Reset preferences</string>
     <string name="alertdialog_3_text1">All settings will be reset to default values, and then the intro will be shown again to make the most important settings.</string>
     <string name="alertdialog_3_text2">Are you sure you want to reset the settings?</string>
@@ -514,4 +516,7 @@
     <string name="battery_title">Battery optimization</string>
     <string name="battery_summary">Deactivate battery optimization for this app so that weather data can be synchronized reliably.</string>
     <string name="battery_rationale">To update weather warnings and weather forecasts regularly, the app should be allowed to always run in the background.</string>
+    <string name="datasaver_enable_unrestricted_title">Enable unrestricted data usage</string>
+    <string name="datasaver_enable_unrestricted_text">In the app info, select mobile data &amp; Wifi and enable unrestricted data usage.</string>
+
 </resources>
