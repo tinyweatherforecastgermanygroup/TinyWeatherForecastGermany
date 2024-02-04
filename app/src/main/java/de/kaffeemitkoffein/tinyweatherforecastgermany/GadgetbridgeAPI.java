@@ -158,11 +158,11 @@ public class GadgetbridgeAPI {
                 if (weatherInfo.hasProbPrecipitation()){
                     daily.precipProbability = weatherInfo.getProbPrecipitation();
                 }
-                daily.sunRise = (int) (Weather.getSunriseInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
-                daily.sunSet = (int) (Weather.getSunsetInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
-                daily.moonRise = (int) (Weather.getMoonRiseInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
-                daily.moonSet = (int) (Weather.getMoonSetInUTC(weatherCard.weatherLocation,weatherInfo)/1000);
-                daily.moonPhase = Weather.getMoonPhaseInDegrees(weatherCard.forecast24hourly.get(i).getTimestamp());
+                daily.sunRise = (int) (Weather.getSunriseInUTC(weatherCard.weatherLocation,weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24)/1000);
+                daily.sunSet = (int) (Weather.getSunsetInUTC(weatherCard.weatherLocation,weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24)/1000);
+                daily.moonRise = (int) (Weather.getMoonRiseInUTC(weatherCard.weatherLocation,weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24)/1000);
+                daily.moonSet = (int) (Weather.getMoonSetInUTC(weatherCard.weatherLocation,weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24)/1000);
+                daily.moonPhase = Weather.getMoonPhaseInDegrees(weatherCard.forecast24hourly.get(i).getTimestamp()-weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24);
                 weatherSpec.forecasts.add(daily);
             }
             String timestampHumanReadable = "";

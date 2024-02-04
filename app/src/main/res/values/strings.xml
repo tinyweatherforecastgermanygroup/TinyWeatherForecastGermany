@@ -517,6 +517,6 @@
     <string name="battery_summary">Deactivate battery optimization for this app so that weather data can be synchronized reliably.</string>
     <string name="battery_rationale">To update weather warnings and weather forecasts regularly, the app should be allowed to always run in the background.</string>
     <string name="datasaver_enable_unrestricted_title">Enable unrestricted data usage</string>
-    <string name="datasaver_enable_unrestricted_text">In the app info, select mobile data &amp; Wifi and enable unrestricted data usage.</string>
+    <string name="datasaver_enable_unrestricted_text">In the app info, select mobile data &amp; Wi-Fi and enable unrestricted data usage.</string>
 
 </resources>
