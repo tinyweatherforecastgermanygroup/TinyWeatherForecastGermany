@@ -486,4 +486,8 @@
     <string name="preference_category_sync">Ajustes de sincronización</string>
     <string name="boldwidget_description_detailed">Un resumen compacto de la información meteorológica más importante para hoy y los próximos días.</string>
     <string name="classicwidget_description_detailed">Tiempo actual y previsión detallada para los próximos días.</string>
+    <string name="datasaver_enable_unrestricted_title">Habilitar el uso de datos sin restricciones</string>
+    <string name="preference_datasaver_title">Ahorro de datos activado</string>
+    <string name="datasaver_enable_unrestricted_text">Seleccione datos móviles y Wi-Fi en la información de la aplicación, luego active el uso de datos sin restricciones.</string>
+    <string name="preference_datasaver_summary">Actualmente, no se pueden sincronizar los datos cuando se utilizan redes con límites de datos. Considere agregar Tiny Weather Forecast Germany a la lista de aplicaciones con datos sin restricciones.</string>
 </resources>
