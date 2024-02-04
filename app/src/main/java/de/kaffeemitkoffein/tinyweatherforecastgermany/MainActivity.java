@@ -2308,11 +2308,21 @@ public class MainActivity extends Activity {
     }
 
     public static SyncRequest getManualSyncRequest(Context context, int updateFlags){
+        boolean disallowMetered = false;
+        if (Build.VERSION.SDK_INT < 23){
+            if (WeatherSettings.useWifiOnly(context)){
+                disallowMetered = true;
+            }
+        } else {
+            if (!WeatherSettings.useMeteredNetworks(context)){
+                disallowMetered = true;
+            }
+        }
         Bundle bundle = new Bundle();
         bundle.putInt(WeatherSyncAdapter.EXTRAS_UPDATE_FLAG,updateFlags);
         SyncRequest syncRequest = new SyncRequest.Builder()
                 .setSyncAdapter(getWeatherAccount(context),WeatherContentProvider.AUTHORITY)
-                .setDisallowMetered(!WeatherSettings.useMeteredNetworks(context))
+                .setDisallowMetered(disallowMetered)
                 .setExtras(bundle)
                 .setManual(true)
                 .setNoRetry(true)

@@ -114,11 +114,16 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
+                            recreate();
                         }
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
                     alertDialog.show();
+                } else {
+                    if (s.equals(WeatherSettings.PREF_USE_METERED_NETWORKS)){
+                        recreate();
+                    }
                 }
                 if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)) {
                     setAlarmSettingAllowed();
@@ -592,7 +597,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
         }
         Preference dataSaverPreference = (Preference) findPreference(WeatherSettings.PREF_DATA_SAVER);
         if (dataSaverPreference!=null){
-            if (MainActivity.isDataSaverActive(context)){
+            if ((MainActivity.isDataSaverActive(context) )&& (WeatherSettings.useMeteredNetworks(context))){
                 dataSaverPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
