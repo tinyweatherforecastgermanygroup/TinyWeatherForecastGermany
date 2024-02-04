@@ -310,14 +310,14 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
             weatherLocations = new ArrayList<Weather.WeatherLocation>();
             weatherLocations.add(WeatherSettings.getSetStationLocation(context));
         }
-        if (WeatherSettings.loggingEnabled(context)){
-            if (update_forced){
-                PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"This is a user-triggered, forced sync.");
-                update_weather = true; update_texts = true; update_pollen = true; update_layers = true;
-                if (!WeatherSettings.areWarningsDisabled(context)){
-                    update_warnings = true;
-                }
+        if (update_forced){
+            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"This is a user-triggered, forced sync.");
+            update_weather = true; update_texts = true; update_pollen = true; update_layers = true;
+            if (!WeatherSettings.areWarningsDisabled(context)){
+                update_warnings = true;
             }
+        }
+        if (WeatherSettings.loggingEnabled(context)){
             PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Syncing stations:");
             for (int i=0; i<weatherLocations.size(); i++){
                 PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"-> "+weatherLocations.get(i).getOriginalDescription()+" ["+weatherLocations.get(i).getName()+"]");
@@ -396,6 +396,15 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             };
             weatherWarningsRunnable.run();
+        } else{
+            // check for warnings to be notified if warnings not updated.
+            // reason: location might have changed, or notifications may have been reset.
+            if (WeatherSettings.notifyWarnings(context)) {
+                ArrayList<WeatherWarning> warnings = WeatherWarnings.getCurrentWarnings(context,true);
+                if (warnings!=null){
+                    launchWeatherWarningNotifications(context,warnings , false);
+                }
+            }
         }
         if ((WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.TEXTS)) || (update_texts)) {
             PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"-> syncing texts.");
