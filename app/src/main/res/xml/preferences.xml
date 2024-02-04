@@ -363,6 +363,7 @@
 
         <Preference
                 android:key="PREF_sync_off_hint"
+                android:title="@string/sync_off_title"
                 android:summary="@string/sync_off_notice"
                 android:icon="?attr/ic_sync_problem">
         </Preference>
