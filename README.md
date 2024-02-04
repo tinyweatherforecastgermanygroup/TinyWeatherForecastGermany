@@ -182,18 +182,16 @@ The user has multiple possibilities to control the use of resources on the mobil
 
 First of all, **check in the app settings of Tiny Weather Forecast Germany if you see any of the three warnings**:
 
-<img src="https://blog.sodamail.de/resources/sync_battery_warning.png" height="150" alt="Sync settings: Sync is disabled for Tiny Weather Forecast Germany in your account settings. Click here to enable sync for Tiny Weather Forecast Germany. Battery optimization: Deactivate battery optimization for this app so that weather data can de synchronized reliably. Data saver enabled: Currently, no data can be synced when using metered networks. Consider adding Tiny Weather Forecast Germany to the list of app with unrestricted data."/>
+<img src="https://blog.sodamail.de/resources/sync_battery_warning.png" height="240" alt="Sync settings: Sync is disabled for Tiny Weather Forecast Germany in your account settings. Click here to enable sync for Tiny Weather Forecast Germany. Battery optimization: Deactivate battery optimization for this app so that weather data can de synchronized reliably. Data saver enabled: Currently, no data can be synced when using metered networks. Consider adding Tiny Weather Forecast Germany to the list of app with unrestricted data."/>
 
 If you see any of them, **click on the respective notice and solve the issue** by following the instructions.
 
 If this does not help, check the following:
 
-1. Check in the settings of Tiny Weather Forecast Germany that you really have **enabled sync** for the desired data (e.g. weather, warnings and perhaps other categories).
+1. Check in the settings of Tiny Weather Forecast Germany that you really have ticked e.g. sync weather, sync warnings, and perhaps other categories like pollen count, texts  and maps.
 2. For weather warnings, make sure you have **not disabled notifications** for Tiny Weather Forecast Germany and you have **not denied the notification permission**. You can check both in the app info.
-
-You may also try interacting with the app by opening it. Should Tiny Weather Forecast Germany have been put into [app hibernation](https://developer.android.com/topic/performance/app-hibernation), this will help to get Tiny Weather Forecast Germany out of it. This may happen if you do not interact with the app for a long time.
-
-When you use the Gadgetbridge support and notice that updates only occur rarely, you may, in addition to the points above, put a weather widget on your home screen.
+3. You may also try interacting with the app by opening it. Should Tiny Weather Forecast Germany have been put into [app hibernation](https://developer.android.com/topic/performance/app-hibernation), this will help to get Tiny Weather Forecast Germany out of it. This may happen if you do not interact with the app for a long time.
+4. When you use the Gadgetbridge support and notice that updates only occur rarely, you may, in addition to the points above, put a weather widget on your home screen.
 
 ### I deleted my sync account. 
 
