@@ -327,7 +327,7 @@
     <string name="preference_map_display_municipalities_summary">Покажіть муніципалітети.</string>
     <string name="preference_map_display_sea_summary">Показати зони попередження на морі.</string>
     <string name="preference_reset_title">Перезавантаження</string>
-    <string name="preference_reset_summary">Встановіть всі налаштування на значення за замовчуванням.</string>
+    <string name="preference_reset_summary">Встановіть усі налаштування на значення за замовчуванням.</string>
     <string name="alertdialog_3_text1">Всі налаштування будуть скинуті до значень за замовчуванням, а потім знову буде показано вступне відео для виконання найбільш важливих налаштувань.</string>
     <string name="preference_screen_overviewchart_usemm_summary">Температурна шкала залишається незмінною, якщо значення знаходяться в зазначеному діапазоні.</string>
     <string name="preference_screen_overviewchart_max_title">Максимальний</string>
@@ -485,4 +485,9 @@
     <string name="battery_summary">Для надійної синхронізації даних про погоду вимкніть оптимізацію акумулятора для цієї програми.</string>
     <string name="preference_category_sync">Налаштування синхронізації</string>
     <string name="chartwidget_description_detailed">Прогноз погоди на найближчі кілька днів у вигляді діаграми.</string>
+    <string name="datasaver_enable_unrestricted_title">Увімкнути необмежене використання даних</string>
+    <string name="sync_off_title">Синхронізацію вимкнено</string>
+    <string name="preference_datasaver_title">Увімкнено заощадження трафіку</string>
+    <string name="datasaver_enable_unrestricted_text">В інформації про програму виберіть мобільні дані та Wi-Fi і ввімкніть необмежену передачу даних.</string>
+    <string name="preference_datasaver_summary">Наразі неможливо синхронізувати дані при використанні мереж із обмеженнями. Найкраще додати Tiny Weather Forecast Germany до списку додатків з необмеженим використанням даних.</string>
 </resources>
