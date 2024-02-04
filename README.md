@@ -205,7 +205,7 @@ In Settings -> Passwords & accounts, hit **+** *Add account* and select *"Tiny W
 
 *or*
 
-launch the Tiny Weather Forecast Germany app. The app will silently re-create the account, if it is missing.
+launch the Tiny Weather Forecast Germany app, or more precisely, the view that displays the weather forecast for the selected station. The app will silently re-create the account, if it is missing.
 
 In either case, you don't need any credentials.
 

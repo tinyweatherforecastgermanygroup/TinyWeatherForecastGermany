@@ -40,5 +40,8 @@
 - additionally, regular Gadgetbridge updates are now performed independently of data syncs, at least every 60 minutes, but not more frequent than every 30 minutes
 - updates of widgets and Gadgetbridge from the main app are delayed, so that they do not slow down the user interface upon app launch
 - added button in welcome activity to opt out from battery optimization
-- added warnings in settings if sync is disabled and/or battery optimization enabled
+- added warnings in settings if sync is disabled, and/or battery optimization enabled and/or the data saver is enabled
 - links and e-mail addresses are now clickable in the popups
+- fixed sunrise, sunset, moonrise, moonset, moon position on sky sent to Gadgetbridge shifted by 24h 
+- fixed wrong numbering of weather warning intervals in WelcomeActivity
+- immediately request sync when location change detected in background, so that weather warnings are delivered immediately
