@@ -502,4 +502,8 @@
     <string name="preference_sync_notice">Sie können die Einstellungen zur Synchronisierung innerhalb der App anpassen.</string>
     <string name="battery_summary">Deaktivieren Sie die Batterieoptimierung für diese App, damit die Wetterdaten zuverlässig synchronisiert werden können.</string>
     <string name="preview_fake_warning_text">WINDBÖEN</string>
+    <string name="datasaver_enable_unrestricted_title">Unbegrenzte Datennutzung aktivieren</string>
+    <string name="preference_datasaver_title">Datensparmodus aktiviert</string>
+    <string name="datasaver_enable_unrestricted_text">In der App-Info mobile Daten und WLAN auswählen, dann uneingeschränkte Datennutzung aktivieren.</string>
+    <string name="preference_datasaver_summary">Aktuell können keine Daten über getaktete Netze synchronisiert werden. Füge am besten die Kleine Wettervorschau Deutschland der Liste der Apps mit unbegrenzter Datennutzung hinzu.</string>
 </resources>
