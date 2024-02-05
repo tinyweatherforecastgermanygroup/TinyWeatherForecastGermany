@@ -202,6 +202,20 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                     MainActivity.registerSyncAdapter(context);
                 }
             }
+            if (s.equals(WeatherSettings.PREF_WARNINGS_DISABLE)){
+                CheckBoxPreference syncWarningsCheckboxPreference = (CheckBoxPreference) findPreference(WeatherSettings.Updates.PREF_UPDATE_WARNINGS_SYNC);
+                if (syncWarningsCheckboxPreference!=null) {
+                    if (WeatherSettings.areWarningsDisabled(context)){
+                        // disable sync for warnings
+                        WeatherSettings.Updates.setSyncEnabled(context,WeatherSettings.Updates.Category.WARNINGS,false);
+                        syncWarningsCheckboxPreference.setChecked(false);
+                        syncWarningsCheckboxPreference.setEnabled(false);
+                        syncWarningsCheckboxPreference.setShouldDisableView(true);
+                    } else {
+                        recreate();
+                    }
+                }
+            }
             ignoreNextPrefUpdate = false;
         }
     };
@@ -377,6 +391,20 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     public boolean disableIfUnchecked(Preference target, final CheckBoxPreference source) {
         if ((target != null) && (source != null)) {
             if (source.isChecked()) {
+                target.setEnabled(true);
+                target.setShouldDisableView(false);
+            } else {
+                target.setEnabled(false);
+                target.setShouldDisableView(true);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean disableIfChecked(Preference target, final CheckBoxPreference source) {
+        if ((target != null) && (source != null)) {
+            if (!source.isChecked()) {
                 target.setEnabled(true);
                 target.setShouldDisableView(false);
             } else {
@@ -623,7 +651,17 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 preferenceCategoryGeneral.removePreference(dataSaverPreference);
             }
         }
-     }
+        CheckBoxPreference syncWarningsCheckboxPreference = (CheckBoxPreference) findPreference(WeatherSettings.Updates.PREF_UPDATE_WARNINGS_SYNC);
+        if (syncWarningsCheckboxPreference!=null) {
+            if (WeatherSettings.areWarningsDisabled(context)) {
+                // disable sync for warnings
+                WeatherSettings.Updates.setSyncEnabled(context, WeatherSettings.Updates.Category.WARNINGS, false);
+                syncWarningsCheckboxPreference.setChecked(false);
+                syncWarningsCheckboxPreference.setEnabled(false);
+                syncWarningsCheckboxPreference.setShouldDisableView(true);
+            }
+        }
+    }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
