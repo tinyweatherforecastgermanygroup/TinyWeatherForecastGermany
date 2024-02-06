@@ -215,6 +215,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         recreate();
                     }
                 }
+                WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
             }
             ignoreNextPrefUpdate = false;
         }
