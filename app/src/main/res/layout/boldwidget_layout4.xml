@@ -182,7 +182,7 @@
             android:id="@+id/boldwidget_fc1_container"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingLeft="15dp"
+            android:paddingLeft="4dp"
             android:layout_above="@id/widget_reference_text"
             android:layout_below="@id/widget_warningcontainer"
             android:layout_toLeftOf="@id/boldwidget_fc2_container"
@@ -255,7 +255,7 @@
             android:layout_above="@id/widget_reference_text"
             android:layout_below="@id/widget_warningcontainer"
             android:layout_marginLeft="@dimen/widget_margin"
-            android:paddingRight="8dp"
+            android:paddingRight="2dp"
             android:layout_centerVertical="true">
 
         <TextView
