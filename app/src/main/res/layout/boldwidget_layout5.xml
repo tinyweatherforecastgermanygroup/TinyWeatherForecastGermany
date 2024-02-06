@@ -259,7 +259,7 @@
             android:layout_above="@id/widget_reference_text"
             android:layout_below="@id/widget_warningcontainer"
             android:layout_toLeftOf="@id/boldwidget_fc1_container"
-            android:paddingRight="8dp"
+            android:paddingRight="4dp"
             android:layout_centerVertical="true">
 
         <TextView
