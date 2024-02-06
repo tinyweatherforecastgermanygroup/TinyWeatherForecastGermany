@@ -198,7 +198,7 @@
             android:layout_above="@id/widget_reference_text"
             android:layout_below="@id/widget_warningcontainer"
             android:layout_toLeftOf="@id/boldwidget_fc1_container"
-            android:paddingRight="8dp"
+            android:paddingRight="2dp"
             android:layout_centerVertical="true">
 
         <TextView
@@ -235,6 +235,7 @@
                   android:layout_alignLeft="@id/boldwidget_today_whitebar"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+                  android:minEms="5"
                   android:text="-°"/>
 
         <TextView android:id="@+id/boldwidget_today_min"
@@ -273,7 +274,7 @@
             android:layout_above="@id/widget_reference_text"
             android:layout_below="@id/widget_warningcontainer"
             android:layout_toRightOf="@id/boldwidget_center"
-            android:paddingLeft="8dp"
+            android:paddingLeft="2dp"
             android:layout_centerVertical="true">
 
         <ImageView android:id="@+id/boldwidget_fc2_weatherconditionicon"
