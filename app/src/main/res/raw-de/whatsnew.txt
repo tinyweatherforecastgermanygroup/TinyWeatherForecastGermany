@@ -8,4 +8,4 @@ Neu in dieser Version [VERSION]:
 - Fehler behoben: Zeiten für Sonnenaufgang, Sonnenuntergang etc. waren auf Wearables um einen Tag verschoben
 - App-Stores können diese App nun automatisch aktualisieren
 
-Für eine detaillierte Liste der Änderungen siehe https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md.
+Für eine detaillierte Liste der Änderungen siehe https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md

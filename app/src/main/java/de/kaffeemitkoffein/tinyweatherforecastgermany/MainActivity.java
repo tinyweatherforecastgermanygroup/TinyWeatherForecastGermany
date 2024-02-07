@@ -592,11 +592,15 @@ public class MainActivity extends Activity {
                     StationFavorites.deleteList(context);
                 }
                 // migrate old sync settings to new class WeatherSettings.Updates
-                if (WeatherSettings.getLastAppVersionCode(context)<35){
+                if (WeatherSettings.getLastAppVersionCode(context)<49){
                     WeatherSettings.Updates.DeprecatedPreferences.migrateDeprecatedSyncSettings(context);
                 }
                 showWhatsNewDialog();
                 WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
+            } else {
+                if (WeatherSettings.getLastAppVersionCode(context)==WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT){
+                    WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
+                }
             }
             try {
                 executor.execute(new Runnable() {
