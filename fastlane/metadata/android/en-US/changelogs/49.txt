@@ -4,3 +4,4 @@
 - fixed broken background location checks
 - fixed bug regarding air pressure on wearables
 - fixed times for sunrise, sunset etc. shifted by one day on wearables
+- app stores can now auto-update this app

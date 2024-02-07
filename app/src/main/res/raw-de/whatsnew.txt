@@ -5,6 +5,7 @@ Neu in dieser Version [VERSION]:
 - schnellerer App-Start
 - die Überprüfung des Standorts im Hintergrund funktioniert nun wie beabsichtigt
 - Fehler den Luftdruck betreffend auf Wearables behoben
-- Fehler behoben, bei dem die Zeiten für Sonnenaufgang, Sonnenuntergang etc. auf Wearables um einen Tag verschoben waren
+- Fehler behoben: Zeiten für Sonnenaufgang, Sonnenuntergang etc. waren auf Wearables um einen Tag verschoben
+- App-Stores können diese App nun automatisch aktualisieren
 
 Für eine detaillierte Liste der Änderungen siehe https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md.

@@ -6,5 +6,6 @@ New in version [VERSION]:
 - fixed broken background location checks
 - fixed bug regarding air pressure on wearables
 - fixed times for sunrise, sunset etc. shifted by one day on wearables
+- app stores can now auto-update this app
 
 For a detailed list of changes, see https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md.

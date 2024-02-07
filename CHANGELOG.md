@@ -45,3 +45,4 @@
 - fixed sunrise, sunset, moonrise, moonset, moon position on sky sent to Gadgetbridge shifted by 24h 
 - fixed wrong numbering of weather warning intervals in WelcomeActivity
 - immediately request sync when location change detected in background, so that weather warnings are delivered immediately
+- reduced padding in the compact weather widget to prevent line-breaks in current min. & max. temperature 
