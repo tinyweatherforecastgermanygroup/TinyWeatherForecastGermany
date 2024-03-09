@@ -19,12 +19,9 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
-import android.accounts.Account;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
 public class OnBootCompletedReceiver extends BroadcastReceiver {
     @Override
