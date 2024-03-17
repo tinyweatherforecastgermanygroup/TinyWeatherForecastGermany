@@ -1,0 +1,7 @@
+0.58.1:
+- datos de estaciones actualizados y áreas de advertencia
+- lógica mejorada cuando mostrar íconos de día/noche
+- corrige la opacidad predeterminada incorrecta del widget
+- traducciones mejoradas
+0.58.2:
+- corrige el tamaño incorrecto de la base de datos

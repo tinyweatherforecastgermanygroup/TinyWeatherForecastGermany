@@ -1,0 +1,9 @@
+- nuevo idioma: danés (¡gracias a mondstern!)
+- los widgets ahora muestran alertas meteorológicas
+- notificaciones sobre alertas meteorológicas para la ubicación elegida
+- nueva opción para desactivar el uso de redes medidas
+- mejor visualización cuando se utilizan tamaños de fuente personalizados
+- corrige la visualización de alertas meteorológicas con un inicio> 24 horas a partir de ahora
+- problemas solucionados con el uso de VPN
+- El nombre del paquete personalizado de Gadgetbridge ahora se utiliza según lo previsto.
+- Se corrigió el ícono de "lluvias de nieve ligeras" en temas claros

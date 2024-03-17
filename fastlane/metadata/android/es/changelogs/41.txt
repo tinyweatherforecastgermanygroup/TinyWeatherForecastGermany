@@ -1,0 +1,4 @@
+- Los LED de notificación ahora son compatibles, incluida la selección de color
+- ligeras mejoras de rendimiento en dispositivos más antiguos al iniciar la aplicación
+- traducciones mejoradas
+- ajustes ligeramente revisados

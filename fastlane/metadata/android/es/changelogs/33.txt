@@ -1,0 +1,4 @@
+- datos de estaciones actualizados y áreas de advertencia
+- lógica mejorada cuando mostrar íconos de día/noche
+- corrige la opacidad predeterminada incorrecta del widget
+- traducciones mejoradas

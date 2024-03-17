@@ -1,0 +1,10 @@
+* admite diferentes diseños (temas)
+* pronóstico nuevo y más simple
+* cambia la fuente del radar de lluvia de compuesto MX a compuesto MN
+* nuevos atajos de aplicaciones
+* introduce la visualización de la humedad relativa
+
+Nuevos idiomas:
+* Italiano (¡gracias a eUgEntOptIc44, mondstern!)
+* Checo (¡gracias a eUgEntOptIc44, mondstern!)
+* Bokmål noruego (¡gracias a Allan Nordhøy, mondstern!)

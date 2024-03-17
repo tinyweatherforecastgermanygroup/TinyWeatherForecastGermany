@@ -1,0 +1,9 @@
+- nuevo idioma: húngaro (¡gracias a eUgEntOptIc44 y Gőz Barnabás!)
+- nueva descripción meteorológica desplazable
+- diseño de interfaz de usuario mejorado
+- soporte mejorado para temas solarizados
+- nueva opción para actualizar los datos meteorológicos de todos los favoritos
+- la aplicación actualiza automáticamente la ubicación si lo desea
+- nueva configuración para forzar el formato horizontal o vertical
+- búsqueda simplificada de la estación meteorológica
+- traducciones mejoradas

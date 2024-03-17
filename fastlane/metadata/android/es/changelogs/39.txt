@@ -1,0 +1,5 @@
+- nuevo filtro para el cual se deben notificar alertas
+- El mapa muestra distritos, estados federados, zonas de alerta en el mar y, si se desea, en las costas
+- la escala de temperatura en el gráfico general (aplicaciones y widgets) se puede configurar en valores fijos
+- nueva opción para restablecer todas las configuraciones a los valores predeterminados
+- traducciones mejoradas

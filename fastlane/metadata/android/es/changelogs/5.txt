@@ -1,0 +1,3 @@
+Versión 0.32:
+- corrige errores en la conversión de temperatura (Celsius a Kelvin) en la API de Gadgetbridge
+- ligera corrección de diseño en el widget (el icono del tiempo ahora es un poco más grande)

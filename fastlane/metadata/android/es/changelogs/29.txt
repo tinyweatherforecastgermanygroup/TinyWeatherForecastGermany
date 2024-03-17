@@ -1,0 +1,3 @@
+* nuevo idioma: polaco (¡gracias a mondstern!)
+* corrige el ícono incorrecto para una noche despejada
+* corrige una posibilidad de error al iniciar la aplicación

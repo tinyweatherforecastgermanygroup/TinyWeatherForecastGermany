@@ -1,0 +1,6 @@
+- nuevo idioma: indonesio (¡gracias a Linerly!)
+- nuevo idioma: irlandés (¡gracias a mondstern!)
+- traducciones mejoradas
+- el gráfico de descripción general ahora también está disponible como widget
+- Ahora se puede ajustar el número de días que se muestran en el gráfico general.
+- La altura de un elemento de predicción ahora tiene en cuenta la escala de fuente individual

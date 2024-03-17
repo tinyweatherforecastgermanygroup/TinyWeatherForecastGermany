@@ -1,9 +1,9 @@
-- corrección de errores importantes que solucionan los bloqueos tras el lanzamiento de la aplicación en algunos dispositivos/roms
-- cambia la fuente del radar de lluvia de MX compuesto a MN compuesto
-- nuevos accesos directos a la aplicación
+- Corrección de errores importantes al resolver fallas después del inicio de la aplicación en algunos dispositivos/roms
+- cambia la fuente del radar de lluvia de compuesto MX a compuesto MN
+- nuevos atajos de aplicaciones
 - introduce la visualización de la humedad relativa
 
 Nuevos idiomas:
-* Italiano (gracias a eUgEntOptIc44, mondstern)
-* Checo (gracias a eUgEntOptIc44, mondstern!)
-* Bokmål noruego (gracias a Allan Nordhøy, mondstern!)
+* Italiano (¡gracias a eUgEntOptIc44, mondstern!)
+* Checo (¡gracias a eUgEntOptIc44, mondstern!)
+* Bokmål noruego (¡gracias a Allan Nordhøy, mondstern!)

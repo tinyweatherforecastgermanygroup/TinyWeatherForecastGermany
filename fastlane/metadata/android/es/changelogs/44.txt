@@ -1,0 +1,3 @@
+- nuevo: mapas meteorológicos, pronóstico de polen, índice de peligro UV
+- admite índice de peligro UV y precipitación en dispositivos portátiles con Gadgetbridge
+- numerosas mejoras adicionales

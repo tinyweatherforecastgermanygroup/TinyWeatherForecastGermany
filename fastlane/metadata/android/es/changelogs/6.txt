@@ -1,0 +1,20 @@
+Versión 0.40:
+- Soporte Gadgetbridge: máx. fijo. temperatura en el pronóstico
+- entrega experimental, nueva y, con suerte, más frecuente de datos meteorológicos a la aplicación GadgetBridge
+- cambio de iconos del clima
+- pronóstico del tiempo ahora disponible para los próximos 10 días
+- nueva opción para repetir la actualización cada 15 minutos cuando no hay red
+- nueva característica experimental para ponerse al día con una actualización pendiente una vez que haya una red disponible
+- nuevas opciones para el registro local (depuración)
+- configuración revisada
+- Se corrigió el fallo del actualizador cuando el dispositivo estaba en modo de reposo.
+- múltiples correcciones de errores
+
+Con esta versión, la aplicación cambia la API del Deutscher Wetterdienst. Con este cambio se pueden mostrar previsiones más precisas, pero va con una remodelación muy fundamental. Por lo tanto, pueden ocurrir nuevos errores.
+
+La configuración se ha restablecido a los valores predeterminados.
+
+Noticia importante:
+Si la aplicación falla después de un cambio de estación meteorológica, infórmame de esta estación.
+
+La aplicación puede volver a su estado funcional eliminando los datos de la aplicación; esto también restablecerá los valores predeterminados y la aplicación volverá a mostrar el clima en Hamburgo.

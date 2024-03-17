@@ -1,0 +1,21 @@
+Versión 0.50.1:
+- Se corrigieron los dispositivos portátiles que mostraban un ícono de clima incorrecto
+- flecha fija que muestra la dirección incorrecta del viento
+- Actualización mejorada del widget para que sea más confiable
+- Se eliminaron actualizaciones de widgets redundantes para aumentar el rendimiento de la aplicación principal.
+- las actualizaciones automáticas ahora están habilitadas de forma predeterminada
+
+Versión 0.50.0:
+- Se agregaron advertencias meteorológicas DWD
+- Se agregaron íconos meteorológicos a escala y conjuntos de símbolos para mejorar el rendimiento.
+- Se agregó mejor soporte para pantallas anchas.
+- se agregó una pantalla de introducción que explica las características principales de la aplicación
+- Se corrigió el recolector de basura roto para datos de pronóstico antiguos.
+- Se corrigió que la aplicación a veces se instalara en la tarjeta SD, lo que hacía que los widgets no fueran accesibles
+- Se corrigió un error menor que hacía que la aplicación fallara cuando la configuración se activa demasiado pronto al iniciar la primera aplicación.
+
+Soporte de Gadgetbridge:
+- Se cambió la marca de tiempo en la API de Gadgetbridge desde el momento de la encuesta hasta el momento del pronóstico; Esto debería resolver el problema de algunos dispositivos portátiles que se quejan de que falta información meteorológica.
+- configuración agregada para establecer la marca de tiempo del pronóstico del tiempo actual en la hora actual en lugar de la hora del pronóstico, ya que algunos dispositivos portátiles no aceptan un pronóstico como tiempo actual
+- Se corrigió la hora de la última actualización de gadgetbridge desconocida en el primer inicio de la aplicación.
+- Se corrigieron los dispositivos portátiles que no mostraban correctamente el texto de las condiciones climáticas.

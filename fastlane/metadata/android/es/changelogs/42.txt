@@ -1,0 +1,4 @@
+- soluciona el fallo al modificar la configuración
+- visualización mejorada de pronósticos cuando están presentes pero desactualizados
+- la frecuencia de las actualizaciones de Gadgetbridge ahora está mejor alineada con los widgets
+- la visualización de la hora de la alarma en el widget del reloj ahora tiene en cuenta correctamente la zona horaria

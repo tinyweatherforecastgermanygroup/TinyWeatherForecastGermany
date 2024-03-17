@@ -1,0 +1,14 @@
+- Opción agregada para cargar datos meteorológicos a intervalos regulares, esto se puede activar/desactivar en la configuración
+- Se agregó la hora visible de la última actualización en la aplicación.
+- La aplicación y el widget ahora también muestran la dirección del viento.
+- Corregido: los datos del viento perdieron información de dirección.
+- corregido: error de análisis del campo FDAT (parte del ID del sensor)
+- corregido: valor predeterminado no válido para el intervalo de actualización
+- solucionado: error que resultó en una actualización muy rara
+- Compatibilidad con Gadgetbridge: solucionado: la marca de tiempo de Unix estaba llena de basura
+- Soporte Gadgetbridge: fijo: la dirección del viento siempre fue 0°
+- Compatibilidad con Gadgetbridge: solucionado: la temperatura se transmitía en grados Celsius en lugar de Kelvin
+- Soporte Gadgetbridge: arreglado: los niveles climáticos no siempre eran compatibles con el estándar Lineageos
+- Compatibilidad con Gadgetbridge: solucionado: el estado del tiempo ahora muestra el tiempo actual en lugar del pronóstico del día
+- La compatibilidad con Gadgetbridge aún es experimental, ¡pero debería funcionar!
+- Idioma alemán agregado

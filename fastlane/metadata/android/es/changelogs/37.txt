@@ -1,0 +1,5 @@
+- inicio de aplicación más rápido
+- La cantidad de precipitación se oculta si es cero.
+- traducciones mejoradas
+- Las actualizaciones de 6 horas se sincronizan mejor con las actualizaciones de datos de Mosmix
+- mejoras menores en la visualización del tiempo

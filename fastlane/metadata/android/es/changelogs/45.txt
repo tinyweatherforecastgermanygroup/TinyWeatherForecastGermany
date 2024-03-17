@@ -1,0 +1,8 @@
+- Las alertas meteorológicas se pueden compartir.
+- el estado de los datos ahora se muestra en hora local (no UTC)
+- El widget con gráfico general utiliza completamente el espacio disponible después de la rotación del dispositivo.
+- fuente más grande en los detalles del tiempo, pronóstico truncado fijo en algunos dispositivos
+- Los mapas ahora utilizan mejor el espacio disponible.
+- entrada y selección de ubicación mejoradas
+- más mejoras en la interfaz de usuario
+- traducciones mejoradas

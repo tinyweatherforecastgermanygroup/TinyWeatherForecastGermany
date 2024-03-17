@@ -1,0 +1,7 @@
+- Las horas de salida y puesta del sol, salida y puesta de la luna y crepúsculo se muestran en los detalles del tiempo.
+- Cálculo mejorado de las condiciones climáticas, particularmente en intervalos de 6 h y 24 h.
+- intervalos mejorados que se muestran en la barra de pronóstico
+- hacer visible el intervalo de temperatura en el cuadro general cuando no se dibujan pasos intermedios
+- Se corrigió el diseño roto en las advertencias meteorológicas en algunos dispositivos antiguos al ocultar/abrir el mapa.
+- tiempo de lanzamiento ligeramente mejorado
+- traducciones mejoradas

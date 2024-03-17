@@ -1,0 +1,6 @@
+- el widget en negrita ahora muestra el pronóstico para más días, dependiendo del tamaño del widget
+- Se corrigieron múltiples problemas de diseño en el widget en negrita.
+- Se corrigió un error que mostraba una estación meteorológica incorrecta al volver a seleccionar un "SWIS-PUNKT" de los favoritos.
+- solución alternativa agregada para evitar que el instalador del paquete falle al instalar y/o actualizar la aplicación
+- Los widgets ahora siempre se actualizan al iniciar la aplicación.
+- algunas opciones de visualización se trasladaron a "varios"

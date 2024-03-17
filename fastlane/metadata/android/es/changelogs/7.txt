@@ -1,0 +1,12 @@
+Nuevas características en esta versión:
+- nuevos widgets
+- búsqueda de nueva estación
+- Favoritos
+- Se seguirán utilizando datos de vista previa de varias estaciones.
+- información meteorológica más detallada
+- numerosas mejoras de rendimiento
+
+Corrección de errores:
+- se han eliminado las previsiones de nieve poco probables muy por encima de 0°
+- Las ráfagas fueron iguales a la velocidad del viento.
+- varias correcciones de errores en las nuevas funciones

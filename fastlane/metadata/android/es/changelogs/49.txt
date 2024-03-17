@@ -1,0 +1,7 @@
+- widgets mejorados, sincronización de datos, traducciones y compatibilidad con Gadgetbridge
+- nuevas opciones para personalizar mejor la sincronización de datos
+- inicio de aplicación más rápido
+- La verificación de ubicación en segundo plano ahora funciona según lo previsto
+- Se corrigieron problemas de presión de aire en dispositivos portátiles.
+- Error solucionado: las horas de salida y puesta del sol, etc. se cambiaron un día en los wearables
+- Las tiendas de aplicaciones ahora pueden actualizar automáticamente esta aplicación

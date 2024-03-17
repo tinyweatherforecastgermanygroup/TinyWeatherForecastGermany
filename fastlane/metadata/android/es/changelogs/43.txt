@@ -1,0 +1,6 @@
+- radar de lluvia mejorado
+- nueva descripción general detallada del pronóstico
+- nuevo idioma: ruso (¡gracias a Wirdi51!)
+- traducciones mejoradas
+- mejoras menores de diseño y correcciones de errores
+- Se corrigieron errores de color en el tema claro y oscuro

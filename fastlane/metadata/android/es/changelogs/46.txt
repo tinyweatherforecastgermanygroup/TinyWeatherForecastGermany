@@ -1,0 +1,8 @@
+- inicio de aplicación más rápido
+- la velocidad del viento ahora se puede mostrar en gráficos
+- determinación de la próxima estación meteorológica en segundo plano
+- compatibilidad mejorada con Gadgetbridge (WeatherSpec v4)
+- visualización del punto de rocío en los detalles del tiempo
+- íconos meteorológicos revisados, la luna ahora muestra la fase lunar
+- el número de ubicaciones afectadas en advertencias compartidas puede ser limitado
+- correcciones de errores menores y otras mejoras
