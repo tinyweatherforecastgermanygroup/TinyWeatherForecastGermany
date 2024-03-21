@@ -1,0 +1,11 @@
+- Se corrigió el error en la conversión de Pascal a Hectopascal (presión de aire)
+- Se corrigió el bloqueo de la aplicación cuando se llamó a la configuración por primera vez
+- El icono del tiempo por hora es ahora el que tiene la prioridad más alta, cuando está disponible; Esto debería armonizar más con los íconos de 6 horas y diarios
+- Una barra cian separa los días cuando corresponda
+- El amanecer y el atardecer ahora se muestran con una flecha y el tamaño del icono se ha reducido ligeramente.
+- Una barra de progreso circular indica cuándo se cargan nuevos datos meteorológicos y nuevas advertencias
+- La barra de desplazamiento tiene un color más brillante y ahora es un poco más ancha
+- Gradiente de color opcional para indicar el tiempo de pronóstico (desactivado de forma predeterminada)
+- Las compilaciones de UserDebug ahora tienen la posibilidad de iniciar sesión en logcat (deshabilitado en las versiones oficiales)
+- Los datos meteorológicos ahora siempre se actualizan regularmente desde el DWD cuando los widgets o la compatibilidad con Gadgetbridge están habilitados.
+- Se puede configurar la visualización de la hora en el pronóstico de 6 horas
