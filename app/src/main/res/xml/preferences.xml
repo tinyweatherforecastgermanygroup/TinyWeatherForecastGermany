@@ -652,7 +652,7 @@
             android:action="android.intent.action.VIEW"
             android:targetPackage="de.kaffeemitkoffein.tinyweatherforecastgermany"
             android:targetClass="de.kaffeemitkoffein.tinyweatherforecastgermany.WelcomeActivity">
-            <extra android:name="mode" android:value="replay"/>
+            <extra android:name="WELCOME_LAUNCHMODE" android:value="1"/>
         </intent>
     </Preference>
 

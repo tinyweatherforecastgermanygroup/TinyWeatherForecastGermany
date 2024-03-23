@@ -71,6 +71,8 @@ public class MainActivity extends Activity {
     public final static String EXTRA_AREADB_PROGRESS_VALUE = "AREADB_PRGS_VALUE";
     public final static String EXTRA_AREADB_PROGRESS_TEXT = "AREADB_PRGS_TEXT";
 
+    public final static String EXTRA_ISFIRSTAPPLAUNCH = "IS_FIRSTAPPLAUNCH";
+
     private ForecastAdapter forecastAdapter;
 
     Context context;
@@ -445,10 +447,15 @@ public class MainActivity extends Activity {
             // init Preference
             WeatherSettings weatherSettings = new WeatherSettings(context);
             weatherSettings.savePreferences();
-            startWelcomeActivity();
+            startWelcomeActivity(WelcomeActivity.LAUNCHMODE_FIRSTAPPLAUNCH);
             finish();
         } else {
             launchTimer = Calendar.getInstance().getTimeInMillis();
+            // check from intent if the WelcomeActivity tells us this is the first app launch
+            Intent intent = getIntent();
+            if (intent!=null){
+                performingFirstAppLaunch = intent.getBooleanExtra(EXTRA_ISFIRSTAPPLAUNCH,false);
+            }
             ThemePicker.SetTheme(this);
             WeatherSettings.setRotationMode(this);
             super.onCreate(savedInstanceState);
@@ -460,13 +467,6 @@ public class MainActivity extends Activity {
                 }
             } catch (Exception e){
                 // ignore
-            }
-            // check from intent if the WelcomeActivity tells us this is the first app launch
-            Intent intent = getIntent();
-            if (intent!=null){
-                if (intent.hasExtra(WelcomeActivity.WA_EXTRA_ISFIRSTAPPLAUNCH)){
-                    performingFirstAppLaunch = intent.getBooleanExtra(WelcomeActivity.WA_EXTRA_ISFIRSTAPPLAUNCH,false);
-                }
             }
             thisActivity = this;
             executor = Executors.newSingleThreadScheduledExecutor();
@@ -2199,10 +2199,11 @@ public class MainActivity extends Activity {
         return s.replace(",",".");
     }
 
-    private void startWelcomeActivity() {
+    private void startWelcomeActivity(int launchmode) {
         WeatherSettings.setHintCounter1(context,0);
         WeatherSettings.setHintCounter2(context,0);
         Intent i = new Intent(this, WelcomeActivity.class);
+        i.putExtra(WelcomeActivity.LAUCHMODE,launchmode);
         startActivity(i);
         finish();
     }

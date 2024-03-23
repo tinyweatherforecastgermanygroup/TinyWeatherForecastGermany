@@ -1172,7 +1172,8 @@ public class APIReaders {
 
     public static class RadarMNSetGeoserverRunnable implements Runnable{
 
-        private static final String WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AWN-Produkt&bbox=-543.462%2C-4808.645%2C556.538%2C-3608.645&TIMESTAMP&width=1100&height=1200&srs=EPSG%3A1000001&styles=&format=image%2Fpng";
+        //private static final String WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AWN-Produkt&bbox=-543.462%2C-4808.645%2C556.538%2C-3608.645&TIMESTAMP&width=1100&height=1200&srs=EPSG%3A1000001&styles=&format=image%2Fpng";
+        private static final String WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AWN-Produkt&bbox=-543.462%2C-4808.645%2C556.538%2C-3608.645&TIMESTAMP&width=1100&height=1200&srs=EPSG%3A4326&styles=&format=image%2Fpng";
         public static final String RADAR_CACHE_FILENAME_PREFIX    = "radarMN-";
         public static final String RADAR_CACHE_FILENAME_SUFFIX    = ".png";
         public final static int TIMESTEP_5MINUTES = 1000*60*5; // 5 minutes

@@ -41,7 +41,10 @@ import java.util.concurrent.Executors;
 
 public class WelcomeActivity extends Activity {
 
-    public final static String WA_EXTRA_ISFIRSTAPPLAUNCH = "WA_EXTRA_IFAL";
+    public final static String LAUCHMODE = "WELCOME_LAUNCHMODE";
+    public final static int LAUNCHMODE_UNKNOWN = -1;
+    public final static int LAUNCHMODE_FIRSTAPPLAUNCH = 0;
+    public final static int LAUNCHMODE_REPLAY = 1;
 
     RelativeLayout pager;
     LayoutInflater layoutInflater;
@@ -69,7 +72,7 @@ public class WelcomeActivity extends Activity {
 
     View result_view;
 
-    boolean force_replay = false;
+    int launchMode = LAUNCHMODE_UNKNOWN;
 
     private final static String SIS_PAGENUMBER = "PAGENUMBER";
 
@@ -88,6 +91,7 @@ public class WelcomeActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putInt(SIS_PAGENUMBER,page);
+        savedInstanceState.putInt(LAUCHMODE,launchMode);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -105,122 +109,112 @@ public class WelcomeActivity extends Activity {
         if (WeatherSettings.Updates.isSyncNecessary(getApplicationContext())){
             ContentResolver.requestSync(MainActivity.getManualSyncRequest(getApplicationContext(),WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
         }
-        force_replay = false;
         Intent intent = getIntent();
         if (intent != null) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                String action = bundle.getString("mode");
-                if (action != null) {
-                    if (action.equals("replay")) {
-                        force_replay = true;
-                    }
-                }
+                launchMode = bundle.getInt(LAUCHMODE,LAUNCHMODE_UNKNOWN);
             }
         }
-        if ((WeatherSettings.isFirstAppLaunch(getApplicationContext())) || (force_replay)) {
-            WeatherSettings.setRotationMode(this);
-            setContentView(R.layout.activity_welcome);
-            // action bar layout
-            ActionBar actionBar = getActionBar();
-            if (actionBar != null) {
-                actionBar.hide();
+        WeatherSettings.setRotationMode(this);
+        setContentView(R.layout.activity_welcome);
+        // action bar layout
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
+        pager = (RelativeLayout) findViewById(R.id.welcome_pager);
+        skip = (TextView) findViewById(R.id.welcome_skip);
+        arrow_left = (ImageView) findViewById(R.id.welcome_arrow_left);
+        arrow_left.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
+        arrow_right = (ImageView) findViewById(R.id.welcome_arrow_right);
+        arrow_right.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
+        layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        dot1 = (ImageView) findViewById(R.id.welcome_dot1);
+        dot1.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
+        dot1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                page = 1;
+                setPage(page);
             }
-            pager = (RelativeLayout) findViewById(R.id.welcome_pager);
-            skip = (TextView) findViewById(R.id.welcome_skip);
-            arrow_left = (ImageView) findViewById(R.id.welcome_arrow_left);
-            arrow_left.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
-            arrow_right = (ImageView) findViewById(R.id.welcome_arrow_right);
-            arrow_right.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
-            layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            dot1 = (ImageView) findViewById(R.id.welcome_dot1);
-            dot1.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
-            dot1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    page = 1;
+        });
+        dot2 = (ImageView) findViewById(R.id.welcome_dot2);
+        dot2.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
+        dot2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                page = 2;
+                setPage(page);
+            }
+        });
+        dot3 = (ImageView) findViewById(R.id.welcome_dot3);
+        dot3.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
+        dot3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                page = 3;
+                setPage(page);
+            }
+        });
+        dot4 = (ImageView) findViewById(R.id.welcome_dot4);
+        dot4.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
+        dot4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                page = 4;
+                setPage(page);
+            }
+        });
+        dot5 = (ImageView) findViewById(R.id.welcome_dot5);
+        dot5.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
+        dot5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                page = 5;
+                setPage(page);
+            }
+        });
+        pager.setOnClickListener(pagerClickListener);
+        next = (TextView) findViewById(R.id.welcome_next);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (page < 5) {
+                    page++;
                     setPage(page);
-                }
-            });
-            dot2 = (ImageView) findViewById(R.id.welcome_dot2);
-            dot2.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
-            dot2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    page = 2;
-                    setPage(page);
-                }
-            });
-            dot3 = (ImageView) findViewById(R.id.welcome_dot3);
-            dot3.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
-            dot3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    page = 3;
-                    setPage(page);
-                }
-            });
-            dot4 = (ImageView) findViewById(R.id.welcome_dot4);
-            dot4.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
-            dot4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    page = 4;
-                    setPage(page);
-                }
-            });
-            dot5 = (ImageView) findViewById(R.id.welcome_dot5);
-            dot5.setColorFilter(ThemePicker.getColorTextLight(getApplicationContext()), PorterDuff.Mode.SRC_IN);
-            dot5.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    page = 5;
-                    setPage(page);
-                }
-            });
-            pager.setOnClickListener(pagerClickListener);
-            next = (TextView) findViewById(R.id.welcome_next);
-            next.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (page < 5) {
-                        page++;
-                        setPage(page);
-                    } else {
-                        startMainActivityAndShowCircle();
-                    }
-                }
-            });
-            setPage(page);
-            arrow_right.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (page < 5) {
-                        page++;
-                        setPage(page);
-                    } else {
-                        startMainActivityAndShowCircle();
-                    }
-                }
-            });
-            arrow_left.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (page > 1) {
-                        page--;
-                        setPage(page);
-                    }
-                }
-            });
-            skip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                } else {
                     startMainActivityAndShowCircle();
                 }
-            });
-        } else {
-            startMainActivity();
-        }
+            }
+        });
+        setPage(page);
+        arrow_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (page < 5) {
+                    page++;
+                    setPage(page);
+                } else {
+                    startMainActivityAndShowCircle();
+                }
+            }
+        });
+        arrow_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (page > 1) {
+                    page--;
+                    setPage(page);
+                }
+            }
+        });
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startMainActivityAndShowCircle();
+            }
+        });
     }
 
     @Override
@@ -470,10 +464,10 @@ public class WelcomeActivity extends Activity {
 
     private void startMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
-        if (WeatherSettings.isFirstAppLaunch(getApplicationContext())){
-            i.putExtra(WA_EXTRA_ISFIRSTAPPLAUNCH,true);
+        if (launchMode==LAUNCHMODE_FIRSTAPPLAUNCH){
+            i.putExtra(MainActivity.EXTRA_ISFIRSTAPPLAUNCH,true);
         } else {
-            i.putExtra(WA_EXTRA_ISFIRSTAPPLAUNCH,false);
+            i.putExtra(MainActivity.EXTRA_ISFIRSTAPPLAUNCH,false);
         }
         WeatherSettings.setAppLaunchedFlag(getApplicationContext());
         startActivity(i);
