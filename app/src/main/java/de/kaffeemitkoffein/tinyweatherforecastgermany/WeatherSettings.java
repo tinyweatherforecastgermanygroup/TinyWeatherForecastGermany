@@ -168,6 +168,7 @@ public class WeatherSettings {
     public static final String PREF_AREADATABASE_LOCK = "PREF_areadatabase_lock";
     public static final String PREF_BATTERY = "PREF_battery";
     public static final String PREF_DATA_SAVER = "PREF_data_saver";
+    public static final String PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT = "PREF_display_overviewchart_pca";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -280,6 +281,7 @@ public class WeatherSettings {
     public static final int PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT = BatteryFlag.NOT_ASKED;
     public static final long PREF_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT = 0;
     public static final boolean PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT = false;
+    public static final boolean PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT = false;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String location_desc_alternate = PREF_LOCATION_DESC_ALTERNATE_DEFAULT;
@@ -384,6 +386,7 @@ public class WeatherSettings {
     public String windInChartsMax = PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT;
     public boolean replaceByMunicipality = PREF_REPLACE_BY_MUNICIPALITY_DEFAULT;
     public int batteryOptimizationFlag = PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT;
+    public boolean displayOverviewChartPrecipitationAmount = PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -493,6 +496,7 @@ public class WeatherSettings {
         this.windInChartsMax = readPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT);
         this.replaceByMunicipality = readPreference(PREF_REPLACE_BY_MUNICIPALITY,PREF_REPLACE_BY_MUNICIPALITY_DEFAULT);
         this.batteryOptimizationFlag = readPreference(PREF_BATTERY_OPTIMIZATION_FLAG,PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT);
+        this.displayOverviewChartPrecipitationAmount = readPreference(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT);
     }
 
     public void savePreferences() {
@@ -543,7 +547,8 @@ public class WeatherSettings {
         applyPreference(PREF_WARNINGS_DISABLE, this.warnings_disabled);
         applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME, this.warnings_last_update_time);
         applyPreference(PREF_WARNINGS_NOTIFY_SEVERITY,this.notifySeverity);
-        applyPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
+        // do not overwrite
+        //applyPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
         applyPreference(PREF_USEGPS,this.usegps);
         applyPreference(PREF_GPSAUTO,this.gpsauto);
         applyPreference(PREF_GPSMANUAL,this.gpsmanual);
@@ -592,6 +597,7 @@ public class WeatherSettings {
         applyPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,this.windInChartsMax);
         applyPreference(PREF_REPLACE_BY_MUNICIPALITY,this.replaceByMunicipality);
         applyPreference(PREF_BATTERY_OPTIMIZATION_FLAG,this.batteryOptimizationFlag);
+        applyPreference(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,displayOverviewChartPrecipitationAmount);
     }
 
 
@@ -1972,7 +1978,10 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_AREADATABASE_LOCK,false);
     }
 
-
+    public static boolean displayPrecipitationAmountInOverviewChart(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT);
+    }
 
     public static class Updates{
 

@@ -1,4 +1,9 @@
 # Changelog 
+
+## Version 0.62.1:
+
+- simplify code calling the WelcomeActivity and returning the launch mode to the main activity
+
 ## Version 0.62.0:
 
 - added a PendingIntent.FLAG_IMMUTABLE to all intents on devices with sdk>=23

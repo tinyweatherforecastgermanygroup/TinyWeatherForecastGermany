@@ -657,7 +657,8 @@ public class ForecastBitmap{
         }
         int startPosition = weatherInfos.size()-1;
         boolean hasTemperature = true;
-        boolean hasPrecipitation = true;
+        boolean hasProbPrecipitation = true;
+        boolean hasAmountPrecipitation = true;
         boolean hasClouds = true;
         boolean hasWindSpeed = true;
         for (int i=startPosition; i<weatherInfos.size(); i++){
@@ -669,13 +670,16 @@ public class ForecastBitmap{
                 hasClouds = false;
             }
             if (!weatherInfo1.hasPrecipitation()){
-                hasPrecipitation=false;
+                hasAmountPrecipitation = false;
+            }
+            if (!weatherInfo1.hasProbPrecipitation()){
+                hasProbPrecipitation = false;
             }
             if (!weatherInfo1.hasWindSpeed()){
                 hasWindSpeed=false;
             }
         }
-        if ((!hasTemperature)&&(!hasClouds)&&(!hasPrecipitation)){
+        if ((!hasTemperature)&&(!hasClouds)&&(!hasProbPrecipitation)&&(!hasAmountPrecipitation)){
             return null;
         }
         // default width is all available data
@@ -710,6 +714,7 @@ public class ForecastBitmap{
         int chartHeight = height;
         final int alphaClouds = 125;
         final int alphaRain = 125;
+        final int alphaRainAmount = 256;
         final int alphaWarnings = 65;
         textPaint.setTextSize(labelTextSize);
         while (textPaint.measureText("-XX°")>(width/18f)){
@@ -834,7 +839,7 @@ public class ForecastBitmap{
             int pos = i - startPosition;
             Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
             float x1 = xChartOffset+ ((float) chartWidth/(float) itemCount)*pos;
-            if (hasPrecipitation){
+            if (hasProbPrecipitation){
                 rainPolygonX[pos]=x1;
                 rainPolygonY[pos]=chartHeight - (weatherInfo1.getProbPrecipitation()/100f) * chartHeight;
             }
@@ -854,7 +859,7 @@ public class ForecastBitmap{
             cloudPolygonY[itemCount+3]=cloudPolygonY[0];
             drawPolygon(canvas,cloudPolygonX,cloudPolygonY,ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXTDARK),alphaClouds);
         }
-        if (hasPrecipitation){
+        if (hasProbPrecipitation){
             rainPolygonX[itemCount]=width;
             rainPolygonY[itemCount]=rainPolygonY[itemCount-1];
             rainPolygonX[itemCount+1]=width;
@@ -926,8 +931,8 @@ public class ForecastBitmap{
                     wind1 = weatherInfo1.getWindSpeedInKnotsInt();
                     wind2 = weatherInfo2.getWindSpeedInKnotsInt();
                 }
-                float y1_t = zeroline_position - wind1 * (chartHeight/windscale);
-                float y2_t = zeroline_position - wind2 * (chartHeight/windscale);
+                float y1_t = chartHeight - wind1 * (chartHeight/windscale);
+                float y2_t = chartHeight - wind2 * (chartHeight/windscale);
                 windPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.TEXT));
                 if (wind1>windscale){
                     y1_t = zeroline_position - chartHeight+lineWidth;
@@ -948,6 +953,38 @@ public class ForecastBitmap{
             windTextPaint.setAntiAlias(true);
             float windXOffset = bitmap.getWidth() - windTextPaint.measureText(windLabel)-3;
             canvas.drawText(windLabel,windXOffset,zeroline_position-windTextPaint.getTextSize()-2,windTextPaint);
+        }
+        if ((WeatherSettings.displayPrecipitationAmountInOverviewChart(context)) && (hasAmountPrecipitation)){
+            Paint precipitationAmountPaint = new Paint();
+            precipitationAmountPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN));
+            precipitationAmountPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            precipitationAmountPaint.setAlpha(alphaRainAmount);
+            precipitationAmountPaint.setStrokeWidth(1);
+            precipitationAmountPaint.setShadowLayer(1,1,1,Color.BLACK);
+            for (int i=startPosition; i<endPosition-1; i++) {
+                int pos = i - startPosition;
+                Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
+                Weather.WeatherInfo weatherInfo2 = weatherInfos.get(i + 1);
+                float maxPcScale = 5; // mm
+                float pca1 = (float) weatherInfo1.getPrecipitation();
+                float y1 = chartHeight - pca1 * (chartHeight / maxPcScale);
+                float x1 = xChartOffset + ((float) chartWidth / (float) itemCount) * pos;
+                float x2 = xChartOffset + ((float) chartWidth / (float) itemCount) * (pos + 1);
+                float xCenter = (x1+x2)/2;
+                float pcaWidth = (x2-x1)/1.0f;
+                if (pcaWidth<0){
+                    pcaWidth = 1;
+                }
+                precipitationAmountPaint.setStrokeWidth(pcaWidth);
+                canvas.drawLine(xCenter,chartHeight,xCenter,y1,precipitationAmountPaint);
+            }
+            String pcaLabel = "25 mm";
+            Paint pcaTextPaint = new Paint(textPaint);
+            pcaTextPaint.setTextSize(labelTextSize/1.5f);
+            pcaTextPaint.setShadowLayer(2,2,2,Color.BLACK);
+            pcaTextPaint.setAntiAlias(true);
+            float pcaXOffset = bitmap.getWidth() - pcaTextPaint.measureText(pcaLabel)-3;
+            canvas.drawText(pcaLabel,pcaXOffset,zeroline_position-2,pcaTextPaint);
         }
         return bitmap;
     }

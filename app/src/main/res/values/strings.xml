@@ -211,6 +211,8 @@
     <string name="preference_screen_overviewchart_summary">Customize the overview chart.</string>
     <string name="preference_display_overviewchart_days_title">Days</string>
     <string name="preference_display_overviewchart_days_summary">Maximum number of days displayed in the overview chart.</string>
+    <string name="preference_display_overviewchart_pca_title">Precipitation Amount</string>
+    <string name="preference_display_overviewchart_pca_summary">Display the amount of precipitation in the overview chart.</string>
     <string name="preference_category_overviewchart_scale">Scale values</string>
     <string name="preference_screen_overviewchart_usemm_title">Fixed Scale</string>
     <string name="preference_screen_overviewchart_usemm_summary">The temperature scale remains the same if the values are within the specified range.</string>
