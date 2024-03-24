@@ -3,6 +3,10 @@
 ## Version 0.62.1:
 
 - simplify code calling the WelcomeActivity and returning the launch mode to the main activity
+- fix wind speed in overview chart displayed too high when temperature was below zero
+- fixed possible crash related to the overview chart when data about the precipitation amount was missing
+- added optional display of the precipitation amount to the overview chart
+- switch the rain radar layers from WGS84 (EPSG 4326) to mercator projection (EPSG 3857) to fit the target map, thus displaying the rain radar with a better local accuracy
 
 ## Version 0.62.0:
 

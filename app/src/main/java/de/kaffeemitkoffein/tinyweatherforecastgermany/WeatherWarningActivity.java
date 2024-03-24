@@ -84,7 +84,6 @@ public class WeatherWarningActivity extends Activity {
     public final static String WEATHER_WARNINGS_UPDATE="WEATHER_WARNINGS_UPDATE";
     public final static String WEATHER_WARNINGS_UPDATE_RESULT="WEATHER_WARNINGS_UPDATE_RESULT";
     public final static String ACTION_RAINRADAR_UPDATE="ACTION_RAINRADAR_UPDATE";
-    public final static String RAINRADAR_UPDATE_RESULT="RAINRADAR_UPDATE_RESULT";
 
     public final static String SIS_ZOOMMAPSTATEBUNDLE="ZOOMMAPSTATEBUNDLE";
     public final static String SIS_HIDERAIN="HIDERAIN";
@@ -481,13 +480,13 @@ public class WeatherWarningActivity extends Activity {
     public static final int MAP_PIXEL_FIXEDWIDTH  = 824;
     public static final int MAP_PIXEL_FIXEDHEIGHT = 956;
 
-    private static final float MAP_GEO_TOP = 55.80f;
-    private static final float MAP_GEO_BOTTOM = 46.96f;
-    private static final float MAP_GEO_HEIGHT= MAP_GEO_TOP - MAP_GEO_BOTTOM;
-    private static final float MAP_GEO_OFFSETX_TOP = 3.45f;
-    private static final float MAP_GEO_ENDX_TOP = 16.9f;
-    private static final float MAP_GEO_OFFSETX_BOTTOM = 4.65f;
-    private static final float MAP_GEO_ENDX_BOTTOM = 15.85f;
+    public static final float MAP_GEO_TOP = 55.80f;
+    public static final float MAP_GEO_BOTTOM = 46.96f;
+    public static final float MAP_GEO_HEIGHT= MAP_GEO_TOP - MAP_GEO_BOTTOM;
+    public static final float MAP_GEO_OFFSETX_TOP = 3.45f;
+    public static final float MAP_GEO_ENDX_TOP = 16.9f;
+    public static final float MAP_GEO_OFFSETX_BOTTOM = 4.65f;
+    public static final float MAP_GEO_ENDX_BOTTOM = 15.85f;
 
     private static final float MAP_GEO_WIDTH_TOP=MAP_GEO_ENDX_TOP - MAP_GEO_OFFSETX_TOP;
     private static final float MAP_GEO_WIDTH_BOTTOM= MAP_GEO_ENDX_BOTTOM - MAP_GEO_OFFSETX_BOTTOM;
@@ -644,6 +643,7 @@ public class WeatherWarningActivity extends Activity {
         });
     }
 
+    /*
     private void drawRadarSlide(final int count){
         if (APIReaders.RadarMNSetGeoserverRunnable.radarCacheFileValid(context,count)) {
             rainRadarData = RadarMN.getData(context, count);
@@ -658,7 +658,7 @@ public class WeatherWarningActivity extends Activity {
                 for (int x = 0; x < RadarMN.RADARMAP_PIXEL_FIXEDWIDTH; x++) {
                     if (rainRadarData[x + y * RadarMN.RADARMAP_PIXEL_FIXEDWIDTH]!=Color.TRANSPARENT){
                         rpaint.setColor(rainRadarData[x + y * RadarMN.RADARMAP_PIXEL_FIXEDWIDTH]);
-                        PlotPoint plotPoint = getPlotPoint(RadarMN.getGeoX(x,y),RadarMN.getGeoY(x,y));
+                  Log.v("twfg","Slide cache file NOT valid: "+count);                  PlotPoint plotPoint = getPlotPoint(RadarMN.getGeoX(x,y),RadarMN.getGeoY(x,y));
                         radarCanvas.drawRect(plotPoint.x-xPS,plotPoint.y-yPS,plotPoint.x+xPS,plotPoint.y+yPS,rpaint);
                     }
                 }
@@ -669,7 +669,26 @@ public class WeatherWarningActivity extends Activity {
         } else {
             // nothing to do
         }
+    }
 
+     */
+
+    private void drawRadarSlide(final int count){
+        if (APIReaders.RadarMNSetGeoserverRunnable.radarCacheFileValid(context,count)) {
+            radarBitmap.eraseColor(Color.TRANSPARENT);
+            Canvas radarCanvas = new Canvas(radarBitmap);
+            Bitmap slideBitmap = RadarMN2.getScaledBitmap(context,count);
+            final Paint radarPaint = new Paint();
+            radarPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+            if (slideBitmap!=null){
+                radarCanvas.drawBitmap(slideBitmap,0,0,radarPaint);
+            }
+            if (!hide_rain) {
+                drawMapBitmap();
+            }
+        } else {
+            // nothing to do
+        }
     }
 
     private void drawMapBitmap(){

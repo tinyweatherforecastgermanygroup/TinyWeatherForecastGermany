@@ -23,6 +23,8 @@ import android.content.Context;
 import android.graphics.*;
 import java.io.*;
 
+// This class is deprecated and not used anymore. See RadarMN2 class.
+
 public class RadarMN {
 
     final static int RADAR_DATAINTERVAL = 1000*60*5;
