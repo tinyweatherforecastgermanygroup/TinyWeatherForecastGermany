@@ -185,6 +185,7 @@ public class GadgetbridgeAPI {
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"UV hazard index    : "+weatherSpec.uvIndex);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Pressure           : "+weatherSpec.pressure);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Visibility         : "+weatherSpec.visibility);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Moon phase in °    : "+weatherSpec.moonPhase);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecasts:");
             for (int i=0; i<weatherSpec.forecasts.size(); i++){
                 PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecast #"+i+": Tmin: "+(weatherSpec.forecasts.get(i).minTemp)+" Tmax: "+(weatherSpec.forecasts.get(i).maxTemp)+" Cond.: "+weatherSpec.forecasts.get(i).conditionCode+" RH: "+weatherSpec.forecasts.get(i).humidity);
