@@ -20,10 +20,8 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="285dp"
     android:minResizeWidth="265dp"
-    android:maxResizeWidth="520dp"
     android:minHeight="120dp"
     android:minResizeHeight="110dp"
-    android:maxResizeHeight="263dp"
     android:targetCellWidth="4"
     android:targetCellHeight="2"
     android:layout_height="match_parent"
@@ -36,3 +34,9 @@
     android:description="@string/clockwidget_description_detailed"
     android:widgetCategory="home_screen">
 </appwidget-provider>
+
+        <!--
+         Removed max-size values:
+    android:maxResizeWidth="520dp"
+    android:maxResizeHeight="263dp"
+         -->

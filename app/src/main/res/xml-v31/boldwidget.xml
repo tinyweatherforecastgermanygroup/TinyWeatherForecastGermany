@@ -20,10 +20,8 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="285dp"
     android:minResizeWidth="285dp"
-    android:maxResizeWidth="520dp"
     android:minHeight="110dp"
     android:minResizeHeight="53dp"
-    android:maxResizeHeight="193dp"
     android:targetCellWidth="4"
     android:targetCellHeight="1"
     android:layout_height="match_parent"
@@ -36,3 +34,9 @@
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">
 </appwidget-provider>
+
+<!--
+Removed max-size values:
+        android:maxResizeWidth="520dp"
+        android:maxResizeHeight="193dp"
+-->
