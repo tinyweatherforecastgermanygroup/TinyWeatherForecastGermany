@@ -442,7 +442,7 @@ public class MainActivity extends Activity {
         if (WeatherSettings.isAreaDatabaseLocked(context)){
             WeatherSettings.unlockAreaDatabase(context);
         }
-        if (WeatherSettings.isFirstAppLaunch(this)){
+        if (WeatherSettings.isFirstAppLaunch(context)){
             super.onCreate(savedInstanceState);
             // init Preference
             WeatherSettings weatherSettings = new WeatherSettings(context);
@@ -1495,7 +1495,7 @@ public class MainActivity extends Activity {
                 whatsNewDialogVisible=false;
                 // update version code in preferences so that this dialog is not shown anymore in this version
                 final WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-                weatherSettings.applyPreference(WeatherSettings.PREF_LAST_VERSION_CODE,BuildConfig.VERSION_CODE);
+                weatherSettings.applyPreference(BuildConfig.VERSION_CODE,WeatherSettings.PREF_LAST_VERSION_CODE,WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT);
                 dialogInterface.dismiss();
             }
         });
@@ -1649,7 +1649,7 @@ public class MainActivity extends Activity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Logging to logcat is being disabled...");
                         WeatherSettings weatherSettings = new WeatherSettings(context);
-                        weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT,WeatherSettings.PREF_LOG_TO_LOGCAT_DEFAULT);
+                        weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT_DEFAULT,WeatherSettings.PREF_LOG_TO_LOGCAT,WeatherSettings.PREF_LOG_TO_LOGCAT_DEFAULT);
                         Toast.makeText(context,context.getResources().getString(R.string.alertdialog_2_toast),Toast.LENGTH_LONG).show();
                     }
                 });

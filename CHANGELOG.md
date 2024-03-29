@@ -7,6 +7,9 @@
 - fixed possible crash related to the overview chart when data about the precipitation amount was missing
 - added optional display of the precipitation amount to the overview chart
 - switch the rain radar layers from WGS84 (EPSG 4326) to mercator projection (EPSG 3857) to fit the target map, thus displaying the rain radar with a better local accuracy
+- Gadgetbridge support: fix wrong moon-phase in daily forecast
+- turning the Gadgetbridge support off/on now always triggers an update
+- fix some preferences missing when saving the whole preference instance
 
 ## Version 0.62.0:
 

@@ -131,7 +131,7 @@ public class WeatherSettings {
     public static final String PREF_USE_METERED_NETWORKS = "PREF_use_metered_networks";
     public static final String PREF_USE_WIFI_ONLY ="PREF_use_wifi_only";
     public static final String PREF_NOTIFICATION_IDENTIFIER = "PREF_notification_id";
-    public static final String PREF_CLEARNOTIFICATIONS = "PREF_clearnotifications";
+    public static final String PREF_CLEARNOTIFICATIONS = "PREF_clearnotifications"; // has no value
     public static final String PREF_ASKEDFORLOCATIONFLAG = "PREF_askedlocpermflag";
     public static final String PREF_ROTATIONMODE = "PREF_rotationmode";
     public static final String PREF_NC_CHANNEL_DETAIL = "PREF_channel_detail";
@@ -166,8 +166,8 @@ public class WeatherSettings {
     public static final String PREF_LAST_NOTIFICATIONS_UPDATE_TIME = "PREF_nf_updatetime";
     public static final String PREF_BOLDWIDGET_VERTICAL_BAR = "PREF_boldwidget_vertical_bar";
     public static final String PREF_AREADATABASE_LOCK = "PREF_areadatabase_lock";
-    public static final String PREF_BATTERY = "PREF_battery";
-    public static final String PREF_DATA_SAVER = "PREF_data_saver";
+    public static final String PREF_BATTERY = "PREF_battery"; // has no value
+    public static final String PREF_DATA_SAVER = "PREF_data_saver"; // has no value
     public static final String PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT = "PREF_display_overviewchart_pca";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
@@ -214,6 +214,7 @@ public class WeatherSettings {
     public static final long PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
     public static final boolean PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT = false;
+    public static final long PREF_GADGETBRIDGE_LASTUPDATE_DEFAULT = 0L;
     public static final boolean PREF_LOGGING_DEFAULT = false;
     public static final boolean PREF_LOG_TO_LOGCAT_DEFAULT = false;
     public static final String PREF_FAVORITESDATA_DEFAULT = PREF_STATION_NAME_DEFAULT;
@@ -281,6 +282,7 @@ public class WeatherSettings {
     public static final int PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT = BatteryFlag.NOT_ASKED;
     public static final long PREF_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT = 0;
     public static final boolean PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT = false;
+    public static final boolean PREF_AREADATABASE_LOCK_DEFAULT = false;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT = false;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
@@ -328,6 +330,7 @@ public class WeatherSettings {
     public String notifySeverity = PREF_WARNINGS_NOTIFY_SEVERITY_DEFAULT;
     public String gadgetbridge_packagename = PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;
     public boolean gadgetbridge_fake_timestamp = PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT;
+    public long gadgetbridge_lastUpdate = PREF_GADGETBRIDGE_LASTUPDATE_DEFAULT;
     public boolean logging = PREF_LOGGING_DEFAULT;
     public boolean log_to_logcat = PREF_LOG_TO_LOGCAT_DEFAULT;
     public String favoritesdata = PREF_FAVORITESDATA_DEFAULT;
@@ -366,6 +369,11 @@ public class WeatherSettings {
     public boolean useLED = PREF_WARNINGS_NOTIFY_LED_DEFAULT;
     public int hintCounter1 = PREF_HINTCOUNTER1_DEFAULT;
     public int hintCounter2 = PREF_HINTCOUNTER2_DEFAULT;
+    public int lastMapDisplayed = PREF_LASTMAPDISPLAYED_DEFAULT;
+    public int pollenRegion = PREF_POLLENREGION_ID_DEFAULT;
+    public int pollenPartRegion = PREF_POLLENPARTREGION_ID_DEFAULT;
+    public String pollenRegionDescription = PREF_POLLENREGION_DESCRIPTION_DEFAULT;
+
     public long uviLastUpdateTime = PREF_MAPLASTUPDATETIME_DEFAULT;
     public boolean pollenAmbrosia = PREF_POLLEN_AMBROSIA_DEFAULT;
     public boolean pollenBeifuss = PREF_POLLEN_BEIFUSS_DEFAULT;
@@ -386,6 +394,10 @@ public class WeatherSettings {
     public String windInChartsMax = PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT;
     public boolean replaceByMunicipality = PREF_REPLACE_BY_MUNICIPALITY_DEFAULT;
     public int batteryOptimizationFlag = PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT;
+    public long lastNotificationsUpdateTime = PREF_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT;
+    public boolean boldWidgetVerticalBar = PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT;
+    public boolean areaDatabaseLock = PREF_AREADATABASE_LOCK_DEFAULT;
+
     public boolean displayOverviewChartPrecipitationAmount = PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT;
 
     private Context context;
@@ -398,15 +410,15 @@ public class WeatherSettings {
     }
 
     public void readPreferences() {
-        this.location_description = readPreference(PREF_LOCATION_DESCRIPTION, PREF_LOCATION_DESCRIPTION_DEFAULT);
         this.station_name = readPreference(PREF_STATION_NAME, PREF_STATION_NAME_DEFAULT);
+        this.location_description = readPreference(PREF_LOCATION_DESCRIPTION, PREF_LOCATION_DESCRIPTION_DEFAULT);
         this.location_desc_alternate = readPreference(PREF_LOCATION_DESC_ALTERNATE,PREF_LOCATION_DESC_ALTERNATE_DEFAULT);
         this.longitude = readPreference(PREF_LONGITUDE, PREF_LONGITUDE_DEFAULT);
         this.latitude = readPreference(PREF_LATITUDE, PREF_LATITUDE_DEFAULT);
         this.altitude = readPreference(PREF_ALTITUDE, PREF_ALTITUDE_DEFAULT);
         this.stationType = readPreference(PREF_STATIONTYPE,PREF_STATIONTYPE_DEFAULT);
+        this.station_name = readPreference(PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT);
         this.stationTime = readPreference(PREF_STATION_TIME,PREF_STATION_TIME_DEFAULT);
-        //this.setalarm = readPreference(PREF_SETALARM, PREF_SETALARM_DEFAULT);
         this.display_station_geo = readPreference(PREF_DISPLAY_STATION_GEO, PREF_DISPLAY_STATION_GEO_DEFAULT);
         this.display_type = readPreference(PREF_DISPLAY_TYPE, PREF_DISPLAY_TYPE_DEFAULT);
         this.display_layout = readPreference(PREF_DISPLAY_LAYOUT,PREF_DISPLAY_LAYOUT_DEFAULT);
@@ -428,9 +440,6 @@ public class WeatherSettings {
         this.displayOverviewChartUseMinMax = readPreference(PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT);
         this.displayOverviewChartMin = readPreference(PREF_DISPLAY_OVERVIEWCHART_MIN,PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT);
         this.displayOverviewChartMax = readPreference(PREF_DISPLAY_OVERVIEWCHART_MAX,PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT);
-        //this.updateinterval = readPreference(PREF_UPDATEINTERVAL, PREF_UPDATEINTERVAL_DEFAULT);
-        //this.update_warnings = readPreference(PREF_UPDATE_WARNINGS,PREF_UPDATE_WARNINGS_DEFAULT);
-        //this.update_textforecasts = readPreference(PREF_UPDATE_TEXTFORECASTS,PREF_UPDATE_TEXTFORECASTS_DEFAULT);
         this.widget_opacity = readPreference(PREF_WIDGET_OPACITY, PREF_WIDGET_OPACITY_DEFAULT);
         this.widget_showdwdnote = readPreference(PREF_WIDGET_SHOWDWDNOTE, PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
         this.widget_displaywarnings = readPreference(PREF_WIDGET_DISPLAYWARNINGS,PREF_WIDGET_DISPLAYWARNINGS_DEFAULT);
@@ -440,10 +449,11 @@ public class WeatherSettings {
         this.views_last_update_time = readPreference(PREF_VIEWS_LAST_UPDATE_TIME, PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT);
         this.gadgetbridge_packagename = readPreference(PREF_GADGETBRIDGE_PACKAGENAME,PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT);
         this.gadgetbridge_fake_timestamp = readPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP, PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT);
+        this.gadgetbridge_lastUpdate = readPreference(PREF_GADGETBRIDGE_LASTUPDATE,PREF_GADGETBRIDGE_LASTUPDATE_DEFAULT);
         this.logging = readPreference(PREF_LOGGING, PREF_LOGGING_DEFAULT);
         this.log_to_logcat = readPreference(PREF_LOG_TO_LOGCAT, PREF_LOG_TO_LOGCAT_DEFAULT);
         this.favoritesdata = readPreference(PREF_FAVORITESDATA, PREF_FAVORITESDATA_DEFAULT);
-        this.favoritesdata = readPreference(PREF_FAVORITESDATA2, PREF_FAVORITESDATA_DEFAULT2);
+        this.favoritesdata2 = readPreference(PREF_FAVORITESDATA2, PREF_FAVORITESDATA_DEFAULT2);
         this.warnings_disabled = readPreference(PREF_WARNINGS_DISABLE, PREF_WARNINGS_DISABLE_DEFAULT);
         this.warnings_last_update_time = readPreference(PREF_WARNINGS_LAST_UPDATE_TIME, PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
         this.notifySeverity = readPreference(PREF_WARNINGS_NOTIFY_SEVERITY,PREF_WARNINGS_NOTIFY_SEVERITY_DEFAULT);
@@ -451,17 +461,17 @@ public class WeatherSettings {
         this.usegps = readPreference(PREF_USEGPS,PREF_USEGPS_DEFAULT);
         this.gpsauto = readPreference(PREF_GPSAUTO,PREF_GPSAUTO_DEFAULT);
         this.gpsmanual = readPreference(PREF_GPSMANUAL,PREF_GPSMANUAL_DEFAULT);
+        this.lastgpsfix = readPreference(PREF_LASTGPSFIX,PREF_LASTGPSFIX_DEFAULT);
         this.disable_tls = readPreference(PREF_DISABLE_TLS,PREF_DISABLE_TLS_DEFAULT);
-        //this.textforecast_last_update_time = readPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
         this.textforecast_filter = readPreference(PREF_TEXTFORECAST_FILTER,PREF_TEXTFORECAST_FILTER_DEFAULT);
         this.radar_lastdatapoll = readPreference(PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
         this.radar_show = readPreference(PREF_RADAR_SHOW,PREF_RADAR_SHOW_DEFAULT);
         this.adminmap_show = readPreference(PREF_ADMINMAP_SHOW,PREF_ADMINMAP_SHOW_DEFAULT);
-        this.mapDisplayMunicipalities = PREF_MAP_DISPLAY_MUNICIPALITIES_DEFAULT;
-        this.mapDisplayCounties = PREF_MAP_DISPLAY_COUNTIES_DEFAULT;
-        this.mapDisplayStates = PREF_MAP_DISPLAY_STATES_DEFAULT;
-        this.mapDisplaySeaAreas = PREF_MAP_DISPLAY_SEA_AREAS_DEFAULT;
-        this.mapDisplayCoastAreas = PREF_MAP_DISPLAY_COAST_AREAS_DEFAULT;
+        this.mapDisplayMunicipalities = readPreference(PREF_MAP_DISPLAY_MUNICIPALITIES,PREF_MAP_DISPLAY_MUNICIPALITIES_DEFAULT);
+        this.mapDisplayCounties = readPreference(PREF_MAP_DISPLAY_COUNTIES,PREF_MAP_DISPLAY_COUNTIES_DEFAULT);
+        this.mapDisplayStates = readPreference(PREF_MAP_DISPLAY_STATES,PREF_MAP_DISPLAY_STATES_DEFAULT);
+        this.mapDisplaySeaAreas = readPreference(PREF_MAP_DISPLAY_SEA_AREAS,PREF_MAP_DISPLAY_SEA_AREAS_DEFAULT);
+        this.mapDisplayCoastAreas = readPreference(PREF_MAP_DISPLAY_COAST_AREAS,PREF_MAP_DISPLAY_COAST_AREAS_DEFAULT);
         this.forceNoMenuIcons = readPreference(PREF_FORCE_NO_MENU_ICONS,PREF_FORCE_NO_MENU_ICONS_DEFAULT);
         this.display_wind_in_radar = readPreference(PREF_DISPLAY_WIND_IN_RADAR,PREF_DISPLAY_WIND_IN_RADAR_DEFAULT);
         this.area_database_ready = readPreference(PREF_AREA_DATABASE_READY,PREF_AREA_DATABASE_READY_DEFAULT);
@@ -472,12 +482,17 @@ public class WeatherSettings {
         this.useMeteredNetworks = readPreference(PREF_USE_METERED_NETWORKS,PREF_USE_METERED_NETWORKS_DEFAULT);
         this.useWifiOnly = readPreference(PREF_USE_WIFI_ONLY,PREF_USE_WIFI_ONLY_DEFAULT);
         this.notificationIdentifier = readPreference(PREF_NOTIFICATION_IDENTIFIER,PREF_NOTIFICATION_IDENTIFIER_DEFAULT);
+        this.askedForLocationFlag = readPreference(PREF_ASKEDFORLOCATIONFLAG,PREF_ASKEDFORLOCATIONFLAG_DEFAULT);
         this.rotationMode = readPreference(PREF_ROTATIONMODE,PREF_ROTATIONMODE_DEFAULT);
         this.ncChannelDetail = readPreference(PREF_NC_CHANNEL_DETAIL,PREF_NC_CHANNEL_DETAIL_DEFAULT);
+        this.ledColor = readPreference(PREF_LED_COLOR,PREF_LED_COLOR_DEFAULT);
         this.useLED = readPreference(PREF_WARNINGS_NOTIFY_LED,PREF_WARNINGS_NOTIFY_LED_DEFAULT);
         this.hintCounter1 = readPreference(PREF_HINTCOUNTER1,PREF_HINTCOUNTER1_DEFAULT);
         this.hintCounter2 = readPreference(PREF_HINTCOUNTER2,PREF_HINTCOUNTER2_DEFAULT);
-        //this.uviLastUpdateTime = readPreference(PREF_MAPLASTUPDATETIME,PREF_MAPLASTUPDATETIME_DEFAULT);
+        this.lastMapDisplayed = readPreference(PREF_LASTMAPDISPLAYED,PREF_LASTMAPDISPLAYED_DEFAULT);
+        this.pollenRegion = readPreference(PREF_POLLENREGION_ID,PREF_POLLENREGION_ID_DEFAULT);
+        this.pollenPartRegion = readPreference(PREF_POLLENPARTREGION_ID,PREF_POLLENPARTREGION_ID_DEFAULT);
+        this.pollenRegionDescription = readPreference(PREF_POLLENREGION_DESCRIPTION,PREF_POLLENREGION_DESCRIPTION_DEFAULT);
         this.pollenAmbrosia = readPreference(PREF_POLLEN_AMBROSIA,PREF_POLLEN_AMBROSIA_DEFAULT);
         this.pollenBeifuss = readPreference(PREF_POLLEN_BEIFUSS,PREF_POLLEN_BEIFUSS_DEFAULT);
         this.pollenRoggen = readPreference(PREF_POLLEN_ROGGEN,PREF_POLLEN_ROGGEN_DEFAULT);
@@ -492,114 +507,125 @@ public class WeatherSettings {
         this.weatherUpdatedFlag = readPreference(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
         this.maxLocationsInSharedWarnings = readPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT);
         this.lastPassiveLocation = new Weather.WeatherLocation(readPreference(PREF_LAST_PASSIVE_LOCATION,PREF_LAST_PASSIVE_LOCATION_DEFAULT));
+        this.useBackgroundLocation = readPreference(PREF_USE_BACKGROUND_LOCATION,PREF_USE_BACKGROUND_LOCATION_DEFAULT);
         this.displayWindInCharts = readPreference(PREF_DISPLAY_WIND_IN_CHARTS,PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT);
         this.windInChartsMax = readPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT);
         this.replaceByMunicipality = readPreference(PREF_REPLACE_BY_MUNICIPALITY,PREF_REPLACE_BY_MUNICIPALITY_DEFAULT);
         this.batteryOptimizationFlag = readPreference(PREF_BATTERY_OPTIMIZATION_FLAG,PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT);
+        this.lastNotificationsUpdateTime = readPreference(PREF_LAST_NOTIFICATIONS_UPDATE_TIME,PREF_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT);
+        this.boldWidgetVerticalBar = readPreference(PREF_BOLDWIDGET_VERTICAL_BAR,PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT);
+        this.areaDatabaseLock = readPreference(PREF_AREADATABASE_LOCK,PREF_AREADATABASE_LOCK_DEFAULT);
         this.displayOverviewChartPrecipitationAmount = readPreference(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT);
     }
 
     public void savePreferences() {
-        applyPreference(PREF_LOCATION_DESCRIPTION, this.location_description);
-        applyPreference(PREF_STATION_NAME, this.station_name);
-        applyPreference(PREF_LOCATION_DESC_ALTERNATE,this.location_desc_alternate);
-        applyPreference(PREF_LONGITUDE, this.longitude);
-        applyPreference(PREF_LATITUDE, this.latitude);
-        applyPreference(PREF_ALTITUDE, this.altitude);
-        applyPreference(PREF_STATIONTYPE,this.stationType);
-        applyPreference(PREF_STATION_TIME,this.stationTime);
-        applyPreference(PREF_DISPLAY_STATION_GEO, this.display_station_geo);
-        applyPreference(PREF_DISPLAY_TYPE, this.display_type);
-        applyPreference(PREF_DISPLAY_LAYOUT,this.display_layout);
-        applyPreference(PREF_DISPLAY_BAR, this.display_bar);
-        applyPreference(PREF_DISPLAY_SIMPLE_BAR,this.display_simple_bar);
-        applyPreference(PREF_DISPLAY_PRESSURE, this.display_pressure);
-        applyPreference(PREF_DISPLAY_VISIBILITY, this.display_visibility);
-        applyPreference(PREF_DISPLAY_SUNRISE, this.display_sunrise);
-        applyPreference(PREF_DISPLAY_ENDOFDAY_BAR, this.display_endofday_bar);
-        applyPreference(PREF_DISPLAY_GRADIENT, this.display_gradient);
-        applyPreference(PREF_DISPLAY_WIND_ARC,this.display_wind_arc);
-        applyPreference(PREF_DISPLAY_WIND_ARC_PERIOD,this.display_wind_arc_period);
-        applyPreference(PREF_DISPLAY_WIND_TYPE,this.display_wind_type);
-        applyPreference(PREF_DISPLAY_WIND_UNIT,this.display_wind_unit);
-        applyPreference(PREF_DISPLAY_DISTANCE_UNIT,this.display_distance_unit);
-        applyPreference(PREF_DISPLAY_CROP_PRECIPITATIONCHART,this.cropPrecipitationChart);
-        applyPreference(PREF_DISPLAY_OVERVIEWCHART,this.displayOverviewChart);
-        applyPreference(PREF_DISPLAY_OVERVIEWCHART_DAYS,this.displayOverviewChartDays);
-        applyPreference(PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,this.displayOverviewChartUseMinMax);
-        applyPreference(PREF_DISPLAY_OVERVIEWCHART_MIN,this.displayOverviewChartMin);
-        applyPreference(PREF_DISPLAY_OVERVIEWCHART_MAX,this.displayOverviewChartMax);
-        //applyPreference(PREF_SETALARM, this.setalarm);
-        //applyPreference(PREF_UPDATEINTERVAL, this.updateinterval);
-        //applyPreference(PREF_UPDATE_WARNINGS, this.update_warnings);
-        //applyPreference(PREF_UPDATE_TEXTFORECASTS, this.update_textforecasts);
-        applyPreference(PREF_WIDGET_OPACITY, this.widget_opacity);
-        applyPreference(PREF_WIDGET_SHOWDWDNOTE, this.widget_showdwdnote);
-        applyPreference(PREF_WIDGET_DISPLAYWARNINGS,this.widget_displaywarnings);
-        applyPreference(PREF_NOTIFY_WARNINGS,this.notify_warnings);
-        applyPreference(PREF_LAST_VERSION_CODE, this.last_version_code);
-        applyPreference(PREF_SERVE_GADGETBRIDGE, this.serve_gadgetbridge);
-        applyPreference(PREF_GADGETBRIDGE_PACKAGENAME,this.gadgetbridge_packagename);
-        applyPreference(PREF_GADGETBRIDGE_FAKE_TIMESTAMP, this.gadgetbridge_fake_timestamp);
-        applyPreference(PREF_VIEWS_LAST_UPDATE_TIME, this.views_last_update_time);
-        applyPreference(PREF_LOGGING, this.logging);
-        applyPreference(PREF_LOG_TO_LOGCAT, this.log_to_logcat);
-        applyPreference(PREF_WARNINGS_DISABLE, this.warnings_disabled);
-        applyPreference(PREF_WARNINGS_LAST_UPDATE_TIME, this.warnings_last_update_time);
-        applyPreference(PREF_WARNINGS_NOTIFY_SEVERITY,this.notifySeverity);
-        // do not overwrite
-        //applyPreference(PREF_IS_FIRST_APP_LAUNCH, this.is_first_app_launch);
-        applyPreference(PREF_USEGPS,this.usegps);
-        applyPreference(PREF_GPSAUTO,this.gpsauto);
-        applyPreference(PREF_GPSMANUAL,this.gpsmanual);
-        applyPreference(PREF_DISABLE_TLS,this.disable_tls);
-        //applyPreference(PREF_TEXTFORECAST_LAST_UPDATE_TIME,this.textforecast_last_update_time);
-        applyPreference(PREF_TEXTFORECAST_FILTER,this.textforecast_filter);
-        applyPreference(PREF_RADAR_LASTDATAPOLL,this.radar_lastdatapoll);
-        applyPreference(PREF_RADAR_SHOW,this.radar_show);
-        applyPreference(PREF_ADMINMAP_SHOW,this.adminmap_show);
-        applyPreference(PREF_MAP_DISPLAY_MUNICIPALITIES,this.mapDisplayMunicipalities);
-        applyPreference(PREF_MAP_DISPLAY_COUNTIES,this.mapDisplayCounties);
-        applyPreference(PREF_MAP_DISPLAY_STATES,this.mapDisplayStates);
-        applyPreference(PREF_MAP_DISPLAY_SEA_AREAS,this.mapDisplaySeaAreas);
-        applyPreference(PREF_MAP_DISPLAY_COAST_AREAS,this.mapDisplayCoastAreas);
-        applyPreference(PREF_FORCE_NO_MENU_ICONS,this.forceNoMenuIcons);
-        applyPreference(PREF_DISPLAY_WIND_IN_RADAR,this.display_wind_in_radar);
-        applyPreference(PREF_AREA_DATABASE_READY,this.area_database_ready);
-        applyPreference(PREF_AREA_DATABASE_VERSION,this.area_database_version);
-        applyPreference(PREF_VIEWMODEL,this.viewModel);
-        applyPreference(PREF_THEME,this.theme);
-        applyPreference(PREF_ALTERNATIVE_ICONS,this.preferAlternativeIcons);
-        applyPreference(PREF_USE_METERED_NETWORKS,this.useMeteredNetworks);
-        applyPreference(PREF_USE_WIFI_ONLY,this.useWifiOnly);
-        applyPreference(PREF_NOTIFICATION_IDENTIFIER,this.notificationIdentifier);
-        applyPreference(PREF_ROTATIONMODE,rotationMode);
-        applyPreference(PREF_NC_CHANNEL_DETAIL,ncChannelDetail);
-        applyPreference(PREF_WARNINGS_NOTIFY_LED,useLED);
-        applyPreference(PREF_HINTCOUNTER1,hintCounter1);
-        applyPreference(PREF_HINTCOUNTER2,hintCounter2);
-        //applyPreference(PREF_MAPLASTUPDATETIME,uviLastUpdateTime);
-        applyPreference(PREF_POLLEN_AMBROSIA,pollenAmbrosia);
-        applyPreference(PREF_POLLEN_BEIFUSS,pollenBeifuss);
-        applyPreference(PREF_POLLEN_ROGGEN,pollenRoggen);
-        applyPreference(PREF_POLLEN_ESCHE,pollenEsche);
-        applyPreference(PREF_POLLEN_BIRKE,pollenBirke);
-        applyPreference(PREF_POLLEN_HASEL,pollenHasel);
-        applyPreference(PREF_POLLEN_ERLE,pollenErle);
-        applyPreference(PREF_POLLEN_GRAESER,pollenGraeser);
-        applyPreference(PREF_PREFETCH_MAPS,preFetchMaps);
-        applyPreference(PREF_UVHI_FETCH_DATA,UVHIfetch);
-        applyPreference(PREF_UVHI_MAINDISPLAY,UVHIdisplayMain);
-        applyPreference(PREF_WEATHERUPDATEDFLAG,weatherUpdatedFlag);
-        applyPreference(PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,maxLocationsInSharedWarnings);
-        applyPreference(PREF_LAST_PASSIVE_LOCATION,lastPassiveLocation.serializeToString());
-        applyPreference(PREF_DISPLAY_WIND_IN_CHARTS,this.displayWindInCharts);
-        applyPreference(PREF_DISPLAY_WIND_IN_CHARTS_MAX,this.windInChartsMax);
-        applyPreference(PREF_REPLACE_BY_MUNICIPALITY,this.replaceByMunicipality);
-        applyPreference(PREF_BATTERY_OPTIMIZATION_FLAG,this.batteryOptimizationFlag);
-        applyPreference(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,displayOverviewChartPrecipitationAmount);
+        applyPreference(station_name , PREF_STATION_NAME, PREF_STATION_NAME_DEFAULT);
+        applyPreference(location_description , PREF_LOCATION_DESCRIPTION, PREF_LOCATION_DESCRIPTION_DEFAULT);
+        applyPreference(location_desc_alternate , PREF_LOCATION_DESC_ALTERNATE,PREF_LOCATION_DESC_ALTERNATE_DEFAULT);
+        applyPreference(longitude , PREF_LONGITUDE, PREF_LONGITUDE_DEFAULT);
+        applyPreference(latitude , PREF_LATITUDE, PREF_LATITUDE_DEFAULT);
+        applyPreference(altitude , PREF_ALTITUDE, PREF_ALTITUDE_DEFAULT);
+        applyPreference(stationType , PREF_STATIONTYPE,PREF_STATIONTYPE_DEFAULT);
+        applyPreference(station_name , PREF_STATION_NAME,PREF_STATION_NAME_DEFAULT);
+        applyPreference(stationTime , PREF_STATION_TIME,PREF_STATION_TIME_DEFAULT);
+        applyPreference(display_station_geo , PREF_DISPLAY_STATION_GEO, PREF_DISPLAY_STATION_GEO_DEFAULT);
+        applyPreference(display_type , PREF_DISPLAY_TYPE, PREF_DISPLAY_TYPE_DEFAULT);
+        applyPreference(display_layout , PREF_DISPLAY_LAYOUT,PREF_DISPLAY_LAYOUT_DEFAULT);
+        applyPreference(display_bar , PREF_DISPLAY_BAR, PREF_DISPLAY_BAR_DEFAULT);
+        applyPreference(display_simple_bar , PREF_DISPLAY_SIMPLE_BAR,PREF_DISPLAY_SIMPLE_BAR_DEFAULT);
+        applyPreference(display_pressure , PREF_DISPLAY_PRESSURE, PREF_DISPLAY_PRESSURE_DEFAULT);
+        applyPreference(display_visibility , PREF_DISPLAY_VISIBILITY, PREF_DISPLAY_VISIBILITY_DEFAULT);
+        applyPreference(display_sunrise , PREF_DISPLAY_SUNRISE, PREF_DISPLAY_SUNRISE_DEFAULT);
+        applyPreference(display_endofday_bar , PREF_DISPLAY_ENDOFDAY_BAR, PREF_DISPLAY_ENDOFDAY_BAR_DEFAULT);
+        applyPreference(display_gradient , PREF_DISPLAY_GRADIENT, PREF_DISPLAY_GRADIENT_DEFAULT);
+        applyPreference(display_wind_arc , PREF_DISPLAY_WIND_ARC,PREF_DISPLAY_WIND_ARC_DEFAULT);
+        applyPreference(display_wind_arc_period , PREF_DISPLAY_WIND_ARC_PERIOD,PREF_DISPLAY_WIND_ARC_PERIOD_DEFAULT);
+        applyPreference(display_wind_type , PREF_DISPLAY_WIND_TYPE,PREF_DISPLAY_WIND_TYPE_DEFAULT);
+        applyPreference(display_wind_unit , PREF_DISPLAY_WIND_UNIT,PREF_DISPLAY_WIND_TYPE_DEFAULT);
+        applyPreference(display_distance_unit , PREF_DISPLAY_DISTANCE_UNIT,PREF_DISPLAY_DISTANCE_UNIT_DEFAULT);
+        applyPreference(cropPrecipitationChart , PREF_DISPLAY_CROP_PRECIPITATIONCHART,PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT);
+        applyPreference(displayOverviewChart , PREF_DISPLAY_OVERVIEWCHART,PREF_DISPLAY_OVERVIEWCHART_DEFAULT);
+        applyPreference(displayOverviewChartDays , PREF_DISPLAY_OVERVIEWCHART_DAYS,PREF_DISPLAY_OVERVIEWCHART_DAYS_DEFAULT);
+        applyPreference(displayOverviewChartUseMinMax , PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT);
+        applyPreference(displayOverviewChartMin , PREF_DISPLAY_OVERVIEWCHART_MIN,PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT);
+        applyPreference(displayOverviewChartMax , PREF_DISPLAY_OVERVIEWCHART_MAX,PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT);
+        applyPreference(widget_opacity , PREF_WIDGET_OPACITY, PREF_WIDGET_OPACITY_DEFAULT);
+        applyPreference(widget_showdwdnote , PREF_WIDGET_SHOWDWDNOTE, PREF_WIDGET_SHOWDWDNOTE_DEFAULT);
+        applyPreference(widget_displaywarnings , PREF_WIDGET_DISPLAYWARNINGS,PREF_WIDGET_DISPLAYWARNINGS_DEFAULT);
+        applyPreference(notify_warnings , PREF_NOTIFY_WARNINGS,PREF_NOTIFY_WARNINGS_DEFAULT);
+        applyPreference(last_version_code , PREF_LAST_VERSION_CODE, PREF_LAST_VERSION_CODE_DEFAULT);
+        applyPreference(serve_gadgetbridge , PREF_SERVE_GADGETBRIDGE, PREF_SERVE_GADGETBRIDGE_DEFAULT);
+        applyPreference(views_last_update_time , PREF_VIEWS_LAST_UPDATE_TIME, PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT);
+        applyPreference(gadgetbridge_packagename , PREF_GADGETBRIDGE_PACKAGENAME,PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT);
+        applyPreference(gadgetbridge_fake_timestamp , PREF_GADGETBRIDGE_FAKE_TIMESTAMP, PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT);
+        applyPreference(gadgetbridge_lastUpdate , PREF_GADGETBRIDGE_LASTUPDATE,PREF_GADGETBRIDGE_LASTUPDATE_DEFAULT);
+        applyPreference(logging , PREF_LOGGING, PREF_LOGGING_DEFAULT);
+        applyPreference(log_to_logcat , PREF_LOG_TO_LOGCAT, PREF_LOG_TO_LOGCAT_DEFAULT);
+        applyPreference(favoritesdata , PREF_FAVORITESDATA, PREF_FAVORITESDATA_DEFAULT);
+        applyPreference(favoritesdata2 , PREF_FAVORITESDATA2, PREF_FAVORITESDATA_DEFAULT2);
+        applyPreference(warnings_disabled , PREF_WARNINGS_DISABLE, PREF_WARNINGS_DISABLE_DEFAULT);
+        applyPreference(warnings_last_update_time , PREF_WARNINGS_LAST_UPDATE_TIME, PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT);
+        applyPreference(notifySeverity , PREF_WARNINGS_NOTIFY_SEVERITY,PREF_WARNINGS_NOTIFY_SEVERITY_DEFAULT);
+        applyPreference(is_first_app_launch , PREF_IS_FIRST_APP_LAUNCH, PREF_IS_FIRST_APP_LAUNCH_DEFAULT);
+        applyPreference(usegps , PREF_USEGPS,PREF_USEGPS_DEFAULT);
+        applyPreference(gpsauto , PREF_GPSAUTO,PREF_GPSAUTO_DEFAULT);
+        applyPreference(gpsmanual , PREF_GPSMANUAL,PREF_GPSMANUAL_DEFAULT);
+        applyPreference(lastgpsfix , PREF_LASTGPSFIX,PREF_LASTGPSFIX_DEFAULT);
+        applyPreference(disable_tls , PREF_DISABLE_TLS,PREF_DISABLE_TLS_DEFAULT);
+        applyPreference(textforecast_filter , PREF_TEXTFORECAST_FILTER,PREF_TEXTFORECAST_FILTER_DEFAULT);
+        applyPreference(radar_lastdatapoll , PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
+        applyPreference(radar_show , PREF_RADAR_SHOW,PREF_RADAR_SHOW_DEFAULT);
+        applyPreference(adminmap_show , PREF_ADMINMAP_SHOW,PREF_ADMINMAP_SHOW_DEFAULT);
+        applyPreference(mapDisplayMunicipalities , PREF_MAP_DISPLAY_MUNICIPALITIES,PREF_MAP_DISPLAY_MUNICIPALITIES_DEFAULT);
+        applyPreference(mapDisplayCounties , PREF_MAP_DISPLAY_COUNTIES,PREF_MAP_DISPLAY_COUNTIES_DEFAULT);
+        applyPreference(mapDisplayStates , PREF_MAP_DISPLAY_STATES,PREF_MAP_DISPLAY_STATES_DEFAULT);
+        applyPreference(mapDisplaySeaAreas , PREF_MAP_DISPLAY_SEA_AREAS,PREF_MAP_DISPLAY_SEA_AREAS_DEFAULT);
+        applyPreference(mapDisplayCoastAreas , PREF_MAP_DISPLAY_COAST_AREAS,PREF_MAP_DISPLAY_COAST_AREAS_DEFAULT);
+        applyPreference(forceNoMenuIcons , PREF_FORCE_NO_MENU_ICONS,PREF_FORCE_NO_MENU_ICONS_DEFAULT);
+        applyPreference(display_wind_in_radar , PREF_DISPLAY_WIND_IN_RADAR,PREF_DISPLAY_WIND_IN_RADAR_DEFAULT);
+        applyPreference(area_database_ready , PREF_AREA_DATABASE_READY,PREF_AREA_DATABASE_READY_DEFAULT);
+        applyPreference(area_database_version , PREF_AREA_DATABASE_VERSION,PREF_AREA_DATABASE_VERSION_DEFAULT);
+        applyPreference(viewModel , PREF_VIEWMODEL,PREF_VIEWMODEL_DEFAULT);
+        applyPreference(theme , PREF_THEME,PREF_THEME_DEFAULT);
+        applyPreference(preferAlternativeIcons , PREF_ALTERNATIVE_ICONS,PREF_ALTERNATIVE_ICONS_DEFAULT);
+        applyPreference(useMeteredNetworks , PREF_USE_METERED_NETWORKS,PREF_USE_METERED_NETWORKS_DEFAULT);
+        applyPreference(useWifiOnly , PREF_USE_WIFI_ONLY,PREF_USE_WIFI_ONLY_DEFAULT);
+        applyPreference(notificationIdentifier , PREF_NOTIFICATION_IDENTIFIER,PREF_NOTIFICATION_IDENTIFIER_DEFAULT);
+        applyPreference(askedForLocationFlag , PREF_ASKEDFORLOCATIONFLAG,PREF_ASKEDFORLOCATIONFLAG_DEFAULT);
+        applyPreference(rotationMode , PREF_ROTATIONMODE,PREF_ROTATIONMODE_DEFAULT);
+        applyPreference(ncChannelDetail , PREF_NC_CHANNEL_DETAIL,PREF_NC_CHANNEL_DETAIL_DEFAULT);
+        applyPreference(ledColor , PREF_LED_COLOR,PREF_LED_COLOR_DEFAULT);
+        applyPreference(useLED , PREF_WARNINGS_NOTIFY_LED,PREF_WARNINGS_NOTIFY_LED_DEFAULT);
+        applyPreference(hintCounter1 , PREF_HINTCOUNTER1,PREF_HINTCOUNTER1_DEFAULT);
+        applyPreference(hintCounter2 , PREF_HINTCOUNTER2,PREF_HINTCOUNTER2_DEFAULT);
+        applyPreference(lastMapDisplayed , PREF_LASTMAPDISPLAYED,PREF_LASTMAPDISPLAYED_DEFAULT);
+        applyPreference(pollenRegion , PREF_POLLENREGION_ID,PREF_POLLENREGION_ID_DEFAULT);
+        applyPreference(pollenPartRegion , PREF_POLLENPARTREGION_ID,PREF_POLLENPARTREGION_ID_DEFAULT);
+        applyPreference(pollenRegionDescription , PREF_POLLENREGION_DESCRIPTION,PREF_POLLENREGION_DESCRIPTION_DEFAULT);
+        applyPreference(pollenAmbrosia , PREF_POLLEN_AMBROSIA,PREF_POLLEN_AMBROSIA_DEFAULT);
+        applyPreference(pollenBeifuss , PREF_POLLEN_BEIFUSS,PREF_POLLEN_BEIFUSS_DEFAULT);
+        applyPreference(pollenRoggen , PREF_POLLEN_ROGGEN,PREF_POLLEN_ROGGEN_DEFAULT);
+        applyPreference(pollenEsche , PREF_POLLEN_ESCHE,PREF_POLLEN_ESCHE_DEFAULT);
+        applyPreference(pollenBirke , PREF_POLLEN_BIRKE,PREF_POLLEN_BIRKE_DEFAULT);
+        applyPreference(pollenHasel , PREF_POLLEN_HASEL,PREF_POLLEN_HASEL_DEFAULT);
+        applyPreference(pollenErle , PREF_POLLEN_ERLE,PREF_POLLEN_ERLE_DEFAULT);
+        applyPreference(pollenGraeser , PREF_POLLEN_GRAESER,PREF_POLLEN_GRAESER_DEFAULT);
+        applyPreference(preFetchMaps , PREF_PREFETCH_MAPS,PREF_PREFETCH_MAPS_DEFAULT);
+        applyPreference(UVHIfetch , PREF_UVHI_FETCH_DATA,PREF_UVHI_FETCH_DATA_DEFAULT);
+        applyPreference(UVHIdisplayMain , PREF_UVHI_MAINDISPLAY,PREF_UVHI_MAINDISPLAY_DEFAULT);
+        applyPreference(weatherUpdatedFlag , PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
+        applyPreference(maxLocationsInSharedWarnings , PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS,PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT);
+        applyPreference(lastPassiveLocation.serializeToString(), PREF_LAST_PASSIVE_LOCATION, PREF_LAST_PASSIVE_LOCATION_DEFAULT);
+        applyPreference(useBackgroundLocation , PREF_USE_BACKGROUND_LOCATION,PREF_USE_BACKGROUND_LOCATION_DEFAULT);
+        applyPreference(displayWindInCharts , PREF_DISPLAY_WIND_IN_CHARTS,PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT);
+        applyPreference(windInChartsMax , PREF_DISPLAY_WIND_IN_CHARTS_MAX,PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT);
+        applyPreference(replaceByMunicipality , PREF_REPLACE_BY_MUNICIPALITY,PREF_REPLACE_BY_MUNICIPALITY_DEFAULT);
+        applyPreference(batteryOptimizationFlag , PREF_BATTERY_OPTIMIZATION_FLAG,PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT);
+        applyPreference(lastNotificationsUpdateTime , PREF_LAST_NOTIFICATIONS_UPDATE_TIME,PREF_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT);
+        applyPreference(boldWidgetVerticalBar , PREF_BOLDWIDGET_VERTICAL_BAR,PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT);
+        applyPreference(areaDatabaseLock , PREF_AREADATABASE_LOCK,PREF_AREADATABASE_LOCK_DEFAULT);
+        applyPreference(displayOverviewChartPrecipitationAmount , PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT);
     }
-
 
     public static void resetPreferencesToDefault(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -632,77 +658,42 @@ public class WeatherSettings {
         return (double) sharedPreferences.getFloat(p, (float) d);
     }
 
-    public void applyPreference(String pref, String value) {
+    public void applyPreference(String value, String pref, String prefDefault) {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putString(pref, value);
         pref_editor.apply();
     }
 
-    public void applyPreference(String pref, Boolean value) {
+    public void applyPreference(boolean value, String pref, boolean prefDefault) {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(pref, value);
         pref_editor.apply();
     }
 
-    public void applyPreference(String pref, int value) {
+    public void applyPreference(int value, String pref, int prefDefault) {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putInt(pref, value);
         pref_editor.apply();
     }
 
-    public void applyPreference(String pref, float value) {
+    public void applyPreference(float value, String pref, float prefDefault) {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putFloat(pref, value);
         pref_editor.apply();
     }
 
-    public void applyPreference(String pref, long value) {
+    public void applyPreference(long value, String pref, long prefDefault) {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putLong(pref, value);
         pref_editor.apply();
     }
 
-    public void applyPreference(String pref, double value) {
+    public void applyPreference(double value, String pref, double prefDefault) {
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        applyPreference(pref, (float) value);
+        applyPreference((float) value, pref, (float) prefDefault);
         pref_editor.apply();
     }
 
-    public void commitPreference(String pref, String value) {
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putString(pref, value);
-        pref_editor.commit();
-    }
-
-    public void commitPreference(String pref, Boolean value) {
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putBoolean(pref, value);
-        pref_editor.commit();
-    }
-
-    public void commitPreference(String pref, int value) {
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putInt(pref, value);
-        pref_editor.commit();
-    }
-
-    public void commitPreference(String pref, float value) {
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putFloat(pref, value);
-        pref_editor.commit();
-    }
-
-    public void commitPreference(String pref, long value) {
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        pref_editor.putLong(pref, value);
-        pref_editor.commit();
-    }
-
-    public void commitPreference(String pref, double value) {
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        applyPreference(pref, (float) value);
-        pref_editor.commit();
-    }
 
     public static boolean displayStationGeo(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -792,7 +783,7 @@ public class WeatherSettings {
         } catch (NumberFormatException e) {
             // return to default if entry is corrupted (not a number)
             this.display_type = PREF_DISPLAY_TYPE_DEFAULT;
-            applyPreference(PREF_DISPLAY_TYPE, display_type);
+            applyPreference(PREF_DISPLAY_TYPE, display_type,PREF_DISPLAY_TYPE_DEFAULT);
             // return default
             return DISPLAYTYPE_6HOURS;
         }
@@ -825,7 +816,7 @@ public class WeatherSettings {
 
     public static long getGadgetBridgeLastUpdateTime(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getLong(PREF_GADGETBRIDGE_LASTUPDATE,0);
+        return sharedPreferences.getLong(PREF_GADGETBRIDGE_LASTUPDATE,PREF_GADGETBRIDGE_LASTUPDATE_DEFAULT);
     }
 
     public static void setGadgetBridgeLastUpdateTime(Context context, long l){
@@ -1108,7 +1099,7 @@ public class WeatherSettings {
         } catch (NumberFormatException e) {
             // return to default if entry is corrupted (not a number)
             this.display_wind_type = PREF_DISPLAY_WIND_TYPE_DEFAULT;
-            applyPreference(PREF_DISPLAY_WIND_TYPE, display_wind_type);
+            applyPreference(PREF_DISPLAY_WIND_TYPE, display_wind_type, PREF_DISPLAY_TYPE_DEFAULT);
             // return default
             return Weather.WindDisplayType.ARROW;
         }
