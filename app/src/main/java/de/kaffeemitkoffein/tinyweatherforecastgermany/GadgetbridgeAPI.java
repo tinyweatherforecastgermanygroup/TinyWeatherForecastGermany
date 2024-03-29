@@ -162,7 +162,7 @@ public class GadgetbridgeAPI {
                 daily.sunSet = (int) (Weather.getSunsetInUTC(weatherCard.weatherLocation,weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24)/1000);
                 daily.moonRise = (int) (Weather.getMoonRiseInUTC(weatherCard.weatherLocation,weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24)/1000);
                 daily.moonSet = (int) (Weather.getMoonSetInUTC(weatherCard.weatherLocation,weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24)/1000);
-                daily.moonPhase = Weather.getMoonPhaseInDegrees(weatherCard.forecast24hourly.get(i).getTimestamp()-weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24);
+                daily.moonPhase = Weather.getMoonPhaseInDegrees(weatherInfo.getTimestamp()-Weather.MILLIS_IN_HOUR*24);
                 weatherSpec.forecasts.add(daily);
             }
             String timestampHumanReadable = "";
@@ -188,7 +188,7 @@ public class GadgetbridgeAPI {
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Moon phase in °    : "+weatherSpec.moonPhase);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecasts:");
             for (int i=0; i<weatherSpec.forecasts.size(); i++){
-                PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecast #"+i+": Tmin: "+(weatherSpec.forecasts.get(i).minTemp)+" Tmax: "+(weatherSpec.forecasts.get(i).maxTemp)+" Cond.: "+weatherSpec.forecasts.get(i).conditionCode+" RH: "+weatherSpec.forecasts.get(i).humidity);
+                PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Forecast #"+i+": Tmin: "+(weatherSpec.forecasts.get(i).minTemp)+" Tmax: "+(weatherSpec.forecasts.get(i).maxTemp)+" Cond.: "+weatherSpec.forecasts.get(i).conditionCode+" RH: "+weatherSpec.forecasts.get(i).humidity+" mp: "+weatherSpec.forecasts.get(i).moonPhase+"°");
             }
             sendWeatherBroadcast(context,weatherSpec);
             WeatherSettings.setGadgetBridgeLastUpdateTime(context,Calendar.getInstance().getTimeInMillis());

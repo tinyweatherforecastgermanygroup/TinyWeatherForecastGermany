@@ -128,6 +128,8 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 if (s.equals(WeatherSettings.PREF_SERVE_GADGETBRIDGE)) {
                     setAlarmSettingAllowed();
                     if (WeatherSettings.serveGadgetBridge(context)){
+                        // reset last Gadgetbridge update time, so that changing this setting off/on will always trigger an update.
+                        WeatherSettings.setGadgetBridgeLastUpdateTime(context,0);
                         GadgetbridgeAPI.sendWeatherBroadcastIfEnabled(context,null);
                         GadgetbridgeBroadcastReceiver.setNextGadgetbridgeUpdateAction(context);
                     }
