@@ -258,7 +258,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/widget_reference_text"
             android:layout_below="@id/widget_warningcontainer"
-            android:layout_toLeftOf="@id/boldwidget_fc1_container"
+            android:layout_alignParentLeft="true"
             android:paddingRight="4dp"
             android:layout_centerVertical="true">
 

@@ -11,6 +11,7 @@
 - turning the Gadgetbridge support off/on now always triggers an update
 - fix some preferences missing when saving the whole preference instance
 - fix wind unit in overview chart km/h instead of kn
+- moved the wind options for the overview chart from "wind" to "overview chart" in the settings
 
 ## Version 0.62.0:
 
