@@ -116,6 +116,26 @@
 
             </PreferenceCategory>
 
+            <PreferenceCategory
+                    android:title="@string/wd_wind">
+
+                <CheckBoxPreference
+                        android:key="PREF_wind_in_charts"
+                        android:title="@string/preference_display_wind_in_charts_title"
+                        android:summary="@string/preference_display_wind_in_charts_summary"
+                        android:defaultValue="false"/>
+
+                <EditTextPreference
+                        android:key="PREF_wind_in_charts_max"
+                        android:title="@string/preference_display_wind_in_charts_max_title"
+                        android:summary="@string/preference_display_wind_in_charts_max_summary"
+                        android:inputType="number"
+                        android:dialogTitle="@string/preference_display_wind_in_charts_max_title"
+                        android:defaultValue="100"/>
+
+            </PreferenceCategory>
+
+
         </PreferenceScreen>
 
             <PreferenceScreen
@@ -218,25 +238,6 @@
                         android:title="@string/preference_display_wind_in_radar_title"
                         android:summary="@string/preference_display_wind_in_radar_summary"
                         android:defaultValue="true"/>
-
-                <PreferenceCategory
-                        android:title="@string/chartwidget_description">
-
-                    <CheckBoxPreference
-                            android:key="PREF_wind_in_charts"
-                            android:title="@string/preference_display_wind_in_charts_title"
-                            android:summary="@string/preference_display_wind_in_charts_summary"
-                            android:defaultValue="false"/>
-
-                    <EditTextPreference
-                            android:key="PREF_wind_in_charts_max"
-                            android:title="@string/preference_display_wind_in_charts_max_title"
-                            android:summary="@string/preference_display_wind_in_charts_max_summary"
-                            android:inputType="number"
-                            android:dialogTitle="@string/preference_display_wind_in_charts_max_title"
-                            android:defaultValue="100"/>
-
-                </PreferenceCategory>
 
             </PreferenceScreen>
 
