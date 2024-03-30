@@ -12,6 +12,7 @@
 - fix some preferences missing when saving the whole preference instance
 - fix wind unit in overview chart km/h instead of kn
 - moved the wind options for the overview chart from "wind" to "overview chart" in the settings
+- bold widget: align the current day to the left to prevent line breaks in temperature display when the values have two digits
 
 ## Version 0.62.0:
 
