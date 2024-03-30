@@ -10,6 +10,7 @@
 - Gadgetbridge support: fix wrong moon-phase in daily forecast
 - turning the Gadgetbridge support off/on now always triggers an update
 - fix some preferences missing when saving the whole preference instance
+- fix wind unit in overview chart km/h instead of kn
 
 ## Version 0.62.0:
 

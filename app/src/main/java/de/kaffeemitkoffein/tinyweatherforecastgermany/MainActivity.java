@@ -446,6 +446,7 @@ public class MainActivity extends Activity {
             super.onCreate(savedInstanceState);
             // init Preference
             WeatherSettings weatherSettings = new WeatherSettings(context);
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Saving preferences...");
             weatherSettings.savePreferences();
             startWelcomeActivity(WelcomeActivity.LAUNCHMODE_FIRSTAPPLAUNCH);
             finish();

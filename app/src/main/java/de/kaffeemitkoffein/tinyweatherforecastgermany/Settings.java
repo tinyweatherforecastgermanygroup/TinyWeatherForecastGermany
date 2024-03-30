@@ -523,7 +523,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                                     // a re-launched MainActivity.
                                     WeatherSettings.setAppLaunchedFlag(context);
                                     // force a replay
-                                    intent.putExtra("mode","replay");
+                                    intent.putExtra(WelcomeActivity.LAUCHMODE,WelcomeActivity.LAUNCHMODE_REPLAY);
                                     startActivity(intent);
                                 }
                             });

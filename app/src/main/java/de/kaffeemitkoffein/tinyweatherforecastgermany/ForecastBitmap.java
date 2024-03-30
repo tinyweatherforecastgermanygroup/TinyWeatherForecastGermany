@@ -999,7 +999,7 @@ public class ForecastBitmap{
         if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.METERS_PER_SECOND){
             return "0 - " + df.format(Weather.Units.MSFromKmh(WeatherSettings.getWindInChartsMaxKmh(context))) + " m/s";
         }
-        if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.KILOMETERS_PER_HOUR){
+        if (WeatherSettings.getWindDisplayUnit(context)==Weather.WindDisplayUnit.KNOTS){
             return "0 - " + df.format(Weather.Units.KnotsFromKmh(WeatherSettings.getWindInChartsMaxKmh(context))) + " kt";
         }
         return "0 - 100 km/h";
