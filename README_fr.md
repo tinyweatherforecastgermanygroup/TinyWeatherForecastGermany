@@ -57,7 +57,7 @@ Ce programme utilise PNPOLY - Point Inclusion in Polygon Test de W. Randolph Fra
 
 Ce programme utilise la classe d'astronomie, Copyright (C) 2010-2012, Helmut Lehmeyer, sous licence GNU General Public License version 3.
 
-Cartes PAT par Ian Macky <http://ian.macky.net/pat>.
+Map used to display the rain radar © OpenStreetMap <https://openstreetmap.org/copyright>.
 
 Calculation of relative humidity from temperature and dew point is done using a simplified formula example from the DWD (Deutscher Wetterdienst), see <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
 

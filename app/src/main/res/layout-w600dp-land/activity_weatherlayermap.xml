@@ -135,7 +135,7 @@
             android:layout_toLeftOf="@id/wlm_legendholder"
             android:layout_below="@id/wlm_title"
             android:layout_above="@id/wlm_bottom_holder"
-            android:src="@drawable/germany_black"
+            android:src="@drawable/germany2"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter">
     </ImageView>

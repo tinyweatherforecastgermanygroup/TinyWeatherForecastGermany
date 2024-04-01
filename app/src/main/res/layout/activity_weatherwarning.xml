@@ -90,7 +90,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:src="@drawable/map_collapsed"/>
+                    android:src="@mipmap/arrow_down"/>
             <ImageView
                     android:id="@+id/warningactivity_map_collapsed_icon"
                     android:layout_width="wrap_content"
@@ -109,8 +109,20 @@
                     android:id="@+id/warningactivity_map"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/germany">
+                    android:src="@drawable/germany2">
             </ImageView>
+
+            <TextView
+                    android:id="@+id/warningactivity_mapattribution"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:textColor="?attr/colorText"
+                    android:background="?attr/colorPrimaryLight"
+                    android:textSize="@dimen/fcmain_mediumdevice_textsize_medium_reduced"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/map_attribution"/>
 
             <RelativeLayout
                     android:id="@+id/warningactivity_windicon_container"
@@ -155,7 +167,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_alignParentBottom="true"
-                    android:paddingBottom="5dp"
+                    android:paddingBottom="12dp"
                     android:weightSum="20">
 
                 <TextView

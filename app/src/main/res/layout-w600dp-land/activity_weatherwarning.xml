@@ -65,7 +65,7 @@
                         android:id="@+id/warningactivity_map"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/germany">
+                        android:src="@drawable/germany2">
                 </ImageView>
                 <RelativeLayout
                         android:id="@+id/warningactivity_windicon_container"

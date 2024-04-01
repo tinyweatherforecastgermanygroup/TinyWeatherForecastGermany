@@ -20,7 +20,9 @@ Dieses Programm benutzt PNPOLY - Point Inclusion in Polygon Test by W. Randolph 
 
 Dieses Programm benutzt die Astronomy Klasse, Copyright (C) 2010-2012, Helmut Lehmeyer, lizenziert unter der GNU General Public License Version 3.
 
-PAT maps by Ian Macky <http://ian.macky.net/pat>. Bilder der "Lange Anna" (Helgoland) und des Pellworm Leuchtturms by arwanger.
+Karte zur Anzeige des Regenradars © OpenStreetMap <https://openstreetmap.org/copyright>.
+
+Bilder der "Lange Anna" (Helgoland) und des Pellworm Leuchtturms by arwanger.
 
 Die Berechnung der relativen Luftfeuchtigkeit aus der Temperatur und dem Taupunkt erfolgt anhand eines vereinfachten Formel-Beispiels des DWD (Deutscher Wetterdienst), siehe <https://www.dwd.de/DE/leistungen/met_verfahren_mosmix/faq/faq_mosmix_node.html>.
 

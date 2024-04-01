@@ -33,6 +33,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.view.*;
 import android.widget.*;
@@ -54,6 +55,7 @@ public class WeatherWarningActivity extends Activity {
     ProgressBar rainSlideProgressBar;
     TextView rainSlideProgressBarText;
     TextView rainSlideTime;
+    TextView mapAttributionText;
     ImageView rainDescription;
     Bitmap germanyBitmap;
     Bitmap warningsBitmap;
@@ -75,6 +77,8 @@ public class WeatherWarningActivity extends Activity {
     RelativeLayout gpsProgressHolder;
 
     Bundle zoomMapState = null;
+
+    final static RadarMN2.MercatorProjectionTile mercatorProjectionTile = RadarMN2.getRadarMapMercatorProjectionTile();
 
     boolean forceWeatherUpdateFlag = false;
 
@@ -282,6 +286,23 @@ public class WeatherWarningActivity extends Activity {
         rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
         rainDescription.setOnTouchListener(forwardRainSlidesOnTouchListener);
         gpsProgressHolder = (RelativeLayout) findViewById(R.id.gps_progress_holder);
+        mapAttributionText = (TextView) findViewById(R.id.warningactivity_mapattribution);
+        //mapAttributionText.setText(Html.fromHtml(context.getResources().getString(R.string.map_attribution)));
+        mapAttributionText.setVisibility(View.VISIBLE);
+        mapAttributionText.setMovementMethod(LinkMovementMethod.getInstance());
+        if (!WeatherSettings.appReleaseIsUserdebug()){
+            mapAttributionText.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mapAttributionText.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            },7000);
+        }
         radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(getApplicationContext()){
             @Override
             public void onProgress(long startTime, final int progress) {
@@ -477,83 +498,21 @@ public class WeatherWarningActivity extends Activity {
         float y;
     }
 
-    public static final int MAP_PIXEL_FIXEDWIDTH  = 824;
-    public static final int MAP_PIXEL_FIXEDHEIGHT = 956;
-
-    public static final float MAP_GEO_TOP = 55.80f;
-    public static final float MAP_GEO_BOTTOM = 46.96f;
-    public static final float MAP_GEO_HEIGHT= MAP_GEO_TOP - MAP_GEO_BOTTOM;
-    public static final float MAP_GEO_OFFSETX_TOP = 3.45f;
-    public static final float MAP_GEO_ENDX_TOP = 16.9f;
-    public static final float MAP_GEO_OFFSETX_BOTTOM = 4.65f;
-    public static final float MAP_GEO_ENDX_BOTTOM = 15.85f;
-
-    private static final float MAP_GEO_WIDTH_TOP=MAP_GEO_ENDX_TOP - MAP_GEO_OFFSETX_TOP;
-    private static final float MAP_GEO_WIDTH_BOTTOM= MAP_GEO_ENDX_BOTTOM - MAP_GEO_OFFSETX_BOTTOM;
-    private static final float MAP_GEO_WIDTH_DELTA = MAP_GEO_WIDTH_TOP - MAP_GEO_WIDTH_BOTTOM;
-
-    //private static final float[] MAP_THRESHOLD ={0,0.16f,0.20f,0.23f,0.30f,0.38f,0.45f,0.62f,0.70f,0.77f,0.80f,0.84f};
-    //private static final float[] MAP_CORRECTION={7,6    ,5    ,4    ,3    ,1    ,0    ,1    ,2    ,3    ,6    ,7    };
-    private static final float[] MAP_THRESHOLD ={0 ,0.025f,0.05f,0.75f,0.11f, 0.16f,0.20f,0.23f,0.30f,0.38f,0.45f,0.62f,0.70f,0.77f,0.80f,0.84f,0.88f, 0.91f,0.96f};
-    private static final float[] MAP_CORRECTION={17,16    ,15   ,10   ,10   ,5    ,4    ,3    ,1    ,0    ,1    ,2    ,3    ,5    ,6      ,9   ,11   ,12    ,17};
-
-    private static float yCorrectionPixels(float lon, float lat){
-        float p = (lon - getXOffsetGeo(lat))/getGeoWidth(lat);
-        float c=MAP_CORRECTION[0];
-        for (int i=1; i< MAP_THRESHOLD.length;i++){
-            if (p>MAP_THRESHOLD[i]){
-                c=MAP_CORRECTION[i];
-            }
-        }
-        return (c/956)*MAP_PIXEL_HEIGHT;
-    }
-
-    private static float getGeoWidth(float geo_height){
-        float geowidth = (MAP_GEO_WIDTH_DELTA/MAP_GEO_HEIGHT) * (geo_height-MAP_GEO_BOTTOM) + MAP_GEO_WIDTH_BOTTOM;
-        return geowidth;
-    }
-
-    private static float getXOffsetGeo(float geo_height){
-        float xDeltaGeo = ((MAP_GEO_OFFSETX_BOTTOM - MAP_GEO_OFFSETX_TOP)/(MAP_GEO_TOP - MAP_GEO_BOTTOM) * (geo_height - MAP_GEO_BOTTOM));
-        float xOffsetGeo = MAP_GEO_OFFSETX_BOTTOM - xDeltaGeo;
-        return xOffsetGeo;
-    }
-
     public static PlotPoint getPlotPoint(float lon, float lat){
-        float x = (lon - getXOffsetGeo(lat)) * (MAP_PIXEL_WIDTH/getGeoWidth(lat));
-        float y = (lat - MAP_GEO_BOTTOM)*(MAP_PIXEL_HEIGHT/MAP_GEO_HEIGHT) + yCorrectionPixels(lon,lat);
         PlotPoint plotPoint = new PlotPoint();
-        plotPoint.y = MAP_PIXEL_HEIGHT - y;
-        plotPoint.x = x;
+        plotPoint.x = (float) mercatorProjectionTile.getXPixel(lon);
+        plotPoint.y = (float) mercatorProjectionTile.getYPixel(lat);
         return plotPoint;
     }
 
     private float getXGeo(PlotPoint plotPoint){
-        float p = (plotPoint.x/MAP_PIXEL_WIDTH);
-        float c = MAP_CORRECTION[0];
-        for (int i=1; i<MAP_THRESHOLD.length; i++ ){
-            if (p>MAP_THRESHOLD[i]){
-                c = MAP_CORRECTION[i];
-            }
-        }
-        float yPixCorr = (c/956)*(MAP_GEO_TOP-MAP_GEO_BOTTOM);
-        float geoy = ((MAP_GEO_TOP-MAP_GEO_BOTTOM)/(MAP_PIXEL_HEIGHT)) * (MAP_PIXEL_HEIGHT-plotPoint.y) + MAP_GEO_BOTTOM - yPixCorr;
-        float geox = getXOffsetGeo(geoy) + (getGeoWidth(geoy)/MAP_PIXEL_WIDTH) * plotPoint.x;
-        return geox;
+        float xCoord = (float) mercatorProjectionTile.getXCoord(plotPoint.x);
+        return xCoord;
     }
 
     private float getYGeo(PlotPoint plotPoint){
-        float p = (plotPoint.x/MAP_PIXEL_WIDTH);
-        float c = MAP_CORRECTION[0];
-        for (int i=1; i<MAP_THRESHOLD.length; i++ ){
-            if (p>MAP_THRESHOLD[i]){
-                c = MAP_CORRECTION[i];
-            }
-        }
-        float yPixCorr = (c/956)*(MAP_GEO_TOP-MAP_GEO_BOTTOM);
-        float geoy = ((MAP_GEO_TOP-MAP_GEO_BOTTOM)/(MAP_PIXEL_HEIGHT)) * (MAP_PIXEL_HEIGHT-plotPoint.y) + MAP_GEO_BOTTOM - yPixCorr;
-        float geox = getXOffsetGeo(geoy) + (getGeoWidth(geoy)/MAP_PIXEL_WIDTH) * plotPoint.x;
-        return geoy;
+        float yCoord = (float) mercatorProjectionTile.getYCoord(plotPoint.y);
+        return yCoord;
     }
 
     private void drawStrokedText(Canvas canvas, String text, float x, float y, Paint paint){
@@ -563,8 +522,8 @@ public class WeatherWarningActivity extends Activity {
         strokePaint.setTypeface(Typeface.DEFAULT);
         strokePaint.setTextSize(paint.getTextSize());
         strokePaint.setAntiAlias(true);
-        int shiftX = Math.max(2,germany.getWidth()/MAP_PIXEL_FIXEDWIDTH);
-        int shiftY = Math.max(2,germany.getHeight()/MAP_PIXEL_FIXEDHEIGHT);
+        int shiftX = Math.max(2,germany.getWidth()/RadarMN2.getFixedRadarMapWidth());
+        int shiftY = Math.max(2,germany.getHeight()/RadarMN2.getFixedRadarMapHeight());
         canvas.drawText(text,x-shiftX,y,strokePaint);
         canvas.drawText(text,x+shiftX,y,strokePaint);
         canvas.drawText(text,x,y-shiftY,strokePaint);
@@ -625,7 +584,7 @@ public class WeatherWarningActivity extends Activity {
     private Bitmap loadBitmapMap(int res_id){
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),res_id),MAP_PIXEL_FIXEDWIDTH,MAP_PIXEL_FIXEDHEIGHT,false);
+        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),res_id),RadarMN2.getFixedRadarMapWidth(),RadarMN2.getFixedRadarMapHeight(),false);
         return bitmap;
     }
 
@@ -721,7 +680,6 @@ public class WeatherWarningActivity extends Activity {
                 }
             });
         }
-        //drawDebugGrid(canvas);
         mapZoomable.updateBitmap(visibleBitmap);
         visibleBitmap.recycle();
     }
@@ -1132,17 +1090,6 @@ public class WeatherWarningActivity extends Activity {
 
     private void showLocationPermissionsRationale(){
         showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_rationale));
-    }
-
-    private void drawDebugGrid(final Canvas canvas){
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2f);
-        //canvas.drawLine(0,0,MAP_PIXEL_WIDTH,MAP_PIXEL_HEIGHT,paint);
-        for (int x=1; x<MAP_THRESHOLD.length; x++){
-            canvas.drawLine(MAP_PIXEL_WIDTH*MAP_THRESHOLD[x],0,MAP_PIXEL_WIDTH*MAP_THRESHOLD[x],MAP_PIXEL_HEIGHT,paint);
-        }
     }
 
     public static Bitmap getAdministrativeBitmap(Context context, int targetWidth, int targetHeight, int[] types){

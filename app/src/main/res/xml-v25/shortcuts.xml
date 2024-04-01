@@ -32,7 +32,7 @@
     <shortcut
             android:shortcutId="maps"
             android:enabled="true"
-            android:icon="@drawable/germany_black"
+            android:icon="@drawable/germany2"
             android:shortcutShortLabel="@string/wm_maps"
             android:shortcutLongLabel="@string/wm_maps">
         <intent

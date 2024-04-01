@@ -575,19 +575,6 @@ public class WeatherLayer {
         return list;
     }
 
-    public static final int EXACTLY_GERMANY_XOFFSET_PIXEL = 117;
-    public static final int EXACTLY_GERMANY_YOFFSET_PIXEL = 79;
-    public static final int EXACTLY_GERMANY_WIDTH_PIXEL = 622;
-    public static final int EXACTLY_GERMANY_HEIGHT_PIXEL = 844;
-
-    public static Bitmap getExactlyGermanyBitmap(Context context) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 1; // do not subsample
-        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(),ThemePicker.getGermanyResource(context)),WeatherWarningActivity.MAP_PIXEL_FIXEDWIDTH,WeatherWarningActivity.MAP_PIXEL_FIXEDHEIGHT,false);
-        bitmap = Bitmap.createBitmap(bitmap, EXACTLY_GERMANY_XOFFSET_PIXEL, EXACTLY_GERMANY_YOFFSET_PIXEL, EXACTLY_GERMANY_WIDTH_PIXEL, EXACTLY_GERMANY_HEIGHT_PIXEL);
-        return bitmap;
-    }
-
     private int getPollenType(){
         switch (layer){
             case Layers.POLLEN_FORECAST_AMBROSIA_0:

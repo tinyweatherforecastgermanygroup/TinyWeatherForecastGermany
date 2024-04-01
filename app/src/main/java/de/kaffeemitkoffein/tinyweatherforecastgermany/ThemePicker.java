@@ -275,10 +275,7 @@ public final class ThemePicker {
     }
 
     public static int getGermanyResource(Context context){
-        if (isDarkTheme(context)){
-            return R.drawable.germany;
-        }
-        return R.drawable.germany_black;
+        return R.drawable.germany2;
     }
 
     private static void tintButton(Context context, Button button){
