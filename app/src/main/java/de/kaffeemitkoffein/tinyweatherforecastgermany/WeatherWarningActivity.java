@@ -982,6 +982,9 @@ public class WeatherWarningActivity extends Activity {
                 scheduledExecutorService.execute(tapRunnable);
             }
         };
+        if (RadarMN2.getScaleFactor(context)>1){
+            mapZoomable.setScaleRange(0.12f,1f);
+        }
         if (zoomMapState!=null){
             mapZoomable.restoreZoomViewState(zoomMapState);
         }

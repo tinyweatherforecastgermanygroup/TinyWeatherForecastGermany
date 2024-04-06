@@ -24,12 +24,14 @@ import android.view.WindowManager;
 
 public class RadarMN2 {
 
+    public static final int WIDTH_SCALE2 = 1079;
+
     public static final int getScaleFactor(Context context){
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
         int scaleFactor=1;
-        if (displayMetrics.widthPixels>1200){
+        if (displayMetrics.widthPixels>WIDTH_SCALE2){
             scaleFactor=2;
         }
         return scaleFactor;
