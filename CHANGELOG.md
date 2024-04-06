@@ -8,13 +8,16 @@
 - added optional display of the precipitation amount to the overview chart
 - switch the rain radar layers from WGS84 (EPSG 4326) to Mercator projection (EPSG 3857) to fit the target map, thus displaying the rain radar with a better local accuracy
 - Gadgetbridge support: fix wrong moon-phase in daily forecast
-- turning the Gadgetbridge support off/on now always triggers an update
+- turning the Gadgetbridge support off/on now always triggers a Gadgetbridge update
 - fix some preferences missing when saving the whole preference instance
 - fix wind unit in overview chart km/h instead of kn
 - moved the wind options for the overview chart from "wind" to "overview chart" in the settings
-- bold widget: align the current day to the left to prevent line breaks in temperature display when the values have two digits
+- bold widget: align the current day to the left to prevent line breaks in temperature display when the values have two digits on some devices
 - switched weather warnings activity map to use a static OpenStreetMap in Mercator Projection
 - rewritten plot functions to draw warning polygons and administrative borders on Mercator projection (EPSG 3857)
+- map legend moved below the map to not overlap with the rain radar
+- depending on the device width in pixels, a higher map resolution is used
+- fix a crash related to unknown pollen region when pollen data was not used before
 
 ## Version 0.62.0:
 

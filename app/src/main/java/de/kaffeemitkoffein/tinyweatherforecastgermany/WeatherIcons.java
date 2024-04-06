@@ -149,7 +149,7 @@ public class WeatherIcons {
             case SYMBOL_SUN: result = R.mipmap.symbol_sun; break;
             case PIN : result = R.mipmap.pin; break;
             case IC_LAUNCHER_BW : result = R.mipmap.ic_launcher_bw; break;
-            case GERMANY: result = R.drawable.germany2; break;
+            case GERMANY: result = RadarMN2.getMapResource(context); break;
             case RADARINFOBAR: result = R.drawable.radarinfobar; break;
             case RADIO_BUTTON_UNCHECKED: result = R.mipmap.ic_radio_button_unchecked_white_24dp; break;
             case RADIO_BUTTON_CHECKED: result = R.mipmap.ic_radio_button_checked_white_24dp; break;

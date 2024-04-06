@@ -21,6 +21,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -31,9 +32,12 @@ import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.view.*;
 import android.widget.*;
@@ -55,7 +59,6 @@ public class WeatherWarningActivity extends Activity {
     ProgressBar rainSlideProgressBar;
     TextView rainSlideProgressBarText;
     TextView rainSlideTime;
-    TextView mapAttributionText;
     ImageView rainDescription;
     Bitmap germanyBitmap;
     Bitmap warningsBitmap;
@@ -64,6 +67,7 @@ public class WeatherWarningActivity extends Activity {
     Bitmap visibleBitmap;
     ZoomableImageView mapZoomable;
     RelativeLayout map_collapsed_container;
+    LinearLayout warningactivityMapinfoContainer;
     boolean deviceIsLandscape;
     private GestureDetector gestureDetector;
     ListView weatherList;
@@ -78,7 +82,7 @@ public class WeatherWarningActivity extends Activity {
 
     Bundle zoomMapState = null;
 
-    final static RadarMN2.MercatorProjectionTile mercatorProjectionTile = RadarMN2.getRadarMapMercatorProjectionTile();
+    RadarMN2.MercatorProjectionTile mercatorProjectionTile;
 
     boolean forceWeatherUpdateFlag = false;
 
@@ -232,6 +236,7 @@ public class WeatherWarningActivity extends Activity {
         }
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
+        mercatorProjectionTile = RadarMN2.getRadarMapMercatorProjectionTile(context);
         rainSlidesStartTime = WeatherSettings.getPrefRadarLastdatapoll(context);
         WeatherSettings.setRotationMode(this);
         setContentView(R.layout.activity_weatherwarning);
@@ -255,6 +260,7 @@ public class WeatherWarningActivity extends Activity {
         mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
         map_collapsed_container = (RelativeLayout) findViewById(R.id.warningactivity_map_collapsed_container);
         warningactivity_map_collapsed = (ImageView) findViewById(R.id.warningactivity_map_collapsed);
+        warningactivityMapinfoContainer = (LinearLayout) findViewById(R.id.warningactivity_mapinfo_container);
         if (warningactivity_map_collapsed!=null){
             warningactivity_map_collapsed.setImageResource(WeatherIcons.getIconResource(context,WeatherIcons.MAP_COLLAPSED));
         }
@@ -286,23 +292,92 @@ public class WeatherWarningActivity extends Activity {
         rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
         rainDescription.setOnTouchListener(forwardRainSlidesOnTouchListener);
         gpsProgressHolder = (RelativeLayout) findViewById(R.id.gps_progress_holder);
-        mapAttributionText = (TextView) findViewById(R.id.warningactivity_mapattribution);
         //mapAttributionText.setText(Html.fromHtml(context.getResources().getString(R.string.map_attribution)));
-        mapAttributionText.setVisibility(View.VISIBLE);
-        mapAttributionText.setMovementMethod(LinkMovementMethod.getInstance());
-        if (!WeatherSettings.appReleaseIsUserdebug()){
-            mapAttributionText.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mapAttributionText.setVisibility(View.GONE);
+        germany = (ImageView) findViewById(R.id.warningactivity_map);
+        // this is to display the osm notice properly in the bottom-right map corner as a textview aligned to the
+        // right border of the bitmap inside the imageview.
+        germany.post(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // get the scale matrix from the imageview to calculate the bitmap size inside the imageview
+                        float[] matrix = new float[9];
+                        germany.getImageMatrix().getValues(matrix);
+                        float scaledMapWidth=germany.getDrawable().getIntrinsicWidth()*matrix[Matrix.MSCALE_X];
+                        float scaledMapHeight=germany.getDrawable().getIntrinsicHeight()*matrix[Matrix.MSCALE_Y];
+                        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+                        // calculate the offset of the textview
+                        int marginRight = Math.round((displayMetrics.widthPixels-scaledMapWidth)/2);
+                        // tweak offset for landscape mode
+                        if (deviceIsLandscape){
+                            RelativeLayout warningactivityLeftcontainer = (RelativeLayout) findViewById(R.id.warningactivity_leftcontainer);
+                            marginRight = Math.round((warningactivityLeftcontainer.getWidth() - scaledMapWidth)/2);
                         }
-                    });
-                }
-            },7000);
-        }
+                        // create the textview
+                        TextView newTextView = new TextView(context);
+                        // underline the text without the (c)
+                        SpannableString spannableString = new SpannableString(context.getResources().getString(R.string.map_attribution));
+                        spannableString.setSpan(new UnderlineSpan(),2,spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                        newTextView.setText(spannableString);
+                        newTextView.setAutoLinkMask(1);
+                        newTextView.setTextSize(9);
+                        newTextView.setVisibility(View.VISIBLE);
+                        newTextView.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN));
+                        newTextView.setBackgroundColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.PRIMARYLIGHT));
+                        newTextView.setPadding(2,1,2,1);
+                        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        layoutParams.setMargins(2,1,marginRight,1);
+                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                        newTextView.setLayoutParams(layoutParams);
+                        RelativeLayout warningactivity_mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
+                        final int newTextViewId = View.generateViewId();
+                        newTextView.setId(newTextViewId);
+
+                        warningactivity_mapcontainer.addView(newTextView);
+                        // make the textview clickable to open the license link
+                        newTextView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                final TextView newTV = (TextView) findViewById(newTextViewId);
+                                newTV.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        String osmUri = "https://openstreetmap.org/copyright";
+                                        Intent openLicenseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(osmUri));
+                                        try {
+                                            startActivity(openLicenseIntent);
+                                        } catch (ActivityNotFoundException e){
+                                            Toast.makeText(context,osmUri,Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                                // make the textview disappear after 7 sec;
+                                // in debug builds, the textview does not disappear
+                                if (!WeatherSettings.appReleaseIsUserdebug()){
+                                    newTV.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    newTV.setVisibility(View.GONE);
+                                                    newTV.setOnClickListener(null);
+                                                }
+                                            });
+                                        }
+                                    },7000);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
         radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(getApplicationContext()){
             @Override
             public void onProgress(long startTime, final int progress) {
@@ -498,7 +573,7 @@ public class WeatherWarningActivity extends Activity {
         float y;
     }
 
-    public static PlotPoint getPlotPoint(float lon, float lat){
+    public PlotPoint getPlotPoint(float lon, float lat){
         PlotPoint plotPoint = new PlotPoint();
         plotPoint.x = (float) mercatorProjectionTile.getXPixel(lon);
         plotPoint.y = (float) mercatorProjectionTile.getYPixel(lat);
@@ -522,8 +597,8 @@ public class WeatherWarningActivity extends Activity {
         strokePaint.setTypeface(Typeface.DEFAULT);
         strokePaint.setTextSize(paint.getTextSize());
         strokePaint.setAntiAlias(true);
-        int shiftX = Math.max(2,germany.getWidth()/RadarMN2.getFixedRadarMapWidth());
-        int shiftY = Math.max(2,germany.getHeight()/RadarMN2.getFixedRadarMapHeight());
+        int shiftX = Math.max(2,germany.getWidth()/RadarMN2.getFixedRadarMapWidth(context));
+        int shiftY = Math.max(2,germany.getHeight()/RadarMN2.getFixedRadarMapHeight(context));
         canvas.drawText(text,x-shiftX,y,strokePaint);
         canvas.drawText(text,x+shiftX,y,strokePaint);
         canvas.drawText(text,x,y-shiftY,strokePaint);
@@ -531,8 +606,17 @@ public class WeatherWarningActivity extends Activity {
         canvas.drawText(text,x,y,paint);
     }
 
+    @SuppressLint("NewApi")
     private void showRainDescription(){
-        Bitmap infoBitmap=Bitmap.createBitmap(Math.round(MAP_PIXEL_WIDTH),Math.round(MAP_PIXEL_HEIGHT*0.12f), Bitmap.Config.ARGB_8888);
+        // Determine the height of the info bar
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        int infoBarHeight = displayMetrics.heightPixels/32;
+        if (deviceIsLandscape){
+            infoBarHeight=displayMetrics.heightPixels/12;
+        }
+        Bitmap infoBitmap=Bitmap.createBitmap(Math.round(MAP_PIXEL_WIDTH),Math.round(infoBarHeight), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(infoBitmap);
         Bitmap radarinfobarResourceBitmap;
         radarinfobarResourceBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADARINFOBAR)),Math.round(MAP_PIXEL_WIDTH),34,false);
@@ -575,7 +659,9 @@ public class WeatherWarningActivity extends Activity {
     }
 
     private void clearRainDescription(){
-        ImageView rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
+        if (rainDescription==null){
+            rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
+        }
         if (rainDescription!=null){
             rainDescription.setImageDrawable(null);
         }
@@ -584,7 +670,7 @@ public class WeatherWarningActivity extends Activity {
     private Bitmap loadBitmapMap(int res_id){
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),res_id),RadarMN2.getFixedRadarMapWidth(),RadarMN2.getFixedRadarMapHeight(),false);
+        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),res_id),RadarMN2.getFixedRadarMapWidth(context),RadarMN2.getFixedRadarMapHeight(context),false);
         return bitmap;
     }
 
@@ -738,9 +824,11 @@ public class WeatherWarningActivity extends Activity {
         map_collapsed_container.setLayoutParams(mclp);
         map_collapsed_container.invalidate();
         LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
-        lop.weight=19;
+        lop.weight=29;
         weatherList.setLayoutParams(lop);
         weatherList.invalidate();
+        LinearLayout.LayoutParams infoContLop = (LinearLayout.LayoutParams) warningactivityMapinfoContainer.getLayoutParams();
+        infoContLop.weight=0;
         return true;
     }
 
@@ -749,7 +837,7 @@ public class WeatherWarningActivity extends Activity {
         mapcontainer.setVisibility(View.VISIBLE);
         LinearLayout.LayoutParams rllp = (LinearLayout.LayoutParams) mapcontainer.getLayoutParams();
         rllp.height=0;
-        rllp.weight=14;
+        rllp.weight=18;
         mapcontainer.setLayoutParams(rllp);
         mapcontainer.invalidate();
         LinearLayout.LayoutParams mclp = (LinearLayout.LayoutParams) map_collapsed_container.getLayoutParams();
@@ -760,9 +848,11 @@ public class WeatherWarningActivity extends Activity {
         map_collapsed_container.setVisibility(View.GONE);
         LinearLayout.LayoutParams lop = (LinearLayout.LayoutParams) weatherList.getLayoutParams();
         lop.height=0;
-        lop.weight=6;
+        lop.weight=11;
         weatherList.setLayoutParams(lop);
         weatherList.invalidate();
+        LinearLayout.LayoutParams infoContLop = (LinearLayout.LayoutParams) warningactivityMapinfoContainer.getLayoutParams();
+        infoContLop.weight=1;
         return true;
     }
     
@@ -1092,7 +1182,7 @@ public class WeatherWarningActivity extends Activity {
         showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_rationale));
     }
 
-    public static Bitmap getAdministrativeBitmap(Context context, int targetWidth, int targetHeight, int[] types){
+    public Bitmap getAdministrativeBitmap(Context context, int targetWidth, int targetHeight, int[] types){
         Bitmap resultBitmap = Bitmap.createBitmap(targetWidth,targetHeight, Bitmap.Config.ARGB_8888);
         resultBitmap.eraseColor(Color.TRANSPARENT);
         Canvas canvas = new Canvas(resultBitmap);

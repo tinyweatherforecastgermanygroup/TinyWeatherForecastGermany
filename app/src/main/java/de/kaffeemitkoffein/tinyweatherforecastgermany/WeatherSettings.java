@@ -1727,8 +1727,8 @@ public class WeatherSettings {
         int pollenRegion = sharedPreferences.getInt(PREF_POLLENREGION_ID,PREF_POLLENREGION_ID_DEFAULT);
         int pollenPartRegion = sharedPreferences.getInt(PREF_POLLENPARTREGION_ID,PREF_POLLENPARTREGION_ID_DEFAULT);
         String description = sharedPreferences.getString(PREF_POLLENREGION_DESCRIPTION,PREF_POLLENREGION_DESCRIPTION_DEFAULT);
-        if (pollenRegion==-1){
-            return null;
+        if (pollenRegion==-1) {
+            return PollenArea.FindPollenArea(context,getSetStationLocation(context));
         }
         return new PollenArea(pollenRegion,pollenPartRegion,description);
     }

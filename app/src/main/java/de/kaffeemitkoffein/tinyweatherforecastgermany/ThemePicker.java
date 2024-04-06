@@ -274,10 +274,6 @@ public final class ThemePicker {
         textView.setTextColor(getPrecipitationAccentColor(context));
     }
 
-    public static int getGermanyResource(Context context){
-        return R.drawable.germany2;
-    }
-
     private static void tintButton(Context context, Button button){
         if (button!=null){
             //button.setBackgroundColor(getColor(context,ThemeColor.PRIMARYLIGHT));

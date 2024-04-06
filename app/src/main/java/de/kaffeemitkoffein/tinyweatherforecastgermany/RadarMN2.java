@@ -2,6 +2,8 @@ package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
 import android.graphics.*;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 /*
  * This is the interface to get a rain radar image in Mercator (EPSG 3857) projection that fits to the static
@@ -22,14 +24,31 @@ import android.graphics.*;
 
 public class RadarMN2 {
 
-    public static final int scaleFactor = 1;
-
-    public static int getFixedRadarMapWidth(){
-        return scaleFactor*1108;
+    public static final int getScaleFactor(Context context){
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        int scaleFactor=1;
+        if (displayMetrics.widthPixels>1200){
+            scaleFactor=2;
+        }
+        return scaleFactor;
     }
 
-    public static int getFixedRadarMapHeight(){
-        return scaleFactor*1360;
+    public static int getMapResource(Context context){
+        int scaleFactor = getScaleFactor(context);
+        if (scaleFactor==2){
+            return R.drawable.germany2_scale2;
+        }
+        return R.drawable.germany2_scale1;
+    }
+
+    public static int getFixedRadarMapWidth(Context context){
+        return getScaleFactor(context)*1108;
+    }
+
+    public static int getFixedRadarMapHeight(Context context){
+        return getScaleFactor(context)*1360;
     }
 
     public static class MercatorProjection{
@@ -111,8 +130,8 @@ public class RadarMN2 {
 
     }
 
-    public static MercatorProjectionTile getRadarMapMercatorProjectionTile(){
-        MercatorProjectionTile mercatorProjectionTile = new MercatorProjectionTile(getFixedRadarMapWidth(),
+    public static MercatorProjectionTile getRadarMapMercatorProjectionTile(Context context){
+        MercatorProjectionTile mercatorProjectionTile = new MercatorProjectionTile(getFixedRadarMapWidth(context),
                 4.4286943,46.5009905,16.0888267,55.5533029);
         return mercatorProjectionTile;
     }
@@ -120,19 +139,19 @@ public class RadarMN2 {
     // this is the bbox corresponding to the specs above
     public static final String BBOX = "bbox=493000.00%2C5861000.00%2C1791000.00%2C7470000.00";
 
-    public static int[] getPixels(){
-        return new int[getFixedRadarMapWidth()*getFixedRadarMapHeight()];
+    public static int[] getPixels(Context context){
+        return new int[getFixedRadarMapWidth(context)*getFixedRadarMapHeight(context)];
     }
 
     public static Bitmap getBitmap(Context context, int count){
         if (APIReaders.RadarMNSetGeoserverRunnable.radarCacheFileExists(context,count)){
-            int[] color = getPixels();
+            int[] color = getPixels(context);
             BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
             bitmapOptions.inMutable = true;
             Bitmap bitmap;
             bitmap = BitmapFactory.decodeFile(APIReaders.RadarMNSetGeoserverRunnable.getRadarMNFile(context,count).getAbsolutePath().toString(),bitmapOptions);
-            bitmap.getPixels(color,0,getFixedRadarMapWidth(),0,0,getFixedRadarMapWidth(),getFixedRadarMapHeight());
-            for (int i=0; i<getFixedRadarMapWidth()*getFixedRadarMapHeight(); i++){
+            bitmap.getPixels(color,0,getFixedRadarMapWidth(context),0,0,getFixedRadarMapWidth(context),getFixedRadarMapHeight(context));
+            for (int i=0; i<getFixedRadarMapWidth(context)*getFixedRadarMapHeight(context); i++){
                 if ((color[i]==-4342339)){
                     color[i]=Color.TRANSPARENT;
                 }
@@ -141,7 +160,7 @@ public class RadarMN2 {
                 }
 
             }
-            bitmap.setPixels(color,0,getFixedRadarMapWidth(),0,0,getFixedRadarMapWidth(),getFixedRadarMapHeight());
+            bitmap.setPixels(color,0,getFixedRadarMapWidth(context),0,0,getFixedRadarMapWidth(context),getFixedRadarMapHeight(context));
             return bitmap;
         }
         return null;
