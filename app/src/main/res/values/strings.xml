@@ -288,6 +288,8 @@
     <string name="preference_reset_summary">Set all settings to the default values.</string>
     <string name="preference_datasaver_title">Data saver enabled</string>
     <string name="preference_datasaver_summary">Currently, no data can be synced when using metered networks. Consider adding Tiny Weather Forecast Germany to the list of apps with unrestricted data.</string>
+    <string name="preference_highresolution_title">High resolution</string>
+    <string name="preference_highresolution_summary">Forces the higher resolution of the map. This can slow down the device or cause problems on older devices. </string>
     <string name="alertdialog_3_title">Reset preferences</string>
     <string name="alertdialog_3_text1">All settings will be reset to default values, and then the intro will be shown again to make the most important settings.</string>
     <string name="alertdialog_3_text2">Are you sure you want to reset the settings?</string>

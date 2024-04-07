@@ -35,6 +35,8 @@ import android.os.PowerManager;
 import android.preference.*;
 import android.widget.Toast;
 
+import java.util.prefs.PreferenceChangeEvent;
+
 @SuppressWarnings("deprecation")
 public class Settings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -664,6 +666,14 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 syncWarningsCheckboxPreference.setChecked(false);
                 syncWarningsCheckboxPreference.setEnabled(false);
                 syncWarningsCheckboxPreference.setShouldDisableView(true);
+            }
+        }
+        CheckBoxPreference forceHighResolutionMap = (CheckBoxPreference) findPreference(WeatherSettings.PREF_MAP_HIGH_RESOLUTION);
+        if (forceHighResolutionMap!=null){
+            if (RadarMN2.getTrueScaleFactor(context)>1){
+                forceHighResolutionMap.setChecked(false);
+                forceHighResolutionMap.setEnabled(false);
+                forceHighResolutionMap.setShouldDisableView(true);
             }
         }
     }

@@ -612,14 +612,21 @@ public class WeatherWarningActivity extends Activity {
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-        int infoBarHeight = displayMetrics.heightPixels/32;
-        if (deviceIsLandscape){
-            infoBarHeight=displayMetrics.heightPixels/12;
+        int infoBarHeight = displayMetrics.heightPixels/12;
+        int infoBarWidth  = Math.round(displayMetrics.widthPixels*(8f/20f)*(14f/20f));
+        if (!deviceIsLandscape){
+            infoBarWidth = Math.round(displayMetrics.widthPixels*(14f/20f));
+            infoBarHeight = Math.round(displayMetrics.heightPixels*(1/28f)); // less than 30 to account for action bar & system elements at top of screen
         }
-        Bitmap infoBitmap=Bitmap.createBitmap(Math.round(MAP_PIXEL_WIDTH),Math.round(infoBarHeight), Bitmap.Config.ARGB_8888);
+        // this is the result bitmap holding the color bar and the text legend
+        Bitmap infoBitmap=Bitmap.createBitmap(Math.round(infoBarWidth),Math.round(infoBarHeight), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(infoBitmap);
+        // this is the color bar, holding 50% of the space
+        // original bitmap resolution of the info bar is 824x34 pixels
+        float targetHeightColorBar   = infoBarHeight/2f;
+        float targetWidthColorBar    = infoBarWidth;
         Bitmap radarinfobarResourceBitmap;
-        radarinfobarResourceBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADARINFOBAR)),Math.round(MAP_PIXEL_WIDTH),34,false);
+        radarinfobarResourceBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),WeatherIcons.getIconResource(getApplicationContext(),WeatherIcons.RADARINFOBAR)),Math.round(targetWidthColorBar),Math.round(targetHeightColorBar),true);
         Paint rpaint = new Paint();
         rpaint.setStyle(Paint.Style.FILL);
         canvas.drawBitmap(radarinfobarResourceBitmap,0,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),rpaint);
@@ -628,14 +635,33 @@ public class WeatherWarningActivity extends Activity {
         radarTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         radarTextPaint.setAntiAlias(true);
         radarTextPaint.setFakeBoldText(true);
-        int textsize = radarinfobarResourceBitmap.getHeight();
+        int textsize = infoBarHeight/2;
         radarTextPaint.setTextSize(textsize);
+        // fix the textsize to prevent overlapping of labels if the total width available is small
+        String rainRadarLabelText1 = getResources().getString(R.string.radar_rain1);
+        String rainRadarLabelText2 = getResources().getString(R.string.radar_rain2);
+        String rainRadarLabelText3 = getResources().getString(R.string.radar_rain3);
+        String rainRadarLabelText4 = getResources().getString(R.string.radar_rain4);
+        int widestRadarLabel = 1; String widestRadarLabelText = rainRadarLabelText1;
+        if (radarTextPaint.measureText(rainRadarLabelText2)>radarTextPaint.measureText(rainRadarLabelText1)){
+            widestRadarLabel = 2; widestRadarLabelText = rainRadarLabelText2;
+        }
+        if (radarTextPaint.measureText(rainRadarLabelText3)>radarTextPaint.measureText(widestRadarLabelText)){
+            widestRadarLabel = 3; widestRadarLabelText = rainRadarLabelText3;
+        }
+        if (radarTextPaint.measureText(rainRadarLabelText4)>radarTextPaint.measureText(widestRadarLabelText)){
+            widestRadarLabel = 4; widestRadarLabelText = rainRadarLabelText4;
+        }
+        int widestLabelWidth = Math.round(radarTextPaint.measureText(widestRadarLabelText));
+        while ((textsize>6) && (infoBarWidth-(radarTextPaint.measureText(widestRadarLabelText)*6)<1)){
+            textsize--;
+            radarTextPaint.setTextSize(textsize);
+        }
         radarTextPaint.setColor(Color.WHITE);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         Date rainSlideDate = new Date(rainSlidesStartTime+(nextRainSlide)*APIReaders.RadarMNSetGeoserverRunnable.TIMESTEP_5MINUTES);
         String radartime = simpleDateFormat.format(rainSlideDate);
         float ff=1.1f;
-        //drawStrokedText(canvas,radartime,MAP_PIXEL_WIDTH/100,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff*2,radarTextPaint);
         if (validSlideSetObtained) {
             rainSlideTime.setTextColor(Color.WHITE);
             if (Calendar.getInstance().getTimeInMillis() > rainSlidesStartTime + +1000*60*60*1.5f){
@@ -646,13 +672,13 @@ public class WeatherWarningActivity extends Activity {
         }
         rainSlideTime.setText(radartime);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[2]);
-        drawStrokedText(canvas,getResources().getString(R.string.radar_rain1),MAP_PIXEL_WIDTH*0.1f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff,radarTextPaint);
+        drawStrokedText(canvas,getResources().getString(R.string.radar_rain1),infoBarWidth*0.1f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff,radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[7]);
-        drawStrokedText(canvas,getResources().getString(R.string.radar_rain2),MAP_PIXEL_WIDTH*0.3f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
+        drawStrokedText(canvas,getResources().getString(R.string.radar_rain2),infoBarWidth*0.3f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[11]);
-        drawStrokedText(canvas,getResources().getString(R.string.radar_rain3),MAP_PIXEL_WIDTH*0.6f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
+        drawStrokedText(canvas,getResources().getString(R.string.radar_rain3),infoBarWidth*0.6f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[16]);
-        drawStrokedText(canvas,getResources().getString(R.string.radar_rain4),MAP_PIXEL_WIDTH*0.8f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
+        drawStrokedText(canvas,getResources().getString(R.string.radar_rain4),infoBarWidth*0.8f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight(),radarTextPaint);
         if (rainDescription!=null){
             rainDescription.setImageBitmap(infoBitmap);
         }
@@ -687,36 +713,6 @@ public class WeatherWarningActivity extends Activity {
             }
         });
     }
-
-    /*
-    private void drawRadarSlide(final int count){
-        if (APIReaders.RadarMNSetGeoserverRunnable.radarCacheFileValid(context,count)) {
-            rainRadarData = RadarMN.getData(context, count);
-            int[] target = new int[radarBitmap.getHeight()*radarBitmap.getWidth()];
-            float yPS = (MAP_PIXEL_HEIGHT / RadarMN.RADARMAP_PIXEL_FIXEDHEIGHT) / 2f + 1;
-            float xPS = (MAP_PIXEL_WIDTH / RadarMN.RADARMAP_PIXEL_FIXEDWIDTH) / 2f + 1;
-            radarBitmap.eraseColor(Color.TRANSPARENT);
-            Canvas radarCanvas = new Canvas(radarBitmap);
-            Paint rpaint = new Paint();
-            rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
-            for (int y = 0; y < RadarMN.RADARMAP_PIXEL_FIXEDHEIGHT; y++) {
-                for (int x = 0; x < RadarMN.RADARMAP_PIXEL_FIXEDWIDTH; x++) {
-                    if (rainRadarData[x + y * RadarMN.RADARMAP_PIXEL_FIXEDWIDTH]!=Color.TRANSPARENT){
-                        rpaint.setColor(rainRadarData[x + y * RadarMN.RADARMAP_PIXEL_FIXEDWIDTH]);
-                  Log.v("twfg","Slide cache file NOT valid: "+count);                  PlotPoint plotPoint = getPlotPoint(RadarMN.getGeoX(x,y),RadarMN.getGeoY(x,y));
-                        radarCanvas.drawRect(plotPoint.x-xPS,plotPoint.y-yPS,plotPoint.x+xPS,plotPoint.y+yPS,rpaint);
-                    }
-                }
-            }
-            if (!hide_rain) {
-                drawMapBitmap();
-            }
-        } else {
-            // nothing to do
-        }
-    }
-
-     */
 
     private void drawRadarSlide(final int count){
         if (APIReaders.RadarMNSetGeoserverRunnable.radarCacheFileValid(context,count)) {
@@ -915,40 +911,6 @@ public class WeatherWarningActivity extends Activity {
             }
         }
 
-        /* old rain radar
-        APIReaders.RadarMNGeoserverRunnable radarMNGeoserverRunnable = new APIReaders.RadarMNGeoserverRunnable(getApplicationContext()){
-            @Override
-            public void onFinished(final RadarMN radarMN){
-                // override to do something with the map
-                if (radarMN!=null){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            float yPS = (MAP_PIXEL_HEIGHT/RadarMN.RADARMAP_PIXEL_FIXEDHEIGHT)/2f+1;
-                            float xPS = (MAP_PIXEL_WIDTH/RadarMN.RADARMAP_PIXEL_FIXEDWIDTH)/2f+1;
-                            Canvas radarCanvas = new Canvas(radarBitmap);
-                            Paint rpaint = new Paint();
-                            rpaint.setStyle(Paint.Style.FILL_AND_STROKE);
-                            for (int y=0; y<RadarMN.RADARMAP_PIXEL_FIXEDHEIGHT; y++){
-                                for (int x=0; x<RadarMN.RADARMAP_PIXEL_FIXEDWIDTH; x++){
-                                    rpaint.setColor(radarMN.color[x][y]);
-                                    PlotPoint plotPoint = getPlotPoint(radarMN.getGeoX(x,y),radarMN.getGeoY(x,y));
-                                    radarCanvas.drawRect(plotPoint.x-xPS,plotPoint.y-yPS,plotPoint.x+xPS,plotPoint.y+yPS,rpaint);
-                                    //radarCanvas.drawRect(x,y,x+xPS,y+yPS,rpaint);
-                                }
-                            }
-                            if (!hide_rain){
-                                drawMapBitmap();
-                                //mapZoomable.updateBitmap(radarMN.getBitmap());
-                            }
-                        }
-                    });
-
-                }
-            }
-        };
-        executor.execute(radarMNGeoserverRunnable);
-        */
         drawWindIcon();
         if (Weather.suitableNetworkAvailable(context)){
             scheduledExecutorService.execute(radarMNSetGeoserverRunnable);

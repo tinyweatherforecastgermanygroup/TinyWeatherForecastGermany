@@ -225,6 +225,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="14"
                     android:gravity="center"
+                    android:scaleType="fitXY"
                     android:layout_gravity="center"
                     android:layout_centerHorizontal="true">
             </ImageView>

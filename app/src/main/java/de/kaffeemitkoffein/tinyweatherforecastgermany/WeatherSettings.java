@@ -169,6 +169,7 @@ public class WeatherSettings {
     public static final String PREF_BATTERY = "PREF_battery"; // has no value
     public static final String PREF_DATA_SAVER = "PREF_data_saver"; // has no value
     public static final String PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT = "PREF_display_overviewchart_pca";
+    public static final String PREF_MAP_HIGH_RESOLUTION ="PREF_map_high_resolution";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -284,6 +285,7 @@ public class WeatherSettings {
     public static final boolean PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT = false;
     public static final boolean PREF_AREADATABASE_LOCK_DEFAULT = false;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT = false;
+    public static final boolean PREF_MAP_HIGH_RESOLUTION_DEFAULT = false;
 
     public String location_description = PREF_LOCATION_DESCRIPTION_DEFAULT;
     public String location_desc_alternate = PREF_LOCATION_DESC_ALTERNATE_DEFAULT;
@@ -373,7 +375,6 @@ public class WeatherSettings {
     public int pollenRegion = PREF_POLLENREGION_ID_DEFAULT;
     public int pollenPartRegion = PREF_POLLENPARTREGION_ID_DEFAULT;
     public String pollenRegionDescription = PREF_POLLENREGION_DESCRIPTION_DEFAULT;
-
     public long uviLastUpdateTime = PREF_MAPLASTUPDATETIME_DEFAULT;
     public boolean pollenAmbrosia = PREF_POLLEN_AMBROSIA_DEFAULT;
     public boolean pollenBeifuss = PREF_POLLEN_BEIFUSS_DEFAULT;
@@ -397,8 +398,8 @@ public class WeatherSettings {
     public long lastNotificationsUpdateTime = PREF_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT;
     public boolean boldWidgetVerticalBar = PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT;
     public boolean areaDatabaseLock = PREF_AREADATABASE_LOCK_DEFAULT;
-
     public boolean displayOverviewChartPrecipitationAmount = PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT;
+    public boolean  mapHighResolution = PREF_MAP_HIGH_RESOLUTION_DEFAULT;
 
     private Context context;
     public SharedPreferences sharedPreferences;
@@ -516,6 +517,7 @@ public class WeatherSettings {
         this.boldWidgetVerticalBar = readPreference(PREF_BOLDWIDGET_VERTICAL_BAR,PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT);
         this.areaDatabaseLock = readPreference(PREF_AREADATABASE_LOCK,PREF_AREADATABASE_LOCK_DEFAULT);
         this.displayOverviewChartPrecipitationAmount = readPreference(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT);
+        this.mapHighResolution = readPreference(PREF_MAP_HIGH_RESOLUTION,PREF_MAP_HIGH_RESOLUTION_DEFAULT);
     }
 
     public void savePreferences() {
@@ -625,6 +627,7 @@ public class WeatherSettings {
         applyPreference(boldWidgetVerticalBar , PREF_BOLDWIDGET_VERTICAL_BAR,PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT);
         applyPreference(areaDatabaseLock , PREF_AREADATABASE_LOCK,PREF_AREADATABASE_LOCK_DEFAULT);
         applyPreference(displayOverviewChartPrecipitationAmount , PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT);
+        applyPreference(mapHighResolution, PREF_MAP_HIGH_RESOLUTION, PREF_MAP_HIGH_RESOLUTION_DEFAULT);
     }
 
     public static void resetPreferencesToDefault(Context context){
@@ -1972,6 +1975,11 @@ public class WeatherSettings {
     public static boolean displayPrecipitationAmountInOverviewChart(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT);
+    }
+
+    public static boolean forceMapHighResolution(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_MAP_HIGH_RESOLUTION,PREF_MAP_HIGH_RESOLUTION_DEFAULT);
     }
 
     public static class Updates{

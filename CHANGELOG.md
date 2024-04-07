@@ -18,6 +18,7 @@
 - map legend moved below the map to not overlap with the rain radar
 - depending on the device width in pixels, a higher map resolution is used
 - fix a crash related to unknown pollen region when pollen data was not used before
+- new setting to force use of the higher resolution map despite lower device specs
 
 ## Version 0.62.0:
 
