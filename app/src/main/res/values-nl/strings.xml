@@ -473,4 +473,5 @@
     <string name="preference_sync_weather_summary">Werk de weersvoorspelling regelmatig bij.</string>
     <string name="battery_summary">Deactiveer batterijoptimalisatie voor deze app zodat weergegevens betrouwbaar kunnen worden gesynchroniseerd.</string>
     <string name="preview_fake_warning_text">WINDSTORMEN</string>
+    <string name="favorites_delete_title">Verwijderen favorieten</string>
 </resources>
