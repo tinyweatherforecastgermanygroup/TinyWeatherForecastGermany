@@ -504,4 +504,9 @@
     <string name="preference_category_sync">Préférences de synchronisation</string>
     <string name="preference_datasaver_title">Économiseur de données activé</string>
     <string name="datasaver_enable_unrestricted_title">Permettre l\'utilisation illimitée des données</string>
+    <string name="preference_display_overviewchart_pca_title">Quantité de précipitation</string>
+    <string name="preference_display_overviewchart_pca_summary">Affichez la quantité de précipitations dans le graphique d\'ensemble.</string>
+    <string name="map_attribution">© <a href="https://www.openstreetmap.org/copyright/fr">OpenStreetMap</a></string>
+    <string name="preference_highresolution_title">Haute résolution</string>
+    <string name="preference_highresolution_summary">Force la résolution la plus élevée de la carte. Cela peut ralentir l\'appareil ou causer des problèmes sur les appareils plus anciens.</string>
 </resources>
