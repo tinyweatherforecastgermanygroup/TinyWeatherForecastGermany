@@ -146,7 +146,6 @@ public class WeatherWarningActivity extends Activity {
                     scheduledExecutorService.execute(showNextRainSlide);
                 }
             }
-            cancelRainSlides = false;
         }
     };
 
@@ -185,6 +184,7 @@ public class WeatherWarningActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        cancelRainSlides=false;
         registerForBroadcast();
         if (germany==null){
             germany = (ImageView) findViewById(R.id.warningactivity_map);
@@ -193,24 +193,7 @@ public class WeatherWarningActivity extends Activity {
         if (WeatherSettings.GPSAuto(context)){
             weatherLocationManager.checkLocation();
         }
-        if ((!hide_rain) && (!cancelRainSlides) && (validSlideSetObtained)){
-            // start rain slides only after map view was created
-            germany.post(new Runnable() {
-                @Override
-                public void run() {
-                    scheduledExecutorService.execute(showNextRainSlide);
-                }
-            });
-        }
-        if ((!validSlideSetObtained) && (Weather.suitableNetworkAvailable(context))){
-            // start rain slides only after map view was created
-            germany.post(new Runnable() {
-                @Override
-                public void run() {
-                    scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
-                }
-            });
-        }
+        startRainRadarIfAvailable();
         if (Weather.suitableNetworkAvailable(context)){
             scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
         }
@@ -522,11 +505,37 @@ public class WeatherWarningActivity extends Activity {
             else {
                 hide_rain = true; hide_admin = true;
             }
-            // hide_rain = !hide_rain;
+            if (!hide_rain){
+                cancelRainSlides=false;
+                startRainRadarIfAvailable();
+            } else {
+                cancelRainSlides=true;
+            }
             drawMapBitmap();
             return true;
         }
         return super.onOptionsItemSelected(mi);
+    }
+
+    public void startRainRadarIfAvailable(){
+        if ((!hide_rain) && (!cancelRainSlides) && (validSlideSetObtained)){
+            // start rain slides only after map view was created
+            germany.post(new Runnable() {
+                @Override
+                public void run() {
+                    scheduledExecutorService.execute(showNextRainSlide);
+                }
+            });
+        }
+        if ((!validSlideSetObtained) && (Weather.suitableNetworkAvailable(context))){
+            // start rain slides only after map view was created
+            germany.post(new Runnable() {
+                @Override
+                public void run() {
+                    scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
+                }
+            });
+        }
     }
 
     public void updateActionBarLabels(){
