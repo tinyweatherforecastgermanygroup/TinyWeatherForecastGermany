@@ -1,0 +1,1 @@
+Väderleksprognosen baseras på öppen data från Deutscher Wetterdienst.
