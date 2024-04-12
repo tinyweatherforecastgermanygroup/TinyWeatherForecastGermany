@@ -156,4 +156,7 @@
     <string name="sync_enable_question">Aktivera synkronisering för %1$s?</string>
     <string name="preference_sync_weather_summary">Uppdatera väderprognosen regelbundet.</string>
     <string name="preview_fake_warning_text">VIND GUSTS</string>
+    <string name="main_updatetime">Senast uppdaterad:</string>
+    <string name="main_wait_for_gps_fix">Avgör platsen nu…</string>
+    <string name="main_selectstation">Region:</string>
 </resources>
