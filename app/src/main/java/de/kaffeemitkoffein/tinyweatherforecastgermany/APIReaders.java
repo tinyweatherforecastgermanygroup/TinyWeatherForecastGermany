@@ -1457,12 +1457,12 @@ public class APIReaders {
     public static class getLayerImages implements Runnable{
 
         private Context context;
-        private ArrayList<WeatherLayer> layers;
+        private final ArrayList<WeatherLayer> layers;
         public boolean ssl_exception = false;
         private boolean forceUpdate = false;
         private boolean alreadyToastedForbiddenUpdate = false;
 
-        public getLayerImages(Context context, ArrayList<WeatherLayer> layers){
+        public getLayerImages(Context context, final ArrayList<WeatherLayer> layers){
             this.context = context;
             this.layers = layers;
         }
@@ -1480,8 +1480,8 @@ public class APIReaders {
             stringBuilder.append("&bbox=");
             stringBuilder.append(x0); stringBuilder.append("%2C"); stringBuilder.append(y0); stringBuilder.append("%2C");
             stringBuilder.append(x1); stringBuilder.append("%2C"); stringBuilder.append(y1); stringBuilder.append("&");
-            if (weatherLayer.timestamp!=null){
-                stringBuilder.append(getTimeStamp(weatherLayer.timestamp));
+            if (weatherLayer.getTargetTime()!=0){
+                stringBuilder.append(getTimeStamp(weatherLayer.getTargetTime()));
                 stringBuilder.append("&");
             }
             stringBuilder.append("width="); stringBuilder.append(weatherLayer.width); stringBuilder.append("&");
@@ -1593,10 +1593,6 @@ public class APIReaders {
                     InputStream layerInputStream = getLayerInputStream(weatherLayer);
                     //Log.v("weather","Layer "+weatherLayer.layer+" fetching from GeoServer. File is "+targetFile.toString()+" and time is "+weatherLayer.timestamp);
                     boolean result = readImage(layerInputStream,targetFile);
-                    if ((result) && (weatherLayer.timestamp!=null)) {
-                        // save the layer "midnight" time (this is the requested time)
-                        WeatherSettings.setLayerTime(context,weatherLayer.layer,weatherLayer.timestamp);
-                    }
                 } catch (Exception e){
                     PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"i/o error while fetching layers: "+e.getMessage());
                     return false;

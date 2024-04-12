@@ -1,11 +1,7 @@
 New in version [VERSION]:
 
-- improved home screen widgets, data syncs, translations and Gadgetbridge support
-- new settings to better customize data syncs
-- reduced app launch time
-- fixed broken background location checks
-- fixed bug regarding air pressure on wearables
-- fixed times for sunrise, sunset etc. shifted by one day on wearables
-- app stores can now auto-update this app
+- More detailed map display and more accurate rain radar
+- the amount of precipitation can be displayed in the overview chart
+- various bug fixes and layout improvements
 
 For a detailed list of changes, see https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md

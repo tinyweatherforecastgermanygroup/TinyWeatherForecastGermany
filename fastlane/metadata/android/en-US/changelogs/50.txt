@@ -1,0 +1,3 @@
+- More detailed map display and more accurate rain radar
+- the amount of precipitation can be displayed in the overview chart
+- various bug fixes and layout improvements

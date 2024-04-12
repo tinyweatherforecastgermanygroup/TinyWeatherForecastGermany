@@ -292,7 +292,6 @@ public class WeatherWarningActivity extends Activity {
         rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
         rainDescription.setOnTouchListener(forwardRainSlidesOnTouchListener);
         gpsProgressHolder = (RelativeLayout) findViewById(R.id.gps_progress_holder);
-        //mapAttributionText.setText(Html.fromHtml(context.getResources().getString(R.string.map_attribution)));
         germany = (ImageView) findViewById(R.id.warningactivity_map);
         // this is to display the osm notice properly in the bottom-right map corner as a textview aligned to the
         // right border of the bitmap inside the imageview.
@@ -320,7 +319,11 @@ public class WeatherWarningActivity extends Activity {
                         // create the textview
                         TextView newTextView = new TextView(context);
                         // underline the text without the (c)
-                        SpannableString spannableString = new SpannableString(context.getResources().getString(R.string.map_attribution));
+                        String osmString = context.getResources().getString(R.string.map_attribution);
+                        if (WeatherSettings.appReleaseIsUserdebug()){
+                            osmString = osmString + " " +context.getResources().getString(R.string.map_attribution_link);
+                        }
+                        SpannableString spannableString = new SpannableString(osmString);
                         spannableString.setSpan(new UnderlineSpan(),2,spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         newTextView.setText(spannableString);
                         newTextView.setAutoLinkMask(1);
@@ -337,7 +340,6 @@ public class WeatherWarningActivity extends Activity {
                         RelativeLayout warningactivity_mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
                         final int newTextViewId = View.generateViewId();
                         newTextView.setId(newTextViewId);
-
                         warningactivity_mapcontainer.addView(newTextView);
                         // make the textview clickable to open the license link
                         newTextView.post(new Runnable() {

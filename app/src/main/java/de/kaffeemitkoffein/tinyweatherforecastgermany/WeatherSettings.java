@@ -1703,7 +1703,6 @@ public class WeatherSettings {
         return sharedPreferences.getLong(key,PREF_LAYERTIME_DEFAULT);
     }
 
-     */
 
     public static void setLayerTime(Context context, int position, long time){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1712,6 +1711,8 @@ public class WeatherSettings {
         pref_editor.putLong(key,time);
         pref_editor.apply();
     }
+
+     */
 
     public static int getLastDisplayedLayer(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);

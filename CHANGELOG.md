@@ -19,6 +19,7 @@
 - depending on the device width in pixels, a higher map resolution is used
 - fix a crash related to unknown pollen region when pollen data was not used before
 - new setting to force use of the higher resolution map despite lower device specs
+- fix wrong dates shown in the weather maps activity when bitmaps were recycled from present data
 
 ## Version 0.62.0:
 

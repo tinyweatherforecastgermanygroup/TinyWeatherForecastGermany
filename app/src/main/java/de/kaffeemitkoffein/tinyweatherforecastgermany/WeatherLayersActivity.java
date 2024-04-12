@@ -29,11 +29,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -148,7 +145,8 @@ public class WeatherLayersActivity extends Activity {
                 }
             }
         };
-        getLayerImages = new APIReaders.getLayerImages(context, WeatherLayer.getLayers(context)) {
+        weatherLayers = WeatherLayer.getLayers(context);
+        getLayerImages = new APIReaders.getLayerImages(context, weatherLayers) {
             @Override
             public void onFinished(boolean success) {
                 if (success){
@@ -231,9 +229,8 @@ public class WeatherLayersActivity extends Activity {
             };
             executor.execute(pollenReader);
         }
-        weatherLayers = WeatherLayer.getLayers(context);
         getViewIDs();
-        APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context,weatherLayers){
+        APIReaders.getLayerImages getLayerImages2 = new APIReaders.getLayerImages(context,weatherLayers){
             @Override
             public void onProgress(final WeatherLayer weatherLayer) {
                 runOnUiThread(new Runnable() {
@@ -254,7 +251,7 @@ public class WeatherLayersActivity extends Activity {
                 });
             }
         };
-        executor.execute(getLayerImages);
+        executor.execute(getLayerImages2);
         TextView wm_heading_4_1 = findViewById(R.id.wm_heading_4_1);
         TextView wm_heading_5_1 = findViewById(R.id.wm_heading_5_1);
         if (wm_heading_4_1!=null){

@@ -1,7 +1,5 @@
-Neu in dieser Version [VERSION]:
 
 - detailliertere Kartendarstellung und genaueres Regenradar
 - in der Übersichtsgrafik kann die Niederschlagsmenge angezeigt werden
 - diverse Fehlerbehebungen und Layout-Verbesserungen
 
-Für eine detaillierte Liste der Änderungen siehe https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md

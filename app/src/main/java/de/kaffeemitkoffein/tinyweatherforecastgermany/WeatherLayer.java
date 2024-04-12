@@ -32,7 +32,8 @@ import java.util.TimeZone;
 public class WeatherLayer {
     int layer;
     float[] mapGeo;
-    Long timestamp;
+    long pollingTime;
+    long targetTime;
     int width;
     int height;
     String srs;
@@ -40,10 +41,10 @@ public class WeatherLayer {
     int[] atop = null;
     int legendType;
 
-    public WeatherLayer(int layer, float[] mapGeo, Long timestamp, int width, int height, String srs, int updateMode, int[] atop, int legendType) {
+    public WeatherLayer(int layer, float[] mapGeo, long targetTime, int width, int height, String srs, int updateMode, int[] atop, int legendType) {
         this.layer = layer;
         this.mapGeo = mapGeo;
-        this.timestamp = timestamp;
+        this.targetTime = targetTime;
         this.width = width;
         this.height = height;
         this.srs = srs;
@@ -63,6 +64,8 @@ public class WeatherLayer {
             this.updateMode = weatherLayer.updateMode;
             this.atop = weatherLayer.atop;
             this.legendType = weatherLayer.legendType;
+            this.targetTime = weatherLayer.targetTime;
+            this.pollingTime = weatherLayer.pollingTime;
         }
     }
 
@@ -280,6 +283,20 @@ public class WeatherLayer {
         return target.toString();
     }
 
+
+    public long getFileLastModifiedTime(Context context) {
+        File cacheDir = context.getCacheDir();
+        File target = new File(cacheDir, getCacheFilename());
+        return target.lastModified();
+    }
+
+    public boolean setFileLastModifiedTime(Context context, long time) {
+        File cacheDir = context.getCacheDir();
+        File target = new File(cacheDir, getCacheFilename());
+        return target.setLastModified(time);
+    }
+
+
     public static String getLayerID(int layer) {
         return LayerIDs[layer];
     }
@@ -405,7 +422,8 @@ public class WeatherLayer {
     }
 
     public static long getMidnightTime(long time, int daysToAdd) {
-        return getFullHourTime(time,0,daysToAdd,TZ.UTC);
+        long l = getFullHourTime(time,0,daysToAdd,TZ.UTC);
+        return l;
     }
 
     public static long getMidnightTime(long time) {
@@ -413,8 +431,6 @@ public class WeatherLayer {
     }
 
     public static int  getRelativeDays(long time){
-        // long todayMidnightTime = getMidnightTime(Calendar.getInstance().getTimeInMillis());
-        // long targetMidnightTime = getMidnightTime(time);
         long todayMidnightTime = getFullHourTime(Calendar.getInstance().getTimeInMillis(),0,0,TZ.LOCAL);
         long targetMidnightTime = getFullHourTime(time,0,0,TZ.LOCAL);
         return (int) (targetMidnightTime - todayMidnightTime)/(1000*60*60*24);
@@ -453,7 +469,7 @@ public class WeatherLayer {
             return true;
         }
         Calendar currentCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        Calendar layerCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        Calendar layerUpdatedCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         File cacheDir = context.getCacheDir();
         File targetFile = new File(cacheDir, getCacheFilename());
         if (!targetFile.exists()){
@@ -475,28 +491,28 @@ public class WeatherLayer {
                 }
             }
         }
-        layerCalendar.setTimeInMillis(targetFile.lastModified()); // will be 0 if file does not exist
+        layerUpdatedCalendar.setTimeInMillis(targetFile.lastModified()); // will be 0 if file does not exist
         if (updateMode==UpdateMode.UVI){
             // refresh usually occurs at 10:00 am
-            if ((layerCalendar.get(Calendar.HOUR_OF_DAY) < 10) && (currentCalendar.get(Calendar.HOUR_OF_DAY) >= 10)) {
+            if ((layerUpdatedCalendar.get(Calendar.HOUR_OF_DAY) < 10) && (currentCalendar.get(Calendar.HOUR_OF_DAY) >= 10)) {
                 return true;
             }
             // when from previous day, then regarded outdated
-            if (layerCalendar.get(Calendar.DAY_OF_YEAR) < currentCalendar.get(Calendar.DAY_OF_YEAR)) {
+            if (layerUpdatedCalendar.get(Calendar.DAY_OF_YEAR) < currentCalendar.get(Calendar.DAY_OF_YEAR)) {
                 return true;
             }
             // when from previous year, then also outdated
-            if (layerCalendar.get(Calendar.YEAR) < currentCalendar.get(Calendar.YEAR)) {
+            if (layerUpdatedCalendar.get(Calendar.YEAR) < currentCalendar.get(Calendar.YEAR)) {
                 return true;
             }
         }
         if (updateMode==UpdateMode.DAY){
             // when from previous day, then regarded outdated
-            if (layerCalendar.get(Calendar.DAY_OF_YEAR) < currentCalendar.get(Calendar.DAY_OF_YEAR)) {
+            if (layerUpdatedCalendar.get(Calendar.DAY_OF_YEAR) < currentCalendar.get(Calendar.DAY_OF_YEAR)) {
                 return true;
             }
             // when from previous year, then also outdated
-            if (layerCalendar.get(Calendar.YEAR) < currentCalendar.get(Calendar.YEAR)) {
+            if (layerUpdatedCalendar.get(Calendar.YEAR) < currentCalendar.get(Calendar.YEAR)) {
                 return true;
             }
         }
@@ -506,14 +522,14 @@ public class WeatherLayer {
     public static WeatherLayer getLayer(int i){
         long time = Calendar.getInstance().getTimeInMillis();
         switch (i){
-            case Layers.WARNING_AREAS_GERMANY: return new WeatherLayer(Layers.WARNING_AREAS_GERMANY, WarnMapGeo, null, layerMapWidth, layerMapHeight, "4326",UpdateMode.NEVER,null,Legend.NONE);
+            case Layers.WARNING_AREAS_GERMANY: return new WeatherLayer(Layers.WARNING_AREAS_GERMANY, WarnMapGeo, 0, layerMapWidth, layerMapHeight, "4326",UpdateMode.NEVER,null,Legend.NONE);
             case Layers.UVI_CLOUDS_0: return new WeatherLayer(Layers.UVI_CLOUDS_0, WarnMapGeo, getMidnightTime(time, 0), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI, new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
             case Layers.UVI_CLOUDS_1: return new WeatherLayer(Layers.UVI_CLOUDS_1, WarnMapGeo, getMidnightTime(time, 1), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
             case Layers.UVI_CLOUDS_2: return new WeatherLayer(Layers.UVI_CLOUDS_2, WarnMapGeo, getMidnightTime(time, 2), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
             case Layers.UVI_CLOUDLESS_0: return new WeatherLayer(Layers.UVI_CLOUDLESS_0, WarnMapGeo, getMidnightTime(time, 0), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
             case Layers.UVI_CLOUDLESS_1: return new WeatherLayer(Layers.UVI_CLOUDLESS_1, WarnMapGeo, getMidnightTime(time, 1), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
             case Layers.UVI_CLOUDLESS_2: return new WeatherLayer(Layers.UVI_CLOUDLESS_2, WarnMapGeo, getMidnightTime(time, 2), layerMapWidth, layerMapHeight, "4326",UpdateMode.UVI,new int[] {Layers.WARNING_AREAS_GERMANY,Layers.BRD_ORTE},Legend.UVI);
-            case Layers.BRD_ORTE: return new WeatherLayer(Layers.BRD_ORTE, WarnMapGeo, null, layerMapWidth, layerMapHeight, "4326",UpdateMode.NEVER,null,Legend.NONE);
+            case Layers.BRD_ORTE: return new WeatherLayer(Layers.BRD_ORTE, WarnMapGeo, 0, layerMapWidth, layerMapHeight, "4326",UpdateMode.NEVER,null,Legend.NONE);
             case Layers.EUROPE_BORDERS_LARGE: return new WeatherLayer(Layers.EUROPE_BORDERS_LARGE,EuropeLargeGeo,getMidnightTime(time,0),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.NEVER,null,Legend.NONE);
             case Layers.SENSED_TEMPERATURE_1M_0: return new WeatherLayer(Layers.SENSED_TEMPERATURE_1M_0,EuropeLargeGeo,getFullHourTime(time,6,0,TZ.LOCAL),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.DAY, new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
             case Layers.SENSED_TEMPERATURE_1M_1: return new WeatherLayer(Layers.SENSED_TEMPERATURE_1M_1,EuropeLargeGeo,getFullHourTime(time,12,0,TZ.LOCAL),EuropeLargeSize[0],EuropeLargeSize[1],"4326",UpdateMode.DAY, new int[] {Layers.EUROPE_BORDERS_LARGE},Legend.TS);
@@ -651,12 +667,15 @@ public class WeatherLayer {
             layerBitmap = ForecastBitmap.getPollenAreasBitmap(context, pollenType, timeParam);
             // put pollen bitmap to cache for faster reading in the future
             saveLayerBitmapToCache(context,layerBitmap);
-            timestamp = Pollen.getLastPollenUpdateTime(context)+(long) getPollenTimeParam()*24*60*60*1000;
+            // modifies the file last modified time so that it matches the polling time of the pollen data
+            if (!setFileLastModifiedTime(context,WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.POLLEN))){
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.ERR,"setLastModified failed on layer "+layer);
+            }
         } else {
-            long originalTimestamp = WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.LAYERS);
+            long originalTimestamp = getFileLastModifiedTime(context);
             // take timestamp from settings only if bitmap decoding was successful and time is not 0
             if ((layerBitmap!=null) && (originalTimestamp!=0)){
-                timestamp = originalTimestamp;
+                pollingTime = originalTimestamp;
             }
         }
         if (layerBitmap!=null){
@@ -714,8 +733,12 @@ public class WeatherLayer {
         return bitmap;
     }
 
+    public long getTargetTime(){
+        return targetTime;
+    }
+
     public String getTimestampString(){
-        return dateFormat.format(new Date(timestamp));
+        return dateFormat.format(new Date(getTargetTime()));
     }
 
     public void saveLayerBitmapToCache(Context context, Bitmap bitmap){
