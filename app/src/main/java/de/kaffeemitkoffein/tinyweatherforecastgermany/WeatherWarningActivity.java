@@ -127,7 +127,6 @@ public class WeatherWarningActivity extends Activity {
     private boolean cancelRainSlides = false;
     private boolean validSlideSetObtained = false;
     public final static int RAINSLIDEDELAY=750;
-    private int[] rainRadarData;
 
     private final Runnable showNextRainSlide = new Runnable() {
         @Override
@@ -195,7 +194,25 @@ public class WeatherWarningActivity extends Activity {
             weatherLocationManager.checkLocation();
         }
         if ((!hide_rain) && (!cancelRainSlides) && (validSlideSetObtained)){
-            scheduledExecutorService.execute(showNextRainSlide);
+            // start rain slides only after map view was created
+            germany.post(new Runnable() {
+                @Override
+                public void run() {
+                    scheduledExecutorService.execute(showNextRainSlide);
+                }
+            });
+        }
+        if ((!validSlideSetObtained) && (Weather.suitableNetworkAvailable(context))){
+            // start rain slides only after map view was created
+            germany.post(new Runnable() {
+                @Override
+                public void run() {
+                    scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
+                }
+            });
+        }
+        if (Weather.suitableNetworkAvailable(context)){
+            scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
         }
         if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WARNINGS)){
             PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Weather warnings are outdated, updating data.");
@@ -237,6 +254,7 @@ public class WeatherWarningActivity extends Activity {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
         mercatorProjectionTile = RadarMN2.getRadarMapMercatorProjectionTile(context);
+        mercatorProjectionTile.setScaleFactor(RadarMN2.getScaleFactor(context));
         rainSlidesStartTime = WeatherSettings.getPrefRadarLastdatapoll(context);
         WeatherSettings.setRotationMode(this);
         setContentView(R.layout.activity_weatherwarning);
@@ -912,11 +930,7 @@ public class WeatherWarningActivity extends Activity {
                 }
             }
         }
-
         drawWindIcon();
-        if (Weather.suitableNetworkAvailable(context)){
-            scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
-        }
         // set close listener
         ImageView closeImageview = (ImageView) findViewById(R.id.closeicon_map);
         if (closeImageview != null){

@@ -20,6 +20,7 @@
 - fix a crash related to unknown pollen region when pollen data was not used before
 - new setting to force use of the higher resolution map despite lower device specs
 - fix wrong dates shown in the weather maps activity when bitmaps were recycled from present data
+- fix rain data loaded twice when rain radar data outdated
 
 ## Version 0.62.0:
 

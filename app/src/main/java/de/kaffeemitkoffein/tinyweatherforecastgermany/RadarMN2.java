@@ -117,6 +117,9 @@ public class RadarMN2 {
         double x0coord; double y0coord; double x1coord; double y1coord;
         private final double xOffsetPixel;
         private final double yOffsetPixel;
+        private double width;
+        private double height;
+        private double scaleFactor=1.0d;
 
         public MercatorProjectionTile(double widthPixels, double x0coord, double y0coord, double x1coord, double y1coord) {
             mapWidth = ( 360/Math.abs((x1coord - x0coord)) ) * widthPixels;
@@ -124,14 +127,31 @@ public class RadarMN2 {
             this.x0coord = x0coord; this.y0coord = y0coord; this.x1coord=x1coord; this.y1coord = y1coord;
             this.xOffsetPixel = getX(x0coord);
             this.yOffsetPixel = getY(y1coord);
+            this.width        = getX(x1coord) - this.xOffsetPixel;
+            this.height       = getY(y0coord) - this.yOffsetPixel;
+        }
+
+        public void setScaleFactor(double scaleFactor){
+            this.scaleFactor = scaleFactor;
         }
 
         public double getXPixel(double xcoord){
-            return getX(xcoord) -xOffsetPixel;
+            double x = getX(xcoord) -xOffsetPixel;
+            // apply some minor pixel corrections to exactly fit the administrative osm borders
+            x = x + 7 - (x/width)*14;
+            return x;
         }
 
         public double getYPixel(double ycoord){
-            return getY(ycoord) - yOffsetPixel;
+            double y = getY(ycoord) - yOffsetPixel;
+            // apply some minor pixel corrections to exactly fit the administrative osm borders
+            if (scaleFactor==1){
+                y = y - 5 - (y/height)*5;
+            }
+            if (scaleFactor==2){
+                y = y - 4 - (y/height)*20;
+            }
+            return y;
         }
 
         @Override
@@ -167,14 +187,14 @@ public class RadarMN2 {
             Bitmap bitmap;
             bitmap = BitmapFactory.decodeFile(APIReaders.RadarMNSetGeoserverRunnable.getRadarMNFile(context,count).getAbsolutePath().toString(),bitmapOptions);
             bitmap.getPixels(color,0,getFixedRadarMapWidth(context),0,0,getFixedRadarMapWidth(context),getFixedRadarMapHeight(context));
-            for (int i=0; i<getFixedRadarMapWidth(context)*getFixedRadarMapHeight(context); i++){
+            int colorArraySize = getFixedRadarMapWidth(context)*getFixedRadarMapHeight(context);
+            for (int i=0; i<colorArraySize; i++){
                 if ((color[i]==-4342339)){
                     color[i]=Color.TRANSPARENT;
                 }
                 if ((color[i]==-1)){
                     color[i]=Color.TRANSPARENT;
                 }
-
             }
             bitmap.setPixels(color,0,getFixedRadarMapWidth(context),0,0,getFixedRadarMapWidth(context),getFixedRadarMapHeight(context));
             return bitmap;
