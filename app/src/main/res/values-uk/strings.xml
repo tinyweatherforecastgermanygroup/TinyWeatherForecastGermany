@@ -492,7 +492,7 @@
     <string name="preference_datasaver_summary">Наразі неможливо синхронізувати дані при використанні мереж із обмеженнями. Найкраще додати Tiny Weather Forecast Germany до списку додатків з необмеженим використанням даних.</string>
     <string name="preference_display_overviewchart_pca_title">Кількість опадів</string>
     <string name="preference_display_overviewchart_pca_summary">Відображати кількість опадів в оглядовій діаграмі.</string>
-    <string name="map_attribution">© <a href="https://openstreetmap.org/copyright">OpenStreetMap</a></string>
+    <string name="map_attribution">© OpenStreetMap</string>
     <string name="preference_highresolution_title">Висока роздільність</string>
     <string name="preference_highresolution_summary">Збільшує роздільну здатність мапи. Це може сповільнити роботу пристрою або спричинити проблеми на старих пристроях.</string>
 </resources>
