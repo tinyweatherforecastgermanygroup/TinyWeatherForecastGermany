@@ -1,12 +1,20 @@
+---
+**Note:**
+This translation is highly outdated. Please refer to the english version in the top folder.
+
+Contributors: you are welcome to update this translation to match the english version of the README.md file. Please either make a pull request or mail the updated translation.
+
+---
+
 # Tiny Weather Forecast Germany
 
 Prévisions météorologiques avec widgets pour un maximum de 10 jours, basées sur les données ouvertes du Deutscher Wetterdienst (DWD).
 
 ## Captures d'écran
 
-![Capture d'écran 1](fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
-![Capture d'écran 2](fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
-![Capture d'écran 3](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
+![Capture d'écran 1](../fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
+![Capture d'écran 2](../fastlane/metadata/android/en-US/images/phoneScreenshots/2.png)
+![Capture d'écran 3](../fastlane/metadata/android/en-US/images/phoneScreenshots/3.png)
 
 ## Comment obtenir l'application
 
