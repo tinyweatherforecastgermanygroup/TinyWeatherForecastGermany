@@ -2,6 +2,18 @@
 
 Weather forecast with widgets for up to 10 days, based on open data from the Deutscher Wetterdienst (DWD).
 
+## Features
+
+- weather forecast for up to 10 days for over 5000 locations worldwide
+- 100% based on open data (no api keys needed)
+- no ads, no tracking, no 3rd party libraries/dependencies
+- supports weather on wearables using GadgetBridge
+- weather warnings, rain radar and pollen count forecast for Germany
+- uv hazard index forecast
+- text forecasts and weather maps
+- multiple home screen widgets
+- highly customizable
+
 ## Screenshots
 
 ![Screenshot #1](https://codeberg.org/Starfish/TinyWeatherForecastGermany/media/branch/master/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png)
@@ -141,7 +153,7 @@ The widget icon, the weather description and the current temperature refer to th
 
 When showing more days, the min and max values and the weather symbol refer to the whole day.
 
-Since version 0.58.0 onward, this app can display weather warnings in widgets. To display weather warnings in widgets, you need to enable this feature in the settings. When a warning is issued for your chosen location, the classic widget and the large widget display a warning symbol. The clock widget and the bold widget also display a small text indicating the warning category of the *most severe* weather warning issued for your location. When there are multiple warnings issued, this is indicated by three dots ("...") and a plus ("+"). You have to go to the app to see them all.  
+Since version 0.58.0 onward, this app can display weather warnings in widgets. To display weather warnings in widgets, you need to enable this feature in the settings. When a warning is issued for your chosen location, the *Weather in Detail* widget displays a warning symbol. The *Weather and Time* widget and the *Compact Weather* widgets also display a small text indicating the warning category of the *most severe* weather warning issued for your location. When there are multiple warnings issued, this is indicated by three dots ("...") and a plus ("+"). You have to go to the app to see them all. The *Weather Chart* widget displays the time affected by a weather warning with a background color. You have to go to the app to see more details.
 
 ### What do the symbols in the main app mean?
 
@@ -203,7 +215,7 @@ Please note that no data sync will take place when the account has been deleted 
 
 How to restore it:
 
-In Settings -> Passwords & accounts, hit **+** *Add account* and select *"Tiny Weather Forecast Germany", 
+In Settings -> Passwords & accounts, hit **+** *Add account* and select *"Tiny Weather Forecast Germany"*, 
 
 *or*
 
@@ -211,7 +223,7 @@ launch the Tiny Weather Forecast Germany app, or more precisely, the view that d
 
 In either case, you don't need any credentials.
 
-### My widgets don't get update (unless I open the app).
+### My widgets don't update (unless I open the app).
 
 Home screen widgets usually get updated every 30 minutes by the system. However, to take into account some manufacturer and/or rom limitations, the sync adapter also updates the widgets.
 
@@ -221,10 +233,12 @@ If widget updates do not happen at all or only happen when you open the app, the
 
 ### My widgets don't change the station automatically when I am on travel.
 
+In this case, please check the following points: 
+
 1. You need to grand the _background location permission_. Please note on some devices you must grant the general location permission before you can grant the background permission. The app asks all of this is the appropriate order. Should you have declined any of the location permissions, you can grant them in the app settings.
 2. You also need to enable background location checks in the app settings.
 3. To save your battery, the app never starts an active location fix in the background. It only re-uses locations obtained by other apps, e.g. map applications. Simply start the location search in any app on your device or search actively for the closest station within the app. All of this will make the widgets change to the closest station.
-4. Please also note that the background-checks are only performed when other tasks are due to save battery, e.g. when updating widgets or syncing data.
+4. Please also note that to safe battery the background-checks are only performed when other tasks are due, e.g. when updating widgets or syncing data.
 5. Open the app to immediately check for known, passive locations.
 
 Should all of this not help: this functionality may be broken due to battery saving apps or roms breaking expected functionality. See above "weather forecasts do not get updated". 
@@ -259,9 +273,9 @@ The system won't call the sync adapter when no suitable network is available and
 
 When GadgetBridge support is **enabled**, the app will update GadgetBridge approximately once per hour.
 
-Should you have placed a weather widget on your homescreen, Tiny Weather Forecast Germany will also always update Gadgetbridge together with the widgets. 
+If updates do not occur as frequent as expected, see "weather forecasts do not get updated" above for things you should check. Specifically, consider putting a weather widget on your home screen, since the app checks for GadgetBridge updates when widgets get updated.
 
-If updates do not occur as frequent as expected, see "weather forecasts do not get updated" above for things you should check. Specifically, consider putting a weather widget on your home screen.
+To force-update GadgetBridge with weather data, e.g. for debugging, you can disable and re-enable the GadgetBridge support. Doing so will immediately send weather data to GadgetBridge.
 
 ### Why is precipitation displayed in kg/m² instead of mm?
   
@@ -284,6 +298,14 @@ However, the official label for thunderstorms (having the highest priority avail
 ### Why does the app give a different value for some parameter (e.g. temperature) than the official station reading?
 
 Tiny Weather Forecast Germany gives *forecasts*, not the current reading at some weather station. If the displayed value in Tiny Weather Forecast Germany differs from an official reading at same spot, the forecast was just off.
+
+### I can't find a suitable location in the text search. What can I do?
+
+Especially when looking for a good forecast location outside of Germany, it is highly recommended tu use the location search provided by your device. 
+
+If you do not want to grant any location permissions, you can also enter the geo coordinates manually or share the location from another app (see "*Is there a map available to choose a spot if I don't know the proper names in the vicinity?*" below.)
+
+Some station names are non-intuitive, you might encounter difficulties finding them using the text search.
 
 ### Where do the names come from that are offered in searches?
 
