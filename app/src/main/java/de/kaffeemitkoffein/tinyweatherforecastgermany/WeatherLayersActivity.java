@@ -48,7 +48,8 @@ public class WeatherLayersActivity extends Activity {
     TableRow tableRowBirke; TableRow tableRowHazel; TableRow tableRowErle; TableRow tableRowGraeser;
     boolean forceWeatherUpdateFlag = false;
     APIReaders.PollenReader pollenReader;
-    APIReaders.getLayerImages getLayerImages;
+    APIReaders.getLayerImages getLayerImagesConditional;
+    APIReaders.getLayerImages getLayerImagesForced;
     Runnable conditionalUpdater;
     Runnable unconditionalUpdater;
     long unconditionalUpdateTime = 0;
@@ -146,7 +147,16 @@ public class WeatherLayersActivity extends Activity {
             }
         };
         weatherLayers = WeatherLayer.getLayers(context);
-        getLayerImages = new APIReaders.getLayerImages(context, weatherLayers) {
+        getLayerImagesForced = new APIReaders.getLayerImages(context, weatherLayers) {
+            @Override
+            public void onProgress(final WeatherLayer weatherLayer) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateLayer(weatherLayer);
+                    }
+                });
+            }
             @Override
             public void onFinished(boolean success) {
                 if (success){
@@ -157,7 +167,31 @@ public class WeatherLayersActivity extends Activity {
                 }
             }
         };
-        getLayerImages.setForceUpdate(true);
+        getLayerImagesForced.setForceUpdate(true);
+        /*
+        getLayerImagesConditional = new APIReaders.getLayerImages(context,weatherLayers){
+            @Override
+            public void onProgress(final WeatherLayer weatherLayer) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateLayer(weatherLayer);
+                    }
+                });
+            }
+            @Override
+            public void onFinished(boolean result){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // nothing to do, update done in onProgress, view should be complete
+                        //updateDisplay();
+                    }
+                });
+            }
+        };
+        executor.execute(getLayerImagesConditional);
+         */
         conditionalUpdater = new Runnable() {
             @Override
             public void run() {
@@ -169,7 +203,7 @@ public class WeatherLayersActivity extends Activity {
                 }
                 if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.LAYERS)){
                     PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Layer data is outdated, updating layers...");
-                    executor.execute(getLayerImages);
+                    executor.execute(getLayerImagesForced);
                 } else {
                     PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Layers are up to date, using present data.");
                 }
@@ -194,7 +228,7 @@ public class WeatherLayersActivity extends Activity {
                 unconditionalUpdateTime = Calendar.getInstance().getTimeInMillis();
                 PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Updating pollen data & layers unconditionally...");
                 executor.execute(pollenReader);
-                executor.execute(getLayerImages);
+                executor.execute(getLayerImagesForced);
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -230,28 +264,6 @@ public class WeatherLayersActivity extends Activity {
             executor.execute(pollenReader);
         }
         getViewIDs();
-        APIReaders.getLayerImages getLayerImages2 = new APIReaders.getLayerImages(context,weatherLayers){
-            @Override
-            public void onProgress(final WeatherLayer weatherLayer) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateLayer(weatherLayer);
-                    }
-                });
-            }
-            @Override
-            public void onFinished(boolean result){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // nothing to do, update done in onProgress, view should be complete
-                        //updateDisplay();
-                    }
-                });
-            }
-        };
-        executor.execute(getLayerImages2);
         TextView wm_heading_4_1 = findViewById(R.id.wm_heading_4_1);
         TextView wm_heading_5_1 = findViewById(R.id.wm_heading_5_1);
         if (wm_heading_4_1!=null){
