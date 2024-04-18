@@ -35,6 +35,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Process;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.UnderlineSpan;
@@ -123,31 +124,77 @@ public class WeatherWarningActivity extends Activity {
     };
 
     private int nextRainSlide = 0;
+    private int lastDrawnRainSlide = 0;
     private long rainSlidesStartTime = 0;
     private boolean cancelRainSlides = false;
+    private boolean rainSlidesRunning = false;
     private boolean validSlideSetObtained = false;
     public final static int RAINSLIDEDELAY=750;
 
-    private final Runnable showNextRainSlide = new Runnable() {
-        @Override
-        public void run() {
-            long startTime = Calendar.getInstance().getTimeInMillis();
-            drawRadarSlide(nextRainSlide);
-            long finishedTime = Calendar.getInstance().getTimeInMillis();
-            long duration = finishedTime - startTime;
-            nextRainSlide++;
-            if (nextRainSlide>APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE){
-                nextRainSlide=0;
-            }
-            if ((!cancelRainSlides) && (validSlideSetObtained)){
-                if (RAINSLIDEDELAY-duration>0){
-                    scheduledExecutorService.schedule(showNextRainSlide,RAINSLIDEDELAY-duration,TimeUnit.MILLISECONDS);
-                } else {
-                    scheduledExecutorService.execute(showNextRainSlide);
-                }
+    private boolean isNextRainSlide(){
+        if (nextRainSlide==lastDrawnRainSlide+1){
+            return true;
+        }
+        if (nextRainSlide==0){
+            if (lastDrawnRainSlide==APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE){
+                return true;
             }
         }
+        return false;
+    }
+
+    private boolean rainDrawLock = false;
+
+    private final Runnable rainRadarRunnable = new Runnable() {
+        @Override
+        public void run() {
+            android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+            nextRainSlide=0;
+            rainSlidesRunning = true;
+            while (!cancelRainSlides){
+                long startTime = Calendar.getInstance().getTimeInMillis();
+                rainDrawLock = true;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        nextRainSlide++;
+                        drawRadarSlide(nextRainSlide);
+                        rainDrawLock = false;
+                    }
+                });
+                if (nextRainSlide>APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE){
+                    nextRainSlide=0;
+                }
+                long stopTime = Calendar.getInstance().getTimeInMillis();
+                long waitTime = RAINSLIDEDELAY - (stopTime-startTime);
+                if (waitTime>0){
+                    try {
+                        Thread.sleep(waitTime);
+                    } catch (InterruptedException e) {
+                        // do nothing
+                    }
+                } else {
+                    while (rainDrawLock){
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            // do nothing
+                        }
+                    }
+                }
+            }
+            rainSlidesRunning = false;
+            cancelRainSlides = false;
+        }
     };
+
+    private synchronized void startRainRadar(){
+        if (!hide_rain){
+            if (!rainSlidesRunning){
+                new Thread(rainRadarRunnable).start();
+            }
+        }
+    }
 
     APIReaders.RadarMNSetGeoserverRunnable radarMNSetGeoserverRunnable;
 
@@ -193,10 +240,7 @@ public class WeatherWarningActivity extends Activity {
         if (WeatherSettings.GPSAuto(context)){
             weatherLocationManager.checkLocation();
         }
-        startRainRadarIfAvailable();
-        if (Weather.suitableNetworkAvailable(context)){
-            scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
-        }
+        scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
         if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WARNINGS)){
             PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Weather warnings are outdated, updating data.");
             scheduledExecutorService.execute(weatherWarningsUpdateRunnable);
@@ -328,7 +372,7 @@ public class WeatherWarningActivity extends Activity {
                         spannableString.setSpan(new UnderlineSpan(),2,spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         newTextView.setText(spannableString);
                         newTextView.setAutoLinkMask(1);
-                        newTextView.setTextSize(9);
+                        newTextView.setTextSize(12);
                         newTextView.setVisibility(View.VISIBLE);
                         newTextView.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN));
                         newTextView.setBackgroundColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.PRIMARYLIGHT));
@@ -384,20 +428,35 @@ public class WeatherWarningActivity extends Activity {
         radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(getApplicationContext()){
             @Override
             public void onProgress(long startTime, final int progress) {
-                if (progress==0){
+                if (progress==1){
                     rainSlidesStartTime = startTime;
-                    drawRadarSlide(0);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            germany.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (!hide_rain){
+                                        drawRadarSlide(0);
+                                    }
+                                }
+                            });
+                        }
+                    });
                 }
                 updateRainSlideProgressBar(progress);
             }
             @Override
             public void onFinished(long startTime, boolean success){
                 super.onFinished(startTime,success);
-                nextRainSlide = 0;
-                rainSlidesStartTime = startTime;
                 if (success){
                     validSlideSetObtained = true;
-                    scheduledExecutorService.execute(showNextRainSlide);
+                    germany.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            startRainRadar();
+                        }
+                    });
                 } else {
                     validSlideSetObtained = false;
                 }
@@ -506,36 +565,21 @@ public class WeatherWarningActivity extends Activity {
                 hide_rain = true; hide_admin = true;
             }
             if (!hide_rain){
-                cancelRainSlides=false;
-                startRainRadarIfAvailable();
+                germany.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        startRainRadar();
+                    }
+                });
             } else {
-                cancelRainSlides=true;
+                if (rainSlidesRunning){
+                    cancelRainSlides=true;
+                }
             }
             drawMapBitmap();
             return true;
         }
         return super.onOptionsItemSelected(mi);
-    }
-
-    public void startRainRadarIfAvailable(){
-        if ((!hide_rain) && (!cancelRainSlides) && (validSlideSetObtained)){
-            // start rain slides only after map view was created
-            germany.post(new Runnable() {
-                @Override
-                public void run() {
-                    scheduledExecutorService.execute(showNextRainSlide);
-                }
-            });
-        }
-        if ((!validSlideSetObtained) && (Weather.suitableNetworkAvailable(context))){
-            // start rain slides only after map view was created
-            germany.post(new Runnable() {
-                @Override
-                public void run() {
-                    scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
-                }
-            });
-        }
     }
 
     public void updateActionBarLabels(){
@@ -759,6 +803,7 @@ public class WeatherWarningActivity extends Activity {
         } else {
             // nothing to do
         }
+        lastDrawnRainSlide=count;
     }
 
     private void drawMapBitmap(){
