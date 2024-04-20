@@ -473,4 +473,10 @@
     <string name="preference_sync_weather_summary">Rendszeresen frissítse az időjárás-előrejelzést.</string>
     <string name="battery_summary">Kapcsolja ki az alkalmazás akkumulátor-optimalizálását, hogy az időjárási adatok megbízhatóan szinkronizálhatók legyenek.</string>
     <string name="preview_fake_warning_text">SZÉLLÖKÉSEK</string>
+    <string name="preference_display_overviewchart_pca_title">Csapadék mennyisége</string>
+    <string name="preference_display_overviewchart_pca_summary">A csapadék mennyiségének megjelenítése az áttekintő diagramon.</string>
+    <string name="preference_highresolution_summary">Kényszeríti a térkép nagyobb felbontását. Ez lelassíthatja a készüléket, vagy problémákat okozhat a régebbi készülékeken.</string>
+    <string name="preference_highresolution_title">Nagy felbontás</string>
+    <string name="preference_mapPinSize_title">Helymegjelölés mérete</string>
+    <string name="preference_mapPinSize_summary">A helymegjelölés mérete a térképen.</string>
 </resources>
