@@ -496,4 +496,6 @@
     <string name="preference_highresolution_summary">Fuerza la resolución más alta del mapa. Esto puede ralentizar el dispositivo o causar problemas en dispositivos antiguos.</string>
     <string name="preference_display_overviewchart_pca_summary">Mostrar la pluviosidad en el gráfico general.</string>
     <string name="map_attribution">© <a href="https://openstreetmap.org/copyright">OpenStreetMap</a></string>
+    <string name="preference_mapPinSize_title">Tamaño de la marca de posición</string>
+    <string name="preference_mapPinSize_summary">Tamaño de la marca de ubicación en el mapa.</string>
 </resources>
