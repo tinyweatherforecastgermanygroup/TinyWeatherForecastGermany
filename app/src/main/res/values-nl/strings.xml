@@ -474,4 +474,10 @@
     <string name="battery_summary">Deactiveer batterijoptimalisatie voor deze app zodat weergegevens betrouwbaar kunnen worden gesynchroniseerd.</string>
     <string name="preview_fake_warning_text">WINDSTORMEN</string>
     <string name="favorites_delete_title">Verwijderen favorieten</string>
+    <string name="preference_display_overviewchart_pca_title">Neerslag Hoeveelheid</string>
+    <string name="preference_display_overviewchart_pca_summary">Geef de hoeveelheid neerslag weer in de overzichtskaart.</string>
+    <string name="preference_highresolution_title">Hoge resolutie</string>
+    <string name="preference_highresolution_summary">Forceert de hogere resolutie van de kaart. Dit kan het apparaat vertragen of problemen veroorzaken op oudere apparaten.</string>
+    <string name="preference_mapPinSize_title">Grootte locatiemarkering</string>
+    <string name="preference_mapPinSize_summary">Grootte van de locatiemarkering op de kaart.</string>
 </resources>
