@@ -159,4 +159,11 @@
     <string name="main_updatetime">Senast uppdaterad:</string>
     <string name="main_wait_for_gps_fix">Avgör platsen nu…</string>
     <string name="main_selectstation">Region:</string>
+    <string name="preference_category_overviewchart_scale">Skalvärden</string>
+    <string name="preference_display_overviewchart_pca_title">Nederbördsmängd</string>
+    <string name="preference_display_overviewchart_pca_summary">Visa mängden nederbörd i översiktsdiagrammet.</string>
+    <string name="preference_highresolution_title">Hög upplösning</string>
+    <string name="preference_highresolution_summary">Driver den högre upplösningen på kartan. Detta kan göra enheten långsammare eller orsaka problem på äldre enheter.</string>
+    <string name="preference_mapPinSize_title">Läge märke storlek</string>
+    <string name="preference_mapPinSize_summary">Storlek på platsmarkeringen på kartan.</string>
 </resources>
