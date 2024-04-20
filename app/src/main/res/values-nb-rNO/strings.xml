@@ -466,4 +466,10 @@
     <string name="preference_sync_weather_summary">Oppdater værmeldingen regelmessig.</string>
     <string name="battery_summary">Deaktiver batterioptimalisering for denne appen slik at værdata kan synkroniseres på en pålitelig måte.</string>
     <string name="preview_fake_warning_text">VINDKAST</string>
+    <string name="preference_display_overviewchart_pca_title">Nedbørmengde</string>
+    <string name="preference_display_overviewchart_pca_summary">Vis nedbørsmengden i oversiktsdiagrammet.</string>
+    <string name="preference_highresolution_title">Høy oppløsning</string>
+    <string name="preference_highresolution_summary">Tvinger frem en høyere oppløsning på kartet. Dette kan gjøre enheten tregere eller forårsake problemer på eldre enheter.</string>
+    <string name="preference_mapPinSize_summary">Størrelsen på stedsmerket på kartet.</string>
+    <string name="preference_mapPinSize_title">Størrelse på plasseringsmerke</string>
 </resources>
