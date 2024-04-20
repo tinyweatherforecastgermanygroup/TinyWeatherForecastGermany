@@ -473,4 +473,10 @@
     <string name="preference_sync_weather_summary">Regularnie aktualizuj prognozę pogody.</string>
     <string name="battery_summary">Wyłącz optymalizację baterii dla tej aplikacji, aby dane pogodowe mogły być niezawodnie synchronizowane.</string>
     <string name="preview_fake_warning_text">PODMUCHY WIATRU</string>
+    <string name="preference_display_overviewchart_pca_title">Ilość opadów</string>
+    <string name="preference_display_overviewchart_pca_summary">Wyświetla ilość opadów na wykresie przeglądowym.</string>
+    <string name="preference_highresolution_title">Wysoka rozdzielczość</string>
+    <string name="preference_highresolution_summary">Wymusza wyższą rozdzielczość mapy. Może to spowolnić działanie urządzenia lub powodować problemy na starszych urządzeniach.</string>
+    <string name="preference_mapPinSize_title">Rozmiar znaku lokalizacji</string>
+    <string name="preference_mapPinSize_summary">Rozmiar znacznika lokalizacji na mapie.</string>
 </resources>
