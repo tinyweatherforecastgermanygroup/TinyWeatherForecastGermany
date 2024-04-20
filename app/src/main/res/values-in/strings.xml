@@ -473,4 +473,10 @@
     <string name="preference_sync_weather_summary">Perbarui prakiraan cuaca secara teratur.</string>
     <string name="battery_summary">Nonaktifkan pengoptimalan baterai untuk aplikasi ini agar data cuaca dapat disinkronkan dengan andal.</string>
     <string name="preview_fake_warning_text">ANGIN ANGIN</string>
+    <string name="preference_display_overviewchart_pca_title">Jumlah Curah Hujan</string>
+    <string name="preference_display_overviewchart_pca_summary">Menampilkan jumlah curah hujan di bagan ikhtisar.</string>
+    <string name="preference_highresolution_title">Resolusi tinggi</string>
+    <string name="preference_highresolution_summary">Memaksakan resolusi peta yang lebih tinggi. Hal ini dapat memperlambat perangkat atau menyebabkan masalah pada perangkat yang lebih tua.</string>
+    <string name="preference_mapPinSize_summary">Ukuran tanda lokasi pada peta.</string>
+    <string name="preference_mapPinSize_title">Ukuran tanda lokasi</string>
 </resources>
