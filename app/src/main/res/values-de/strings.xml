@@ -507,4 +507,10 @@
     <string name="datasaver_enable_unrestricted_text">In der App-Info mobile Daten und WLAN auswählen, dann uneingeschränkte Datennutzung aktivieren.</string>
     <string name="preference_datasaver_summary">Aktuell können keine Daten über getaktete Netze synchronisiert werden. Füge am besten die Kleine Wettervorschau Deutschland der Liste der Apps mit unbegrenzter Datennutzung hinzu.</string>
     <string name="sync_off_title">Synchronisation deaktiviert</string>
+    <string name="preference_display_overviewchart_pca_title">Niederschlagsmenge</string>
+    <string name="preference_display_overviewchart_pca_summary">Anzeige der Niederschlagsmenge in der Übersichtskarte.</string>
+    <string name="preference_highresolution_title">Hohe Auflösung</string>
+    <string name="preference_highresolution_summary">Erzwingt die höhere Auflösung der Karte. Dies kann das Gerät verlangsamen oder auf älteren Geräten Probleme verursachen.</string>
+    <string name="preference_mapPinSize_title">Größe der Ortsmarke</string>
+    <string name="preference_mapPinSize_summary">Größe der Ortsmarkierung auf der Karte.</string>
 </resources>
