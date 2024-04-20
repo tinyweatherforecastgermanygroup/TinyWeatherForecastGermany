@@ -22,6 +22,9 @@
 - fix wrong dates shown in the weather maps activity when bitmaps were recycled from present data
 - fix rain data loaded twice when rain radar data outdated
 - fix a lag related to loading maps
+- rewritten code to display the rain radar slides, now running smoother and more reliable
+- fix crash when reusing warnings and rain radar data 
+- add customizable location pin size on map
 
 ## Version 0.62.0:
 

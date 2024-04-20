@@ -1035,10 +1035,13 @@ public class WeatherWarningActivity extends Activity {
         }
         drawMapBitmap();
         // add the pin sprite
-        int pinsize = Math.round(18*this.getApplicationContext().getResources().getDisplayMetrics().density);
-        PlotPoint pinPoint = getPlotPoint((float) ownLocation.longitude, (float) ownLocation.latitude);
-        Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinsize,pinsize,false);
-        mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT,null);
+        float pinSize = WeatherSettings.getMapPinSize(context)/2f;
+        if (pinSize>0){
+            int pinSizePixels = Math.round(18*this.getApplicationContext().getResources().getDisplayMetrics().density*pinSize);
+            PlotPoint pinPoint = getPlotPoint((float) ownLocation.longitude, (float) ownLocation.latitude);
+            Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinSizePixels,pinSizePixels,false);
+            mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT,null);
+        }
         mapZoomable.redrawBitmap();
         mapTouchListener = new View.OnTouchListener() {
             @Override

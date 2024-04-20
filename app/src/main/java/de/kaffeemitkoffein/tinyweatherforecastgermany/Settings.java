@@ -33,9 +33,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.*;
+import android.widget.SeekBar;
 import android.widget.Toast;
-
-import java.util.prefs.PreferenceChangeEvent;
 
 @SuppressWarnings("deprecation")
 public class Settings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -676,6 +675,29 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 forceHighResolutionMap.setShouldDisableView(true);
             }
         }
+        final SeekBarPreference pinSizePreference = (SeekBarPreference) findPreference(WeatherSettings.PREF_MAP_PIN_SIZE);
+        pinSizePreference.setMax(10);
+        pinSizePreference.setProgress(WeatherSettings.getMapPinSize(context));
+        SeekBar.OnSeekBarChangeListener pinsizeChangeListener = new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean userInitiated) {
+                if (userInitiated){
+                    pinSizePreference.setProgress(i);
+                    WeatherSettings.setMapPinSize(context,i);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        };
+        pinSizePreference.setSeekBarChangeListener(pinsizeChangeListener);
     }
 
     @Override
