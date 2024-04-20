@@ -191,7 +191,13 @@ public class WeatherWarningActivity extends Activity {
     private synchronized void startRainRadar(){
         if (!hide_rain){
             if (!rainSlidesRunning){
-                new Thread(rainRadarRunnable).start();
+                // make sure not to start rain radar before views are created
+                germany.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        new Thread(rainRadarRunnable).start();
+                    }
+                });
             }
         }
     }
@@ -240,15 +246,22 @@ public class WeatherWarningActivity extends Activity {
         if (WeatherSettings.GPSAuto(context)){
             weatherLocationManager.checkLocation();
         }
-        scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
         if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WARNINGS)){
             PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Weather warnings are outdated, updating data.");
             scheduledExecutorService.execute(weatherWarningsUpdateRunnable);
         } else {
             weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext(),true);
             PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Weather warnings are up to date, showing the data available.");
-            displayWarnings();
+            // displayWarnings() must be in scheduledExecutorService queue to make sure it is executed before
+            // radarMNSetGeoserverRunnable (see below)
+            scheduledExecutorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    displayWarnings();
+                }
+            });
         }
+        scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
     }
 
     @Override
