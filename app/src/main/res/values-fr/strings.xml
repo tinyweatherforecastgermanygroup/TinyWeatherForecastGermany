@@ -509,4 +509,6 @@
     <string name="map_attribution">© <a href="https://www.openstreetmap.org/copyright/fr">OpenStreetMap</a></string>
     <string name="preference_highresolution_title">Haute résolution</string>
     <string name="preference_highresolution_summary">Force la résolution la plus élevée de la carte. Cela peut ralentir l\'appareil ou causer des problèmes sur les appareils plus anciens.</string>
+    <string name="preference_mapPinSize_title">Taille de la marque d\'emplacement</string>
+    <string name="preference_mapPinSize_summary">Taille de la marque de localisation sur la carte.</string>
 </resources>
