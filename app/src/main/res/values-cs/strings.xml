@@ -473,4 +473,10 @@
     <string name="preference_sync_weather_summary">Pravidelně aktualizujte předpověď počasí.</string>
     <string name="battery_summary">Deaktivujte optimalizaci baterie pro tuto aplikaci, aby bylo možné spolehlivě synchronizovat data o počasí.</string>
     <string name="preview_fake_warning_text">VĚTRNÉ PORYVY</string>
+    <string name="preference_display_overviewchart_pca_title">Množství srážek</string>
+    <string name="preference_display_overviewchart_pca_summary">Zobrazení množství srážek v přehledovém grafu.</string>
+    <string name="preference_highresolution_title">Vysoké rozlišení</string>
+    <string name="preference_highresolution_summary">Vynutí vyšší rozlišení mapy. To může zpomalit zařízení nebo způsobit problémy na starších zařízeních.</string>
+    <string name="preference_mapPinSize_summary">Velikost značky polohy na mapě.</string>
+    <string name="preference_mapPinSize_title">Velikost značky umístění</string>
 </resources>
