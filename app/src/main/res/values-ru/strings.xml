@@ -464,7 +464,7 @@
     <string name="sync_off_notice">Синхронизация отключена для %1$s в настройках вашей учетной записи.</string>
     <string name="battery_rationale">Чтобы регулярно обновлять предупреждения и прогнозы погоды, приложение должно постоянно работать в фоновом режиме.</string>
     <string name="hour">час</string>
-    <string name="preference_sync_weather_title"></string>
+    <string name="preference_sync_weather_title"/>
     <string name="sync_enable_notice">Нажмите здесь, чтобы включить синхронизацию для %1$s.</string>
     <string name="battery_title">Оптимизация работы аккумулятора</string>
     <string name="sync_interval">В настоящее время каждые %1$s.</string>
@@ -473,4 +473,10 @@
     <string name="preference_sync_weather_summary">Регулярно обновляйте прогноз погоды.</string>
     <string name="battery_summary">Отключите оптимизацию заряда батареи для этого приложения, чтобы обеспечить надежную синхронизацию погодных данных.</string>
     <string name="preview_fake_warning_text">ПОРЫВЫ ВЕТРА</string>
+    <string name="preference_display_overviewchart_pca_title">Количество осадков</string>
+    <string name="preference_display_overviewchart_pca_summary">Отображение количества осадков на обзорной диаграмме.</string>
+    <string name="preference_highresolution_title">Высокое разрешение</string>
+    <string name="preference_highresolution_summary">Использует более высокое разрешение карты. Это может замедлить работу устройства или вызвать проблемы на старых устройствах.</string>
+    <string name="preference_mapPinSize_title">Размер знака местоположения</string>
+    <string name="preference_mapPinSize_summary">Размер метки местоположения на карте.</string>
 </resources>
