@@ -495,4 +495,7 @@
     <string name="map_attribution">© OpenStreetMap</string>
     <string name="preference_highresolution_title">Висока роздільність</string>
     <string name="preference_highresolution_summary">Збільшує роздільну здатність мапи. Це може сповільнити роботу пристрою або спричинити проблеми на старих пристроях.</string>
+    <string name="map_attribution_link">&lt;openstreetmap.org/copyright&gt;</string>
+    <string name="preference_mapPinSize_title">Позначка місцезнаходження</string>
+    <string name="preference_mapPinSize_summary">Розмір позначки місцезнаходження на мапі.</string>
 </resources>
