@@ -473,4 +473,10 @@
     <string name="preference_sync_weather_summary">Opdater regelmæssigt vejrudsigten.</string>
     <string name="battery_summary">Deaktiver batterioptimering for denne app, så vejrdata kan synkroniseres pålideligt.</string>
     <string name="preview_fake_warning_text">VINDSTØD</string>
+    <string name="preference_display_overviewchart_pca_title">Nedbørsmængde</string>
+    <string name="preference_display_overviewchart_pca_summary">Vis mængden af nedbør i oversigtsdiagrammet.</string>
+    <string name="preference_highresolution_title">Høj opløsning</string>
+    <string name="preference_highresolution_summary">Tvinger kortet til at have en højere opløsning. Det kan gøre enheden langsommere eller give problemer på ældre enheder.</string>
+    <string name="preference_mapPinSize_title">Placering mærke størrelse</string>
+    <string name="preference_mapPinSize_summary">Størrelse på placeringsmærket på kortet.</string>
 </resources>
