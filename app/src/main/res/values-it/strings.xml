@@ -474,4 +474,10 @@
     <string name="preference_sync_weather_summary">Aggiornare regolarmente le previsioni del tempo.</string>
     <string name="battery_summary">Disattivare l\'ottimizzazione della batteria per questa applicazione in modo che i dati meteo possano essere sincronizzati in modo affidabile.</string>
     <string name="preview_fake_warning_text">VENTO</string>
+    <string name="preference_display_overviewchart_pca_title">Quantità di precipitazioni</string>
+    <string name="preference_display_overviewchart_pca_summary">Visualizza la quantità di precipitazioni nel grafico generale.</string>
+    <string name="preference_highresolution_title">Alta risoluzione</string>
+    <string name="preference_highresolution_summary">Forza la risoluzione più alta della mappa. Questo può rallentare il dispositivo o causare problemi ai dispositivi più vecchi.</string>
+    <string name="preference_mapPinSize_summary">Dimensione del contrassegno di posizione sulla mappa.</string>
+    <string name="preference_mapPinSize_title">Dimensione del marchio di posizione</string>
 </resources>
