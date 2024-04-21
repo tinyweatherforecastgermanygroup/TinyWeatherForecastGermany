@@ -5,4 +5,4 @@
 - fixed wind speed in overview chart sometimes displayed too high
 - Gadgetbridge support: fix wrong moon-phase in daily forecast
 - fixed crash related to unknown pollen region
-- various other bugfixes & improvements
+- various other bug-fixes & improvements
