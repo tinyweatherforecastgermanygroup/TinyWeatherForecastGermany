@@ -289,6 +289,7 @@
                 android:background="?attr/colorPrimary"
                 android:textAlignment="center"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:textSize="@dimen/fcmain_textsize_medium"
                 android:id="@+id/warningactivity_notice_text"/>
     </LinearLayout>
