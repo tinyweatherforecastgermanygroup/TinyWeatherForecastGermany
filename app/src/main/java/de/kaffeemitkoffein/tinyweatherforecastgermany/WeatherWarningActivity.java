@@ -237,7 +237,8 @@ public class WeatherWarningActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        cancelRainSlides=false;
+        // stop rain radar while processing warnings to avoid performance issues on older devices
+        cancelRainSlides=true;
         registerForBroadcast();
         if (germany==null){
             germany = (ImageView) findViewById(R.id.warningactivity_map);
@@ -250,18 +251,27 @@ public class WeatherWarningActivity extends Activity {
             PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Weather warnings are outdated, updating data.");
             scheduledExecutorService.execute(weatherWarningsUpdateRunnable);
         } else {
-            weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext(),true);
-            PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Weather warnings are up to date, showing the data available.");
             // displayWarnings() must be in scheduledExecutorService queue to make sure it is executed before
             // radarMNSetGeoserverRunnable (see below)
             scheduledExecutorService.execute(new Runnable() {
                 @Override
                 public void run() {
+                    weatherWarnings = WeatherWarnings.getCurrentWarnings(getApplicationContext(),true);
+                    PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Weather warnings are up to date, showing the data available.");
                     displayWarnings();
                 }
             });
         }
         scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
+        // start rain radar (again) if applicable
+        if (!hide_rain){
+            scheduledExecutorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    startRainRadar();
+                }
+            });
+        }
     }
 
     @Override
@@ -350,97 +360,7 @@ public class WeatherWarningActivity extends Activity {
         rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
         rainDescription.setOnTouchListener(forwardRainSlidesOnTouchListener);
         gpsProgressHolder = (RelativeLayout) findViewById(R.id.gps_progress_holder);
-        germany = (ImageView) findViewById(R.id.warningactivity_map);
-        // this is to display the osm notice properly in the bottom-right map corner as a textview aligned to the
-        // right border of the bitmap inside the imageview.
-        germany.post(new Runnable() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // get the scale matrix from the imageview to calculate the bitmap size inside the imageview
-                        float[] matrix = new float[9];
-                        germany.getImageMatrix().getValues(matrix);
-                        float scaledMapWidth=germany.getDrawable().getIntrinsicWidth()*matrix[Matrix.MSCALE_X];
-                        float scaledMapHeight=germany.getDrawable().getIntrinsicHeight()*matrix[Matrix.MSCALE_Y];
-                        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-                        DisplayMetrics displayMetrics = new DisplayMetrics();
-                        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-                        // calculate the offset of the textview
-                        int marginRight = Math.round((displayMetrics.widthPixels-scaledMapWidth)/2);
-                        // tweak offset for landscape mode
-                        if (deviceIsLandscape){
-                            RelativeLayout warningactivityLeftcontainer = (RelativeLayout) findViewById(R.id.warningactivity_leftcontainer);
-                            marginRight = Math.round((warningactivityLeftcontainer.getWidth() - scaledMapWidth)/2);
-                        }
-                        // create the textview
-                        TextView newTextView = new TextView(context);
-                        // underline the text without the (c)
-                        String osmString = context.getResources().getString(R.string.map_attribution);
-                        if (WeatherSettings.appReleaseIsUserdebug()){
-                            osmString = osmString + " " +context.getResources().getString(R.string.map_attribution_link);
-                        }
-                        SpannableString spannableString = new SpannableString(osmString);
-                        spannableString.setSpan(new UnderlineSpan(),2,spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                        newTextView.setText(spannableString);
-                        newTextView.setAutoLinkMask(1);
-                        newTextView.setTextSize(12);
-                        if (!WeatherSettings.appReleaseIsUserdebug()){
-                            newTextView.setTextSize(10);
-                        }
-                        newTextView.setVisibility(View.VISIBLE);
-                        newTextView.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN));
-                        newTextView.setBackgroundColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.PRIMARYLIGHT));
-                        newTextView.setPadding(2,1,2,1);
-                        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        layoutParams.setMargins(2,1,marginRight,1);
-                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                        newTextView.setLayoutParams(layoutParams);
-                        RelativeLayout warningactivity_mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
-                        final int newTextViewId = View.generateViewId();
-                        newTextView.setId(newTextViewId);
-                        warningactivity_mapcontainer.addView(newTextView);
-                        // make the textview clickable to open the license link
-                        newTextView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                final TextView newTV = (TextView) findViewById(newTextViewId);
-                                newTV.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        String osmUri = "https://openstreetmap.org/copyright";
-                                        Intent openLicenseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(osmUri));
-                                        try {
-                                            startActivity(openLicenseIntent);
-                                        } catch (ActivityNotFoundException e){
-                                            Toast.makeText(context,osmUri,Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
-                                // make the textview disappear after 7 sec;
-                                // in debug builds, the textview does not disappear
-                                if (!WeatherSettings.appReleaseIsUserdebug()){
-                                    newTV.postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    newTV.setVisibility(View.GONE);
-                                                    newTV.setOnClickListener(null);
-                                                }
-                                            });
-                                        }
-                                    },7000);
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        });
+        displayOsmNotice();
         radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(getApplicationContext()){
             @Override
             public void onProgress(long startTime, final int progress) {
@@ -1359,6 +1279,12 @@ public class WeatherWarningActivity extends Activity {
                                 }
                                 hintPopupWindow = new PopupWindow(popupView,width,height,true);
                                 hintPopupWindow.showAtLocation(anchorView,Gravity.CENTER,0,0);
+                                hintPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss() {
+                                        displayOsmNotice();
+                                    }
+                                });
                             }
                         });
                     }
@@ -1369,6 +1295,107 @@ public class WeatherWarningActivity extends Activity {
             int newCount = count + 1;
             WeatherSettings.setHintCounter2(context,newCount);
         }
+    }
+
+    public void displayOsmNotice(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (germany==null){
+                    germany = (ImageView) findViewById(R.id.warningactivity_map);
+                }
+                // this is to display the osm notice properly in the bottom-right map corner as a textview aligned to the
+                // right border of the bitmap inside the imageview.
+                germany.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // get the scale matrix from the imageview to calculate the bitmap size inside the imageview
+                                float[] matrix = new float[9];
+                                germany.getImageMatrix().getValues(matrix);
+                                float scaledMapWidth=germany.getDrawable().getIntrinsicWidth()*matrix[Matrix.MSCALE_X];
+                                float scaledMapHeight=germany.getDrawable().getIntrinsicHeight()*matrix[Matrix.MSCALE_Y];
+                                WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                                DisplayMetrics displayMetrics = new DisplayMetrics();
+                                windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+                                // calculate the offset of the textview
+                                int marginRight = Math.round((displayMetrics.widthPixels-scaledMapWidth)/2);
+                                // tweak offset for landscape mode
+                                if (deviceIsLandscape){
+                                    RelativeLayout warningactivityLeftcontainer = (RelativeLayout) findViewById(R.id.warningactivity_leftcontainer);
+                                    marginRight = Math.round((warningactivityLeftcontainer.getWidth() - scaledMapWidth)/2);
+                                }
+                                // create the textview
+                                TextView newTextView = new TextView(context);
+                                // underline the text without the (c)
+                                String osmString = context.getResources().getString(R.string.map_attribution);
+                                if (WeatherSettings.appReleaseIsUserdebug()){
+                                    osmString = osmString + " " +context.getResources().getString(R.string.map_attribution_link);
+                                }
+                                SpannableString spannableString = new SpannableString(osmString);
+                                spannableString.setSpan(new UnderlineSpan(),2,spannableString.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                                newTextView.setText(spannableString);
+                                newTextView.setAutoLinkMask(1);
+                                newTextView.setTextSize(12);
+                                if (!WeatherSettings.appReleaseIsUserdebug()){
+                                    newTextView.setTextSize(10);
+                                }
+                                newTextView.setVisibility(View.VISIBLE);
+                                newTextView.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN));
+                                newTextView.setBackgroundColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.PRIMARYLIGHT));
+                                newTextView.setPadding(2,1,2,1);
+                                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                layoutParams.setMargins(2,1,marginRight,1);
+                                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                                newTextView.setLayoutParams(layoutParams);
+                                RelativeLayout warningactivity_mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
+                                final int newTextViewId = View.generateViewId();
+                                newTextView.setId(newTextViewId);
+                                warningactivity_mapcontainer.addView(newTextView);
+                                // make the textview clickable to open the license link
+                                newTextView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        final TextView newTV = (TextView) findViewById(newTextViewId);
+                                        newTV.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                String osmUri = "https://openstreetmap.org/copyright";
+                                                Intent openLicenseIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(osmUri));
+                                                try {
+                                                    startActivity(openLicenseIntent);
+                                                } catch (ActivityNotFoundException e){
+                                                    Toast.makeText(context,osmUri,Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+                                        // make the textview disappear after 7 sec;
+                                        // in debug builds, the textview does not disappear
+                                        if (!WeatherSettings.appReleaseIsUserdebug()){
+                                            newTV.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            newTV.setVisibility(View.GONE);
+                                                            newTV.setOnClickListener(null);
+                                                        }
+                                                    });
+                                                }
+                                            },7000);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
 }

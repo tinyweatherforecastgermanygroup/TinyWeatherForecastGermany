@@ -1,5 +1,8 @@
-
-- detailliertere Kartendarstellung und genaueres Regenradar
-- in der Übersichtsgrafik kann die Niederschlagsmenge angezeigt werden
-- diverse Fehlerbehebungen und Layout-Verbesserungen
+- detailliertere Kartendarstellung & genaueres Regenradar
+- verbesserte, flüssigere Darstellung des Regenradars
+- Niederschlagsmenge kann in der Übersichtsgrafik angezeigt werden
+- Fehler behoben: manchmal falsches Datum der Karten, Windgeschwindigkeit wurde in der Übersichtsgrafik manchmal zu hoch angezeigt
+- Gadgetbridge-Unterstützung: falsche Mondphase in der täglichen Vorhersage behoben
+- Absturz im Zusammenhang mit Pollenvorhersage behoben
+- weitere Bugfixes & Verbesserungen
 

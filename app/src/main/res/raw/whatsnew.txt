@@ -1,7 +1,12 @@
 New in version [VERSION]:
 
-- More detailed map display and more accurate rain radar
+- more detailed map display and more accurate rain radar
+- improved, smoother display of the rain radar
 - the amount of precipitation can be displayed in the overview chart
-- various bug fixes and layout improvements
+- fixed weather maps sometimes labeled with wrong dates
+- fixed wind speed in overview chart sometimes displayed too high
+- Gadgetbridge support: fix wrong moon-phase in daily forecast
+- fixed crash related to unknown pollen region
+- various other bugfixes & improvements
 
 For a detailed list of changes, see https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md
