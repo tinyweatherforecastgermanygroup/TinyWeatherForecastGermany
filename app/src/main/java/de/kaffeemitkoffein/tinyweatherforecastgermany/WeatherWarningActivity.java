@@ -386,6 +386,9 @@ public class WeatherWarningActivity extends Activity {
                         newTextView.setText(spannableString);
                         newTextView.setAutoLinkMask(1);
                         newTextView.setTextSize(12);
+                        if (!WeatherSettings.appReleaseIsUserdebug()){
+                            newTextView.setTextSize(10);
+                        }
                         newTextView.setVisibility(View.VISIBLE);
                         newTextView.setTextColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.CYAN));
                         newTextView.setBackgroundColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.PRIMARYLIGHT));
