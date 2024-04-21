@@ -25,6 +25,8 @@
 - rewritten code to display the rain radar slides, now running smoother and more reliable
 - fix crash when reusing warnings and rain radar data 
 - add customizable location pin size on map
+- stop rain radar when updating/processing warnings in onResume to avoid performance issues on older devices
+- fix spinner not disappearing after update of warnings finishes
 
 ## Version 0.62.0:
 

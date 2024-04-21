@@ -1170,17 +1170,27 @@ public class WeatherWarningActivity extends Activity {
     }
 
     private void showProgressBar(){
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.warningactivity_progressbar);
-        if (progressBar!=null){
-            progressBar.setVisibility(View.VISIBLE);
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ProgressBar progressBar = (ProgressBar) findViewById(R.id.warningactivity_progressbar);
+                if (progressBar!=null){
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void hideProgressBar(){
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.warningactivity_progressbar);
-        if (progressBar!=null){
-            progressBar.setVisibility(View.INVISIBLE);
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ProgressBar progressBar = (ProgressBar) findViewById(R.id.warningactivity_progressbar);
+                if (progressBar!=null){
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     private void registerForBroadcast(){
