@@ -378,7 +378,7 @@
     <string name="preference_screen_uvhi_title">Індекс небезпеки ультрафіолетового випромінювання</string>
     <string name="preference_screen_uvhi_summary">Налаштуйте відображення індексу небезпеки ультрафіолетового випромінювання.</string>
     <string name="service_notification_text4">Отримання шарів карти…</string>
-    <string name="service_notification_text5">Отримуємо дані з дощового радара…</string>
+    <string name="service_notification_text5">Отримання даних радара дощу…</string>
     <string name="layerlabel_warning_areas_de">Попереджувальні зони Німеччина</string>
     <string name="layerlabel_short_ts">Відчутна температура</string>
     <string name="layerlabel_uvi_cl_0">Індекс небезпеки ультрафіолету на сьогодні</string>
