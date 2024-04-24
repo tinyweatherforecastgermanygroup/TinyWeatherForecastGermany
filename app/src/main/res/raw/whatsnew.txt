@@ -1,5 +1,9 @@
 New in version [VERSION]:
 
+- improved translations
+
+New in version 0.62.1:
+
 - more detailed map display and more accurate rain radar
 - improved, smoother display of the rain radar
 - the amount of precipitation can be displayed in the overview chart

@@ -1,5 +1,9 @@
 Neu in dieser Version [VERSION]:
 
+- verbesserte Übersetzungen
+
+Neu in Version 0.62.1:
+
 - detailliertere Kartendarstellung & genaueres Regenradar
 - verbesserte, flüssigere Darstellung des Regenradars
 - Niederschlagsmenge kann in der Übersichtsgrafik angezeigt werden
