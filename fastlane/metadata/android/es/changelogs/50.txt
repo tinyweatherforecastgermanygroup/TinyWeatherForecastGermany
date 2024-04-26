@@ -1,3 +1,8 @@
-- Visualización más detallada del mapa y radar de lluvia más preciso
-- la cantidad de precipitaciones puede mostrarse en el gráfico general
-- varias correcciones de errores y mejoras en el diseño
+- mapas más detallados y radar de lluvia más preciso
+- visualización mejorada y más fluida del radar de lluvia
+- la precipitación se puede mostrar en el gráfico general
+- mapas meteorológicos a veces etiquetados con fechas incorrectas
+- velocidad del viento fija en el gráfico general, se muestra demasiado alta
+- soporte de Gadgetbridge: corrige la fase lunar incorrecta en el pronóstico diario
+- corregido el fallo con una región de polen desconocida.
+- otras correcciones de errores y mejoras
