@@ -513,4 +513,5 @@
     <string name="preference_highresolution_summary">Erzwingt die höhere Auflösung der Karte. Dies kann das Gerät verlangsamen oder auf älteren Geräten Probleme verursachen.</string>
     <string name="preference_mapPinSize_title">Größe der Ortsmarke</string>
     <string name="preference_mapPinSize_summary">Größe der Ortsmarkierung auf der Karte.</string>
+    <string name="map_attribution_link">&lt;openstreetmap.org/copyright&gt;</string>
 </resources>
