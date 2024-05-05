@@ -84,6 +84,8 @@ public class BoldWidget extends ClassicWidget {
                 } else {
                     pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
                 }
+                // adapt the width to the custom font size
+                widgetWidth= Math.round(widgetWidth/(c.getResources().getConfiguration().fontScale));
                 int forecastDays = 2; // default
                 int widgetResource = R.layout.boldwidget_layout;
                 if (widgetWidth>=280){

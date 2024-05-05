@@ -25,6 +25,8 @@
     <dimen name="widget_textsize_medium">12sp</dimen>
     <dimen name="widget_textsize_small">7sp</dimen>
 
+    <dimen name="widget_textsize_large3x">42sp</dimen>
+
     <dimen name="widget_textsize_fc_day">10sp</dimen>
     <dimen name="widget_textsize_fc_temperature">10sp</dimen>
     <dimen name="widget_textsize_clock">64sp</dimen>
