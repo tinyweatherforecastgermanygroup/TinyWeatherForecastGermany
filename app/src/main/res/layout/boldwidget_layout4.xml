@@ -292,6 +292,8 @@
                   android:layout_alignLeft="@id/boldwidget_today_whitebar"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+                  android:minWidth="@dimen/widget_textsize_large3x"
+                  android:minEms="5"
                   android:text="-°"/>
 
         <TextView android:id="@+id/boldwidget_today_min"
@@ -301,6 +303,8 @@
                   android:layout_alignLeft="@id/boldwidget_today_whitebar"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+                  android:minWidth="@dimen/widget_textsize_large3x"
+                  android:minEms="5"
                   android:text="-°"/>
 
         <TextView android:id="@+id/boldwidget_dayofweek_today"
