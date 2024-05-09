@@ -22,7 +22,6 @@
     android:minResizeWidth="285dp"
     android:minHeight="90dp"
     android:minResizeHeight="40dp"
-    android:maxResizeHeight="263dp"
     android:targetCellWidth="4"
     android:targetCellHeight="2"
     android:layout_height="match_parent"
