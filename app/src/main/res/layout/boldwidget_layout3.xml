@@ -143,7 +143,7 @@
                    android:layout_width="@dimen/widget_weathericon_medium"
                    android:layout_height="@dimen/widget_weathericon_medium"
                    android:layout_toRightOf="@+id/boldwidget_fc1_verticalline"
-                   android:paddingLeft="8dp"
+                   android:paddingLeft="2dp"
                    android:layout_centerVertical="true"
                    android:src="@mipmap/not_available" />
 
@@ -193,7 +193,7 @@
 
     <RelativeLayout
             android:id="@+id/boldwidget_current_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/widget_reference_text"
             android:layout_below="@id/widget_warningcontainer"
@@ -217,7 +217,7 @@
                 android:layout_height="@dimen/widget_weathericon_medium"
                 android:layout_toRightOf="@id/boldwidget_current_temperature"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/not_available" />
+                android:src="@mipmap/not_available"/>
 
         <ImageView
                 android:id="@+id/boldwidget_today_whitebar"

@@ -25,8 +25,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
@@ -70,11 +72,15 @@ public class BoldWidget extends ClassicWidget {
                 int widthLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
                 int heightLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
                 int orientation = c.getResources().getConfiguration().orientation;
-                int widgetWidth = widthPortrait; int widgetHeight = heightPortrait;
+                // need to convert from dp to pixels
+                int widgetWidthDP = widthPortrait;
+                int widgetHeightDP = heightPortrait;
                 if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-                    widgetWidth = widthLandscape;
-                    widgetHeight = heightLandscape;
+                    widgetWidthDP = widthLandscape;
+                    widgetHeightDP = heightLandscape;
                 }
+                int widgetWidthPix  = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,widgetWidthDP,c.getResources().getDisplayMetrics()));
+                int widgetHeightPix = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,widgetHeightDP,c.getResources().getDisplayMetrics()));
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c, MainActivity.class);
                 PendingIntent pendingIntent;
@@ -84,24 +90,31 @@ public class BoldWidget extends ClassicWidget {
                 } else {
                     pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
                 }
-                // adapt the width to the custom font size
-                widgetWidth= Math.round(widgetWidth/(c.getResources().getConfiguration().fontScale));
-                int forecastDays = 2; // default
                 int widgetResource = R.layout.boldwidget_layout;
-                if (widgetWidth>=280){
+                int forecastDays = 2; // default
+                // calculate threshold values for number of forecast days to display in widget
+                int pixelsOneDayWidth      = getOneDaySizeInPixels(c);
+                int pixelsVerticalBarWidth = 0;
+                if (WeatherSettings.displayBoldwidgetVerticalBar(c)){
+                    pixelsVerticalBarWidth = 5; // this is the maximum width from mipmap size
+                }
+                int pixelsCurrentTempWidth = getTodayCurrentTempSizeInPixels(c);
+                int[] widthThresholdsPix = new int[]{pixelsCurrentTempWidth + pixelsVerticalBarWidth + pixelsOneDayWidth*4,
+                        pixelsCurrentTempWidth + pixelsVerticalBarWidth + pixelsOneDayWidth*5,
+                        pixelsCurrentTempWidth + pixelsVerticalBarWidth + pixelsOneDayWidth*6};
+                if (widgetWidthPix>=widthThresholdsPix[0]){
                     forecastDays = 3;
                     widgetResource = R.layout.boldwidget_layout3;
                 }
-                if (widgetWidth>=335){
+                if (widgetWidthPix>=widthThresholdsPix[1]){
                     forecastDays = 4;
                     widgetResource = R.layout.boldwidget_layout4;
                 }
-                if (widgetWidth>=430){
+                if (widgetWidthPix>=widthThresholdsPix[2]){
                     forecastDays = 5;
                     widgetResource = R.layout.boldwidget_layout5;
                 }
-                // Log.v("widget","Widget = "+widgetWidth+" / "+widgetHeight);
-                PrivateLog.log(c,PrivateLog.WIDGET, PrivateLog.INFO," Bold widget id "+widget_instances[i]+" size: "+widgetWidth+"/"+widgetHeight+" dp, showing "+forecastDays+" forecast days.");
+                PrivateLog.log(c,PrivateLog.WIDGET, PrivateLog.INFO," Bold widget id "+widget_instances[i]+" size: "+widgetWidthDP+"/"+widgetHeightDP+" dp, showing "+forecastDays+" forecast days.");
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), widgetResource);
                 fillBoldWidgetItems(c, remoteViews, weatherSettings, weatherCard,forecastDays);
                 setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
@@ -148,7 +161,6 @@ public class BoldWidget extends ClassicWidget {
         if (currentWeatherInfo.currentWeather.hasCondition()) {
             remoteViews.setImageViewBitmap(R.id.boldwidget_today_condition,forecastIcons.getIconBitmap(currentWeatherInfo.currentWeather,currentWeatherInfo.weatherLocation));
         } else {
-            remoteViews.setImageViewResource(R.id.boldwidget_today_condition, R.mipmap.not_available);
             remoteViews.setImageViewBitmap(R.id.boldwidget_today_condition,WeatherIcons.getIconBitmap(c,WeatherIcons.NOT_AVAILABLE,true));
         }
         if (currentWeatherInfo.currentWeather.hasMaxTemperature()) {
@@ -309,6 +321,22 @@ public class BoldWidget extends ClassicWidget {
         }
         setLocationText(c,remoteViews,weatherCard,shorten_text);
         setConditionText(c,remoteViews,weatherCard);
+    }
+
+    private final static String TemperatureMaxWidthTemplate = "-00°";
+
+    private int getOneDaySizeInPixels(Context context){
+        Paint calcPaint = new Paint();
+        calcPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.widget_textsize_large));
+        int pixelWidthTextMinMax  = Math.round(calcPaint.measureText(TemperatureMaxWidthTemplate));
+        int pixelWidthIcon        = context.getResources().getDimensionPixelSize(R.dimen.widget_weathericon_medium);
+        return pixelWidthTextMinMax+pixelWidthIcon;
+    }
+
+    private int getTodayCurrentTempSizeInPixels(Context context){
+        Paint calcPaint = new Paint();
+        calcPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.widget_textsize_verylarge));
+        return Math.round(calcPaint.measureText(TemperatureMaxWidthTemplate));
     }
 
 }
