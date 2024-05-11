@@ -1,5 +1,14 @@
 # Changelog 
 
+## Version 0.62.3:
+- add monochrome app icon to support app icon theming
+- improved layout of the compact weather widget, fixing multiple bugs
+- fixed classic widget having a maximum height limit
+
+## Version 0.62.2:
+
+- updated build tools
+
 ## Version 0.62.1:
 
 - simplify code calling the WelcomeActivity and returning the launch mode to the main activity

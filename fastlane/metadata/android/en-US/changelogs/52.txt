@@ -1,0 +1,4 @@
+- add monochrome app icon to support app icon theming
+- improved layout of the compact weather widget, fixing multiple bugs
+- fixed classic widget having a maximum height limit
+- improved translations

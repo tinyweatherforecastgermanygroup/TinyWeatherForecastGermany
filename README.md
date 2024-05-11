@@ -102,7 +102,7 @@ Translations:
 * English: Allan Nordhøy
 * French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
 * Finnish: eUgEntOptIc44, mondstern
-* German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, MaxK, mondstern, silmaril, w4ts0n
+* German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, MaxK, mondstern, silmaril, w4ts0n, Dirk
 * Hungarian: eUgEntOptIc44, Gőz Barnabás
 * Indonesian: Linerly
 * Italian: mondstern, eUgEntOptIc44

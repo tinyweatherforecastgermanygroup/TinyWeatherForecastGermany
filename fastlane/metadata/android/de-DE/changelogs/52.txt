@@ -1,0 +1,4 @@
+- monochromes App-Icon hinzugefügt, um individuell gestaltete App-Icons zu ermöglichen
+- verbessertes Layout des kompakten Wetter-Widgets, Behebung mehrerer Fehler
+- maximale Höhe des klassischen Widgets entfernt
+- verbesserte Übersetzungen
