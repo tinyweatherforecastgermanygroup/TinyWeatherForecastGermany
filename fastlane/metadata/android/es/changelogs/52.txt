@@ -1,0 +1,4 @@
+- un nuevo icono de aplicación monocromático para apoyar la tematización de los iconos de la aplicación
+- se ha mejorado el diseño del widget compacto del tiempo y se han corregido varios errores
+- se ha corregido el límite de altura del widget clásico
+- mejora de las traducciones
