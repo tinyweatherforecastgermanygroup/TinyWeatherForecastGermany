@@ -449,7 +449,6 @@ public class MainActivity extends Activity {
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Saving preferences...");
             weatherSettings.savePreferences();
             startWelcomeActivity(WelcomeActivity.LAUNCHMODE_FIRSTAPPLAUNCH);
-            finish();
         } else {
             launchTimer = Calendar.getInstance().getTimeInMillis();
             // check from intent if the WelcomeActivity tells us this is the first app launch
