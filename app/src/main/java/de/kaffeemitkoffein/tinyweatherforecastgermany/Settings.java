@@ -151,7 +151,8 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 if (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE) ||
                         (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN)) ||
                         (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX)) ||
-                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT))) {
+                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT)) ||
+                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH))){
                     setUseMinMax();
                     WidgetRefresher.refreshChartWidget(context,WidgetRefresher.FROM_SETTINGS);
                     WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);

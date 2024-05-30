@@ -169,6 +169,7 @@ public class WeatherSettings {
     public static final String PREF_BATTERY = "PREF_battery"; // has no value
     public static final String PREF_DATA_SAVER = "PREF_data_saver"; // has no value
     public static final String PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT = "PREF_display_overviewchart_pca";
+    public static final String PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH = "PREF_display_overviewchart_RH";
     public static final String PREF_MAP_HIGH_RESOLUTION ="PREF_map_high_resolution";
     public static final String PREF_MAP_PIN_SIZE = "PREF_map_pinsize";
 
@@ -286,6 +287,7 @@ public class WeatherSettings {
     public static final boolean PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT = false;
     public static final boolean PREF_AREADATABASE_LOCK_DEFAULT = false;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT = false;
+    public static final boolean PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH_DEFAULT = false;
     public static final boolean PREF_MAP_HIGH_RESOLUTION_DEFAULT = false;
     public static final int PREF_MAP_PIN_SIZE_DEFAULT = 4;
 
@@ -401,6 +403,7 @@ public class WeatherSettings {
     public boolean boldWidgetVerticalBar = PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT;
     public boolean areaDatabaseLock = PREF_AREADATABASE_LOCK_DEFAULT;
     public boolean displayOverviewChartPrecipitationAmount = PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT;
+    public boolean displayOverviewChartRH = PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH_DEFAULT;
     public boolean  mapHighResolution = PREF_MAP_HIGH_RESOLUTION_DEFAULT;
     public int mapPinSize = PREF_MAP_PIN_SIZE_DEFAULT;
 
@@ -520,6 +523,7 @@ public class WeatherSettings {
         this.boldWidgetVerticalBar = readPreference(PREF_BOLDWIDGET_VERTICAL_BAR,PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT);
         this.areaDatabaseLock = readPreference(PREF_AREADATABASE_LOCK,PREF_AREADATABASE_LOCK_DEFAULT);
         this.displayOverviewChartPrecipitationAmount = readPreference(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT);
+        this.displayOverviewChartRH = readPreference(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH_DEFAULT);
         this.mapHighResolution = readPreference(PREF_MAP_HIGH_RESOLUTION,PREF_MAP_HIGH_RESOLUTION_DEFAULT);
         this.mapPinSize = readPreference(PREF_MAP_PIN_SIZE,PREF_MAP_PIN_SIZE_DEFAULT);
     }
@@ -631,6 +635,7 @@ public class WeatherSettings {
         applyPreference(boldWidgetVerticalBar , PREF_BOLDWIDGET_VERTICAL_BAR,PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT);
         applyPreference(areaDatabaseLock , PREF_AREADATABASE_LOCK,PREF_AREADATABASE_LOCK_DEFAULT);
         applyPreference(displayOverviewChartPrecipitationAmount , PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT);
+        applyPreference(displayOverviewChartRH, PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH, PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH_DEFAULT);
         applyPreference(mapHighResolution, PREF_MAP_HIGH_RESOLUTION, PREF_MAP_HIGH_RESOLUTION_DEFAULT);
         applyPreference(mapPinSize,PREF_MAP_PIN_SIZE,PREF_MAP_PIN_SIZE_DEFAULT);
     }
@@ -1981,6 +1986,11 @@ public class WeatherSettings {
     public static boolean displayPrecipitationAmountInOverviewChart(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT);
+    }
+
+    public static boolean displayRHInOverviewChart(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH,PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH_DEFAULT);
     }
 
     public static boolean forceMapHighResolution(Context context){

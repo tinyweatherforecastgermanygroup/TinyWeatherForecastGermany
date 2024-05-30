@@ -661,6 +661,7 @@ public class ForecastBitmap{
         boolean hasAmountPrecipitation = true;
         boolean hasClouds = true;
         boolean hasWindSpeed = true;
+        boolean hasRH = true;
         for (int i=startPosition; i<weatherInfos.size(); i++){
             Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
             if (!weatherInfo1.hasTemperature()){
@@ -677,6 +678,9 @@ public class ForecastBitmap{
             }
             if (!weatherInfo1.hasWindSpeed()){
                 hasWindSpeed=false;
+            }
+            if (!weatherInfo1.hasRH()){
+                hasRH=false;
             }
         }
         if ((!hasTemperature)&&(!hasClouds)&&(!hasProbPrecipitation)&&(!hasAmountPrecipitation)){
@@ -869,6 +873,29 @@ public class ForecastBitmap{
             rainPolygonX[itemCount+3]=xChartOffset;
             rainPolygonY[itemCount+3]=rainPolygonY[0];
             drawPolygon(canvas,rainPolygonX,rainPolygonY,ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE),alphaRain);
+        }
+        // display humidity
+        if ((hasRH) && (WeatherSettings.displayRHInOverviewChart(context))){
+            Paint RHPaint = new Paint(temperaturePaint);
+            RHPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
+            for (int i=startPosition; i<endPosition-1; i++){
+                int pos = i - startPosition;
+                Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
+                Weather.WeatherInfo weatherInfo2 = weatherInfos.get(i+1);
+                float y1_t = (float) (zeroline_position - weatherInfo1.getRH() * (chartHeight/100f));
+                float y2_t = (float) (zeroline_position - weatherInfo2.getRH() * (chartHeight/100f));
+                float x1 = xChartOffset+ ((float) chartWidth/(float) itemCount)*pos;
+                float x2 = xChartOffset+ ((float) chartWidth/(float) itemCount)*(pos+1);
+                canvas.drawLine(x1,y1_t,x2,y2_t,RHPaint);
+            }
+            String pcaLabel = "100 %";
+            Paint RHTextPaint = new Paint(textPaint);
+            RHTextPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
+            RHTextPaint.setTextSize(labelTextSize/1.5f);
+            RHTextPaint.setShadowLayer(2,2,2,Color.BLACK);
+            RHTextPaint.setAntiAlias(true);
+            float RHXOffset = bitmap.getWidth() - RHTextPaint.measureText(pcaLabel)-3;
+            canvas.drawText(pcaLabel,RHXOffset,zeroline_position - RHTextPaint.getTextSize()*2-2,RHTextPaint);
         }
         if (hasTemperature){
             for (int i=startPosition; i<endPosition-1; i++){
