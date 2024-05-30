@@ -160,7 +160,7 @@
     <string name="preference_loggingscreen_summary">Налаштування параметрів журналювання для зневадження.</string>
     <string name="preference_logging_summary">Активувати журналювання. Журнали зберігатимуться ЛОКАЛЬНО на Вашому пристрої і НЕ надсилатимуться автоматично.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Назву пакунка Gadgetbridge повернуто до значення за замовчуванням.</string>
-    <string name="preference_clearnotifications_summary">Скиньте сповіщення для нагадувань про погоду. Усі правильні сповіщення відображатимуться знову.</string>
+    <string name="preference_clearnotifications_summary">Скидає сповіщення для нагадувань про погоду. Всі дійсні сповіщення відображатимуться знову.</string>
     <string name="weathercode_UNKNOWN">невідомо</string>
     <string name="weathercode_SNOW_SHOWERS_MODERATE_OR_HEAVY">снігопад</string>
     <string name="preference_cache_warnings_summary">Виберіть, як часто потрібно оновлювати попередження про погоду.</string>
@@ -498,4 +498,8 @@
     <string name="map_attribution_link">&lt;openstreetmap.org/copyright&gt;</string>
     <string name="preference_mapPinSize_title">Позначка місцезнаходження</string>
     <string name="preference_mapPinSize_summary">Розмір позначки місцезнаходження на мапі.</string>
+    <string name="preference_display_overviewchart_RH_summary">Відображати відносну вологість в оглядовій діаграмі.</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Фільтр попереджень</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Фільтрувати попередження в оглядовій діаграмі за тими ж параметрами, що й сповіщення.</string>
+    <string name="preference_display_overviewchart_RH_title">Відносна вологість</string>
 </resources>
