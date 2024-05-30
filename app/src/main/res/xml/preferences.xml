@@ -99,6 +99,11 @@
                     android:summary="@string/preference_display_overviewchart_RH_summary"
                     android:defaultValue="false"/>
 
+            <CheckBoxPreference
+                    android:key="PREF_display_overviewchart_filter_warnings"
+                    android:title="@string/preference_display_overviewchart_filter_warnings_title"
+                    android:summary="@string/preference_display_overviewchart_filter_warnings_summary"
+                    android:defaultValue="false"/>
 
             <PreferenceCategory
                     android:title="@string/preference_category_overviewchart_scale">

@@ -815,20 +815,23 @@ public class ForecastBitmap{
                  WeatherWarning warning = warnings.get(i);
                  // omit already expired warnings
                  if (warning.getApplicableExpires()>=chartTimeStart){
-                     float x1 = xChartOffset + (warning.onset-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
-                     if (x1<xChartOffset){
-                         x1 = xChartOffset;
+
+                     if ((warning.getSeverity() >= WeatherSettings.getWarningsNotifySeverity(context)) && (WeatherSettings.filterWarningsInOverviewChartBySeverity(context))) {
+                         float x1 = xChartOffset + (warning.onset-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
+                         if (x1<xChartOffset){
+                             x1 = xChartOffset;
+                         }
+                         float x2 = xChartOffset + (warning.getApplicableExpires()-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
+                         int color = warning.getWarningColor();
+                         float[] warningPolygonX = new float[5];
+                         float[] warningPolygonY = new float[5];
+                         warningPolygonX[0] = x1; warningPolygonY[0] = 0;
+                         warningPolygonX[1] = x2; warningPolygonY[1] = 0;
+                         warningPolygonX[2] = x2; warningPolygonY[2] = chartHeight;
+                         warningPolygonX[3] = x1; warningPolygonY[3] = chartTimeStart;
+                         warningPolygonX[4] = x1; warningPolygonY[4] = 0;
+                         drawPolygon(canvas,warningPolygonX,warningPolygonY,color,alphaWarnings);
                      }
-                     float x2 = xChartOffset + (warning.getApplicableExpires()-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
-                     int color = warning.getWarningColor();
-                     float[] warningPolygonX = new float[5];
-                     float[] warningPolygonY = new float[5];
-                     warningPolygonX[0] = x1; warningPolygonY[0] = 0;
-                     warningPolygonX[1] = x2; warningPolygonY[1] = 0;
-                     warningPolygonX[2] = x2; warningPolygonY[2] = chartHeight;
-                     warningPolygonX[3] = x1; warningPolygonY[3] = chartTimeStart;
-                     warningPolygonX[4] = x1; warningPolygonY[4] = 0;
-                     drawPolygon(canvas,warningPolygonX,warningPolygonY,color,alphaWarnings);
                  }
              }
         }

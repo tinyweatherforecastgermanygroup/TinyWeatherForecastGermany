@@ -152,7 +152,8 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN)) ||
                         (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX)) ||
                         (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT)) ||
-                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH))){
+                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH)) ||
+                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_FILTER_WARNINGS))){
                     setUseMinMax();
                     WidgetRefresher.refreshChartWidget(context,WidgetRefresher.FROM_SETTINGS);
                     WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
@@ -392,6 +393,10 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 numberPickerPreferenceChartRangeMin.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_min_summary) + " " + WeatherSettings.getOverviewChartMin(context));
                 numberPickerPreferenceChartRangeMax.setSummary(context.getResources().getString(R.string.preference_screen_overviewchart_max_summary) + " " + WeatherSettings.getOverviewChartMax(context));
             }
+        }
+        CheckBoxPreference overviewChartFilterWarningsPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_FILTER_WARNINGS);
+        if (overviewChartFilterWarningsPreference!=null){
+            // todo: display serverity level
         }
     }
 
