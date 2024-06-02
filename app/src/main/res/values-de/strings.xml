@@ -514,4 +514,8 @@
     <string name="preference_mapPinSize_title">Größe der Ortsmarke</string>
     <string name="preference_mapPinSize_summary">Größe der Ortsmarkierung auf der Karte.</string>
     <string name="map_attribution_link">&lt;openstreetmap.org/copyright&gt;</string>
+    <string name="preference_display_overviewchart_RH_summary">Relative Luftfeuchtigkeit im Übersichtsdiagramm anzeigen.</string>
+    <string name="preference_display_overviewchart_RH_title">Relative Luftfeuchtigkeit</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Warnungen filtern</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Den gleichen Filter wie für Benachrichtigungen auch für Warnungen im Übersichtsdiagramm benutzen.</string>
 </resources>
