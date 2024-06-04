@@ -499,4 +499,8 @@
     <string name="preference_mapPinSize_title">Tamaño de la marca de posición</string>
     <string name="preference_mapPinSize_summary">Tamaño de la marca de ubicación en el mapa.</string>
     <string name="map_attribution_link">&lt;openstreetmap.org/copyright&gt;</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Filtrar alertas</string>
+    <string name="preference_display_overviewchart_RH_title">Humedad relativa</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Utilice el mismo filtro que para las notificaciones de advertencias en el diagrama general.</string>
+    <string name="preference_display_overviewchart_RH_summary">Muestra la humedad relativa en el gráfico general.</string>
 </resources>
