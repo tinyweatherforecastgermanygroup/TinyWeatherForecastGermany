@@ -4,6 +4,8 @@
 - removed stray pixels in modular clouds icon
 - added an option to display relative humidity in the overview chart
 - added warnings filter to overview chart
+- added background location check call to onResume
+- fixed main activity terminating twice under certain conditions
 
 ## Version 0.62.3:
 - add monochrome app icon to support app icon theming

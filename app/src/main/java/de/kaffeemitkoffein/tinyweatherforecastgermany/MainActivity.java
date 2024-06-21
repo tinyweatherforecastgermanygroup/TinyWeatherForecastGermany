@@ -370,10 +370,15 @@ public class MainActivity extends Activity {
         } catch (Exception e){
             // ignore
         }
+
         long estimatedAdapterLayoutTimeMillis = getEstimatedAdapterLayoutTimeInMillis(context);
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Estimated weather adapter layout time is: "+timerDecimalFormat.format(estimatedAdapterLayoutTimeMillis/1000f)+ " sec");
         //PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Entering onResume at "+timerDecimalFormat.format((Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f)+" sec from app launch.");
-        if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)) {
+        boolean newLocation = false;
+        if (WeatherSettings.useBackgroundLocation(context)){
+            newLocation = WeatherLocationManager.checkForBackgroundLocation(context);
+        }
+        if ((WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)) || (newLocation)) {
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is outdated, getting new weather data.");
             weatherForecastRunnable.setWeatherLocations(null);
             executor.execute(weatherForecastRunnable);

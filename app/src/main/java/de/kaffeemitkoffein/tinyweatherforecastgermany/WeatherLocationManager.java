@@ -290,17 +290,30 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
                         if (closestStation!=null){
                             Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
                             if (!closestStation.getName().equals(currentStation.getName())){
+                                PrivateLog.log(context,PrivateLog.GEO,PrivateLog.INFO,"* New station from a background location: "+closestStation.getName()+" ["+closestStation.getOriginalDescription()+"]"+" (from "+currentStation.getName()+")");
                                 // new station is different to old one
                                 WeatherSettings.setStation(context,closestStation);
                                 // set flag so that at next app start the new location will be added to the spinner
                                 WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
                                 ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT|WeatherSyncAdapter.UpdateFlags.FLAG_NO_LOCATION_CHECK));
                                 return true;
+                            } else {
+                                PrivateLog.log(context,PrivateLog.GEO,PrivateLog.INFO,"* closest station did not change (current: "+currentStation.getName()+" ["+currentStation.getOriginalDescription()+"]"+", location: "+closestStation.getName()+").");
                             }
+                        } else {
+                            PrivateLog.log(context,PrivateLog.GEO,PrivateLog.INFO,"* not able to find closest station.");
                         }
+                    } else {
+                        PrivateLog.log(context,PrivateLog.GEO,PrivateLog.INFO,"* no need to change station.");
                     }
+                } else {
+                    PrivateLog.log(context,PrivateLog.GEO,PrivateLog.INFO,"* no new location data.");
                 }
+            } else {
+                PrivateLog.log(context,PrivateLog.GEO,PrivateLog.INFO,"* no last known location present.");
             }
+        } else {
+            PrivateLog.log(context,PrivateLog.GEO,PrivateLog.ERR,"* background location check failed due to missing permissions.");
         }
         return false;
     }

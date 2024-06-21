@@ -37,7 +37,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class PrivateLog {
-    public final static String LOGHANDLE="WEATHER";
+    public final static String LOGHANDLE="tinyweather";
     public final static String LOGFILENAME="logs.txt";
     public final static String CLIPBOARD_LOGLABEL="Logs for";
     public final static String[] CLIPBOARD_MIMETYPES={"text/plain"};
@@ -55,6 +55,7 @@ public class PrivateLog {
     public static final String TEXTS = "texts";
     public static final String STATIONS = "stations";
     public static final String RADAR  = "radar";
+    public static final String GEO  = "geo";
     public static final String ALERTS  = "alerts";
     public static final String LAYERS  = "layers";
 
