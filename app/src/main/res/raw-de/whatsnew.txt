@@ -1,15 +1,11 @@
 Neu in dieser Version [VERSION]:
 
+- Streupixel in einigen Wolkensymbolen entfernt
+- optionale Anzeige der relativen Luftfeuchtigkeit in der Übersichtsgrafik
+- optionaler Filter für Warnungen in der Übersichtsgrafik
+- verbesserte Standortprüfungen im Hintergrund
+- behoben: ausgewählter Standort wurde in einigen Fällen nicht beibehalten
+- weitere kleinere Fehlerkorrekturen
 - verbesserte Übersetzungen
-
-Neu in Version 0.62.1:
-
-- detailliertere Kartendarstellung & genaueres Regenradar
-- verbesserte, flüssigere Darstellung des Regenradars
-- Niederschlagsmenge kann in der Übersichtsgrafik angezeigt werden
-- Fehler behoben: manchmal falsches Datum der Karten, Windgeschwindigkeit wurde in der Übersichtsgrafik manchmal zu hoch angezeigt
-- Gadgetbridge-Unterstützung: falsche Mondphase in der täglichen Vorhersage behoben
-- Absturz im Zusammenhang mit Pollenvorhersage behoben
-- weitere Bugfixes & Verbesserungen
 
 Für eine detaillierte Liste der Änderungen siehe https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md

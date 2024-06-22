@@ -1,16 +1,11 @@
 New in version [VERSION]:
 
+- removed stray pixels in some cloud icons
+- added optional display of relative humidity in the overview chart
+- added optional warnings filter to overview chart
+- improved background location checks
+- fixed selected location not preserved in some cases
+- other minor bug fixes
 - improved translations
-
-New in version 0.62.1:
-
-- more detailed map display and more accurate rain radar
-- improved, smoother display of the rain radar
-- the amount of precipitation can be displayed in the overview chart
-- fixed weather maps sometimes labeled with wrong dates
-- fixed wind speed in overview chart sometimes displayed too high
-- Gadgetbridge support: fix wrong moon-phase in daily forecast
-- fixed crash related to unknown pollen region
-- various other bug-fixes & improvements
 
 For a detailed list of changes, see https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md
