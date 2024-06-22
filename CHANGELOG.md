@@ -8,6 +8,7 @@
 - added hint in settings when background location checks are enabled but the app is lacking the background location permission
 - added background location check call to onResume
 - a new background location is now also loaded in onResume
+- fixed manually selected location from spinner did not override older last known location
 
 ## Version 0.62.3:
 - add monochrome app icon to support app icon theming

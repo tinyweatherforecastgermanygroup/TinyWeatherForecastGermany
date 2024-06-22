@@ -37,7 +37,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class PrivateLog {
-    public final static String LOGHANDLE="tinyweather";
+    public final static String LOGHANDLE="tiwefoge";
     public final static String LOGFILENAME="logs.txt";
     public final static String CLIPBOARD_LOGLABEL="Logs for";
     public final static String[] CLIPBOARD_MIMETYPES={"text/plain"};

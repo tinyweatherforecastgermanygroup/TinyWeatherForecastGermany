@@ -1,0 +1,7 @@
+- removed stray pixels in some cloud icons
+- added optional display of relative humidity in the overview chart
+- added optional warnings filter to overview chart
+- improved background location checks
+- fixed selected location not preserved in some cases
+- other minor bug fixes
+- improved translations
