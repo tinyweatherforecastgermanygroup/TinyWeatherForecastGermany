@@ -280,6 +280,7 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
             if (location!=null) {
                 Weather.WeatherLocation oldWeatherLocation = WeatherSettings.getSetStationLocation(context);
                 Weather.WeatherLocation newWeatherLocation = new Weather.WeatherLocation(location);
+
                 if (newWeatherLocation.time > oldWeatherLocation.time) {
                     // check for distance significance
                     float distance = oldWeatherLocation.toLocation().distanceTo(newWeatherLocation.toLocation());
@@ -293,6 +294,8 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
                                 PrivateLog.log(context,PrivateLog.GEO,PrivateLog.INFO,"* New station from a background location: "+closestStation.getName()+" ["+closestStation.getOriginalDescription()+"]"+" (from "+currentStation.getName()+")");
                                 // new station is different to old one
                                 WeatherSettings.setStation(context,closestStation);
+                                // set this flag so that the main activity can change the station from onResume
+                                WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
                                 // set flag so that at next app start the new location will be added to the spinner
                                 WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
                                 ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT|WeatherSyncAdapter.UpdateFlags.FLAG_NO_LOCATION_CHECK));

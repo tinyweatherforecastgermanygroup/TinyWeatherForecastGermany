@@ -33,7 +33,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.*;
-import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -520,6 +519,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Resetting settings to default values...");
                                     WeatherSettings.resetPreferencesToDefault(context);
                                     Intent intent = new Intent(context, WelcomeActivity.class);
                                     Toast.makeText(context,getResources().getString(R.string.alertdialog_3_toast),Toast.LENGTH_LONG).show();
@@ -686,7 +686,6 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                     }
                 });
             } else {
-                Log.v("tinyweather","CONDITIONS NOT MET: "+WeatherSettings.useBackgroundLocation(context)+" "+WeatherLocationManager.hasBackgroundLocationPermission(context));
                 preferenceCategoryGeneral.removePreference(missingBackgroundLocationPermissionPreference);
             }
         }

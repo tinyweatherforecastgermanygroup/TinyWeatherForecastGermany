@@ -378,6 +378,9 @@ public class MainActivity extends Activity {
         if (WeatherSettings.useBackgroundLocation(context)){
             newLocation = WeatherLocationManager.checkForBackgroundLocation(context);
         }
+        if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)){
+            newLocation = true;
+        }
         if ((WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)) || (newLocation)) {
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is outdated, getting new weather data.");
             weatherForecastRunnable.setWeatherLocations(null);
@@ -946,14 +949,16 @@ public class MainActivity extends Activity {
                 spinner.setAdapter(spinnerArrayAdapter);
             }
         });
-        final Context context = this;
         // for the spinner
         final SpinnerListener spinnerListener = new SpinnerListener() {
             @Override
             public void handleItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 // the items in the spinner have the same numbering as in the spinnerItems arraylist.
                 if (pos<spinnerItems.size()){
-                    newWeatherRegionSelected(spinnerItems.get(pos));
+                    Weather.WeatherLocation weatherLocation = spinnerItems.get(pos);
+                    // override time with new selection time to make this entry most recent
+                    weatherLocation.time = Calendar.getInstance().getTimeInMillis();
+                    newWeatherRegionSelected(weatherLocation);
                     super.handleItemSelected(adapterView, view, pos, l);
                 }
             }

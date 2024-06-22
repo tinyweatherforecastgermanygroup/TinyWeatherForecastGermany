@@ -20,6 +20,7 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,6 +69,10 @@ public class StationFavorites {
             }
         }
         WeatherSettings.putFavorites2(context,stringBuilder.toString());
+        Log.v("tinyweather","------------------");
+        for (int i=0; i<sanitizedFavorites.size(); i++){
+            Log.v("tinyweather",i+": "+sanitizedFavorites.get(i).getDescription(context));
+        }
         return sanitizedFavorites;
     }
 

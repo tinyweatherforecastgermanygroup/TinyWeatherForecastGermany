@@ -646,6 +646,7 @@ public class WeatherSettings {
     }
 
     public static void resetPreferencesToDefault(Context context){
+        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Settings were reset to default!");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.clear();
