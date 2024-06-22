@@ -292,6 +292,8 @@
     <string name="preference_reset_summary">Set all settings to the default values.</string>
     <string name="preference_datasaver_title">Data saver enabled</string>
     <string name="preference_datasaver_summary">Currently, no data can be synced when using metered networks. Consider adding Tiny Weather Forecast Germany to the list of apps with unrestricted data.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Missing Permission</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">Currently, the app can\'t access the location in the background. Consider granting this permission or turn off regular location checks.</string>
     <string name="preference_highresolution_title">High resolution</string>
     <string name="preference_highresolution_summary">Forces the higher resolution of the map. This can slow down the device or cause problems on older devices. </string>
     <string name="preference_mapPinSize_title">Location mark size</string>

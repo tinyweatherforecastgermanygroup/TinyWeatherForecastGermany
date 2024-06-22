@@ -33,6 +33,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.*;
+import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -451,11 +452,6 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
         if (useBackgroundLocation==null){
             useBackgroundLocation = (CheckBoxPreference) findPreference(WeatherSettings.PREF_USE_BACKGROUND_LOCATION);
         }
-        if (!WeatherLocationManager.hasBackgroundLocationPermission(context)){
-            useBackgroundLocation.setChecked(false);
-        } else {
-            useBackgroundLocation.setChecked(true);
-        }
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(listener);
         updateValuesDisplay();
     }
@@ -472,6 +468,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     @SuppressWarnings("deprecation")
     private void updateValuesDisplay(){
         final PreferenceCategory preferenceCategoryGeneral = (PreferenceCategory) findPreference(WeatherSettings.PREF_CATEGORY_GENERAL);
+
         if (!WeatherSettings.appReleaseIsUserdebug()){
             disableLogCatLogging();
             //disableClearNotifications();
@@ -663,6 +660,37 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 preferenceCategoryGeneral.removePreference(dataSaverPreference);
             }
         }
+        Preference missingBackgroundLocationPermissionPreference = (Preference) findPreference("PREF_missing_background_location_permission");
+        if (missingBackgroundLocationPermissionPreference!=null){
+            if ((WeatherSettings.useBackgroundLocation(context)) && (!WeatherLocationManager.hasBackgroundLocationPermission(context))){
+                missingBackgroundLocationPermissionPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        MainActivity.askDialog(context,
+                                WeatherIcons.getIconResource(context, WeatherIcons.IC_GPS_FIXED),
+                                context.getResources().getString(R.string.preference_category_location),
+                                new String[]{context.getResources().getString(R.string.backgroundGPS_rationale), context.getResources().getString(R.string.backgroundGPS_settingshint)+"."},
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        Uri uri = Uri.parse("package:"+getPackageName());
+                                        intent.putExtra(Intent.EXTRA_PACKAGE_NAME,uri);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        intent.setData(uri);
+                                        startActivity(intent);
+                                    }
+                                }
+                        );
+                        return true;
+                    }
+                });
+            } else {
+                Log.v("tinyweather","CONDITIONS NOT MET: "+WeatherSettings.useBackgroundLocation(context)+" "+WeatherLocationManager.hasBackgroundLocationPermission(context));
+                preferenceCategoryGeneral.removePreference(missingBackgroundLocationPermissionPreference);
+            }
+        }
+        // todo
         CheckBoxPreference syncWarningsCheckboxPreference = (CheckBoxPreference) findPreference(WeatherSettings.Updates.PREF_UPDATE_WARNINGS_SYNC);
         if (syncWarningsCheckboxPreference!=null) {
             if (WeatherSettings.areWarningsDisabled(context)) {
