@@ -503,4 +503,6 @@
     <string name="preference_display_overviewchart_RH_title">Humedad relativa</string>
     <string name="preference_display_overviewchart_filter_warnings_summary">Utilice el mismo filtro que para las notificaciones de advertencias en el diagrama general.</string>
     <string name="preference_display_overviewchart_RH_summary">Muestra la humedad relativa en el gráfico general.</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">Actualmente, la aplicación no puede acceder a la ubicación en segundo plano. Considere otorgar este permiso o desactivar las comprobaciones periódicas de ubicación.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Falta el permiso</string>
 </resources>
