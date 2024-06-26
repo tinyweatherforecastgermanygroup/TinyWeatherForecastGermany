@@ -1,0 +1,7 @@
+- Se eliminaron píxeles perdidos en algunos íconos de la nube.
+- visualización opcional agregada de la humedad relativa en el cuadro general
+- Se agregó un filtro de advertencias opcional al cuadro general.
+- comprobaciones de ubicación de antecedentes mejoradas
+- la ubicación seleccionada fija no se conserva en algunos casos
+- otras correcciones de errores menores
+- traducciones mejoradas
