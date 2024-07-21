@@ -453,9 +453,9 @@ public class MainActivity extends Activity {
         if (WeatherSettings.isFirstAppLaunch(context)){
             super.onCreate(savedInstanceState);
             // init Preference
-            WeatherSettings weatherSettings = new WeatherSettings(context);
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Saving preferences...");
-            weatherSettings.savePreferences();
+            // WeatherSettings weatherSettings = new WeatherSettings(context);
+            // PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Saving preferences...");
+            // weatherSettings.savePreferences();
             startWelcomeActivity(WelcomeActivity.LAUNCHMODE_FIRSTAPPLAUNCH);
         } else {
             launchTimer = Calendar.getInstance().getTimeInMillis();

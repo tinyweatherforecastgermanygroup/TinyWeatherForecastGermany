@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.RemoteViews;
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class ChartWidget extends ClassicWidget{
 
@@ -71,7 +72,11 @@ public class ChartWidget extends ClassicWidget{
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.chartwidget_layout);
                 fillChartWidgetItems(c, awm, widget_instances[i], remoteViews, weatherSettings, weatherCard);
                 remoteViews.setOnClickPendingIntent(R.id.chartwidget_maincontainer, pendingIntent);
-                awm.updateAppWidget(widget_instances[i], remoteViews);
+                try {
+                    awm.updateAppWidget(widget_instances[i], remoteViews);
+                } catch (IllegalArgumentException exception){
+                    PrivateLog.log(c,PrivateLog.WIDGET,PrivateLog.ERR,"Chartwidget update failed: "+ exception.getMessage());
+                }
             }
         } else
             // sync weather if no information is present, however do not loop syncs if widget update was already
@@ -101,15 +106,23 @@ public class ChartWidget extends ClassicWidget{
         WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(context,awm,widgetInstance);
         int width = widgetDimensionManager.getWidgetWidthInt();
         int height = widgetDimensionManager.getWidgetHeightInt();
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        display.getMetrics(displayMetrics);
         if ((width<=0) || (height<=0)){
             width = 720; height = 160;
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Chartwidget size unknown, applying default dimensions: "+width+" x "+height);
+        } else {
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Chartwidget size is "+width+" x "+height);
+            // check for implausible widget dimensions
+            if ((width>displayMetrics.widthPixels) || (height>displayMetrics.heightPixels)){
+                width = 720; height = 160;
+                PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.ERR,"Chartwidget size returned is bigger than the screen resolution. Falling back to widget default dimensions.");
+            }
         }
         // measure DWD note and adapt the target bitmap size
         if (weatherSettings.widget_showdwdnote){
-            WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            Display display = windowManager.getDefaultDisplay();
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            display.getMetrics(displayMetrics);
             float fontScale = context.getResources().getConfiguration().fontScale;
             float textSizeInPixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,7,context.getResources().getDisplayMetrics());
             Paint noteTextPaint = new Paint();
@@ -122,6 +135,7 @@ public class ChartWidget extends ClassicWidget{
             }
             height = Math.round(height - lines*textSizeInPixels);
         }
+        PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Chartwidget bitmap size is "+width+" x "+height);
         Bitmap bitmap = ForecastBitmap.getOverviewChart(context,width,height,currentWeatherInfo.forecast1hourly,locationWarnings);
         remoteViews.setImageViewBitmap(R.id.chartwidget_chart,bitmap);
         // set opacity

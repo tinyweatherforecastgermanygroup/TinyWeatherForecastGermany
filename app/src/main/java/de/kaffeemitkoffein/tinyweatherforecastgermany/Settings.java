@@ -467,7 +467,6 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
     @SuppressWarnings("deprecation")
     private void updateValuesDisplay(){
         final PreferenceCategory preferenceCategoryGeneral = (PreferenceCategory) findPreference(WeatherSettings.PREF_CATEGORY_GENERAL);
-
         if (!WeatherSettings.appReleaseIsUserdebug()){
             disableLogCatLogging();
             //disableClearNotifications();

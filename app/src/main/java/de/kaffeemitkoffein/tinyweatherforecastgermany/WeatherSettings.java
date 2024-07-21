@@ -56,8 +56,6 @@ public class WeatherSettings {
     public final static int DISPLAYTYPE_24HOURS = 4;
     public final static int DISPLAYTYPE_MIXED = 256;
 
-    public final static int POLLBLOCKTIME = 1000*60*5; // 5 minutes in millis
-
     public static final String PREF_CATEGORY_GENERAL = "PREF_category_general";
 
     public static final String PREF_STATION_NAME = "PREF_station_name";
@@ -988,21 +986,6 @@ public class WeatherSettings {
         return WeatherWarning.Severity.toInt(result);
     }
 
-    /*
-    public static long getTextForecastLastUpdateTimeInMillis(Context context){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getLong(PREF_TEXTFORECAST_LAST_UPDATE_TIME,PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT);
-    }
-     */
-
-    /*
-    public static final long TEXTFORECASTS_UPDATE_INTERVAL = 12*60*60*1000;
-
-    public static boolean areTextForecastsOutdated(Context context){
-        return getTextForecastLastUpdateTimeInMillis(context) + TEXTFORECASTS_UPDATE_INTERVAL <= Calendar.getInstance().getTimeInMillis();
-    }
-     */
-
     public static boolean isFirstAppLaunch(Context c) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
         return sharedPreferences.getBoolean(PREF_IS_FIRST_APP_LAUNCH, PREF_IS_FIRST_APP_LAUNCH_DEFAULT);
@@ -1012,7 +995,11 @@ public class WeatherSettings {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(c);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putBoolean(PREF_IS_FIRST_APP_LAUNCH, false);
-        pref_editor.apply();
+        if (pref_editor.commit()){
+            PrivateLog.log(c,PrivateLog.MAIN,PrivateLog.INFO,"First launch flag set successfully.");
+        } else {
+            PrivateLog.log(c,PrivateLog.MAIN,PrivateLog.ERR,"Setting first launch flag failed.");
+        }
     }
 
     public static void resetAppLaunchedFlag(Context c) {
