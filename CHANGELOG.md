@@ -1,5 +1,9 @@
 # Changelog 
 
+## Version 0.62.5
+- fix app crash caused by launcher returning an inaccurately large widget size
+- - disable features requiring location services after the user declined the location permission again in the permission rationale dialog
+
 ## Version 0.62.4
 - removed stray pixels in modular clouds icon
 - added an option to display relative humidity in the overview chart

@@ -2182,6 +2182,16 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
+                WeatherSettings.setAskedLocationFlag(context,WeatherSettings.AskedLocationFlag.NONE);
+                WeatherSettings.setUseBackgroundLocation(context,false); // disable background location checks
+                WeatherSettings.setGPSAuto(context,false); // disable regular location checks at app launch
+                WeatherSettings.setUSEGPSFlag(context,false);  // disable tick in manual station search dialog to use device
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Location permissions declined even after asking again, features requiring location permissions have been disabled.");
+                if (permisson.equals(LOCATION_DENIED)){
+                    showWarning(WeatherIcons.getIconResource(context,WeatherIcons.IC_GPS_FIXED),
+                            context.getResources().getString(R.string.preference_category_location),
+                            context.getResources().getString(R.string.geoinput_declined));
+                }
             }
         });
         builder.setPositiveButton(getApplicationContext().getResources().getString(R.string.allow), new DialogInterface.OnClickListener() {

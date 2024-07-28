@@ -406,6 +406,7 @@
     <string name="backgroundGPS_settingshint">To grant the background location permission, you need to open the app settings: select permissions; select location, allow </string>
     <string name="always_allow">always allow</string>
     <string name="geoinput_settingshint">To grant the location permission you need to open the app settings: select permissions; select location, allow location access.</string>
+    <string name="geoinput_declined">Since you have declined location permissions, the app features requiring them have been disabled. You may enable them again in the settings.</string>
     <string name="disable_battery_saving_rationale">The location check in the background will not work reliably as long as battery optimization is turned on. It is better to disable battery optimization for this app. Note that the system may reset this setting occasionally. If the location check does not work properly, you should check this setting in the future.</string>
     <string name="geoinput_noprovider">No suitable location service found. Please enable location services and retry.</string>
     <string name="geoinput_reflocation_title">The reference location is:</string>

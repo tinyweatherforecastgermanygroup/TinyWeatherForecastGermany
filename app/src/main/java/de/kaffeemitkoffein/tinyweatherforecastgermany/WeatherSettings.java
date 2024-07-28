@@ -1043,6 +1043,13 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_GPSAUTO, PREF_GPSAUTO_DEFAULT);
     }
 
+    public static void setGPSAuto(Context context, boolean b){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putBoolean(PREF_GPSAUTO,b);
+        pref_editor.apply();
+    }
+
     public static void saveGPSfixtime(Context context, long time){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
