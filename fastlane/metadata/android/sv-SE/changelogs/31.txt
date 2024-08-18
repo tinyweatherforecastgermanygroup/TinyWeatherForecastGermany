@@ -1,0 +1,1 @@
+- fixar trasigt stöd för Gadgetbridge
