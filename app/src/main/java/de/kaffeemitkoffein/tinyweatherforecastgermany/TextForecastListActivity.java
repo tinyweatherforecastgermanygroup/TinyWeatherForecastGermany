@@ -90,7 +90,7 @@ public class TextForecastListActivity extends Activity {
     @Override
     protected void onResume() {
         registerForBroadcast();
-        if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.TEXTS)){
+        if (DataStorage.Updates.isSyncDue(context,WeatherSettings.Updates.Category.TEXTS)){
             PrivateLog.log(context,PrivateLog.TEXTS,PrivateLog.INFO,"Weather texts are outdated, updating data.");
             executor.execute(textForecastRunnable);
         } else {
@@ -122,7 +122,7 @@ public class TextForecastListActivity extends Activity {
         textForecastRunnable = new APIReaders.TextForecastRunnable(this){
             @Override
             public void onPositiveResult(){
-               WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.TEXTS,Calendar.getInstance().getTimeInMillis());
+               DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.TEXTS,Calendar.getInstance().getTimeInMillis());
                showList();
                // trigger a sync request to update other items if necessary.
                // Texts will not be updated again because setLastUpdate was called. When no syncs are due, nothing
@@ -160,7 +160,7 @@ public class TextForecastListActivity extends Activity {
                     intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT, true);
                     PrivateLog.log(context, PrivateLog.TEXTS, PrivateLog.INFO, "Weather texts updated successfully.");
                     context.sendBroadcast(intent);
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.TEXTS, Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.TEXTS, Calendar.getInstance().getTimeInMillis());
                 }
 
                 @Override
@@ -188,7 +188,7 @@ public class TextForecastListActivity extends Activity {
                 }
                 // update action bar
                 final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE, dd.MM.yyyy, HH:mm:ss");
-                actionBar.setSubtitle(simpleDateFormat.format(new Date(WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.TEXTS)))+" ("+textForecasts.size()+")");
+                actionBar.setSubtitle(simpleDateFormat.format(new Date(DataStorage.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.TEXTS)))+" ("+textForecasts.size()+")");
                 // set adapter
                 textForecastAdapter = new TextForecastAdapter(getBaseContext(),textForecasts);
                 textforecasts_listview = (ListView) findViewById(R.id.textforecasts_listview);

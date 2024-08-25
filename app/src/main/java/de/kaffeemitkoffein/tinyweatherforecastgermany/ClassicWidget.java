@@ -355,7 +355,7 @@ public class ClassicWidget extends AppWidgetProvider {
         }
     }
 
-    public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c, boolean shorten_text){
+    public void setClassicWidgetItems(RemoteViews remoteViews, CurrentWeatherInfo weatherCard, Context c, boolean shorten_text){
         if (weatherCard==null){
             weatherCard = new CurrentWeatherInfo();
             weatherCard.setToEmpty();
@@ -386,23 +386,23 @@ public class ClassicWidget extends AppWidgetProvider {
         remoteViews.setViewVisibility(R.id.classicwidget_temperature_highlow,View.VISIBLE);
         String windstring="";
         if (weatherCard.currentWeather.hasWindDirection()){
-            if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.ARROW){
+            if (WeatherSettings.getWindDisplayType(c)==Weather.WindDisplayType.ARROW){
                 remoteViews.setViewVisibility(R.id.classicwidget_windarrow,View.VISIBLE);
-                if (weatherSettings.display_wind_arc) {
+                if (WeatherSettings.displayWindArc(c)) {
                     remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow, Weather.WeatherInfo.getWindForecastTint(weatherCard.currentWeather.getArrowBitmap(c,true),weatherCard.getWindForecast(WeatherSettings.getWindArcPeriod(c))));
                 } else {
                     remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getArrowBitmap(c,true));
                 }
             }
-            if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.BEAUFORT){
+            if (WeatherSettings.getWindDisplayType(c)==Weather.WindDisplayType.BEAUFORT){
                 remoteViews.setViewVisibility(R.id.classicwidget_windarrow,View.VISIBLE);
-                if (weatherSettings.display_wind_arc){
+                if (WeatherSettings.displayWindArc(c)){
                     remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow, Weather.WeatherInfo.getWindForecastTint(weatherCard.currentWeather.getBeaufortBitmap(c,true),weatherCard.getWindForecast(WeatherSettings.getWindArcPeriod(c))));
                 } else {
                     remoteViews.setImageViewBitmap(R.id.classicwidget_windarrow,weatherCard.currentWeather.getBeaufortBitmap(c,true));
                 }
             }
-            if (weatherSettings.getWindDisplayType()==Weather.WindDisplayType.TEXT){
+            if (WeatherSettings.getWindDisplayType(c)==Weather.WindDisplayType.TEXT){
                 remoteViews.setViewVisibility(R.id.classicwidget_windarrow,View.GONE);
                 windstring=weatherCard.currentWeather.getWindDirectionString(c)+" ";
             }
@@ -438,20 +438,15 @@ public class ClassicWidget extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.classicwidget_wind,windstring);
             remoteViews.setTextColor(R.id.classicwidget_wind,ThemePicker.getWidgetTextColor(c));
             remoteViews.setViewVisibility(R.id.classicwidget_wind_unit,View.VISIBLE);
-            remoteViews.setTextViewText(R.id.classicwidget_wind_unit,Weather.getWindUnitString(weatherSettings.getWindDisplayUnit(c)));
+            remoteViews.setTextViewText(R.id.classicwidget_wind_unit,Weather.getWindUnitString(WeatherSettings.getWindDisplayUnit(c)));
             remoteViews.setTextColor(R.id.classicwidget_wind_unit,ThemePicker.getWidgetTextColor(c));
         } else {
             remoteViews.setViewVisibility(R.id.classicwidget_wind,View.INVISIBLE);
         }
-        int opacity = 90;
-        try {
-            opacity = Integer.parseInt(weatherSettings.widget_opacity);
-        } catch (Exception e){
-            // do nothing
-        }
+        int opacity = WeatherSettings.getWidgetOpacity(c);
         remoteViews.setImageViewResource(android.R.id.background,ThemePicker.getWidgetBackgroundDrawableRessource(c));
         remoteViews.setInt(android.R.id.background,"setImageAlpha",Math.round(opacity*2.55f));
-        if (weatherSettings.widget_showdwdnote) {
+        if (WeatherSettings.showDWDNote(c)) {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.VISIBLE);
             remoteViews.setTextColor(R.id.widget_reference_text,ThemePicker.getWidgetTextColor(c));
         } else {
@@ -459,14 +454,14 @@ public class ClassicWidget extends AppWidgetProvider {
         }
     }
 
-    public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c){
-        setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c,false);
+    public void setClassicWidgetItems(RemoteViews remoteViews, CurrentWeatherInfo weatherCard, Context c){
+        setClassicWidgetItems(remoteViews,weatherCard,c,false);
     }
 
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances, int source){
         CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c);
+        int pid = android.os.Process.myPid();
         if (weatherCard!=null){
-            WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i=0; i<widget_instances.length; i++){
                 // determine widget diameters in pixels
                 Bundle appWidgetOptions = awm.getAppWidgetOptions(widget_instances[i]);
@@ -508,7 +503,7 @@ public class ClassicWidget extends AppWidgetProvider {
                     remoteViews.setImageViewBitmap(R.id.largewidget_10daysbitmap, get10DaysForecastBar(c,awm,widget_instances[i],weatherCard,true));
                 }
                 remoteViews.setOnClickPendingIntent(R.id.widget_maincontainer,pendingIntent);
-                setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
+                setClassicWidgetItems(remoteViews,weatherCard,c);
                 awm.updateAppWidget(widget_instances[i],remoteViews);
             }
         } else

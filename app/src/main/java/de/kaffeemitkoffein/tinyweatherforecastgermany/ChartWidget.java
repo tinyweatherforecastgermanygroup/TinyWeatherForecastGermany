@@ -44,7 +44,6 @@ public class ChartWidget extends ClassicWidget{
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances, int source) {
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         if (weatherCard!=null){
-            WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i = 0; i < widget_instances.length; i++) {
                 // determine widget diameters in pixels
                 Bundle appWidgetOptions = awm.getAppWidgetOptions(widget_instances[i]);
@@ -70,7 +69,7 @@ public class ChartWidget extends ClassicWidget{
                     pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
                 }
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.chartwidget_layout);
-                fillChartWidgetItems(c, awm, widget_instances[i], remoteViews, weatherSettings, weatherCard);
+                fillChartWidgetItems(c, awm, widget_instances[i], remoteViews, weatherCard);
                 remoteViews.setOnClickPendingIntent(R.id.chartwidget_maincontainer, pendingIntent);
                 try {
                     awm.updateAppWidget(widget_instances[i], remoteViews);
@@ -86,12 +85,12 @@ public class ChartWidget extends ClassicWidget{
             }
     }
 
-    private void fillChartWidgetItems(Context context, AppWidgetManager awm, int widgetInstance, RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo currentWeatherInfo) {
+    private void fillChartWidgetItems(Context context, AppWidgetManager awm, int widgetInstance, RemoteViews remoteViews, CurrentWeatherInfo currentWeatherInfo) {
         if (currentWeatherInfo == null) {
             currentWeatherInfo = new CurrentWeatherInfo();
             currentWeatherInfo.setToEmpty();
         }
-        if (weatherSettings.widget_showdwdnote) {
+        if (WeatherSettings.showDWDNote(context)) {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.VISIBLE);
             remoteViews.setTextColor(R.id.widget_reference_text,ThemePicker.getWidgetTextColor(context));
         } else {
@@ -122,7 +121,7 @@ public class ChartWidget extends ClassicWidget{
             }
         }
         // measure DWD note and adapt the target bitmap size
-        if (weatherSettings.widget_showdwdnote){
+        if (WeatherSettings.showDWDNote(context)){
             float fontScale = context.getResources().getConfiguration().fontScale;
             float textSizeInPixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,7,context.getResources().getDisplayMetrics());
             Paint noteTextPaint = new Paint();
@@ -139,7 +138,7 @@ public class ChartWidget extends ClassicWidget{
         Bitmap bitmap = ForecastBitmap.getOverviewChart(context,width,height,currentWeatherInfo.forecast1hourly,locationWarnings);
         remoteViews.setImageViewBitmap(R.id.chartwidget_chart,bitmap);
         // set opacity
-        int opacity = Integer.parseInt(weatherSettings.widget_opacity);
+        int opacity = WeatherSettings.getWidgetOpacity(context);
         remoteViews.setImageViewResource(android.R.id.background,ThemePicker.getWidgetBackgroundDrawableRessource(context));
         remoteViews.setInt(android.R.id.background,"setImageAlpha",Math.round(opacity*2.55f));
     }

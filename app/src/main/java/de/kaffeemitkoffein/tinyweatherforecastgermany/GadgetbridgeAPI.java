@@ -196,19 +196,18 @@ public class GadgetbridgeAPI {
     }
 
     private static void sendWeatherBroadcast(Context context, WeatherSpec weatherSpec){
-        WeatherSettings weatherSettings = new WeatherSettings(context);
         if (weatherSpec!=null){
             Intent intent = new Intent();
             intent.putExtra(WEATHER_EXTRA, (Parcelable) weatherSpec);
             // going by the docs, this requires at least api level 14
             // read the package name from the settings. Users may change the package name to
             // be able to use forks.
-            intent.setPackage(weatherSettings.gadgetbridge_packagename);
+            intent.setPackage(WeatherSettings.getGadgetBridgePackageName(context));
             intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
             intent.setAction(WEATHER_ACTION);
             context.sendBroadcast(intent);
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"Sent weather broadcast to GadgetBridge:");
-            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"+-> package name: "+weatherSettings.gadgetbridge_packagename);
+            PrivateLog.log(context,PrivateLog.GB,PrivateLog.INFO,"+-> package name: "+WeatherSettings.getGadgetBridgePackageName(context));
         } else {
             PrivateLog.log(context,PrivateLog.GB,PrivateLog.ERR,"GadgetBridge could not be served because there is no weather data.");
         }

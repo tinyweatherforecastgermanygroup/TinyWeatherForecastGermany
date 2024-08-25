@@ -668,7 +668,7 @@ public class WeatherLayer {
             // put pollen bitmap to cache for faster reading in the future
             saveLayerBitmapToCache(context,layerBitmap);
             // modifies the file last modified time so that it matches the polling time of the pollen data
-            if (!setFileLastModifiedTime(context,WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.POLLEN))){
+            if (!setFileLastModifiedTime(context,DataStorage.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.POLLEN))){
                 PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.ERR,"setLastModified failed on layer "+layer);
             }
         } else {

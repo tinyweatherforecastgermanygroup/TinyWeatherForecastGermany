@@ -259,7 +259,7 @@ public class WeatherDetailsActivity extends Activity {
             @Override
             public void onFinished(boolean success) {
                 if (success){
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN, Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN, Calendar.getInstance().getTimeInMillis());
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -954,7 +954,7 @@ public class WeatherDetailsActivity extends Activity {
     protected void onResume() {
         super.onResume();
         registerForBroadcast();
-        if (WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN)){
+        if (DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN)){
             PrivateLog.log(context,PrivateLog.TEXTS,PrivateLog.INFO,"Pollen data outdated, updating data.");
             executor.execute(pollenReader);
         } else {

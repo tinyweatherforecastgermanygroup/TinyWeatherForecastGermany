@@ -61,7 +61,6 @@ public class BoldWidget extends ClassicWidget {
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances, int source) {
         CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c);
         if (weatherCard!=null){
-            WeatherSettings weatherSettings = new WeatherSettings(c);
             for (int i = 0; i < widget_instances.length; i++) {
                 // determine widget diameters in pixels
                 Bundle appWidgetOptions = awm.getAppWidgetOptions(widget_instances[i]);
@@ -116,8 +115,8 @@ public class BoldWidget extends ClassicWidget {
                 }
                 PrivateLog.log(c,PrivateLog.WIDGET, PrivateLog.INFO," Bold widget id "+widget_instances[i]+" size: "+widgetWidthDP+"/"+widgetHeightDP+" dp, showing "+forecastDays+" forecast days.");
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), widgetResource);
-                fillBoldWidgetItems(c, remoteViews, weatherSettings, weatherCard,forecastDays);
-                setClassicWidgetItems(remoteViews,weatherSettings,weatherCard,c);
+                fillBoldWidgetItems(c, remoteViews, weatherCard,forecastDays);
+                setClassicWidgetItems(remoteViews,weatherCard,c);
                 remoteViews.setOnClickPendingIntent(R.id.boldwidget_maincontainer, pendingIntent);
                 awm.updateAppWidget(widget_instances[i], remoteViews);
             }
@@ -130,7 +129,7 @@ public class BoldWidget extends ClassicWidget {
 
     }
 
-    private void fillBoldWidgetItems(Context c, RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo currentWeatherInfo, int forecastDays) {
+    private void fillBoldWidgetItems(Context c, RemoteViews remoteViews, CurrentWeatherInfo currentWeatherInfo, int forecastDays) {
         ForecastIcons forecastIcons = new ForecastIcons(c,null);
         if (currentWeatherInfo == null) {
             currentWeatherInfo = new CurrentWeatherInfo();
@@ -138,7 +137,7 @@ public class BoldWidget extends ClassicWidget {
         }
         setWarningTextAndIcon(c,remoteViews,R.id.widget_warningcontainer,R.id.widget_warningsymbol,R.id.widget_warningtext,R.id.widget_warning_more);
         remoteViews.setTextColor(R.id.boldwidget_dayofweek_today,ThemePicker.getWidgetTextColor(c));
-        if (weatherSettings.widget_showdwdnote) {
+        if (WeatherSettings.showDWDNote(c)) {
             remoteViews.setViewVisibility(R.id.widget_reference_text, View.VISIBLE);
             remoteViews.setTextColor(R.id.widget_reference_text,ThemePicker.getWidgetTextColor(c));
         } else {
@@ -308,13 +307,13 @@ public class BoldWidget extends ClassicWidget {
             }
         }
         // set opacity
-        int opacity = Integer.parseInt(weatherSettings.widget_opacity);
+        int opacity = WeatherSettings.getWidgetOpacity(c);
         remoteViews.setImageViewResource(android.R.id.background,ThemePicker.getWidgetBackgroundDrawableRessource(c));
         remoteViews.setInt(android.R.id.background,"setImageAlpha",Math.round(opacity*2.55f));
     }
 
     @Override
-    public void setClassicWidgetItems(RemoteViews remoteViews, WeatherSettings weatherSettings, CurrentWeatherInfo weatherCard, Context c, boolean shorten_text) {
+    public void setClassicWidgetItems(RemoteViews remoteViews, CurrentWeatherInfo weatherCard, Context c, boolean shorten_text) {
         if (weatherCard==null){
             weatherCard = new CurrentWeatherInfo();
             weatherCard.setToEmpty();

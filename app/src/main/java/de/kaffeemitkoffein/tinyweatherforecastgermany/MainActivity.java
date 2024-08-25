@@ -192,12 +192,11 @@ public class MainActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
             // weather settings must be read at the time of selection!
-            WeatherSettings weatherSettings = new WeatherSettings(context);
             TextView tv = (TextView) view.findViewById(R.id.dropdown_textitem);
             String station_description = tv.getText().toString();
-            Integer station_pos = stationsManager.getPositionFromDescription(station_description,true);
-            if (station_pos != null) {
-                if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos)) && (last_updateweathercall + 3000 < Calendar.getInstance().getTimeInMillis())) {
+            Weather.WeatherLocation newLocation = stationsManager.getLocationFromDescription(station_description);
+            if (newLocation != null) {
+                if ((!WeatherSettings.getSetStationLocation(context).equals(newLocation)) && (last_updateweathercall + 3000 < Calendar.getInstance().getTimeInMillis())) {
                     newWeatherRegionSelected(stationsManager.getLocationFromDescription(station_description));
                     if (autoCompleteTextView != null) {
                         autoCompleteTextView.setText("");
@@ -282,27 +281,26 @@ public class MainActivity extends Activity {
 
     private void performTextSearch(){
     // weather settings must be read at the time of selection!
-            WeatherSettings weatherSettings = new WeatherSettings(context);
-            String station_description = autoCompleteTextView.getText().toString();
-            Integer station_pos = stationsManager.getPositionFromDescription(station_description,true);
-            if (station_pos!=null){
-                if (!weatherSettings.station_name.equals(stationsManager.getName(station_pos))){
+        String station_description = autoCompleteTextView.getText().toString();
+        Weather.WeatherLocation newLocation = stationsManager.getLocationFromDescription(station_description);
+        if (newLocation!=null){
+            if (!WeatherSettings.getSetStationLocation(context).equals(newLocation)){
                     newWeatherRegionSelected(stationsManager.getLocationFromDescription(station_description));
-                }
+            }
+        } else {
+            final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
+            Location startLocation = stationSearchEngine.getCentroidLocationFromArea(station_description);
+            if (startLocation!=null){
+                calcualateClosestStations(stations,startLocation);
             } else {
-                final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
-                Location startLocation = stationSearchEngine.getCentroidLocationFromArea(station_description);
-                if (startLocation!=null){
-                    calcualateClosestStations(stations,startLocation);
-                } else {
-                    try {
-                      Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
-                    } catch (Exception e){
-                      PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error: station does not exist.");
-                    }
+                try {
+                    Toast.makeText(getApplicationContext(),getApplicationContext().getResources().getText(R.string.station_does_not_exist),Toast.LENGTH_LONG).show();
+                } catch (Exception e){
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error: station does not exist.");
                 }
             }
         }
+    }
 
 
     final View.OnClickListener searchListener = new View.OnClickListener() {
@@ -381,7 +379,7 @@ public class MainActivity extends Activity {
         if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)){
             newLocation = true;
         }
-        if ((WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)) || (newLocation)) {
+        if ((DataStorage.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)) || (newLocation)) {
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is outdated, getting new weather data.");
             weatherForecastRunnable.setWeatherLocations(null);
             executor.execute(weatherForecastRunnable);
@@ -444,8 +442,10 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int pid = android.os.Process.myPid();
         // remove area database lock if necessary
         context = getApplicationContext();
+        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"PID main activity is: "+pid);
         estimatedAdapterLayoutTimeMillis = getEstimatedAdapterLayoutTimeInMillis(context);
         if (WeatherSettings.isAreaDatabaseLocked(context)){
             WeatherSettings.unlockAreaDatabase(context);
@@ -499,7 +499,7 @@ public class MainActivity extends Activity {
                     updateAppViews(null);
                     PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.INFO, "Weather update: success");
                     super.onPositiveResult();
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,Calendar.getInstance().getTimeInMillis());
                     // finally, do a sync of other conditions. Weather will not by updated, since setLastUpdate was called.
                     // If no sync is due, nothing will happen.
                     executor.execute(
@@ -604,10 +604,10 @@ public class MainActivity extends Activity {
                     WeatherSettings.Updates.DeprecatedPreferences.migrateDeprecatedSyncSettings(context);
                 }
                 showWhatsNewDialog();
-                WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
+                WeatherSettings.setCurrentAppVersionCode(getApplicationContext());
             } else {
                 if (WeatherSettings.getLastAppVersionCode(context)==WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT){
-                    WeatherSettings.setCurrentAppVersionFlag(getApplicationContext());
+                    WeatherSettings.setCurrentAppVersionCode(getApplicationContext());
                 }
             }
             try {
@@ -778,8 +778,12 @@ public class MainActivity extends Activity {
                     }
                 });
             }
-            // TESTING
         }
+        // TESTING
+        /* DataStorage.setLong(context,DataStorage.DATASTORAGE_TEST, 1042);
+        long test = (long) DataStorage.getLong(context,DataStorage.DATASTORAGE_TEST, 40);
+        DataStorage.printPackages(context,DataStorage.readAllPackages(context));
+         */
     }
 
     public static long getEstimatedAdapterLayoutTimeInMillis(Context context){
@@ -891,12 +895,12 @@ public class MainActivity extends Activity {
             weatherCard = Weather.getCurrentWeatherInfo(context);
             if (weatherCard!=null){
                 // replace update time from the data polling time after changing station
-                WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,weatherCard.polling_time);
+                DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,weatherCard.polling_time);
             } else {
                 // when no weather data available in database, set last update time to 1970-01-01
-                WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,0);
+                DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,0);
             }
-            if (WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WEATHER)){
+            if (DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WEATHER)){
                 ArrayList<Weather.WeatherLocation> weatherLocations = new ArrayList<Weather.WeatherLocation>();
                 weatherLocations.add(weatherLocation);
                 weatherForecastRunnable.setWeatherLocations(weatherLocations);
@@ -997,7 +1001,7 @@ public class MainActivity extends Activity {
                 }
                 stationsManager.stations = stations;
                 stationsManager.loaded = true;
-                stationSearchEngine = new StationSearchEngine(context,executor,null,stationsManager){
+                stationSearchEngine = new StationSearchEngine(context,executor,stationsManager){
                     @Override
                     public void newEntries(ArrayList<String> newEntries){
                         super.newEntries(newEntries);
@@ -1112,14 +1116,13 @@ public class MainActivity extends Activity {
     }
 
     private ArrayList<Weather.WeatherInfo> getCustomForecastWeatherInfoArray(CurrentWeatherInfo weatherCard){
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-        if (weatherSettings.getDisplayType() == WeatherSettings.DISPLAYTYPE_24HOURS){
+        if (WeatherSettings.getDisplayType(context) == WeatherSettings.DISPLAYTYPE_24HOURS){
             return weatherCard.forecast24hourly;
         }
-        if (weatherSettings.getDisplayType() == WeatherSettings.DISPLAYTYPE_6HOURS){
+        if (WeatherSettings.getDisplayType(context) == WeatherSettings.DISPLAYTYPE_6HOURS){
             return weatherCard.forecast6hourly;
         }
-        if (weatherSettings.getDisplayType() == WeatherSettings.DISPLAYTYPE_1HOUR){
+        if (WeatherSettings.getDisplayType(context) == WeatherSettings.DISPLAYTYPE_1HOUR){
             return weatherCard.forecast1hourly;
         }
         ArrayList<Weather.WeatherInfo> weatherInfos = new ArrayList<Weather.WeatherInfo>();
@@ -1443,7 +1446,7 @@ public class MainActivity extends Activity {
             if (WeatherSettings.appReleaseIsUserdebug()){
                 text = text + PrivateLog.getDebugInfoString(getApplicationContext());
                 text = text + PrivateLog.getInfoString(getApplicationContext());
-                text = text + PrivateLog.getCurrentStationInfoString(getApplicationContext());
+                text = text + PrivateLog.getCurrentStationInfoString(this);
             }
             textView.setText(text);
         } catch (IOException e) {
@@ -1504,8 +1507,7 @@ public class MainActivity extends Activity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 whatsNewDialogVisible=false;
                 // update version code in preferences so that this dialog is not shown anymore in this version
-                final WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-                weatherSettings.applyPreference(BuildConfig.VERSION_CODE,WeatherSettings.PREF_LAST_VERSION_CODE,WeatherSettings.PREF_LAST_VERSION_CODE_DEFAULT);
+                WeatherSettings.setCurrentAppVersionCode(context);
                 dialogInterface.dismiss();
             }
         });
@@ -1646,9 +1648,8 @@ public class MainActivity extends Activity {
     }
 
     private void disableLogToLogcatIfNotUserDebug(){
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
         if (!WeatherSettings.appReleaseIsUserdebug()){
-            if (weatherSettings.log_to_logcat){
+            if (WeatherSettings.loggingToLogcatEnabled(context)){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this,0);
                 builder.setIcon(R.mipmap.ic_warning_white_24dp);
                 builder.setTitle(getApplicationContext().getResources().getString(R.string.alertdialog_2_title));
@@ -1658,8 +1659,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Logging to logcat is being disabled...");
-                        WeatherSettings weatherSettings = new WeatherSettings(context);
-                        weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT_DEFAULT,WeatherSettings.PREF_LOG_TO_LOGCAT,WeatherSettings.PREF_LOG_TO_LOGCAT_DEFAULT);
+                        WeatherSettings.setLoggingToLogcat(context,false);
                         Toast.makeText(context,context.getResources().getString(R.string.alertdialog_2_toast),Toast.LENGTH_LONG).show();
                     }
                 });
@@ -1987,13 +1987,12 @@ public class MainActivity extends Activity {
             final AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
                     TextView textView = view.findViewById(R.id.geochoiceitem_text);
                     String station_description = textView.getText().toString();
                     station_description = station_description.substring(0,station_description.indexOf(" ["));
                     Weather.WeatherLocation newWeatherLocation = stationsManager.getLocationFromDescription(station_description);
                     if (newWeatherLocation!=null){
-                        if (!weatherSettings.station_name.equals(newWeatherLocation.getName())){
+                        if (!WeatherSettings.getSetStationLocation(context).equals(newWeatherLocation)){
                             newWeatherRegionSelected(newWeatherLocation);
                         }
                     } else {

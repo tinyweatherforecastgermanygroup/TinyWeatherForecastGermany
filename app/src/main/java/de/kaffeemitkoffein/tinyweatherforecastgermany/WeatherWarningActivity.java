@@ -247,9 +247,14 @@ public class WeatherWarningActivity extends Activity {
         if (WeatherSettings.GPSAuto(context)){
             weatherLocationManager.checkLocation();
         }
-        if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WARNINGS)){
-            PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Weather warnings are outdated, updating data.");
-            scheduledExecutorService.execute(weatherWarningsUpdateRunnable);
+        if (DataStorage.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WARNINGS)){
+            if (Weather.suitableNetworkAvailable(context)){
+                PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Weather warnings are outdated, updating data.");
+                scheduledExecutorService.execute(weatherWarningsUpdateRunnable);
+            } else {
+                PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.ERR,"Weather warnings need to be updated, but no suitable network connection found.");
+            }
+
         } else {
             // displayWarnings() must be in scheduledExecutorService queue to make sure it is executed before
             // radarMNSetGeoserverRunnable (see below)
@@ -435,7 +440,7 @@ public class WeatherWarningActivity extends Activity {
             @Override
             public void onPositiveResult(ArrayList<WeatherWarning> warnings) {
                 hideProgressBar();
-                WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS,Calendar.getInstance().getTimeInMillis());
+                DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS,Calendar.getInstance().getTimeInMillis());
                 PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Updated warnings: "+warnings.size()+" records.");
                 weatherWarnings = warnings;
                 for (int i=0; i<weatherWarnings.size(); i++){
@@ -480,7 +485,6 @@ public class WeatherWarningActivity extends Activity {
             SyncRequest syncRequest = MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_WARNINGS);
             ContentResolver.requestSync(syncRequest);
             forceWeatherUpdateFlag = true;
-            showProgressBar();
             // force update or rain radar if shown
             if (!hide_rain){
                     cancelRainSlides=true;
@@ -520,7 +524,7 @@ public class WeatherWarningActivity extends Activity {
 
     public void updateActionBarLabels(){
         final SimpleDateFormat simpleDateFormat = Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DATEYEARTIME);
-        String update = simpleDateFormat.format(WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS));
+        String update = simpleDateFormat.format(DataStorage.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS));
         if (weatherWarnings!=null){
             actionBar.setSubtitle(update+" ("+weatherWarnings.size()+")");
         } else {
@@ -543,7 +547,7 @@ public class WeatherWarningActivity extends Activity {
                 noWarnings.setVisibility(View.GONE);
             }
             TextView warningsDeprecated = (TextView) findViewById(R.id.warningactivity_warnings_deprecated);
-            if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WARNINGS)){
+            if (DataStorage.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WARNINGS)){
                 warningsDeprecated.setVisibility(View.VISIBLE);
             } else {
                 warningsDeprecated.setVisibility(View.GONE);

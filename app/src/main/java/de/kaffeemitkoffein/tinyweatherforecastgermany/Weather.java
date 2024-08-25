@@ -204,6 +204,14 @@ public final class Weather {
             return s1.description.compareTo(s2.description);
         }
 
+        public boolean equals(WeatherLocation s2){
+           int compareResult = compare(this,s2);
+           if (compareResult==0) {
+               return true;
+           }
+           return false;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -1661,12 +1669,15 @@ public final class Weather {
         // Should there be more, take the most recent by polling time. The most recent entry is at position 1.
         if (cursor.moveToFirst()){
             // get the uvhi strings only
-            String[] uvhiStringArray = WeatherContentManager.deSerializeString(cursor.getString(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_UVHazardIndex)));
-            // check if very first element is -1 or something else
-            if (uvhiStringArray!=null){
-                if (uvhiStringArray.length>0){
-                    if (!uvhiStringArray[0].equals("-1")){
-                        return true;
+            int columnIndex = cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_UVHazardIndex);
+            if (columnIndex>-1){
+                String[] uvhiStringArray = WeatherContentManager.deSerializeString(cursor.getString(columnIndex));
+                // check if very first element is -1 or something else
+                if (uvhiStringArray!=null){
+                    if (uvhiStringArray.length>0){
+                        if (!uvhiStringArray[0].equals("-1")){
+                            return true;
+                        }
                     }
                 }
             }
@@ -1689,8 +1700,10 @@ public final class Weather {
         // Should there be more, take the most recent by polling time. The most recent entry is at position 1.
         if (cursor.moveToFirst()){
             // get the uvhi strings only
-            long pollingTime = cursor.getLong(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time));
-            return pollingTime;
+            int columnIndex = cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_FORECASTS_polling_time);
+            if (columnIndex>-1){
+                return cursor.getLong(columnIndex);
+            }
         }
         cursor.close();
         return 0;

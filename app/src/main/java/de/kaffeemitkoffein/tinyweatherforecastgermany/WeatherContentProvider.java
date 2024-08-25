@@ -30,7 +30,7 @@ public class WeatherContentProvider extends ContentProvider {
 
     static final String AUTHORITY = "de.kaffeemitkoffein.tinyweatherforecastgermany";
 
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "weather";
     private SQLiteDatabase database;
 
@@ -40,6 +40,7 @@ public class WeatherContentProvider extends ContentProvider {
     public static final String TABLE_NAME_AREAS       = "areas";
     public static final String TABLE_NAME_POLLENAREAS = "pollenareas";
     public static final String TABLE_NAME_POLLEN      = "pollen";
+    public static final String TABLE_NAME_DATA        = "data";
 
     public static final String EXISTCLAUSE = " IF NOT EXISTS ";
 
@@ -57,6 +58,8 @@ public class WeatherContentProvider extends ContentProvider {
     private static final int URICODE_POLLENAREA_ALL    = 51;
     private static final int URICODE_POLLEN_SINGLE     = 60;
     private static final int URICODE_POLLEN_ALL        = 61;
+    private static final int URICODE_DATA_SINGLE       = 70;
+    private static final int URICODE_DATA_ALL          = 71;
 
     static {
         uriMatcher.addURI(AUTHORITY, TABLE_NAME_FORECASTS, URICODE_FORECAST_SINGLE);
@@ -71,8 +74,9 @@ public class WeatherContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY,TABLE_NAME_POLLENAREAS+"/*",URICODE_POLLENAREA_ALL);
         uriMatcher.addURI(AUTHORITY,TABLE_NAME_POLLEN,URICODE_POLLEN_SINGLE);
         uriMatcher.addURI(AUTHORITY,TABLE_NAME_POLLEN+"/*",URICODE_POLLEN_ALL);
+        uriMatcher.addURI(AUTHORITY,TABLE_NAME_DATA,URICODE_DATA_SINGLE);
+        uriMatcher.addURI(AUTHORITY,TABLE_NAME_DATA+"/*",URICODE_DATA_ALL);
     }
-
 
     @Override
     public boolean onCreate() {
@@ -106,6 +110,9 @@ public class WeatherContentProvider extends ContentProvider {
             case URICODE_POLLEN_SINGLE:
             case URICODE_POLLEN_ALL  :
                 tableName=TABLE_NAME_POLLEN; break;
+            case URICODE_DATA_SINGLE:
+            case URICODE_DATA_ALL  :
+                tableName=TABLE_NAME_DATA; break;
             default: throw new IllegalArgumentException("Unknown Uri: "+uri);
         }
         return tableName;
@@ -151,6 +158,9 @@ public class WeatherContentProvider extends ContentProvider {
             case URICODE_POLLEN_SINGLE:
             case URICODE_POLLEN_ALL:
                 uriBuilder.appendPath(TABLE_NAME_POLLEN); break;
+            case URICODE_DATA_SINGLE:
+            case URICODE_DATA_ALL:
+                uriBuilder.appendPath(TABLE_NAME_DATA); break;
             default: throw new IllegalArgumentException("Unknown Uri: "+uri);
         }
         Uri uriResult = uriBuilder.build();
@@ -180,7 +190,7 @@ public class WeatherContentProvider extends ContentProvider {
         public static final String SQL_COMMAND_DROP_TABLE_AREAS       = "DROP TABLE IF EXISTS " + TABLE_NAME_AREAS;
         public static final String SQL_COMMAND_DROP_TABLE_POLLENAREAS = "DROP TABLE IF EXISTS " + TABLE_NAME_POLLENAREAS;
         public static final String SQL_COMMAND_DROP_TABLE_POLLEN      = "DROP TABLE IF EXISTS " + TABLE_NAME_POLLEN;
-
+        public static final String SQL_COMMAND_DROP_TABLE_DATA        = "DROP TABLE IF EXISTS " + TABLE_NAME_DATA;
         /*
          * SQL Data for the Forecasts
          */
@@ -734,6 +744,28 @@ public class WeatherContentProvider extends ContentProvider {
             + KEY_POLLEN_graeser5 + " INTEGER"
             + ");";
 
+        /*
+         * SQL Data for data table
+         */
+
+        public static final String KEY_DATA_id           = "id";
+        public static final String KEY_DATA_timestamp    = "timestamp";
+        public static final String KEY_DATA_type         = "type";
+        public static final String KEY_DATA_valueBlob    = "value_blob";
+        public static final String KEY_DATA_valueFloat   = "value_float";
+        public static final String KEY_DATA_valueLong     = "value_long";
+        public static final String KEY_DATA_valueString  = "value_string";
+
+        public static final String SQL_COMMAND_CREATE_TABLE_DATA = "CREATE TABLE " + EXISTCLAUSE + TABLE_NAME_DATA + "("
+                + KEY_DATA_id + " INTEGER,"
+                + KEY_DATA_timestamp + " INTEGER,"
+                + KEY_DATA_type + " INTEGER,"
+                + KEY_DATA_valueBlob + " BLOB,"
+                + KEY_DATA_valueFloat + " TEXT,"
+                + KEY_DATA_valueLong + " INTEGER,"
+                + KEY_DATA_valueString + " TEXT"
+                + ");";
+
         public WeatherDatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
@@ -746,6 +778,7 @@ public class WeatherContentProvider extends ContentProvider {
             sqLiteDatabase.execSQL(SQL_COMMAND_CREATE_TABLE_AREAS);
             sqLiteDatabase.execSQL(SQL_COMMAND_CREATE_TABLE_POLLENAREAS);
             sqLiteDatabase.execSQL(SQL_COMMAND_CREATE_TABLE_POLLEN);
+            sqLiteDatabase.execSQL(SQL_COMMAND_CREATE_TABLE_DATA);
         }
 
         @Override
@@ -763,6 +796,7 @@ public class WeatherContentProvider extends ContentProvider {
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_AREAS);
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_POLLENAREAS);
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_POLLEN);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_DATA);
             onCreate(sqLiteDatabase);
         }
 
@@ -775,6 +809,7 @@ public class WeatherContentProvider extends ContentProvider {
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_AREAS);
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_POLLENAREAS);
             sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_POLLEN);
+            sqLiteDatabase.execSQL(SQL_COMMAND_DROP_TABLE_DATA);
             onCreate(sqLiteDatabase);
             //super.onDowngrade(db, oldVersion, newVersion);
         }

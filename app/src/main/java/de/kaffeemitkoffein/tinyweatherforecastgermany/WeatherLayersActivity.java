@@ -139,7 +139,7 @@ public class WeatherLayersActivity extends Activity {
             @Override
             public void onFinished(boolean success) {
                 if (success){
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN,Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN,Calendar.getInstance().getTimeInMillis());
                     PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Pollen data updated.");
                 } else {
                     PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.ERR,"Updating pollen data failed.");
@@ -160,7 +160,7 @@ public class WeatherLayersActivity extends Activity {
             @Override
             public void onFinished(boolean success) {
                 if (success){
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.LAYERS,Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.LAYERS,Calendar.getInstance().getTimeInMillis());
                     PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Layer data updated.");
                 } else {
                     PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.ERR,"Updating layer data failed.");
@@ -195,13 +195,13 @@ public class WeatherLayersActivity extends Activity {
         conditionalUpdater = new Runnable() {
             @Override
             public void run() {
-                if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.POLLEN)){
+                if (DataStorage.Updates.isSyncDue(context,WeatherSettings.Updates.Category.POLLEN)){
                     PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Pollen data is outdated, updating pollen data...");
                     executor.execute(pollenReader);
                 } else {
                     PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Pollen data up to date, using present data.");
                 }
-                if (WeatherSettings.Updates.isSyncDue(context,WeatherSettings.Updates.Category.LAYERS)){
+                if (DataStorage.Updates.isSyncDue(context,WeatherSettings.Updates.Category.LAYERS)){
                     PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Layer data is outdated, updating layers...");
                     executor.execute(getLayerImagesForced);
                 } else {
@@ -257,7 +257,7 @@ public class WeatherLayersActivity extends Activity {
                     intent.putExtra(Pollen.UPDATE_POLLEN_RESULT, success);
                     PrivateLog.log(context, PrivateLog.LAYERS, PrivateLog.INFO, "Pollen data updated successfully.");
                     context.sendBroadcast(intent);
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN, Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN, Calendar.getInstance().getTimeInMillis());
 
                 }
             };

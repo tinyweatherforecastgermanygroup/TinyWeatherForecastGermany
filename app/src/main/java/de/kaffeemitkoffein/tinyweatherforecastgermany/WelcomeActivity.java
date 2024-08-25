@@ -106,7 +106,7 @@ public class WelcomeActivity extends Activity {
         }
         executor = Executors.newSingleThreadExecutor();
         MainActivity.registerSyncAdapter(getApplicationContext());
-        if (WeatherSettings.Updates.isSyncNecessary(getApplicationContext())){
+        if (DataStorage.Updates.isSyncNecessary(getApplicationContext())){
             ContentResolver.requestSync(MainActivity.getManualSyncRequest(getApplicationContext(),WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
         }
         Intent intent = getIntent();

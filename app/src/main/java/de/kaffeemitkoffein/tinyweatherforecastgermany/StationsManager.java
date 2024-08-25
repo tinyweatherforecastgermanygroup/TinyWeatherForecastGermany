@@ -123,11 +123,9 @@ public class StationsManager {
     public static class StationsReader implements Runnable {
 
         private Context context;
-        private WeatherSettings weatherSettings;
 
         public StationsReader(Context context){
             this.context = context;
-            weatherSettings = new WeatherSettings(context);
         }
 
         public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> new_stations){

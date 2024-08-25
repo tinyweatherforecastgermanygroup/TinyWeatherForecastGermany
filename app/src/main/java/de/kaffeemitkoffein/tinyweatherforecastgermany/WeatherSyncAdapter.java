@@ -39,7 +39,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
 
     ContentResolver contentResolver;
-    private final Context context;
+    private Context context;
     public final static String EXTRAS_UPDATE_FLAG = "update_favorites";
 
     public static class UpdateFlags {
@@ -70,6 +70,9 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle bundle, String authority, ContentProviderClient contentProviderClient, SyncResult syncResult) {
         PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"SyncAdapter called. Performing sync operations.");
+        context = getContext();
+        int pid = android.os.Process.myPid();
+        PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"pid of the sync adapter is: "+pid);
         Update(context,bundle);
     }
 
@@ -323,14 +326,14 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"-> "+weatherLocations.get(i).getOriginalDescription()+" ["+weatherLocations.get(i).getName()+"]");
             }
             PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Last syncs: ");
-            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Weather : "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED).format(WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.WEATHER))+", enabled: "+WeatherSettings.Updates.isSyncEnabled(context, WeatherSettings.Updates.Category.WEATHER)+" , due: "+WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WEATHER)+" , forced: "+update_weather);
-            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Warnings: "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED).format(WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS))+", enabled: "+WeatherSettings.Updates.isSyncEnabled(context, WeatherSettings.Updates.Category.WARNINGS)+", due: "+WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WARNINGS)+" , forced: "+update_warnings);
-            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Texts   : "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED).format(WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.TEXTS))+", enabled: "+WeatherSettings.Updates.isSyncEnabled(context, WeatherSettings.Updates.Category.TEXTS)+", due: "+WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.TEXTS)+" , forced: "+update_texts);
-            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Maps    : "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED).format(WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.LAYERS))+", enabled: "+WeatherSettings.Updates.isSyncEnabled(context, WeatherSettings.Updates.Category.LAYERS)+", due: "+WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.LAYERS)+" , forced: "+update_layers);
-            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Pollen  : "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED).format(WeatherSettings.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.POLLEN))+", enabled: "+WeatherSettings.Updates.isSyncEnabled(context, WeatherSettings.Updates.Category.POLLEN)+", due: "+WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN)+" , forced: "+update_pollen);
+            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Weather : "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED).format(DataStorage.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.WEATHER))+", enabled: "+WeatherSettings.Updates.isSyncEnabled(context, WeatherSettings.Updates.Category.WEATHER)+" , due: "+DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WEATHER)+" , forced: "+update_weather);
+            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Warnings: "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED).format(DataStorage.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS))+", enabled: "+WeatherSettings.Updates.isSyncEnabled(context, WeatherSettings.Updates.Category.WARNINGS)+", due: "+DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WARNINGS)+" , forced: "+update_warnings);
+            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Texts   : "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED).format(DataStorage.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.TEXTS))+", enabled: "+WeatherSettings.Updates.isSyncEnabled(context, WeatherSettings.Updates.Category.TEXTS)+", due: "+DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.TEXTS)+" , forced: "+update_texts);
+            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Maps    : "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED).format(DataStorage.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.LAYERS))+", enabled: "+WeatherSettings.Updates.isSyncEnabled(context, WeatherSettings.Updates.Category.LAYERS)+", due: "+DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.LAYERS)+" , forced: "+update_layers);
+            PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"Pollen  : "+Weather.getSimpleDateFormat(Weather.SimpleDateFormats.DETAILED).format(DataStorage.Updates.getLastUpdate(context,WeatherSettings.Updates.Category.POLLEN))+", enabled: "+WeatherSettings.Updates.isSyncEnabled(context, WeatherSettings.Updates.Category.POLLEN)+", due: "+DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN)+" , forced: "+update_pollen);
         }
         // update Weather, also do the update if database has no data
-        if ((WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WEATHER) && WeatherSettings.Updates.isSyncEnabled(context,WeatherSettings.Updates.Category.WEATHER))
+        if ((DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WEATHER) && WeatherSettings.Updates.isSyncEnabled(context,WeatherSettings.Updates.Category.WEATHER))
                 || (!Weather.hasCurrentWeatherInfo(context))
                 || (update_weather)) {
             PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"-> syncing weather.");
@@ -345,7 +348,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     context.sendBroadcast(intent);
                     PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Weather update: success");
                     super.onPositiveResult();
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,Calendar.getInstance().getTimeInMillis());
                 }
                 @Override
                 public void onNegativeResult() {
@@ -367,14 +370,14 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
             weatherForecastRunnable.run();
         }
         // update warnings
-        if ((WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WARNINGS) && WeatherSettings.Updates.isSyncEnabled(context,WeatherSettings.Updates.Category.WARNINGS))
+        if ((DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.WARNINGS) && WeatherSettings.Updates.isSyncEnabled(context,WeatherSettings.Updates.Category.WARNINGS))
                 || (update_warnings)) {
             PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"-> syncing warnings.");
             APIReaders.WeatherWarningsRunnable weatherWarningsRunnable = new APIReaders.WeatherWarningsRunnable(context) {
                 @Override
                 public void onPositiveResult(ArrayList<WeatherWarning> warnings) {
                     super.onPositiveResult(warnings);
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS,Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WARNINGS,Calendar.getInstance().getTimeInMillis());
                     PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Warnings updated successfully.");
                     // trigger update of views in activity
                     Intent intent = new Intent();
@@ -406,7 +409,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                 }
             }
         }
-        if ((WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.TEXTS)) || (update_texts)) {
+        if ((DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.TEXTS)) || (update_texts)) {
             PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"-> syncing texts.");
             APIReaders.TextForecastRunnable textForecastRunnable = new APIReaders.TextForecastRunnable(context) {
                 @Override
@@ -421,12 +424,12 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     intent.putExtra(TextForecastListActivity.UPDATE_TEXTS_RESULT, true);
                     PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Weather texts updated successfully.");
                     context.sendBroadcast(intent);
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.TEXTS,Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.TEXTS,Calendar.getInstance().getTimeInMillis());
                 }
             };
             textForecastRunnable.run();
         }
-        if ((WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.LAYERS) && WeatherSettings.Updates.isSyncEnabled(context,WeatherSettings.Updates.Category.LAYERS))
+        if ((DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.LAYERS) && WeatherSettings.Updates.isSyncEnabled(context,WeatherSettings.Updates.Category.LAYERS))
                 || (update_layers)) {
             PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"-> syncing maps.");
             APIReaders.getLayerImages getLayerImages = new APIReaders.getLayerImages(context, WeatherLayer.getLayers(context)) {
@@ -437,13 +440,13 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     intent.putExtra(WeatherLayersActivity.UPDATE_LAYERS_RESULT, success);
                     PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Layer images updated successfully.");
                     context.sendBroadcast(intent);
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.LAYERS,Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.LAYERS,Calendar.getInstance().getTimeInMillis());
                 }
             };
             getLayerImages.setForceUpdate(true);
             getLayerImages.run();
         }
-        if ((WeatherSettings.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN) && WeatherSettings.Updates.isSyncEnabled(context,WeatherSettings.Updates.Category.POLLEN))
+        if ((DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN) && WeatherSettings.Updates.isSyncEnabled(context,WeatherSettings.Updates.Category.POLLEN))
                 || (update_pollen)) {
             PrivateLog.log(context,PrivateLog.SYNC,PrivateLog.INFO,"-> syncing pollen.");
             APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context) {
@@ -458,7 +461,7 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     intent.putExtra(Pollen.UPDATE_POLLEN_RESULT, success);
                     PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Pollen data updated successfully.");
                     context.sendBroadcast(intent);
-                    WeatherSettings.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN,Calendar.getInstance().getTimeInMillis());
+                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN,Calendar.getInstance().getTimeInMillis());
 
                 }
             };

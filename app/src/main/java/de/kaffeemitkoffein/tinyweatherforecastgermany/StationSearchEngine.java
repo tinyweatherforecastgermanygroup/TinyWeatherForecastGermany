@@ -28,7 +28,6 @@ import java.util.concurrent.Executors;
 
 public class StationSearchEngine {
 
-    private WeatherSettings weatherSettings;
     private StationsManager stationsManager;
     private final Context context;
     private Executor executor;
@@ -40,28 +39,21 @@ public class StationSearchEngine {
 
     public boolean includeInternational = true;
 
-    public StationSearchEngine(Context context, Executor executor, WeatherSettings weatherSettings, StationsManager stationsManager){
+    public StationSearchEngine(Context context, Executor executor, StationsManager stationsManager){
         this.context = context;
         this.executor = executor;
-        this.weatherSettings = weatherSettings;
-        this.stationsManager = stationsManager;
-        initValues();
-    }
-
-    public StationSearchEngine(Context context, WeatherSettings weatherSettings){
-        this.context = context;
-        this.weatherSettings = weatherSettings;
-        initValues();
-    }
-
-    public StationSearchEngine(Context context, StationsManager stationsManager){
-        this.context = context;
         this.stationsManager = stationsManager;
         initValues();
     }
 
     public StationSearchEngine(Context context){
         this.context = context;
+        initValues();
+    }
+
+    public StationSearchEngine(Context context, StationsManager stationsManager){
+        this.context = context;
+        this.stationsManager = stationsManager;
         initValues();
     }
 
@@ -73,9 +65,6 @@ public class StationSearchEngine {
         entries = new ArrayList<String>();
         if (executor==null){
             executor = Executors.newSingleThreadExecutor();
-        }
-        if (weatherSettings==null){
-            weatherSettings = new WeatherSettings(context);
         }
         if (stationsManager==null){
             readStations();

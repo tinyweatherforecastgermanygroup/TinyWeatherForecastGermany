@@ -19,6 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -26,6 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.text.TextUtils;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class WeatherContentManager {
 
@@ -42,6 +44,8 @@ public class WeatherContentManager {
     private static final String POLLENAREA_URI_STRING_ALL    = POLLENAREA_URI_STRING_SINGLE+"/*";
     private static final String POLLEN_URI_STRING_SINGLE = CONTENT_STRING+WeatherContentProvider.AUTHORITY+"/"+WeatherContentProvider.TABLE_NAME_POLLEN;
     private static final String POLLEN_URI_STRING_ALL    = POLLEN_URI_STRING_SINGLE+"/*";
+    private static final String DATA_URI_STRING_SINGLE = CONTENT_STRING+WeatherContentProvider.AUTHORITY+"/"+WeatherContentProvider.TABLE_NAME_DATA;
+    private static final String DATA_URI_STRING_ALL    = DATA_URI_STRING_SINGLE+"/*";
 
     public static final Uri FORECAST_URI_SINLGE = Uri.parse(FORECAST_URI_STRING_SINGLE);
     public static final Uri FORECAST_URI_ALL = Uri.parse(FORECAST_URI_STRING_ALL);
@@ -55,6 +59,8 @@ public class WeatherContentManager {
     public static final Uri POLLENAREAS_URI_ALL = Uri.parse(POLLENAREA_URI_STRING_ALL);
     public static final Uri POLLEN_URI_SINGLE = Uri.parse(POLLENAREA_URI_STRING_SINGLE);
     public static final Uri POLLEN_URI_ALL = Uri.parse(POLLEN_URI_STRING_ALL);
+    public static final Uri DATA_URI_SINGLE = Uri.parse(DATA_URI_STRING_SINGLE);
+    public static final Uri DATA_URI_ALL = Uri.parse(DATA_URI_STRING_ALL);
 
     private final static String serial_serparator="_,_";
 
@@ -217,6 +223,7 @@ public class WeatherContentManager {
         return contentValues;
     }
 
+    @SuppressLint("Range")
     public static RawWeatherInfo getRawWeatherInfoFromCursor(Cursor c){
         if (c==null){
             return null;
@@ -409,6 +416,7 @@ public class WeatherContentManager {
         return contentValues;
     }
 
+    @SuppressLint("Range")
     public static WeatherWarning getWeatherWarningFromCursor(Cursor c) {
         if (c == null) {
             return null;
@@ -470,6 +478,7 @@ public class WeatherContentManager {
         return contentValues;
     }
 
+    @SuppressLint("Range")
     public static TextForecast getTextForecastFromCursor(Cursor c) {
         if (c == null) {
             return null;
@@ -501,6 +510,7 @@ public class WeatherContentManager {
         return contentValues;
     }
 
+    @SuppressLint("Range")
     public static Areas.Area getAreaFromCursor(Cursor c) {
         if (c == null) {
             return null;
@@ -517,6 +527,7 @@ public class WeatherContentManager {
         }
     }
 
+    @SuppressLint("Range")
     public static String getAreaNameFromCursor(Cursor c) {
         if (c == null) {
             return null;
@@ -525,6 +536,7 @@ public class WeatherContentManager {
         }
     }
 
+    @SuppressLint("Range")
     public static String getWarncellIDFromCursor(Cursor c) {
         if (c == null) {
             return null;
@@ -542,6 +554,7 @@ public class WeatherContentManager {
         return contentValues;
     }
 
+    @SuppressLint("Range")
     public static PollenArea getPollenAreaFromCursor(Cursor c){
         PollenArea pollenArea = new PollenArea();
         pollenArea.region_id = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLENAREA_region_id));
@@ -613,6 +626,7 @@ public class WeatherContentManager {
         return contentValues;
     }
 
+    @SuppressLint("Range")
     public static Pollen getPollenFromCursor(Cursor c){
         Pollen pollen = new Pollen();
         pollen.timestamp = c.getLong(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_timestamp));
@@ -673,6 +687,82 @@ public class WeatherContentManager {
         pollen.erle[5] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_erle5));
         pollen.graeser[5] = c.getInt(c.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_POLLEN_graeser5));
         return pollen;
+    }
+
+    public static ContentValues getContentValuesFromData_Blob(int id, byte[] blob){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_type,Cursor.FIELD_TYPE_BLOB);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_id,id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_timestamp, Calendar.getInstance().getTimeInMillis());
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueBlob,blob);
+        return contentValues;
+    }
+
+    public static ContentValues getContentValuesFromData_Float(int id,float value){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_type,Cursor.FIELD_TYPE_FLOAT);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_id,id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_timestamp, Calendar.getInstance().getTimeInMillis());
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueFloat,value);
+        return contentValues;
+    }
+
+    public static ContentValues getContentValuesFromData_Int(int id,int value){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_type,Cursor.FIELD_TYPE_INTEGER);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_id,id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_timestamp, Calendar.getInstance().getTimeInMillis());
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueLong,value);
+        return contentValues;
+    }
+
+
+    public static ContentValues getContentValuesFromData_Long(int id,long value){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_type,DataPackage.FIELD_TYPE_LONG);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_id,id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_timestamp, Calendar.getInstance().getTimeInMillis());
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueLong,value);
+        return contentValues;
+    }
+
+    public static ContentValues getContentValuesFromData_String(int id, String value){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_type,Cursor.FIELD_TYPE_STRING);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_id,id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_timestamp, Calendar.getInstance().getTimeInMillis());
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueString,value);
+        return contentValues;
+    }
+
+    public static ContentValues getContentValuesFromData_Boolean(int id, boolean value){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_type,DataPackage.FIELD_TYPE_BOOLEAN);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_id,id);
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_timestamp, Calendar.getInstance().getTimeInMillis());
+        contentValues.put(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueLong,value);
+        return contentValues;
+    }
+
+    @SuppressLint("Range")
+    public static DataPackage getDataFromCursor(Cursor cursor){
+        int typeValue = cursor.getInt(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_type));
+        int intValue = 0; long longValue = 0l;
+        if (typeValue == Cursor.FIELD_TYPE_INTEGER){
+            intValue = cursor.getInt(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueLong));
+        } else {
+            longValue = cursor.getLong(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueLong));
+        }
+        DataPackage dataPackage = new DataPackage(cursor.getInt(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_id)),
+                cursor.getLong(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_timestamp)),
+                typeValue,
+                cursor.getBlob(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueBlob)),
+                intValue,
+                longValue,
+                cursor.getFloat(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueFloat)),
+                cursor.getString(cursor.getColumnIndex(WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_valueString))
+                );
+        return dataPackage;
     }
 
     public static int checkForDatabaseUpgrade(Context c) {

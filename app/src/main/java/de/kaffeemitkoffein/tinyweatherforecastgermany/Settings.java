@@ -306,12 +306,11 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
 
     @SuppressWarnings("deprecation")
     public void setAlarmSettingAllowed() {
-        WeatherSettings weatherSettings = new WeatherSettings(context);
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.Updates.PREF_UPDATE_WEATHER_SYNC);
         if (checkBoxPreference != null) {
-            checkBoxPreference.setEnabled(!weatherSettings.serve_gadgetbridge);
+            checkBoxPreference.setEnabled(!WeatherSettings.serveGadgetBridge(context));
             checkBoxPreference.setShouldDisableView(true);
-            if (weatherSettings.serve_gadgetbridge) {
+            if (WeatherSettings.serveGadgetBridge(context)) {
                 checkBoxPreference.setSummary(context.getResources().getString(R.string.preference_setalarm_summary) + System.getProperty("line.separator") + context.getResources().getString(R.string.preference_setalarm_notice));
             } else {
                 checkBoxPreference.setSummary(context.getResources().getString(R.string.preference_setalarm_summary));
@@ -321,28 +320,25 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
 
     @SuppressWarnings("deprecation")
     public void setShowWarningsInWidgetAllowed() {
-        WeatherSettings weatherSettings = new WeatherSettings(context);
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_WIDGET_DISPLAYWARNINGS);
         if (checkBoxPreference != null) {
-            checkBoxPreference.setEnabled(!weatherSettings.warnings_disabled);
+            checkBoxPreference.setEnabled(!WeatherSettings.areWarningsDisabled(context));
             checkBoxPreference.setShouldDisableView(true);
         }
     }
 
     public void setNotifyWarnings() {
-        WeatherSettings weatherSettings = new WeatherSettings(context);
         CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_NOTIFY_WARNINGS);
         if (checkBoxPreference != null) {
-            checkBoxPreference.setEnabled(!weatherSettings.warnings_disabled);
+            checkBoxPreference.setEnabled(!WeatherSettings.areWarningsDisabled(context));
             checkBoxPreference.setShouldDisableView(true);
         }
     }
 
     public void setNotifySeverity() {
-        WeatherSettings weatherSettings = new WeatherSettings(context);
         ListPreference listPreference = (ListPreference) findPreference(WeatherSettings.PREF_WARNINGS_NOTIFY_SEVERITY);
         if (listPreference != null) {
-            if ((weatherSettings.warnings_disabled) || (!weatherSettings.notify_warnings)) {
+            if ((WeatherSettings.areWarningsDisabled(context)) || (!WeatherSettings.notifyWarnings(context))) {
                 listPreference.setEnabled(false);
                 listPreference.setShouldDisableView(true);
             } else {
@@ -486,7 +482,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
         setUseMinMax();
         setNotifyLED();
         //setUVHIdisplayMain();
-        SharedPreferences sp= PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sp= WeatherSettings.getSharedPreferences(context);
         String gadgetbridge_packagename = sp.getString(WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME,WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT);
         if (gadgetbridge_packagename.equals("")){
             gadgetbridge_packagename = WeatherSettings.PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT;

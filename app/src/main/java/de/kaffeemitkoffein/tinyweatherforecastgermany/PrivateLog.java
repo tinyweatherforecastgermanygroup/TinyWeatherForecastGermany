@@ -26,9 +26,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
-import android.util.Log;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -58,6 +58,7 @@ public class PrivateLog {
     public static final String GEO  = "geo";
     public static final String ALERTS  = "alerts";
     public static final String LAYERS  = "layers";
+    public static final String DATASTORAGE  = "data";
 
     public static final int INFO = 0;
     public static final int WARN = 1;

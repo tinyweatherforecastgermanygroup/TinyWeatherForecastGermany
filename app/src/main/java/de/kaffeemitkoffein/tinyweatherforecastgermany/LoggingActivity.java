@@ -193,8 +193,7 @@ public class LoggingActivity extends Activity {
             MainActivity.setOverflowMenuItemColor(this,menu,R.id.lmenu_copy,R.string.logging_button_copy);
         }
         // disable weather warnings if desired by user
-        WeatherSettings weatherSettings = new WeatherSettings(getApplicationContext());
-        if (weatherSettings.warnings_disabled){
+        if (WeatherSettings.areWarningsDisabled(context)){
             for (int i=0; i<menu.size(); i++){
                 if (menu.getItem(i).getItemId()==R.id.menu_warnings){
                     menu.getItem(i).setVisible(false);
