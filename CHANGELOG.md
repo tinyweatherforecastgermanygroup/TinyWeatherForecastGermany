@@ -2,12 +2,14 @@
 
 ## Version 0.62.5
 - fix app crash caused by launcher returning an inaccurately large widget size
-- - disable features requiring location services after the user declined the location permission again in the permission rationale dialog
+- disable features requiring location services after the user declined the location permission again in the permission rationale dialog
 - removed all non-static calls to the sharedPreferences
 - added DataPackage and DataStorage classes to replace shared preferences for values actively written by the WeatherSyncAdapter
 - moved all values written by the WeatherSyncAdapter from the shared preferences to the new data storage to avoid random resets of the settings
 - unified shared preference init in WeatherSettings
 - fixed wrong context reference in WeatherSyncAdapter
+- added option to switch to a different mirror of opendata.dwd.de
+- fixed background color of some warnings too bright in light themes
 
 ## Version 0.62.4
 - removed stray pixels in modular clouds icon

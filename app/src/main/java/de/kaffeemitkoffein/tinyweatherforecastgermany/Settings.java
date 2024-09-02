@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.*;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -33,8 +34,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.*;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.widget.SeekBar;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 @SuppressWarnings("deprecation")
 public class Settings extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -223,6 +230,18 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                     }
                 }
                 WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
+            }
+            if (s.equals(WeatherSettings.PREF_WEATHER_URL)){
+                String weatherUrl = WeatherSettings.getWeatherUrl(context);
+                if ((weatherUrl==null) || (weatherUrl.trim().isEmpty())){
+                    WeatherSettings.setWeatherUrl(context,WeatherSettings.PREF_WEATHER_URL_DEFAULT);
+                } else {
+                    // trim prefix(es)
+                    weatherUrl = weatherUrl.toLowerCase(Locale.ROOT).replace("https://","")
+                            .replace("http://","");
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Data url changed to: "+weatherUrl);
+                    WeatherSettings.setWeatherUrl(context,weatherUrl);
+                }
             }
             ignoreNextPrefUpdate = false;
         }
@@ -726,6 +745,23 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             }
         };
         pinSizePreference.setSeekBarChangeListener(pinsizeChangeListener);
+        EditTextPreference weatherUrlPreference = (EditTextPreference) findPreference(WeatherSettings.PREF_WEATHER_URL);
+        if (weatherUrlPreference!=null){
+            String url = WeatherSettings.getWeatherUrl(context);
+            /* String s = context.getResources().getString(R.string.preference_weatherurl_summary)+" "+ url;
+            String s = "URL: "+url + System.getProperty("line.separator");
+            SpannableString spannableString = new SpannableString("");
+            spannableString.setSpan(new ForegroundColorSpan(Color.BLUE),2,4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new RelativeSizeSpan(0.5f),0,spannableString.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            weatherUrlPreference.setSummary(s+spannableString);
+             */
+            SpannableString spannable = new SpannableString(context.getResources().getString(R.string.preference_weatherurl_summary) +
+                    //
+                    // System.getProperty("line.separator") +
+                    context.getResources().getString(R.string.preference_weatherurl_summary2)+url);
+            //spannable.setSpan(new RelativeSizeSpan(0.8f),0,context.getResources().getString(R.string.preference_weatherurl_summary).length(),Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            weatherUrlPreference.setSummary(spannable);
+        }
     }
 
     @Override

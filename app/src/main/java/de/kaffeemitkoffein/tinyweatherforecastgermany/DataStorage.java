@@ -82,7 +82,7 @@ public class DataStorage {
         String[] selectionArgs = {Integer.toString(id)};
         contentResolver.delete(WeatherContentManager.DATA_URI_ALL,selection,selectionArgs);
         Uri rows = contentResolver.insert(WeatherContentManager.DATA_URI_ALL,contentValues);
-        PrivateLog.log(context,PrivateLog.DATASTORAGE,PrivateLog.INFO,"Station update: rows updated "+rows.toString());
+        // PrivateLog.log(context,PrivateLog.DATASTORAGE,PrivateLog.INFO,"Station update: rows updated "+rows.toString());
     }
 
     public static void clear(Context context){

@@ -262,7 +262,7 @@ public class APIReaders {
                country = context.getResources().getConfiguration().locale.getCountry();
            }
            // 3.2.1 Gemeindebasis mit DWD Aktualisierungsstrategie
-           final String C_FIRST ="https://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_";
+           final String C_FIRST ="https://"+WeatherSettings.getWeatherUrl(context)+"/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_";
            final String C_LAST  = ".zip";
            switch (country){
                case "FR": return C_FIRST+"FR"+C_LAST;
@@ -281,7 +281,7 @@ public class APIReaders {
            } else {
                country = context.getResources().getConfiguration().locale.getCountry();
            }
-           final String C_FIRST ="http://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_";
+           final String C_FIRST ="http://"+WeatherSettings.getWeatherUrl(context)+"/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_";
            final String C_LAST  = ".zip";
            switch (country){
                case "FR": return C_FIRST+"FR"+C_LAST;
@@ -326,9 +326,6 @@ public class APIReaders {
        public ArrayList<WeatherWarning> doInBackground() {
            ArrayList<WeatherWarning> warnings = new ArrayList<WeatherWarning>();
            try {
-               // URL warningsUrl = new URL("https://opendata.dwd.de/weather/alerts/cap/COMMUNEUNION_DWD_STAT/Z_CAP_C_EDZW_LATEST_PVW_STATUS_PREMIUMDWD_COMMUNEUNION_DE.zip");
-               // URL warningsUrl = new URL(getUrlString(context));
-               // ZipInputStream zipInputStream = new ZipInputStream(warningsUrl.openStream());
                InputStream inputStream = new BufferedInputStream(getWeatherWarningInputStream());
                ZipInputStream zipInputStream = new ZipInputStream(inputStream);
                // iterate through the warnings; each warning is a file
@@ -438,8 +435,8 @@ public class APIReaders {
         }
 
         public String getLastestDMOUrl(Context context, String stationName) throws IOException {
-            String basicUrl        = "https://opendata.dwd.de/weather/local_forecasts/dmo/icon-eu/single_stations/" + stationName + "/kmz/";
-            String basicUrlLegacy = "http://opendata.dwd.de/weather/local_forecasts/dmo/icon-eu/single_stations/" + stationName + "/kmz/";
+            String basicUrl        = "https://"+WeatherSettings.getWeatherUrl(context)+"/weather/local_forecasts/dmo/icon-eu/single_stations/" + stationName + "/kmz/";
+            String basicUrlLegacy = "http://"+WeatherSettings.getWeatherUrl(context)+"/weather/local_forecasts/dmo/icon-eu/single_stations/" + stationName + "/kmz/";
             URL url;
             URL url_legacy;
             InputStream inputStream = null;
@@ -489,12 +486,11 @@ public class APIReaders {
         private InputStream getWeatherInputStream(Weather.WeatherLocation weatherLocation) throws IOException {
             String stationName = weatherLocation.getName().replace("*","");
             // stationType MOS is default
-            String weather_url = "https://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+stationName+"/kml/MOSMIX_L_LATEST_"+stationName+".kmz";
-            String weather_url_legacy = "http://opendata.dwd.de/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+stationName+"/kml/MOSMIX_L_LATEST_"+stationName+".kmz";
+            String weather_url = "https://"+WeatherSettings.getWeatherUrl(context)+"/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+stationName+"/kml/MOSMIX_L_LATEST_"+stationName+".kmz";
+            String weather_url_legacy = "http://"+WeatherSettings.getWeatherUrl(context)+"/weather/local_forecasts/mos/MOSMIX_L/single_stations/"+stationName+"/kml/MOSMIX_L_LATEST_"+stationName+".kmz";
             // change to DMO if applicable
             if (weatherLocation.type==RawWeatherInfo.Source.DMO){
-                //weather_url = "https://opendata.dwd.de/weather/local_forecasts/dmo/icon-eu/single_stations/"+stationName+"/kmz/MOSMIX_L_LATEST_"+stationName+".kmz";
-                String fileName = "opendata.dwd.de/weather/local_forecasts/dmo/icon-eu/single_stations/"+stationName+"/kmz/"+getLastestDMOUrl(context,stationName);
+                String fileName = WeatherSettings.getWeatherUrl(context)+"/weather/local_forecasts/dmo/icon-eu/single_stations/"+stationName+"/kmz/"+getLastestDMOUrl(context,stationName);
                 weather_url = "https://"+fileName;
                 weather_url_legacy = "http://"+fileName;
             }
@@ -927,248 +923,6 @@ public class APIReaders {
             onPositiveResult();
         }
     }
-
-    public static class RadarmapRunnable implements Runnable{
-        private static final String WX_RADAR_URL="//opendata.dwd.de/weather/radar/composit/wx/raa01-wx_10000-latest-dwd---bin";
-        private Context context;
-        public boolean ssl_exception = false;
-
-        public RadarmapRunnable(Context context){
-            this.context = context;
-        }
-
-        private InputStream getRadarInputStream() throws IOException {
-            String radar_url        = "https:"+WX_RADAR_URL;
-            String radar_url_legacy = "http:"+WX_RADAR_URL;
-            URL url;
-            URL url_legacy;
-            try {
-                url = new URL(radar_url);
-                url_legacy = new URL(radar_url_legacy);
-            } catch (MalformedURLException e){
-                throw e;
-            }
-            try {
-                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-                InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
-                return inputStream;
-            } catch (SSLException e){
-                ssl_exception = true;
-                if (WeatherSettings.isTLSdisabled(context)){
-                    // try fallback to http
-                    try {
-                        HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
-                        InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
-                        PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"weather data is polled over http without encryption.");
-                        return inputStream;
-                    } catch (IOException e2){
-                        throw e2;
-                    }
-                } else {
-                    PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"ssl connection could not be established, but http is not allowed.");
-                    throw e;
-                }
-            } catch (Exception e){
-                throw e;
-            }
-        }
-
-        private byte[] putRadarMapToCache(InputStream inputStream){
-            byte[] radararray = new byte[1500*1400+1024];
-            int radarMapsize = radararray.length;
-            File cacheDir = context.getCacheDir();
-            File cacheFile = new File(cacheDir,"radardata.bin");
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream(cacheFile);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(radarMapsize);
-                int i;
-                byte[] cache = new byte[1024];
-                while ((i=inputStream.read(cache))!=-1){
-                    fileOutputStream.write(cache,0,i);
-                    byteArrayOutputStream.write(cache,0,i);
-                }
-                fileOutputStream.close();
-                byteArrayOutputStream.close();
-                return byteArrayOutputStream.toByteArray();
-            } catch (Exception e){
-                return null;
-            }
-        }
-
-        private byte[] getRadarMapFromCache(){
-            byte[] radararray = new byte[1500*1400+1024];
-            int radarMapsize = radararray.length;
-            File cacheDir = context.getCacheDir();
-            File cacheFile = new File(cacheDir,"radardata.bin");
-            try {
-                FileInputStream fileInputStream = new FileInputStream(cacheFile);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(radarMapsize);
-                int i;
-                byte[] cache = new byte[1024];
-                while ((i=fileInputStream.read(cache))!=-1){
-                    byteArrayOutputStream.write(cache,0,i);
-                }
-                fileInputStream.close();
-                return byteArrayOutputStream.toByteArray();
-            } catch (Exception e){
-                return null;
-            }
-        }
-
-        private boolean radarCacheFileExists(){
-            File cacheDir = context.getCacheDir();
-            File cacheFile = new File(cacheDir,"radardata.bin");
-            return cacheFile.exists();
-        }
-
-        private RawRadarmap readRadarData(){
-            byte[] radararray = null;
-            if (radarCacheFileExists() && !WeatherSettings.isRadarDataOutdated(context)) {
-                radararray = getRadarMapFromCache();
-            } else
-            {
-                try {
-                    InputStream inputStream = new BufferedInputStream(getRadarInputStream());
-                    radararray = putRadarMapToCache(inputStream);
-                    WeatherSettings.setPrefRadarLastdatapoll(context,Calendar.getInstance().getTimeInMillis());
-                } catch (Exception e){
-                    // do nothing
-                }
-            }
-            if ((radararray==null) && (radarCacheFileExists())){
-                radararray = getRadarMapFromCache();
-            }
-            if (radararray!=null){
-                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(radararray);
-                RawRadarmap rawRadarmap = new RawRadarmap(byteArrayInputStream);
-                return rawRadarmap;
-            }
-            return null;
-        }
-
-        public void onFinished(Radarmap radarmap){
-            // override to do something with the map
-        }
-
-        @Override
-        public void run() {
-            Radarmap radarmap = new Radarmap(readRadarData());
-            onFinished(radarmap);
-        }
-    }
-
-    /*
-    public static class RadarMNGeoserverRunnable implements Runnable{
-
-        private static final String WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AWN-Produkt&bbox=-543.462%2C-4808.645%2C556.538%2C-3608.645&width=1100&height=1200&srs=EPSG%3A1000001&styles=&format=image%2Fpng";
-        public static final String RADAR_CACHE_FILENAME = "radarMN.png";
-        private Context context;
-        private boolean forceUpdate = false;
-        public boolean ssl_exception = false;
-
-        public RadarMNGeoserverRunnable(Context context){
-            this.context = context;
-        }
-
-        public RadarMNGeoserverRunnable(Context context, boolean forceUpdate){
-            this.context = context;
-            this.forceUpdate = forceUpdate;
-        }
-
-        public void setForceUpdate(boolean forceUpdate){
-            this.forceUpdate = forceUpdate;
-        }
-
-        private InputStream getRadarInputStream() throws IOException {
-            String radar_url        = "https:"+WN_RADAR_URL;
-            String radar_url_legacy = "http:"+WN_RADAR_URL;
-            URL url;
-            URL url_legacy;
-            try {
-                url = new URL(radar_url);
-                url_legacy = new URL(radar_url_legacy);
-            } catch (MalformedURLException e){
-                throw e;
-            }
-            try {
-                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-                InputStream inputStream = new BufferedInputStream(httpsURLConnection.getInputStream());
-                return inputStream;
-            } catch (SSLException e){
-                ssl_exception = true;
-                if (WeatherSettings.isTLSdisabled(context)){
-                    // try fallback to http
-                    try {
-                        HttpURLConnection httpURLConnection = (HttpURLConnection) url_legacy.openConnection();
-                        InputStream inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
-                        PrivateLog.log(context,PrivateLog.DATA,PrivateLog.WARN,"MN radar data is polled over http without encryption.");
-                        return inputStream;
-                    } catch (IOException e2){
-                        throw e2;
-                    }
-                } else {
-                    PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Error: ssl connection could not be established, but http is not allowed.");
-                    throw e;
-                }
-            } catch (Exception e){
-                throw e;
-            }
-        }
-
-        public static File getRadarMNFile(Context context){
-            File cacheDir = context.getCacheDir();
-            return new File(cacheDir,RADAR_CACHE_FILENAME);
-
-        }
-
-        private boolean putRadarMapToCache(InputStream inputStream){
-            File cacheFile = getRadarMNFile(context);
-            try {
-                FileOutputStream fileOutputStream = new FileOutputStream(cacheFile);
-                int i;
-                byte[] cache = new byte[1024];
-                while ((i=inputStream.read(cache))!=-1){
-                    fileOutputStream.write(cache,0,i);
-                }
-                fileOutputStream.close();
-                inputStream.close();
-                WeatherSettings.setPrefRadarLastdatapoll(context,Calendar.getInstance().getTimeInMillis());
-            } catch (Exception e){
-                return false;
-            }
-            return true;
-        }
-
-        public static boolean radarCacheFileExists(Context context){
-            File cacheFile = getRadarMNFile(context);
-            return cacheFile.exists();
-        }
-
-        public void onFinished(RadarMN radarMN){
-            // override to do something with the map
-        }
-
-        @Override
-        public void run() {
-            try {
-                // read new data from DWD geo server if present data does not exist or is outdated
-                if ((!radarCacheFileExists(context) || (WeatherSettings.isRadarDataOutdated(context)) || (forceUpdate))){
-                    putRadarMapToCache(getRadarInputStream());
-                }
-                // construct radar data from new or old data
-                RadarMN radarMN = new RadarMN(context);
-                if (radarMN.hasData()){
-                    onFinished(radarMN);
-                } else {
-                    onFinished(null);
-                }
-            } catch (IOException e) {
-                onFinished(null);
-            }
-        }
-    }
-
-    */
 
     public static class RadarMNSetGeoserverRunnable implements Runnable{
 
@@ -1654,7 +1408,7 @@ public class APIReaders {
         }
 
         public static InputStream getPollenStream(boolean ssl) {
-            String urlString = "opendata.dwd.de/climate_environment/health/alerts/s31fg.json";
+            String urlString = WeatherSettings.getWeatherUrl(context)+"/climate_environment/health/alerts/s31fg.json";
             InputStream inputStream;
             long sourceLastModified = 0;
             if (ssl) {

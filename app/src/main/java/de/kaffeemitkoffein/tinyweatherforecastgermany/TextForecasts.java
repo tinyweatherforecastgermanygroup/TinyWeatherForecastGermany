@@ -135,14 +135,6 @@ public class TextForecasts {
         }
     }
 
-
-    public static final String TEXT_WEBPATH = "https://opendata.dwd.de/weather/text_forecasts/txt/";
-    public static final String TEXT_WEBPATH_LEGACY = "http://opendata.dwd.de/weather/text_forecasts/txt/";
-    public static final String MARITIME_WEBPATH_DE = "https://opendata.dwd.de/weather/maritime/forecast/german/";
-    public static final String MARITIME_WEBPATH_LEGACY_DE = "https://opendata.dwd.de/weather/maritime/forecast/german/";
-    public static final String MARITIME_WEBPATH_EN = "https://opendata.dwd.de/weather/maritime/forecast/english/";
-    public static final String MARITIME_WEBPATH_LEGACY_EN = "https://opendata.dwd.de/weather/maritime/forecast/english/";
-
     public static class Type{
         public final static int FEATURE = 0;
         public final static int KURZFRIST = 1;
@@ -256,6 +248,12 @@ public class TextForecasts {
     }
 
     public static ArrayList<TextForecastSource> getTextForecastSources(Context context){
+        final String TEXT_WEBPATH = "https://"+WeatherSettings.getWeatherUrl(context)+"/weather/text_forecasts/txt/";
+        final String TEXT_WEBPATH_LEGACY = "http://"+WeatherSettings.getWeatherUrl(context)+"/weather/text_forecasts/txt/";
+        final String MARITIME_WEBPATH_DE = "https://"+WeatherSettings.getWeatherUrl(context)+"/weather/maritime/forecast/german/";
+        final String MARITIME_WEBPATH_LEGACY_DE = "https://"+WeatherSettings.getWeatherUrl(context)+"/weather/maritime/forecast/german/";
+        final String MARITIME_WEBPATH_EN = "https://"+WeatherSettings.getWeatherUrl(context)+"/weather/maritime/forecast/english/";
+        final String MARITIME_WEBPATH_LEGACY_EN = "https://"+WeatherSettings.getWeatherUrl(context)+"/weather/maritime/forecast/english/";
         ArrayList<TextForecastSource> resultList = new ArrayList<TextForecastSource>();
         // construct the features and common forecasts
         TextForecastFile common_feature = new TextForecastFile("FPDL",Type.FEATURE);

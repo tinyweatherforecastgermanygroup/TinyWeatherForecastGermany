@@ -169,6 +169,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_OVERVIEWCHART_FILTER_WARNINGS = "PREF_display_overviewchart_filter_warnings";
     public static final String PREF_MAP_HIGH_RESOLUTION ="PREF_map_high_resolution";
     public static final String PREF_MAP_PIN_SIZE = "PREF_map_pinsize";
+    public static final String PREF_WEATHER_URL = "PREF_weather_url";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -288,6 +289,7 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_FILTER_WARNINGS_DEFAULT = false;
     public static final boolean PREF_MAP_HIGH_RESOLUTION_DEFAULT = false;
     public static final int PREF_MAP_PIN_SIZE_DEFAULT = 4;
+    public static final String PREF_WEATHER_URL_DEFAULT = "opendata.dwd.de";
 
     private Context context;
     private SharedPreferences sharedPreferences;
@@ -1788,6 +1790,18 @@ public class WeatherSettings {
     public static String getGadgetBridgePackageName(Context context){
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         return sharedPreferences.getString(PREF_GADGETBRIDGE_PACKAGENAME,PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT);
+    }
+
+    public static String getWeatherUrl(Context context){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getString(PREF_WEATHER_URL,PREF_WEATHER_URL_DEFAULT);
+    }
+
+    public static void setWeatherUrl(Context context, String value){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putString(PREF_WEATHER_URL,value);
+        pref_editor.apply();
     }
 
 }

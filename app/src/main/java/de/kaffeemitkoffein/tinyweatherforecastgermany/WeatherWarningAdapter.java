@@ -172,7 +172,13 @@
             if (ThemePicker.GetTheme(context) == R.style.AppTheme_Light) {
                 colorFactor = 1.2f;
             }
-            color = Color.rgb(Math.round(Color.red(color) / colorFactor), Math.round(Color.green(color) / colorFactor), Math.round(Color.blue(color) / colorFactor));
+            //
+            float[] colorHSV = new float[3];
+            do {
+                colorFactor = colorFactor + 0.1f;
+                Color.colorToHSV(color, colorHSV);
+                color = Color.rgb(Math.round(Color.red(color) / colorFactor), Math.round(Color.green(color) / colorFactor), Math.round(Color.blue(color) / colorFactor));
+            } while (colorHSV[2]>0.5f);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Drawable drawable = context.getDrawable(ThemePicker.getWidgetBackgroundDrawableRessource(context));
                 viewHolder.warning_item_maincontainer.setBackground(drawable);

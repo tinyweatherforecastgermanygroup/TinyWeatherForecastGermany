@@ -32,6 +32,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -602,6 +603,14 @@ public class MainActivity extends Activity {
                 // migrate old sync settings to new class WeatherSettings.Updates
                 if (WeatherSettings.getLastAppVersionCode(context)<49){
                     WeatherSettings.Updates.DeprecatedPreferences.migrateDeprecatedSyncSettings(context);
+                }
+                // copy current weather station once
+                if (WeatherSettings.getLastAppVersionCode(context)<54){
+                    ArrayList<Weather.WeatherLocation> weatherLocations = StationFavorites.getFavorites(context);
+                    if (weatherLocations.size()>0){
+                        WeatherSettings.setStation(context,weatherLocations.get(0));
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather station migrated to DataStorage: "+weatherLocations.get(0).getDescription(context));
+                    }
                 }
                 showWhatsNewDialog();
                 WeatherSettings.setCurrentAppVersionCode(getApplicationContext());
