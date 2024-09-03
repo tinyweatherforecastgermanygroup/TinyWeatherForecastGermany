@@ -518,4 +518,7 @@
     <string name="preference_display_overviewchart_RH_title">Relative Luftfeuchtigkeit</string>
     <string name="preference_display_overviewchart_filter_warnings_title">Warnungen filtern</string>
     <string name="preference_display_overviewchart_filter_warnings_summary">Den gleichen Filter wie für Benachrichtigungen auch für Warnungen im Übersichtsdiagramm benutzen.</string>
+    <string name="geoinput_declined">Da du die Standort-Berechtigungen abgelehnt hast, werden die Funktionen der App, die diese Berechtigungen benötigen, deaktiviert. Du kannst sie in den Einstellungen wieder aktivieren.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Fehlende Berechtigung</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">Derzeit kann die App den Standort nicht im Hintergrund abrufen. Erwäge die Freigabe dieser Berechtigung oder schalte die regelmäßigen Standortbestimmungen ab.</string>
 </resources>
