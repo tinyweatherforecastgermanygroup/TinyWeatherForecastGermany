@@ -521,4 +521,7 @@
     <string name="geoinput_declined">Da du die Standort-Berechtigungen abgelehnt hast, werden die Funktionen der App, die diese Berechtigungen benötigen, deaktiviert. Du kannst sie in den Einstellungen wieder aktivieren.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Fehlende Berechtigung</string>
     <string name="preference_missingBackgroundLocationPermission_summary">Derzeit kann die App den Standort nicht im Hintergrund abrufen. Erwäge die Freigabe dieser Berechtigung oder schalte die regelmäßigen Standortbestimmungen ab.</string>
+    <string name="preference_weatherurl_summary2">Aktueller URL:</string>
+    <string name="preference_weatherurl_title">Server-URL</string>
+    <string name="preference_weatherurl_summary">Hier kann ein alternativer Spiegelserver angegeben werden, von dem die Daten geladen werden. Eintrag löschen, um den originalen DWD-Server zu verwenden.</string>
 </resources>
