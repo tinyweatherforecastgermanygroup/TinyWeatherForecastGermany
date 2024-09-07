@@ -505,4 +505,9 @@
     <string name="preference_missingBackgroundLocationPermission_title">Немає дозволу</string>
     <string name="preference_missingBackgroundLocationPermission_summary">Наразі програма не може отримувати доступ до місцезнаходження у фоновому режимі. Найкраще надати цей дозвіл або вимкнути регулярну перевірку місцезнаходження.</string>
     <string name="geoinput_declined">Ви відхилили дозволи на визначення місцезнаходження, тому функції програми, які їх вимагають, було вимкнено. Можете ввімкнути їх знову в налаштуваннях.</string>
+    <string name="preference_weatherurl_title">URL-адреса сервера</string>
+    <string name="preference_weatherurl_summary">Тут можна вказати альтернативний дзеркальний сервер, з якого будуть завантажуватися дані. Видаліть запис, щоб скинути URL-адресу до сервера DWD за замовчуванням.</string>
+    <string name="preference_weatherurl_summary2">Поточна URL-адреса:</string>
+    <string name="preference_visualizeDaytime_title">Виділіть час доби</string>
+    <string name="preference_visualizeDaytime_summary">Час доби підкреслюється трохи світлішим тлом.</string>
 </resources>
