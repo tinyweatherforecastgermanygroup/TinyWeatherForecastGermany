@@ -511,4 +511,10 @@
     <string name="preference_highresolution_summary">Force la résolution la plus élevée de la carte. Cela peut ralentir l\'appareil ou causer des problèmes sur les appareils plus anciens.</string>
     <string name="preference_mapPinSize_title">Taille de la marque d\'emplacement</string>
     <string name="preference_mapPinSize_summary">Taille de la marque de localisation sur la carte.</string>
+    <string name="preference_display_overviewchart_RH_title">Humidité relative</string>
+    <string name="preference_weatherurl_title">URL du serveur</string>
+    <string name="preference_weatherurl_summary">Un autre serveur miroir à partir duquel les données doivent être chargées peut être spécifié ici. Supprimer l\'entrée pour réinitialiser l\'URL au serveur DWD par défaut.</string>
+    <string name="preference_weatherurl_summary2">URL actuel :</string>
+    <string name="preference_visualizeDaytime_title">Mettre en évidence l\'heure de la journée</string>
+    <string name="preference_visualizeDaytime_summary">Le moment de la journée est souligné par le fond légèrement plus clair.</string>
 </resources>
