@@ -479,4 +479,10 @@
     <string name="preference_highresolution_summary">Vynutí vyšší rozlišení mapy. To může zpomalit zařízení nebo způsobit problémy na starších zařízeních.</string>
     <string name="preference_mapPinSize_summary">Velikost značky polohy na mapě.</string>
     <string name="preference_mapPinSize_title">Velikost značky umístění</string>
+    <string name="preference_display_overviewchart_RH_title">Relativní vlhkost</string>
+    <string name="preference_weatherurl_title">Adresa URL serveru</string>
+    <string name="preference_weatherurl_summary">Zde lze zadat alternativní zrcadlový server, ze kterého se mají data načítat. Odstraněním položky obnovíte adresu URL na výchozí server DWD.</string>
+    <string name="preference_weatherurl_summary2">Aktuální adresa URL:</string>
+    <string name="preference_visualizeDaytime_summary">Denní doba je zdůrazněna mírně světlejším pozadím.</string>
+    <string name="preference_visualizeDaytime_title">Zvýraznění denní doby</string>
 </resources>
