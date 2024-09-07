@@ -10,6 +10,8 @@
 - fixed wrong context reference in WeatherSyncAdapter
 - added option to switch to a different mirror of opendata.dwd.de
 - fixed background color of some warnings too bright in light themes
+- moved some more values from SharedPreferences to DataStorage
+- added setting to highlight time of day in overview chart
 
 ## Version 0.62.4
 - removed stray pixels in modular clouds icon

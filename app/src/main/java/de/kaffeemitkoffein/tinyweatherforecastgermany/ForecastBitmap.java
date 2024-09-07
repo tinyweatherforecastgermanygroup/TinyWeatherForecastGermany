@@ -815,7 +815,6 @@ public class ForecastBitmap{
                  WeatherWarning warning = warnings.get(i);
                  // omit already expired warnings
                  if (warning.getApplicableExpires()>=chartTimeStart){
-
                      if ((warning.getSeverity() >= WeatherSettings.getWarningsNotifySeverity(context)) && (WeatherSettings.filterWarningsInOverviewChartBySeverity(context))) {
                          float x1 = xChartOffset + (warning.onset-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
                          if (x1<xChartOffset){
@@ -834,6 +833,33 @@ public class ForecastBitmap{
                      }
                  }
              }
+        }
+        // daytime visualisation
+        if (WeatherSettings.visualizeDaytime(context)){
+            Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+            Paint dayTimePaint = new Paint();
+            dayTimePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+            int dayTimeColor = ThemePicker.getColor(context,ThemePicker.ThemeColor.PRIMARY);
+            float[] dayTimeColorHSV = new float[3];
+            Color.colorToHSV(dayTimeColor,dayTimeColorHSV);
+            int hueValue = 25;
+            if (ThemePicker.GetTheme(context) == R.style.AppTheme_Light){
+                hueValue = 50;
+            }
+            if (ThemePicker.GetTheme(context) == R.style.AppTheme_Solarized){
+                hueValue = 125;
+            }
+            dayTimeColorHSV[2] = hueValue;
+            dayTimeColor = Color.HSVToColor(dayTimeColorHSV);
+            dayTimePaint.setColor(dayTimeColor);
+            dayTimePaint.setAlpha(hueValue);
+            for (int i=startPosition; i<endPosition-1; i++){
+                float x1 = xChartOffset+ ((float) chartWidth/(float) itemCount)*i;
+                float x2 = xChartOffset+ ((float) chartWidth/(float) itemCount)*(i+1);
+                if (weatherInfos.get(i).isDaytime(weatherLocation)){
+                    canvas.drawRect(x1,0,x2,chartHeight,dayTimePaint);
+                }
+            }
         }
         // paint clouds & rain
         textPaint.setTextSize(labelTextSize);

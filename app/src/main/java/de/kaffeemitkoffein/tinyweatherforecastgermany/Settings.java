@@ -243,6 +243,9 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                     WeatherSettings.setWeatherUrl(context,weatherUrl);
                 }
             }
+            if (s.equals(WeatherSettings.PREF_VISUALIZE_DAYTIME)){
+                WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
+            }
             ignoreNextPrefUpdate = false;
         }
     };
