@@ -479,4 +479,10 @@
     <string name="preference_highresolution_summary">Использует более высокое разрешение карты. Это может замедлить работу устройства или вызвать проблемы на старых устройствах.</string>
     <string name="preference_mapPinSize_title">Размер знака местоположения</string>
     <string name="preference_mapPinSize_summary">Размер метки местоположения на карте.</string>
+    <string name="preference_display_overviewchart_RH_title">Относительная влажность</string>
+    <string name="preference_weatherurl_title">URL-адрес сервера</string>
+    <string name="preference_weatherurl_summary">Здесь можно указать альтернативный зеркальный сервер, с которого будут загружаться данные. Удалите запись, чтобы вернуть URL к серверу DWD по умолчанию.</string>
+    <string name="preference_weatherurl_summary2">Текущий URL:</string>
+    <string name="preference_visualizeDaytime_summary">Время суток подчеркивается чуть более светлым фоном.</string>
+    <string name="preference_visualizeDaytime_title">Выделите время суток</string>
 </resources>
