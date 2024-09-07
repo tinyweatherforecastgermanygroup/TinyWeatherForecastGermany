@@ -166,4 +166,10 @@
     <string name="preference_highresolution_summary">Driver den högre upplösningen på kartan. Detta kan göra enheten långsammare eller orsaka problem på äldre enheter.</string>
     <string name="preference_mapPinSize_title">Läge märke storlek</string>
     <string name="preference_mapPinSize_summary">Storlek på platsmarkeringen på kartan.</string>
+    <string name="preference_display_overviewchart_RH_title">Relativ luftfuktighet</string>
+    <string name="preference_weatherurl_title">URL till server</string>
+    <string name="preference_weatherurl_summary">En alternativ spegelserver från vilken data ska laddas kan anges här. Ta bort posten för att återställa URL:en till standard DWD-servern.</string>
+    <string name="preference_weatherurl_summary2">Nuvarande webbadress:</string>
+    <string name="preference_visualizeDaytime_title">Markera tid på dygnet</string>
+    <string name="preference_visualizeDaytime_summary">Tidpunkten på dygnet framhävs av en något ljusare bakgrund.</string>
 </resources>
