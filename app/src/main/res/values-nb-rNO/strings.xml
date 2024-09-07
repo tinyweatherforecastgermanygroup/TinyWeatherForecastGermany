@@ -472,4 +472,10 @@
     <string name="preference_highresolution_summary">Tvinger frem en høyere oppløsning på kartet. Dette kan gjøre enheten tregere eller forårsake problemer på eldre enheter.</string>
     <string name="preference_mapPinSize_summary">Størrelsen på stedsmerket på kartet.</string>
     <string name="preference_mapPinSize_title">Størrelse på plasseringsmerke</string>
+    <string name="preference_weatherurl_title">Server-URL</string>
+    <string name="preference_weatherurl_summary">Her kan du angi en alternativ speilserver som dataene skal lastes inn fra. Slett oppføringen for å tilbakestille URL-adressen til standard DWD-server.</string>
+    <string name="preference_weatherurl_summary2">Nåværende URL:</string>
+    <string name="preference_visualizeDaytime_title">Fremhev tidspunkt på dagen</string>
+    <string name="preference_visualizeDaytime_summary">Tidspunktet på dagen understrekes av en litt lysere bakgrunn.</string>
+    <string name="preference_display_overviewchart_RH_title">Relativ luftfuktighet</string>
 </resources>
