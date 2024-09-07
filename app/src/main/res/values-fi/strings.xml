@@ -479,4 +479,10 @@
     <string name="preference_highresolution_summary">Pakottaa kartan korkeampaan resoluutioon. Tämä voi hidastaa laitteen toimintaa tai aiheuttaa ongelmia vanhemmissa laitteissa.</string>
     <string name="preference_mapPinSize_summary">Sijaintimerkin koko kartalla.</string>
     <string name="preference_mapPinSize_title">Sijaintimerkin koko</string>
+    <string name="preference_display_overviewchart_RH_title">Suhteellinen kosteus</string>
+    <string name="preference_weatherurl_title">Palvelimen URL-osoite</string>
+    <string name="preference_weatherurl_summary">Tässä voidaan määrittää vaihtoehtoinen peilipalvelin, jolta tiedot ladataan. Poista merkintä palauttaa URL-osoitteen oletusarvoiselle DWD-palvelimelle.</string>
+    <string name="preference_weatherurl_summary2">Nykyinen URL:</string>
+    <string name="preference_visualizeDaytime_title">Korosta vuorokauden aika</string>
+    <string name="preference_visualizeDaytime_summary">Kellonaika korostuu hieman vaaleammalla taustalla.</string>
 </resources>
