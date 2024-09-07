@@ -479,4 +479,10 @@
     <string name="preference_highresolution_summary">Wymusza wyższą rozdzielczość mapy. Może to spowolnić działanie urządzenia lub powodować problemy na starszych urządzeniach.</string>
     <string name="preference_mapPinSize_title">Rozmiar znaku lokalizacji</string>
     <string name="preference_mapPinSize_summary">Rozmiar znacznika lokalizacji na mapie.</string>
+    <string name="preference_weatherurl_title">Adres URL serwera</string>
+    <string name="preference_weatherurl_summary">W tym miejscu można określić alternatywny serwer lustrzany, z którego mają być ładowane dane. Usuń wpis, aby zresetować adres URL do domyślnego serwera DWD.</string>
+    <string name="preference_weatherurl_summary2">Aktualny adres URL:</string>
+    <string name="preference_visualizeDaytime_title">Wyróżnij porę dnia</string>
+    <string name="preference_visualizeDaytime_summary">Pora dnia jest podkreślona przez nieco jaśniejsze tło.</string>
+    <string name="preference_display_overviewchart_RH_title">Wilgotność względna</string>
 </resources>
