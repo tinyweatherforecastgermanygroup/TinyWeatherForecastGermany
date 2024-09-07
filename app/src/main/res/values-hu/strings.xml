@@ -479,4 +479,10 @@
     <string name="preference_highresolution_title">Nagy felbontás</string>
     <string name="preference_mapPinSize_title">Helymegjelölés mérete</string>
     <string name="preference_mapPinSize_summary">A helymegjelölés mérete a térképen.</string>
+    <string name="preference_display_overviewchart_RH_title">Relatív páratartalom</string>
+    <string name="preference_weatherurl_title">Kiszolgáló URL címe</string>
+    <string name="preference_weatherurl_summary">Itt megadható egy alternatív tükörkiszolgáló, ahonnan az adatokat be kell tölteni. A bejegyzés törlésével az URL visszaállítható az alapértelmezett DWD-kiszolgálóra.</string>
+    <string name="preference_weatherurl_summary2">Jelenlegi URL:</string>
+    <string name="preference_visualizeDaytime_title">Napszak kiemelése</string>
+    <string name="preference_visualizeDaytime_summary">A napszakot a kissé világosabb háttér hangsúlyozza.</string>
 </resources>
