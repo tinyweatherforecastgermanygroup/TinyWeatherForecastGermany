@@ -1,0 +1,14 @@
+- fixed occasional reset of settings
+- the background color of some warnings is now darker to improve readability
+- added setting to highlight time of day in overview chart
+- added option to switch to a different mirror of opendata.dwd.de
+- other minor bug fixes & improved translations
+
+
+
+
+
+
+
+
+

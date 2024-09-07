@@ -1,0 +1,5 @@
+- gelegentliches Zurücksetzen der Einstellungen behoben
+- die Hintergrundfarbe einiger Warnungen ist nun zur besseren Lesbarkeit dunkler
+- Einstellung zur Hervorhebung der Tageszeit im Übersichtsdiagramm hinzugefügt
+- Option hinzugefügt, um zu einem anderen Spiegelserver von opendata.dwd.de wechseln zu können
+- weitere kleinere Fehlerkorrekturen & verbesserte Übersetzungen

@@ -96,13 +96,14 @@ Contributors:
 
 Translations:
 
+* Chinese: hugoalh
 * Czech: eUgEntOptIc44, mondstern
 * Danish: eUgEntOptIc44, mondstern
 * Dutch: Allan Nordhøy, alternative_be, eUgEntOptIc44, Jean-Luc Tibaux, jwildeboer, mondstern, Vistaus
 * English: Allan Nordhøy
 * French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
 * Finnish: eUgEntOptIc44, mondstern
-* German: Aircan, Allan Nordhøy, buhtz, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, MaxK, mondstern, silmaril, w4ts0n, Dirk
+* German: Aircan, Allan Nordhøy, buhtz, Dirk, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, MaxK, mondstern, silmaril, w4ts0n, Dirk
 * Hungarian: eUgEntOptIc44, Gőz Barnabás
 * Indonesian: Linerly
 * Italian: mondstern, eUgEntOptIc44
