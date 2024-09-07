@@ -479,4 +479,10 @@
     <string name="preference_highresolution_summary">Memaksakan resolusi peta yang lebih tinggi. Hal ini dapat memperlambat perangkat atau menyebabkan masalah pada perangkat yang lebih tua.</string>
     <string name="preference_mapPinSize_summary">Ukuran tanda lokasi pada peta.</string>
     <string name="preference_mapPinSize_title">Ukuran tanda lokasi</string>
+    <string name="preference_display_overviewchart_RH_title">Kelembaban Relatif</string>
+    <string name="preference_weatherurl_title">URL Server</string>
+    <string name="preference_weatherurl_summary">Server mirror alternatif tempat data akan dimuat dapat ditentukan di sini. Hapus entri untuk mengatur ulang URL ke server DWD default.</string>
+    <string name="preference_weatherurl_summary2">URL saat ini:</string>
+    <string name="preference_visualizeDaytime_title">Menyoroti waktu dalam sehari</string>
+    <string name="preference_visualizeDaytime_summary">Waktu di siang hari dipertegas oleh latar belakang yang sedikit lebih terang.</string>
 </resources>
