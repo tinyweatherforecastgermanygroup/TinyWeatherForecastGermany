@@ -98,6 +98,8 @@ public class WeatherWarningActivity extends Activity {
     public final static String SIS_HIDERAIN="HIDERAIN";
     public final static String SIS_HIDEADMIN="HIDEADMIN";
 
+    public final static long CREDENTIALS_FADE_TIME_DELAY = 7000l;
+
     PopupWindow hintPopupWindow = null;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -1390,7 +1392,7 @@ public class WeatherWarningActivity extends Activity {
                                                         }
                                                     });
                                                 }
-                                            },7000);
+                                            },CREDENTIALS_FADE_TIME_DELAY);
                                         }
                                     }
                                 });

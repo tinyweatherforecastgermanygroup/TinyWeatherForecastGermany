@@ -58,14 +58,6 @@ public class WeatherSettings {
 
     public static final String PREF_CATEGORY_GENERAL = "PREF_category_general";
 
-    // public static final String PREF_STATION_NAME = "PREF_station_name";
-    // public static final String PREF_LOCATION_DESCRIPTION = "PREF_station_description";
-    // public static final String PREF_LOCATION_DESC_ALTERNATE = "PREF_station_desc_alternate";
-    // public static final String PREF_LONGITUDE = "PREF_longitude";
-    // public static final String PREF_LATITUDE = "PREF_latitude";
-    // public static final String PREF_ALTITUDE = "PREF_altitude";
-    // public static final String PREF_STATIONTYPE = "PREF_stationtype";
-    // public static final String PREF_STATION_TIME = "PREF_station_time";
     public static final String PREF_DISPLAY_STATION_GEO = "PREF_display_station_geo";
     public static final String PREF_DISPLAY_TYPE = "PREF_display_type";
     public static final String PREF_DISPLAY_LAYOUT = "PREF_display_layout";
@@ -93,10 +85,8 @@ public class WeatherSettings {
     public static final String PREF_NOTIFY_WARNINGS = "PREF_notify_warnings";
     public static final String PREF_LAST_VERSION_CODE = "PREF_last_version_code";
     public static final String PREF_SERVE_GADGETBRIDGE = "PREF_serve_gadgetbridge";
-    public static final String PREF_VIEWS_LAST_UPDATE_TIME = "PREF_views_last_update_time";
     public static final String PREF_GADGETBRIDGE_PACKAGENAME = "PREF_gadgetbridge_packagename";
     public static final String PREF_GADGETBRIDGE_FAKE_TIMESTAMP = "PREF_gadgetbridge_fake_timestamp";
-    public static final String PREF_GADGETBRIDGE_LASTUPDATE = "PREF_gadgetbridge_lastupdate";
     public static final String PREF_LOGGING = "PREF_logging";
     public static final String PREF_LOG_TO_LOGCAT = "PREF_log_to_logcat";
     public static final String PREF_FAVORITESDATA2 = "PREF_favoritesdata2";
@@ -106,10 +96,8 @@ public class WeatherSettings {
     public static final String PREF_USEGPS = "PREF_usegps";
     public static final String PREF_GPSAUTO = "PREF_gpsauto";
     public static final String PREF_GPSMANUAL = "PREF_gpsmanual";
-    // public static final String PREF_LASTGPSFIX = "PREF_lastgpsfix";      // moved to DataStorage
     public static final String PREF_DISABLE_TLS = "PREF_disable_tls";
     public static final String PREF_TEXTFORECAST_FILTER = "PREF_textforecast_filter";
-    public static final String PREF_RADAR_LASTDATAPOLL = "PREF_radar_lastdatapoll";
     public static final String PREF_RADAR_SHOW = "PREF_radar_show";
     public static final String PREF_ADMINMAP_SHOW="PREF_adminmap_show";
     public static final String PREF_MAP_DISPLAY_MUNICIPALITIES ="PREF_map_display_municipalities";
@@ -126,19 +114,14 @@ public class WeatherSettings {
     public static final String PREF_ALTERNATIVE_ICONS = "PREF_alternative_icons";
     public static final String PREF_USE_METERED_NETWORKS = "PREF_use_metered_networks";
     public static final String PREF_USE_WIFI_ONLY ="PREF_use_wifi_only";
-    public static final String PREF_NOTIFICATION_IDENTIFIER = "PREF_notification_id";
     public static final String PREF_CLEARNOTIFICATIONS = "PREF_clearnotifications"; // has no value
     public static final String PREF_ASKEDFORLOCATIONFLAG = "PREF_askedlocpermflag";
     public static final String PREF_ROTATIONMODE = "PREF_rotationmode";
-    // public static final String PREF_NC_CHANNEL_DETAIL = "PREF_channel_detail"; // moved to DataStorage
     public static final String PREF_LED_COLOR = "PREF_led_color";
     public static final String PREF_WARNINGS_NOTIFY_LED = "PREF_warnings_notify_LED";
     public static final String PREF_HINTCOUNTER1 = "PREF_hintcounter1";
     public static final String PREF_HINTCOUNTER2 = "PREF_hintcounter2";
     public static final String PREF_LASTMAPDISPLAYED = "PREF_lastmapdisplayed";
-    // public static final String PREF_POLLENREGION_ID = "PREF_pollen_region_id";           // moved to DataStorage
-    // public static final String PREF_POLLENPARTREGION_ID = "PREF_pollen_partregion_id";   // moved to DataStorage
-    // public static final String PREF_POLLENREGION_DESCRIPTION = "PREF_pollen_description";// moved to DataStorage
     public static final String PREF_POLLEN_AMBROSIA = "PREF_pollen_ambrosia";
     public static final String PREF_POLLEN_BEIFUSS = "PREF_pollen_beifuss";
     public static final String PREF_POLLEN_ROGGEN = "PREF_pollen_roggen";
@@ -151,15 +134,12 @@ public class WeatherSettings {
     public static final String PREF_LAST_PREFETCH_TIME = "PREF_prefetch_time";
     public static final String PREF_UVHI_FETCH_DATA ="PREF_uvhi_fetch_data";
     public static final String PREF_UVHI_MAINDISPLAY="PREF_uvhi_maindisplay";
-    public static final String PREF_WEATHERUPDATEDFLAG="PREF_weather_updated";
     public static final String PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS = "PREF_max_loc_in_shared_warnings";
-    public static final String PREF_LAST_PASSIVE_LOCATION = "PREF_last_passive_location";
     public static final String PREF_USE_BACKGROUND_LOCATION = "PREF_use_backgr_location";
     public static final String PREF_DISPLAY_WIND_IN_CHARTS = "PREF_wind_in_charts";
     public static final String PREF_DISPLAY_WIND_IN_CHARTS_MAX = "PREF_wind_in_charts_max";
     public static final String PREF_REPLACE_BY_MUNICIPALITY = "PREF_replace_by_municipality";
     public static final String PREF_BATTERY_OPTIMIZATION_FLAG = "PREF_battery_opt_flag";
-    // public static final String PREF_LAST_NOTIFICATIONS_UPDATE_TIME = "PREF_nf_updatetime"; // moved to DataStorage
     public static final String PREF_BOLDWIDGET_VERTICAL_BAR = "PREF_boldwidget_vertical_bar";
     public static final String PREF_AREADATABASE_LOCK = "PREF_areadatabase_lock";
     public static final String PREF_BATTERY = "PREF_battery"; // has no value
@@ -173,7 +153,6 @@ public class WeatherSettings {
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
-    public static final String PREF_LOCATION_DESC_ALTERNATE_DEFAULT = "Hamburg-Mitte/Ost";
     public static final double PREF_LATITUDE_DEFAULT = 53.55;
     public static final double PREF_LONGITUDE_DEFAULT = 9.98;
     public static final double PREF_ALTITUDE_DEFAULT = 8.0;
@@ -181,7 +160,6 @@ public class WeatherSettings {
     public static final long PREF_STATION_TIME_DEFAULT = 0;
     public static final boolean PREF_DISPLAY_STATION_GEO_DEFAULT = true;
     public static final String PREF_DISPLAY_TYPE_DEFAULT = "3";
-    public static final String PREF_DISPLAY_LAYOUT_DEFAULT = "0";
     public static final boolean PREF_DISPLAY_BAR_DEFAULT = true;
     public static final boolean PREF_DISPLAY_SIMPLE_BAR_DEFAULT = false;
     public static final boolean PREF_DISPLAY_PRESSURE_DEFAULT = true;
@@ -200,37 +178,25 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT = false;
     public static final int PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT = 7;
     public static final int PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT = 4;
-    public static final boolean PREF_SETALARM_DEFAULT = true;
-    public static final boolean PREF_UPDATE_WARNINGS_DEFAULT = true;
-    public static final boolean PREF_UPDATE_TEXTFORECASTS_DEFAULT = true;
-    public static final long PREF_TEXTFORECAST_LAST_UPDATE_TIME_DEFAULT = 0;
-    public static final String PREF_UPDATEINTERVAL_DEFAULT = "24";
-    public static final long PREF_LASTWEATHERUPDATETIME_DEFAULT = 0;
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "90";
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
     public static final boolean PREF_WIDGET_DISPLAYWARNINGS_DEFAULT = true;
     public static final boolean PREF_NOTIFY_WARNINGS_DEFAULT = true;
     public static final int PREF_LAST_VERSION_CODE_DEFAULT = 0;
     public static final boolean PREF_SERVE_GADGETBRIDGE_DEFAULT = false;
-    public static final long PREF_VIEWS_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_GADGETBRIDGE_PACKAGENAME_DEFAULT = "nodomain.freeyourgadget.gadgetbridge";
     public static final boolean PREF_GADGETBRIDGE_FAKE_TIMESTAMP_DEFAULT = false;
-    public static final long PREF_GADGETBRIDGE_LASTUPDATE_DEFAULT = 0L;
     public static final boolean PREF_LOGGING_DEFAULT = false;
     public static final boolean PREF_LOG_TO_LOGCAT_DEFAULT = false;
-    public static final String PREF_FAVORITESDATA_DEFAULT = PREF_STATION_NAME_DEFAULT;
     public static final String PREF_FAVORITESDATA_DEFAULT2 = "";
     public static final boolean PREF_WARNINGS_DISABLE_DEFAULT = false;
-    public static final long PREF_WARNINGS_LAST_UPDATE_TIME_DEFAULT = 0;
     public static final String PREF_WARNINGS_NOTIFY_SEVERITY_DEFAULT = WeatherWarning.Severity.MINOR;
     public static final boolean PREF_IS_FIRST_APP_LAUNCH_DEFAULT = true;
     public static final boolean PREF_USEGPS_DEFAULT = true;
     public static final boolean PREF_GPSAUTO_DEFAULT = false;
     public static final boolean PREF_GPSMANUAL_DEFAULT = false;
-    public static final long PREF_LASTGPSFIX_DEFAULT = 0;
     public static final boolean PREF_DISABLE_TLS_DEFAULT = false;
     public static final boolean PREF_TEXTFORECAST_FILTER_DEFAULT = false;
-    public static final long PREF_RADAR_LASTDATAPOLL_DEFAULT = 0;
     public static final boolean PREF_RADAR_SHOW_DEFAULT = true;
     public static final boolean PREF_ADMINMAP_SHOW_DEFAULT=false;
     public static final boolean PREF_MAP_DISPLAY_MUNICIPALITIES_DEFAULT = false;
@@ -247,20 +213,13 @@ public class WeatherSettings {
     public static final boolean PREF_ALTERNATIVE_ICONS_DEFAULT = true;
     public static final boolean PREF_USE_METERED_NETWORKS_DEFAULT = true;
     public static final boolean PREF_USE_WIFI_ONLY_DEFAULT = false;
-    // public static final int PREF_NOTIFICATION_IDENTIFIER_DEFAULT = -2147483640;  // moved to DataStorage
     public static final int PREF_ASKEDFORLOCATIONFLAG_DEFAULT = AskedLocationFlag.NONE;
     public static final String PREF_ROTATIONMODE_DEFAULT = DeviceRotation.DEVICE;
-    // public static final long PREF_NC_CHANNEL_DETAIL_DEFAULT = 0; // moved to DataStorage
     public static final int PREF_LED_COLOR_DEFAULT = 0;
     public static final boolean PREF_WARNINGS_NOTIFY_LED_DEFAULT = true;
     public static final int PREF_HINTCOUNTER1_DEFAULT = 0;
     public static final int PREF_HINTCOUNTER2_DEFAULT = 0;
-    public static final long PREF_MAPLASTUPDATETIME_DEFAULT = 0;
-    public static final long PREF_LAYERTIME_DEFAULT = 0;
     public static final int PREF_LASTMAPDISPLAYED_DEFAULT = WeatherLayer.Layers.UVI_CLOUDS_0;
-    public static final int PREF_POLLENREGION_ID_DEFAULT = 10;
-    public static final int PREF_POLLENPARTREGION_ID_DEFAULT = 12;
-    public static final String PREF_POLLENREGION_DESCRIPTION_DEFAULT = "Geest, Schleswig-Holstein und Hamburg";
     public static final boolean PREF_POLLEN_AMBROSIA_DEFAULT = true;
     public static final boolean PREF_POLLEN_BEIFUSS_DEFAULT = true;
     public static final boolean PREF_POLLEN_ROGGEN_DEFAULT = true;
@@ -273,17 +232,13 @@ public class WeatherSettings {
     public static final long PREF_LAST_PREFETCH_TIME_DEFAULT = 0;
     public static final boolean PREF_UVHI_FETCH_DATA_DEFAULT = false;
     public static final boolean PREF_UVHI_MAINDISPLAY_DEFAULT = false;
-    public static final int PREF_WEATHERUPDATEDFLAG_DEFAULT = UpdateType.NONE;
     public static final int PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT = 12;
-    public static final String PREF_LAST_PASSIVE_LOCATION_DEFAULT = "";
     public static final boolean PREF_USE_BACKGROUND_LOCATION_DEFAULT = false;
     public static final boolean PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT = false;
     public static final String PREF_DISPLAY_WIND_IN_CHARTS_MAX_DEFAULT = "100";
     public static final boolean PREF_REPLACE_BY_MUNICIPALITY_DEFAULT = false;
     public static final int PREF_BATTERY_OPTIMIZATION_FLAG_DEFAULT = BatteryFlag.NOT_ASKED;
-    public static final long PREF_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT = 0;
     public static final boolean PREF_BOLDWIDGET_VERTICAL_BAR_DEFAULT = false;
-    public static final boolean PREF_AREADATABASE_LOCK_DEFAULT = false;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT_DEFAULT = false;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH_DEFAULT = false;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_FILTER_WARNINGS_DEFAULT = false;
@@ -523,22 +478,29 @@ public class WeatherSettings {
     }
 
     public static long getGadgetBridgeLastUpdateTime(Context context){
-        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        /*SharedPreferences sharedPreferences = getSharedPreferences(context);
         return sharedPreferences.getLong(PREF_GADGETBRIDGE_LASTUPDATE,PREF_GADGETBRIDGE_LASTUPDATE_DEFAULT);
+         */
+        long l = DataStorage.getLong(context,DataStorage.DATASTORAGE_GADGETBRIDGE_LASTUPDATE,DataStorage.DATASTORAGE_GADGETBRIDGE_LASTUPDATE_DEFAULT);
+        return l;
     }
 
     public static void setGadgetBridgeLastUpdateTime(Context context, long l){
-        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        /*SharedPreferences sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putLong(PREF_GADGETBRIDGE_LASTUPDATE, l);
         pref_editor.apply();
+         */
+        DataStorage.setLong(context,DataStorage.DATASTORAGE_GADGETBRIDGE_LASTUPDATE,l);
     }
 
     public static void setViewsLastUpdateTime(Context context, long l){
-        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        /*SharedPreferences sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putLong(PREF_VIEWS_LAST_UPDATE_TIME, l);
         pref_editor.apply();
+         */
+        DataStorage.setLong(context,DataStorage.DATASTORAGE_VIEWS_LAST_UPDATE_TIME,l);
     }
 
 
@@ -785,21 +747,26 @@ public class WeatherSettings {
     }
 
     public static void setPrefRadarLastdatapoll(Context context, long l){
-        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        /*SharedPreferences sharedPreferences = getSharedPreferences(context);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         pref_editor.putLong(PREF_RADAR_LASTDATAPOLL,l);
         pref_editor.apply();
+         */
+        DataStorage.setLong(context,DataStorage.DATASTORAGE_RADAR_LASTDATAPOLL,l);
     }
 
     public static long getPrefRadarLastdatapoll(Context context){
+        /*
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         long l = sharedPreferences.getLong(PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
+         */
+        long l = DataStorage.getLong(context,DataStorage.DATASTORAGE_RADAR_LASTDATAPOLL,DataStorage.DATASTORAGE_RADAR_LASTDATAPOLL_DEFAULT);
         return l;
     }
 
     public static boolean isRadarDataOutdated(Context context){
-        SharedPreferences sharedPreferences = getSharedPreferences(context);
-        long l = sharedPreferences.getLong(PREF_RADAR_LASTDATAPOLL,PREF_RADAR_LASTDATAPOLL_DEFAULT);
+        // SharedPreferences sharedPreferences = getSharedPreferences(context);
+        long l = getPrefRadarLastdatapoll(context);
         return Calendar.getInstance().getTimeInMillis() > l + RadarMN.RADAR_DATAINTERVAL;
     }
 
@@ -1375,14 +1342,16 @@ public class WeatherSettings {
     }
 
     public static boolean hasWeatherUpdatedFlag(Context context, int flag) {
-        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        /*SharedPreferences sharedPreferences = getSharedPreferences(context);
         int savedFlag = sharedPreferences.getInt(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
+         */
+        int savedFlag = DataStorage.getInt(context,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG_DEFAULT);
         int result = savedFlag & flag;
         return (result>0);
     }
 
     public static void setWeatherUpdatedFlag(Context context, int flag) {
-        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        /*SharedPreferences sharedPreferences = getSharedPreferences(context);
         int oldFlag = sharedPreferences.getInt(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
         SharedPreferences.Editor pref_editor = sharedPreferences.edit();
         if (flag==UpdateType.NONE){
@@ -1391,6 +1360,13 @@ public class WeatherSettings {
             pref_editor.putInt(PREF_WEATHERUPDATEDFLAG, oldFlag|flag);
         }
         pref_editor.apply();
+         */
+        int oldFlag = DataStorage.getInt(context,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG_DEFAULT);
+        if (flag==UpdateType.NONE){
+            DataStorage.setInt(context,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG, UpdateType.NONE);
+        } else {
+            DataStorage.setInt(context,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG, oldFlag|flag);
+        }
     }
 
     public static int getMaxLocationsInSharedWarnings(Context context) {

@@ -114,6 +114,7 @@
         android:layout_height="match_parent">
 
         <TextView
+                android:id="@+id/main_dwd_notice_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/dwd_notice_app"
@@ -124,8 +125,7 @@
                 android:gravity="center_horizontal"
                 android:layout_gravity="center"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/fcmain_textsize_medium"
-                android:id="@+id/main_dwd_notice_text"/>
+                android:textSize="@dimen/fcmain_textsize_medium"/>
 
         <RelativeLayout
                 android:id="@+id/main_top_container"
@@ -219,6 +219,7 @@
                   android:dividerHeight="0dp"
                   android:layout_below="@id/main_top_container"
                   android:layout_above="@id/main_dwd_notice_text"
+                  android:layout_alignWithParentIfMissing="true"
                   android:scrollbars="vertical"
                   android:scrollbarThumbVertical="?attr/colorTextDark"
                   android:verticalScrollbarPosition="right"

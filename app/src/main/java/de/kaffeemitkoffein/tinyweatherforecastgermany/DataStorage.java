@@ -21,6 +21,10 @@ public class DataStorage {
     public final static int DATASTORAGE_NOTIFICATION_IDENTIFIER = 14;
     public final static int DATASTORAGE_LAST_NOTIFICATIONS_UPDATE_TIME = 15;
     public final static int DATASTORAGE_NC_CHANNEL_DETAIL = 15;
+    public final static int DATASTORAGE_WEATHERUPDATEDFLAG = 20;
+    public final static int DATASTORAGE_RADAR_LASTDATAPOLL = 21;
+    public static final int DATASTORAGE_VIEWS_LAST_UPDATE_TIME = 22;
+    public static final int DATASTORAGE_GADGETBRIDGE_LASTUPDATE = 23;
 
     public final static int DATASTORAGE_POLLENREGION_ID_DEFAULT = -1;
     public final static int DATASTORAGE_POLLENPARTREGION_ID_DEFAULT = -1;
@@ -29,6 +33,10 @@ public class DataStorage {
     public final static int DATASTORAGE_NOTIFICATION_IDENTIFIER_DEFAULT = -2147483640;
     public final static long DATASTORAGE_LAST_NOTIFICATIONS_UPDATE_TIME_DEFAULT =0l;
     public final static long DATASTORAGE_NC_CHANNEL_DETAIL_DEFAULT = 0l;
+    public final static int DATASTORAGE_WEATHERUPDATEDFLAG_DEFAULT = WeatherSettings.UpdateType.NONE;
+    public static final long DATASTORAGE_RADAR_LASTDATAPOLL_DEFAULT = 0l;
+    public static final long DATASTORAGE_VIEWS_LAST_UPDATE_TIME_DEFAULT = 0l;
+    public static final long DATASTORAGE_GADGETBRIDGE_LASTUPDATE_DEFAULT = 0l;
 
     public static ArrayList<DataPackage> readAllPackages(Context context){
         ContentResolver contentResolver = context.getContentResolver();
