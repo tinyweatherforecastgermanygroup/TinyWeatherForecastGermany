@@ -75,4 +75,10 @@
     <string name="warnings_updatetime">已更新：</string>
     <string name="geoinput_reflocation_longitude">經度：</string>
     <string name="welcome_s2_text2">雲</string>
+    <string name="preference_weatherurl_title">伺服器 URL</string>
+    <string name="preference_weatherurl_summary">可在此指定要從其載入資料的替代鏡像伺服器。刪除項目可將 URL 重設為預設 DWD 伺服器。</string>
+    <string name="preference_weatherurl_summary2">目前的 URL：</string>
+    <string name="preference_visualizeDaytime_summary">略微淺色的背景強調了一天中的時間。</string>
+    <string name="preference_visualizeDaytime_title">強調每天的時間</string>
+    <string name="preference_display_overviewchart_RH_title">相對濕度</string>
 </resources>
