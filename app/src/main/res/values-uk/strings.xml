@@ -509,5 +509,5 @@
     <string name="preference_weatherurl_summary">Тут можна вказати альтернативний дзеркальний сервер, з якого будуть завантажуватися дані. Видаліть запис, щоб скинути URL-адресу до сервера DWD за замовчуванням.</string>
     <string name="preference_weatherurl_summary2">Поточна URL-адреса:</string>
     <string name="preference_visualizeDaytime_title">Виділіть час доби</string>
-    <string name="preference_visualizeDaytime_summary">Час доби підкреслюється трохи світлішим тлом.</string>
+    <string name="preference_visualizeDaytime_summary">Час доби виділяється трохи світлішим тлом.</string>
 </resources>
