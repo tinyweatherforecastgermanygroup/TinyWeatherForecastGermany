@@ -480,4 +480,10 @@
     <string name="preference_highresolution_summary">Forceert de hogere resolutie van de kaart. Dit kan het apparaat vertragen of problemen veroorzaken op oudere apparaten.</string>
     <string name="preference_mapPinSize_title">Grootte locatiemarkering</string>
     <string name="preference_mapPinSize_summary">Grootte van de locatiemarkering op de kaart.</string>
+    <string name="preference_display_overviewchart_RH_title">Relatieve vochtigheid</string>
+    <string name="preference_weatherurl_title">Server URL</string>
+    <string name="preference_weatherurl_summary">Hier kan een alternatieve spiegelserver worden opgegeven waarvan de gegevens moeten worden geladen. Verwijder item om de URL terug te zetten naar de standaard DWD-server.</string>
+    <string name="preference_weatherurl_summary2">Huidige URL:</string>
+    <string name="preference_visualizeDaytime_title">Markeer tijd van de dag</string>
+    <string name="preference_visualizeDaytime_summary">Het tijdstip wordt benadrukt door de iets lichtere achtergrond.</string>
 </resources>
