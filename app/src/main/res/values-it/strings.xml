@@ -480,4 +480,10 @@
     <string name="preference_highresolution_summary">Forza la risoluzione più alta della mappa. Questo può rallentare il dispositivo o causare problemi ai dispositivi più vecchi.</string>
     <string name="preference_mapPinSize_summary">Dimensione del contrassegno di posizione sulla mappa.</string>
     <string name="preference_mapPinSize_title">Dimensione del marchio di posizione</string>
+    <string name="preference_weatherurl_title">URL del server</string>
+    <string name="preference_weatherurl_summary">È possibile specificare un server mirror alternativo da cui caricare i dati. Cancellare la voce per ripristinare l\'URL del server DWD predefinito.</string>
+    <string name="preference_weatherurl_summary2">URL attuale:</string>
+    <string name="preference_visualizeDaytime_summary">L\'ora del giorno è sottolineata da uno sfondo leggermente più chiaro.</string>
+    <string name="preference_visualizeDaytime_title">Evidenziare l\'ora del giorno</string>
+    <string name="preference_display_overviewchart_RH_title">Umidità relativa</string>
 </resources>
