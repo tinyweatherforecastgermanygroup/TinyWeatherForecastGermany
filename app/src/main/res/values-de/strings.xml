@@ -524,4 +524,6 @@
     <string name="preference_weatherurl_summary2">Aktueller URL:</string>
     <string name="preference_weatherurl_title">Server-URL</string>
     <string name="preference_weatherurl_summary">Hier kann ein alternativer Spiegelserver angegeben werden, von dem die Daten geladen werden. Eintrag löschen, um den originalen DWD-Server zu verwenden.</string>
+    <string name="preference_visualizeDaytime_title">Tageszeit hervorheben</string>
+    <string name="preference_visualizeDaytime_summary">Die Tageszeit wird durch einen etwas helleren Hintergrund hervorgehoben.</string>
 </resources>
