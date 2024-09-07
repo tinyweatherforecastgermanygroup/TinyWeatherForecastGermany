@@ -505,4 +505,10 @@
     <string name="preference_display_overviewchart_RH_summary">Muestra la humedad relativa en el gráfico general.</string>
     <string name="preference_missingBackgroundLocationPermission_summary">Actualmente, la aplicación no puede acceder a la ubicación en segundo plano. Considere otorgar este permiso o desactivar las comprobaciones periódicas de ubicación.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Falta el permiso</string>
+    <string name="preference_weatherurl_title">URL del servidor</string>
+    <string name="preference_weatherurl_summary">Aquí se puede especificar un servidor espejo alternativo desde el que cargar los datos. Borre la entrada para restablecer la URL al servidor DWD predeterminado.</string>
+    <string name="preference_weatherurl_summary2">URL actual:</string>
+    <string name="preference_visualizeDaytime_summary">La hora del día se acentúa con un fondo ligeramente más claro.</string>
+    <string name="preference_visualizeDaytime_title">Hora destacada del día</string>
+    <string name="geoinput_declined">Como has rechazado los permisos de localización, las funciones de la aplicación que los requieren se han desactivado. Puedes volver a activarlas en los ajustes.</string>
 </resources>
