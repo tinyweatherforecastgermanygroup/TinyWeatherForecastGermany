@@ -303,6 +303,8 @@
     <string name="preference_weatherurl_summary2">Current URL:</string>
     <string name="preference_visualizeDaytime_title">Highlight time of day</string>
     <string name="preference_visualizeDaytime_summary">The time of day is emphasized by a slightly lighter background.</string>
+    <string name="preference_displayDewPoint_title">Dew point</string>
+    <string name="preference_displayDewPoint_summary">Display the dew point instead of relative humidity.</string>
     <string name="alertdialog_3_title">Reset preferences</string>
     <string name="alertdialog_3_text1">All settings will be reset to default values, and then the intro will be shown again to make the most important settings.</string>
     <string name="alertdialog_3_text2">Are you sure you want to reset the settings?</string>

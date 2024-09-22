@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.62.6
+- added setting to display dew point instead of relative humidity
+
 ## Version 0.62.5
 - fix app crash caused by launcher returning an inaccurately large widget size
 - disable features requiring location services after the user declined the location permission again in the permission rationale dialog

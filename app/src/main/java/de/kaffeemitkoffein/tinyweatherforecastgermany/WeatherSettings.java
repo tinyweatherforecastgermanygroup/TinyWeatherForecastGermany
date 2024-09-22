@@ -151,6 +151,7 @@ public class WeatherSettings {
     public static final String PREF_MAP_PIN_SIZE = "PREF_map_pinsize";
     public static final String PREF_WEATHER_URL = "PREF_weather_url";
     public static final String PREF_VISUALIZE_DAYTIME = "PREF_visualize_daytime";
+    public static final String PREF_DISPLAY_DEWPOINT = "PREF_display_dewpoint";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -247,6 +248,7 @@ public class WeatherSettings {
     public static final int PREF_MAP_PIN_SIZE_DEFAULT = 4;
     public static final String PREF_WEATHER_URL_DEFAULT = "opendata.dwd.de";
     public static final boolean PREF_VISUALIZE_DAYTIME_DEFAULT = false;
+    public static final boolean PREF_DISPLAY_DEWPOINT_DEFAULT = false;
 
     private Context context;
     private SharedPreferences sharedPreferences;
@@ -1785,6 +1787,11 @@ public class WeatherSettings {
     public static boolean visualizeDaytime(Context context){
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_VISUALIZE_DAYTIME,PREF_VISUALIZE_DAYTIME_DEFAULT);
+    }
+
+    public static boolean displayDewPoint(Context context){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_DEWPOINT,PREF_DISPLAY_DEWPOINT_DEFAULT);
     }
 
 }

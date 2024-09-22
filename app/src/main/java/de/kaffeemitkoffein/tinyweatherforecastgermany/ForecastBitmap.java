@@ -913,11 +913,18 @@ public class ForecastBitmap{
                 Weather.WeatherInfo weatherInfo2 = weatherInfos.get(i+1);
                 float y1_t = (float) (zeroline_position - weatherInfo1.getRH() * (chartHeight/100f));
                 float y2_t = (float) (zeroline_position - weatherInfo2.getRH() * (chartHeight/100f));
+                if (WeatherSettings.displayDewPoint(context)){
+                    y1_t = zeroline_position - weatherInfo1.getDewPointInCelsiusInt() / temp_graphscale;
+                    y2_t = zeroline_position - weatherInfo2.getDewPointInCelsiusInt() / temp_graphscale;
+                }
                 float x1 = xChartOffset+ ((float) chartWidth/(float) itemCount)*pos;
                 float x2 = xChartOffset+ ((float) chartWidth/(float) itemCount)*(pos+1);
                 canvas.drawLine(x1,y1_t,x2,y2_t,RHPaint);
             }
             String pcaLabel = "100 %";
+            if (WeatherSettings.displayDewPoint(context)){
+               pcaLabel = "°C";
+            }
             Paint RHTextPaint = new Paint(textPaint);
             RHTextPaint.setColor(ThemePicker.getColor(context,ThemePicker.ThemeColor.BLUE));
             RHTextPaint.setTextSize(labelTextSize/1.5f);

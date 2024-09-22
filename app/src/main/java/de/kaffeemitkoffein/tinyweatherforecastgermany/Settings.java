@@ -246,6 +246,10 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             if (s.equals(WeatherSettings.PREF_VISUALIZE_DAYTIME)){
                 WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
             }
+            if (s.equals(WeatherSettings.PREF_DISPLAY_DEWPOINT)){
+                WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
+            }
+
             ignoreNextPrefUpdate = false;
         }
     };

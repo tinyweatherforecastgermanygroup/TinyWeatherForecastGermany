@@ -1542,6 +1542,18 @@ public final class Weather {
             return rh;
         }
 
+        public double getDewPointInCelsius(){
+            return (td - KelvinConstant);
+        }
+
+        public int getDewPointInCelsiusInt(){
+            return (int) Math.round(getDewPointInCelsius());
+        }
+
+        public String getDewPointInCelsiusRoundedString(){
+            return getDewPointInCelsiusInt()+"°";
+        }
+
         public int getRHInt(){
             return (int) Math.round(getRH());
         }

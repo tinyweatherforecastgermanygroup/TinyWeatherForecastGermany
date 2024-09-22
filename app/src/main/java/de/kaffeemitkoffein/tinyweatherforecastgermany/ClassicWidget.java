@@ -220,7 +220,11 @@ public class ClassicWidget extends AppWidgetProvider {
         if (weatherInfo.currentWeather.hasRH()){
             remoteViews.setViewVisibility(R.id.widget_rh_icon,View.VISIBLE);
             remoteViews.setViewVisibility(R.id.widget_rh_value,View.VISIBLE);
-            remoteViews.setTextViewText(R.id.widget_rh_value,Math.round(weatherInfo.currentWeather.getRH())+"%");
+            if (WeatherSettings.displayDewPoint(context)){
+                remoteViews.setTextViewText(R.id.widget_rh_value,weatherInfo.currentWeather.getDewPointInCelsiusRoundedString());
+            } else {
+                remoteViews.setTextViewText(R.id.widget_rh_value,Math.round(weatherInfo.currentWeather.getRH())+"%");
+            }
             remoteViews.setTextColor(R.id.widget_rh_value,ThemePicker.getWidgetTextColor(context));
         } else {
             remoteViews.setViewVisibility(R.id.widget_rh_icon,View.GONE);

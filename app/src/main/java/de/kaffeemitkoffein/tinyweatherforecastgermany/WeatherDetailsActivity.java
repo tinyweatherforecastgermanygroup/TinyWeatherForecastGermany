@@ -712,7 +712,7 @@ public class WeatherDetailsActivity extends Activity {
                 list.add(newDetail(null,WeatherIcons.SYMBOL_RH,weatherInfo.getRHInt()+"%",getResources().getString(R.string.welcome_s2_text11)));
             }
             if (weatherInfo.hasTd()){
-                list.add(newDetail(null,null,weatherInfo.getTdInCelsiusInt()+" °C",getResources().getString(R.string.dewpoint)));
+                list.add(newDetail(null,null,weatherInfo.getDewPointInCelsiusRoundedString(),getResources().getString(R.string.dewpoint)));
             }
             if (weatherInfo.hasTemperature5cm()){
                 list.add(newDetail(null,WeatherIcons.SYMBOL_TEMPERATURE5CM,weatherInfo.getTemperature5cmInCelsiusInt()+"°",getResources().getString(R.string.wd_t5)));

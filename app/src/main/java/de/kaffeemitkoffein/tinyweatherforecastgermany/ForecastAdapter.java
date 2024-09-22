@@ -718,7 +718,11 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         textView_pressure.setText(String.valueOf(weatherInfo.getPressure()/100));
     }
     if (weatherInfo.hasRH() && textView_rh!=null){
-        textView_rh.setText(weatherInfo.getRHInt()+" %");
+        if (WeatherSettings.displayDewPoint(context)){
+            textView_rh.setText(weatherInfo.getDewPointInCelsiusRoundedString());
+        } else {
+            textView_rh.setText(weatherInfo.getRHInt()+" %");
+        }
     }
     if (imageView_windarrow == null){
         imageView_windarrow = (ImageView) view.findViewById(R.id.fcitem_windarrow);
