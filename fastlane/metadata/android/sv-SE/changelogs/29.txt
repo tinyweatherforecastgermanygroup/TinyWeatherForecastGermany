@@ -1,0 +1,3 @@
+* nytt språk: Polska (tack vare mondstern!)
+* fixar fel ikon för klar natt
+* fixar en möjlig krasch när appen laddas

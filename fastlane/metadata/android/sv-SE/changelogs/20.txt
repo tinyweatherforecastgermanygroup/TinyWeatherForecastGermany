@@ -1,0 +1,5 @@
+- ny textuella väderleksrapporter
+- förbättrade väderleksvarningar
+- vind-ikonen kan visa en vind-prognos
+- reviderad och uppdaterad fet widget
+- diverse buggfixar

@@ -1,0 +1,3 @@
+- nytt: väderlekskartor, pollenprognos, UV-riskindex
+- stödjer UV-riskindex och nederbörd på smartklockor med Gadgetbridge
+- flertalet, fortsatta förbättringar

@@ -1,0 +1,4 @@
+- nytt språk: Franska (tack vare Jean-Luc!)
+- varningskartan kan nu storleksförändras
+- olika förbättringar, t.ex. gällande prestanda
+- flertalet buggfixar

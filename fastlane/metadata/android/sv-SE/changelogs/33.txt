@@ -1,0 +1,4 @@
+- uppdaterade stationsdata och varningsområden
+- förbättrad logik när dag/natt-ikoner ska visas
+- korrigerar felaktig standard-opacitet för widget
+- förbättrade översättningar
