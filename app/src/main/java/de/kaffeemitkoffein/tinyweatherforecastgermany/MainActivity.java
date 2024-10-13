@@ -1145,8 +1145,7 @@ public class MainActivity extends Activity {
     }
 
     private void loadCurrentWeather(){
-        if ((WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)) ||
-                (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA))){
+        if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)){
             // in case of new station add it to the spinner list and update the spinner display
             if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)){
                 addToSpinner(WeatherSettings.getSetStationLocation(context));

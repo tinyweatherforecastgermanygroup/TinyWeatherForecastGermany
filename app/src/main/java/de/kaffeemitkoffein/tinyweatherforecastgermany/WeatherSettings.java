@@ -1340,7 +1340,6 @@ public class WeatherSettings {
 
     public final static class UpdateType {
         public final static int NONE = 0;
-        public final static int DATA = 1;
         public final static int VIEWS = 2;
         public final static int STATION = 4;
     }

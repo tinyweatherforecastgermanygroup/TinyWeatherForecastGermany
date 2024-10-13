@@ -1523,8 +1523,13 @@ public final class Weather {
             return td;
         }
 
-        public int getTdInCelsiusInt(){
+        public double getTdInCelsius(){
             double value = td - KelvinConstant;
+            return value;
+        }
+
+        public int getTdInCelsiusInt(){
+            double value = getTdInCelsius();
             return (int) Math.round(value);
         }
 
@@ -1538,7 +1543,7 @@ public final class Weather {
         public double getRH(){
             final double rh_c2 = 17.5043;
             final double rh_c3 = 241.2;
-            double rh = 100*Math.exp((rh_c2*td/(rh_c3+td))-(rh_c2*temperature/(rh_c3+temperature)));
+            double rh = 100*Math.exp((rh_c2*getTdInCelsius()/(rh_c3+getTdInCelsius()))-(rh_c2*getTemperatureInCelsius()/(rh_c3+getTemperatureInCelsius())));
             return rh;
         }
 

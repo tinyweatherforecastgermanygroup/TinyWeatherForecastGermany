@@ -2,6 +2,8 @@
 
 ## Version 0.62.6
 - added setting to display dew point instead of relative humidity
+- fixed humidity calculation formula
+- fixed theme not changing completely when also changing the level of detail 
 
 ## Version 0.62.5
 - fix app crash caused by launcher returning an inaccurately large widget size

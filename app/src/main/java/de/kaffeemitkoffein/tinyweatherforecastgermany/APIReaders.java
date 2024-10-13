@@ -772,7 +772,7 @@ public class APIReaders {
                 for (int i=0; i<rawWeatherInfos.size(); i++){
                     addEntryToDatabase(rawWeatherInfos.get(i));
                 }
-                WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
+                WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
                 onPositiveResult(rawWeatherInfos);
             }
         }

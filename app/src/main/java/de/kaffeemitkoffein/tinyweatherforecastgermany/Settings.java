@@ -186,7 +186,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART) || s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS) || (s.equals(WeatherSettings.PREF_VIEWMODEL)) ||
                         (s.equals(WeatherSettings.PREF_UVHI_MAINDISPLAY)) || (s.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)) ||
                         (s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
-                        WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA);
+                        WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
                     // invalidate weather display and widgets
                     if ((s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
                         WidgetRefresher.refresh(getApplicationContext(),WidgetRefresher.FROM_SETTINGS);
