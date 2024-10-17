@@ -136,7 +136,7 @@
     <string name="welcome_ready">ГОТОВО!</string>
     <string name="welcome_s1_text1">вільне, безкоштовне, з відкритим кодом</string>
     <string name="welcome_s1_text3">прогноз на 10 днів</string>
-    <string name="welcome_s1_text5">віджети для домашнього екрану</string>
+    <string name="welcome_s1_text5">віджети для домашнього екрана</string>
     <string name="welcome_s2_text10">Темп. на землі</string>
     <string name="welcome_s3_text4">Панель прогнозу показує хмарність сірим кольором, а дощ – синім.</string>
     <string name="welcome_setuptitle">Основне налаштування</string>
@@ -294,7 +294,7 @@
     <string name="preference_gpsauto_title">Перевірте місцезнаходження</string>
     <string name="preference_gpsmanual_summary">Виберіть метеостанцію зі списку найближчих станцій самостійно.</string>
     <string name="overview_button">Огляд</string>
-    <string name="preference_display_rotation_title">Вирівнювання екрану</string>
+    <string name="preference_display_rotation_title">Вирівнювання екрана</string>
     <string name="preference_display_rotation_summary">Як вирівняти екран</string>
     <string name="chartwidget_description">Діаграма погоди</string>
     <string name="preference_display_overviewchart_days_title">Дні</string>
