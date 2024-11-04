@@ -4,4 +4,3 @@
 - verbesserte Übersetzungen
 - kleinere Layout- & Fehler-Verbesserungen
 - Farbfehler im hellen & dunklen Theme behoben
-

@@ -5,4 +5,3 @@
 - Gadgetbridge-Unterstützung: falsche Mondphase in der täglichen Vorhersage behoben
 - Absturz im Zusammenhang mit Pollenvorhersage behoben
 - weitere Bugfixes & Verbesserungen
-

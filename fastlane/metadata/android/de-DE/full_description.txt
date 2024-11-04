@@ -1,4 +1,4 @@
-Detaillierte Wettervorschau für bis zu 10 Tage, basierend auf frei zugänglichen Daten des Deutschen Wetterdienstes (DWD). Es werden auch die Wetterwarnungen des DWD für Deutschland angezeigt.
+Detaillierte Wettervorhersagen für bis zu 10 Tage, basierend auf frei zugänglichen Daten des Deutschen Wetterdienstes (DWD). Es werden auch die Wetterwarnungen des DWD für Deutschland angezeigt.
 
 Dargestellt wird die Vorschau für die ausgewählte Wetterstation, die man anhand des Namens, der Geo-Koordinaten oder des eigenen Standorts suchen kann. Eine Wettervorhersage ist für über 5000 deutsche und weltweite Wetterstationen verfügbar.
 
