@@ -488,7 +488,7 @@
     <string name="datasaver_enable_unrestricted_title">Увімкнути необмежене використання даних</string>
     <string name="sync_off_title">Синхронізацію вимкнено</string>
     <string name="preference_datasaver_title">Увімкнено заощадження трафіку</string>
-    <string name="datasaver_enable_unrestricted_text">В інформації про програму виберіть мобільні дані та Wi-Fi і ввімкніть необмежену передачу даних.</string>
+    <string name="datasaver_enable_unrestricted_text">В інформації про програму виберіть мобільні дані та Wi-Fi і ввімкніть необмежене використання даних.</string>
     <string name="preference_datasaver_summary">Наразі неможливо синхронізувати дані при використанні мереж із обмеженнями. Найкраще додати Tiny Weather Forecast Germany до списку додатків з необмеженим використанням даних.</string>
     <string name="preference_display_overviewchart_pca_title">Кількість опадів</string>
     <string name="preference_display_overviewchart_pca_summary">Показувати кількість опадів в оглядовій діаграмі.</string>
