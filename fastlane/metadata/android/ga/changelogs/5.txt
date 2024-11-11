@@ -1,0 +1,3 @@
+Leagan 0.32:
+- socraítear earráid tiontaithe teochta (celsius go kelvin) sa Gadgetbridge api
+- ceartú leagan amach beag sa ghiuirléid (tá siombail na haimsire níos mó anois)

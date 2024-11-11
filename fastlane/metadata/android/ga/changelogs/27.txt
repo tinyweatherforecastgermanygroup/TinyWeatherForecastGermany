@@ -1,0 +1,9 @@
+- tuairteanna móra le réiteach fabhtanna tar éis seoladh aip ar roinnt gléasanna/romanna
+- athraíonn foinse radair báistí ó chomhchodach MX go comhchodach MN
+- aicearraí feidhmchláir nua
+- tugtar isteach taispeáint taise choibhneasta
+
+Teangacha nua:
+* Iodáilis (buíochas le eUgEntOptIc44, mondstern!)
+* Seicis (buíochas le eUgEntOptIc44, mondstern!)
+* Ioruais Bokmål (buíochas le Allan Nordhøy, mondstern!)

@@ -1,0 +1,6 @@
+Leagan 0.50.2:
+
+- íosairde giuirléidí coigeartaithe le haghaidh comhtháthú níos fearr i méideanna greille saincheaptha ar an scáileán baile
+- giuirléidí seasta gan nuashonrú go pras chuig suíomh nua i gcásanna áirithe
+- rogha seasta gadgetbridge briste "seol an t-am reatha"
+- níor cuireadh tús le seirbhís nuashonraithe seasta toisc nach bhfuil an ghníomhaíocht sa tulra ar ghléasanna a bhfuil API>25 orthu

@@ -1,0 +1,8 @@
+- tosaithe app níos tapúla
+- is féidir luas na gaoithe a thaispeáint sna cairteacha anois
+- cinneadh faoin gcéad stáisiún aimsire eile sa chúlra
+- tacaíocht fheabhsaithe Gadgetbridge (WeatherSpec v4)
+- taispeáint pointe drúcht i sonraí aimsire
+- deilbhíní aimsire athbhreithnithe, taispeánann an ghealach céim na gealaí anois
+- is féidir teorainn a chur le líon na n-ionad i gceist le rabhaidh roinnte
+- mioncheartúcháin ar fhabhtanna agus feabhsuithe eile

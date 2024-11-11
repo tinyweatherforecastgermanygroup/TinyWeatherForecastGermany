@@ -1,0 +1,5 @@
+- gné bhreise chun na braiteoirí aimsire is gaire a aimsiú trí gheo-chomhordanáidí nó seirbhísí suímh ar an ngléas
+- cúltaca breise le http gan ssl, má theipeann ar nasc criptithe ar ghléasanna an-sean (m.sh. 4.x.x) de bharr cipher-suites in easnamh
+- caitheann tréimhsí ama neamhiomlána (6h, 24h) anois sonraí ón am atá caite agus iad á ríomh nuair is féidir
+- earráid sheasta agus min á ríomh. agus uas. teochtaí (d'fhéadfadh a bheith ró-ard & ró-íseal)
+- mioncheartúcháin iomadúla

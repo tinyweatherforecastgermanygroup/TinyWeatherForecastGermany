@@ -1,0 +1,4 @@
+- tá suiteáil aip éigean anois ar an stóráil inmheánach (ní shocraíonn sé an ghiuirléid nuair a shuiteálann an aip ar chárta SD)
+- Chuir scáileán "cad atá nua" leis
+- tacaíocht thurgnamhach breise do Gadgetbridge (níl sé ag feidhmiú go fóill!)
+- earráidí parsála seasta san fhaisnéis gaoithe

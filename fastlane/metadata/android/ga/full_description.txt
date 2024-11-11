@@ -1,0 +1,9 @@
+Réamhaisnéis mhionsonraithe aimsire ar feadh suas le 10 lá, bunaithe ar shonraí oscailte an Deutscher Wetterdienst (DWD). Taispeántar rabhaidh aimsire ón DWD freisin.
+
+Taispeántar réamhaisnéis aimsire an stáisiúin aimsire atá ag teastáil. Is féidir stáisiúin a chuardach de réir ainm, de réir geo-chomhordanáidí nó de réir a n-ionad féin. Tá réamhaisnéis aimsire ar fáil do bhreis agus 5000 stáisiún aimsire sa Ghearmáin agus ar fud an domhain.
+
+Tá dearadh caol ag an aip. Tacaíonn sé go roghnach le wearables thar Gadgetbridge, ionas gur féidir sonraí aimsire a thaispeáint ar wearables, freisin.
+
+Ina theannta sin, tá féidearthachtaí éagsúla ann chun taispeáint sonraí aimsire a oiriúnú le do chuid riachtanas féin. Is féidir am éirí na gréine, luí na gréine agus luí na gréine a thaispeáint don láthair roghnaithe freisin.
+
+Tá liosta de cheanáin san aip freisin, ar féidir iad a úsáid chun aistriú go tapa idir stáisiúin aimsire iolracha. Cuireann sé giuirléidí iolracha de mhéideanna difriúla ar fáil freisin le réamhaisnéis aimsire is féidir a chur ar an scáileán baile agus a nuashonraítear go huathoibríoch.

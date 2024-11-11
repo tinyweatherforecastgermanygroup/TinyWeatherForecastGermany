@@ -1,0 +1,4 @@
+- cuir deilbhín aipe monacrómach leis chun tacú le téamaí deilbhíní aipe
+- leagan amach feabhsaithe den ghiuirléid aimsire dhlúth, ag socrú bugs iolracha
+- ghiuirléid seasta clasaiceach le teorainn uasta airde
+- aistriúcháin fheabhsaithe

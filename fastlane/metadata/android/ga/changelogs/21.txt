@@ -1,0 +1,5 @@
+- nuashonrú seasta rabhaidh ar iarraidh sa phríomh-app
+- earráidí parsála le dáta socraithe i réamhaisnéisí téacs
+- cló seasta ró-mhór i ngiuirléid mhóra
+- Síneann an ghiuirléid throm anois an fhaisnéis chuig an uasleithead atá ar fáil
+- scrollaíonn rabhaidh aimsire níos tapúla anois

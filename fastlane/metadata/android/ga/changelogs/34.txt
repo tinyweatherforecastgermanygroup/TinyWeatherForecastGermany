@@ -1,0 +1,7 @@
+0.58.1:
+- sonraí stáisiúin nuashonraithe agus réimsí rabhaidh
+- loighic fheabhsaithe nuair is ceart deilbhíní lae/oíche a thaispeáint
+- Ceartaítear teimhneacht ghiuirléid réamhshocraithe mícheart
+- aistriúcháin fheabhsaithe
+0.58.2:
+- Ceartaítear méid mícheart bunachar sonraí

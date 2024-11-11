@@ -1,0 +1,6 @@
+Nuashonraíodh formáid sonraí aimsire Gadgetbridge chun tacú le leagan 0.48.0 (tóg 182) nó níos airde.
+
+TÁBHACHTACH: ní thacóidh an leagan seo de Tiny Weather Forecast Ghearmáin agus leaganacha amach anseo ach le leaganacha Gadgetbridge 0.48.0 nó níos airde, le do thoil nuashonraigh Gadgetbridge dá réir sin chun an soláthar sonraí aimsire a choinneáil le haghaidh do chuid oibre inchaite!
+
+- mionfheabhsuithe ui (taispeáint ama, teochta & treo na gaoithe)
+- seasta: giuirléidí a thaispeánann sonraí aimsire míchearta faoi choinníollacha áirithe

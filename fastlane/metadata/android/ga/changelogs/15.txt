@@ -1,0 +1,5 @@
+- aonaid ghaoithe breise: m/s, áilleacht (bf), snaidhmeanna (kn)
+- aonaid faid bhreise: muirmhíle, míle & slat
+- is féidir treo na gaoithe a thaispeáint ar thrí bhealach anois: saighead simplí, saighead le luas na gaoithe (beaufort), téacs
+- Earráid sheasta i rothlú na saigheada bitmapa agus mar thoradh air sin tá taispeáint treo na gaoithe mícheart
+- feabhsuithe beaga ar leagan amach na ngiuirléidí

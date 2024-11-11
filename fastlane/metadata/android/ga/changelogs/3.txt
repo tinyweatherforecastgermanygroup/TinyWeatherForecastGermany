@@ -1,0 +1,14 @@
+- Rogha breise chun sonraí aimsire a luchtú go tráthrialta, is féidir é seo a scoránaigh ar/as i socruithe
+- Cuireadh an t-am nuashonraithe deireanach infheicthe leis san aip
+- Léiríonn an aip agus an ghiuirléid anois treo na gaoithe freisin
+- seasta: chaill sonraí gaoithe faisnéis treo
+- seasta: earráid pharsála i réimse FDAT (cuid d'aitheantas braiteora)
+- seasta: luach réamhshocraithe neamhbhailí don eatramh nuashonraithe
+- seasta: Fabht a raibh nuashonrú fíor-annamh mar thoradh air
+- Tacaíocht Gadgetbridge: seasta: Líonadh stampa ama Unix le truflais
+- Tacaíocht Gadgetbridge: seasta: bhí treo na gaoithe i gcónaí 0°
+- Tacaíocht Gadgetbridge: seasta: Aistríodh teocht i Celsius in ionad Kelvin
+- Tacaíocht Gadgetbridge: seasta: ní raibh leibhéil aimsire ag teacht le caighdeán Lineageos i gcónaí
+- Tacaíocht Gadgetbridge: seasta: taispeánann an stádas aimsire an aimsir reatha in ionad réamhaisnéis an lae
+- Tá tacaíocht Gadgetbridge fós turgnamhach, ach ba chóir go n-oibreoidh sé!
+- Gearmáinis teanga curtha leis

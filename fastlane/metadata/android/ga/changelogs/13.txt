@@ -1,0 +1,11 @@
+- earráid sheasta sa chomhshó ó pascal go heicteapascal (aerbhrú)
+- timpiste app seasta nuair a glaodh socruithe don chéad uair
+- is é an deilbhín aimsire in aghaidh na huaire an tosaíocht is airde anois, nuair atá sé ar fáil; ba cheart go ndéanfaí é seo a chomhchuibhiú níos mó leis na deilbhíní 6 huaire agus laethúla
+- scarann cianbharra laethanta nuair is infheidhme
+- tá éirí gréine agus luí na gréine ar taispeáint anois le saighead agus laghdaítear méid an deilbhín beagán
+- léiríonn barra ciorclach dul chun cinn nuair a lódáiltear sonraí aimsire nua agus rabhaidh nua
+- tá dath níos gile ar an scrollbharra agus tá sé beagán níos leithne anois
+- grádán datha roghnach chun am réamhaisnéise a léiriú (múchta de réir réamhshocraithe)
+- tá deis anois ag tógálaithe userdebug logáil isteach chuig logcat (díchumasaithe i leaganacha oifigiúla)
+- déantar sonraí aimsire a nuashonrú go rialta anois ón DWD nuair a bhíonn giuirléidí nó tacaíocht Gadgetbridge cumasaithe
+- Is féidir taispeáint ama sa réamhaisnéis 6 huaire a chumrú

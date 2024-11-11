@@ -1,0 +1,6 @@
+- deilbhín app nua (téigh na creidmheasanna chuig Janis Bitta!)
+- fabht seasta sa chomhshó ó m/s go snaidhmeanna (kn)
+- taispeántar fluairí seasta mícheart nuair a roghnaíodh km/u
+- bugs il socraithe agus saincheisteanna maidir le taispeáint gaoithe sna giuirléidí
+- réamhaisnéisí seasta in aghaidh na huaire ag forluí uaireanta ar shonraí aimsire sa phríomhaip
+- leagan amach beag iolrach agus feabhsuithe taispeána

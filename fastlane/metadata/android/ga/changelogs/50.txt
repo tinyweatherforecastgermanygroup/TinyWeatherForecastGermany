@@ -1,0 +1,8 @@
+- taispeáint léarscáil níos mionsonraithe agus radar báistí níos cruinne
+- taispeáint feabhsaithe, níos rianúla ar an radar báistí
+- is féidir méid an fhrasaíochta a thaispeáint sa chairt forbhreathnú
+- léarscáileanna aimsire seasta lipéadaithe uaireanta le dátaí míchearta
+- luas seasta gaoithe sa chairt forbhreathnú uaireanta léirithe ró-ard
+- Tacaíocht Gadgetbridge: deisigh céim mhícheart na gealaí sa réamhaisnéis laethúil
+- timpiste seasta a bhaineann le réigiún anaithnid pailin
+- Ceartúcháin & feabhsuithe éagsúla eile

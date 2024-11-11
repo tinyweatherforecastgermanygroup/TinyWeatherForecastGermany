@@ -1,0 +1,20 @@
+Leagan 0.40:
+- Gadgetbridge-Tacaíocht: seasta max. teocht sa réamhaisnéis
+- seachadadh turgnamhach, nua agus táthar ag súil le sonraí aimsire níos minice chuig an App GadgetBridge
+- athrú ar na deilbhíní aimsire
+- réamhaisnéis na haimsire ar fáil anois don chéad 10 lá eile
+- rogha nua chun nuashonrú a dhéanamh arís gach 15 nóiméad nuair nach bhfuil líonra ann
+- gné thurgnamhach nua chun teacht suas le nuashonrú cuí a luaithe a bheidh líonra ar fáil
+- roghanna nua don logáil áitiúil (dífhabhtaithe)
+- socruithe athbhreithnithe
+- tuairteála seasta an nuashonraithe nuair a bhí an gléas i mód doze
+- ilcheartúcháin
+
+Leis an leagan seo, athraíonn an aip an API ag an Deutscher Wetterdienst. Leis an athrú seo, is féidir réamhaisnéisí níos cruinne a thaispeáint, ach téann sé le hathmhúnlú an-bhunúsach. Mar sin, d’fhéadfadh earráidí nua tarlú.
+
+Socraíodh na socruithe ar ais go dtí na luachanna réamhshocraithe.
+
+Fógra tábhachtach:
+Má thiteann an aip tar éis athrú ar an stáisiún aimsire, cuir an stáisiún seo in iúl dom le do thoil.
+
+Is féidir an app a thabhairt ar ais i stát feidhmiúil trí shonraí an aip a scriosadh; socróidh sé seo na luachanna réamhshocraithe chomh maith agus taispeánfaidh an aip an aimsir in Hamburg arís.

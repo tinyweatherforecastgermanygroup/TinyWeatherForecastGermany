@@ -1,0 +1,14 @@
+Leagan 0.50:
+- rabhaidh aimsire DWD breise
+- deilbhín aimsire scálaithe breise agus tacair siombailí chun feidhmíocht a fheabhsú
+- tacaíocht níos fearr do scáileáin leathana curtha leis
+- cuireadh scáileán tosaigh leis ag míniú príomhghnéithe an aip
+- bailitheoir truflais briste seasta do sheanshonraí réamhaisnéise
+- feidhmchlár seasta á shuiteáil uaireanta ar chárta SD, rud a fhágann nach bhfuil rochtain ar ghiuirléidí
+- mionfhabht seasta ag déanamh tuairteála na haipe nuair a ghlaoitear socruithe ró-luath ar an gcéad seoladh app
+
+Tacaíocht Gadgetbridge:
+- stampa ama athraithe in Gadgetbridge API ó am vótaíochta go ham réamhaisnéise; ba cheart go réiteodh sé seo an cheist a bhaineann le roinnt earraí inchaite ag gearán faoi eolas aimsire atá ar iarraidh
+- socrú breise chun stampa ama réamhaisnéis na haimsire reatha a shocrú go dtí an t-am reatha in ionad am na réamhaisnéise, toisc nach nglacann roinnt gléasanna inchaite le réamhaisnéis mar an aimsir reatha
+- an t-am nuashonraithe deireanach gadgetbridge seasta anaithnid ag an gcéad seoladh app
+- gléasanna inchaite seasta nach bhfuil an téacs ar an riocht aimsire á thaispeáint i gceart

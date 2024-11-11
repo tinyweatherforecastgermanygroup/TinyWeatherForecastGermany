@@ -1,0 +1,10 @@
+* tacaíonn sé le dearaí éagsúla (téamaí)
+* réamhaisnéis nua, níos simplí
+* athraíonn foinse radair báistí ó chomhchodach MX go MN ilchodach
+* aicearraí feidhmchláir nua
+* tugtar isteach taispeáint na taise coibhneasta
+
+Teangacha nua:
+* Iodáilis (buíochas le eUgEntOptIc44, mondstern!)
+* Seicis (buíochas le eUgEntOptIc44, mondstern!)
+* Ioruais Bokmål (buíochas le Allan Nordhøy, mondstern!)

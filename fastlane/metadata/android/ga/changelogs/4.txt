@@ -1,0 +1,18 @@
+Leagan 0.31:
+- Tuairteáil aipe ar an gcéad seoladh (nuair nach bhfuil aon sonraí seanaimsire i láthair)
+- Tá "Cad atá nua" le feiceáil anois freisin tar éis an chéad suiteáil
+
+Leagan 0.30:
+- chuir sé rogha leis sonraí aimsire a íoslódáil go rialta i dtréimhsí saincheaptha, is féidir é seo a chumasú agus a dhíchumasú sna socruithe
+- cuireadh an t-am nuashonraithe is déanaí le feiceáil sa phríomhaip
+- taispeánann aip agus giuirléid treo na gaoithe anois
+- sonraí gaoithe seasta a chailleann faisnéis treo
+- earráid pharsála sheasta i réimse sonraí FDAT (cuid d’aitheantas braiteora)
+- luach réamhshocraithe briste seasta le haghaidh eatramh nuashonraithe
+- fabht nuashonraithe seasta is cúis le nuashonruithe a tharlaíonn go hannamh
+- tacaíocht gadgetbridge: stampa ama seasta unix líonadh le truflais
+- tacaíocht droichead gadget: treo seasta na gaoithe i gcónaí 0 °
+- tacaíocht gadgetbridge: teocht sheasta seolta i celsius in ionad kelvin
+- tacaíocht giuirléidí: ní raibh coinníollacha aimsire seasta soláthraithe ag teacht le caighdeán na lineageos i gcónaí
+- tacaíocht gadgetbridge: taispeánann an aimsir sheasta an staid reatha anois seachas réamhaisnéis an lae
+- tá tacaíocht gadgetbridge fós i béite, ach ba chóir go n-oibreoidh sé!

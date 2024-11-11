@@ -1,0 +1,8 @@
+- Is féidir foláirimh aimsire a roinnt
+- taispeántar stádas sonraí anois in am áitiúil (ní UTC)
+- úsáideann an ghiuirléid le graf forbhreathnú go hiomlán an spás atá ar fáil tar éis rothlú gléas
+- cló níos mó i sonraí aimsire, réamhaisnéis teasctha seasta ar roinnt gléasanna
+- úsáideann léarscáileanna an spás atá ar fáil níos fearr anois
+- ionchur suímh agus roghnú feabhsaithe
+- feabhsuithe breise ar an gcomhéadan úsáideora
+- aistriúcháin fheabhsaithe

@@ -1,0 +1,12 @@
+- déantar rabhaidh aimsire a nuashonrú i gceart freisin nuair a théann an feidhmchlár chun tosaigh arís
+- ainm an stáisiúin sheasta gan nuashonrú tar éis na ceanáin a athshocrú
+- ríomh beacht lae/oíche breise agus taispeáint éirí agus luí na gréine
+- tuairteanna seasta tar éis nuashonrú ó leaganacha níos sine den app
+- brú aeir dromchla breise
+- infheictheacht bhreise
+- tá barra le réamhaisnéis na huaire ar taispeáint anois de réir réamhshocraithe
+- roghanna leathnaithe chun taispeáint a shaincheapadh
+
+- Níor taispeánadh changelog leagan 0.50.3 i gceart laistigh den aip:
+ - is féidir eatraimh réamhaisnéise a shocrú anois: in aghaidh na huaire, 6 huaire, measctha (an chéad 24 uair an chloig, 6 huaire ina dhiaidh sin)
+ - barra roghnach a thaispeánann sonraí réamhaisnéise in aghaidh na huaire sa réamhaisnéis 6 huaire

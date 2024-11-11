@@ -1,0 +1,6 @@
+- folaíonn cuardaigh anois cathracha, pobail, stáit feidearálacha, lochanna agus limistéir farraige
+- tá an cuardach anois trócaireach le umlauts
+- sonraí limistéir ceartaithe, bearnaí a shocrú nuair a thaispeánfar limistéir farraige agus limistéir chósta
+- ní thosaíonn nuashonruithe a thuilleadh nuair nach bhfuil nasc idirlín ann
+- is féidir nuashonruithe uathoibríocha téacsanna aimsire a dhíchumasú sna roghanna
+- roinnt mioncheartuithe ar fhabht agus feabhsuithe taispeána
