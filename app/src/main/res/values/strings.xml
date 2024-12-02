@@ -230,7 +230,7 @@
     <string name="preference_screen_map_summary">Customize the map display.</string>
     <string name="preference_display_show_radar_by_default_title">Rain radar</string>
     <string name="preference_display_show_radar_by_default_summary">Always display automatically.</string>
-    <string name="preference_map_show_admin_by_default_title">Administative Map</string>
+    <string name="preference_map_show_admin_by_default_title">Administrative Map</string>
     <string name="preference_map_show_admin_by_default_summary">Display administrative borders automatically.</string>
     <string name="preference_category_admin">Administrative borders</string>
     <string name="preference_map_display_municipalities_title">Municipalities</string>
