@@ -67,6 +67,27 @@ public class RadarMN2 {
         return getScaleFactor(context)*1360;
     }
 
+    /**
+     * Calculates the destination coorinates from a given starting point, bearing and distance
+     *
+     * @param startGeoX x-coorinate (longitude) in degrees
+     * @param startGeoY y-coordinate (latitude) in degrees
+     * @param bearing bearing in degrees
+     * @param distance distance in km
+     * @return a double pair representing the destination point (x (longitude) and y (latitude)) in degrees.
+     */
+
+    public static double[] getDestinationCoordinates(double startGeoX, double startGeoY, double bearing, double distance){
+        // latitude
+        double y = Math.asin( Math.sin(Math.toRadians(startGeoY)) * Math.cos(distance/6371)
+                + Math.cos(Math.toRadians(startGeoY)) * Math.sin(distance/6371) * Math.cos(Math.toRadians(bearing)) );
+        // longitude
+        double x = Math.atan2(Math.sin(Math.toRadians(bearing)) * Math.sin(distance/6371) * Math.cos(Math.toRadians(startGeoY)),
+                Math.cos(distance/6371) - Math.sin(Math.toRadians(startGeoY)) * Math.sin(y));
+
+        return new double[]{startGeoX + Math.toDegrees(x),Math.toDegrees(y)};
+    }
+
     public static class MercatorProjection{
 
         /*

@@ -40,6 +40,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.text.SimpleDateFormat;
@@ -926,6 +927,49 @@ public class WeatherWarningActivity extends Activity {
                 }
             }
         }
+        // testing
+        Paint windLinePaint =  new Paint();
+        windLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        windLinePaint.setStrokeWidth(3);
+        windLinePaint.setColor(Color.BLACK);
+        float pinSize = WeatherSettings.getMapPinSize(context)/2f;
+        int pinSizePixels = Math.round(18*this.getApplicationContext().getResources().getDisplayMetrics().density*pinSize);
+        Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinSizePixels,pinSizePixels,false);
+        PlotPoint pinPoint = getPlotPoint((float) ownLocation.longitude, (float) ownLocation.latitude);
+        float pinX = pinPoint.x; float pinY = pinPoint.y;
+        // testing enhanced wind arrow
+        CurrentWeatherInfo currentWeatherInfo = Weather.getCurrentWeatherInfo(context);
+        ArrayList<Weather.WindData> windDataList = currentWeatherInfo.getWindForecast(1);
+        Weather.WindData windData = windDataList.get(0);
+        double windDirection = windData.getDirection();
+        windDirection = 135;
+        double windSpeed = windData.getSpeed(); // in km/h
+        double markDistance = 100; // km
+        double windAngle = windDirection * (Math.PI/180);
+        Log.v("twfg","DIRECTION: "+windDirection+" SPEED: "+windSpeed);
+        double[] lineTarget = RadarMN2.getDestinationCoordinates((float) ownLocation.longitude,ownLocation.latitude,windDirection,markDistance);
+        // float targetPinX = (float) (mercatorProjectionTile.getXPixel(lineTarget[0]) * Math.sin(windAngle));
+        // float targetPinY = (float) (mercatorProjectionTile.getXPixel(lineTarget[1]) * Math.cos(windAngle));
+        float targetPinX = (float) (mercatorProjectionTile.getXPixel(lineTarget[0]));
+        float targetPinY = (float) (mercatorProjectionTile.getYPixel(lineTarget[1]));
+        Log.v("twfg","SOURCE COORDINATES: "+ownLocation.longitude+" / "+ownLocation.latitude);
+        Log.v("twfg","TARGET COORDINATES: "+lineTarget[0]+" / "+lineTarget[1]);
+        Log.v("twfg","TARGET PIXELS     : "+targetPinX+" / "+targetPinY);
+        //canvas.drawCircle(pinX,pinY,50,windLinePaint);
+        canvas.drawLine(pinX,pinY,targetPinX,targetPinY,windLinePaint);
+
+        for (int i = 1; i <= 6; i++){
+            lineTarget = RadarMN2.getDestinationCoordinates((float) ownLocation.longitude,ownLocation.latitude,windDirection,markDistance/6*i);
+             float wingPinX = (float) (mercatorProjectionTile.getXPixel(lineTarget[0]) + 50 * Math.sin(Math.toRadians(windAngle+90)));
+            float wingPinY = (float) (mercatorProjectionTile.getYPixel(lineTarget[1]) + 50 * Math.cos(Math.toRadians(windAngle+90)));
+            canvas.drawLine((float) mercatorProjectionTile.getXPixel(lineTarget[0]), (float) mercatorProjectionTile.getYPixel(lineTarget[1]),wingPinX,wingPinY,windLinePaint);
+            float wingPinX2 = (float) (mercatorProjectionTile.getXPixel(lineTarget[0]) + 50 * Math.sin(Math.toRadians(windAngle-90)));
+            float wingPinY2 = (float) (mercatorProjectionTile.getYPixel(lineTarget[1]) + 50 * Math.cos(Math.toRadians(windAngle-90)));
+            canvas.drawLine((float) mercatorProjectionTile.getXPixel(lineTarget[0]), (float) mercatorProjectionTile.getYPixel(lineTarget[1]),wingPinX2,wingPinY2,windLinePaint);
+
+        }
+
+
         drawWindIcon();
         // set close listener
         ImageView closeImageview = (ImageView) findViewById(R.id.closeicon_map);
@@ -941,6 +985,7 @@ public class WeatherWarningActivity extends Activity {
         germany = (ImageView) findViewById(R.id.warningactivity_map);
         gestureDetector = new GestureDetector(this,new MapGestureListener());
         //mapZoomable = new ZoomableImageView(getApplicationContext(),germany,germanyBitmap) {
+        // testing
         mapZoomable = new ZoomableImageView(getApplicationContext(),germany,warningsBitmap){
             @Override
             public void onGestureFinished(float scaleFactor, float lastXtouch, float lastYtouch, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
@@ -964,12 +1009,9 @@ public class WeatherWarningActivity extends Activity {
         }
         drawMapBitmap();
         // add the pin sprite
-        float pinSize = WeatherSettings.getMapPinSize(context)/2f;
         if (pinSize>0){
-            int pinSizePixels = Math.round(18*this.getApplicationContext().getResources().getDisplayMetrics().density*pinSize);
-            PlotPoint pinPoint = getPlotPoint((float) ownLocation.longitude, (float) ownLocation.latitude);
-            Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinSizePixels,pinSizePixels,false);
-            mapZoomable.addSpite(pinBitmap,pinPoint.x,pinPoint.y-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT,null);
+            mapZoomable.addSpite(pinBitmap,pinX,pinY-pinBitmap.getHeight(),ZoomableImageView.SPRITEFIXPOINT.BOTTOM_LEFT,null);
+            //
         }
         mapZoomable.redrawBitmap();
         mapTouchListener = new View.OnTouchListener() {

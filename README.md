@@ -30,7 +30,17 @@ Tiny Weather Forecast Germany is available from the F-Droid main repository. You
 
 You can get the binary builds here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/qqao88LzSQ4rTeg>
 
-Or from the developer's own F-Droid repository: <https://kaffeemitkoffein.de/fdroid>
+Or from the developer's own F-Droid repository: <https://kaffeemitkoffein.de/fdroid/repo>
+
+<img style="height: 10em;" src="https://www.kaffeemitkoffein.de/fdroid/repo/index.png" alt="Get it on F-Droid">
+
+1. Launch the f-droid app
+2. Select "Settings"
+3. Select "Repositories" from the list
+4. Select "+NEW REPOSITORY"
+5. Scan the code above or add the following repository address: "https://kaffeemitkoffein.de/fdroid/repo"
+6. Optional: enter the fingerprint of this repo (see above)
+7. Select "Add"
 
 You get userdebug builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/4SXHaLxLSmFd8Ri>
 
