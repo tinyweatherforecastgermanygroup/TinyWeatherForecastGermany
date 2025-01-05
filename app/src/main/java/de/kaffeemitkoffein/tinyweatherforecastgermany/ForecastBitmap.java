@@ -911,11 +911,12 @@ public class ForecastBitmap{
                 int pos = i - startPosition;
                 Weather.WeatherInfo weatherInfo1 = weatherInfos.get(i);
                 Weather.WeatherInfo weatherInfo2 = weatherInfos.get(i+1);
-                float y1_t = (float) (zeroline_position - weatherInfo1.getRH() * (chartHeight/100f));
-                float y2_t = (float) (zeroline_position - weatherInfo2.getRH() * (chartHeight/100f));
+                float y1_t = chartHeight - (((float) weatherInfo1.getRH())/100f) * chartHeight;
+                float y2_t = chartHeight - (((float) weatherInfo2.getRH())/100f) * chartHeight;
                 if (WeatherSettings.displayDewPoint(context)){
-                    y1_t = zeroline_position - weatherInfo1.getDewPointInCelsiusInt() / temp_graphscale;
-                    y2_t = zeroline_position - weatherInfo2.getDewPointInCelsiusInt() / temp_graphscale;
+                    y1_t = zeroline_position - ((float) weatherInfo1.getDewPointInCelsius()) / temp_graphscale;
+                    y2_t = zeroline_position - ((float) weatherInfo2.getDewPointInCelsius()) / temp_graphscale;
+
                 }
                 float x1 = xChartOffset+ ((float) chartWidth/(float) itemCount)*pos;
                 float x2 = xChartOffset+ ((float) chartWidth/(float) itemCount)*(pos+1);
