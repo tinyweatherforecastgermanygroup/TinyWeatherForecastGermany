@@ -152,6 +152,9 @@ public class WeatherSettings {
     public static final String PREF_WEATHER_URL = "PREF_weather_url";
     public static final String PREF_VISUALIZE_DAYTIME = "PREF_visualize_daytime";
     public static final String PREF_DISPLAY_DEWPOINT = "PREF_display_dewpoint";
+    public static final String PREF_WIND_DISTANCE_DISPLAY = "PREF_wind_distance_display";
+    public static final String PREF_WIND_DISTANCE_ARC = "PREF_wind_distance_arc";
+    public static final String PREF_WIND_DISTANCE_HOURS = "PREF_wind_distance_hours";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -249,6 +252,9 @@ public class WeatherSettings {
     public static final String PREF_WEATHER_URL_DEFAULT = "opendata.dwd.de";
     public static final boolean PREF_VISUALIZE_DAYTIME_DEFAULT = false;
     public static final boolean PREF_DISPLAY_DEWPOINT_DEFAULT = false;
+    public static final boolean PREF_WIND_DISTANCE_DISPLAY_DEFAULT = false;
+    public static final int PREF_WIND_DISTANCE_ARC_DEFAULT = 1;
+    public static final int PREF_WIND_DISTANCE_HOURS_DEFAULT = 3;
 
     private Context context;
     private SharedPreferences sharedPreferences;
@@ -1791,6 +1797,21 @@ public class WeatherSettings {
     public static boolean displayDewPoint(Context context){
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_DISPLAY_DEWPOINT,PREF_DISPLAY_DEWPOINT_DEFAULT);
+    }
+
+    public static boolean displayWindDistance(Context context){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_WIND_DISTANCE_DISPLAY,PREF_WIND_DISTANCE_DISPLAY_DEFAULT);
+    }
+
+    public static int getWindDistanceArc(Context context){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_WIND_DISTANCE_ARC,PREF_WIND_DISTANCE_ARC_DEFAULT)*30;
+    }
+
+    public static int getWindDistanceHours(Context context){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_WIND_DISTANCE_HOURS,PREF_WIND_DISTANCE_HOURS_DEFAULT);
     }
 
 }

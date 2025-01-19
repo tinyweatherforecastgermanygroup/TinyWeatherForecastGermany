@@ -182,6 +182,13 @@
     <string name="preference_display_wind_unit_summary">Select the unit for wind speed.</string>
     <string name="preference_display_wind_in_radar_title">Show in rain radar</string>
     <string name="preference_display_wind_in_radar_summary">Display wind direction in the rain radar</string>
+    <string name="preference_category_distancetravelled">Distance traveled</string>
+    <string name="preference_display_wind_distance_activate_title">Activate display</string>
+    <string name="preference_display_wind_distance_activate_summary">Show the estimated distance following the direction and speed of the wind.</string>
+    <string name="preference_display_wind_distance_arc_title">Arc</string>
+    <string name="preference_display_wind_distance_arc_summary">Length of the displayed arcs in degrees.</string>
+    <string name="preference_display_wind_distance_time_title">Time</string>
+    <string name="preference_display_wind_distance_time_summary">Time to be displayed in hours.</string>
     <string name="preference_display_wind_in_charts_title">Show in charts</string>
     <string name="preference_display_wind_in_charts_summary">Display the wind speed in the overview chart and the chart widget.</string>
     <string name="preference_display_wind_in_charts_max_title">Wind scale in charts</string>

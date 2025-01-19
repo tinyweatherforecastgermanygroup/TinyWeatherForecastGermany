@@ -481,7 +481,8 @@ public class ClassicWidget extends AppWidgetProvider {
                     widgetWidth = widthLandscape;
                     widgetHeight = heightLandscape;
                 }
-                //Log.v("widget","Widget = "+widgetWidth+" / "+widgetHeight);
+                int[] resultArray = DeviceTweaks.confirmPlausibleWidgetSize(c,widgetWidth,widgetHeight,560,180);
+                widgetHeight=resultArray[0]; widgetWidth=resultArray[1];
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c,MainActivity.class);
                 PendingIntent pendingIntent;
@@ -501,10 +502,10 @@ public class ClassicWidget extends AppWidgetProvider {
                 }
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(),widgetResource);
                 if (lines==2){
-                    remoteViews.setImageViewBitmap(R.id.largewidget_10daysbitmap, get10DaysForecastBar(c,awm,widget_instances[i],weatherCard,false));
+                    remoteViews.setImageViewBitmap(R.id.largewidget_10daysbitmap, get10DaysForecastBar(c,widgetWidth,widgetHeight,weatherCard,false));
                 }
                 if (lines==3){
-                    remoteViews.setImageViewBitmap(R.id.largewidget_10daysbitmap, get10DaysForecastBar(c,awm,widget_instances[i],weatherCard,true));
+                    remoteViews.setImageViewBitmap(R.id.largewidget_10daysbitmap, get10DaysForecastBar(c,widgetWidth,widgetHeight,weatherCard,true));
                 }
                 remoteViews.setOnClickPendingIntent(R.id.widget_maincontainer,pendingIntent);
                 setClassicWidgetItems(remoteViews,weatherCard,c);
@@ -697,7 +698,7 @@ public class ClassicWidget extends AppWidgetProvider {
         return bitmap;
     }
 
-    private Bitmap get10DaysForecastBar(Context context, AppWidgetManager awm, int widget_instance, CurrentWeatherInfo currentWeatherInfo, boolean showTemperatures){
+    private Bitmap get10DaysForecastBar(Context context, int widgetWidth, int widgetHeight, CurrentWeatherInfo currentWeatherInfo, boolean showTemperatures){
         /*
          * Determine the approximate diameters of the bitmap.
          *
@@ -709,15 +710,9 @@ public class ClassicWidget extends AppWidgetProvider {
          * assume the larger size (image gets downscaled) than a too small size (image gets upscaled and may look
          * awful).
          */
-        WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(context, awm,widget_instance);
-        float width_bitmap = widgetDimensionManager.getWidgetWidth();
-        float height_bitmap = widgetDimensionManager.getWidgetHeight()/2;
-        if ((width_bitmap<=0) || (height_bitmap<=0)){
-            // make some fallback values if the widget dimensions remain unknown
-            width_bitmap = 500;
-            height_bitmap = 250;
-        }
-        // create an empty, transparent bitmap
+        float width_bitmap = widgetWidth;
+        float height_bitmap = widgetHeight/2f;
+      // create an empty, transparent bitmap
         Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bitmap),Math.round(height_bitmap),Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         bitmap.eraseColor(Color.TRANSPARENT);
@@ -744,7 +739,7 @@ public class ClassicWidget extends AppWidgetProvider {
      * This class provides some methods to determine the approximate current size of a widget in pixels.
      */
 
-    public class WidgetDimensionManager {
+    public static class WidgetDimensionManager {
 
         /*
          * You can get a Bundle from the AppWidgetManager (awm) that holds some metrics, which are

@@ -423,7 +423,7 @@ public final class Weather {
         double TG;          // K; min. surface temp. at 5 cm within last 12h
         double DD;          // km/h; wind direction 0-360°
         double E_DD;        // 0-360°; absolute error DD
-        double FF;          // m/s; wind speed in km/h
+        double FF;          // m/s; wind spee
         double E_FF;        // m/s; absolute error wind speed 10m above surface
         double FX1;         // m/s; max. wind gust within last hour (Windböen)
         double FX3;         // m/s; max. wind gust within last 3h (Windböen)
@@ -2237,6 +2237,10 @@ public final class Weather {
 
         public double getSpeed(){
             return speed;
+        }
+
+        public double getSpeedKmh(){
+            return speed * ( 60*60 / 1000d);
         }
 
         public double getDirection(){

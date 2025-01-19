@@ -274,6 +274,29 @@
                         android:summary="@string/preference_display_wind_in_radar_summary"
                         android:defaultValue="true"/>
 
+                <PreferenceCategory
+                        android:title="@string/preference_category_distancetravelled">
+
+                    <CheckBoxPreference
+                            android:key="PREF_wind_distance_display"
+                            android:title="@string/preference_display_wind_distance_activate_title"
+                            android:summary="@string/preference_display_wind_distance_activate_summary"
+                            android:defaultValue="false"/>
+
+                    <de.kaffeemitkoffein.tinyweatherforecastgermany.NumberPickerPreference
+                            android:key="PREF_wind_distance_arc"
+                            android:title="@string/preference_display_wind_distance_arc_title"
+                            android:summary="@string/preference_display_wind_distance_arc_summary"
+                    />
+
+                    <de.kaffeemitkoffein.tinyweatherforecastgermany.NumberPickerPreference
+                            android:key="PREF_wind_distance_hours"
+                            android:title="@string/preference_display_wind_distance_time_title"
+                            android:summary="@string/preference_display_wind_distance_time_summary"
+                    />
+
+                </PreferenceCategory>
+
             </PreferenceScreen>
 
             <ListPreference

@@ -40,7 +40,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import java.text.SimpleDateFormat;
@@ -779,6 +778,9 @@ public class WeatherWarningActivity extends Activity {
                 }
             });
         }
+        if (WeatherSettings.displayWindDistance(context)){
+            drawAdvancedWindStencil(canvas);
+        }
         mapZoomable.updateBitmap(visibleBitmap);
         visibleBitmap.recycle();
     }
@@ -820,6 +822,60 @@ public class WeatherWarningActivity extends Activity {
             }
         };
         scheduledExecutorService.execute(windRunnable);
+    }
+
+    private void drawAdvancedWindStencil(Canvas canvas){
+        int windPathTime = WeatherSettings.getWindDistanceHours(context)*60;
+        int arcSize = WeatherSettings.getWindDistanceArc(context)/2;
+        Paint windLinePaint =  new Paint();
+        windLinePaint.setStyle(Paint.Style.STROKE);
+        windLinePaint.setStrokeWidth(3);
+        windLinePaint.setColor(Color.BLACK);
+        if (mapZoomable!=null){
+            windLinePaint.setStrokeWidth(mapZoomable.scaleFactor*3f);
+        }
+        float positionX = (float) mercatorProjectionTile.getXPixel(ownLocation.longitude);
+        float positionY = (float) mercatorProjectionTile.getYPixel(ownLocation.latitude);
+        // testing enhanced wind arrow
+        CurrentWeatherInfo currentWeatherInfo = Weather.getCurrentWeatherInfo(context);
+        ArrayList<Weather.WindData> windDataList = currentWeatherInfo.getWindForecast(windPathTime/60+1);
+        final int windPathLength = windPathTime/15; // number of arcs drawn, corresponding to 15 mins rain progress
+        final double ARCSTEPS = 15;
+        final DashPathEffect dashPathEffect = new DashPathEffect(new float[]{1f,2f},0f);
+        float[] windPathX = new float[windPathLength+1];
+        float[] windPathY = new float[windPathLength+1];
+        windPathX[0] = positionX; windPathY[0] = positionY;
+        double distance = 0; // in km from the current location
+        for (int i=1; i<=windPathLength; i++){
+            windLinePaint.setStrokeWidth(1f);
+            if (i % 4 == 0){
+                windLinePaint.setPathEffect(null);
+            } else {
+                windLinePaint.setPathEffect(dashPathEffect);
+            }
+            Weather.WindData windData = windDataList.get(i/4);
+            double windDirection = windData.getDirection()+180;
+            if (windDirection>360){
+                windDirection = windDirection - 360;
+            }
+            double windSpeed = windData.getSpeedKmh(); // in km/h
+            double windWay15MinInKm = windSpeed / 4;
+            distance = distance + windWay15MinInKm;
+            double[] pathTarget = RadarMN2.getDestinationCoordinates((float) ownLocation.longitude,ownLocation.latitude,windDirection,distance);
+            windPathX[i] = (float) mercatorProjectionTile.getXPixel(pathTarget[0]); windPathY[i] = (float) mercatorProjectionTile.getYPixel(pathTarget[1]);
+            double[] coordinates = RadarMN2.getDestinationCoordinates((float) ownLocation.longitude,ownLocation.latitude,windDirection - arcSize,distance);
+            float x1 = (float) mercatorProjectionTile.getXPixel(coordinates[0]);
+            float y1 = (float) mercatorProjectionTile.getYPixel(coordinates[1]);
+            for (double arcAngle = windDirection - arcSize; arcAngle <= windDirection + arcSize; arcAngle = arcAngle + ARCSTEPS){
+                coordinates = RadarMN2.getDestinationCoordinates((float) ownLocation.longitude,ownLocation.latitude,arcAngle,distance);
+                float x2 = (float) mercatorProjectionTile.getXPixel(coordinates[0]);
+                float y2 = (float) mercatorProjectionTile.getYPixel(coordinates[1]);
+                canvas.drawLine(x1,y1,x2,y2,windLinePaint);
+                x1 = x2; y1 = y2;
+            }
+            windLinePaint.setPathEffect(null);
+            canvas.drawLine(windPathX[i-1], windPathY[i-1],windPathX[i], windPathY[i],windLinePaint);
+        }
     }
 
     private boolean hideMap(){
@@ -927,49 +983,12 @@ public class WeatherWarningActivity extends Activity {
                 }
             }
         }
-        // testing
-        Paint windLinePaint =  new Paint();
-        windLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        windLinePaint.setStrokeWidth(3);
-        windLinePaint.setColor(Color.BLACK);
         float pinSize = WeatherSettings.getMapPinSize(context)/2f;
         int pinSizePixels = Math.round(18*this.getApplicationContext().getResources().getDisplayMetrics().density*pinSize);
         Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinSizePixels,pinSizePixels,false);
         PlotPoint pinPoint = getPlotPoint((float) ownLocation.longitude, (float) ownLocation.latitude);
         float pinX = pinPoint.x; float pinY = pinPoint.y;
-        // testing enhanced wind arrow
-        CurrentWeatherInfo currentWeatherInfo = Weather.getCurrentWeatherInfo(context);
-        ArrayList<Weather.WindData> windDataList = currentWeatherInfo.getWindForecast(1);
-        Weather.WindData windData = windDataList.get(0);
-        double windDirection = windData.getDirection();
-        windDirection = 135;
-        double windSpeed = windData.getSpeed(); // in km/h
-        double markDistance = 100; // km
-        double windAngle = windDirection * (Math.PI/180);
-        Log.v("twfg","DIRECTION: "+windDirection+" SPEED: "+windSpeed);
-        double[] lineTarget = RadarMN2.getDestinationCoordinates((float) ownLocation.longitude,ownLocation.latitude,windDirection,markDistance);
-        // float targetPinX = (float) (mercatorProjectionTile.getXPixel(lineTarget[0]) * Math.sin(windAngle));
-        // float targetPinY = (float) (mercatorProjectionTile.getXPixel(lineTarget[1]) * Math.cos(windAngle));
-        float targetPinX = (float) (mercatorProjectionTile.getXPixel(lineTarget[0]));
-        float targetPinY = (float) (mercatorProjectionTile.getYPixel(lineTarget[1]));
-        Log.v("twfg","SOURCE COORDINATES: "+ownLocation.longitude+" / "+ownLocation.latitude);
-        Log.v("twfg","TARGET COORDINATES: "+lineTarget[0]+" / "+lineTarget[1]);
-        Log.v("twfg","TARGET PIXELS     : "+targetPinX+" / "+targetPinY);
-        //canvas.drawCircle(pinX,pinY,50,windLinePaint);
-        canvas.drawLine(pinX,pinY,targetPinX,targetPinY,windLinePaint);
-
-        for (int i = 1; i <= 6; i++){
-            lineTarget = RadarMN2.getDestinationCoordinates((float) ownLocation.longitude,ownLocation.latitude,windDirection,markDistance/6*i);
-             float wingPinX = (float) (mercatorProjectionTile.getXPixel(lineTarget[0]) + 50 * Math.sin(Math.toRadians(windAngle+90)));
-            float wingPinY = (float) (mercatorProjectionTile.getYPixel(lineTarget[1]) + 50 * Math.cos(Math.toRadians(windAngle+90)));
-            canvas.drawLine((float) mercatorProjectionTile.getXPixel(lineTarget[0]), (float) mercatorProjectionTile.getYPixel(lineTarget[1]),wingPinX,wingPinY,windLinePaint);
-            float wingPinX2 = (float) (mercatorProjectionTile.getXPixel(lineTarget[0]) + 50 * Math.sin(Math.toRadians(windAngle-90)));
-            float wingPinY2 = (float) (mercatorProjectionTile.getYPixel(lineTarget[1]) + 50 * Math.cos(Math.toRadians(windAngle-90)));
-            canvas.drawLine((float) mercatorProjectionTile.getXPixel(lineTarget[0]), (float) mercatorProjectionTile.getYPixel(lineTarget[1]),wingPinX2,wingPinY2,windLinePaint);
-
-        }
-
-
+        // drawAdvancedWindStencil(canvas,145,300);
         drawWindIcon();
         // set close listener
         ImageView closeImageview = (ImageView) findViewById(R.id.closeicon_map);
@@ -999,6 +1018,10 @@ public class WeatherWarningActivity extends Activity {
                     }
                 };
                 scheduledExecutorService.execute(tapRunnable);
+            }
+            @Override
+            public void onLongPress(float scaleFactor, float lastXtouch, float lastYtouch, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea) {
+                // currently does nothing; reserved for a future long press event
             }
         };
         if (RadarMN2.getScaleFactor(context)>1){

@@ -24,8 +24,10 @@ import android.graphics.*;
 import android.os.Bundle;
 import android.view.ScaleGestureDetector;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.widget.ImageView;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * ZoomableImageView is a simple class that enhances an ImageView with the capability to zoom in and out.
@@ -142,6 +144,9 @@ public class ZoomableImageView {
     private ImageView imageView;
     public ZoomGestureListener zoomGestureListener;
     public ScaleGestureDetector scaleGestureDetector;
+    private boolean isMoveOrScaleGesture;
+    private long gestureStartTIme;
+    private long gestureStopTime;
     private Context context;
     private float imageViewWidth;
     private float imageViewHeight;
@@ -315,7 +320,7 @@ public class ZoomableImageView {
      *
      * @param scaleFactor the current scale factor
      * @param lastPressX the absolute x of last pointer/touch, reference is the whole bitmap
-     * @param lastPressY the absolute y of last pointer/touch, reference is the whole bitmap
+         * @param lastPressY the absolute y of last pointer/touch, reference is the whole bitmap
      * @param xFocus the absolute x focus in pixels, reference is the whole bitmap
      * @param yFocus the absolute y focus in pixels, reference is the whole bitmap
      * @param xFocusRelative the relative x focus (0 {@literal <}= xFocusRelative {@literal <}= 1), reference is the whole bitmap
@@ -324,6 +329,10 @@ public class ZoomableImageView {
      */
 
     public void onGestureFinished(float scaleFactor, float lastPressX, float lastPressY, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
+        // things to do after gesture finished.
+    }
+
+    public void onLongPress(float scaleFactor, float lastPressX, float lastPressY, float xFocus, float yFocus, float xFocusRelative, float yFocusRelative, RectF currentlyVisibleArea){
         // things to do after gesture finished.
     }
 
@@ -388,7 +397,6 @@ public class ZoomableImageView {
     public boolean onTouchEvent(MotionEvent motionEvent){
         int widthVisible  = Math.round(imageViewWidth * scaleFactor);
         int heightVisible = Math.round(imageViewHeight * scaleFactor);
-
         lastPressX = motionEvent.getX()/imageView.getWidth()*widthVisible+(xFocus-widthVisible/2);
         lastPressY = motionEvent.getY()/imageView.getHeight()*heightVisible+(yFocus-heightVisible/2);
         scaleGestureDetector.onTouchEvent(motionEvent);
@@ -396,15 +404,26 @@ public class ZoomableImageView {
             if (motionEvent.getAction()==MotionEvent.ACTION_DOWN){
                 xMoveStart = motionEvent.getX();
                 yMoveStart = motionEvent.getY();
+                gestureStartTIme = Calendar.getInstance().getTimeInMillis();
+                isMoveOrScaleGesture = false;
             }
             if (motionEvent.getAction()==MotionEvent.ACTION_MOVE){
                 moveMap(xMoveStart-motionEvent.getX(),yMoveStart-motionEvent.getY());
                 xMoveStart = motionEvent.getX();
                 yMoveStart = motionEvent.getY();
+                //isMoveOrScaleGesture = true;
             }
         }
         if (motionEvent.getAction() == MotionEvent.ACTION_UP){
+            gestureStopTime = Calendar.getInstance().getTimeInMillis();
+            boolean isLongPress = false;
+            if ((gestureStopTime-gestureStartTIme)>=ViewConfiguration.getLongPressTimeout()){
+                isLongPress = true;
+            }
             onGestureFinished(scaleFactor,lastPressX,lastPressY,getXFocus(),getYFocus(),getRelativeXFocus(),getRelativeYFocus(),temporaryVisibleArea);
+            if ((isLongPress) && (!isMoveOrScaleGesture)){
+                onLongPress(scaleFactor,lastPressX,lastPressY,getXFocus(),getYFocus(),getRelativeXFocus(),getRelativeYFocus(),temporaryVisibleArea);
+            }
         }
         return true;
     }
@@ -571,6 +590,7 @@ public class ZoomableImageView {
         @Override
         public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
             startSpan = scaleGestureDetector.getCurrentSpan();
+            isMoveOrScaleGesture = true;
             return super.onScaleBegin(scaleGestureDetector);
         }
 
