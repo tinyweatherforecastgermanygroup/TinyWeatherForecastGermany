@@ -5,6 +5,7 @@
 - fixed humidity calculation formula
 - fixed theme not changing completely when also changing the level of detail 
 - fixed relative humidity not drawn correctly in the overview chart when temperatures are below 0° C
+- add optional display of wind path information 
 
 ## Version 0.62.5
 - fix app crash caused by launcher returning an inaccurately large widget size
