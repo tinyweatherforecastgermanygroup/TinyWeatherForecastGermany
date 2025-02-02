@@ -33,9 +33,10 @@ public class NumberPickerPreference extends DialogPreference {
     private int minValue = 7;
     private int maxValue = 4;
     private int arcValue = 2;
-    public final static String[] minValues = {"-35","-30","-25","-20","-15","-10","-5","0"};
-    public final static String[] maxValues = {"5","10","15","20","25","30","35","40"};
-    public final static String[] arcValues = {"0","30","60","90","120","150","180","210","240","270","300","330","360"};
+    public final static String[] minValues  = {"-35","-30","-25","-20","-15","-10","-5","0"};
+    public final static String[] maxValues  = {"5","10","15","20","25","30","35","40"};
+    public final static String[] arcValues  = {"0","30","60","90","120","150","180","210","240","270","300","330","360"};
+    public final static String[] hourValues = {"1","2","3","4","5","6","7","8","9","10","11","12"};
 
     public NumberPickerPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -53,35 +54,40 @@ public class NumberPickerPreference extends DialogPreference {
             context = getContext();
         }
         numberPicker = new NumberPicker(context);
+        int defaultPosition = 5;
         numberPicker.setMinValue(3);
         numberPicker.setMaxValue(10);
         if (getKey().equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN)){
             numberPicker.setMinValue(0);
             numberPicker.setMaxValue(7);
             numberPicker.setDisplayedValues(minValues);
+            defaultPosition = WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT;
         }
         if (getKey().equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX)){
             numberPicker.setMinValue(0);
             numberPicker.setMaxValue(7);
             numberPicker.setDisplayedValues(maxValues);
+            defaultPosition = WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT;
         }
         if (getKey().equals(WeatherSettings.PREF_WIND_DISTANCE_ARC)){
             numberPicker.setMinValue(0);
             numberPicker.setMaxValue(12);
             numberPicker.setDisplayedValues(arcValues);
+            defaultPosition = WeatherSettings.PREF_WIND_DISTANCE_ARC_DEFAULT;
         }
 
         if (getKey().equals(WeatherSettings.PREF_WIND_DISTANCE_HOURS)){
             numberPicker.setMinValue(1);
             numberPicker.setMaxValue(12);
             //numberPicker.setDisplayedValues(maxValues);
+            defaultPosition = WeatherSettings.PREF_WIND_DISTANCE_HOURS_DEFAULT;
         }
         if (getKey().equals(WeatherSettings.PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS)){
             numberPicker.setMinValue(0);
             numberPicker.setMaxValue(255);
             //numberPicker.setDisplayedValues(maxValues);
         }
-        numberPicker.setValue(getPersistedInt(10));
+        numberPicker.setValue(getPersistedInt(defaultPosition));
         return numberPicker;
     }
 
