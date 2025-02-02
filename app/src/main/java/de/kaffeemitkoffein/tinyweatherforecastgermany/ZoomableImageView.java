@@ -632,4 +632,13 @@ public class ZoomableImageView {
         yFocus      = zoomViewState.getFloat(STATE_YFOCUS,yFocus);
         redrawBitmap();
     }
+
+    public void restoreZoomViewState(Bundle zoomViewState, boolean redraw){
+        scaleFactor = zoomViewState.getFloat(STATE_SCALEFACTOR,scaleFactor);
+        xFocus      = zoomViewState.getFloat(STATE_XFOCUS,xFocus);
+        yFocus      = zoomViewState.getFloat(STATE_YFOCUS,yFocus);
+        if (redraw){
+            redrawBitmap();
+        }
+    }
 }

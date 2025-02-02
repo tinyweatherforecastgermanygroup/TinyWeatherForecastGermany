@@ -305,6 +305,8 @@
     <string name="preference_highresolution_summary">Forces the higher resolution of the map. This can slow down the device or cause problems on older devices. </string>
     <string name="preference_mapPinSize_title">Location mark size</string>
     <string name="preference_mapPinSize_summary">Size of the location mark on the map.</string>
+    <string name="preference_mapSaveState_title">Save zoom</string>
+    <string name="preference_mapSaveState_summary">Save the last map position and magnification and restore them the next time you call the map.</string>
     <string name="preference_weatherurl_title">Server URL</string>
     <string name="preference_weatherurl_summary">An alternative mirror server from which the data is to be loaded can be specified here. Delete entry to reset the URL to the default DWD server.</string>
     <string name="preference_weatherurl_summary2">Current URL:</string>

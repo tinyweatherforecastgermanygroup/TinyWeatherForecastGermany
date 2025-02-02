@@ -284,6 +284,15 @@ public class WeatherWarningActivity extends Activity {
     @Override
     protected void onPause(){
         cancelRainSlides = true;
+        // save the map state if desired
+        if (WeatherSettings.saveMapState(context)){
+            PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"Saving map state enabled.");
+            if (mapZoomable!=null){
+                zoomMapState = mapZoomable.saveZoomViewState();
+                WeatherSettings.setZoomStateBundle(context,zoomMapState);
+                PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"Map zoom state saved.");
+            }
+        }
         unregisterReceiver(receiver);
         super.onPause();
         PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"app paused.");
@@ -325,6 +334,10 @@ public class WeatherWarningActivity extends Activity {
             hide_rain = savedInstanceState.getBoolean(SIS_HIDERAIN,!WeatherSettings.showRadarByDefault(getApplicationContext()));
             hide_admin = savedInstanceState.getBoolean(SIS_HIDEADMIN,!WeatherSettings.showAdminMapByDefault(getApplicationContext()));
         } else {
+            if (WeatherSettings.saveMapState(context)){
+                PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"Restored map position.");
+                zoomMapState = WeatherSettings.getZoomStateBundle(context);
+            }
             hide_rain = !WeatherSettings.showRadarByDefault(getApplicationContext());
             hide_admin = !WeatherSettings.showAdminMapByDefault(getApplicationContext());
         }
@@ -1028,7 +1041,10 @@ public class WeatherWarningActivity extends Activity {
             mapZoomable.setScaleRange(0.12f,1f);
         }
         if (zoomMapState!=null){
+            PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"Restoring map state...");
             mapZoomable.restoreZoomViewState(zoomMapState);
+        } else {
+            PrivateLog.log(getApplicationContext(),PrivateLog.WARNINGS,PrivateLog.INFO,"Not restoring map map state because data is null");
         }
         drawMapBitmap();
         // add the pin sprite

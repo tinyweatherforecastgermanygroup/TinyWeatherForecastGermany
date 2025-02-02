@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -155,6 +156,10 @@ public class WeatherSettings {
     public static final String PREF_WIND_DISTANCE_DISPLAY = "PREF_wind_distance_display";
     public static final String PREF_WIND_DISTANCE_ARC = "PREF_wind_distance_arc";
     public static final String PREF_WIND_DISTANCE_HOURS = "PREF_wind_distance_hours";
+    public final static String PREF_STATE_SAVE="PREF_state_save";
+    public final static String PREF_STATE_SCALEFACTOR="PREF_state_scalefactor";
+    public final static String PREF_STATE_XFOCUS="PREF_state_xfocus";
+    public final static String PREF_STATE_YFOCUS="PREF_state_yfocus";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -255,6 +260,11 @@ public class WeatherSettings {
     public static final boolean PREF_WIND_DISTANCE_DISPLAY_DEFAULT = false;
     public static final int PREF_WIND_DISTANCE_ARC_DEFAULT = 1;
     public static final int PREF_WIND_DISTANCE_HOURS_DEFAULT = 3;
+    public final static boolean PREF_STATE_SAVE_DEFAULT = false;
+    public final static float PREF_STATE_SCALEFACTOR_DEFAULT = 0.0f;
+    public final static float PREF_STATE_XFOCUS_DEFAULT = 0.0f;
+    public final static float PREF_STATE_YFOCUS_DEFAULT = 0.0f;
+
 
     private Context context;
     private SharedPreferences sharedPreferences;
@@ -1812,6 +1822,38 @@ public class WeatherSettings {
     public static int getWindDistanceHours(Context context){
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         return sharedPreferences.getInt(PREF_WIND_DISTANCE_HOURS,PREF_WIND_DISTANCE_HOURS_DEFAULT);
+    }
+
+    public static boolean saveMapState(Context context){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_STATE_SAVE,PREF_STATE_SAVE_DEFAULT);
+    }
+
+    public static void setZoomStateBundle(Context context, Bundle bundle){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putFloat(PREF_STATE_SCALEFACTOR,bundle.getFloat(ZoomableImageView.STATE_SCALEFACTOR));
+        pref_editor.putFloat(PREF_STATE_XFOCUS,bundle.getFloat(ZoomableImageView.STATE_XFOCUS));
+        pref_editor.putFloat(PREF_STATE_YFOCUS,bundle.getFloat(ZoomableImageView.STATE_YFOCUS));
+        pref_editor.commit();
+    }
+
+    public static Bundle getZoomStateBundle(Context context){
+        Bundle bundle = new Bundle();
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        bundle.putFloat(ZoomableImageView.STATE_SCALEFACTOR,sharedPreferences.getFloat(PREF_STATE_SCALEFACTOR,PREF_STATE_SCALEFACTOR_DEFAULT));
+        bundle.putFloat(ZoomableImageView.STATE_XFOCUS,sharedPreferences.getFloat(PREF_STATE_XFOCUS,PREF_STATE_XFOCUS_DEFAULT));
+        bundle.putFloat(ZoomableImageView.STATE_YFOCUS,sharedPreferences.getFloat(PREF_STATE_YFOCUS,PREF_STATE_YFOCUS_DEFAULT));
+        // return null if default values are returned, meaning values never have been saved
+        // PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"| scalefactor: "+bundle.getFloat(ZoomableImageView.STATE_SCALEFACTOR));
+        // PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"|      xfocus: "+bundle.getFloat(ZoomableImageView.STATE_XFOCUS));
+        // PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.INFO,"|      yfocus: "+bundle.getFloat(ZoomableImageView.STATE_YFOCUS));
+        if ((bundle.getFloat(ZoomableImageView.STATE_SCALEFACTOR)==PREF_STATE_SCALEFACTOR_DEFAULT) ||
+                (bundle.getFloat(ZoomableImageView.STATE_XFOCUS)==PREF_STATE_XFOCUS_DEFAULT) ||
+                (bundle.getFloat(ZoomableImageView.STATE_YFOCUS)==PREF_STATE_YFOCUS_DEFAULT)){
+            return null;
+        }
+        return bundle;
     }
 
 }
