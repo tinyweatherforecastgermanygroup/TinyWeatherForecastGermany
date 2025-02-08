@@ -526,4 +526,12 @@
     <string name="preference_display_wind_distance_time_title">L\'heure</string>
     <string name="preference_display_wind_distance_time_summary">Heure à afficher en heures.</string>
     <string name="preference_mapSaveState_title">Sauvegarder le zoom</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Avertissements sur les filtres</string>
+    <string name="preference_displayDewPoint_title">Point de rosée</string>
+    <string name="preference_displayDewPoint_summary">Affiche le point de rosée au lieu de l\'humidité relative.</string>
+    <string name="preference_display_overviewchart_RH_summary">Affiche l\'humidité relative dans le graphique de synthèse.</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Pour les avertissements, utilisez le même filtre que pour les avis dans le tableau synoptique.</string>
+    <string name="geoinput_declined">Comme vous avez refusé les autorisations de localisation, les fonctions de l\'application qui les requièrent ont été désactivées. Vous pouvez les réactiver dans les paramètres.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Permission manquante</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">Actuellement, l\'application ne peut pas accéder à la localisation en arrière-plan. Envisagez d\'accorder cette autorisation ou de désactiver les vérifications régulières de l\'emplacement.</string>
 </resources>
