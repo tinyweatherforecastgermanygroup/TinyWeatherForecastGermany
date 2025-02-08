@@ -520,4 +520,6 @@
     <string name="preference_display_wind_distance_time_title">Tiempo</string>
     <string name="preference_display_wind_distance_time_summary">Tiempo a mostrar en horas.</string>
     <string name="preference_mapSaveState_title">Guardar zoom</string>
+    <string name="preference_displayDewPoint_title">Punto de rocío</string>
+    <string name="preference_displayDewPoint_summary">Muestra el punto de rocío en lugar de la humedad relativa.</string>
 </resources>
