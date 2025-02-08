@@ -485,4 +485,13 @@
     <string name="preference_weatherurl_summary2">Текущий URL:</string>
     <string name="preference_visualizeDaytime_summary">Время суток подчеркивается чуть более светлым фоном.</string>
     <string name="preference_visualizeDaytime_title">Выделите время суток</string>
+    <string name="preference_category_distancetravelled">Пройденное расстояние</string>
+    <string name="preference_display_wind_distance_activate_title">Расстояние до дисплея</string>
+    <string name="preference_display_wind_distance_activate_summary">Покажите на карте предполагаемое расстояние с учетом направления и скорости ветра.</string>
+    <string name="preference_display_wind_distance_arc_title">Дуга</string>
+    <string name="preference_display_wind_distance_arc_summary">Длина отображаемых дуг в градусах.</string>
+    <string name="preference_display_wind_distance_time_title">Время</string>
+    <string name="preference_display_wind_distance_time_summary">Время, которое будет отображаться в часах.</string>
+    <string name="preference_mapSaveState_title">Сохранить масштаб</string>
+    <string name="preference_mapSaveState_summary">Сохраните последнее положение карты и увеличение и восстановите их при следующем вызове карты.</string>
 </resources>
