@@ -485,4 +485,13 @@
     <string name="preference_weatherurl_summary2">URL saat ini:</string>
     <string name="preference_visualizeDaytime_title">Menyoroti waktu dalam sehari</string>
     <string name="preference_visualizeDaytime_summary">Waktu di siang hari dipertegas oleh latar belakang yang sedikit lebih terang.</string>
+    <string name="preference_mapSaveState_title">Simpan zoom</string>
+    <string name="preference_display_wind_distance_activate_title">Jarak tampilan</string>
+    <string name="preference_display_wind_distance_activate_summary">Menampilkan perkiraan jarak yang mengikuti arah dan kecepatan angin pada peta.</string>
+    <string name="preference_category_distancetravelled">Jarak yang ditempuh</string>
+    <string name="preference_mapSaveState_summary">Simpan posisi dan pembesaran peta terakhir dan kembalikan posisi dan pembesaran tersebut pada saat Anda memanggil peta berikutnya.</string>
+    <string name="preference_display_wind_distance_arc_title">Busur</string>
+    <string name="preference_display_wind_distance_arc_summary">Panjang busur yang ditampilkan dalam derajat.</string>
+    <string name="preference_display_wind_distance_time_title">Waktu</string>
+    <string name="preference_display_wind_distance_time_summary">Waktu yang akan ditampilkan dalam jam.</string>
 </resources>
