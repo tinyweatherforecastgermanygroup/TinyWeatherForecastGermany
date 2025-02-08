@@ -485,4 +485,13 @@
     <string name="preference_visualizeDaytime_title">Wyróżnij porę dnia</string>
     <string name="preference_visualizeDaytime_summary">Pora dnia jest podkreślona przez nieco jaśniejsze tło.</string>
     <string name="preference_display_overviewchart_RH_title">Wilgotność względna</string>
+    <string name="preference_display_wind_distance_activate_title">Wyświetlana odległość</string>
+    <string name="preference_display_wind_distance_arc_title">Łuk</string>
+    <string name="preference_display_wind_distance_arc_summary">Długość wyświetlanych łuków w stopniach.</string>
+    <string name="preference_display_wind_distance_time_title">Czas</string>
+    <string name="preference_display_wind_distance_time_summary">Czas wyświetlany w godzinach.</string>
+    <string name="preference_display_wind_distance_activate_summary">Pokaż na mapie szacowaną odległość zgodnie z kierunkiem i prędkością wiatru.</string>
+    <string name="preference_category_distancetravelled">Przebyta odległość</string>
+    <string name="preference_mapSaveState_title">Zapisz powiększenie</string>
+    <string name="preference_mapSaveState_summary">Zapisz ostatnią pozycję i powiększenie mapy i przywróć je przy następnym wywołaniu mapy.</string>
 </resources>
