@@ -494,4 +494,12 @@
     <string name="preference_display_wind_distance_time_summary">Время, которое будет отображаться в часах.</string>
     <string name="preference_mapSaveState_title">Сохранить масштаб</string>
     <string name="preference_mapSaveState_summary">Сохраните последнее положение карты и увеличение и восстановите их при следующем вызове карты.</string>
+    <string name="preference_displayDewPoint_title">Точка росы</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Предупреждения о фильтрах</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Для предупреждений на обзорной диаграмме используйте тот же фильтр, что и для уведомлений.</string>
+    <string name="preference_display_overviewchart_RH_summary">Отображение относительной влажности на обзорной диаграмме.</string>
+    <string name="preference_displayDewPoint_summary">Отображение точки росы вместо относительной влажности.</string>
+    <string name="geoinput_declined">Поскольку вы отказались от разрешений на определение местоположения, функции приложения, требующие их, были отключены. Вы можете снова включить их в настройках.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Отсутствие разрешения</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">В настоящее время приложение не может получить доступ к местоположению в фоновом режиме. Рассмотрите возможность предоставления этого разрешения или отключите регулярную проверку местоположения.</string>
 </resources>
