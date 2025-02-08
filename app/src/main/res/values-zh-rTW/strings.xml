@@ -90,4 +90,14 @@
     <string name="preference_display_wind_distance_time_summary">以小時為單位顯示時間。</string>
     <string name="preference_display_wind_distance_time_title">時間</string>
     <string name="preference_mapSaveState_summary">儲存上次的地圖位置和放大倍率，並在下次呼叫地圖時還原。</string>
+    <string name="preference_displayDewPoint_title">露點</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">在總覽圖表中對警告使用與通知相同的篩選條件。</string>
+    <string name="preference_map_show_admin_by_default_title">行政地圖</string>
+    <string name="preference_displayDewPoint_summary">顯示露點而非相對濕度。</string>
+    <string name="preference_display_overviewchart_RH_summary">在總覽圖中顯示相對濕度。</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">過濾器警告</string>
+    <string name="preference_missingBackgroundLocationPermission_title">遺失權限</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">目前，應用程式無法在背景存取位置。請考慮授予此權限或關閉定期位置檢查。</string>
+    <string name="preference_map_show_admin_by_default_summary">自動顯示管理邊界。</string>
+    <string name="geoinput_declined">由於您已拒絕位置權限，因此需要位置權限的應用程式功能已被停用。您可以在設定中重新啟用。</string>
 </resources>
