@@ -495,4 +495,12 @@
     <string name="preference_display_wind_distance_time_summary">Tijd die moet worden weergegeven in uren.</string>
     <string name="preference_mapSaveState_title">Save hem</string>
     <string name="preference_mapSaveState_summary">Sla de laatste kaartpositie en vergroting op en herstel deze de volgende keer dat je de kaart oproept.</string>
+    <string name="preference_displayDewPoint_summary">Het dauwpunt weergeven in plaats van de relatieve vochtigheid.</string>
+    <string name="preference_displayDewPoint_title">Dauwpunt</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Gebruik dezelfde filter voor waarschuwingen in de overzichtskaart als voor meldingen.</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Filter waarschuwingen</string>
+    <string name="preference_display_overviewchart_RH_summary">Geef de relatieve vochtigheid weer in de overzichtskaart.</string>
+    <string name="geoinput_declined">Omdat je de locatietoestemmingen hebt geweigerd, zijn de functies van de app die deze vereisen uitgeschakeld. Je kunt ze weer inschakelen in de instellingen.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Ontbrekende toestemming</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">Op dit moment heeft de app geen toegang tot de locatie op de achtergrond. Overweeg deze toestemming te geven of schakel regelmatige locatiecontroles uit.</string>
 </resources>
