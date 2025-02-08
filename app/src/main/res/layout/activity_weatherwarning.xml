@@ -284,7 +284,7 @@
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/dwd_warnings_notice"
+                android:text="@string/dwd_notice_app"
                 android:textColor="?attr/colorTextDark"
                 android:background="?attr/colorPrimary"
                 android:textAlignment="center"

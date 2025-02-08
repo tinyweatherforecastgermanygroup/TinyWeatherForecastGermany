@@ -38,6 +38,7 @@
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
     import java.util.Date;
+    import java.util.Random;
     import java.util.concurrent.Executor;
 
     public class WeatherWarningAdapter extends BaseAdapter {
@@ -78,6 +79,7 @@
         }
 
         public static class ViewHolder{
+            RelativeLayout warning_item_frame;
             RelativeLayout warning_item_supermaincontainer;
             LinearLayout warning_item_maincontainer;
             LinearLayout warning_item_line1container;
@@ -141,6 +143,7 @@
                 viewHolder = (ViewHolder) view.getTag();
             } else {
                 view = layoutInflater.inflate(R.layout.warning_item, viewGroup, false);
+                viewHolder.warning_item_frame = (RelativeLayout) view.findViewById(R.id.warning_item_frame);
                 viewHolder.warning_item_supermaincontainer = (RelativeLayout) view.findViewById(R.id.fcitem_supermaincontainer);
                 viewHolder.warning_item_maincontainer = (LinearLayout) view.findViewById(R.id.warning_item_maincontainer);
                 viewHolder.warning_item_line1container = (LinearLayout) view.findViewById(R.id.warning_item_line1container);
@@ -164,39 +167,36 @@
                 viewHolder.shareIcon = (ImageView) view.findViewById(R.id.warning_item_shareicon);
                 view.setTag(viewHolder);
             }
-            int color = warning.getWarningColor();
-            float colorFactor = 3.5f;
-            if (ThemePicker.GetTheme(context) == R.style.AppTheme_Solarized) {
-                colorFactor = 1.2f;
+            int warningColor = warning.getWarningColor();
+            if (highlight){
+                viewHolder.warning_item_frame.setBackgroundColor(warningColor);
+            } else {
+                viewHolder.warning_item_frame.setBackgroundColor(MainActivity.getColorFromResource(context, R.attr.colorPrimary));
             }
-            if (ThemePicker.GetTheme(context) == R.style.AppTheme_Light) {
-                colorFactor = 1.2f;
-            }
-            //
-            float[] colorHSV = new float[3];
-            do {
-                colorFactor = colorFactor + 0.1f;
-                Color.colorToHSV(color, colorHSV);
-                color = Color.rgb(Math.round(Color.red(color) / colorFactor), Math.round(Color.green(color) / colorFactor), Math.round(Color.blue(color) / colorFactor));
-            } while (colorHSV[2]>0.5f);
+            int backgroundHighlightColor = ThemePicker.getColor(context,ThemePicker.ThemeColor.PRIMARYDARK);
+            // for debugging colors
+            // color = WeatherWarning.Severity.colors[new Random().nextInt(WeatherWarning.Severity.colors.length)];
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Drawable drawable = context.getDrawable(ThemePicker.getWidgetBackgroundDrawableRessource(context));
                 viewHolder.warning_item_maincontainer.setBackground(drawable);
+                /*
                 if (highlight) {
                     if (Build.VERSION.SDK_INT < 29) {
                         // drawable.setColorFilter(Color.argb(96, color, color, color), PorterDuff.Mode.SRC_IN);
-                        drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                        drawable.setColorFilter(backgroundHighlightColor, PorterDuff.Mode.SRC_IN);
                     } else {
-                        drawable.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_IN));
+                        drawable.setColorFilter(new BlendModeColorFilter(backgroundHighlightColor, BlendMode.SRC_IN));
                     }
                 }
+                */
             } else {
                 if (highlight) {
-                    viewHolder.warning_item_maincontainer.setBackgroundColor(color);
+                    // viewHolder.warning_item_maincontainer.setBackgroundColor(backgroundHighlightColor);
+                    viewHolder.warning_item_maincontainer.setBackgroundColor(MainActivity.getColorFromResource(context, R.attr.colorPrimary));
                 } else {
                     viewHolder.warning_item_maincontainer.setBackgroundColor(MainActivity.getColorFromResource(context, R.attr.colorPrimary));
                 }
-                viewHolder.warning_item_maincontainer.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.WIDGETBACKGROUND));
+                // viewHolder.warning_item_maincontainer.setBackgroundColor(ThemePicker.getColor(context, ThemePicker.ThemeColor.WIDGETBACKGROUND));
             }
             if (viewHolder.shareIcon != null){
                 viewHolder.shareIcon.setOnTouchListener(new View.OnTouchListener() {

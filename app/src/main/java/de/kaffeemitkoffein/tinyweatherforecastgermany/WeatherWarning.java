@@ -54,16 +54,23 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
             return 0;
         }
 
-        public static int getColor(Context context, int severity){
-            switch (severity){
-                case MINOR_INT: return Color.YELLOW;
-                case MODERATE_INT: return 0xe6700b;
-                case SEVERE_INT: return Color.RED;
-                case EXTREME_INT: return 0xb629cd;
-                default: return ThemePicker.getColorTextLight(context);
-            }
-        }
+        /*
+        Warning colors according to https://www.dwd.de/EN/weather/warnings/warnings_node.html
+        level 1                       : ffeb3b
+        level 2                       : fb8c00
+        level 3                       : e53935
+        level 4                       : 880e4f
+        heat alert                    : cc99ff
+        ultraviolet radiation warning : fe68fe
+         */
 
+        final static int[] colors = new int[]{0xffffeb3b,0xfffb8c00,0xffe53935,0xff880e4f,0xffcc99ff,0xfffe68fe};
+
+        public static int GetColorHue(int color){
+            float hsv[] = new float[3];
+            Color.colorToHSV(color,hsv);
+            return Math.round(hsv[0]);
+        }
     }
 
     public final static String ID_UPDATE="Update";

@@ -7,6 +7,7 @@
 - fixed relative humidity not drawn correctly in the overview chart when temperatures are below 0° C
 - add optional display of wind path information 
 - add option to save the last map position and zoom and restore them the next time the map is called
+- warnings are now highlighted by a frame (not by changing the background color)
 
 ## Version 0.62.5
 - fix app crash caused by launcher returning an inaccurately large widget size

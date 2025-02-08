@@ -275,10 +275,7 @@ public class WeatherSettings {
     }
 
     public static SharedPreferences getSharedPreferences(Context context){
-        // Context applicationContext = context.getApplicationContext();
-        //SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME,Context.MODE_PRIVATE);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        // Log.v("twfg",sharedPreferences.toString());
         return sharedPreferences;
     }
 

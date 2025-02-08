@@ -1345,7 +1345,6 @@ public class APIReaders {
                     File cacheDir = context.getCacheDir();
                     File targetFile = new File(cacheDir,weatherLayer.getCacheFilename());
                     InputStream layerInputStream = getLayerInputStream(weatherLayer);
-                    //Log.v("weather","Layer "+weatherLayer.layer+" fetching from GeoServer. File is "+targetFile.toString()+" and time is "+weatherLayer.timestamp);
                     boolean result = readImage(layerInputStream,targetFile);
                 } catch (Exception e){
                     PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"i/o error while fetching layers: "+e.getMessage());

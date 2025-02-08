@@ -59,7 +59,6 @@ public class ChartWidget extends ClassicWidget{
                     widgetWidth = widthLandscape;
                     widgetHeight = heightLandscape;
                 }
-                //Log.v("widget","Widget = "+widgetWidth+" / "+widgetHeight);
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c, MainActivity.class);
                 PendingIntent pendingIntent;

@@ -53,7 +53,6 @@ public class ClockWidget extends ClassicWidget {
                     widgetWidth = widthLandscape;
                     widgetHeight = heightLandscape;
                 }
-                //Log.v("widget","Widget = "+widgetWidth+" / "+widgetHeight);
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.clockwidget_layout);
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent_weather = new Intent(c, MainActivity.class);
