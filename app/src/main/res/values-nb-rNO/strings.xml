@@ -478,4 +478,13 @@
     <string name="preference_visualizeDaytime_title">Fremhev tidspunkt på dagen</string>
     <string name="preference_visualizeDaytime_summary">Tidspunktet på dagen understrekes av en litt lysere bakgrunn.</string>
     <string name="preference_display_overviewchart_RH_title">Relativ luftfuktighet</string>
+    <string name="preference_display_wind_distance_arc_title">Bue</string>
+    <string name="preference_display_wind_distance_arc_summary">Lengden på buene som vises, i grader.</string>
+    <string name="preference_display_wind_distance_time_title">Tid</string>
+    <string name="preference_display_wind_distance_time_summary">Tiden som skal vises i timer.</string>
+    <string name="preference_category_distancetravelled">Reist distanse</string>
+    <string name="preference_display_wind_distance_activate_title">Vis avstand</string>
+    <string name="preference_display_wind_distance_activate_summary">Vis estimert avstand etter vindretning og -hastighet på kartet.</string>
+    <string name="preference_mapSaveState_title">Lagre zoom</string>
+    <string name="preference_mapSaveState_summary">Lagre den siste kartposisjonen og forstørrelsen, og gjenopprett dem neste gang du henter kartet.</string>
 </resources>
