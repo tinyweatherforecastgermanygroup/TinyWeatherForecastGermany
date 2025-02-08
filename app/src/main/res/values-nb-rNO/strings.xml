@@ -487,4 +487,12 @@
     <string name="preference_display_wind_distance_activate_summary">Vis estimert avstand etter vindretning og -hastighet på kartet.</string>
     <string name="preference_mapSaveState_title">Lagre zoom</string>
     <string name="preference_mapSaveState_summary">Lagre den siste kartposisjonen og forstørrelsen, og gjenopprett dem neste gang du henter kartet.</string>
+    <string name="preference_displayDewPoint_summary">Vis duggpunktet i stedet for relativ luftfuktighet.</string>
+    <string name="preference_displayDewPoint_title">Duggpunkt</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Filtrer advarsler</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Bruk det samme filteret for advarsler i oversiktsdiagrammet som for varsler.</string>
+    <string name="preference_display_overviewchart_RH_summary">Vis den relative luftfuktigheten i oversiktsdiagrammet.</string>
+    <string name="geoinput_declined">Siden du har avslått posisjonstillatelser, er appfunksjonene som krever dem, deaktivert. Du kan aktivere dem igjen i innstillingene.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Mangler tillatelse</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">For øyeblikket har ikke appen tilgang til posisjonen i bakgrunnen. Vurder å gi denne tillatelsen, eller slå av regelmessige posisjonskontroller.</string>
 </resources>
