@@ -485,4 +485,13 @@
     <string name="preference_weatherurl_summary2">Jelenlegi URL:</string>
     <string name="preference_visualizeDaytime_title">Napszak kiemelése</string>
     <string name="preference_visualizeDaytime_summary">A napszakot a kissé világosabb háttér hangsúlyozza.</string>
+    <string name="preference_display_wind_distance_activate_summary">A szél irányát és sebességét követő becsült távolságot mutassa a térképen.</string>
+    <string name="preference_category_distancetravelled">Távolság megtett út</string>
+    <string name="preference_display_wind_distance_activate_title">Távolság kijelzése</string>
+    <string name="preference_display_wind_distance_arc_title">Ív</string>
+    <string name="preference_mapSaveState_title">Nagyítás mentése</string>
+    <string name="preference_mapSaveState_summary">A legutóbbi térképpozíció és nagyítás elmentése és visszaállítása a térkép következő meghívásakor.</string>
+    <string name="preference_display_wind_distance_arc_summary">A megjelenített ívek hossza fokban.</string>
+    <string name="preference_display_wind_distance_time_title">Idő</string>
+    <string name="preference_display_wind_distance_time_summary">A megjelenítendő idő órákban.</string>
 </resources>
