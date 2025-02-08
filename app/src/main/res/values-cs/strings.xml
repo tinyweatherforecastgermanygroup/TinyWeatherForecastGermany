@@ -485,4 +485,13 @@
     <string name="preference_weatherurl_summary2">Aktuální adresa URL:</string>
     <string name="preference_visualizeDaytime_summary">Denní doba je zdůrazněna mírně světlejším pozadím.</string>
     <string name="preference_visualizeDaytime_title">Zvýraznění denní doby</string>
+    <string name="preference_display_wind_distance_activate_summary">Na mapě zobrazte odhadovanou vzdálenost podle směru a rychlosti větru.</string>
+    <string name="preference_category_distancetravelled">Ujetá vzdálenost</string>
+    <string name="preference_display_wind_distance_activate_title">Vzdálenost zobrazení</string>
+    <string name="preference_display_wind_distance_arc_summary">Délka zobrazených oblouků ve stupních.</string>
+    <string name="preference_display_wind_distance_time_summary">Čas, který se zobrazí v hodinách.</string>
+    <string name="preference_mapSaveState_title">Uložit zoom</string>
+    <string name="preference_mapSaveState_summary">Uložte poslední polohu a zvětšení mapy a obnovte je při příštím vyvolání mapy.</string>
+    <string name="preference_display_wind_distance_arc_title">Oblouk</string>
+    <string name="preference_display_wind_distance_time_title">Čas</string>
 </resources>
