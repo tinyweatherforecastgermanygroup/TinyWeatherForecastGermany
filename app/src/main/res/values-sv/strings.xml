@@ -233,4 +233,13 @@
     <string name="geoinput_cancel">Avbryt</string>
     <string name="geoinput_reflocation_longitude">Longitud:</string>
     <string name="welcome_s2_text2">moln</string>
+    <string name="preference_category_distancetravelled">Tillryggalagd sträcka</string>
+    <string name="preference_display_wind_distance_activate_title">Avstånd till display</string>
+    <string name="preference_display_wind_distance_activate_summary">Visa det beräknade avståndet efter vindens riktning och hastighet på kartan.</string>
+    <string name="preference_display_wind_distance_arc_title">Båge</string>
+    <string name="preference_display_wind_distance_arc_summary">Längd på de visade bågarna i grader.</string>
+    <string name="preference_display_wind_distance_time_title">Tid</string>
+    <string name="preference_display_wind_distance_time_summary">Tid som ska visas i timmar.</string>
+    <string name="preference_mapSaveState_title">Spara zoom</string>
+    <string name="preference_mapSaveState_summary">Spara den senaste kartpositionen och förstoringen och återställ dem nästa gång du ringer upp kartan.</string>
 </resources>
