@@ -494,4 +494,12 @@
     <string name="preference_mapSaveState_summary">Uložte poslední polohu a zvětšení mapy a obnovte je při příštím vyvolání mapy.</string>
     <string name="preference_display_wind_distance_arc_title">Oblouk</string>
     <string name="preference_display_wind_distance_time_title">Čas</string>
+    <string name="preference_displayDewPoint_summary">Zobrazení rosného bodu místo relativní vlhkosti.</string>
+    <string name="preference_displayDewPoint_title">Rosný bod</string>
+    <string name="preference_display_overviewchart_RH_summary">Zobrazení relativní vlhkosti v přehledovém grafu.</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Varování filtru</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Pro varování v přehledovém grafu použijte stejný filtr jako pro oznámení.</string>
+    <string name="geoinput_declined">Vzhledem k tomu, že jste odmítli oprávnění k určování polohy, byly funkce aplikace, které je vyžadují, zakázány. Můžete je znovu povolit v nastavení.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Chybějící povolení</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">V současné době aplikace nemá přístup k poloze na pozadí. Zvažte udělení tohoto oprávnění nebo vypněte pravidelné kontroly polohy.</string>
 </resources>
