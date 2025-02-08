@@ -512,7 +512,7 @@
     <string name="preference_visualizeDaytime_summary">Час доби виділяється трохи світлішим тлом.</string>
     <string name="preference_displayDewPoint_summary">Показувати точку роси замість відносної вологості.</string>
     <string name="preference_displayDewPoint_title">Точка роси</string>
-    <string name="preference_display_wind_distance_activate_summary">Покажіть приблизну відстань за напрямком і швидкістю вітру на карті.</string>
+    <string name="preference_display_wind_distance_activate_summary">Показати приблизну відстань за напрямком і швидкістю вітру на карті.</string>
     <string name="preference_category_distancetravelled">Пройдена відстань</string>
     <string name="preference_display_wind_distance_arc_title">Дуга</string>
     <string name="preference_display_wind_distance_arc_summary">Довжина дуг, що відображаються, в градусах.</string>
@@ -520,5 +520,5 @@
     <string name="preference_display_wind_distance_time_summary">Час відображається в годинах.</string>
     <string name="preference_display_wind_distance_activate_title">Відстань відображення</string>
     <string name="preference_mapSaveState_title">Зберегти масштаб</string>
-    <string name="preference_mapSaveState_summary">Збережіть останнє положення мапи та збільшення і відновіть їх наступного разу, коли викличете мапу.</string>
+    <string name="preference_mapSaveState_summary">Зберегти останнє положення мапи та збільшення і відновити їх при наступному виклику мапи.</string>
 </resources>
