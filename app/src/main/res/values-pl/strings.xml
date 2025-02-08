@@ -494,4 +494,12 @@
     <string name="preference_category_distancetravelled">Przebyta odległość</string>
     <string name="preference_mapSaveState_title">Zapisz powiększenie</string>
     <string name="preference_mapSaveState_summary">Zapisz ostatnią pozycję i powiększenie mapy i przywróć je przy następnym wywołaniu mapy.</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Użyj tego samego filtra dla ostrzeżeń na wykresie przeglądu, co dla powiadomień.</string>
+    <string name="preference_displayDewPoint_summary">Wyświetla punkt rosy zamiast wilgotności względnej.</string>
+    <string name="preference_displayDewPoint_title">Punkt rosy</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Ostrzeżenia filtra</string>
+    <string name="preference_display_overviewchart_RH_summary">Wyświetl wilgotność względną na wykresie poglądowym.</string>
+    <string name="geoinput_declined">Ponieważ nie masz uprawnień do lokalizacji, funkcje aplikacji, które ich wymagają, zostały wyłączone. Możesz je ponownie włączyć w ustawieniach.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Brakujące zezwolenie</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">Obecnie aplikacja nie może uzyskać dostępu do lokalizacji w tle. Rozważ przyznanie tego uprawnienia lub wyłącz regularne sprawdzanie lokalizacji.</string>
 </resources>
