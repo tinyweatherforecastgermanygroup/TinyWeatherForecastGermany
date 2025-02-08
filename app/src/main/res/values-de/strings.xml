@@ -529,4 +529,12 @@
     <string name="preference_displayDewPoint_title">Taupunkt</string>
     <string name="preference_displayDewPoint_summary">Taupunkt statt relativer Luftfeuchtigkeit anzeigen.</string>
     <string name="preference_category_distancetravelled">Reiseentfernung</string>
+    <string name="preference_display_wind_distance_time_title">Zeit</string>
+    <string name="preference_mapSaveState_title">Zoom speichern</string>
+    <string name="preference_mapSaveState_summary">Die letzte Kartenposition und Vergrößerung speichern und sie beim nächsten Aufruf der Karte wieder herstellen.</string>
+    <string name="preference_display_wind_distance_activate_title">Zeige Entfernung</string>
+    <string name="preference_display_wind_distance_activate_summary">Zeige die geschätzte Entfernung entsprechend der Windrichtung und Geschwindigkeit auf der Karte an.</string>
+    <string name="preference_display_wind_distance_arc_title">Bogen</string>
+    <string name="preference_display_wind_distance_arc_summary">Länge der angezeigten Bögen in Grad.</string>
+    <string name="preference_display_wind_distance_time_summary">Anzuzeigende Zeit in Stunden.</string>
 </resources>
