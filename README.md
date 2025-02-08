@@ -32,7 +32,7 @@ You can get the binary builds here: <https://kaffeemitkoffein.de/nextcloud/index
 
 Or from the developer's own F-Droid repository: <https://kaffeemitkoffein.de/fdroid/repo>
 
-<img style="height: 3em;" src="https://www.kaffeemitkoffein.de/fdroid/repo/index.png" alt="Get it on F-Droid">
+<img style="width: 5em; height: 5em;" src="https://www.kaffeemitkoffein.de/fdroid/repo/index.png" alt="Get it on F-Droid">
 
 1. Launch the f-droid app
 2. Select "Settings"
