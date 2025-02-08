@@ -495,4 +495,12 @@
     <string name="preference_mapSaveState_title">Salva lo zoom</string>
     <string name="preference_mapSaveState_summary">Salva l\'ultima posizione e l\'ultimo ingrandimento della mappa e li ripristina la volta successiva che si richiama la mappa.</string>
     <string name="preference_display_wind_distance_activate_summary">Mostrare la distanza stimata seguendo la direzione e la velocità del vento sulla mappa.</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Avvertenze sui filtri</string>
+    <string name="preference_displayDewPoint_title">Punto di rugiada</string>
+    <string name="preference_displayDewPoint_summary">Visualizza il punto di rugiada invece dell\'umidità relativa.</string>
+    <string name="preference_display_overviewchart_RH_summary">Visualizzare l\'umidità relativa nel grafico d\'insieme.</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Per gli avvisi nel grafico d\'insieme utilizzare lo stesso filtro delle notifiche.</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">Attualmente l\'app non può accedere alla posizione in background. Considerate la possibilità di concedere questa autorizzazione o di disattivare i controlli regolari della posizione.</string>
+    <string name="geoinput_declined">Poiché l\'utente ha rifiutato i permessi di localizzazione, le funzioni dell\'app che li richiedono sono state disattivate. È possibile attivarle nuovamente nelle impostazioni.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Autorizzazione mancante</string>
 </resources>
