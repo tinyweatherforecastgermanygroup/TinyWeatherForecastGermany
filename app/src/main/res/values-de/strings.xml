@@ -528,4 +528,5 @@
     <string name="preference_visualizeDaytime_summary">Die Tageszeit wird durch einen etwas helleren Hintergrund hervorgehoben.</string>
     <string name="preference_displayDewPoint_title">Taupunkt</string>
     <string name="preference_displayDewPoint_summary">Taupunkt statt relativer Luftfeuchtigkeit anzeigen.</string>
+    <string name="preference_category_distancetravelled">Reiseentfernung</string>
 </resources>
