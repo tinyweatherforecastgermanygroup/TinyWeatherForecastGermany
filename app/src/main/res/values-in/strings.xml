@@ -494,4 +494,11 @@
     <string name="preference_display_wind_distance_arc_summary">Panjang busur yang ditampilkan dalam derajat.</string>
     <string name="preference_display_wind_distance_time_title">Waktu</string>
     <string name="preference_display_wind_distance_time_summary">Waktu yang akan ditampilkan dalam jam.</string>
+    <string name="preference_displayDewPoint_title">Titik embun</string>
+    <string name="preference_displayDewPoint_summary">Menampilkan titik embun, bukan kelembapan relatif.</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Gunakan filter yang sama untuk peringatan di bagan ikhtisar seperti halnya untuk pemberitahuan.</string>
+    <string name="preference_display_overviewchart_RH_summary">Menampilkan kelembapan relatif dalam bagan ikhtisar.</string>
+    <string name="geoinput_declined">Karena Anda telah menolak izin lokasi, fitur aplikasi yang memerlukannya telah dinonaktifkan. Anda dapat mengaktifkannya lagi di pengaturan.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Izin yang hilang</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">Saat ini, aplikasi tidak dapat mengakses lokasi di latar belakang. Pertimbangkan untuk memberikan izin ini atau matikan pemeriksaan lokasi reguler.</string>
 </resources>
