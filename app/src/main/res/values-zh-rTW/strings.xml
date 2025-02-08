@@ -81,4 +81,13 @@
     <string name="preference_visualizeDaytime_summary">略微淺色的背景強調了一天中的時間。</string>
     <string name="preference_visualizeDaytime_title">強調每天的時間</string>
     <string name="preference_display_overviewchart_RH_title">相對濕度</string>
+    <string name="preference_display_wind_distance_arc_title">弧形</string>
+    <string name="preference_display_wind_distance_arc_summary">顯示的弧長度，單位為度。</string>
+    <string name="preference_category_distancetravelled">旅行距離</string>
+    <string name="preference_display_wind_distance_activate_title">顯示距離</string>
+    <string name="preference_display_wind_distance_activate_summary">在地圖上顯示跟隨風向和風速的估計距離。</string>
+    <string name="preference_mapSaveState_title">儲存變焦</string>
+    <string name="preference_display_wind_distance_time_summary">以小時為單位顯示時間。</string>
+    <string name="preference_display_wind_distance_time_title">時間</string>
+    <string name="preference_mapSaveState_summary">儲存上次的地圖位置和放大倍率，並在下次呼叫地圖時還原。</string>
 </resources>
