@@ -485,4 +485,13 @@
     <string name="preference_weatherurl_summary2">Nuværende URL:</string>
     <string name="preference_visualizeDaytime_title">Fremhæv tidspunkt på dagen</string>
     <string name="preference_visualizeDaytime_summary">Tidspunktet på dagen understreges af den lidt lysere baggrund.</string>
+    <string name="preference_display_wind_distance_activate_summary">Vis den anslåede afstand efter vindens retning og hastighed på kortet.</string>
+    <string name="preference_display_wind_distance_activate_title">Vis afstand</string>
+    <string name="preference_display_wind_distance_time_summary">Tid, der skal vises i timer.</string>
+    <string name="preference_mapSaveState_title">Gem zoom</string>
+    <string name="preference_mapSaveState_summary">Gem den sidste kortposition og forstørrelse, og gendan dem, næste gang du kalder kortet.</string>
+    <string name="preference_category_distancetravelled">Afstand tilbagelagt</string>
+    <string name="preference_display_wind_distance_arc_title">Bue</string>
+    <string name="preference_display_wind_distance_arc_summary">Længden af de viste buer i grader.</string>
+    <string name="preference_display_wind_distance_time_title">Tid</string>
 </resources>
