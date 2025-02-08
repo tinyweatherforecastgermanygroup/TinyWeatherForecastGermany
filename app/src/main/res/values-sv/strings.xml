@@ -242,4 +242,14 @@
     <string name="preference_display_wind_distance_time_summary">Tid som ska visas i timmar.</string>
     <string name="preference_mapSaveState_title">Spara zoom</string>
     <string name="preference_mapSaveState_summary">Spara den senaste kartpositionen och förstoringen och återställ dem nästa gång du ringer upp kartan.</string>
+    <string name="preference_map_show_admin_by_default_title">Administrativ karta</string>
+    <string name="preference_map_show_admin_by_default_summary">Visa administrativa gränser automatiskt.</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Filtervarningar</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Använd samma filter för varningar i översiktsdiagrammet som för meddelanden.</string>
+    <string name="preference_displayDewPoint_summary">Visa daggpunkten istället för den relativa luftfuktigheten.</string>
+    <string name="preference_displayDewPoint_title">Daggpunkt</string>
+    <string name="preference_display_overviewchart_RH_summary">Visa den relativa luftfuktigheten i översiktsdiagrammet.</string>
+    <string name="geoinput_declined">Eftersom du har avböjt platsbehörigheter har de appfunktioner som kräver dem inaktiverats. Du kan aktivera dem igen i inställningarna.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Saknad tillåtelse</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">För närvarande kan appen inte komma åt platsen i bakgrunden. Överväg att ge denna behörighet eller stäng av regelbundna platskontroller.</string>
 </resources>
