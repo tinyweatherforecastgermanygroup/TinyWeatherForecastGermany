@@ -494,4 +494,12 @@
     <string name="preference_display_wind_distance_time_summary">Näytettävä aika tunteina.</string>
     <string name="preference_mapSaveState_title">Tallenna zoom</string>
     <string name="preference_mapSaveState_summary">Tallenna viimeisin kartan sijainti ja suurennos ja palauta ne, kun seuraavan kerran kutsut karttaa.</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Suodattimen varoitukset</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Käytä samaa suodatinta varoituksille yleiskatsauksessa kuin ilmoituksille.</string>
+    <string name="preference_display_overviewchart_RH_summary">Näytä suhteellinen kosteus yleiskatsauksessa.</string>
+    <string name="preference_displayDewPoint_title">Kastepiste</string>
+    <string name="preference_displayDewPoint_summary">Näyttää kastepisteen suhteellisen kosteuden sijasta.</string>
+    <string name="geoinput_declined">Koska olet hylännyt sijaintioikeudet, niitä vaativat sovelluksen ominaisuudet on poistettu käytöstä. Voit ottaa ne uudelleen käyttöön asetuksissa.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Puuttuva lupa</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">Tällä hetkellä sovellus ei voi käyttää sijaintia taustalla. Harkitse tämän luvan antamista tai ota säännölliset sijainnin tarkistukset pois käytöstä.</string>
 </resources>
