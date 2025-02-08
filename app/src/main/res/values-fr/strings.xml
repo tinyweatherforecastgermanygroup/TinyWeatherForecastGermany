@@ -517,4 +517,13 @@
     <string name="preference_weatherurl_summary2">URL actuel :</string>
     <string name="preference_visualizeDaytime_title">Mettre en évidence l\'heure de la journée</string>
     <string name="preference_visualizeDaytime_summary">Le moment de la journée est souligné par le fond légèrement plus clair.</string>
+    <string name="preference_mapSaveState_summary">Enregistrez la dernière position et le dernier agrandissement de la carte et restaurez-les la prochaine fois que vous appellerez la carte.</string>
+    <string name="preference_category_distancetravelled">Distance parcourue</string>
+    <string name="preference_display_wind_distance_activate_title">Distance d\'affichage</string>
+    <string name="preference_display_wind_distance_activate_summary">Indiquer la distance estimée en fonction de la direction et de la vitesse du vent sur la carte.</string>
+    <string name="preference_display_wind_distance_arc_title">Arc</string>
+    <string name="preference_display_wind_distance_arc_summary">Longueur des arcs affichés en degrés.</string>
+    <string name="preference_display_wind_distance_time_title">L\'heure</string>
+    <string name="preference_display_wind_distance_time_summary">Heure à afficher en heures.</string>
+    <string name="preference_mapSaveState_title">Sauvegarder le zoom</string>
 </resources>
