@@ -485,4 +485,13 @@
     <string name="preference_weatherurl_summary2">Nykyinen URL:</string>
     <string name="preference_visualizeDaytime_title">Korosta vuorokauden aika</string>
     <string name="preference_visualizeDaytime_summary">Kellonaika korostuu hieman vaaleammalla taustalla.</string>
+    <string name="preference_category_distancetravelled">Kuljettu matka</string>
+    <string name="preference_display_wind_distance_activate_title">Näytön etäisyys</string>
+    <string name="preference_display_wind_distance_activate_summary">Näytä kartalla arvioitu etäisyys tuulen suunnan ja nopeuden mukaan.</string>
+    <string name="preference_display_wind_distance_arc_summary">Näytettävien kaarien pituus asteina.</string>
+    <string name="preference_display_wind_distance_arc_title">Arc</string>
+    <string name="preference_display_wind_distance_time_title">Aika</string>
+    <string name="preference_display_wind_distance_time_summary">Näytettävä aika tunteina.</string>
+    <string name="preference_mapSaveState_title">Tallenna zoom</string>
+    <string name="preference_mapSaveState_summary">Tallenna viimeisin kartan sijainti ja suurennos ja palauta ne, kun seuraavan kerran kutsut karttaa.</string>
 </resources>
