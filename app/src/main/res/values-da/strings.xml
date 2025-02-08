@@ -494,4 +494,12 @@
     <string name="preference_display_wind_distance_arc_title">Bue</string>
     <string name="preference_display_wind_distance_arc_summary">Længden af de viste buer i grader.</string>
     <string name="preference_display_wind_distance_time_title">Tid</string>
+    <string name="preference_displayDewPoint_title">Dugpunkt</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Brug det samme filter for advarsler i oversigtsdiagrammet som for notifikationer.</string>
+    <string name="preference_display_overviewchart_RH_summary">Vis den relative luftfugtighed i oversigtsdiagrammet.</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Filtrer advarsler</string>
+    <string name="preference_displayDewPoint_summary">Vis dugpunktet i stedet for den relative luftfugtighed.</string>
+    <string name="geoinput_declined">Da du har afvist placeringstilladelser, er de appfunktioner, der kræver dem, blevet deaktiveret. Du kan aktivere dem igen i indstillingerne.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Manglende tilladelse</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">I øjeblikket kan appen ikke få adgang til placeringen i baggrunden. Overvej at give denne tilladelse eller slå regelmæssige lokationstjek fra.</string>
 </resources>
