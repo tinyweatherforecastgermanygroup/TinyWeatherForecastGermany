@@ -511,4 +511,13 @@
     <string name="preference_visualizeDaytime_summary">La hora del día se acentúa con un fondo ligeramente más claro.</string>
     <string name="preference_visualizeDaytime_title">Hora destacada del día</string>
     <string name="geoinput_declined">Como has rechazado los permisos de localización, las funciones de la aplicación que los requieren se han desactivado. Puedes volver a activarlas en los ajustes.</string>
+    <string name="preference_category_distancetravelled">Distancia recorrida</string>
+    <string name="preference_display_wind_distance_activate_title">Distancia de visualización</string>
+    <string name="preference_display_wind_distance_activate_summary">Muestra la distancia estimada siguiendo la dirección y la velocidad del viento en el mapa.</string>
+    <string name="preference_mapSaveState_summary">Guarda la última posición y ampliación del mapa y restablécelas la próxima vez que llames al mapa.</string>
+    <string name="preference_display_wind_distance_arc_title">Arco</string>
+    <string name="preference_display_wind_distance_arc_summary">Longitud de los arcos mostrados en grados.</string>
+    <string name="preference_display_wind_distance_time_title">Tiempo</string>
+    <string name="preference_display_wind_distance_time_summary">Tiempo a mostrar en horas.</string>
+    <string name="preference_mapSaveState_title">Guardar zoom</string>
 </resources>
