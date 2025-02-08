@@ -32,7 +32,7 @@ You can get the binary builds here: <https://kaffeemitkoffein.de/nextcloud/index
 
 Or from the developer's own F-Droid repository: <https://kaffeemitkoffein.de/fdroid/repo>
 
-<img style="height: 10em;" src="https://www.kaffeemitkoffein.de/fdroid/repo/index.png" alt="Get it on F-Droid">
+<img style="height: 3em;" src="https://www.kaffeemitkoffein.de/fdroid/repo/index.png" alt="Get it on F-Droid">
 
 1. Launch the f-droid app
 2. Select "Settings"
@@ -50,7 +50,7 @@ For a detailed list of recent changes, see [the changelog](https://codeberg.org/
 
 ## License
 
-Copyright (c) 2020, 2021, 2022, 2023, 2024 Pawel Dube
+Copyright (c) 2020, 2021, 2022, 2023, 2024, 2025 Pawel Dube
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
@@ -157,6 +157,15 @@ Since version 0.62.0, the FOREGROUND_SERVICE permission is no longer necessary a
 ### For locations in a different time zone the day/night icons seem incorrect.
 
 The app always displays the date & time of your device (and locale). Example: you are in Berlin and have selected the weather for Cuba. The app shows you the weather in Cuba at the corresponding Berlin time and uses the day/night-icons corresponding to the Berlin time. Once you have travelled to Cuba and your device switched to the local time in Cuba, the app will display the weather in Cuba at the Cuba time.
+
+### How to best use the app outside of Germany?
+
+Despite the name, app provides weather forecasts for a lot of locations worldwide. You can easily disable the functions specific to Germany:
+
+- under "sync settings", disable *sync warnings* and *sync pollen count*, since both are limited to Germany only.
+- under "Weather warnings", disable warnings, since they are limited to Germany as well.
+
+That's all. This way, you have disabled the features that apply to Germany only.
 
 ### How to read the widget?
 
