@@ -486,4 +486,13 @@
     <string name="preference_visualizeDaytime_summary">L\'ora del giorno è sottolineata da uno sfondo leggermente più chiaro.</string>
     <string name="preference_visualizeDaytime_title">Evidenziare l\'ora del giorno</string>
     <string name="preference_display_overviewchart_RH_title">Umidità relativa</string>
+    <string name="preference_display_wind_distance_activate_title">Distanza di visualizzazione</string>
+    <string name="preference_display_wind_distance_arc_title">Arco</string>
+    <string name="preference_display_wind_distance_arc_summary">Lunghezza degli archi visualizzati in gradi.</string>
+    <string name="preference_display_wind_distance_time_title">Tempo</string>
+    <string name="preference_display_wind_distance_time_summary">Tempo da visualizzare in ore.</string>
+    <string name="preference_category_distancetravelled">Distanza percorsa</string>
+    <string name="preference_mapSaveState_title">Salva lo zoom</string>
+    <string name="preference_mapSaveState_summary">Salva l\'ultima posizione e l\'ultimo ingrandimento della mappa e li ripristina la volta successiva che si richiama la mappa.</string>
+    <string name="preference_display_wind_distance_activate_summary">Mostrare la distanza stimata seguendo la direzione e la velocità del vento sulla mappa.</string>
 </resources>
