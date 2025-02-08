@@ -494,4 +494,12 @@
     <string name="preference_display_wind_distance_arc_summary">A megjelenített ívek hossza fokban.</string>
     <string name="preference_display_wind_distance_time_title">Idő</string>
     <string name="preference_display_wind_distance_time_summary">A megjelenítendő idő órákban.</string>
+    <string name="preference_display_overviewchart_RH_summary">A relatív páratartalom megjelenítése az áttekintő diagramon.</string>
+    <string name="preference_display_overviewchart_filter_warnings_summary">Az áttekintő diagramban a figyelmeztetésekhez ugyanazt a szűrőt használja, mint az értesítésekhez.</string>
+    <string name="preference_displayDewPoint_title">Harmatpont</string>
+    <string name="preference_display_overviewchart_filter_warnings_title">Szűrő figyelmeztetések</string>
+    <string name="preference_displayDewPoint_summary">A relatív páratartalom helyett a harmatpont megjelenítése.</string>
+    <string name="geoinput_declined">Mivel Ön elutasította a helymeghatározási engedélyeket, az azokat igénylő alkalmazásfunkciókat letiltotta. A beállításokban újra engedélyezheti őket.</string>
+    <string name="preference_missingBackgroundLocationPermission_title">Hiányzó engedély</string>
+    <string name="preference_missingBackgroundLocationPermission_summary">Jelenleg az alkalmazás nem tud hozzáférni a helyhez a háttérben. Fontolja meg ennek az engedélynek a megadását, vagy kapcsolja ki a rendszeres helyellenőrzést.</string>
 </resources>
