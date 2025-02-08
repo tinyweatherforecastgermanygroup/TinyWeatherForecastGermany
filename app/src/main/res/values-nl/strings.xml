@@ -486,4 +486,13 @@
     <string name="preference_weatherurl_summary2">Huidige URL:</string>
     <string name="preference_visualizeDaytime_title">Markeer tijd van de dag</string>
     <string name="preference_visualizeDaytime_summary">Het tijdstip wordt benadrukt door de iets lichtere achtergrond.</string>
+    <string name="preference_display_wind_distance_activate_summary">Toon de geschatte afstand volgens de richting en snelheid van de wind op de kaart.</string>
+    <string name="preference_category_distancetravelled">Afgelegde afstand</string>
+    <string name="preference_display_wind_distance_activate_title">Afstand weergeven</string>
+    <string name="preference_display_wind_distance_arc_title">Boog</string>
+    <string name="preference_display_wind_distance_arc_summary">Lengte van de weergegeven bogen in graden.</string>
+    <string name="preference_display_wind_distance_time_title">Tijd</string>
+    <string name="preference_display_wind_distance_time_summary">Tijd die moet worden weergegeven in uren.</string>
+    <string name="preference_mapSaveState_title">Save hem</string>
+    <string name="preference_mapSaveState_summary">Sla de laatste kaartpositie en vergroting op en herstel deze de volgende keer dat je de kaart oproept.</string>
 </resources>
