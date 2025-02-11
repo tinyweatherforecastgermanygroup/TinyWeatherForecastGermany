@@ -40,6 +40,8 @@ public class WeatherLayersActivity extends Activity {
     public static final String UPDATE_LAYERS_RESULT = "ACTION_UPDATE_LAYERS_RESULT";
     public static final String ACTION_UPDATE_FORBIDDEN = "ACTION_UPDATE_FORBIDDEN";
 
+    private static final int INSAMPLESIZE = 2;
+
     private Context context;
     Executor executor;
     ActionBar actionBar;
@@ -147,15 +149,12 @@ public class WeatherLayersActivity extends Activity {
             }
         };
         weatherLayers = WeatherLayer.getLayers(context);
+
         getLayerImagesForced = new APIReaders.getLayerImages(context, weatherLayers) {
             @Override
             public void onProgress(final WeatherLayer weatherLayer) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateLayer(weatherLayer);
-                    }
-                });
+                PrivateLog.log(context,PrivateLog.LAYERS,PrivateLog.INFO,"Updating layer: "+weatherLayer.layer);
+                updateLayer(weatherLayer);
             }
             @Override
             public void onFinished(boolean success) {
@@ -210,12 +209,7 @@ public class WeatherLayersActivity extends Activity {
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateDisplay();
-                            }
-                        });
+                        updateDisplay();
                         ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
                         forceWeatherUpdateFlag = false;
                     }
@@ -232,12 +226,7 @@ public class WeatherLayersActivity extends Activity {
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateDisplay();
-                            }
-                        });
+                        updateDisplay();
                         ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
                         forceWeatherUpdateFlag = false;
                     }
@@ -621,9 +610,14 @@ public class WeatherLayersActivity extends Activity {
     public void updateDisplay(){
         for (int i=0; i<displayLayers.size(); i++){
             DisplayLayer displayLayer = displayLayers.get(i);
-            Bitmap map = displayLayer.weatherLayer.getLayerBitmap(context);
-            displayLayer.imageView.setImageBitmap(map);
-            displayLayer.textViewDate.setText(displayLayer.weatherLayer.getTimestampString());
+            Bitmap map = displayLayer.weatherLayer.getLayerBitmap(context,INSAMPLESIZE);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    displayLayer.imageView.setImageBitmap(map);
+                    displayLayer.textViewDate.setText(displayLayer.weatherLayer.getTimestampString());
+                }
+            });
         }
     }
 
@@ -631,18 +625,23 @@ public class WeatherLayersActivity extends Activity {
         if (updateLayer!=null){
             DisplayLayer displayLayer = getDisplayLayerByID(updateLayer.layer);
             if (displayLayer!=null){
-                Bitmap bitmap = updateLayer.getLayerBitmap(context);
-                if (bitmap!=null){
-                    displayLayer.textViewTitle.setVisibility(View.VISIBLE);
-                    displayLayer.textViewDate.setVisibility(View.VISIBLE);
-                    displayLayer.imageView.setVisibility(View.VISIBLE);
-                    displayLayer.imageView.setImageBitmap(bitmap);
-                    displayLayer.textViewDate.setText(displayLayer.weatherLayer.getTimestampString());
-                } else {
-                    displayLayer.textViewTitle.setVisibility(View.GONE);
-                    displayLayer.textViewDate.setVisibility(View.GONE);
-                    displayLayer.imageView.setVisibility(View.GONE);
-                }
+                final Bitmap bitmap = updateLayer.getLayerBitmap(context,INSAMPLESIZE);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (bitmap!=null){
+                            displayLayer.textViewTitle.setVisibility(View.VISIBLE);
+                            displayLayer.textViewDate.setVisibility(View.VISIBLE);
+                            displayLayer.imageView.setVisibility(View.VISIBLE);
+                            displayLayer.imageView.setImageBitmap(bitmap);
+                            displayLayer.textViewDate.setText(displayLayer.weatherLayer.getTimestampString());
+                        } else {
+                            displayLayer.textViewTitle.setVisibility(View.GONE);
+                            displayLayer.textViewDate.setVisibility(View.GONE);
+                            displayLayer.imageView.setVisibility(View.GONE);
+                        }
+                    }
+                });
             }
         }
     }

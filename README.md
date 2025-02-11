@@ -32,7 +32,7 @@ You can get the binary builds here: <https://kaffeemitkoffein.de/nextcloud/index
 
 Or from the developer's own F-Droid repository: <https://kaffeemitkoffein.de/fdroid/repo>
 
-<img style="width: 5em; height: 5em;" src="https://www.kaffeemitkoffein.de/fdroid/repo/index.png" alt="Get it on F-Droid">
+<img src="https://www.kaffeemitkoffein.de/fdroid/repo/index.png" alt="Get it on F-Droid">
 
 1. Launch the f-droid app
 2. Select "Settings"
@@ -160,7 +160,7 @@ The app always displays the date & time of your device (and locale). Example: yo
 
 ### How to best use the app outside of Germany?
 
-Despite the name, app provides weather forecasts for a lot of locations worldwide. You can easily disable the functions specific to Germany:
+Despite the name, Tiny Weather Forecast Germany provides weather data for a lot of locations worldwide. You can easily disable the functions specific to Germany:
 
 - under "sync settings", disable *sync warnings* and *sync pollen count*, since both are limited to Germany only.
 - under "Weather warnings", disable warnings, since they are limited to Germany as well.

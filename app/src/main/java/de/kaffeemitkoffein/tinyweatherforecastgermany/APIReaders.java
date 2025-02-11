@@ -1338,7 +1338,7 @@ public class APIReaders {
             return true;
         }
 
-        public boolean readLayer(WeatherLayer weatherLayer){
+        public boolean readLayer(WeatherLayer weatherLayer, boolean isSubLayer){
             // read outdated images from geoServer. Ignore pollen layers, because they are generated locally.
             if ((weatherLayer.isOutdated(context) && !weatherLayer.isPollen()) || (forceUpdate)){
                 try {
@@ -1355,14 +1355,16 @@ public class APIReaders {
                 if (weatherLayer.atop!=null){
                     for (int i=0; i<weatherLayer.atop.length; i++){
                         if (weatherLayer.atop[i]!=weatherLayer.layer){
-                            readLayer(new WeatherLayer(weatherLayer.atop[i]));
+                            readLayer(new WeatherLayer(weatherLayer.atop[i]),true);
                         }
                     }
                 }
             } else {
                 // layer in place. Do nothing special here.
             }
-            onProgress(weatherLayer);
+            if (!isSubLayer){
+                onProgress(weatherLayer);
+            }
             return true;
         }
 
@@ -1389,7 +1391,7 @@ public class APIReaders {
             if (layers!=null){
                 for (int i=0; i<layers.size(); i++){
                     WeatherLayer weatherLayer = layers.get(i);
-                    if (!readLayer(weatherLayer)){
+                    if (!readLayer(weatherLayer,false)){
                         success = false;
                     }
                 }

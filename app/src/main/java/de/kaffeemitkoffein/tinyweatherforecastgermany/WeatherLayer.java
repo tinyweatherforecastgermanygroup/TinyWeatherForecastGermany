@@ -654,9 +654,9 @@ public class WeatherLayer {
         }
     }
 
-    public Bitmap getLayerBitmap(Context context) {
+    public Bitmap getLayerBitmap(Context context, int inSampleSize) {
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 1; // do not subsample
+        options.inSampleSize = inSampleSize; // do not subsample
         options.inMutable = true; // always return mutable bitmap
         Bitmap layerBitmap = null;
         layerBitmap = BitmapFactory.decodeFile(getFullChacheFilepath(context), options);
@@ -689,7 +689,7 @@ public class WeatherLayer {
                     WeatherLayer atopLayer = new WeatherLayer(atop[i]);
                     Bitmap atopBitmap = null;
                     if (atopLayer.layer!=layer){
-                        atopBitmap = atopLayer.getTransparentLayerBitmap(context,outlineColor);
+                        atopBitmap = atopLayer.getTransparentLayerBitmap(context,outlineColor,inSampleSize);
                     }
                     if (atopBitmap!=null){
                         canvasVisibleMap.drawBitmap(atopBitmap,0,0,cp);
@@ -702,8 +702,8 @@ public class WeatherLayer {
         return null;
     }
 
-    public Bitmap getTransparentLayerBitmap(Context context, int targetColor) {
-        Bitmap bitmap = getLayerBitmap(context);
+    public Bitmap getTransparentLayerBitmap(Context context, int targetColor, int inSampleSize) {
+        Bitmap bitmap = getLayerBitmap(context,inSampleSize);
         if (bitmap!=null){
             int[] pixels = new int[bitmap.getWidth()*bitmap.getHeight()];
             bitmap.getPixels(pixels,0,bitmap.getWidth(),0,0,bitmap.getWidth(),bitmap.getHeight());

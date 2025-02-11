@@ -723,7 +723,7 @@ public class MainActivity extends Activity {
                                     super.onProgress(weatherLayer);
                                     if (weatherLayer.isPollen()) {
                                         if (weatherLayer.isPollenLayerCacheFileOutdated(context)) {
-                                            Bitmap bitmap = weatherLayer.getLayerBitmap(context);
+                                            Bitmap bitmap = weatherLayer.getLayerBitmap(context,1);
                                             if (bitmap != null) {
                                                 weatherLayer.saveLayerBitmapToCache(context, bitmap);
                                             }

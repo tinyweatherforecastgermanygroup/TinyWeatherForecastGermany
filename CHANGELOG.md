@@ -8,6 +8,8 @@
 - add optional display of wind path information 
 - add option to save the last map position and zoom and restore them the next time the map is called
 - warnings are now highlighted by a frame (not by changing the background color)
+- warnings are now displayed in the overview chart by default, unless disabled or restricted by the uer
+- improved ui performance of the maps overview activity by shifting some bitmap processing to the background
 
 ## Version 0.62.5
 - fix app crash caused by launcher returning an inaccurately large widget size

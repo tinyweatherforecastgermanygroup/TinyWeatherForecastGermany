@@ -429,7 +429,7 @@ public class WeatherLayerMapActivity extends Activity {
             mapImageView.setBackground(ThemePicker.getWidgetBackgroundDrawable(context));
         }
         drawLegend(weatherLayer);
-        Bitmap visibleBitmap = weatherLayer.getLayerBitmap(context);
+        Bitmap visibleBitmap = weatherLayer.getLayerBitmap(context,1);
         // layer might be null due to day-update shifts
         if (visibleBitmap!=null){
             zoomableImageView = new ZoomableImageView(context,mapImageView,visibleBitmap,true){
