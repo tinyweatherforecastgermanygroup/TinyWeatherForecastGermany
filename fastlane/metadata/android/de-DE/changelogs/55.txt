@@ -1,0 +1,8 @@
+- neue Einstellung zur Anzeige des Taupunkts anstelle der relativen Luftfeuchtigkeit
+- Formel zur Berechnung der Luftfeuchtigkeit korrigiert
+- optionale Anzeige von Windpfadinformationen hinzugefügt
+- Option zum Speichern der letzten Kartenposition und des Zooms hinzugefügt
+- Warnungen, die den gewählten Standort betreffen, werden nun durch einen Rahmen hervorgehoben
+- relative Luftfeuchtigkeit und Taupunkt werden nun in der Übersichtskarte bei Temperaturen unter 0° C korrekt dargestellt
+- weitere Korrekturen & Verbesserungen
+- verbesserte Übersetzungen
