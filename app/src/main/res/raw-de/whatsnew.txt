@@ -1,9 +1,12 @@
 Neu in dieser Version [VERSION]:
 
-- gelegentliches Zurücksetzen der Einstellungen behoben
-- die Hintergrundfarbe einiger Warnungen ist nun zur besseren Lesbarkeit dunkler
-- Einstellung zur Hervorhebung der Tageszeit im Übersichtsdiagramm hinzugefügt
-- Option hinzugefügt, um zu einem anderen Spiegelserver von opendata.dwd.de wechseln zu können
-- weitere kleinere Fehlerkorrekturen & verbesserte Übersetzungen
+- neue Einstellung zur Anzeige des Taupunkts anstelle der relativen Luftfeuchtigkeit
+- Formel zur Berechnung der Luftfeuchtigkeit korrigiert
+- optionale Anzeige von Windpfadinformationen hinzugefügt
+- Option zum Speichern der letzten Kartenposition und des Zooms hinzugefügt
+- Warnungen, die den gewählten Standort betreffen, werden nun durch einen Rahmen hervorgehoben
+- relative Luftfeuchtigkeit und Taupunkt werden nun in der Übersichtskarte bei Temperaturen unter 0° C korrekt dargestellt
+- weitere Korrekturen & Verbesserungen
+- verbesserte Übersetzungen
 
 Für eine detaillierte Liste der Änderungen siehe https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md
