@@ -110,14 +110,14 @@ Translations:
 * Czech: eUgEntOptIc44, mondstern
 * Danish: eUgEntOptIc44, mondstern
 * Dutch: Allan Nordhøy, alternative_be, eUgEntOptIc44, Jean-Luc Tibaux, jwildeboer, mondstern, Vistaus
-* English: Allan Nordhøy
+* English: Allan Nordhøy, nofish
 * French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
 * Finnish: eUgEntOptIc44, mondstern
-* German: Aircan, Allan Nordhøy, buhtz, Dirk, eUgEntOptIc44, Hexagon, Hiajen, J. Lavoie, MaxK, mondstern, silmaril, w4ts0n, Dirk
+* German: Aircan, Allan Nordhøy, buhtz, Dirk, eUgEntOptIc44, franconian, Hexagon, Hiajen, J. Lavoie, MaxK, mondstern, silmaril, w4ts0n, Dirk
 * Hungarian: eUgEntOptIc44, Gőz Barnabás
 * Indonesian: Linerly
 * Italian: mondstern, eUgEntOptIc44
-* Irish: mondstern
+* Irish: aindriu80, mondstern
 * Norwegian Bokmål: Allan Nordhøy, eUgEntOptIc44, mondstern
 * Polish: eUgEntOptIc44, Eryk Michalak, ewm, mondstern
 * Russian: Wirdi51
