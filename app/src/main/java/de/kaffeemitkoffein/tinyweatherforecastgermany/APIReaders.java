@@ -1439,18 +1439,23 @@ public class APIReaders {
         }
 
         public String readPollenDataRawString() {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getPollenStream(!WeatherSettings.isTLSdisabled(context))));
-            StringBuilder stringBuilder = new StringBuilder();
-            String s;
-            try {
-                while ((s=bufferedReader.readLine())!=null){
-                    stringBuilder.append(s);
+            InputStream pollenImputStream = getPollenStream(!WeatherSettings.isTLSdisabled(context));
+            if (pollenImputStream!=null){
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pollenImputStream));
+                StringBuilder stringBuilder = new StringBuilder();
+                String s;
+                try {
+                    while ((s=bufferedReader.readLine())!=null){
+                        stringBuilder.append(s);
+                    }
+                    bufferedReader.close();
+                    return stringBuilder.toString();
+                } catch (IOException e){
+                    PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.FATAL,"I/O error reading raw pollen data: "+e.getMessage());
                 }
-                bufferedReader.close();
-                return stringBuilder.toString();
-            } catch (IOException e){
-                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.FATAL,"I/O error reading raw pollen data: "+e.getMessage());
             }
+            // pollenInputStream is null
+            PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.ERR,"Unable to fetch pollen data.");
             return null;
         }
 
@@ -1484,6 +1489,9 @@ public class APIReaders {
 
         public boolean readPollenData(){
             String rawJsonData = readPollenDataRawString();
+            if (rawJsonData==null){
+                return false;
+            }
             try {
                 Pollen basicPollen = new Pollen();
                 ArrayList<Pollen> pollenArrayList = new ArrayList<Pollen>();

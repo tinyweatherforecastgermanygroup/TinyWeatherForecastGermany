@@ -23,8 +23,10 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class Pollen {
 
@@ -51,7 +53,7 @@ public class Pollen {
     int region_id;
     String region_name;
     String last_update;
-    long last_update_UTC;
+    long last_update_UTC = 0L;
     String next_update;
     long next_update_UTC;
 
@@ -133,7 +135,8 @@ public class Pollen {
      * @param context the calling context
      * @param type pollen type, e.g. Ambrosia. Valid values are 0-7.
      * @param timeParam 0 = today, 1 = tomorrow, 2 = day after tomorrow.
-     * @return the pollen load (0-6). Will return -1 when the load cannot be determined, either because there is no data and/or the parameters are invalid.
+     * @return the pollen load (0-6). Will return -1 when the load cannot be determined, either
+     * because there is no data and/or the parameters are invalid.
      */
 
     public int getPollenLoad(Context context, int type, int timeParam) {
@@ -271,11 +274,23 @@ public class Pollen {
         return false;
     }
 
-    public static int getDayShift(Context context){
-        Pollen pollen = Pollen.GetPollenData(context,WeatherSettings.getPollenRegion(context));
-        long pollday = WeatherLayer.getMidnightTime(pollen.last_update_UTC);
+    /**
+     * Determines day shift for some marginal conditions where the number of pollen forecast days is
+     * below three.
+     *
+     * @param context
+     * @return day shift in number of days, always zero (no shift necessary) or positive.
+     */
+
+    public int getDayShift(Context context) {
+        long pollday = WeatherLayer.getMidnightTime(this.last_update_UTC);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         long nowday  = WeatherLayer.getMidnightTime(Calendar.getInstance().getTimeInMillis());
-        return (int) (nowday-pollday)/(1000*60*60*24);
+        float shiftInDays = (nowday-pollday)/(1000*60*60*24f);
+        // PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Pollen data polled on day (midnight time): "+sdf.format(new Date(pollday)));
+        // PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Calculated current day    (midnight time): "+sdf.format(new Date(nowday)));
+        // PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.INFO,"Calculated pollen forecast shift in days : "+shiftInDays);
+        return Math.round(shiftInDays);
     }
 
 }

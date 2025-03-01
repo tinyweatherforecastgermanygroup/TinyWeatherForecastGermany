@@ -6,7 +6,7 @@ New in version [VERSION]:
 - added an option to save the last map position and zoom
 - warnings concerning the chosen location are now highlighted by a frame
 - relative humidity and dew point are now drawn correctly in the overview chart for temperatures below 0° C
-- further bugfixes & improvements
+- further bug fixes & improvements
 - improved translations
 
 For a detailed list of changes, see https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md

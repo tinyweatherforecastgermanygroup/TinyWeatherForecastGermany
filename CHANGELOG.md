@@ -1,5 +1,8 @@
 # Changelog 
 
+## Version 0.62.7
+- fixed maps activity crashing when no internet connection and/or no pollen data present 
+
 ## Version 0.62.6
 - added setting to display dew point instead of relative humidity
 - fixed humidity calculation formula
