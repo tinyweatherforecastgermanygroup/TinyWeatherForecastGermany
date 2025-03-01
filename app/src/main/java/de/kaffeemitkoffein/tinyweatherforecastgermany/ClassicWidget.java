@@ -482,7 +482,7 @@ public class ClassicWidget extends AppWidgetProvider {
                     widgetHeight = heightLandscape;
                 }
                 int[] resultArray = DeviceTweaks.confirmPlausibleWidgetSize(c,widgetWidth,widgetHeight,560,180);
-                widgetHeight=resultArray[0]; widgetWidth=resultArray[1];
+                widgetWidth=resultArray[0]; widgetHeight=resultArray[1];
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c,MainActivity.class);
                 PendingIntent pendingIntent;

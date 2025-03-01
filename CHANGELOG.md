@@ -2,6 +2,8 @@
 
 ## Version 0.62.7
 - fixed maps activity crashing when no internet connection and/or no pollen data present 
+- fixed wrong preview image shown for "Weather and Time" widget
+- fixed wrong bitmap size calculation for the lower half of the "Weather and Time" widget 
 
 ## Version 0.62.6
 - added setting to display dew point instead of relative humidity

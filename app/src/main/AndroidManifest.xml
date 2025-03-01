@@ -126,7 +126,7 @@
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/boldwidget" />
         </receiver>
 
-        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClockWidget" android:icon="@drawable/widget_preview"
+        <receiver android:name="de.kaffeemitkoffein.tinyweatherforecastgermany.ClockWidget" android:icon="@drawable/widget_preview_clock"
                   android:label=
                           "@string/clockwidget_description"
                   android:exported="false">
