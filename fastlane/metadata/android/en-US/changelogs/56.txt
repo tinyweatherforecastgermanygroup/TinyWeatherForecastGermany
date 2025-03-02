@@ -1,0 +1,4 @@
+- fixed maps activity crashing when no internet connection and/or no pollen data present
+- improved widget appearance on some devices and launchers
+- fixed font too small in the "Weather in Detail" widget
+- fixed wrong preview image shown for the "Weather and Time" widget
