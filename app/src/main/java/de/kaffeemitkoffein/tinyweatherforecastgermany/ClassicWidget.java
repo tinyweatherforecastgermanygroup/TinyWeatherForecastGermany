@@ -467,21 +467,11 @@ public class ClassicWidget extends AppWidgetProvider {
         int pid = android.os.Process.myPid();
         if (weatherCard!=null){
             for (int i=0; i<widget_instances.length; i++){
-                // determine widget diameters in pixels
-                Bundle appWidgetOptions = awm.getAppWidgetOptions(widget_instances[i]);
-                // diameters in portrait mode
-                int widthPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                int heightPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
-                // diameters in landscape mode
-                int widthLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
-                int heightLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-                int orientation = c.getResources().getConfiguration().orientation;
-                int widgetWidth = widthPortrait; int widgetHeight = heightPortrait;
-                if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-                    widgetWidth = widthLandscape;
-                    widgetHeight = heightLandscape;
-                }
-                int[] resultArray = DeviceTweaks.confirmPlausibleWidgetSize(c,widgetWidth,widgetHeight,560,180);
+                WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(c,awm,widget_instances[i]);
+                int widgetWidth = widgetDimensionManager.getWidgetWidthInt();
+                int widgetHeight = widgetDimensionManager.getWidgetHeightInt();
+                //int[] resultArray = DeviceTweaks.confirmPlausibleWidgetSize("Classic widget",c,widgetWidth,widgetHeight,560,180);
+                int[] resultArray = DeviceTweaks.confirmPlausibleWidgetSize(c,DeviceTweaks.Widget.CLASSIC,widgetWidth,widgetHeight);
                 widgetWidth=resultArray[0]; widgetHeight=resultArray[1];
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c,MainActivity.class);
@@ -493,11 +483,13 @@ public class ClassicWidget extends AppWidgetProvider {
                 }
                 int widgetResource = R.layout.classicwidget_layout;
                 int lines = 1;
-                if (widgetHeight>120){
+                // if widget hight is > 120 dpi, expand to 2 lines
+                if (widgetHeight>widgetDimensionManager.getYPixelsFromDPIInt(120)){
                     lines = 2;
                     widgetResource = R.layout.largewidget_layout;
                 }
-                if (widgetHeight>240){
+                // if widget hight is > 240 dpi, expand to 3 lines
+                if (widgetHeight>widgetDimensionManager.getYPixelsFromDPIInt(240)){
                     lines = 3;
                 }
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(),widgetResource);
@@ -548,74 +540,21 @@ public class ClassicWidget extends AppWidgetProvider {
         return item_count;
     }
 
-    private final static float OFFSET_FONTSIZE = 60;
-    private final static float FONTSIZESTEP = 1;
-
-    public static float getMaxPossibleFontsize(String string, float max_width, float max_height, Float offset){
-        if (offset==null){
-            if (max_width>max_height){
-                offset = max_width;
-            } else {
-                offset = max_height;
-            }
-        }
-        float textsize = offset;
+    public static float GetFontSize(float maxReferenceWidth, float maxReferenceHeight, final String STRING_TEMPLATE){
+        float fontSize = maxReferenceHeight;
+        // paint
         Paint paint = new Paint();
-        paint.setTextSize(textsize);
-        while ((textsize>0) && (paint.measureText(string)>max_width)){
-            textsize = textsize - FONTSIZESTEP;
-            paint.setTextSize(textsize);
-        }
-        while ((textsize>0) && (paint.getTextSize()>max_height)){
-            textsize = textsize - FONTSIZESTEP;
-            paint.setTextSize(textsize);
-        }
-        return textsize;
+        // determine the maximum font size possible, determined by maxWidth
+        float textWidth;
+        do {
+            paint.setTextSize(fontSize);
+            textWidth = paint.measureText(STRING_TEMPLATE);
+            fontSize = fontSize - 0.5f;
+        } while (textWidth>maxReferenceWidth);
+        return fontSize;
     }
 
-    private float fontsize_temperature = OFFSET_FONTSIZE;
-    private float fontsize_dayofweek = OFFSET_FONTSIZE;
-
-    private void determineMaxFontSizes(CurrentWeatherInfo currentWeatherInfo, float max_width, float max_height, boolean showTemperatures){
-        int item_count=0;
-        for (int i=0; i<currentWeatherInfo.forecast24hourly.size(); i++){
-            if (getDailyItemCount(currentWeatherInfo.forecast24hourly.get(i),showTemperatures)>item_count){
-                item_count = getDailyItemCount(currentWeatherInfo.forecast24hourly.get(i),showTemperatures);
-            }
-            String min_temp = "-°";
-            if (currentWeatherInfo.forecast24hourly.get(i).hasMinTemperature()){
-                min_temp = currentWeatherInfo.forecast24hourly.get(i).getMinTemperatureInCelsiusInt()+"°";
-            }
-            String max_temp = "-°";
-            if (currentWeatherInfo.forecast24hourly.get(i).hasMaxTemperature()){
-                max_temp = currentWeatherInfo.forecast24hourly.get(i).getMaxTemperatureInCelsiusInt()+"°";
-            }
-            Paint p_temp = new Paint();
-            p_temp.setTextSize(fontsize_temperature);
-            float mf1 = getMaxPossibleFontsize(min_temp,max_width,(max_height/(item_count+1))*0.95f,OFFSET_FONTSIZE);
-            if (mf1<fontsize_temperature){
-                fontsize_temperature = mf1;
-            }
-            float mf2 = getMaxPossibleFontsize(max_temp,max_width,(max_height/(item_count+1))*0.95f,OFFSET_FONTSIZE);
-            if (mf2<fontsize_temperature){
-                fontsize_temperature = mf2;
-            }
-        }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EE");
-        for (int i=0; i<currentWeatherInfo.forecast24hourly.size(); i++){
-            String day      = simpleDateFormat.format(new Date(currentWeatherInfo.forecast24hourly.get(i).getTimestamp()));
-            Paint p_day = new Paint();
-            p_day.setTextSize(fontsize_dayofweek);
-            float mf3 = getMaxPossibleFontsize(day,max_width,(max_height/(item_count+1))*0.95f,OFFSET_FONTSIZE);
-            if (mf3<fontsize_dayofweek){
-                fontsize_dayofweek = mf3;
-            }
-        }
-        fontsize_temperature = (float) (fontsize_temperature * 0.85);
-        fontsize_dayofweek = (float) (fontsize_dayofweek * 0.85);
-    }
-
-    private Bitmap getDailyBar(Context context, float width_bar, float height_bar, Weather.WeatherInfo weatherInfo, boolean showTemperatures){
+    private Bitmap getDailyBar(Context context, float width_bar, float height_bar, float fontSize, Weather.WeatherInfo weatherInfo, boolean showTemperatures){
         ForecastIcons forecastIcons = new ForecastIcons(context,null);
         // create an empty bitmap with black being the transparent color
         Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bar),Math.round(height_bar),Bitmap.Config.ARGB_8888);
@@ -642,11 +581,10 @@ public class ClassicWidget extends AppWidgetProvider {
         calendar.add(Calendar.DAY_OF_WEEK,-1);
         //String weekday = simpleDateFormat.format(new Date(weatherInfo.getTimestamp()));
         String weekday = simpleDateFormat.format(new Date(calendar.getTimeInMillis()));
-        // determine max. possible fontsize
         Paint paint_weekday = new Paint();
         paint_weekday.setColor(ThemePicker.getWidgetTextColor(context));
         paint_weekday.setAntiAlias(true);
-        paint_weekday.setTextSize(fontsize_dayofweek);
+        paint_weekday.setTextSize(fontSize);
         float x_offset_day = (width_bar - paint_weekday.measureText(weekday))/2;
         float y_offset_day = height_item - paint_weekday.getTextSize()/2;
         canvas.drawText(weekday,x_offset_day,y_offset_day,paint_weekday);
@@ -675,7 +613,7 @@ public class ClassicWidget extends AppWidgetProvider {
             Paint paint_maxtemp = new Paint();
             paint_maxtemp.setColor(ThemePicker.getWidgetTextColor(context));
             paint_maxtemp.setAntiAlias(true);
-            paint_maxtemp.setTextSize(fontsize_temperature);
+            paint_maxtemp.setTextSize(fontSize);
             float x_offset_maxtemp = (width_bar - paint_weekday.measureText(max_temperature_string))/2;
             float y_offset_maxtemp = y_offset_counter - paint_maxtemp.getTextSize()/2;
             canvas.drawText(max_temperature_string,x_offset_maxtemp,y_offset_maxtemp+height_item,paint_maxtemp);
@@ -688,7 +626,7 @@ public class ClassicWidget extends AppWidgetProvider {
             Paint paint_mintemp = new Paint();
             paint_mintemp.setColor(ThemePicker.getWidgetTextColor(context));
             paint_mintemp.setAntiAlias(true);
-            paint_mintemp.setTextSize(fontsize_temperature);
+            paint_mintemp.setTextSize(fontSize);
             float x_offset_mintemp = (width_bar - paint_weekday.measureText(min_temperature_string))/2;
             float y_offset_mintemp = y_offset_counter - paint_mintemp.getTextSize()/2;
             canvas.drawText(min_temperature_string,x_offset_mintemp,y_offset_mintemp+height_item,paint_mintemp);
@@ -726,9 +664,9 @@ public class ClassicWidget extends AppWidgetProvider {
         }
         float width_oneday = width_bitmap / (number_of_forecast_days-1);
         float height_oneday = height_bitmap;
-        determineMaxFontSizes(currentWeatherInfo,width_oneday,height_oneday,showTemperatures);
+        float fontSize = GetFontSize(width_oneday*0.95f,height_oneday,"Wed");
         for (int i=1; i<number_of_forecast_days; i++){
-            Bitmap item = getDailyBar(context,width_oneday,height_oneday,currentWeatherInfo.forecast24hourly.get(i),showTemperatures);
+            Bitmap item = getDailyBar(context,width_oneday,height_oneday,fontSize,currentWeatherInfo.forecast24hourly.get(i),showTemperatures);
             canvas.drawBitmap(item,(i-1)*width_oneday,0,null);
         }
         return bitmap;
@@ -740,7 +678,6 @@ public class ClassicWidget extends AppWidgetProvider {
      */
 
     public static class WidgetDimensionManager {
-
         /*
          * You can get a Bundle from the AppWidgetManager (awm) that holds some metrics, which are
          * poorly documented. Going by the docs, they provide a range of min-max in dp that the widget
@@ -863,6 +800,23 @@ public class ClassicWidget extends AppWidgetProvider {
         public float getFontHeightInPixels(float fontsize){
             return (float) fontsize * scaledDensity;
         }
+
+        public float getXPixelsFromDpi(final float dpi){
+            return dpi * (this.xdpi/160);
+        }
+
+        public float getYPixelsFromDPI(final float dpi){
+            return dpi * (this.ydpi/160);
+        }
+
+        public int getXPixelsFromDpiInt(final int dpi){
+            return Math.round(dpi * (this.xdpi/160));
+        }
+
+        public int getYPixelsFromDPIInt(final int dpi){
+            return Math.round(dpi * (this.ydpi/160));
+        }
+
     }
 
 }

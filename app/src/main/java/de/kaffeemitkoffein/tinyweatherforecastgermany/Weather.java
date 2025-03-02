@@ -964,7 +964,7 @@ public final class Weather {
                 Bitmap bitmap = Bitmap.createBitmap(Math.round(width_bitmap),Math.round(height_bitmap), Bitmap.Config.ARGB_8888);
                 bitmap.eraseColor(Color.TRANSPARENT);
                 String windsting = getWindDirectionString(context);
-                float max_fontsize = ClassicWidget.getMaxPossibleFontsize(windsting,width_bitmap,height_bitmap,null);
+                float max_fontsize = ClassicWidget.GetFontSize(width_bitmap,height_bitmap,"NW");
                 Paint paint = new Paint();
                 paint.setColor(MainActivity.getColorFromResource(context,R.attr.colorText));
                 paint.setTextSize(max_fontsize);

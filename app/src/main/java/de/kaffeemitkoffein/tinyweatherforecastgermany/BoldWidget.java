@@ -62,24 +62,12 @@ public class BoldWidget extends ClassicWidget {
         CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             for (int i = 0; i < widget_instances.length; i++) {
-                // determine widget diameters in pixels
-                Bundle appWidgetOptions = awm.getAppWidgetOptions(widget_instances[i]);
-                // diameters in portrait mode
-                int widthPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                int heightPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
-                // diameters in landscape mode
-                int widthLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
-                int heightLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-                int orientation = c.getResources().getConfiguration().orientation;
-                // need to convert from dp to pixels
-                int widgetWidthDP = widthPortrait;
-                int widgetHeightDP = heightPortrait;
-                if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-                    widgetWidthDP = widthLandscape;
-                    widgetHeightDP = heightLandscape;
-                }
-                int widgetWidthPix  = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,widgetWidthDP,c.getResources().getDisplayMetrics()));
-                int widgetHeightPix = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,widgetHeightDP,c.getResources().getDisplayMetrics()));
+                WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(c,awm,widget_instances[i]);
+                int width = widgetDimensionManager.getWidgetWidthInt();
+                int height = widgetDimensionManager.getWidgetHeightInt();
+                // check if reported widget size is plausible and fall back to defaults if necessary
+                int[] widgetSize = DeviceTweaks.confirmPlausibleWidgetSize(c,DeviceTweaks.Widget.BOLD,width,height);
+                width = widgetSize[0]; height = widgetSize[1];
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c, MainActivity.class);
                 PendingIntent pendingIntent;
@@ -101,19 +89,19 @@ public class BoldWidget extends ClassicWidget {
                 int[] widthThresholdsPix = new int[]{pixelsCurrentTempWidth + pixelsVerticalBarWidth + pixelsOneDayWidth*4,
                         pixelsCurrentTempWidth + pixelsVerticalBarWidth + pixelsOneDayWidth*5,
                         pixelsCurrentTempWidth + pixelsVerticalBarWidth + pixelsOneDayWidth*6};
-                if (widgetWidthPix>=widthThresholdsPix[0]){
+                PrivateLog.log(c,PrivateLog.WIDGET,PrivateLog.INFO,"+-> calculated thresholds (in pixels) for item number in BoldWidget: "+widthThresholdsPix[0]+"|"+widthThresholdsPix[1]+"|"+widthThresholdsPix[2]);
+                if (width>=widthThresholdsPix[0]){
                     forecastDays = 3;
                     widgetResource = R.layout.boldwidget_layout3;
                 }
-                if (widgetWidthPix>=widthThresholdsPix[1]){
+                if (width>=widthThresholdsPix[1]){
                     forecastDays = 4;
                     widgetResource = R.layout.boldwidget_layout4;
                 }
-                if (widgetWidthPix>=widthThresholdsPix[2]){
+                if (width>=widthThresholdsPix[2]){
                     forecastDays = 5;
                     widgetResource = R.layout.boldwidget_layout5;
                 }
-                PrivateLog.log(c,PrivateLog.WIDGET, PrivateLog.INFO," Bold widget id "+widget_instances[i]+" size: "+widgetWidthDP+"/"+widgetHeightDP+" dp, showing "+forecastDays+" forecast days.");
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), widgetResource);
                 fillBoldWidgetItems(c, remoteViews, weatherCard,forecastDays);
                 setClassicWidgetItems(remoteViews,weatherCard,c);

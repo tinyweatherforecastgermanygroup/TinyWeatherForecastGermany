@@ -45,20 +45,6 @@ public class ChartWidget extends ClassicWidget{
         CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             for (int i = 0; i < widget_instances.length; i++) {
-                // determine widget diameters in pixels
-                Bundle appWidgetOptions = awm.getAppWidgetOptions(widget_instances[i]);
-                // diameters in portrait mode
-                int widthPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                int heightPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
-                // diameters in landscape mode
-                int widthLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
-                int heightLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-                int orientation = c.getResources().getConfiguration().orientation;
-                int widgetWidth = widthPortrait; int widgetHeight = heightPortrait;
-                if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-                    widgetWidth = widthLandscape;
-                    widgetHeight = heightLandscape;
-                }
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c, MainActivity.class);
                 PendingIntent pendingIntent;
@@ -104,21 +90,9 @@ public class ChartWidget extends ClassicWidget{
         WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(context,awm,widgetInstance);
         int width = widgetDimensionManager.getWidgetWidthInt();
         int height = widgetDimensionManager.getWidgetHeightInt();
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = windowManager.getDefaultDisplay();
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        display.getMetrics(displayMetrics);
-        if ((width<=0) || (height<=0)){
-            width = 720; height = 160;
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Chartwidget size unknown, applying default dimensions: "+width+" x "+height);
-        } else {
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Chartwidget size is "+width+" x "+height);
-            // check for implausible widget dimensions
-            if ((width>displayMetrics.widthPixels) || (height>displayMetrics.heightPixels)){
-                width = 720; height = 160;
-                PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.ERR,"Chartwidget size returned is bigger than the screen resolution. Falling back to widget default dimensions.");
-            }
-        }
+        // confirm if determined widget size is plausible, fall back to defaults if necessary
+        int[] widgetSize = DeviceTweaks.confirmPlausibleWidgetSize(context,DeviceTweaks.Widget.CLASSIC,width,height);
+        width = widgetSize[0]; height = widgetSize[1];
         // measure DWD note and adapt the target bitmap size
         if (WeatherSettings.showDWDNote(context)){
             float fontScale = context.getResources().getConfiguration().fontScale;
