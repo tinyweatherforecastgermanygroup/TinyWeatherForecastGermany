@@ -1,0 +1,4 @@
+- LED-lampor för avisering stöds nu, inklusive färgval
+- små prestandaökningar i äldre enheter när appen startas
+- förbättrade översättningar
+- något reviderade inställningar

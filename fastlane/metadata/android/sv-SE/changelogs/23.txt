@@ -1,0 +1,2 @@
+- ny regn-radar
+- sommartidsförskjutningen av den visade tiden används istället för den nuvarande tiden för beräkning av solnedgång och soluppgång

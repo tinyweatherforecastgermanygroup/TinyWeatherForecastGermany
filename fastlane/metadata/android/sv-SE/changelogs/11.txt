@@ -1,0 +1,2 @@
+- väderleksintervaller kan nu ställas in: varje timme, var 6:e timme, blandad (de första 24 timmarna, var sjätte timme efteråt)
+- valfritt fält som visar detaljerad timprognos i 6-timmars-prognosen
