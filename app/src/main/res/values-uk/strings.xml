@@ -520,5 +520,5 @@
     <string name="preference_display_wind_distance_time_summary">Час відображається в годинах.</string>
     <string name="preference_display_wind_distance_activate_title">Відстань відображення</string>
     <string name="preference_mapSaveState_title">Зберегти масштаб</string>
-    <string name="preference_mapSaveState_summary">Зберегти останнє положення мапи та збільшення і відновити їх при наступному виклику мапи.</string>
+    <string name="preference_mapSaveState_summary">Пам\'ятати останнє положення та масштаб мапи і відновлювати їх при наступному виклику мапи.</string>
 </resources>
