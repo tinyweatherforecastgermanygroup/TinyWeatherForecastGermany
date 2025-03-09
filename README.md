@@ -24,9 +24,9 @@ Weather forecast with widgets for up to 10 days, based on open data from the Deu
 
 Tiny Weather Forecast Germany is available from the F-Droid main repository and also from the IzzyOnDroid repository. You can download it here:
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="50">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
+[<img src="https://kaffeemitkoffein.de/resources/fdroidButton.png" alt="Get it on F-Droid" height="80px">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
-[<img src="https://kaffeemitkoffein.de/resources/IzzyOnDroidButton.png" alt="Get it on F-Droid" height="50">](https://apt.izzysoft.de/fdroid/index/apk/de.kaffeemitkoffein.tinyweatherforecastgermany)
+[<img src="https://kaffeemitkoffein.de/resources/IzzyOnDroidButton.png" alt="Get it on F-Droid" height="80px">](https://apt.izzysoft.de/fdroid/index/apk/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
 **Alternative sources:**
 
