@@ -24,9 +24,9 @@ Weather forecast with widgets for up to 10 days, based on open data from the Deu
 
 Tiny Weather Forecast Germany is available from the F-Droid main repository and also from the IzzyOnDroid repository. You can download it here:
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="80px">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="50px">](https://f-droid.org/packages/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
-[<img src="https://kaffeemitkoffein.de/resources/IzzyOnDroidButton.png" alt="Get it on F-Droid" height="80px">](https://apt.izzysoft.de/fdroid/index/apk/de.kaffeemitkoffein.tinyweatherforecastgermany)
+[<img src="https://kaffeemitkoffein.de/resources/IzzyOnDroidButton.png" alt="Get it on F-Droid" height="50px">](https://apt.izzysoft.de/fdroid/index/apk/de.kaffeemitkoffein.tinyweatherforecastgermany)
 
 **Alternative sources:**
 
@@ -34,7 +34,7 @@ You can get the binary builds here: <https://kaffeemitkoffein.de/nextcloud/index
 
 Or from the developer's own F-Droid repository: <https://kaffeemitkoffein.de/fdroid/repo>
 
-<img src="https://www.kaffeemitkoffein.de/fdroid/repo/index.png" alt="Get it from the developers own F-Droid repository" height="80px">
+<img src="https://www.kaffeemitkoffein.de/fdroid/repo/index.png" alt="Get it from the developers own F-Droid repository" height="120px">
 
 1. Launch the f-droid app
 2. Select "Settings"
