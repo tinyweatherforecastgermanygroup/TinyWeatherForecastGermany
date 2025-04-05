@@ -76,35 +76,6 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                                     }
                                 }
                         );
-                        // set back to false unless the user actively hits "ok" below
-                        /*
-                        WeatherSettings.setLoggingToLogcat(context,false);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle(context.getResources().getString(R.string.alertdialog_1_title));
-                        builder.setMessage(context.getResources().getString(R.string.alertdialog_1_text));
-                        builder.setIcon(R.mipmap.ic_warning_white_24dp);
-                        builder.setPositiveButton(context.getResources().getString(R.string.alertdialog_yes), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
-                        builder.setNegativeButton(context.getResources().getString(R.string.alertdialog_no), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                WeatherSettings weatherSettings = new WeatherSettings(context);
-                                weatherSettings.applyPreference(WeatherSettings.PREF_LOG_TO_LOGCAT, false);
-                                CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(WeatherSettings.PREF_LOG_TO_LOGCAT);
-                                if (checkBoxPreference != null) {
-                                    checkBoxPreference.setChecked(false);
-                                    dialogInterface.dismiss();
-                                }
-                            }
-                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.getWindow().setBackgroundDrawable(ThemePicker.getWidgetBackgroundDrawable(context));
-                        alertDialog.show();
-                         */
                     }
                 }
                 if (s.equals(WeatherSettings.PREF_USE_METERED_NETWORKS)){

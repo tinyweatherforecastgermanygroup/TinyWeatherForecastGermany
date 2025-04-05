@@ -1,7 +1,8 @@
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 import java.util.Arrays;
 
-public class DataPackage {
+public class
+DataPackage {
 
     public int id;
     public long timestamp;

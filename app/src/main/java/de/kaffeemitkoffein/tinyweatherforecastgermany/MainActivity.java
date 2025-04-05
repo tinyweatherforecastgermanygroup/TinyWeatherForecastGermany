@@ -281,12 +281,11 @@ public class MainActivity extends Activity {
     };
 
     private void performTextSearch(){
-    // weather settings must be read at the time of selection!
         String station_description = autoCompleteTextView.getText().toString();
         Weather.WeatherLocation newLocation = stationsManager.getLocationFromDescription(station_description);
         if (newLocation!=null){
             if (!WeatherSettings.getSetStationLocation(context).equals(newLocation)){
-                    newWeatherRegionSelected(stationsManager.getLocationFromDescription(station_description));
+                newWeatherRegionSelected(stationsManager.getLocationFromDescription(station_description));
             }
         } else {
             final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
@@ -360,6 +359,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume(){
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app resumed.");
+        /*
         // we need to check here, too since warnings may have been activated in settings again
         try {
             if (prepareAreaDatabase(context)){
@@ -369,7 +369,7 @@ public class MainActivity extends Activity {
         } catch (Exception e){
             // ignore
         }
-
+         */
         long estimatedAdapterLayoutTimeMillis = getEstimatedAdapterLayoutTimeInMillis(context);
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Estimated weather adapter layout time is: "+timerDecimalFormat.format(estimatedAdapterLayoutTimeMillis/1000f)+ " sec");
         //PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Entering onResume at "+timerDecimalFormat.format((Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f)+" sec from app launch.");
@@ -583,7 +583,7 @@ public class MainActivity extends Activity {
                     showWarning(R.mipmap.ic_warning_white_24dp,getResources().getString(R.string.warning_stationreset_title),getResources().getString(R.string.warning_stationreset_text));
                 }
                 // the station name K2226 has been changed to 10522, effective from 25.04.2022 9:00
-                // the old name does not exist in stations4.txt any more.
+                // the old name does not exist in stations4.txt anymore.
                 if (WeatherSettings.getLastAppVersionCode(context)<34){
                     Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(this);
                     if (currentStation.getName().equals("K2226")){
@@ -1565,11 +1565,13 @@ public class MainActivity extends Activity {
     }
 
     public static boolean prepareAreaDatabase(final Context context){
+        /*
         if (WeatherSettings.areWarningsDisabled(context)){
             deleteAreaDatabase(context);
             PrivateLog.log(context.getApplicationContext(),PrivateLog.MAIN, PrivateLog.WARN,"Area database will not be prepared because weather warnings are disabled.");
             return false;
         }
+         */
         // delete area database if it is too big due to some database errors. It will be
         // recreated then.
         if (Areas.getAreaDatabaseSize(context.getApplicationContext())>Areas.AreaDatabaseCreator.DATABASE_SIZE){

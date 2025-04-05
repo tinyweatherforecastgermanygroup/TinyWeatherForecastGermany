@@ -1,4 +1,6 @@
 # Changelog 
+## Version 0.62.8
+- fixed stations history displaying "null" when warnings are disabled and municipality names instead of the station name are displayed
 
 ## Version 0.62.7
 - fixed maps activity crashing when no internet connection and/or no pollen data present 
