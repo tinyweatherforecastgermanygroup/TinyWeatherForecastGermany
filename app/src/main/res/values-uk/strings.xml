@@ -156,7 +156,7 @@
     <string name="weathercode_HEAVY_DRIZZLE_NOT_FREEZING_CONTINUOUS">сильна мряка, тривала</string>
     <string name="preference_update_textforecasts_summary">Тримати погодні тексти актуальними</string>
     <string name="preference_notify_warnings_summary">Сповіщати про нові попередження для вибраного Вами місцезнаходження.</string>
-    <string name="preference_meterednetwork_notice">Ви можете пропустити погодні попередження, якщо використовуватимете лише не дозовані мережі.</string>
+    <string name="preference_meterednetwork_notice">Ви можете пропустити погодні попередження, використовуючи лише мережі без тарифікації.</string>
     <string name="preference_loggingscreen_summary">Налаштування параметрів журналювання для зневадження.</string>
     <string name="preference_logging_summary">Активувати журналювання. Журнали зберігатимуться ЛОКАЛЬНО на Вашому пристрої і НЕ надсилатимуться автоматично.</string>
     <string name="preference_gadgetbridge_package_reset_toast">Назву пакунка Gadgetbridge повернуто до значення за замовчуванням.</string>
@@ -189,8 +189,8 @@
     <string name="preference_setalarm_summary">Тримати дані погоди оновленими.</string>
     <string name="preference_display_station_geo_title">Географічні координати</string>
     <string name="preference_display_station_geo_summary">Показувати географічні координати станції</string>
-    <string name="preference_meterednetwork_title">Викор. дозовані мережі</string>
-    <string name="preference_meterednetwork_summary">Також використовувати дозовані мережі для отримання даних.</string>
+    <string name="preference_meterednetwork_title">Використовувати тарифіковані мережі</string>
+    <string name="preference_meterednetwork_summary">Також використовувати тарифіковані мережі для отримання даних.</string>
     <string name="preference_screen_gadgetbridge_title">Підтримка Gadgetbridge</string>
     <string name="preference_screen_gadgetbridge_summary">Параметри для інтегрування даних погоди цієї програми в Gadgetbridge.</string>
     <string name="preference_gadgetbridge_serve_summary">Якщо дозволено – всі дані погоди надсилатимуться локально до програми Gadgetbridge на Вашому пристрої.</string>
@@ -203,7 +203,7 @@
     <string name="preference_intro_summary">Розпочати вступ ще раз.</string>
     <string name="preference_ssl_summary">Вимкнути шифрування поверх https під час опитування погодних даних.</string>
     <string name="alertdialog_1_title">Увага</string>
-    <string name="preference_log_to_logcat_title">Увійти до Logcat</string>
+    <string name="preference_log_to_logcat_title">Запис у Logcat</string>
     <string name="logging_button_clear">Очистити журнали</string>
     <string name="logging_button_copy">Копіювати журнали до буфера обміну</string>
     <string name="logging_button_share">Поширити</string>
@@ -265,7 +265,7 @@
     <string name="radar_rain1">незначний</string>
     <string name="radar_rain3">сильний</string>
     <string name="preference_log_to_logcat_summary">Вставте журнали в системний журнал на пристрої. Увага: це може бути витоком конфіденційності, інші програми можуть отримати доступ до системного журналу.</string>
-    <string name="alertdialog_1_text">Реєстрація в logcat може призвести до витоку приватної інформації в інші програми. Ви впевнені і знаєте, що робите\?</string>
+    <string name="alertdialog_1_text">Ведення журналу в logcat може призвести до витоку приватної інформації в інші програми. Ви впевнені і знаєте, що робите?</string>
     <string name="alertdialog_2_text">Ця програма зараз пише в logcat. Запис в logcat буде вимкнено, оскільки ця функція не призначена для офіційних випусків.</string>
     <string name="preference_setalarm_notice">ПРИМІТКА: Зараз це недоступно, оскільки ввімкнено підтримку Gadgetbridge, яка все одно примушує автоматичні оновлення.</string>
     <string name="alertdialog_2_toast">Запис у Logcat деактивовано.</string>
@@ -489,7 +489,7 @@
     <string name="sync_off_title">Синхронізацію вимкнено</string>
     <string name="preference_datasaver_title">Увімкнено заощадження трафіку</string>
     <string name="datasaver_enable_unrestricted_text">В інформації про програму виберіть мобільні дані та Wi-Fi і ввімкніть необмежене використання даних.</string>
-    <string name="preference_datasaver_summary">Наразі неможливо синхронізувати дані при використанні мереж із обмеженнями. Найкраще додати Tiny Weather Forecast Germany до списку додатків з необмеженим використанням даних.</string>
+    <string name="preference_datasaver_summary">Наразі неможливо синхронізувати дані при використанні тарифікованих мереж. Найкраще додати Tiny Weather Forecast Germany до списку додатків з необмеженим використанням даних.</string>
     <string name="preference_display_overviewchart_pca_title">Кількість опадів</string>
     <string name="preference_display_overviewchart_pca_summary">Показувати кількість опадів в оглядовій діаграмі.</string>
     <string name="map_attribution">© OpenStreetMap</string>
