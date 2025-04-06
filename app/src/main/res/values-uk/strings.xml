@@ -74,7 +74,7 @@
     <string name="preference_displayforecastbar_title">Погодинний прогноз</string>
     <string name="preference_displaysimplebar_title">Проста панель</string>
     <string name="preference_displayvisibility_summary">Показувати видимість у прогнозах.</string>
-    <string name="preference_displaysunrise_summary">Показувати години сходу, заходу і сутінок.</string>
+    <string name="preference_displaysunrise_summary">Показувати час сходу, заходу і сутінків.</string>
     <string name="preference_pdateinterval_summary">Виберіть, як часто потрібно оновлювати погодні дані.</string>
     <string name="preference_opacity_summary">Виберіть, наскільки прозорим має бути віджет на головному екрані.</string>
     <string name="preference_gadgetbridge_serve_title">Увімкнути</string>
@@ -136,7 +136,7 @@
     <string name="welcome_ready">ГОТОВО!</string>
     <string name="welcome_s1_text1">вільне, безкоштовне, з відкритим кодом</string>
     <string name="welcome_s1_text3">прогноз на 10 днів</string>
-    <string name="welcome_s1_text5">віджети для домашнього екрана</string>
+    <string name="welcome_s1_text5">віджети для головного екрана</string>
     <string name="welcome_s2_text10">Темп. на землі</string>
     <string name="welcome_s3_text4">Панель прогнозу показує хмарність сірим кольором, а дощ – синім.</string>
     <string name="welcome_setuptitle">Основне налаштування</string>
@@ -223,7 +223,7 @@
     <string name="direction_calm">-</string>
     <string name="twilight">Сутінки</string>
     <string name="preference_feedback_summary">Надішліть розробнику якийсь відгук на ел. пошту.</string>
-    <string name="preference_clearnotifications_message">Памʼять сповіщень очищено.</string>
+    <string name="preference_clearnotifications_message">Пам\'ять сповіщень очищено.</string>
     <string name="feedback_mail_subject">Відгук: TinyWeatherForecastGermany</string>
     <string name="feedback_mail_text">Під час надсилання звітів про вади, будь ласка, за можливості скопіюйте і вставте журнали.</string>
     <string name="warnings_until">до</string>
@@ -282,11 +282,11 @@
     <string name="travel_button">Оновити все</string>
     <string name="welcome_s3_text5">Довге натискання на прогнозі відкриває детальний перегляд.</string>
     <string name="update_failed">Невдале оновлення:</string>
-    <string name="network_lost">втрачено зʼєднання з інтернетом.</string>
+    <string name="network_lost">втрачено з\'єднання з Інтернетом.</string>
     <string name="preference_display_overviewchart_summary">Завжди показувати діаграму з температурою, хмарністю й опадами на наступні дні. Якщо вимкнено, діаграма буде видима лише в альбомному режимі і лише за умови достатнього місця.</string>
-    <string name="preference_display_overviewchart_title">Перегляд діаграми</string>
-    <string name="network_nonetwork">нема зʼєднання з інтернетом.</string>
-    <string name="network_timeout">час на зʼєднання з інтернетом вичерпано.</string>
+    <string name="preference_display_overviewchart_title">Оглядова діаграма</string>
+    <string name="network_nonetwork">нема з\'єднання з Інтернетом.</string>
+    <string name="network_timeout">час на з\'єднання з Інтернетом вичерпано.</string>
     <string name="preference_category_location">Місцезнаходження</string>
     <string name="preference_usegps_title">Використовуйте служби визначення місцезнаходження</string>
     <string name="preference_gpsauto_summary">Під час кожного запуску перевіряйте правильність розташування.</string>
@@ -455,7 +455,7 @@
     <string name="moonrise">Схід місяця</string>
     <string name="preference_boldwiget_vertical_bar_title">Окремий прогноз</string>
     <string name="miscellaneous">Різне</string>
-    <string name="preference_boldwiget_vertical_bar_summary">У віджеті, виділеному жирним шрифтом, відокремте прогноз на сьогодні від наступних днів вертикальною лінією.</string>
+    <string name="preference_boldwiget_vertical_bar_summary">У віджеті з жирним шрифтом відокремлювати прогноз на сьогодні від наступних днів вертикальною лінією.</string>
     <string name="boldwidget_description_detailed">Стислий виклад найважливішої інформації про погоду на сьогодні та наступні кілька днів.</string>
     <string name="classicwidget_description_detailed">Поточна погода та детальний прогноз на найближчі дні.</string>
     <string name="preview_fake_warning_text">ПОРИВИ ВІТРУ</string>
