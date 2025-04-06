@@ -213,6 +213,7 @@
     <string name="preference_screen_uvhi_fetchData_summary">Besides the weather forecast, also fetch the UV hazard index forecast for your location.</string>
     <string name="preference_screen_uvhi_showInMain_title">Show in main view</string>
     <string name="preference_screen_uvhi_showInMain_summary">Display the UV hazard index in the main app view.</string>
+    <string name="preference_uvi_notice_summary">The uv hazard index forecast displayed in the main app view considers the cloud cover amongst other factors. For more details on the calculation and scale see https://kunden.dwd.de/uvi/ .</string>
     <string name="preference_display_overviewchart_title">Overview chart</string>
     <string name="preference_display_overviewchart_summary">Always show the chart indicating temperature, clouds and rain for the next days. When disabled, the chart will only be visible in landscape mode, and only if there is enough space.</string>
     <string name="preference_screen_overviewchart_summary">Customize the overview chart.</string>

@@ -131,7 +131,7 @@ public class WeatherSettings {
     public static final String PREF_POLLEN_HASEL = "PREF_pollen_hasel";
     public static final String PREF_POLLEN_ERLE = "PREF_pollen_erle";
     public static final String PREF_POLLEN_GRAESER = "PREF_pollen_graeser";
-    public static final String PREF_PREFETCH_MAPS = "PREF_prefetch_maps";
+    // public static final String PREF_PREFETCH_MAPS = "PREF_prefetch_maps";
     public static final String PREF_LAST_PREFETCH_TIME = "PREF_prefetch_time";
     public static final String PREF_UVHI_FETCH_DATA ="PREF_uvhi_fetch_data";
     public static final String PREF_UVHI_MAINDISPLAY="PREF_uvhi_maindisplay";
@@ -1310,6 +1310,7 @@ public class WeatherSettings {
                 (getPollenActiveErle(context)) || (getPollenActiveGraeser(context)));
     }
 
+    /*
     public static boolean preFetchMaps(Context context){
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         long lastPrefetchTime = sharedPreferences.getLong(PREF_LAST_PREFETCH_TIME,PREF_LAST_PREFETCH_TIME_DEFAULT);
@@ -1318,6 +1319,7 @@ public class WeatherSettings {
         }
         return false;
     }
+     */
 
     public static void setPrefetchMapsTime(Context context) {
         SharedPreferences sharedPreferences = getSharedPreferences(context);

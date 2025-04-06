@@ -703,6 +703,7 @@ public class MainActivity extends Activity {
                     PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Cannot fetch pollen areas because no suitable network connection found.");
                 }
             }
+            /*
             // Prefetch maps for better performance. This may be turned off later by the user.
             // This will be done at a maximum of once per hour, see WeatherSettings.preFetchMaps.
             if (((performingFirstAppLaunch) || (WeatherSettings.preFetchMaps(context))) && Weather.suitableNetworkAvailable(context)){
@@ -753,6 +754,7 @@ public class MainActivity extends Activity {
             } else {
                 // do nothing
             }
+            */
             if ((WeatherSettings.loggingEnabled(context)) && (android.os.Build.VERSION.SDK_INT >= 33)){
                 executor.execute(new Runnable() {
                     @Override
