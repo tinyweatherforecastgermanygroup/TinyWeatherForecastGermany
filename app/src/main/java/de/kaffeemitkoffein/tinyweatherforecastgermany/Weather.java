@@ -2288,6 +2288,17 @@ public final class Weather {
         return null;
     }
 
+    public static void removeForecastsFromDatabase(Context context){
+        ContentResolver contentResolver = context.getContentResolver();
+        try {
+            int i = contentResolver.delete(WeatherContentManager.FORECAST_URI_ALL,null,null);
+            PrivateLog.log(context,PrivateLog.DATA,PrivateLog.INFO,"All weather forecast data was removed from the database. Sets removed: "+i);
+        } catch (Exception e){
+            PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Deleting weather forecast data failed. Error: "+e.getMessage());
+
+        }
+    }
+
     public final static class SimpleDateFormats {
         final static int DETAILED              = 0;
         final static int DETAILED_NO_SECONDS   = 1;

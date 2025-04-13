@@ -1813,7 +1813,8 @@ public class APIReaders {
             String x0 = String.format(Locale.US,"%.2f",weatherLocation.longitude-GEOACCURACY_UVI);
             String x1 = String.format(Locale.US,"%.2f",weatherLocation.longitude+GEOACCURACY_UVI);
             String timestring = getLayerImages.getTimeStamp(time);
-            String urlString ="maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AUVI_Global_CL&bbox="+x0+"%2C"+y0+"%2C"+x1+"%2C"+y1+"&"+timestring+"&width=1&height=1&srs=EPSG%3A4326&format=image%2Fpng";
+            // String urlString ="maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AUVI_Global_CL&bbox="+x0+"%2C"+y0+"%2C"+x1+"%2C"+y1+"&"+timestring+"&width=1&height=1&srs=EPSG%3A4326&format=image%2Fpng";
+            String urlString ="maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AUVI_Global_"+WeatherSettings.getPrefUVHIMaindisplayType(context)+"&bbox="+x0+"%2C"+y0+"%2C"+x1+"%2C"+y1+"&"+timestring+"&width=1&height=1&srs=EPSG%3A4326&format=image%2Fpng";
             InputStream inputStream;
             boolean ssl = !WeatherSettings.isTLSdisabled(context);
             try {

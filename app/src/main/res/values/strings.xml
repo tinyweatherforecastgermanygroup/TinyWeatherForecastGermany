@@ -213,7 +213,9 @@
     <string name="preference_screen_uvhi_fetchData_summary">Besides the weather forecast, also fetch the UV hazard index forecast for your location.</string>
     <string name="preference_screen_uvhi_showInMain_title">Show in main view</string>
     <string name="preference_screen_uvhi_showInMain_summary">Display the UV hazard index in the main app view.</string>
-    <string name="preference_uvi_notice_summary">The uv hazard index forecast displayed in the main app view considers the cloud cover amongst other factors. For more details on the calculation and scale see https://kunden.dwd.de/uvi/ .</string>
+    <string name="preference_screen_uvhi_mainType_title">Clear sky</string>
+    <string name="preference_screen_uvhi_mainType_summary">Do not apply cloud modification factors to the UV hazard index forecast displayed in the main app view.</string>
+    <string name="preference_uvi_notice_summary">More details on the calculation of the UV hazard index are available on the DWD homepage. Changing the clear sky preference makes it necessary to update the forecast data from the DWD.</string>
     <string name="preference_display_overviewchart_title">Overview chart</string>
     <string name="preference_display_overviewchart_summary">Always show the chart indicating temperature, clouds and rain for the next days. When disabled, the chart will only be visible in landscape mode, and only if there is enough space.</string>
     <string name="preference_screen_overviewchart_summary">Customize the overview chart.</string>

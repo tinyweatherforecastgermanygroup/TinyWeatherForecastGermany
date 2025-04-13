@@ -135,6 +135,7 @@ public class WeatherSettings {
     public static final String PREF_LAST_PREFETCH_TIME = "PREF_prefetch_time";
     public static final String PREF_UVHI_FETCH_DATA ="PREF_uvhi_fetch_data";
     public static final String PREF_UVHI_MAINDISPLAY="PREF_uvhi_maindisplay";
+    public static final String PREF_UVHI_CLEAR_SKY = "PREF_uvhi_clear_sky";
     public static final String PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS = "PREF_max_loc_in_shared_warnings";
     public static final String PREF_USE_BACKGROUND_LOCATION = "PREF_use_backgr_location";
     public static final String PREF_DISPLAY_WIND_IN_CHARTS = "PREF_wind_in_charts";
@@ -242,6 +243,7 @@ public class WeatherSettings {
     public static final long PREF_LAST_PREFETCH_TIME_DEFAULT = 0;
     public static final boolean PREF_UVHI_FETCH_DATA_DEFAULT = false;
     public static final boolean PREF_UVHI_MAINDISPLAY_DEFAULT = false;
+    public static final boolean PREF_UVHI_CLEAR_SKY_DEFAULT = false;
     public static final int PREF_MAX_LOCATIONS_IN_SHARED_WARNINGS_DEFAULT = 12;
     public static final boolean PREF_USE_BACKGROUND_LOCATION_DEFAULT = false;
     public static final boolean PREF_DISPLAY_WIND_IN_CHARTS_DEFAULT = false;
@@ -1854,5 +1856,25 @@ public class WeatherSettings {
         }
         return bundle;
     }
+
+    public static class UVHI_Type{
+        public static final String CL = "CL"; // clouds
+        public static final String CS = "CS"; // cloudless
+    }
+
+    public static boolean getPrefUVHIClearSky(Context context){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_UVHI_CLEAR_SKY,PREF_UVHI_CLEAR_SKY_DEFAULT);
+    }
+
+
+    public static String getPrefUVHIMaindisplayType(Context context){
+        if (getPrefUVHIClearSky(context)) {
+            return UVHI_Type.CS;
+        }
+        return UVHI_Type.CL;
+    }
+
+
 
 }
