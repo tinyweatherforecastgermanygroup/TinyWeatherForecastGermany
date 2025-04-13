@@ -1,9 +1,5 @@
-Neu in dieser Version [VERSION]:
-
 - das Regenradar funktioniert wieder
 - der UV Gefahrenindex, der in der Hauptansicht angezeigt wird, kann auf "klarer Himmel" geändert werden
 - verbesserte Leistung der Hauptansicht
 - verbesserte Übersetzungen
 - diverse Fehlerkorrekturen
-
-Für eine detaillierte Liste der Änderungen siehe https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md
