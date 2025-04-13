@@ -4,6 +4,7 @@
 - remove pre-fetching of map images to speed up main ui on older devices
 - added information about uv index
 - added option to not apply cloud modification factors to the UV hazard index forecast displayed in the main app view
+- fix changed wn-product id
 
 ## Version 0.62.7
 - fixed maps activity crashing when no internet connection and/or no pollen data present 

@@ -32,7 +32,6 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -795,6 +794,7 @@ public class MainActivity extends Activity {
         long test = (long) DataStorage.getLong(context,DataStorage.DATASTORAGE_TEST, 40);
         DataStorage.printPackages(context,DataStorage.readAllPackages(context));
          */
+        // Log.v("tiwefoge","COLOR: "+Color.parseColor("#bebebe"));
     }
 
     public static long getEstimatedAdapterLayoutTimeInMillis(Context context){

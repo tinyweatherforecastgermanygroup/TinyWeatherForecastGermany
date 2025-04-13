@@ -210,9 +210,15 @@ public class RadarMN2 {
             bitmap.getPixels(color,0,getFixedRadarMapWidth(context),0,0,getFixedRadarMapWidth(context),getFixedRadarMapHeight(context));
             int colorArraySize = getFixedRadarMapWidth(context)*getFixedRadarMapHeight(context);
             for (int i=0; i<colorArraySize; i++){
+                if ((color[i]==-4276546)){
+                    color[i]=Color.TRANSPARENT;
+                } else
+                if ((color[i]==-245761)){
+                    color[i]=Color.TRANSPARENT;
+                } else
                 if ((color[i]==-4342339)){
                     color[i]=Color.TRANSPARENT;
-                }
+                } else
                 if ((color[i]==-1)){
                     color[i]=Color.TRANSPARENT;
                 }

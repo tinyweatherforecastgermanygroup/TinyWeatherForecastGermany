@@ -944,7 +944,8 @@ public class APIReaders {
 
         public RadarMNSetGeoserverRunnable(Context context){
             this.context = context;
-            WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AWN-Produkt&"+RadarMN2.BBOX+"&TIMESTAMP&width="+RadarMN2.getFixedRadarMapWidth(context)+"&height="+RadarMN2.getFixedRadarMapHeight(context)+"&srs=EPSG%3A3857&styles=&format=image%2Fpng";
+            //WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AWN-Produkt&"+RadarMN2.BBOX+"&TIMESTAMP&width="+RadarMN2.getFixedRadarMapWidth(context)+"&height="+RadarMN2.getFixedRadarMapHeight(context)+"&srs=EPSG%3A3857&styles=&format=image%2Fpng";
+            WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3ARadar_wn-product_1x1km_ger&"+RadarMN2.BBOX+"&TIMESTAMP&width="+RadarMN2.getFixedRadarMapWidth(context)+"&height="+RadarMN2.getFixedRadarMapHeight(context)+"&srs=EPSG%3A3857&styles=&format=image%2Fpng";
         }
 
         public void setForceUpdate(boolean forceUpdate){
