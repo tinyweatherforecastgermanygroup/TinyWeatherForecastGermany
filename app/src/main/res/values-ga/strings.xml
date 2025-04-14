@@ -511,4 +511,14 @@
     <string name="preference_missingBackgroundLocationPermission_title">Cead ar Iarraidh</string>
     <string name="preference_missingBackgroundLocationPermission_summary">Faoi láthair, ní féidir leis an aip rochtain a fháil ar an suíomh sa chúlra. Smaoinigh ar an gcead seo a thabhairt nó seiceálacha suímh rialta a mhúchadh.</string>
     <string name="pollen_alder">Fearnóg</string>
+    <string name="preference_display_wind_distance_activate_summary">Taispeáin an fad measta tar éis treo agus luas na gaoithe ar an léarscáil.</string>
+    <string name="preference_display_wind_distance_activate_title">Fad taispeána</string>
+    <string name="preference_category_distancetravelled">Fad a thaistil</string>
+    <string name="preference_display_wind_distance_arc_title">Stua</string>
+    <string name="preference_display_wind_distance_arc_summary">Fad na stuanna ar taispeáint ina gcéimeanna.</string>
+    <string name="preference_display_wind_distance_time_title">Am</string>
+    <string name="preference_display_wind_distance_time_summary">Am le taispeáint in uaireanta.</string>
+    <string name="preference_mapSaveState_title">Sábháil súmáil</string>
+    <string name="preference_uvi_notice_summary">Breathnaítear ar an gclúdach scamall i measc fachtóirí eile sa réamhaisnéis innéacs guaise uv atá ar taispeáint i bpríomh-amharc na haipe. Le haghaidh tuilleadh sonraí faoin ríomh agus faoin scála féach https://kunden.dwd.de/uvi/ .</string>
+    <string name="preference_mapSaveState_summary">Sábháil an suíomh léarscáile deireanach agus an formhéadú agus cuir ar ais iad an chéad uair eile a ghlaonn tú ar an léarscáil.</string>
 </resources>
