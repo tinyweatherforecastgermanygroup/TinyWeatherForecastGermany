@@ -521,7 +521,7 @@
     <string name="preference_display_wind_distance_activate_title">Показувати відстань</string>
     <string name="preference_mapSaveState_title">Зберегти масштаб</string>
     <string name="preference_mapSaveState_summary">Пам\'ятати останнє положення та масштаб мапи і відновлювати їх при наступному виклику мапи.</string>
-    <string name="preference_uvi_notice_summary">Прогноз небезпеки ультрафіолетового випромінювання в головному вікні програми враховує, серед іншого, хмарність. Докладніше про розрахунок і шкалу див. https://kunden.dwd.de/uvi/.</string>
+    <string name="preference_uvi_notice_summary">Докладніше про розрахунок УФ-індексу див. на сторінці DWD. Зміна параметра «Ясне небо» призводить до необхідності оновлення прогнозних даних від DWD.</string>
     <string name="preference_screen_uvhi_mainType_title">Ясне небо</string>
     <string name="preference_screen_uvhi_mainType_summary">Не застосовувати модифікатор хмарності до прогнозу індексу небезпеки ультрафіолетового випромінювання.</string>
 </resources>
