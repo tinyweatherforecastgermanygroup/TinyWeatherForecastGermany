@@ -383,12 +383,12 @@
     <string name="layerlabel_short_ts">Відчутна температура</string>
     <string name="layerlabel_uvi_cl_0">Індекс небезпеки ультрафіолету на сьогодні</string>
     <string name="layerlabel_uvi_cl_1">Індекс небезпеки ультрафіолету на завтра</string>
-    <string name="layerlabel_uvi_cl_2">Індекс небезпеки ультрафіолетового випромінювання на післязавтра</string>
-    <string name="layerlabel_uvi_cs_0">Індекс небезпеки ультрафіолетового випромінювання на сьогодні (ясне небо)</string>
-    <string name="layerlabel_uvi_cs_1">Індекс небезпеки ультрафіолетового випромінювання на завтра (ясне небо)</string>
-    <string name="layerlabel_uvi_cs_2">Індекс небезпеки ультрафіолетового випромінювання на післязавтра (ясне небо)</string>
-    <string name="layerlabel_uvi_eu_cl_0">Індекс небезпеки ультрафіолетового випромінювання на сьогодні (Європа)</string>
-    <string name="layerlabel_uvi_eu_cs_0">Індекс небезпеки ультрафіолетового випромінювання на сьогодні (Європа, ясне небо)</string>
+    <string name="layerlabel_uvi_cl_2">Індекс небезпеки ультрафіолету на післязавтра</string>
+    <string name="layerlabel_uvi_cs_0">Індекс небезпеки ультрафіолету на сьогодні (ясне небо)</string>
+    <string name="layerlabel_uvi_cs_1">Індекс небезпеки ультрафіолету на завтра (ясне небо)</string>
+    <string name="layerlabel_uvi_cs_2">Індекс небезпеки ультрафіолету на післязавтра (ясне небо)</string>
+    <string name="layerlabel_uvi_eu_cl_0">Індекс небезпеки ультрафіолету на сьогодні (Європа)</string>
+    <string name="layerlabel_uvi_eu_cs_0">Індекс небезпеки ультрафіолету на сьогодні (Європа, ясне небо)</string>
     <string name="layerlabel_ts_0">Температура, сприйнята о 6:00 за місцевим часом</string>
     <string name="local_time_6">6:00 за місцевим часом</string>
     <string name="preference_screen_pollen_title">Відображення пилку</string>
@@ -522,4 +522,6 @@
     <string name="preference_mapSaveState_title">Зберегти масштаб</string>
     <string name="preference_mapSaveState_summary">Пам\'ятати останнє положення та масштаб мапи і відновлювати їх при наступному виклику мапи.</string>
     <string name="preference_uvi_notice_summary">Прогноз небезпеки ультрафіолетового випромінювання в головному вікні програми враховує, серед іншого, хмарність. Докладніше про розрахунок і шкалу див. https://kunden.dwd.de/uvi/.</string>
+    <string name="preference_screen_uvhi_mainType_title">Ясне небо</string>
+    <string name="preference_screen_uvhi_mainType_summary">Не застосовувати модифікатор хмарності до прогнозу індексу небезпеки ультрафіолетового випромінювання.</string>
 </resources>
