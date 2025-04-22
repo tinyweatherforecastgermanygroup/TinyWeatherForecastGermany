@@ -131,7 +131,13 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MAX)) ||
                         (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT)) ||
                         (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH)) ||
-                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_FILTER_WARNINGS))){
+                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_FILTER_WARNINGS)) ||
+                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_ZEROBASE))){
+                    // min value of fixed range must not be above max value, fix if needed
+                    if (WeatherSettings.getOverviewChartMin(context)>WeatherSettings.getOverviewChartMax(context)){
+                        WeatherSettings.setOverviewChartMax(context,WeatherSettings.getOverviewChartMin(context)+15);
+                        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Overview chart: when using fixed scale, min must not be larger than max. Fixed set values.");
+                    }
                     setUseMinMax();
                     WidgetRefresher.refreshChartWidget(context,WidgetRefresher.FROM_SETTINGS);
                     WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
@@ -227,7 +233,6 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             ignoreNextPrefUpdate = false;
         }
     };
-
 
     @Override
     @SuppressWarnings("deprecation")

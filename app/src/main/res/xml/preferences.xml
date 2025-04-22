@@ -115,6 +115,13 @@
                     android:title="@string/preference_category_overviewchart_scale">
 
                 <CheckBoxPreference
+                        android:key="PREF_display_overviewchart_zbase"
+                        android:title="@string/preference_screen_overviewchart_zbase_title"
+                        android:summary="@string/preference_screen_overviewchart_zbase_summary"
+                        android:defaultValue="true"/>
+
+
+                <CheckBoxPreference
                         android:key="PREF_display_overviewchart_mmu"
                         android:title="@string/preference_screen_overviewchart_usemm_title"
                         android:summary="@string/preference_screen_overviewchart_usemm_summary"

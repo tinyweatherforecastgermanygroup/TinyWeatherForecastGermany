@@ -758,16 +758,24 @@ public class ForecastBitmap{
         }
         //minTemp = -5; maxTemp = 25;
         int deltaTemp = maxTemp - minTemp;
-        if (minTemp>=0){
-            deltaTemp = maxTemp;
+        // if graph starts with zero, adjust delta accordingly
+        if (WeatherSettings.OverviewChartBaseZero(context)){
+            if (minTemp>=0){
+                deltaTemp = maxTemp;
+            }
         }
         int temp_scale_step_value = 5;
-        // if screen to narrow or deltaTemp too high, increase scale to 10°
+        // if screen too narrow or deltaTemp too high, increase scale to 10°
         if ((chartHeight<100) || (deltaTemp>25)){
             temp_scale_step_value = 10;
         }
         int display_steps = deltaTemp / temp_scale_step_value;
-        float temp_bottom_offset_value = 0;
+        float temp_bottom_offset_value = (minTemp/temp_scale_step_value)*temp_scale_step_value;
+        // if graph starts with zero, set offset to zero
+        if (WeatherSettings.OverviewChartBaseZero(context)){
+            temp_bottom_offset_value = 0;
+        }
+        PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Overwiew chart: minTemp: "+minTemp+"°C, maxTemp: "+maxTemp+"°C, temp. step value: "+temp_scale_step_value+", temp. offset: "+temp_bottom_offset_value);
         if (minTemp < 0){
             temp_bottom_offset_value = -(((float) (Math.abs(minTemp)/temp_scale_step_value))+1)*temp_scale_step_value;
         }

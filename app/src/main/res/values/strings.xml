@@ -228,6 +228,8 @@
     <string name="preference_display_overviewchart_filter_warnings_title">Filter warnings</string>
     <string name="preference_display_overviewchart_filter_warnings_summary">Use the same filter for warnings in the overview chart as for notifications.</string>
     <string name="preference_category_overviewchart_scale">Scale values</string>
+    <string name="preference_screen_overviewchart_zbase_title">Zero baseline</string>
+    <string name="preference_screen_overviewchart_zbase_summary">The temperature graph begins with zero unless temperatures are lower.</string>
     <string name="preference_screen_overviewchart_usemm_title">Fixed Scale</string>
     <string name="preference_screen_overviewchart_usemm_summary">The temperature scale remains the same if the values are within the specified range.</string>
     <string name="preference_screen_overviewchart_max_title">Maximum</string>

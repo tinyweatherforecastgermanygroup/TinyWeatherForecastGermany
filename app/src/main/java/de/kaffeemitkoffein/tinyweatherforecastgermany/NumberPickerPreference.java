@@ -33,7 +33,8 @@ public class NumberPickerPreference extends DialogPreference {
     private int minValue = 7;
     private int maxValue = 4;
     private int arcValue = 2;
-    public final static String[] minValues  = {"-35","-30","-25","-20","-15","-10","-5","0"};
+    // public final static String[] minValues  = {"-35","-30","-25","-20","-15","-10","-5","0"};
+    public final static String[] minValues  = {"-35","-30","-25","-20","-15","-10","-5","0","5","10","15"};
     public final static String[] maxValues  = {"5","10","15","20","25","30","35","40"};
     public final static String[] arcValues  = {"0","30","60","90","120","150","180","210","240","270","300","330","360"};
     public final static String[] hourValues = {"1","2","3","4","5","6","7","8","9","10","11","12"};
@@ -59,7 +60,7 @@ public class NumberPickerPreference extends DialogPreference {
         numberPicker.setMaxValue(10);
         if (getKey().equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN)){
             numberPicker.setMinValue(0);
-            numberPicker.setMaxValue(7);
+            numberPicker.setMaxValue(10);
             numberPicker.setDisplayedValues(minValues);
             defaultPosition = WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT;
         }

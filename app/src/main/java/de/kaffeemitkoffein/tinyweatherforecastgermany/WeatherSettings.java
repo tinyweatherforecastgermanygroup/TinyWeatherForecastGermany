@@ -77,6 +77,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_CROP_PRECIPITATIONCHART = "PREF_crop_precipchart";
     public static final String PREF_DISPLAY_OVERVIEWCHART = "PREF_display_overviewchart";
     public static final String PREF_DISPLAY_OVERVIEWCHART_DAYS="PREF_display_overviewchart_days";
+    public static final String PREF_DISPLAY_OVERVIEWCHART_ZEROBASE = "PREF_display_overviewchart_zbase";
     public static final String PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE = "PREF_display_overviewchart_mmu";
     public static final String PREF_DISPLAY_OVERVIEWCHART_MIN = "PREF_display_overviewchart_min";
     public static final String PREF_DISPLAY_OVERVIEWCHART_MAX = "PREF_display_overviewchart_max";
@@ -186,6 +187,7 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_CROP_PRECIPITATIONCHART_DEFAULT = false;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_DEFAULT = false;
     public static final int PREF_DISPLAY_OVERVIEWCHART_DAYS_DEFAULT = 10;
+    public static final boolean PREF_DISPLAY_OVERVIEWCHART_ZEROBASE_DEFAULT = true;
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT = false;
     public static final int PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT = 7;
     public static final int PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT = 4;
@@ -1114,6 +1116,11 @@ public class WeatherSettings {
         pref_editor.apply();
     }
 
+    public static boolean OverviewChartBaseZero(Context context){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getBoolean(PREF_DISPLAY_OVERVIEWCHART_ZEROBASE,PREF_DISPLAY_OVERVIEWCHART_ZEROBASE_DEFAULT);
+    }
+
     public static boolean useOverviewChartMinMax(Context context){
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE,PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT);
@@ -1127,6 +1134,21 @@ public class WeatherSettings {
     public static int getOverviewChartMax(Context context){
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         return Integer.parseInt(NumberPickerPreference.maxValues[sharedPreferences.getInt(PREF_DISPLAY_OVERVIEWCHART_MAX,PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT)]);
+    }
+
+    public static void setOverviewChartMax(Context context, int value){
+        int position = value/5 - 1;
+        if (position<0){
+            position = 0;
+        }
+        if (position > NumberPickerPreference.maxValues.length - 1){
+            position = NumberPickerPreference.maxValues.length - 1;
+        }
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putInt(PREF_DISPLAY_OVERVIEWCHART_MAX,position);
+        pref_editor.apply();
+
     }
 
     public static String getNotificationChannelID(long identifier){
