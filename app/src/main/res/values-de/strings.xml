@@ -537,4 +537,7 @@
     <string name="preference_display_wind_distance_arc_title">Bogen</string>
     <string name="preference_display_wind_distance_arc_summary">Länge der angezeigten Bögen in Grad.</string>
     <string name="preference_display_wind_distance_time_summary">Anzuzeigende Zeit in Stunden.</string>
+    <string name="preference_screen_uvhi_mainType_title">Klarer Himmel</string>
+    <string name="preference_screen_uvhi_mainType_summary">Keine Wolkenmodifikationsfaktoren auf die UV-Gefahrenindexprognose anwenden, die in der Hauptansicht der App angezeigt wird.</string>
+    <string name="preference_uvi_notice_summary">Weitere Informationen zur Berechnung des UV-Gefahrensindex sind auf der DWD-Homepage verfügbar. Eine Änderung der Präferenzen bei klarem Himmel erfordert eine Aktualisierung der Prognosedaten des DWD.</string>
 </resources>
