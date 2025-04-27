@@ -152,6 +152,31 @@ public class PrivateLog {
         return log(context,tag.toUpperCase()+" ["+severity+"] "+s);
     }
 
+    public static class BoxDefinition{
+        private final char c1;
+        private final char c2;
+        private final char c3;
+        private final int width;
+        public BoxDefinition(int width, String c1, String c2, String c3){
+            this.c1 = c1.toCharArray()[0];
+            this.c2 = c2.toCharArray()[0];
+            this.c3 = c3.toCharArray()[0];
+            this.width = width;
+        }
+        public boolean log(Context context,String tag, int severity, String s){
+            StringBuilder messageBuilder = new StringBuilder();
+            messageBuilder.append(c1);
+            // messageBuilder.append(c2);
+            messageBuilder.append(s);
+            int gap = width - s.length() - 1;
+            for (int i=0; i<gap; i++){
+                messageBuilder.append(c2);
+            }
+            messageBuilder.append(c3);
+            return PrivateLog.log(context,tag,severity,messageBuilder.toString());
+        }
+    }
+
     public static boolean copyLogsToClipboard(Context context){
         String logs = getLogs(context);
         if (logs != null){

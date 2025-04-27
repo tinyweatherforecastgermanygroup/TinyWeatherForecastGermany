@@ -767,42 +767,56 @@ public class ClassicWidget extends AppWidgetProvider {
                 widget_height_pixels = widget_height_landscape_pixels;
                 os = "landscape";
             }
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"==== Widget Dimension Manager ("+calledClassName+") ====");
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Widget width in portrait mode  : "+widget_width_portrait_dp+" dp, "+widget_width_portrait_pixels+" pixels");
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Widget height in portrait mode : "+widget_height_portrait_dp+" dp, "+widget_height_portrait_pixels+" pixels");
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Widget width in landscape mode : "+widget_width_landscape_dp+" dp, "+widget_width_landscape_pixels+" pixels");
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Widget height in landscape mode: "+widget_height_landscape_dp+" dp, "+widget_height_landscape_pixels+" pixels");
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"xdpi          : "+xdpi+" pixels per inch");
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"ydpi          : "+ydpi+" pixels per inch");
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"density       : "+density);
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"scaled density: "+scaledDensity+ " (scale factor for fonts)");
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"orientation   : "+orientation+" ("+os+")");
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"current width : "+widget_width_pixels+" pixels");
-            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"current height: "+widget_height_pixels+" pixels");
-
+            PrivateLog.BoxDefinition boxTop = new PrivateLog.BoxDefinition(65,"┍","━","┑");
+            PrivateLog.BoxDefinition boxTxt = new PrivateLog.BoxDefinition(65,"│"," ","│");
+            PrivateLog.BoxDefinition boxMid = new PrivateLog.BoxDefinition(65,"┝","━","┥");
+            PrivateLog.BoxDefinition boxBtm = new PrivateLog.BoxDefinition(65,"┕","━","┙");
+            boxTop.log(context,PrivateLog.WIDGET,PrivateLog.INFO," Widget Dimension Manager ("+calledClassName+") ");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," Widget width in portrait mode  : "+widget_width_portrait_dp+" dp, "+widget_width_portrait_pixels+" pixels");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," Widget height in portrait mode : "+widget_height_portrait_dp+" dp, "+widget_height_portrait_pixels+" pixels");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," Widget width in landscape mode : "+widget_width_landscape_dp+" dp, "+widget_width_landscape_pixels+" pixels");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," Widget height in landscape mode: "+widget_height_landscape_dp+" dp, "+widget_height_landscape_pixels+" pixels");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," xdpi          : "+xdpi+" pixels per inch");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," ydpi          : "+ydpi+" pixels per inch");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," density       : "+density);
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," scaled density: "+scaledDensity+ " (scale factor for fonts)");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," orientation   : "+orientation+" ("+os+")");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," current widget width : "+widget_width_pixels+" pixels");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," current widget height: "+widget_height_pixels+" pixels");
             WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+            int displayWidth = displayMetrics.widthPixels;
+            int displayHeight = displayMetrics.heightPixels;
             // windowManager.getDefaultDisplay().getMetrics(metrics);
+            boxMid.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"");
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
                 WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
-                WindowInsets  windowInsets  = windowMetrics.getWindowInsets();
+                WindowInsets windowInsets = windowMetrics.getWindowInsets();
                 WindowMetrics maximumWindowMetrics = windowManager.getMaximumWindowMetrics();
                 Rect bounds = maximumWindowMetrics.getBounds();
-                PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Window max. width : "+bounds.width()+" pixels (current widget width: "+widget_width_pixels+")");
-                PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Window max. height: "+bounds.height()+" pixels (current widget height: "+widget_height_pixels+")");
-                if ((widget_width_pixels> bounds.width()) || (widget_height_pixels>bounds.height())){
-                    PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.ERR, "Implausible widget size, because widget is reported larger than the maximum available window size:");
-                    // implausible widget size
-                    float widgetRatio = (float) widget_width_pixels/widget_height_pixels;
-                    int correctedWidth  = bounds.width();
-                    int correctedHeight = Math.round(bounds.width() / widgetRatio);
-                    PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.WARN,"=> Widget size corrected to: "+correctedWidth+" x "+correctedHeight+" pixels.");
-                    widget_width_pixels  = correctedWidth;
-                    widget_height_pixels = correctedHeight;
-                } else {
-                    PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Reported widget size seems ok.");
-                }
+                displayWidth = bounds.width();
+                displayHeight = bounds.height();
+                boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," API>29: using window metrics to check widget size.");
+            } else {
+                boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," API<30: using default display to check widget size.");
             }
-
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," Window max. width : "+displayWidth+" pixels (current widget width: "+widget_width_pixels+")");
+            boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," Window max. height: "+displayHeight+" pixels (current widget height: "+widget_height_pixels+")");
+            if ((widget_width_pixels> displayWidth) || (widget_height_pixels>displayHeight)){
+                boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.ERR, " Implausible widget size, because widget is reported larger ");
+                boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.ERR," than the maximum available window size:");
+                // implausible widget size
+                float widgetRatio = (float) widget_width_pixels/widget_height_pixels;
+                int correctedWidth  = displayWidth;
+                int correctedHeight = Math.round(displayWidth / widgetRatio);
+                boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.WARN," => Widget size corrected to: "+correctedWidth+" x "+correctedHeight+" pixels.");
+                widget_width_pixels  = correctedWidth;
+                widget_height_pixels = correctedHeight;
+            } else {
+                boxTxt.log(context,PrivateLog.WIDGET,PrivateLog.INFO," Reported widget size seems ok.");
+            }
+            boxBtm.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"");
         }
 
         /**
