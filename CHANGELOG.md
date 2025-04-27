@@ -5,6 +5,7 @@
 - added an error check to prevent min>max when a fixed scale is enabled
 - WidgetDimensionManager guesses a widget size based on available window size when the reported widget dimensions are implausible
 - improved font size of the clock in the clock widget
+- fix implausible widget sizes also when API<30
 
 ## Version 0.62.8
 - fixed stations history displaying "null" when warnings are disabled and municipality names instead of the station name are displayed
