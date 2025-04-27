@@ -36,23 +36,10 @@ public class ClockWidget extends ClassicWidget {
 
     @Override
     public void updateWidgetDisplay(Context c, AppWidgetManager awm, int[] widget_instances, int source) {
-        CurrentWeatherInfo weatherCard = new Weather().getCurrentWeatherInfo(c);
+        CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             for (int i = 0; i < widget_instances.length; i++) {
-                // determine widget diameters in pixels
-                Bundle appWidgetOptions = awm.getAppWidgetOptions(widget_instances[i]);
-                // diameters in portrait mode
-                int widthPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                int heightPortrait = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
-                // diameters in landscape mode
-                int widthLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
-                int heightLandscape = appWidgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-                int orientation = c.getResources().getConfiguration().orientation;
-                int widgetWidth = widthPortrait; int widgetHeight = heightPortrait;
-                if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-                    widgetWidth = widthLandscape;
-                    widgetHeight = heightLandscape;
-                }
+                WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(c,awm,widget_instances[i],"Clock Widget #"+i);
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.clockwidget_layout);
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent_weather = new Intent(c, MainActivity.class);
@@ -79,10 +66,8 @@ public class ClockWidget extends ClassicWidget {
                 remoteViews.setOnClickPendingIntent(R.id.widget_date, pendingIntent_clock);
                 remoteViews.setOnClickPendingIntent(R.id.widget_nextalarm, pendingIntent_clock);
                 setClassicWidgetItems(remoteViews, weatherCard, c,false);
-                adjustClockFontSize(c, awm, i, remoteViews);
-                if (weatherCard!=null){
-                    fillClockWeatherItems(c,remoteViews, weatherCard);
-                }
+                adjustClockFontSize(c,widgetDimensionManager, remoteViews);
+                fillClockWeatherItems(c,remoteViews, weatherCard);
                 awm.updateAppWidget(widget_instances[i], remoteViews);
             }
         } else
@@ -93,14 +78,13 @@ public class ClockWidget extends ClassicWidget {
             }
     }
 
-    private void adjustClockFontSize(Context context, final AppWidgetManager awm, final int widget_instance, RemoteViews remoteViews) {
-        WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(context, awm, widget_instance);
-        float width_max = widgetDimensionManager.getWidgetWidth();
+    private void adjustClockFontSize(Context context, WidgetDimensionManager widgetDimensionManager, RemoteViews remoteViews) {
         // clock layout takes 50% of widget height
-        float height_max = widgetDimensionManager.getWidgetHeight() / (float) 0.36;
+        float height_max = widgetDimensionManager.getFontHeightInSP(widgetDimensionManager.getWidgetHeight() * (float) 0.36);
         if (height_max == 0) {
             height_max = (float) 64;
         }
+        PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Setting clock font size to :"+height_max+" sp.");
         remoteViews.setTextViewTextSize(R.id.clockwidget_clock, TypedValue.COMPLEX_UNIT_SP, height_max);
     }
 

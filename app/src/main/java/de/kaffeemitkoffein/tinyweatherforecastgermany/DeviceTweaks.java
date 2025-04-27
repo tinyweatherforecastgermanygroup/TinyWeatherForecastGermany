@@ -85,8 +85,8 @@ public class DeviceTweaks {
         return resultArray;
     }
 
-    public static int[] confirmPlausibleWidgetSize(final Context context, final int widget, final AppWidgetManager awm, final int widgetInstance){
-        ClassicWidget.WidgetDimensionManager widgetDimensionManager = new ClassicWidget.WidgetDimensionManager(context,awm,widgetInstance);
+    public static int[] confirmPlausibleWidgetSize(final Context context, final int widget, final AppWidgetManager awm, final int widgetInstance, String widgetName){
+        ClassicWidget.WidgetDimensionManager widgetDimensionManager = new ClassicWidget.WidgetDimensionManager(context,awm,widgetInstance,widgetName);
         final int width = widgetDimensionManager.getWidgetWidthInt();
         final int height = widgetDimensionManager.getWidgetHeightInt();
         return confirmPlausibleWidgetSize(context,widget,width,height);

@@ -62,7 +62,7 @@ public class BoldWidget extends ClassicWidget {
         CurrentWeatherInfo weatherCard = Weather.getCurrentWeatherInfo(c);
         if (weatherCard!=null){
             for (int i = 0; i < widget_instances.length; i++) {
-                WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(c,awm,widget_instances[i]);
+                WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(c,awm,widget_instances[i],"Bold Widget #"+i);
                 int width = widgetDimensionManager.getWidgetWidthInt();
                 int height = widgetDimensionManager.getWidgetHeightInt();
                 // check if reported widget size is plausible and fall back to defaults if necessary

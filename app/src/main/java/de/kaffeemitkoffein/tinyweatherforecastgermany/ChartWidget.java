@@ -87,7 +87,7 @@ public class ChartWidget extends ClassicWidget{
             ArrayList<WeatherWarning> warnings = WeatherWarnings.getCurrentWarnings(context, true);
             locationWarnings = WeatherWarnings.getWarningsForLocation(context, warnings, weatherLocation);
         }
-        WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(context,awm,widgetInstance);
+        WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(context,awm,widgetInstance,"Chart Widget #"+widgetInstance);
         int width = widgetDimensionManager.getWidgetWidthInt();
         int height = widgetDimensionManager.getWidgetHeightInt();
         // confirm if determined widget size is plausible, fall back to defaults if necessary

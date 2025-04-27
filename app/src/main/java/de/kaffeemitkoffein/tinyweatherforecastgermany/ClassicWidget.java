@@ -34,7 +34,11 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowManager;
+import android.view.WindowMetrics;
 import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -467,7 +471,7 @@ public class ClassicWidget extends AppWidgetProvider {
         int pid = android.os.Process.myPid();
         if (weatherCard!=null){
             for (int i=0; i<widget_instances.length; i++){
-                WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(c,awm,widget_instances[i]);
+                WidgetDimensionManager widgetDimensionManager = new WidgetDimensionManager(c,awm,widget_instances[i],"Classic Widget #"+i);
                 int widgetWidth = widgetDimensionManager.getWidgetWidthInt();
                 int widgetHeight = widgetDimensionManager.getWidgetHeightInt();
                 //int[] resultArray = DeviceTweaks.confirmPlausibleWidgetSize("Classic widget",c,widgetWidth,widgetHeight,560,180);
@@ -707,7 +711,6 @@ public class ClassicWidget extends AppWidgetProvider {
          * However, they can be a pretty nice estimate how large text & graphics should be generated before
          * getting displayed.
          */
-
         int widget_width_portrait_dp;
         int widget_height_portrait_dp;
         int widget_width_landscape_dp;
@@ -719,6 +722,14 @@ public class ClassicWidget extends AppWidgetProvider {
         float scaledDensity;
         Context context;
 
+        // calculated values
+        int widget_width_portrait_pixels;
+        int widget_height_portrait_pixels;
+        int widget_width_landscape_pixels;
+        int widget_height_landscape_pixels;
+        int widget_width_pixels;
+        int widget_height_pixels;
+
         /**
          * Public constructor to be called from the widget.
          * It fills all the local variables with values.
@@ -728,7 +739,7 @@ public class ClassicWidget extends AppWidgetProvider {
          * @param widget_instance
          */
 
-        public WidgetDimensionManager(Context c, AppWidgetManager awm, int widget_instance){
+        public WidgetDimensionManager(Context c, AppWidgetManager awm, int widget_instance, String calledClassName){
             this.context = c;
             Bundle bundle = awm.getAppWidgetOptions(widget_instance);
             widget_width_portrait_dp = bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
@@ -741,6 +752,57 @@ public class ClassicWidget extends AppWidgetProvider {
             this.scaledDensity = metrics.scaledDensity;
             this.orientation = c.getResources().getConfiguration().orientation;
             this.density = c.getResources().getConfiguration().densityDpi;
+            // calculate derived values
+            this.widget_width_portrait_pixels  = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,widget_width_portrait_dp,metrics));
+            this.widget_height_portrait_pixels = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,widget_height_portrait_dp,metrics));
+            this.widget_width_landscape_pixels = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,widget_width_landscape_dp,metrics));
+            this.widget_height_landscape_pixels= Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,widget_height_landscape_dp,metrics));
+            String os;
+            if (orientation == Configuration.ORIENTATION_PORTRAIT){
+                widget_width_pixels  = widget_width_portrait_pixels;
+                widget_height_pixels = widget_height_portrait_pixels;
+                os = "portrait";
+            } else {
+                widget_width_pixels  = widget_width_landscape_pixels;
+                widget_height_pixels = widget_height_landscape_pixels;
+                os = "landscape";
+            }
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"==== Widget Dimension Manager ("+calledClassName+") ====");
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Widget width in portrait mode  : "+widget_width_portrait_dp+" dp, "+widget_width_portrait_pixels+" pixels");
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Widget height in portrait mode : "+widget_height_portrait_dp+" dp, "+widget_height_portrait_pixels+" pixels");
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Widget width in landscape mode : "+widget_width_landscape_dp+" dp, "+widget_width_landscape_pixels+" pixels");
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Widget height in landscape mode: "+widget_height_landscape_dp+" dp, "+widget_height_landscape_pixels+" pixels");
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"xdpi          : "+xdpi+" pixels per inch");
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"ydpi          : "+ydpi+" pixels per inch");
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"density       : "+density);
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"scaled density: "+scaledDensity+ " (scale factor for fonts)");
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"orientation   : "+orientation+" ("+os+")");
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"current width : "+widget_width_pixels+" pixels");
+            PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"current height: "+widget_height_pixels+" pixels");
+
+            WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            // windowManager.getDefaultDisplay().getMetrics(metrics);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                WindowMetrics windowMetrics = windowManager.getCurrentWindowMetrics();
+                WindowInsets  windowInsets  = windowMetrics.getWindowInsets();
+                WindowMetrics maximumWindowMetrics = windowManager.getMaximumWindowMetrics();
+                Rect bounds = maximumWindowMetrics.getBounds();
+                PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Window max. width : "+bounds.width()+" pixels (current widget width: "+widget_width_pixels+")");
+                PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Window max. height: "+bounds.height()+" pixels (current widget height: "+widget_height_pixels+")");
+                if ((widget_width_pixels> bounds.width()) || (widget_height_pixels>bounds.height())){
+                    PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.ERR, "Implausible widget size, because widget is reported larger than the maximum available window size:");
+                    // implausible widget size
+                    float widgetRatio = (float) widget_width_pixels/widget_height_pixels;
+                    int correctedWidth  = bounds.width();
+                    int correctedHeight = Math.round(bounds.width() / widgetRatio);
+                    PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.WARN,"=> Widget size corrected to: "+correctedWidth+" x "+correctedHeight+" pixels.");
+                    widget_width_pixels  = correctedWidth;
+                    widget_height_pixels = correctedHeight;
+                } else {
+                    PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Reported widget size seems ok.");
+                }
+            }
+
         }
 
         /**
@@ -749,11 +811,7 @@ public class ClassicWidget extends AppWidgetProvider {
          */
 
         public float getWidgetWidth(){
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-                return (float) widget_width_landscape_dp * (xdpi/160);
-            } else {
-                return (float) widget_width_portrait_dp * (xdpi/160);
-            }
+            return widget_width_pixels;
         }
 
         /**
@@ -762,11 +820,7 @@ public class ClassicWidget extends AppWidgetProvider {
          */
 
         public float getWidgetHeight(){
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-                return (float) widget_height_landscape_dp * (ydpi/160);
-            } else {
-                return (float) widget_height_portrait_dp * (ydpi/160);
-            }
+            return widget_height_pixels;
         }
 
         /**
@@ -799,6 +853,10 @@ public class ClassicWidget extends AppWidgetProvider {
 
         public float getFontHeightInPixels(float fontsize){
             return (float) fontsize * scaledDensity;
+        }
+
+        public float getFontHeightInSP(float fontsizePixels){
+            return (float) fontsizePixels / scaledDensity;
         }
 
         public float getXPixelsFromDpi(final float dpi){
