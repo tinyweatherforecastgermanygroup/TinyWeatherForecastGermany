@@ -307,7 +307,7 @@
     <string name="preference_category_overviewchart_scale">Значення шкали</string>
     <string name="preference_screen_overviewchart_usemm_title">Фіксована шкала</string>
     <string name="preference_screen_overviewchart_max_summary">Верхнє значення температурної шкали:</string>
-    <string name="preference_screen_overviewchart_min_title">Мінімальний</string>
+    <string name="preference_screen_overviewchart_min_title">Мінімальне</string>
     <string name="preference_screen_overviewchart_min_summary">Нижнє значення температурної шкали:</string>
     <string name="preference_category_admin">Адміністративні кордони</string>
     <string name="preference_map_display_municipalities_title">Муніципалітети</string>
@@ -330,7 +330,7 @@
     <string name="preference_reset_summary">Встановіть усі налаштування на значення за замовчуванням.</string>
     <string name="alertdialog_3_text1">Всі налаштування будуть скинуті до значень за замовчуванням, а потім знову буде показано вступне відео для виконання найбільш важливих налаштувань.</string>
     <string name="preference_screen_overviewchart_usemm_summary">Температурна шкала залишається незмінною, якщо значення знаходяться в зазначеному діапазоні.</string>
-    <string name="preference_screen_overviewchart_max_title">Максимальний</string>
+    <string name="preference_screen_overviewchart_max_title">Максимальне</string>
     <string name="preference_notify_LED_title">Світлодіодні сповіщення</string>
     <string name="preference_screen_notifications_title">Сповіщення</string>
     <string name="preference_screen_notifications_summary">Налаштуйте сповіщення про погодні попередження.</string>
@@ -524,4 +524,6 @@
     <string name="preference_uvi_notice_summary">Докладніше про розрахунок УФ-індексу див. на сторінці DWD. Зміна параметра «Ясне небо» призводить до необхідності оновлення прогнозних даних від DWD.</string>
     <string name="preference_screen_uvhi_mainType_title">Ясне небо</string>
     <string name="preference_screen_uvhi_mainType_summary">Не застосовувати модифікатор хмарності до прогнозу індексу небезпеки ультрафіолетового випромінювання.</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Графік температури починається з нуля, якщо тільки температура не є нижчою.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Базова лінія на рівні нуля</string>
 </resources>
