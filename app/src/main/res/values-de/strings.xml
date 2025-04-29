@@ -540,4 +540,6 @@
     <string name="preference_screen_uvhi_mainType_title">Klarer Himmel</string>
     <string name="preference_screen_uvhi_mainType_summary">Keine Wolkenmodifikationsfaktoren auf die UV-Gefahrenindexprognose anwenden, die in der Hauptansicht der App angezeigt wird.</string>
     <string name="preference_uvi_notice_summary">Weitere Informationen zur Berechnung des UV-Gefahrensindex sind auf der DWD-Homepage verfügbar. Eine Änderung der Präferenzen bei klarem Himmel erfordert eine Aktualisierung der Prognosedaten des DWD.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Null-Grundlinie</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Der Temperaturgraph fängt immer mit Null an, außer die Temperaturen sind geringer.</string>
 </resources>
