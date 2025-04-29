@@ -397,14 +397,14 @@
     <string name="preference_screen_pollen_hint_summary">Wenn Sie bestimmte Pollen deaktivieren, werden sie in der detaillierten Vorhersage, der Kartenliste und der detaillierten Kartenansicht ausgeblendet.</string>
     <string name="preference_prefetch_maps_title">Karten sofort laden</string>
     <string name="preference_prefetch_maps_summary">Wetterkarten und Pollen-Vorhersage beim Start der App automatisch aktualisieren. Verbessert die Leistung, verbraucht aber mehr Daten-Volumen.</string>
-    <string name="preference_screen_uvhi_summary">Anzeige des UV-Gefahrenindexes anpassen.</string>
+    <string name="preference_screen_uvhi_summary">Anzeige des UV-Gefahrenindex anpassen.</string>
     <string name="preference_screen_uvhi_fetchData_title">UV-Daten abrufen</string>
     <string name="preference_screen_uvhi_showInMain_title">In der Hauptansicht anzeigen</string>
     <string name="preference_screen_uvhi_showInMain_summary">UV-Gefahrenindex auch in der Hauptansicht der App anzeigen.</string>
     <string name="preference_wifionly_title">Nur WLAN verwenden</string>
     <string name="preference_wifionly_summary">Netzwerk-Nutzung auf WLAN beschränken.</string>
     <string name="preference_screen_uvhi_title">UV-Gefahrenindex</string>
-    <string name="preference_screen_uvhi_fetchData_summary">Lädt neben der Wettervorhersage auch die Vorhersage des UV-Gefahrenindexes für Ihren Standort.</string>
+    <string name="preference_screen_uvhi_fetchData_summary">Lädt neben der Wettervorhersage auch die Vorhersage des UV-Gefahrenindex für Ihren Standort.</string>
     <string name="service_notification_text4">Kartenebenen abrufen…</string>
     <string name="service_notification_text5">Abrufen von Regenradardaten…</string>
     <string name="layerlabel_warning_areas_de">Warngebiete Deutschland</string>
@@ -446,7 +446,7 @@
     <string name="pollen_load5">mittel bis hoch</string>
     <string name="pollen_load6">hoch</string>
     <string name="clear_sky">klarer Himmel</string>
-    <string name="welcome_s4_showuv">UV Gefahrenindex für die Wetterstation laden und anzeigen.</string>
+    <string name="welcome_s4_showuv">UV-Gefahrenindex für die Wetterstation laden und anzeigen.</string>
     <string name="wd_probablity_precipitation_amounts">Wahrscheinlichkeit von Niederschlagsmengen</string>
     <string name="preference_use_background_location_summary">Standort regelmäßig anhand der vorhandenen Standortdaten überpüfen.</string>
     <string name="preference_max_loc_in_shared_warnings_title">Geteilte Orte</string>
@@ -538,8 +538,8 @@
     <string name="preference_display_wind_distance_arc_summary">Länge der angezeigten Bögen in Grad.</string>
     <string name="preference_display_wind_distance_time_summary">Anzuzeigende Zeit in Stunden.</string>
     <string name="preference_screen_uvhi_mainType_title">Klarer Himmel</string>
-    <string name="preference_screen_uvhi_mainType_summary">Keine Wolkenmodifikationsfaktoren auf die UV-Gefahrenindexprognose anwenden, die in der Hauptansicht der App angezeigt wird.</string>
-    <string name="preference_uvi_notice_summary">Weitere Informationen zur Berechnung des UV-Gefahrensindex sind auf der DWD-Homepage verfügbar. Eine Änderung der Präferenzen bei klarem Himmel erfordert eine Aktualisierung der Prognosedaten des DWD.</string>
+    <string name="preference_screen_uvhi_mainType_summary">Keine auf Bewölkungsänderungen basierende Faktoren auf die in der Hauptansicht der App angezeigte Vorhersage des UV-Gefahrenindex anwenden.</string>
+    <string name="preference_uvi_notice_summary">Weitere Informationen zur Berechnung des UV-Gefahrenindex sind auf der DWD-Homepage verfügbar. Eine Änderung der Einstellung „Klarer Himmel“ erfordert eine Aktualisierung der Prognosedaten des DWD.</string>
     <string name="preference_screen_overviewchart_zbase_title">Null-Grundlinie</string>
     <string name="preference_screen_overviewchart_zbase_summary">Der Temperaturgraph fängt immer mit Null an, außer die Temperaturen sind geringer.</string>
 </resources>
