@@ -345,7 +345,7 @@
     <string name="wd_mcc">Середня хмарність (від 2 до 7 км)</string>
     <string name="wd_lcc">Низька хмарність (менше 2 км)</string>
     <string name="wd_gusts">Пориви</string>
-    <string name="wd_sun">Тривалість сонячного сяйва</string>
+    <string name="wd_sun">Тривалість світлового дня</string>
     <string name="wd_pa">Кількість опадів</string>
     <string name="wd_wevents">Погодні події</string>
     <string name="wd_pfr">Імовірність крижаного дощу</string>
