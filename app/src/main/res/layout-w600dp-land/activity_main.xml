@@ -252,10 +252,45 @@
                 android:layout_height="120dp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:indeterminate="true"
-                android:visibility="invisible"/>
+                android:visibility="invisible" android:layout_centerInParent="true"/>
+
+        <RelativeLayout
+                android:id="@+id/main_nodata_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_centerInParent="true">
+
+            <TextView
+                    android:id="@+id/main_nodata_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/shrug"
+                    android:textColor="?attr/colorText"
+                    android:textSize="@dimen/fcmain_textsize_xl"/>
+
+            <TextView
+                    android:id="@+id/main_nodata_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_below="@id/main_nodata_heading"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/no_data"
+                    android:textColor="?attr/colorText"
+                    android:textSize="@dimen/fcmain_textsize_medium"/>
+
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

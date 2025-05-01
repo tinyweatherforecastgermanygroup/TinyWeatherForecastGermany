@@ -83,6 +83,7 @@ public class MainActivity extends Activity {
     ListView weatherList;
     AutoCompleteTextView autoCompleteTextView;
     StationSearchEngine stationSearchEngine;
+    RelativeLayout noDataContainer;
 
     CurrentWeatherInfo weatherCard;
 
@@ -1278,6 +1279,11 @@ public class MainActivity extends Activity {
                 }
             });
             hideMainappProgress();
+            hideNoData();
+        } else {
+            // display: sorry no data
+            hideMainappProgress();
+            displayNoData();
         }
    }
 
@@ -2396,6 +2402,40 @@ public class MainActivity extends Activity {
             }
         });
     }
+
+    public void displayNoData(){
+        if (noDataContainer==null){
+            noDataContainer = (RelativeLayout) findViewById(R.id.main_nodata_container);
+        }
+        if (noDataContainer!=null){
+            noDataContainer.setVisibility(View.VISIBLE);
+        }
+        if (weatherList!=null){
+            weatherList.setVisibility(View.INVISIBLE);
+        }
+        final ImageView overviewChartImageView = (ImageView) findViewById(R.id.main_overview_chart);
+        if (overviewChartImageView!=null){
+            overviewChartImageView.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    public void hideNoData(){
+        if (noDataContainer==null){
+            noDataContainer = (RelativeLayout) findViewById(R.id.main_nodata_container);
+        }
+        if (noDataContainer!=null){
+            noDataContainer.setVisibility(View.INVISIBLE);
+        }
+        if (weatherList!=null){
+            weatherList.setVisibility(View.VISIBLE);
+        }
+        final ImageView overviewChartImageView = (ImageView) findViewById(R.id.main_overview_chart);
+        if (overviewChartImageView!=null){
+            overviewChartImageView.setVisibility(View.VISIBLE);
+        }
+    }
+
 }
 
 
