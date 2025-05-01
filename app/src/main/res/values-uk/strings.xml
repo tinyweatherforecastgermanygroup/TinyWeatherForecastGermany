@@ -82,7 +82,7 @@
     <string name="preference_ssl_title">Вимкнути SSL</string>
     <string name="alertdialog_yes">Так</string>
     <string name="alertdialog_no">Ні</string>
-    <string name="alertdialog_ok">Добре</string>
+    <string name="alertdialog_ok">Гаразд</string>
     <string name="license_title">Ліцензії</string>
     <string name="direction_north">Пн</string>
     <string name="direction_south">Пд</string>
