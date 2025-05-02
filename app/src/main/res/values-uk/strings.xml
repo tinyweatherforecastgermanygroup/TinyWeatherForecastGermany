@@ -526,4 +526,5 @@
     <string name="preference_screen_uvhi_mainType_summary">Не застосовувати модифікатор хмарності до прогнозу індексу небезпеки ультрафіолетового випромінювання.</string>
     <string name="preference_screen_overviewchart_zbase_summary">Графік температури починається з нуля, якщо тільки температура не є нижчою.</string>
     <string name="preference_screen_overviewchart_zbase_title">Базова лінія на рівні нуля</string>
+    <string name="no_data">Здається, для цього населеного пункту немає прогнозу погоди. Спробуйте оновити дані або виберіть інше місце.</string>
 </resources>
