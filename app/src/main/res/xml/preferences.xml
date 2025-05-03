@@ -17,7 +17,8 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
             android:title="@string/preference_category_display">
@@ -239,6 +240,8 @@
                     android:key="PREF_map_pinsize"
                     android:title="@string/preference_mapPinSize_title"
                     android:summary="@string/preference_mapPinSize_summary"
+                    custom:progress="1"
+                    custom:max="5"
                     />
 
                 </PreferenceCategory>
@@ -443,6 +446,14 @@
                         android:title="@string/preference_boldwiget_vertical_bar_title"
                         android:summary="@string/preference_boldwiget_vertical_bar_summary"
                         android:defaultValue="false"/>
+
+                <de.kaffeemitkoffein.tinyweatherforecastgermany.SeekBarPreference
+                        android:key="PREF_widget_clocksize"
+                        android:title="@string/preference_widget_clock_title"
+                        android:summary="@string/preference_widget_clock_summary"
+                        custom:progress="36"
+                        custom:max="60"
+                />
 
                 <CheckBoxPreference
                         android:key="PREF_display_dewpoint"

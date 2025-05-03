@@ -33,19 +33,21 @@ public class SeekBarPreference extends Preference {
     private Context context;
     private SeekBar seekBar;
     private SeekBar.OnSeekBarChangeListener seekBarChangeListener;
+    private int progress = 1;
+    private int max = 100;
+    private String key;
 
     public SeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
+        setAttributes(attrs);
     }
 
     public SeekBarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+        setAttributes(attrs);
     }
-
-    private int progress = 1;
-    private int max = 5;
 
     @Override
     protected View onCreateView(ViewGroup parent) {
@@ -59,12 +61,31 @@ public class SeekBarPreference extends Preference {
             textView1.setTextColor(Color.GRAY);
             TextView textView2 = (TextView) view.findViewById(android.R.id.summary);
             textView2.setTextColor(Color.GRAY);
-            TextView textView3 = (TextView) view.findViewById(R.id.currentLEDColorText);
-            textView3.setTextColor(Color.GRAY);
             seekBar.setAlpha(0.5f);
         }
         seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
         return view;
+    }
+
+    private void setAttributes(final AttributeSet attrs){
+        String maxString = attrs.getAttributeValue("http://schemas.android.com/apk/res-auto","max");
+        String progressString = attrs.getAttributeValue("http://schemas.android.com/apk/res-auto","progress");
+        this.key = getKey();
+        if (maxString!=null){
+            try {
+                this.max = Integer.parseInt(maxString);
+            } catch (NumberFormatException e){
+                this.max = 100;
+            }
+        }
+        if (progressString!=null){
+            try {
+                this.progress = Integer.parseInt(progressString);
+            } catch (NumberFormatException e){
+                this.max=1;
+            }
+        }
+        PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"SeekBarPreference ("+key+") values from xml: max="+max+" progress="+progress);
     }
 
     public void setProgress(int progress){

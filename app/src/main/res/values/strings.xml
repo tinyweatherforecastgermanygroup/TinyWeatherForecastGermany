@@ -124,6 +124,8 @@
     <string name="preference_opacity_title">Widget opacity</string>
     <string name="preference_opacity_summary">Select how transparent the widget is on your home screen.</string>
     <string name="preference_displaywarninginwidget_title">Show warnings in widget</string>
+    <string name="preference_widget_clock_title">Clock size</string>
+    <string name="preference_widget_clock_summary">Adjust the clock size in the weather and time widget.</string>
     <string name="preference_displaywarninginwidget_summary">Display warnings for your selected location in widgets.</string>
     <string name="preference_screen_notifications_title">Notifications</string>
     <string name="preference_screen_notifications_summary">Customize notifications about weather warnings.</string>

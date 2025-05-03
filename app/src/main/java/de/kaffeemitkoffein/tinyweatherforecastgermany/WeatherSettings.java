@@ -162,6 +162,7 @@ public class WeatherSettings {
     public final static String PREF_STATE_SCALEFACTOR="PREF_state_scalefactor";
     public final static String PREF_STATE_XFOCUS="PREF_state_xfocus";
     public final static String PREF_STATE_YFOCUS="PREF_state_yfocus";
+    public final static String PREF_WIDGET_CLOCKSIZE="PREF_widget_clocksize";
 
     public static final String PREF_STATION_NAME_DEFAULT = "P0489";
     public static final String PREF_LOCATION_DESCRIPTION_DEFAULT = "HAMBURG INNENSTADT";
@@ -268,6 +269,7 @@ public class WeatherSettings {
     public final static float PREF_STATE_SCALEFACTOR_DEFAULT = 0.0f;
     public final static float PREF_STATE_XFOCUS_DEFAULT = 0.0f;
     public final static float PREF_STATE_YFOCUS_DEFAULT = 0.0f;
+    public final static int PREF_WIDGET_CLOCKSIZE_DEFAULT=36;
 
 
     private Context context;
@@ -1889,7 +1891,6 @@ public class WeatherSettings {
         return sharedPreferences.getBoolean(PREF_UVHI_CLEAR_SKY,PREF_UVHI_CLEAR_SKY_DEFAULT);
     }
 
-
     public static String getPrefUVHIMaindisplayType(Context context){
         if (getPrefUVHIClearSky(context)) {
             return UVHI_Type.CS;
@@ -1897,6 +1898,16 @@ public class WeatherSettings {
         return UVHI_Type.CL;
     }
 
+    public static int getClockSize(Context context){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_WIDGET_CLOCKSIZE,PREF_WIDGET_CLOCKSIZE_DEFAULT);
+    }
 
+    public static void setClockSize(Context context, int clockSize){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putInt(PREF_WIDGET_CLOCKSIZE,clockSize);
+        pref_editor.commit();
+    }
 
 }

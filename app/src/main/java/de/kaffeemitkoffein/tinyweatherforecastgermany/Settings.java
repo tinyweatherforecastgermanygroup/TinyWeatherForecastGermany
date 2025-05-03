@@ -230,6 +230,9 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
                 Weather.removeForecastsFromDatabase(context);
             }
+            if (s.equals(WeatherSettings.PREF_WIDGET_CLOCKSIZE)){
+                WidgetRefresher.refreshClockWidget(context,WidgetRefresher.FROM_SETTINGS);
+            }
             ignoreNextPrefUpdate = false;
         }
     };
@@ -731,6 +734,31 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             }
         };
         pinSizePreference.setSeekBarChangeListener(pinsizeChangeListener);
+
+        final SeekBarPreference clockSizePreference = (SeekBarPreference) findPreference(WeatherSettings.PREF_WIDGET_CLOCKSIZE);
+        clockSizePreference.setProgress(WeatherSettings.getClockSize(context));
+        SeekBar.OnSeekBarChangeListener clockSizeChangeListener = new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean userInitiated) {
+                if (userInitiated){
+                    clockSizePreference.setProgress(i);
+                    PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Progress -> "+i);
+                    WeatherSettings.setClockSize(context,i);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        };
+        clockSizePreference.setSeekBarChangeListener(clockSizeChangeListener);
+
         EditTextPreference weatherUrlPreference = (EditTextPreference) findPreference(WeatherSettings.PREF_WEATHER_URL);
         if (weatherUrlPreference!=null){
             String url = WeatherSettings.getWeatherUrl(context);

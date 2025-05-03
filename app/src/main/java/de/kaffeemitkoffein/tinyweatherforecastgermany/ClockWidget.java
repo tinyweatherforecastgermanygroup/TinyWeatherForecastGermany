@@ -78,13 +78,15 @@ public class ClockWidget extends ClassicWidget {
             }
     }
 
-    private void adjustClockFontSize(Context context, WidgetDimensionManager widgetDimensionManager, RemoteViews remoteViews) {
+    private void adjustClockFontSize(Context context, WidgetDimensionManager widgetDimensionManager, final RemoteViews remoteViews) {
         // clock layout takes 50% of widget height
-        float height_max = widgetDimensionManager.getFontHeightInSP(widgetDimensionManager.getWidgetHeight() * (float) 0.36);
+        //float height_max = widgetDimensionManager.getFontHeightInSP(widgetDimensionManager.getWidgetHeight() * (float) 0.36);
+        float clockSize = WeatherSettings.getClockSize(context)/100f;
+        float height_max = widgetDimensionManager.getFontHeightInSP(widgetDimensionManager.getWidgetHeight() * clockSize);
         if (height_max == 0) {
             height_max = (float) 64;
         }
-        PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Setting clock font size to :"+height_max+" sp.");
+        PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Setting clock font size to :"+height_max+" sp (setting: "+clockSize+").");
         remoteViews.setTextViewTextSize(R.id.clockwidget_clock, TypedValue.COMPLEX_UNIT_SP, height_max);
     }
 
