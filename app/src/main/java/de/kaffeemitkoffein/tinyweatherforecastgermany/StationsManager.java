@@ -144,6 +144,28 @@ public class StationsManager {
         return stations;
     }
 
+    public static boolean StringArrayContains(String s, String[] strings){
+        for (int i=0; i<strings.length; i++){
+            if (strings[i].equalsIgnoreCase(s)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Weather.WeatherLocation> getStations(String[] ignoreNames){
+        if (ignoreNames!=null){
+            ArrayList<Weather.WeatherLocation> resultStations = new ArrayList<>();
+            for (int i=0; i<stations.size(); i++){
+                Weather.WeatherLocation station = stations.get(i);
+                if (!StringArrayContains(station.getName(),ignoreNames)){
+                    resultStations.add(station);
+                }
+            }
+            return resultStations;
+        }
+        return stations;
+    }
 
     public String getName(int position){
         if (stations != null){

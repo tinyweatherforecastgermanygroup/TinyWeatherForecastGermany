@@ -7,6 +7,7 @@
 - improved font size of the clock in the clock widget
 - fix implausible widget sizes also when API<30
 - display an error message when no weather forecast is available for the selected station
+- this error message now has a button to switch to the closest station
 - added a preference to adjust the clock size in the weather and time widget
 
 ## Version 0.62.8

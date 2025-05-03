@@ -42,6 +42,7 @@ import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -636,7 +637,7 @@ public class MainActivity extends Activity {
             weatherLocationManager = new WeatherLocationManager(context){
                 @Override
                 public void newLocation(Location location){
-                    launchStationSearchByLocation(location);
+                    launchStationSearchByLocation(location,null);
                     super.newLocation(location);
                 }
             };
@@ -671,7 +672,7 @@ public class MainActivity extends Activity {
             // check if a geo intent was sent
             Location intentLocation = getLocationForGeoIntent(getIntent());
             if (intentLocation!=null){
-                launchStationSearchByLocation(intentLocation);
+                launchStationSearchByLocation(intentLocation,null);
             }
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"App launch finished.");
             // check for permissions
@@ -1906,7 +1907,7 @@ public class MainActivity extends Activity {
                         }
                     }
                     if ((own_location.getLatitude()>=-90) && (own_location.getLatitude()<=90) && (own_location.getLongitude()>=-180) && (own_location.getLongitude()<=180)) {
-                        launchStationSearchByLocation(own_location);
+                        launchStationSearchByLocation(own_location,null);
                     } else {
                         showSimpleLocationAlert(getApplicationContext().getResources().getString(R.string.geoinput_wrongvalue));
                     }
@@ -1926,9 +1927,9 @@ public class MainActivity extends Activity {
         useGPS.setChecked(WeatherSettings.getUseGPSFlag(getApplicationContext()));
     }
 
-    private void launchStationSearchByLocation(final Location own_location){
+    private void launchStationSearchByLocation(final Location own_location, final String[] ignoreStations){
         // load stations
-        final ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations();
+        ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations(ignoreStations);
         if (stations.size()>0){
             calcualateClosestStations(stations,own_location);
         } else {
@@ -1936,6 +1937,7 @@ public class MainActivity extends Activity {
                 @Override
                 public void onLoadingListFinished(ArrayList<Weather.WeatherLocation> new_stations) {
                     super.onLoadingListFinished(new_stations);
+                    ArrayList<Weather.WeatherLocation> stations = stationsManager.getStations(ignoreStations);
                     calcualateClosestStations(stations, own_location);
                 }
             };
@@ -2416,6 +2418,17 @@ public class MainActivity extends Activity {
         final ImageView overviewChartImageView = (ImageView) findViewById(R.id.main_overview_chart);
         if (overviewChartImageView!=null){
             overviewChartImageView.setVisibility(View.INVISIBLE);
+        }
+        Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
+        String[] ignoreStationNames = new String[]{currentStation.getName()};
+        Button nextStationButton = (Button) findViewById(R.id.main_nodata_button);
+        if (nextStationButton!=null){
+        nextStationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchStationSearchByLocation(currentStation.toLocation(),ignoreStationNames);
+            }
+        });
         }
 
     }
