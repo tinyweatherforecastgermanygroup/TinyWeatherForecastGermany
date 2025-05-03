@@ -508,7 +508,7 @@
     <string name="preference_weatherurl_title">URL-адреса сервера</string>
     <string name="preference_weatherurl_summary">Тут можна вказати альтернативний дзеркальний сервер, з якого будуть завантажуватися дані. Видаліть запис, щоб скинути URL-адресу до сервера DWD за замовчуванням.</string>
     <string name="preference_weatherurl_summary2">Поточна URL-адреса:</string>
-    <string name="preference_visualizeDaytime_title">Виділіть час доби</string>
+    <string name="preference_visualizeDaytime_title">Виділення часу доби</string>
     <string name="preference_visualizeDaytime_summary">Час доби виділяється трохи світлішим тлом.</string>
     <string name="preference_displayDewPoint_summary">Показувати точку роси замість відносної вологості.</string>
     <string name="preference_displayDewPoint_title">Точка роси</string>
@@ -527,4 +527,7 @@
     <string name="preference_screen_overviewchart_zbase_summary">Графік температури починається з нуля, якщо тільки температура не є нижчою.</string>
     <string name="preference_screen_overviewchart_zbase_title">Базова лінія на рівні нуля</string>
     <string name="no_data">Здається, для цього населеного пункту немає прогнозу погоди. Спробуйте оновити дані або виберіть інше місце.</string>
+    <string name="preference_widget_clock_title">Розмір годинника</string>
+    <string name="preference_widget_clock_summary">Налаштуйте розмір годинника у віджеті погоди і часу.</string>
+    <string name="switch_to_next_station">Перемкнутися на найближчу метеостанцію</string>
 </resources>
