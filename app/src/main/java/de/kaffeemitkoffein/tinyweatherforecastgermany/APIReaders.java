@@ -1524,8 +1524,9 @@ public class APIReaders {
                     pollenArrayList.add(pollen);
                 }
                 Pollen.WritePollenToDatabase(context,pollenArrayList);
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.ERR,"Pollen data fetched successfully & added to database. Entries: "+pollenArrayList.size());
             } catch (JSONException e) {
-                PrivateLog.log(context,PrivateLog.DATA,PrivateLog.ERR,"Error reading pollen forecast: "+e.getMessage());
+                PrivateLog.log(context,PrivateLog.UPDATER,PrivateLog.ERR,"Error reading pollen forecast: "+e.getMessage());
                 return false;
             }
             return true;

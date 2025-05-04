@@ -1263,7 +1263,7 @@ public class WeatherSettings {
         int pollenRegion = (int) DataStorage.getInt(context,DataStorage.DATASTORAGE_POLLENREGION_ID,DataStorage.DATASTORAGE_POLLENREGION_ID_DEFAULT);
         int pollenPartRegion = (int) DataStorage.getInt(context,DataStorage.DATASTORAGE_POLLENPARTREGION_ID,DataStorage.DATASTORAGE_POLLENPARTREGION_ID_DEFAULT);
         String description = (String) DataStorage.getString(context,DataStorage.DATASTORAGE_POLLENREGION_DESCRIPTION,DataStorage.DATASTORAGE_POLLENREGION_DESCRIPTION_DEFAULT);
-        if (pollenRegion==-1) {
+        if ((pollenRegion==-1) || (pollenRegion==0)){
             return PollenArea.FindPollenArea(context,getSetStationLocation(context));
         }
         return new PollenArea(pollenRegion,pollenPartRegion,description);
@@ -1276,15 +1276,15 @@ public class WeatherSettings {
             //pref_editor.putInt(PREF_POLLENREGION_ID,-1);
             //pref_editor.putInt(PREF_POLLENPARTREGION_ID,-1);
             //pref_editor.putString(PREF_POLLENREGION_DESCRIPTION,"");
-            DataStorage.setLong(context,DataStorage.DATASTORAGE_POLLENREGION_ID,-1);
-            DataStorage.setLong(context,DataStorage.DATASTORAGE_POLLENPARTREGION_ID,-1);
+            DataStorage.setInt(context,DataStorage.DATASTORAGE_POLLENREGION_ID,-1);
+            DataStorage.setInt(context,DataStorage.DATASTORAGE_POLLENPARTREGION_ID,-1);
             DataStorage.setString(context,DataStorage.DATASTORAGE_POLLENREGION_DESCRIPTION,"");
         } else {
             // pref_editor.putInt(PREF_POLLENREGION_ID,pollenArea.region_id);
             // pref_editor.putInt(PREF_POLLENPARTREGION_ID,pollenArea.partregion_id);
             // pref_editor.putString(PREF_POLLENREGION_DESCRIPTION,pollenArea.description);
-            DataStorage.setLong(context,DataStorage.DATASTORAGE_POLLENREGION_ID,pollenArea.region_id);
-            DataStorage.setLong(context,DataStorage.DATASTORAGE_POLLENPARTREGION_ID,pollenArea.partregion_id);
+            DataStorage.setInt(context,DataStorage.DATASTORAGE_POLLENREGION_ID,pollenArea.region_id);
+            DataStorage.setInt(context,DataStorage.DATASTORAGE_POLLENPARTREGION_ID,pollenArea.partregion_id);
             DataStorage.setString(context,DataStorage.DATASTORAGE_POLLENREGION_DESCRIPTION,pollenArea.description);
         }
         // pref_editor.apply();

@@ -237,7 +237,7 @@ public class WeatherLayersActivity extends Activity {
         // check for pollen update
         PollenArea pollenArea = WeatherSettings.getPollenRegion(context);
         Pollen pollen = Pollen.GetPollenData(context,pollenArea);
-        if ((pollen==null) || (Pollen.isUpdateDue(context))){
+        if ((pollen==null) || (DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN))){
             APIReaders.PollenReader pollenReader = new APIReaders.PollenReader(context) {
                 @Override
                 public void onFinished(boolean success) {

@@ -32,7 +32,6 @@ import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -57,7 +56,6 @@ public class WeatherDetailsActivity extends Activity {
     LayoutInflater layoutInflater;
     ActionBar actionBar;
     Executor executor;
-    APIReaders.PollenReader pollenReader;
     ForecastIcons forecastIcons;
 
     CurrentWeatherInfo currentWeatherInfo;
@@ -95,12 +93,14 @@ public class WeatherDetailsActivity extends Activity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent intent) {
+            PrivateLog.log(c,PrivateLog.MAIN,PrivateLog.INFO,"WeatherDetailsActivity: received broadcast.");
             progressBar.setVisibility(View.INVISIBLE);
             if (intent != null) {
                if (((intent.getAction().equals(Pollen.ACTION_UPDATE_POLLEN)) && (intent.getBooleanExtra(Pollen.ACTION_UPDATE_POLLEN,true)))
                        || (intent.getAction().equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE))
                        || (intent.getAction().equals(MainActivity.MAINAPP_CUSTOM_REFRESH_ACTION)))
                 {
+                   PrivateLog.log(c,PrivateLog.MAIN,PrivateLog.INFO,"WeatherDetailsActivity: received broadcast -> updating views.");
                    displayValues();
                }
             }
@@ -252,25 +252,6 @@ public class WeatherDetailsActivity extends Activity {
         actionBar.setCustomView(R.layout.actionbar_textforecastview);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP|ActionBar.DISPLAY_SHOW_TITLE);
         executor = Executors.newSingleThreadExecutor();
-        pollenReader = new APIReaders.PollenReader(context) {
-            @Override
-            public void onStart() {
-            }
-            @Override
-            public void onFinished(boolean success) {
-                if (success){
-                    DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN, Calendar.getInstance().getTimeInMillis());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            displayValues();
-                        }
-                    });
-                    // check for other updates
-                    ContentResolver.requestSync(MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
-                }
-            }
-        };
         forecastIcons  = new ForecastIcons(context,weatherConditionIcon);
         phaseImages = new PhaseImages(context);
         if (savedInstanceState!=null){
@@ -313,15 +294,6 @@ public class WeatherDetailsActivity extends Activity {
         } catch (Exception e){
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
         }
-
-        pollenArea = WeatherSettings.getPollenRegion(context);
-        if (pollenArea!=null){
-            pollen = Pollen.GetPollenData(context,pollenArea);
-            if ((pollen==null) || (Pollen.isUpdateDue(context))){
-                SyncRequest syncRequest = MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_POLLEN);
-                ContentResolver.requestSync(syncRequest);
-            }
-        }
         TextView textViewNotice = (TextView) findViewById(R.id.weatherdetails_reference_text);
         if ((textViewNotice!=null) && (ForecastBitmap.getDisplayOrientation(context)== Configuration.ORIENTATION_LANDSCAPE)){
             float textSize = context.getResources().getDimension(R.dimen.fcmain_textsize_smaller);
@@ -341,6 +313,14 @@ public class WeatherDetailsActivity extends Activity {
             }
         };
         scrollView.setOnTouchListener(swipeGestureDetector);
+        // determine pollen area.
+        pollenArea = WeatherSettings.getPollenRegion(context);
+        // if location eligible for pollen data, read the pollen data.
+        // The pollen data might be outdated; in this case, this will be checked in onResume and an update will be triggered
+        if (pollenArea!=null){
+            pollen = Pollen.GetPollenData(context,pollenArea);
+        }
+        displayValues();
     }
 
     @Override
@@ -789,6 +769,7 @@ public class WeatherDetailsActivity extends Activity {
         }
         if (pollenArea!=null){
             final int relativeDay = weatherInfo.getRelativeDay();
+            pollen = Pollen.GetPollenData(context,pollenArea);
             if ((pollen!=null) && (relativeDay>=Pollen.Today) && (relativeDay<=Pollen.DayAfterTomorrow) && (WeatherSettings.anyPollenActive(context))){
                 final int BAR_WIDTH = 1024; final int BAR_HEIGHT = 256;
                 list = new ArrayList<DetailsElement>();
@@ -954,12 +935,17 @@ public class WeatherDetailsActivity extends Activity {
     protected void onResume() {
         super.onResume();
         registerForBroadcast();
-        if (DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN)){
-            PrivateLog.log(context,PrivateLog.TEXTS,PrivateLog.INFO,"Pollen data outdated, updating data.");
-            executor.execute(pollenReader);
+        // update pollen data if necessary. Callback is via broadcast-receiver.
+        if (pollenArea!=null){
+            if ((pollen==null) || DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN)){
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"WeatherDetailsActivity: requesting a pollen update.");
+                SyncRequest syncRequest = MainActivity.getManualSyncRequest(context,WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_POLLEN);
+                ContentResolver.requestSync(syncRequest);
+            } else {
+                PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"WeatherDetailsActivity: pollen data is in place, no update necessary.");
+            }
         } else {
-            PrivateLog.log(context,PrivateLog.TEXTS,PrivateLog.INFO,"Pollen data is up to date, using data available.");
-            displayValues();
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"WeatherDetailsActivity: pollen data not available for this location.");
         }
     }
 

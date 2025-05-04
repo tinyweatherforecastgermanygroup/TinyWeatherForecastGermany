@@ -462,7 +462,6 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
                     PrivateLog.log(context, PrivateLog.SYNC, PrivateLog.INFO, "Pollen data updated successfully.");
                     context.sendBroadcast(intent);
                     DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.POLLEN,Calendar.getInstance().getTimeInMillis());
-
                 }
             };
             pollenReader.run();

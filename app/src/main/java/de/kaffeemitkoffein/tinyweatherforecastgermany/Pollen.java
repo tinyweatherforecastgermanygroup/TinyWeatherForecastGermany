@@ -182,7 +182,7 @@ public class Pollen {
         return -1;
     }
 
-    public static void  WritePollenToDatabase(Context context, ArrayList<Pollen> pollenArrayList){
+    public static void WritePollenToDatabase(Context context, ArrayList<Pollen> pollenArrayList){
         ContentResolver contentResolver = context.getContentResolver();
         try {
             int i = contentResolver.delete(WeatherContentManager.POLLEN_URI_ALL,null,null);
@@ -200,10 +200,11 @@ public class Pollen {
         if (pollenArea!=null){
             ContentResolver contentResolver = context.getContentResolver();
             Cursor cursor = contentResolver.query(WeatherContentManager.POLLEN_URI_ALL, null,null,null,null);
+            int counter = 0;
             if (cursor.moveToFirst()){
-                do {
-                    Pollen pollen = WeatherContentManager.getPollenFromCursor(cursor);
-                    if (pollen.partregion_id==-1){
+               do {
+                   Pollen pollen = WeatherContentManager.getPollenFromCursor(cursor);
+                   if (pollen.partregion_id==-1){
                         if (pollen.region_id == pollenArea.region_id){
                             cursor.close();
                             return pollen;
@@ -214,6 +215,7 @@ public class Pollen {
                             return pollen;
                         }
                     }
+                    counter++;
                 } while (cursor.moveToNext());
             }
             cursor.close();
@@ -265,13 +267,6 @@ public class Pollen {
             return pollen.last_update_UTC;
         }
         else return 0;
-    }
-
-    public static boolean isUpdateDue(Context context){
-        if (Calendar.getInstance().getTimeInMillis()>getNextPollenUpdateTime(context)){
-            return true;
-        }
-        return false;
     }
 
     /**

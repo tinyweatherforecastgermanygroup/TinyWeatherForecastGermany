@@ -456,7 +456,7 @@ public class WeatherLayer {
 
     public boolean isOutdated(Context context) {
         if (updateMode==UpdateMode.POLLEN){
-            if (Pollen.isUpdateDue(context)){
+            if (DataStorage.Updates.isSyncDue(context, WeatherSettings.Updates.Category.POLLEN)){
                 return true;
             } else {
                 return false;

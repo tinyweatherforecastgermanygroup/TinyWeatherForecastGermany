@@ -796,6 +796,8 @@ public class MainActivity extends Activity {
         DataStorage.printPackages(context,DataStorage.readAllPackages(context));
          */
         // Log.v("tiwefoge","COLOR: "+Color.parseColor("#bebebe"));
+        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
+        PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
     }
 
     public static long getEstimatedAdapterLayoutTimeInMillis(Context context){
