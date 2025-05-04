@@ -289,6 +289,18 @@
                     android:textColor="?attr/colorText"
                     android:textSize="@dimen/fcmain_textsize_medium"/>
 
+            <Button
+                    android:id="@+id/main_nodata_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimaryLight"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/main_nodata_text"
+                    android:textSize="@dimen/fcmain_textsize_medium"
+                    android:text="@string/switch_to_next_station"/>
+
         </RelativeLayout>
 
 
