@@ -502,4 +502,13 @@
     <string name="geoinput_declined">Vzhledem k tomu, že jste odmítli oprávnění k určování polohy, byly funkce aplikace, které je vyžadují, zakázány. Můžete je znovu povolit v nastavení.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Chybějící povolení</string>
     <string name="preference_missingBackgroundLocationPermission_summary">V současné době aplikace nemá přístup k poloze na pozadí. Zvažte udělení tohoto oprávnění nebo vypněte pravidelné kontroly polohy.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Nulová výchozí hodnota</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Graf teploty začíná nulou, pokud nejsou teploty nižší.</string>
+    <string name="no_data">Zdá se, že pro tuto lokalitu není v současné době k dispozici žádná předpověď počasí. Můžete zkusit obnovit data nebo vybrat jinou lokalitu.</string>
+    <string name="preference_widget_clock_title">Velikost hodin</string>
+    <string name="preference_widget_clock_summary">Nastavení velikosti hodin ve widgetu počasí a času.</string>
+    <string name="switch_to_next_station">Přepnutí na nejbližší stanici</string>
+    <string name="preference_uvi_notice_summary">Další podrobnosti o výpočtu indexu UV nebezpečí jsou k dispozici na domovské stránce DWD. Při změně preference jasné oblohy je nutné aktualizovat předpovědní údaje z DWD.</string>
+    <string name="preference_screen_uvhi_mainType_title">Jasná obloha</string>
+    <string name="preference_screen_uvhi_mainType_summary">Na předpověď indexu UV nebezpečí zobrazenou v hlavním zobrazení aplikace nepoužívejte faktory modifikace oblačnosti.</string>
 </resources>
