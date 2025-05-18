@@ -502,4 +502,13 @@
     <string name="geoinput_declined">Ponieważ nie masz uprawnień do lokalizacji, funkcje aplikacji, które ich wymagają, zostały wyłączone. Możesz je ponownie włączyć w ustawieniach.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Brakujące zezwolenie</string>
     <string name="preference_missingBackgroundLocationPermission_summary">Obecnie aplikacja nie może uzyskać dostępu do lokalizacji w tle. Rozważ przyznanie tego uprawnienia lub wyłącz regularne sprawdzanie lokalizacji.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Zerowy poziom bazowy</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Wykres temperatury zaczyna się od zera, chyba że temperatury są niższe.</string>
+    <string name="no_data">Wygląda na to, że obecnie nie ma dostępnej prognozy pogody dla tej lokalizacji. Możesz spróbować odświeżyć dane lub wybrać inną lokalizację.</string>
+    <string name="preference_widget_clock_summary">Dostosuj rozmiar zegara w widżecie pogody i czasu.</string>
+    <string name="switch_to_next_station">Przełącz na najbliższą stację</string>
+    <string name="preference_widget_clock_title">Rozmiar zegara</string>
+    <string name="preference_uvi_notice_summary">Więcej szczegółów na temat obliczania wskaźnika zagrożenia UV można znaleźć na stronie głównej DWD. Zmiana preferencji dotyczących bezchmurnego nieba wymaga aktualizacji danych prognostycznych z DWD.</string>
+    <string name="preference_screen_uvhi_mainType_title">Czyste niebo</string>
+    <string name="preference_screen_uvhi_mainType_summary">Nie należy stosować współczynników modyfikacji zachmurzenia do prognozy indeksu zagrożenia UV wyświetlanej w widoku głównym aplikacji.</string>
 </resources>
