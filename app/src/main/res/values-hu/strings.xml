@@ -520,4 +520,12 @@
     <string name="preference_sync_pollen_summary">A pollenadatok rendszere frissítése.</string>
     <string name="preference_sync_notice">A szinkronizálási beállításokat az alkalmazáson belül szabhatja testre.</string>
     <string name="preference_category_sync">Szinkronizálási beállítások</string>
+    <string name="preference_screen_overviewchart_zbase_title">Nulla alapérték</string>
+    <string name="preference_screen_overviewchart_zbase_summary">A hőmérsékleti grafikon nullával kezdődik, kivéve, ha a hőmérséklet alacsonyabb.</string>
+    <string name="switch_to_next_station">Váltson a legközelebbi állomásra</string>
+    <string name="preference_widget_clock_title">Óraméret</string>
+    <string name="no_data">Úgy tűnik, jelenleg nincs elérhető időjárás-előrejelzés erre a helyre. Megpróbálhatja frissíteni az adatokat, vagy választhat egy másik helyet.</string>
+    <string name="preference_screen_uvhi_mainType_title">Tiszta égbolt</string>
+    <string name="preference_screen_uvhi_mainType_summary">Ne alkalmazzon felhőmódosító tényezőket az alkalmazás fő nézetében megjelenő UV-veszélyességi index-előrejelzésre.</string>
+    <string name="preference_widget_clock_summary">Állítsa be az óra méretét az időjárás és az idő widgetben.</string>
 </resources>
