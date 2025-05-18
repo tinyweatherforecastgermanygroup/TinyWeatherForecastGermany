@@ -795,9 +795,7 @@ public class MainActivity extends Activity {
         long test = (long) DataStorage.getLong(context,DataStorage.DATASTORAGE_TEST, 40);
         DataStorage.printPackages(context,DataStorage.readAllPackages(context));
          */
-        // Log.v("tiwefoge","COLOR: "+Color.parseColor("#bebebe"));
-        Weather.WeatherLocation weatherLocation = WeatherSettings.getSetStationLocation(context);
-        PollenArea pollenArea = PollenArea.FindPollenArea(context,weatherLocation);
+        //Log.v("tiwefoge","COLOR: "+Color.parseColor("#fb1bff"));
     }
 
     public static long getEstimatedAdapterLayoutTimeInMillis(Context context){
@@ -1084,8 +1082,17 @@ public class MainActivity extends Activity {
                 overviewChartImageView.setVisibility(View.VISIBLE);
             }
             if (!isLandscape){
-                if (WeatherSettings.displayOverviewChart(context)){
-                    Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,displayMetrics.heightPixels/10,currentWeatherInfo.forecast1hourly,localWarnings);
+                ImageView overviewChartView = (ImageView) findViewById(R.id.main_overview_chart);
+                if (overviewChartView!=null){
+                    ViewGroup.LayoutParams overviewChartLayoutParams = overviewChartView.getLayoutParams();
+                    int displayHeightDP = Math.round(displayMetrics.heightPixels/ (displayMetrics.ydpi/DisplayMetrics.DENSITY_DEFAULT));
+                    int overviewChartHeightDP = Math.round((displayHeightDP)*(WeatherSettings.getOverviewChartInAppSizePercent(context)/100f));
+
+                    PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Overview chart height: "+overviewChartHeightDP+" dp (screen height: "+displayMetrics.heightPixels+" px "+displayHeightDP+" dp)");
+                    int overviewChartHeightPixels = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,overviewChartHeightDP,displayMetrics));
+                    overviewChartLayoutParams.height = overviewChartHeightPixels;
+                    overviewChartView.setLayoutParams(overviewChartLayoutParams);
+                    Bitmap overViewChartBitmap = ForecastBitmap.getOverviewChart(context,displayMetrics.widthPixels,overviewChartHeightPixels,currentWeatherInfo.forecast1hourly,localWarnings);
                     if (overViewChartBitmap!=null){
                         overviewChartImageView.setImageBitmap(overViewChartBitmap);
                     }

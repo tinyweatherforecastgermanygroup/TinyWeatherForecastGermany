@@ -9,6 +9,8 @@
 - display an error message when no weather forecast is available for the selected station
 - this error message now has a button to switch to the closest station
 - added a preference to adjust the clock size in the weather and time widget
+- fix WeatherDetailsActivity not properly displaying the pollen forecast
+- added a preference to adjust the overview chart height in portrait mode
 
 ## Version 0.62.8
 - fixed stations history displaying "null" when warnings are disabled and municipality names instead of the station name are displayed

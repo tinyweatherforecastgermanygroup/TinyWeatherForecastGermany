@@ -132,11 +132,6 @@ public class ForecastBitmap{
         }
     }
 
-    public class LayoutParams{
-        public float width;
-        public float height;
-    }
-
     private ForecastBitmap(Context context, final Builder builder){
         this.context = context;
         this.weatherInfos =  builder.weatherInfos;

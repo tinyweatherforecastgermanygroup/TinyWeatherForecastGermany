@@ -319,6 +319,8 @@
     <string name="preference_weatherurl_summary2">Current URL:</string>
     <string name="preference_visualizeDaytime_title">Highlight time of day</string>
     <string name="preference_visualizeDaytime_summary">The time of day is emphasized by a slightly lighter background.</string>
+    <string name="preference_overviewchart_inappsize_title">Size</string>
+    <string name="preference_overviewchart_inappsize_summary">Size of the overview chart in portrait mode.</string>
     <string name="preference_displayDewPoint_title">Dew point</string>
     <string name="preference_displayDewPoint_summary">Display the dew point instead of relative humidity.</string>
     <string name="alertdialog_3_title">Reset preferences</string>

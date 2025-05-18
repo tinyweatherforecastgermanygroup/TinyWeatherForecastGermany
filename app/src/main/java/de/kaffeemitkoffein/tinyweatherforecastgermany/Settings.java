@@ -162,7 +162,8 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                         (s.equals(WeatherSettings.PREF_DISPLAY_VISIBILITY)) || (s.equals(WeatherSettings.PREF_DISPLAY_SUNRISE)) || (s.equals(WeatherSettings.PREF_DISPLAY_DISTANCE_UNIT)) ||
                         s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART) || s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_DAYS) || (s.equals(WeatherSettings.PREF_VIEWMODEL)) ||
                         (s.equals(WeatherSettings.PREF_UVHI_MAINDISPLAY)) || (s.equals(WeatherSettings.PREF_DISPLAY_STATION_GEO)) ||
-                        (s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
+                        (s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT)) ||
+                        (s.equals(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_INAPPSIZE))){
                         WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
                     // invalidate weather display and widgets
                     if ((s.equals(WeatherSettings.PREF_DISPLAY_WIND_TYPE)) || (s.equals(WeatherSettings.PREF_DISPLAY_WIND_UNIT))){
@@ -742,7 +743,6 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
             public void onProgressChanged(SeekBar seekBar, int i, boolean userInitiated) {
                 if (userInitiated){
                     clockSizePreference.setProgress(i);
-                    PrivateLog.log(context,PrivateLog.WIDGET,PrivateLog.INFO,"Progress -> "+i);
                     WeatherSettings.setClockSize(context,i);
                 }
             }
@@ -759,6 +759,29 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
         };
         clockSizePreference.setSeekBarChangeListener(clockSizeChangeListener);
 
+        final SeekBarPreference overviewChartInappSizePreference = (SeekBarPreference) findPreference(WeatherSettings.PREF_DISPLAY_OVERVIEWCHART_INAPPSIZE);
+        if (overviewChartInappSizePreference!=null){
+            overviewChartInappSizePreference.setProgress(WeatherSettings.getOverviewChartInAppSizePercent(context));
+            overviewChartInappSizePreference.setSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int i, boolean userInitiated) {
+                    if (userInitiated){
+                        WeatherSettings.setOverviewChartInAppSizePercent(context,i);
+                        overviewChartInappSizePreference.setProgress(i);
+                    }
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+        }
         EditTextPreference weatherUrlPreference = (EditTextPreference) findPreference(WeatherSettings.PREF_WEATHER_URL);
         if (weatherUrlPreference!=null){
             String url = WeatherSettings.getWeatherUrl(context);

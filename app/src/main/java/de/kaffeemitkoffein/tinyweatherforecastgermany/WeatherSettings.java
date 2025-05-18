@@ -150,6 +150,7 @@ public class WeatherSettings {
     public static final String PREF_DISPLAY_OVERVIEWCHART_DISPLAY_PRECIPITATION_AMOUNT = "PREF_display_overviewchart_pca";
     public static final String PREF_DISPLAY_OVERVIEWCHART_DISPLAY_RH = "PREF_display_overviewchart_RH";
     public static final String PREF_DISPLAY_OVERVIEWCHART_FILTER_WARNINGS = "PREF_display_overviewchart_filter_warnings";
+    public static final String PREF_DISPLAY_OVERVIEWCHART_INAPPSIZE = "PREF_overviewchart_inappsize";
     public static final String PREF_MAP_HIGH_RESOLUTION ="PREF_map_high_resolution";
     public static final String PREF_MAP_PIN_SIZE = "PREF_map_pinsize";
     public static final String PREF_WEATHER_URL = "PREF_weather_url";
@@ -192,6 +193,7 @@ public class WeatherSettings {
     public static final boolean PREF_DISPLAY_OVERVIEWCHART_MINMAXUSE_DEFAULT = false;
     public static final int PREF_DISPLAY_OVERVIEWCHART_MIN_DEFAULT = 7;
     public static final int PREF_DISPLAY_OVERVIEWCHART_MAX_DEFAULT = 4;
+    public static final int PREF_DISPLAY_OVERVIEWCHART_INAPPSIZE_DEFAULT = 10;
     public static final String PREF_WIDGET_OPACITY_DEFAULT = "90";
     public static final boolean PREF_WIDGET_SHOWDWDNOTE_DEFAULT = true;
     public static final boolean PREF_WIDGET_DISPLAYWARNINGS_DEFAULT = true;
@@ -1506,6 +1508,18 @@ public class WeatherSettings {
     public static boolean filterWarningsInOverviewChartBySeverity(Context context) {
         SharedPreferences sharedPreferences = getSharedPreferences(context);
         return sharedPreferences.getBoolean(PREF_DISPLAY_OVERVIEWCHART_FILTER_WARNINGS,PREF_DISPLAY_OVERVIEWCHART_FILTER_WARNINGS_DEFAULT);
+    }
+
+    public static void setOverviewChartInAppSizePercent(Context context, int size){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
+        pref_editor.putInt(PREF_DISPLAY_OVERVIEWCHART_INAPPSIZE,size);
+        pref_editor.apply();
+    }
+
+    public static int getOverviewChartInAppSizePercent(Context context){
+        SharedPreferences sharedPreferences = getSharedPreferences(context);
+        return sharedPreferences.getInt(PREF_DISPLAY_OVERVIEWCHART_INAPPSIZE,PREF_DISPLAY_OVERVIEWCHART_INAPPSIZE_DEFAULT);
     }
 
     public static boolean forceMapHighResolution(Context context){
