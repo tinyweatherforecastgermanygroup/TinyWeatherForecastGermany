@@ -545,5 +545,5 @@
     <string name="no_data">Es scheint momentan keine Wettervorhersage für diesen Standort abrufbar zu sein. Du kannst versuchen, die Daten neu zu laden, oder einen anderen Ort auswählen.</string>
     <string name="switch_to_next_station">Zur nächstgelegenen Station wechseln</string>
     <string name="preference_widget_clock_summary">Die Größe der Uhr im Wetter- und Zeit-Widget einstellen.</string>
-    <string name="preference_widget_clock_title">Uhrgröße</string>
+    <string name="preference_widget_clock_title">Größe der Uhr</string>
 </resources>
