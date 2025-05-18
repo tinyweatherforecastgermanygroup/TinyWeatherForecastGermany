@@ -502,4 +502,13 @@
     <string name="geoinput_declined">Поскольку вы отказались от разрешений на определение местоположения, функции приложения, требующие их, были отключены. Вы можете снова включить их в настройках.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Отсутствие разрешения</string>
     <string name="preference_missingBackgroundLocationPermission_summary">В настоящее время приложение не может получить доступ к местоположению в фоновом режиме. Рассмотрите возможность предоставления этого разрешения или отключите регулярную проверку местоположения.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Нулевая базовая линия</string>
+    <string name="preference_screen_overviewchart_zbase_summary">График температуры начинается с нуля, если температура не ниже.</string>
+    <string name="switch_to_next_station">Переключение на ближайшую станцию</string>
+    <string name="preference_widget_clock_summary">Настройте размер часов в виджете погоды и времени.</string>
+    <string name="no_data">Похоже, что для этого места сейчас нет прогноза погоды. Вы можете попробовать обновить данные или выбрать другое место.</string>
+    <string name="preference_screen_uvhi_mainType_title">Чистое небо</string>
+    <string name="preference_screen_uvhi_mainType_summary">Не применяйте коэффициенты модификации облачности к прогнозу индекса опасности ультрафиолетового излучения, отображаемому в главном окне приложения.</string>
+    <string name="preference_uvi_notice_summary">Более подробную информацию о расчете индекса опасности ультрафиолетового излучения можно найти на домашней странице DWD. Изменение предпочтения ясного неба приводит к необходимости обновления данных прогноза DWD.</string>
+    <string name="preference_widget_clock_title">Размер часов</string>
 </resources>
