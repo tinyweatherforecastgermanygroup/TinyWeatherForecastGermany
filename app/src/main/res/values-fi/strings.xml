@@ -502,4 +502,13 @@
     <string name="geoinput_declined">Koska olet hylännyt sijaintioikeudet, niitä vaativat sovelluksen ominaisuudet on poistettu käytöstä. Voit ottaa ne uudelleen käyttöön asetuksissa.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Puuttuva lupa</string>
     <string name="preference_missingBackgroundLocationPermission_summary">Tällä hetkellä sovellus ei voi käyttää sijaintia taustalla. Harkitse tämän luvan antamista tai ota säännölliset sijainnin tarkistukset pois käytöstä.</string>
+    <string name="preference_widget_clock_summary">Säädä kellon kokoa sää- ja aikawidgetissä.</string>
+    <string name="switch_to_next_station">Vaihda lähimmälle asemalle</string>
+    <string name="preference_widget_clock_title">Kellon koko</string>
+    <string name="preference_screen_overviewchart_zbase_title">Nollaperustaso</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Lämpötilakuvaaja alkaa nollasta, ellei lämpötila ole alhaisempi.</string>
+    <string name="preference_uvi_notice_summary">Lisätietoja UV-vaaraindeksin laskemisesta on saatavilla DWD:n kotisivuilla. Selkeän taivaan etusijajärjestyksen muuttaminen edellyttää DWD:n ennustetietojen päivittämistä.</string>
+    <string name="preference_screen_uvhi_mainType_title">Kirkas taivas</string>
+    <string name="preference_screen_uvhi_mainType_summary">Älä sovella pilvimuutoskertoimia sovelluksen päänäkymässä näkyvään UV-vaaraindeksiennusteeseen.</string>
+    <string name="no_data">Näyttää siltä, että tällä hetkellä ei ole saatavilla sääennustetta tähän sijaintiin. Voit yrittää päivittää tiedot tai valita toisen sijainnin.</string>
 </resources>
