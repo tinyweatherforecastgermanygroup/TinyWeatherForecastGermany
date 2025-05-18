@@ -495,4 +495,13 @@
     <string name="geoinput_declined">Siden du har avslått posisjonstillatelser, er appfunksjonene som krever dem, deaktivert. Du kan aktivere dem igjen i innstillingene.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Mangler tillatelse</string>
     <string name="preference_missingBackgroundLocationPermission_summary">For øyeblikket har ikke appen tilgang til posisjonen i bakgrunnen. Vurder å gi denne tillatelsen, eller slå av regelmessige posisjonskontroller.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Null grunnlinje</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Temperaturgrafen begynner med null, med mindre temperaturen er lavere.</string>
+    <string name="preference_widget_clock_title">Klokkestørrelse</string>
+    <string name="switch_to_next_station">Bytt til nærmeste stasjon</string>
+    <string name="no_data">Det ser ut til at det for øyeblikket ikke er noen værmelding tilgjengelig for dette stedet. Du kan prøve å oppdatere dataene eller velge et annet sted.</string>
+    <string name="preference_uvi_notice_summary">Du finner mer informasjon om beregningen av UV-fareindeksen på DWDs hjemmeside. Hvis du endrer preferansen for klar himmel, er det nødvendig å oppdatere prognosedataene fra DWD.</string>
+    <string name="preference_screen_uvhi_mainType_title">Klar himmel</string>
+    <string name="preference_screen_uvhi_mainType_summary">Ikke bruk skymodifikasjonsfaktorer på UV-fareindeksen som vises i hovedvisningen i appen.</string>
+    <string name="preference_widget_clock_summary">Juster klokkestørrelsen i widgeten for vær og tid.</string>
 </resources>
