@@ -116,7 +116,7 @@ Translations:
 * French: Allan Nordhøy, eUgEntOptIc44, J. Lavoie, Jean-Luc Tibaux, lejun, mondstern
 * Finnish: eUgEntOptIc44, mondstern
 * German: Aircan, Allan Nordhøy, buhtz, Dirk, eUgEntOptIc44, franconian, Hexagon, Hiajen, J. Lavoie, MaxK, mondstern, silmaril, w4ts0n, Dirk
-* Hungarian: eUgEntOptIc44, Gőz Barnabás
+* Hungarian: eUgEntOptIc44, Gőz Barnabás, meskobalazs
 * Indonesian: Linerly
 * Italian: mondstern, eUgEntOptIc44
 * Irish: aindriu80, mondstern

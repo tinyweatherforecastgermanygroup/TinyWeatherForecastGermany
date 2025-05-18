@@ -301,6 +301,44 @@
                     android:textSize="@dimen/fcmain_textsize_medium"
                     android:text="@string/switch_to_next_station"/>
 
+            <RelativeLayout
+                    android:id="@+id/main_noconn_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/main_nodata_button"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:layout_centerInParent="true">
+
+                <ImageView
+                        android:id="@+id/main_noconn_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_centerInParent="true"
+                        android:tint="?attr/colorText"
+                        android:src="?attr/ic_warning"/>
+
+                <TextView
+                        android:id="@+id/main_noconn_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/main_noconn_icon"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/network_nonetwork"
+                        android:textColor="?attr/colorText"
+                        android:textSize="@dimen/fcmain_textsize_medium"/>
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
 
