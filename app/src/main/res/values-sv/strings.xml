@@ -252,4 +252,17 @@
     <string name="geoinput_declined">Eftersom du har avböjt platsbehörigheter har de appfunktioner som kräver dem inaktiverats. Du kan aktivera dem igen i inställningarna.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Saknad tillåtelse</string>
     <string name="preference_missingBackgroundLocationPermission_summary">För närvarande kan appen inte komma åt platsen i bakgrunden. Överväg att ge denna behörighet eller stäng av regelbundna platskontroller.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Noll baslinje</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Temperaturkurvan börjar med noll om inte temperaturen är lägre.</string>
+    <string name="preference_widget_clock_title">Klockstorlek</string>
+    <string name="preference_widget_clock_summary">Justera klockans storlek i widgeten för väder och tid.</string>
+    <string name="switch_to_next_station">Växla till närmaste station</string>
+    <string name="preference_screen_overviewchart_max_summary">Övre värde för temperaturskalan:</string>
+    <string name="preference_screen_overviewchart_usemm_summary">Temperaturskalan förblir densamma om värdena ligger inom det angivna intervallet.</string>
+    <string name="no_data">Det verkar som om det för närvarande inte finns någon väderprognos tillgänglig för den här platsen. Du kan försöka uppdatera data eller välja en annan plats.</string>
+    <string name="preference_uvi_notice_summary">Mer information om beräkningen av UV-riskindexet finns på DWD:s hemsida. Om du ändrar inställningen för klar himmel måste du uppdatera prognosuppgifterna från DWD.</string>
+    <string name="preference_screen_overviewchart_min_summary">Lägre värde på temperaturskalan:</string>
+    <string name="preference_screen_uvhi_mainType_title">Klar himmel</string>
+    <string name="preference_screen_uvhi_mainType_summary">No aplique factores de modificación de nubes a la previsión del índice de peligro UV que se muestra en la vista principal de la aplicación.</string>
+    <string name="preference_screen_overviewchart_usemm_title">Fast skala</string>
 </resources>
