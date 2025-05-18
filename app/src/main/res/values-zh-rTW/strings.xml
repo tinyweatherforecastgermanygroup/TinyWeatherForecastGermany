@@ -101,4 +101,20 @@
     <string name="preference_map_show_admin_by_default_summary">自動顯示管理邊界。</string>
     <string name="geoinput_declined">由於您已拒絕位置權限，因此需要位置權限的應用程式功能已被停用。您可以在設定中重新啟用。</string>
     <string name="classicwidget_description">詳細天氣資訊</string>
+    <string name="preference_screen_overviewchart_zbase_title">零基線</string>
+    <string name="preference_screen_overviewchart_zbase_summary">除非溫度較低，否則溫度圖以零開始。</string>
+    <string name="preference_widget_clock_title">时钟大小</string>
+    <string name="switch_to_next_station">切換到最近的車站</string>
+    <string name="preference_screen_overviewchart_usemm_summary">如果數值在指定範圍內，溫度刻度會保持不變。</string>
+    <string name="preference_screen_overviewchart_max_title">最大值</string>
+    <string name="preference_screen_overviewchart_min_title">最小值</string>
+    <string name="preference_screen_overviewchart_max_summary">溫度刻度的上限值：</string>
+    <string name="preference_screen_overviewchart_min_summary">溫度刻度的下限值：</string>
+    <string name="preference_display_rotation_title">顯示對齊</string>
+    <string name="preference_display_rotation_summary">如何對齊顯示器</string>
+    <string name="no_data">該地點目前似乎沒有可用的天氣預報。您可以嘗試刷新資料或選擇其他地點。</string>
+    <string name="preference_uvi_notice_summary">有關紫外線危害指數計算的更多詳細資訊，請參閱 DWD 首頁。改變晴空偏好，就必須更新 DWD 的預測資料。</string>
+    <string name="preference_screen_uvhi_mainType_title">晴朗的天空</string>
+    <string name="preference_screen_uvhi_mainType_summary">請勿在主應用程式檢視中顯示的紫外線危害指數預報中套用雲量修正係數。</string>
+    <string name="preference_screen_overviewchart_usemm_title">固定刻度</string>
 </resources>
