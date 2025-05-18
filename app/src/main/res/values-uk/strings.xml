@@ -530,4 +530,6 @@
     <string name="preference_widget_clock_title">Розмір годинника</string>
     <string name="preference_widget_clock_summary">Налаштуйте розмір годинника у віджеті погоди і часу.</string>
     <string name="switch_to_next_station">Перемкнутися на найближчу метеостанцію</string>
+    <string name="preference_overviewchart_inappsize_title">Розмір</string>
+    <string name="preference_overviewchart_inappsize_summary">Розмір оглядової діаграми в портретній орієнтації.</string>
 </resources>
