@@ -501,4 +501,13 @@
     <string name="geoinput_declined">Karena Anda telah menolak izin lokasi, fitur aplikasi yang memerlukannya telah dinonaktifkan. Anda dapat mengaktifkannya lagi di pengaturan.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Izin yang hilang</string>
     <string name="preference_missingBackgroundLocationPermission_summary">Saat ini, aplikasi tidak dapat mengakses lokasi di latar belakang. Pertimbangkan untuk memberikan izin ini atau matikan pemeriksaan lokasi reguler.</string>
+    <string name="preference_widget_clock_summary">Sesuaikan ukuran jam di widget cuaca dan waktu.</string>
+    <string name="no_data">Tampaknya saat ini tidak ada prakiraan cuaca yang tersedia untuk lokasi ini. Anda dapat mencoba menyegarkan data atau memilih lokasi lain.</string>
+    <string name="switch_to_next_station">Beralih ke stasiun terdekat</string>
+    <string name="preference_uvi_notice_summary">Rincian lebih lanjut tentang perhitungan indeks bahaya UV tersedia di halaman muka DWD. Mengubah preferensi langit cerah membuat data prakiraan dari DWD perlu diperbarui.</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Grafik suhu dimulai dengan angka nol kecuali jika suhu lebih rendah.</string>
+    <string name="preference_screen_uvhi_mainType_summary">Jangan menerapkan faktor modifikasi awan pada prakiraan indeks bahaya UV yang ditampilkan di tampilan aplikasi utama.</string>
+    <string name="preference_screen_uvhi_mainType_title">Langit cerah</string>
+    <string name="preference_screen_overviewchart_zbase_title">Garis dasar nol</string>
+    <string name="preference_widget_clock_title">Ukuran jam</string>
 </resources>
