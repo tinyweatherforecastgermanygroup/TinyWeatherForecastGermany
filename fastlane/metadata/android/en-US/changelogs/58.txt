@@ -1,9 +1,5 @@
-New in version [VERSION]:
-
 - additional options for customizing the overview chart
 - the size of the clock in the widget can now be adjusted
 - if there is no weather data for a weather station, this will be displayed
 - widgets are now displayed better with some launchers
 - the pollen forecast is now reliably displayed in the weather details
-
-For a detailed list of changes, see https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md

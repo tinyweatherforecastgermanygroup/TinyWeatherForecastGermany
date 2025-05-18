@@ -2430,13 +2430,27 @@ public class MainActivity extends Activity {
         Weather.WeatherLocation currentStation = WeatherSettings.getSetStationLocation(context);
         String[] ignoreStationNames = new String[]{currentStation.getName()};
         Button nextStationButton = (Button) findViewById(R.id.main_nodata_button);
+        boolean hasNetwork = Weather.suitableNetworkAvailable(context);
         if (nextStationButton!=null){
-        nextStationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchStationSearchByLocation(currentStation.toLocation(),ignoreStationNames);
+            if (hasNetwork){
+                nextStationButton.setVisibility(View.VISIBLE);
+                nextStationButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        launchStationSearchByLocation(currentStation.toLocation(),ignoreStationNames);
+                    }
+                });
+            } else {
+                nextStationButton.setVisibility(View.INVISIBLE);
             }
-        });
+        }
+        RelativeLayout noConnLayout = (RelativeLayout) findViewById(R.id.main_noconn_container);
+        if (noConnLayout!=null){
+            if (hasNetwork){
+                noConnLayout.setVisibility(View.INVISIBLE);
+            } else {
+                noConnLayout.setVisibility(View.VISIBLE);
+            }
         }
 
     }
