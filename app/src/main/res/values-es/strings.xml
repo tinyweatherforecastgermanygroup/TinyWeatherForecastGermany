@@ -522,4 +522,13 @@
     <string name="preference_mapSaveState_title">Guardar zoom</string>
     <string name="preference_displayDewPoint_title">Punto de rocío</string>
     <string name="preference_displayDewPoint_summary">Muestra el punto de rocío en lugar de la humedad relativa.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Base cero</string>
+    <string name="preference_screen_overviewchart_zbase_summary">El gráfico de temperatura comienza en cero a menos que las temperaturas sean más bajas.</string>
+    <string name="preference_widget_clock_title">Tamaño del reloj</string>
+    <string name="preference_widget_clock_summary">Ajusta el tamaño del reloj en el widget del tiempo y la hora.</string>
+    <string name="switch_to_next_station">Cambiar a la estación más cercana</string>
+    <string name="no_data">Parece que actualmente no hay previsiones meteorológicas disponibles para esta localidad. Puedes intentar actualizar los datos o elegir una ubicación diferente.</string>
+    <string name="preference_uvi_notice_summary">Encontrará más detalles sobre el cálculo del índice de peligro UV en la página de inicio de la DWD. El cambio de la preferencia de cielo despejado hace necesario actualizar los datos de previsión de la DWD.</string>
+    <string name="preference_screen_uvhi_mainType_title">Cielo despejado</string>
+    <string name="preference_screen_uvhi_mainType_summary">No aplique factores de modificación de nubes a la previsión del índice de peligro UV que se muestra en la vista principal de la aplicación.</string>
 </resources>
