@@ -534,4 +534,13 @@
     <string name="geoinput_declined">Comme vous avez refusé les autorisations de localisation, les fonctions de l\'application qui les requièrent ont été désactivées. Vous pouvez les réactiver dans les paramètres.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Permission manquante</string>
     <string name="preference_missingBackgroundLocationPermission_summary">Actuellement, l\'application ne peut pas accéder à la localisation en arrière-plan. Envisagez d\'accorder cette autorisation ou de désactiver les vérifications régulières de l\'emplacement.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Base zéro</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Le graphique des températures commence à zéro, sauf si les températures sont inférieures.</string>
+    <string name="preference_widget_clock_title">Taille de l\'horloge</string>
+    <string name="preference_widget_clock_summary">Ajustez la taille de l\'horloge dans le widget de la météo et de l\'heure.</string>
+    <string name="switch_to_next_station">Commutation vers la station la plus proche</string>
+    <string name="no_data">Il semble qu\'il n\'y ait pas de prévisions météorologiques disponibles pour cet endroit. Vous pouvez essayer d\'actualiser les données ou de choisir un autre lieu.</string>
+    <string name="preference_uvi_notice_summary">De plus amples détails sur le calcul de l\'indice de danger UV sont disponibles sur la page d\'accueil du DWD. La modification de la préférence pour le ciel dégagé nécessite la mise à jour des données de prévision de la DWD.</string>
+    <string name="preference_screen_uvhi_mainType_title">Ciel dégagé</string>
+    <string name="preference_screen_uvhi_mainType_summary">Älä sovella pilvimuutoskertoimia sovelluksen päänäkymässä näkyvään UV-vaaraindeksiennusteeseen.</string>
 </resources>
