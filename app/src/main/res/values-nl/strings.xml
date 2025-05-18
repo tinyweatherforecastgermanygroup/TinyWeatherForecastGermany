@@ -503,4 +503,13 @@
     <string name="geoinput_declined">Omdat je de locatietoestemmingen hebt geweigerd, zijn de functies van de app die deze vereisen uitgeschakeld. Je kunt ze weer inschakelen in de instellingen.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Ontbrekende toestemming</string>
     <string name="preference_missingBackgroundLocationPermission_summary">Op dit moment heeft de app geen toegang tot de locatie op de achtergrond. Overweeg deze toestemming te geven of schakel regelmatige locatiecontroles uit.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Nulbasislijn</string>
+    <string name="preference_screen_overviewchart_zbase_summary">De temperatuurgrafiek begint bij nul, tenzij de temperaturen lager zijn.</string>
+    <string name="preference_widget_clock_title">Klokgrootte</string>
+    <string name="preference_widget_clock_summary">Pas de grootte van de klok aan in de weer- en tijdwidget.</string>
+    <string name="no_data">There does not appear to be any weather forecast for this location at this time. You can try refreshing the data or selecting another location.</string>
+    <string name="switch_to_next_station">Schakel naar dichtstbijzijnde station</string>
+    <string name="preference_uvi_notice_summary">Meer details over de berekening van de UV-risico-index zijn beschikbaar op de homepage van de DWD. Als de voorkeur voor heldere hemel wordt gewijzigd, moeten de voorspellingsgegevens van de DWD worden bijgewerkt.</string>
+    <string name="preference_screen_uvhi_mainType_summary">Pas geen wolkenmodificatiefactoren toe op de UV-gevarenindexvoorspelling die wordt weergegeven in de hoofdweergave van de app.</string>
+    <string name="preference_screen_uvhi_mainType_title">Heldere lucht</string>
 </resources>
