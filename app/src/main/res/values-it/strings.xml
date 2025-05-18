@@ -503,4 +503,13 @@
     <string name="preference_missingBackgroundLocationPermission_summary">Attualmente l\'app non può accedere alla posizione in background. Considerate la possibilità di concedere questa autorizzazione o di disattivare i controlli regolari della posizione.</string>
     <string name="geoinput_declined">Poiché l\'utente ha rifiutato i permessi di localizzazione, le funzioni dell\'app che li richiedono sono state disattivate. È possibile attivarle nuovamente nelle impostazioni.</string>
     <string name="preference_missingBackgroundLocationPermission_title">Autorizzazione mancante</string>
+    <string name="preference_screen_overviewchart_zbase_title">Linea di base zero</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Il grafico della temperatura inizia con lo zero, a meno che le temperature non siano inferiori.</string>
+    <string name="switch_to_next_station">Passare alla stazione più vicina</string>
+    <string name="preference_widget_clock_title">Dimensione dell\'orologio</string>
+    <string name="preference_widget_clock_summary">Regolare le dimensioni dell\'orologio nel widget del meteo e dell\'ora.</string>
+    <string name="preference_uvi_notice_summary">Maggiori dettagli sul calcolo dell\'indice di pericolo UV sono disponibili sulla homepage del DWD. La modifica della preferenza per il cielo sereno rende necessario l\'aggiornamento dei dati di previsione del DWD.</string>
+    <string name="preference_screen_uvhi_mainType_title">Cielo sereno</string>
+    <string name="preference_screen_uvhi_mainType_summary">Non applicare i fattori di modifica delle nubi alle previsioni dell\'indice di pericolo UV visualizzate nella vista principale dell\'applicazione.</string>
+    <string name="no_data">Sembra che al momento non siano disponibili previsioni meteo per questa località. È possibile provare ad aggiornare i dati o scegliere un\'altra località.</string>
 </resources>
