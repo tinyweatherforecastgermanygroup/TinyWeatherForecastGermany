@@ -1385,28 +1385,25 @@ public class WeatherSettings {
         public final static int NONE = 0;
         public final static int VIEWS = 2;
         public final static int STATION = 4;
+        public final static int DATA_CLEARED = 8;
     }
 
     public static boolean hasWeatherUpdatedFlag(Context context, int flag) {
-        /*SharedPreferences sharedPreferences = getSharedPreferences(context);
-        int savedFlag = sharedPreferences.getInt(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
-         */
         int savedFlag = DataStorage.getInt(context,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG_DEFAULT);
         int result = savedFlag & flag;
         return (result>0);
     }
 
-    public static void setWeatherUpdatedFlag(Context context, int flag) {
-        /*SharedPreferences sharedPreferences = getSharedPreferences(context);
-        int oldFlag = sharedPreferences.getInt(PREF_WEATHERUPDATEDFLAG,PREF_WEATHERUPDATEDFLAG_DEFAULT);
-        SharedPreferences.Editor pref_editor = sharedPreferences.edit();
-        if (flag==UpdateType.NONE){
-            pref_editor.putInt(PREF_WEATHERUPDATEDFLAG, UpdateType.NONE);
-        } else {
-            pref_editor.putInt(PREF_WEATHERUPDATEDFLAG, oldFlag|flag);
+    public static void removeWeatherUpdatedFlag(Context context, int flag) {
+        int savedFlag = DataStorage.getInt(context,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG_DEFAULT);
+        // if flag is set, xor stored flag with flag to remove flag
+        if (hasWeatherUpdatedFlag(context,flag)){
+            int result = savedFlag ^ flag;
+            DataStorage.setInt(context,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG, result);
         }
-        pref_editor.apply();
-         */
+    }
+
+    public static void setWeatherUpdatedFlag(Context context, int flag) {
         int oldFlag = DataStorage.getInt(context,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG_DEFAULT);
         if (flag==UpdateType.NONE){
             DataStorage.setInt(context,DataStorage.DATASTORAGE_WEATHERUPDATEDFLAG, UpdateType.NONE);

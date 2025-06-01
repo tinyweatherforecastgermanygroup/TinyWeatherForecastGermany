@@ -165,9 +165,12 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
         Bitmap iconMutable = warningIconBitmap.copy(Bitmap.Config.ARGB_8888, true);
         ThemePicker.applyColor(iconMutable, weatherWarning.getWarningColor());
         String notificationBody = weatherWarning.description;
+        notificationBody = WeatherSettings.getSetStationLocation(context).getDescription(context).toUpperCase(Locale.getDefault()) + ": " + notificationBody;
         String expires = WeatherWarnings.getExpiresMiniString(context, weatherWarning);
-        expires = expires.replaceFirst(String.valueOf(expires.charAt(0)), String.valueOf(expires.charAt(0)).toUpperCase());
-        notificationBody = WeatherSettings.getSetStationLocation(context).getDescription(context).toUpperCase(Locale.getDefault()) + ": " + notificationBody + " (" + expires + ".)";
+        if (expires!=null){
+            expires = expires.replaceFirst(String.valueOf(expires.charAt(0)), String.valueOf(expires.charAt(0)).toUpperCase());
+            notificationBody = notificationBody + " (" + expires + ".)";
+        }
         // construct pending intent for sharing
         PendingIntent shareWarningPendingIntent = getWarningPendingIntent(context, weatherWarning, uniqueNotificationID);
         Notification n;

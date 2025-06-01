@@ -19,6 +19,7 @@
 
 package de.kaffeemitkoffein.tinyweatherforecastgermany;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,6 +29,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -193,7 +195,7 @@ public class WeatherWarnings {
             } else {
                 return context.getResources().getString(R.string.ends)+" "+getTimeMiniString(weatherWarning.expires);
             }
-        } else return "";
+        } else return null;
     }
 
     public static SpannableStringBuilder getMiniWarningsString(Context context, ArrayList<WeatherWarning> applicableWarnings, long itemStartTime, long itemStopTime, boolean multiLine, int textType){
@@ -216,7 +218,10 @@ public class WeatherWarnings {
             }
             if (applicableWarnings.get(i).expires!=0){
                 if (applicableWarnings.get(i).expires<itemStopTime){
-                    text = text + " (" + getExpiresMiniString(context,applicableWarnings.get(i)) + ")";
+                    String expiresMiniString = getExpiresMiniString(context,applicableWarnings.get(i));
+                    if (expiresMiniString!=null){
+                        text = text + " (" + expiresMiniString + ")";
+                    }
                 }
             }
             if ((!multiLine) && (applicableWarnings.size()>1)){
@@ -302,6 +307,7 @@ public class WeatherWarnings {
         return addToNotified(context,warningNotification);
     }
 
+    @SuppressLint("Range")
     public static ArrayList<WarningNotification> getNotificationElements(Context context){
         ArrayList<WarningNotification> result = new ArrayList<WarningNotification>();
         NotificationListDbHelper notificationListDbHelper = new NotificationListDbHelper(context);

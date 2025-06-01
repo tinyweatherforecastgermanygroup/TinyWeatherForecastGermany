@@ -144,6 +144,22 @@
                 android:shadowColor="?attr/colorTextLight"
                 android:textColor="?attr/colorText"/>
 
+        <TextView
+                android:id="@+id/fcitem_uvHazardIndexType"
+                android:layout_width="@dimen/fcmain_textsize_small"
+                android:layout_height="@dimen/fcmain_textsize_small"
+                android:visibility="visible"
+                android:layout_alignTop="@id/fcitem_uvHazardIndex"
+                android:layout_alignRight="@id/fcitem_uvHazardIndex"
+                android:gravity="top|right"
+                android:textStyle="bold"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="1dp"
+                android:text="C"
+                android:textSize="@dimen/fcmain_textsize_small"
+                android:shadowColor="?attr/colorTextLight"
+                android:textColor="?attr/colorText"/>
+
         <ImageView android:id="@+id/fcitem_forecastbar"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"

@@ -156,17 +156,13 @@ public class MainActivity extends Activity {
                     ThemePicker.tintAlertDialogButtons(context,alertDialog);
                 }
             }
+            // action DEPRECATED, currently not used
             if (intent.getAction().equals(MainActivity.MAINAPP_SHOW_PROGRESS)){
-                ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
-                if (progressBar!=null){
-                    progressBar.setVisibility(View.VISIBLE);
-                }
+                showMainappProgress();
             }
+            // action DEPRECATED, currently not used
             if (intent.getAction().equals(MainActivity.MAINAPP_HIDE_PROGRESS)){
-                ProgressBar progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
-                if (progressBar!=null){
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
+                hideMainappProgress();
                 forceWeatherUpdateFlag = false;
             }
             if (intent.getAction().equals(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE)){
@@ -359,29 +355,29 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume(){
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"app resumed.");
-        /*
-        // we need to check here, too since warnings may have been activated in settings again
-        try {
-            if (prepareAreaDatabase(context)){
-                Intent serviceStartIntent = new Intent(context,CreateAreasDatabaseService.class);
-                startService(serviceStartIntent);
-            }
-        } catch (Exception e){
-            // ignore
-        }
-         */
         long estimatedAdapterLayoutTimeMillis = getEstimatedAdapterLayoutTimeInMillis(context);
         PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Estimated weather adapter layout time is: "+timerDecimalFormat.format(estimatedAdapterLayoutTimeMillis/1000f)+ " sec");
         //PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Entering onResume at "+timerDecimalFormat.format((Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f)+" sec from app launch.");
-        boolean newLocation = false;
+        boolean syncWeatherUpdate = false;
+        // check if a new station was set in the background
         if (WeatherSettings.useBackgroundLocation(context)){
-            newLocation = WeatherLocationManager.checkForBackgroundLocation(context);
+            syncWeatherUpdate = WeatherLocationManager.checkForBackgroundLocation(context);
         }
+        // check if station has changed
         if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION)){
-            newLocation = true;
+            syncWeatherUpdate = true;
         }
-        if ((DataStorage.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)) || (newLocation)) {
-            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is outdated, getting new weather data.");
+        // check if data was cleared (e.g. by changing the UV setting)
+        if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA_CLEARED)){
+            // we need to invalidate the data in the memory, since this data is not accurate any more
+            weatherCard = null;
+            // need to force empty screen; the sync process will be triggered from inside displayWeatherForecast()
+            displayWeatherForecast();
+        } else {
+            // do nothing
+        }
+        if ((DataStorage.Updates.isSyncDue(context,WeatherSettings.Updates.Category.WEATHER)) || (syncWeatherUpdate)) {
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Weather data is outdated or not present, getting new weather data.");
             weatherForecastRunnable.setWeatherLocations(null);
             executor.execute(weatherForecastRunnable);
         } else {
@@ -500,6 +496,8 @@ public class MainActivity extends Activity {
                     updateAppViews(null);
                     PrivateLog.log(context, PrivateLog.MAIN, PrivateLog.INFO, "Weather update: success");
                     super.onPositiveResult();
+                    // remove the flag that data was removed
+                    WeatherSettings.removeWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA_CLEARED);
                     DataStorage.Updates.setLastUpdate(context,WeatherSettings.Updates.Category.WEATHER,Calendar.getInstance().getTimeInMillis());
                     // finally, do a sync of other conditions. Weather will not by updated, since setLastUpdate was called.
                     // If no sync is due, nothing will happen.
@@ -509,7 +507,7 @@ public class MainActivity extends Activity {
                                 public void run() {
                                     ContentResolver.requestSync(getManualSyncRequest(context, WeatherSyncAdapter.UpdateFlags.FLAG_UPDATE_DEFAULT));
                                 }
-                            });;
+                            });
                     loadCurrentWeather();
                     // also update the widgets & Gadgetbridge with new data. This will take place with a delay.
                     updateAppViews(null);
@@ -1165,11 +1163,13 @@ public class MainActivity extends Activity {
             // force a re-load of weather data using the station from settings
             weatherCard = null;
             // set back the flag as update was done.
-            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
+            //WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
+            WeatherSettings.removeWeatherUpdatedFlag(context,WeatherSettings.UpdateType.STATION);
         }
         if (WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS)){
             // set back the flag before recreate occurs
-            WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
+            //WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.NONE);
+            WeatherSettings.removeWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
             // notify widgets (& Gadgetbridge), since such view changes may also affect widgets, e.g. overview chart
             updateAppViews(weatherCard);
             // recreate the whole view
@@ -1250,19 +1250,7 @@ public class MainActivity extends Activity {
             displayUpdateTime(weatherCard);
             forecastAdapter = new ForecastAdapter(getApplicationContext(),getCustomForecastWeatherInfoArray(weatherCard),weatherCard.forecast1hourly,weatherCard.weatherLocation);
             forecastAdapter.setWarnings(localWarnings);
-            // weatherList.setFastScrollEnabled(true);
             weatherList.setAdapter(forecastAdapter);
-            /*
-            weatherList.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    long time = Calendar.getInstance().getTimeInMillis()-launchTimer;
-                    launchItemsCounter++;
-                    //PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.INFO,"Adapter item #"+launchItemsCounter+" finished layout at "+timerDecimalFormat.format(time/1000f)+" sec from app launch.");
-                    //WeatherSettings.LaunchTimer.updateLaunchTimes(context,time,launchItemsCounter);
-                }
-            });
-             */
             forecastAdapter.notifyDataSetChanged();
             if (WeatherSettings.loggingEnabled(this)){
                 float time = (Calendar.getInstance().getTimeInMillis()-launchTimer)/1000f;
@@ -2432,7 +2420,7 @@ public class MainActivity extends Activity {
         Button nextStationButton = (Button) findViewById(R.id.main_nodata_button);
         boolean hasNetwork = Weather.suitableNetworkAvailable(context);
         if (nextStationButton!=null){
-            if (hasNetwork){
+            if ((hasNetwork) && (!WeatherSettings.hasWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA_CLEARED))){
                 nextStationButton.setVisibility(View.VISIBLE);
                 nextStationButton.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -743,6 +743,8 @@ public class APIReaders {
          */
 
         public void onPositiveResult(){
+            // remove the flag that data was removed previously, if set
+            WeatherSettings.removeWeatherUpdatedFlag(context,WeatherSettings.UpdateType.DATA_CLEARED);
         }
 
         public void onPositiveResult(ArrayList<RawWeatherInfo> rawWeatherInfos){

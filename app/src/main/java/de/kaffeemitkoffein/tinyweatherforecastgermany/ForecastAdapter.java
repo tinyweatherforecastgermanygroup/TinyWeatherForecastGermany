@@ -247,6 +247,7 @@ private static class ViewHolder {
     ImageView symbolRH;
     View endofday_bar;
     TextView uvHazardIndex;
+    TextView uvHazardIndexType;
 
     public ViewHolder() {
         symbols = new ImageView[6];
@@ -308,6 +309,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
     ImageView biocular = null;
     ImageView symbolRH = null;
     TextView textView_uvHazardIndex = null;
+    TextView textView_uvHazardIndexType = null;
     if (view == null) {
         // view is not available from cache
         newView = true;
@@ -355,6 +357,7 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         biocular = viewHolder.biocular;
         symbolRH = viewHolder.symbolRH;
         textView_uvHazardIndex = viewHolder.uvHazardIndex;
+        textView_uvHazardIndexType = viewHolder.uvHazardIndexType;
     }
     // init forecastIcons on 1st call after we inflated the imageview size
     if (forecastIcons==null){
@@ -822,6 +825,10 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         textView_uvHazardIndex = (TextView) view.findViewById(R.id.fcitem_uvHazardIndex);
         viewHolder.uvHazardIndex = textView_uvHazardIndex;
     }
+    if (textView_uvHazardIndexType==null){
+        textView_uvHazardIndexType = (TextView) view.findViewById(R.id.fcitem_uvHazardIndexType);
+        viewHolder.uvHazardIndexType = textView_uvHazardIndexType;
+    }
     if (textView_uvHazardIndex!=null) {
         /*
         int uvHazardPosition = getHourlyPosition(i);
@@ -834,17 +841,18 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         if (WeatherSettings.UVHImainDisplay(context) && weatherInfo.hasUvHazardIndex()){
             if (weatherInfo.isDaytime(weatherLocation)) {
                 textView_uvHazardIndex.setVisibility(View.VISIBLE);
-                /*
-                textView_uvHazardIndex.setBackground(ForecastBitmap.getColoredBox(context,UVHazardIndex.UVIndexColors[weatherForecasts_hourly.get(uvHazardPosition).getUvHazardIndex()]));
-                textView_uvHazardIndex.setText(String.valueOf(weatherForecasts_hourly.get(uvHazardPosition).getUvHazardIndex()));
-                 */
+                if (WeatherSettings.getPrefUVHIClearSky(context)){
+                    textView_uvHazardIndexType.setVisibility(View.VISIBLE);
+                }
                 textView_uvHazardIndex.setBackground(ForecastBitmap.getColoredBox(context,UVHazardIndex.UVIndexColors[weatherInfo.getUvHazardIndex()]));
                 textView_uvHazardIndex.setText(String.valueOf(weatherInfo.getUvHazardIndex()));
             } else {
                 textView_uvHazardIndex.setVisibility(View.GONE);
+                textView_uvHazardIndexType.setVisibility(View.GONE);
             }
         } else {
             textView_uvHazardIndex.setVisibility(View.GONE);
+            textView_uvHazardIndexType.setVisibility(View.GONE);
         }
     }
     // hourly forecast bar, display only if forecast is 6h

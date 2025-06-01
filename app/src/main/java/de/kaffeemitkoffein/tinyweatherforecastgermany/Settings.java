@@ -228,7 +228,7 @@ public class Settings extends PreferenceActivity implements SharedPreferences.On
                 WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
             }
             if (s.equals(WeatherSettings.PREF_UVHI_CLEAR_SKY)){
-                WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS);
+                WeatherSettings.setWeatherUpdatedFlag(context,WeatherSettings.UpdateType.VIEWS | WeatherSettings.UpdateType.DATA_CLEARED);
                 Weather.removeForecastsFromDatabase(context);
             }
             if (s.equals(WeatherSettings.PREF_WIDGET_CLOCKSIZE)){
