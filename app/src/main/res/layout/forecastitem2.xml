@@ -191,6 +191,7 @@
                       android:layout_toRightOf="@id/fcitem_uvHazardIndex"
                       android:layout_alignWithParentIfMissing="true"
                       android:layout_alignParentBottom="true"
+                      android:layout_marginLeft="1dp"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"/>
 
