@@ -519,6 +519,16 @@
     <string name="preference_display_wind_distance_time_title">Am</string>
     <string name="preference_display_wind_distance_time_summary">Am le taispeáint in uaireanta.</string>
     <string name="preference_mapSaveState_title">Sábháil súmáil</string>
-    <string name="preference_uvi_notice_summary">Breathnaítear ar an gclúdach scamall i measc fachtóirí eile sa réamhaisnéis innéacs guaise uv atá ar taispeáint i bpríomh-amharc na haipe. Le haghaidh tuilleadh sonraí faoin ríomh agus faoin scála féach https://kunden.dwd.de/uvi/ .</string>
+    <string name="preference_uvi_notice_summary">Tá tuilleadh sonraí faoi ríomh innéacs guaise UV ar fáil ar leathanach baile an DWD. Má athraítear an rogha spéir shoiléir, is gá sonraí réamhaisnéise an DWD a nuashonrú.</string>
     <string name="preference_mapSaveState_summary">Sábháil an suíomh léarscáile deireanach agus an formhéadú agus cuir ar ais iad an chéad uair eile a ghlaonn tú ar an léarscáil.</string>
+    <string name="preference_screen_overviewchart_zbase_summary">Tosaíonn an graf teochta le náid mura bhfuil an teocht níos ísle.</string>
+    <string name="preference_overviewchart_inappsize_title">Méid</string>
+    <string name="no_data">Is cosúil nach bhfuil aon réamhaisnéis aimsire ar fáil don suíomh seo faoi láthair. Is féidir leat iarracht a dhéanamh na sonraí a athnuachan nó suíomh difriúil a roghnú.</string>
+    <string name="preference_screen_overviewchart_zbase_title">Bunlíne nialasach</string>
+    <string name="preference_overviewchart_inappsize_summary">Méid an chairt forbhreathnaithe i mód portráide.</string>
+    <string name="preference_widget_clock_title">Méid an chloig</string>
+    <string name="preference_widget_clock_summary">Coigeartaigh méid an chloig sa ghiuirléid aimsire agus ama.</string>
+    <string name="switch_to_next_station">Athraigh go dtí an stáisiún is gaire</string>
+    <string name="preference_screen_uvhi_mainType_title">Spéir shoiléir</string>
+    <string name="preference_screen_uvhi_mainType_summary">Ná cuir fachtóirí modhnúcháin scamall i bhfeidhm ar réamhaisnéis innéacs guaise UV a thaispeántar i bpríomhradharc an aip.</string>
 </resources>
