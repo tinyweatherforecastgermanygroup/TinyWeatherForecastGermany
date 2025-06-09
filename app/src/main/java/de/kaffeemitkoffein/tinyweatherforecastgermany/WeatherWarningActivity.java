@@ -256,7 +256,6 @@ public class WeatherWarningActivity extends Activity {
             } else {
                 PrivateLog.log(context,PrivateLog.WARNINGS,PrivateLog.ERR,"Weather warnings need to be updated, but no suitable network connection found.");
             }
-
         } else {
             // displayWarnings() must be in scheduledExecutorService queue to make sure it is executed before
             // radarMNSetGeoserverRunnable (see below)
@@ -269,8 +268,12 @@ public class WeatherWarningActivity extends Activity {
                 }
             });
         }
+        // at this point, do not cancel slides (anymore)
+        cancelRainSlides = false;
         scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
         // start rain radar (again) if applicable
+        // not needed, will always be invoked by radarMNSetGeoserverRunnable
+        /*
         if (!hide_rain){
             scheduledExecutorService.execute(new Runnable() {
                 @Override
@@ -279,6 +282,7 @@ public class WeatherWarningActivity extends Activity {
                 }
             });
         }
+         */
     }
 
     @Override
@@ -756,7 +760,7 @@ public class WeatherWarningActivity extends Activity {
                 drawMapBitmap();
             }
         } else {
-            // nothing to do
+            // do nothing
         }
         lastDrawnRainSlide=count;
     }

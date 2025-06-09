@@ -1196,12 +1196,12 @@ public class APIReaders {
         public void run() {
             onStart();
             forceUpdate = false;
-            boolean success = true;
             /* either update or return immediately to reuse present data
              * conditions for update:
              * corrupted / incomplete dataset, OR forced update (currently not used in production) AND there is internet access.
              */
             if ((!fullRadarDataSet(context) || (WeatherSettings.isRadarDataOutdated(context)) || (forceUpdate)) && (Weather.suitableNetworkAvailable(context))){
+                // onFinished is called form multiFetch
                 multiFetchRadarSet();
             } else {
                 // when re-using data, the startTime needs to be loaded from settings

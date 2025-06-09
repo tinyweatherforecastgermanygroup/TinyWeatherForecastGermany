@@ -843,6 +843,8 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 textView_uvHazardIndex.setVisibility(View.VISIBLE);
                 if (WeatherSettings.getPrefUVHIClearSky(context)){
                     textView_uvHazardIndexType.setVisibility(View.VISIBLE);
+                } else {
+                    textView_uvHazardIndexType.setVisibility(View.INVISIBLE);
                 }
                 textView_uvHazardIndex.setBackground(ForecastBitmap.getColoredBox(context,UVHazardIndex.UVIndexColors[weatherInfo.getUvHazardIndex()]));
                 textView_uvHazardIndex.setText(String.valueOf(weatherInfo.getUvHazardIndex()));
