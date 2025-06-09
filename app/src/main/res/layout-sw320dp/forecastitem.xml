@@ -158,7 +158,7 @@
         <TextView
                 android:id="@+id/fcitem_uvHazardIndexType"
                 android:layout_width="@dimen/fcmain_mediumdevice_textsize_small"
-                android:layout_height="@dimen/fcmain_mediumdevice_textsize_small"
+                android:layout_height="wrap_content"
                 android:visibility="visible"
                 android:layout_alignTop="@id/fcitem_uvHazardIndex"
                 android:layout_alignRight="@id/fcitem_uvHazardIndex"
@@ -166,7 +166,10 @@
                 android:textStyle="bold"
                 android:layout_marginTop="1dp"
                 android:layout_marginLeft="1dp"
-                android:text="C"
+                android:text="●"
+                android:shadowRadius="1"
+                android:shadowDx="1"
+                android:shadowDy="1"
                 android:textSize="@dimen/fcmain_mediumdevice_textsize_small"
                 android:shadowColor="?attr/colorTextLight"
                 android:textColor="?attr/colorText"/>

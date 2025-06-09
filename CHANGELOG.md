@@ -4,6 +4,7 @@
 - fixed a crash when manually refreshing data caused by warnings with no expiration date
 - the button to change to the nearest station is not displayed when data is not present but being re-loaded
 - when the uv hazard index is set to "clear sky", the uv hazard index icon in the main view now indicates this by displaying a tiny "C" in the upper-right corner of the icon
+- fixed rain radar film not starting properly when app is resumed and the rain radar data is still valid
 
 ## Version 0.62.9
 - added an option to allow the overview chart to start above 0°

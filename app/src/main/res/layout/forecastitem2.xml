@@ -150,7 +150,7 @@
                        android:layout_height="@dimen/fcmain_narrowdevice_fciconsize"
                        android:layout_toLeftOf="@id/fcitem2_temperatureholder"
                        android:layout_marginRight="15dp"
-                       android:layout_alignParentTop="true"
+                       android:layout_centerVertical="true"
             />
 
             <TextView
@@ -172,15 +172,18 @@
             <TextView
                     android:id="@+id/fcitem_uvHazardIndexType"
                     android:layout_width="@dimen/fcmain_narrowdevice_textsize_small"
-                    android:layout_height="@dimen/fcmain_narrowdevice_textsize_small"
+                    android:layout_height="wrap_content"
                     android:visibility="visible"
                     android:layout_alignTop="@id/fcitem_uvHazardIndex"
                     android:layout_alignRight="@id/fcitem_uvHazardIndex"
                     android:gravity="top|right"
                     android:textStyle="bold"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginLeft="1dp"
-                    android:text="C"
+                    android:text="●"
+                    android:shadowRadius="1"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
                     android:textSize="@dimen/fcmain_narrowdevice_textsize_small"
                     android:shadowColor="?attr/colorTextLight"
                     android:textColor="?attr/colorText"/>
