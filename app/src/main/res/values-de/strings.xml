@@ -546,4 +546,6 @@
     <string name="switch_to_next_station">Zur nächstgelegenen Station wechseln</string>
     <string name="preference_widget_clock_summary">Die Größe der Uhr im Wetter- und Zeit-Widget einstellen.</string>
     <string name="preference_widget_clock_title">Größe der Uhr</string>
+    <string name="preference_overviewchart_inappsize_title">Größe</string>
+    <string name="preference_overviewchart_inappsize_summary">Größe der Übersichtstabelle im Portrait-Modus.</string>
 </resources>
