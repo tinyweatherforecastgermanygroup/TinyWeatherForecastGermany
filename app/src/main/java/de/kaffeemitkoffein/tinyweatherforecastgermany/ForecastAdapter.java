@@ -1335,7 +1335,7 @@ private ArrayList<WeatherWarning> getApplicableWarnings(Weather.WeatherInfo weat
         long itemStartTime = neededHoursAgo(weatherInfo);
         long itemStopTime = weatherInfo.getTimestamp();
         for (int i=0; i<warnings.size(); i++){
-            if ((warnings.get(i).onset<=itemStopTime) && (warnings.get(i).getApplicableExpires()>=itemStartTime)){
+            if ((warnings.get(i).onset<itemStopTime) && (warnings.get(i).getApplicableExpires()>itemStartTime)){
                 applicableWarnings.add(warnings.get(i));
             }
         }
