@@ -503,7 +503,6 @@ public View getView(int i, View view, ViewGroup viewGroup) {
             setVisibility(precipitation_unit_lower, View.GONE);
         }
     }
-    //precipitation_string = precipitation_string +">"+weatherInfo.getUvHazardIndex()+"<";
     if (precipitation_string.equals("")){
         setVisibility(precipitation_symbol,View.GONE);
         setVisibility(precipitation_textview,View.GONE);

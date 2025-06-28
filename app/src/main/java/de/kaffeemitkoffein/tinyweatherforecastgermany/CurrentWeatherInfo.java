@@ -330,7 +330,7 @@ public class CurrentWeatherInfo{
             wi.setPrecipitation(getDoubleItem(rawWeatherInfo.RR6c[index]));
             if (!wi.hasPrecipitation()) {
                 // try to self-calculate this
-                wi.setPrecipitation(rawWeatherInfo.getMaxDoubleValue(rawWeatherInfo.RR1c, start, index));
+                wi.setPrecipitation(rawWeatherInfo.getSumDouble(rawWeatherInfo.RR1c, start, index));
             }
             wi.setProbPrecipitation(getIntItem(rawWeatherInfo.wwP6[index]));
             if (!wi.hasProbPrecipitation()) {
@@ -432,7 +432,7 @@ public class CurrentWeatherInfo{
             wi.setPrecipitation(getDoubleItem(rawWeatherInfo.RRdc[index]));
             if (!wi.hasPrecipitation()){
                 // try to self-calculate this
-                wi.setPrecipitation(rawWeatherInfo.getMaxDoubleValue(rawWeatherInfo.RR1c, start,index));
+                wi.setPrecipitation(rawWeatherInfo.getSumDouble(rawWeatherInfo.RR1c, start,index));
             }
             wi.setProbPrecipitation(getIntItem(rawWeatherInfo.wwPd[index]));
             if (!wi.hasProbPrecipitation()){
