@@ -18,9 +18,9 @@
 -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="285dp"
-    android:minResizeWidth="265dp"
-    android:minHeight="120dp"
+    android:minWidth="183dp"
+    android:minResizeWidth="155dp"
+    android:minHeight="115dp"
     android:minResizeHeight="110dp"
     android:targetCellWidth="4"
     android:targetCellHeight="2"
@@ -36,7 +36,7 @@
 </appwidget-provider>
 
         <!--
-         Removed max-size values:
-    android:maxResizeWidth="520dp"
-    android:maxResizeHeight="263dp"
+            Intended grid size:
+                minimum: 3x2    => approx. 155 dp x 110 dp (with some safety margins)
+                proposed: 4x2
          -->
