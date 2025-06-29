@@ -10,6 +10,7 @@
 - fixed precipitation amount unit displayed when no data present
 - lower minResizeWidth & minResizeHeight values for the "Weather & Time" widget
 - updated list of weather stations (stations6.txt)
+- fixed area database generated twice on 1st app launch
 
 ## Version 0.62.9
 - added an option to allow the overview chart to start above 0°

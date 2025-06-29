@@ -42,7 +42,6 @@ import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
