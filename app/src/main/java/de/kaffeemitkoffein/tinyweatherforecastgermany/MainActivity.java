@@ -42,6 +42,7 @@ import android.text.*;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
@@ -449,10 +450,6 @@ public class MainActivity extends Activity {
         }
         if (WeatherSettings.isFirstAppLaunch(context)){
             super.onCreate(savedInstanceState);
-            // init Preference
-            // WeatherSettings weatherSettings = new WeatherSettings(context);
-            // PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.WARN,"Saving preferences...");
-            // weatherSettings.savePreferences();
             startWelcomeActivity(WelcomeActivity.LAUNCHMODE_FIRSTAPPLAUNCH);
         } else {
             launchTimer = Calendar.getInstance().getTimeInMillis();
@@ -467,8 +464,13 @@ public class MainActivity extends Activity {
             // init area database if needed
             try {
                 if (prepareAreaDatabase(context)){
-                    Intent serviceStartIntent = new Intent(context,CreateAreasDatabaseService.class);
-                    startService(serviceStartIntent);
+                    // prepare database only if activity is launched natively and not as a return action
+                    if (savedInstanceState==null){
+                        Intent serviceStartIntent = new Intent(context,CreateAreasDatabaseService.class);
+                        startService(serviceStartIntent);
+                    } else {
+                        // do nothing
+                    }
                 }
             } catch (Exception e){
                 // ignore
@@ -2085,12 +2087,14 @@ public class MainActivity extends Activity {
         }
         if (permissionsToRequest.size()==0){
             popupHint();
+            /*
             if (MainActivity.prepareAreaDatabase(getApplicationContext())){
                 Intent serviceStartIntent = new Intent(this,CreateAreasDatabaseService.class);
                 startService(serviceStartIntent);
             } else {
                 // nothing to do
             }
+             */
         }
     }
 
@@ -2138,12 +2142,14 @@ public class MainActivity extends Activity {
             // re-do notify current warnings
 
         }
+        /*
         if (MainActivity.prepareAreaDatabase(getApplicationContext())){
             Intent serviceStartIntent = new Intent(this,CreateAreasDatabaseService.class);
             startService(serviceStartIntent);
         } else {
             // nothing to do
         }
+         */
     }
 
     @Override
