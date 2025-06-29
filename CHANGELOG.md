@@ -7,6 +7,9 @@
 - fixed rain radar film not starting properly when app is resumed and the rain radar data is still valid
 - exclude exact matches of onset/expiry of weather warnings with start/stop of the time period from being displayed in the ForecastAdapter
 - calculate sum of the precipitation amount instead of determining the maximum when interval values are calculated form hourly values
+- fixed precipitation amount unit displayed when no data present
+- lower minResizeWidth & minResizeHeight values for the "Weather & Time" widget
+- updated list of weather stations (stations6.txt)
 
 ## Version 0.62.9
 - added an option to allow the overview chart to start above 0°

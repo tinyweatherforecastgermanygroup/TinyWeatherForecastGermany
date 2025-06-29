@@ -4,7 +4,7 @@ Weather forecast with widgets for up to 10 days, based on open data from the Deu
 
 ## Features
 
-- weather forecast for up to 10 days for over 5000 locations worldwide
+- weather forecast for up to 10 days for over 6000 locations worldwide
 - 100% based on open data (no api keys needed)
 - no ads, no tracking, no 3rd party libraries/dependencies
 - supports weather on wearables using GadgetBridge
@@ -44,7 +44,7 @@ Or from the developer's own F-Droid repository: <https://kaffeemitkoffein.de/fdr
 6. Optional: enter the fingerprint of this repo (see above)
 7. Select "Add"
 
-You get userdebug builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/4SXHaLxLSmFd8Ri>
+You get user debug builds for testing here: <https://kaffeemitkoffein.de/nextcloud/index.php/s/4SXHaLxLSmFd8Ri>
 
 Please note that the builds linked here are not signed by the F-Droid key, so you basically need to uninstall the F-Droid versions before installing them and vice versa.
 

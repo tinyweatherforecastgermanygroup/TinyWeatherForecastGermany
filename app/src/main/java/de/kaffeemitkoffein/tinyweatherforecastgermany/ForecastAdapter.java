@@ -26,7 +26,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -497,11 +496,14 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         if (precipitationAmount>0){
             setVisibility(precipitation_unit_upper,View.VISIBLE);
             setVisibility(precipitation_unit_lower, View.VISIBLE);
-            precipitation_string = precipitation_string +weatherInfo.getPrecipitation();
+            precipitation_string = precipitation_string +precipitationAmount;
         } else {
             setVisibility(precipitation_unit_upper,View.GONE);
             setVisibility(precipitation_unit_lower, View.GONE);
         }
+    } else {
+        setVisibility(precipitation_unit_upper,View.GONE);
+        setVisibility(precipitation_unit_lower, View.GONE);
     }
     if (precipitation_string.equals("")){
         setVisibility(precipitation_symbol,View.GONE);
@@ -843,12 +845,8 @@ public View getView(int i, View view, ViewGroup viewGroup) {
                 textView_uvHazardIndex.setVisibility(View.VISIBLE);
                 if (WeatherSettings.getPrefUVHIClearSky(context)){
                     textView_uvHazardIndexType.setVisibility(View.VISIBLE);
-                    // textView_uvHazardIndexType.setText("●");
                     // candidate symbols: ● ☉ ☼
                     ViewGroup.LayoutParams textViewLayoutParams = (ViewGroup.LayoutParams) textView_uvHazardIndex.getLayoutParams();
-                    // textViewLayoutParams.width = 21 + textView_uvHazardIndexType.getLayoutParams().width;
-                    Log.v("twfg","WIDTH: "+textViewLayoutParams.width+" | "+textView_uvHazardIndexType.getLayoutParams().width);
-                    //textViewLayoutParams.width = Math.round((21 + textView_uvHazardIndexType.getLayoutParams().width) * displayMetrics.xdpi/160f);
                     textViewLayoutParams.width = Math.round((21*displayMetrics.density + textView_uvHazardIndexType.getLayoutParams().width));
                     textView_uvHazardIndex.setLayoutParams(textViewLayoutParams);
                 } else {

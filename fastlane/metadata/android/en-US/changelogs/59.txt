@@ -1,5 +1,3 @@
-New in version [VERSION]:
-
 - fixed a crash caused by warnings with no expiration date
 - fixed rain radar film sometimes not starting properly
 - the precipitation amount in intervals is now displayed as the sum of hourly values
@@ -8,4 +6,5 @@ New in version [VERSION]:
 - updated list of weather stations
 - improved translations
 
-For a detailed list of changes, see https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md
+
+

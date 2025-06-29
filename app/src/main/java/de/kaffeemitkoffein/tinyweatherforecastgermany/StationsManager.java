@@ -51,7 +51,7 @@ public class StationsManager {
     }
 
     private static String getStationsStringFromResource(Context context){
-        InputStream inputStream = context.getResources().openRawResource(R.raw.stations5);
+        InputStream inputStream = context.getResources().openRawResource(R.raw.stations6);
         try {
             int size = inputStream.available();
             byte[] textdata = new byte[size];
@@ -96,6 +96,7 @@ public class StationsManager {
             count++;
         }
         Collections.sort(stations, new Weather.WeatherLocation());
+        PrivateLog.log(context,PrivateLog.STATIONS,PrivateLog.INFO,"Known weather stations: "+stations.size());
         return stations;
     }
 
