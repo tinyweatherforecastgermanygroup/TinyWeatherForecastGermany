@@ -496,7 +496,8 @@ public View getView(int i, View view, ViewGroup viewGroup) {
         if (precipitationAmount>0){
             setVisibility(precipitation_unit_upper,View.VISIBLE);
             setVisibility(precipitation_unit_lower, View.VISIBLE);
-            precipitation_string = precipitation_string +precipitationAmount;
+            DecimalFormat decimalFormat = new DecimalFormat(".#");
+            precipitation_string = precipitation_string + decimalFormat.format(precipitationAmount);
         } else {
             setVisibility(precipitation_unit_upper,View.GONE);
             setVisibility(precipitation_unit_lower, View.GONE);
