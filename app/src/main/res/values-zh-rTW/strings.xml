@@ -117,4 +117,10 @@
     <string name="preference_screen_uvhi_mainType_title">晴朗的天空</string>
     <string name="preference_screen_uvhi_mainType_summary">請勿在主應用程式檢視中顯示的紫外線危害指數預報中套用雲量修正係數。</string>
     <string name="preference_screen_overviewchart_usemm_title">固定刻度</string>
+    <string name="welcome_s2_text7">細雨</string>
+    <string name="main_wait_for_gps_fix">地點正在確定…</string>
+    <string name="dwd_notice">數據基礎：德國氣象局，加入了自己的元素，一些數據是單一值的平均值。</string>
+    <string name="dwd_notice_app">資料來源：德國氣象局，自有元素加，部分資料為個別數值的平均值。警告訊息已簡化。</string>
+    <string name="dayaftertomorrow">後天</string>
+    <string name="station">車站</string>
 </resources>
