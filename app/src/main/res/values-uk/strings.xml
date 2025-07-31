@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome_s1_text2">підтримує &gt; 5000 місць</string>
+    <string name="welcome_s1_text2">підтримує &gt; 6000 місць</string>
     <string name="dwd_notice_app">Основні дані: Deutscher Wetterdienst, додано власні елементи, деякі дані усереднені за окремими значеннями. Попередження скорочено.</string>
     <string name="license_button">Ліцензія</string>
     <string name="update_button">Оновити</string>
