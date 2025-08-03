@@ -18,11 +18,11 @@
 -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="183dp"
-    android:minResizeWidth="155dp"
-    android:minHeight="115dp"
-    android:minResizeHeight="110dp"
-    android:targetCellWidth="4"
+    android:minWidth="145dp"
+    android:minResizeWidth="145dp"
+    android:minHeight="100dp"
+    android:minResizeHeight="100dp"
+    android:targetCellWidth="3"
     android:targetCellHeight="2"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
