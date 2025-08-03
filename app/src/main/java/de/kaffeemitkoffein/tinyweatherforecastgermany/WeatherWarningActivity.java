@@ -65,6 +65,7 @@ public class WeatherWarningActivity extends Activity {
     Bitmap warningsBitmap;
     Bitmap radarBitmap;
     Bitmap administrativeBitmap;
+    Bitmap advancedWindStencilBitmap;
     Bitmap visibleBitmap;
     ZoomableImageView mapZoomable;
     RelativeLayout map_collapsed_container;
@@ -80,12 +81,20 @@ public class WeatherWarningActivity extends Activity {
     boolean hide_admin = true;
     WeatherLocationManager weatherLocationManager;
     RelativeLayout gpsProgressHolder;
+    RelativeLayout rainsliderSeekbarContainer;
+    SeekBar rainsliderSeekbar;
 
     Bundle zoomMapState = null;
 
     RadarMN2.MercatorProjectionTile mercatorProjectionTile;
+    PlotPoint pinPoint;
+    int[] precipitationAtPinPointArray = new int[24];
+    ImageView precipitationAtPinPointColors;
+    Bitmap precipitationAtPinPointBitmap;
 
     boolean forceWeatherUpdateFlag = false;
+
+    boolean mapIsDrawn = false;
 
     static float MAP_PIXEL_WIDTH;
     static float MAP_PIXEL_HEIGHT;
@@ -153,18 +162,30 @@ public class WeatherWarningActivity extends Activity {
             android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
             nextRainSlide=0;
             rainSlidesRunning = true;
+            // check if rain slider is visible and make it visible if necessary
+            if (rainsliderSeekbarContainer!=null){
+                if (rainsliderSeekbarContainer.getVisibility()!=View.VISIBLE){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            rainsliderSeekbarContainer.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+            }
             while (!cancelRainSlides){
                 long startTime = Calendar.getInstance().getTimeInMillis();
-                rainDrawLock = true;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        nextRainSlide++;
-                        drawRadarSlide(nextRainSlide);
-                        rainDrawLock = false;
-                    }
-                });
-                if (nextRainSlide>APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE){
+                if (nextRainSlide<APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE) {
+                    rainDrawLock = true;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            drawRadarSlide(nextRainSlide);
+                            nextRainSlide++;
+                            rainDrawLock = false;
+                        }
+                    });
+                } else {
                     nextRainSlide=0;
                 }
                 long stopTime = Calendar.getInstance().getTimeInMillis();
@@ -185,6 +206,15 @@ public class WeatherWarningActivity extends Activity {
                     }
                 }
             }
+            // make rain slider isvisible after slides stopped
+            if (rainsliderSeekbarContainer!=null){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        rainsliderSeekbarContainer.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
             rainSlidesRunning = false;
             cancelRainSlides = false;
         }
@@ -197,6 +227,16 @@ public class WeatherWarningActivity extends Activity {
                 germany.post(new Runnable() {
                     @Override
                     public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // make slider visible before rain radar starts
+                                if (rainsliderSeekbarContainer!=null){
+                                    updateRainSeekBar(0);
+                                    rainsliderSeekbarContainer.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
                         new Thread(rainRadarRunnable).start();
                     }
                 });
@@ -239,6 +279,8 @@ public class WeatherWarningActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        // invalidate some map views so that they will be updated
+        mapIsDrawn = false;
         // stop rain radar while processing warnings to avoid performance issues on older devices
         cancelRainSlides=true;
         registerForBroadcast();
@@ -270,19 +312,8 @@ public class WeatherWarningActivity extends Activity {
         }
         // at this point, do not cancel slides (anymore)
         cancelRainSlides = false;
+        // reader is started unconditionally, because it will check in APIReaders if slides are outdated and/or incomplete
         scheduledExecutorService.execute(radarMNSetGeoserverRunnable);
-        // start rain radar (again) if applicable
-        // not needed, will always be invoked by radarMNSetGeoserverRunnable
-        /*
-        if (!hide_rain){
-            scheduledExecutorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    startRainRadar();
-                }
-            });
-        }
-         */
     }
 
     @Override
@@ -325,6 +356,10 @@ public class WeatherWarningActivity extends Activity {
         context = getApplicationContext();
         mercatorProjectionTile = RadarMN2.getRadarMapMercatorProjectionTile(context);
         mercatorProjectionTile.setScaleFactor(RadarMN2.getScaleFactor(context));
+        // set to station, perhaps override with current location later
+        ownLocation = WeatherSettings.getSetStationLocation(getApplicationContext());
+        // calculate coordinates of user location on map
+        pinPoint = getPlotPoint((float) ownLocation.longitude, (float) ownLocation.latitude);
         rainSlidesStartTime = WeatherSettings.getPrefRadarLastdatapoll(context);
         WeatherSettings.setRotationMode(this);
         setContentView(R.layout.activity_weatherwarning);
@@ -352,6 +387,8 @@ public class WeatherWarningActivity extends Activity {
         mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);
         map_collapsed_container = (RelativeLayout) findViewById(R.id.warningactivity_map_collapsed_container);
         warningactivity_map_collapsed = (ImageView) findViewById(R.id.warningactivity_map_collapsed);
+        rainsliderSeekbarContainer = (RelativeLayout) findViewById(R.id.warningactivity_rainsliderSeekbarContainer);
+        precipitationAtPinPointColors = (ImageView) findViewById(R.id.warningactivity_rainsliderColors);
         warningactivityMapinfoContainer = (LinearLayout) findViewById(R.id.warningactivity_mapinfo_container);
         if (warningactivity_map_collapsed!=null){
             warningactivity_map_collapsed.setImageResource(WeatherIcons.getIconResource(context,WeatherIcons.MAP_COLLAPSED));
@@ -375,14 +412,16 @@ public class WeatherWarningActivity extends Activity {
         rainSlideProgressBar = (ProgressBar) findViewById(R.id.warningactivity_rainslideprogressbar);
         rainSlideProgressBarText = (TextView) findViewById(R.id.warningactivity_rainslideprogressbartext);
         rainSlideTime = (TextView) findViewById(R.id.warningactivity_rainslidetime);
+        /*
         rainSlideTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 nextRainSlide=0;
             }
         });
+         */
         rainDescription = (ImageView) findViewById(R.id.warningactivity_mapinfo);
-        rainDescription.setOnTouchListener(forwardRainSlidesOnTouchListener);
+        // rainDescription.setOnTouchListener(forwardRainSlidesOnTouchListener);
         gpsProgressHolder = (RelativeLayout) findViewById(R.id.gps_progress_holder);
         displayOsmNotice();
         radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(getApplicationContext()){
@@ -411,6 +450,23 @@ public class WeatherWarningActivity extends Activity {
                 super.onFinished(startTime,success);
                 if (success){
                     validSlideSetObtained = true;
+                    if (precipitationAtPinPointColors!=null){
+                        precipitationAtPinPointArray = getPrecipitationArrayAtPinPoint();
+                        //precipitationAtPinPointBitmap = ForecastBitmap.CreatePrecipitationAtPinPointBitmap(context,precipitationAtPinPointArray,precipitationLabelFontSize);
+                        // make sure drawing only happens after view hierarchy was created
+                        germany.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                precipitationAtPinPointBitmap = ForecastBitmap.CreatePrecipitationAtPinPointBitmap(context,precipitationAtPinPointArray,rainsliderSeekbarContainer);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        precipitationAtPinPointColors.setImageBitmap(precipitationAtPinPointBitmap);
+                                    }
+                                });
+                            }
+                        });
+                    }
                     germany.post(new Runnable() {
                         @Override
                         public void run() {
@@ -478,8 +534,6 @@ public class WeatherWarningActivity extends Activity {
             }
         };
         WeatherSettings.saveGPSfixtime(context,0);
-        // set to station, perhaps override with current location later
-        ownLocation = WeatherSettings.getSetStationLocation(getApplicationContext());
         getApplication().registerActivityLifecycleCallbacks(weatherLocationManager);
         weatherLocationManager.setView(gpsProgressHolder);
         weatherLocationManager.registerCancelButton((Button) findViewById(R.id.cancel_gps));
@@ -511,6 +565,8 @@ public class WeatherWarningActivity extends Activity {
             return true;
         }
         if (item_id==R.id.hide_rain) {
+            // invalidate some map views so that they will be drawn again once
+            mapIsDrawn = false;
             if ((hide_rain) && (hide_admin)){
                 hide_rain = false;
             } else
@@ -696,7 +752,7 @@ public class WeatherWarningActivity extends Activity {
         float ff=1.1f;
         if (validSlideSetObtained) {
             rainSlideTime.setTextColor(Color.WHITE);
-            if (Calendar.getInstance().getTimeInMillis() > rainSlidesStartTime + +1000*60*60*1.5f){
+            if (Calendar.getInstance().getTimeInMillis() > rainSlidesStartTime + 1000*60*60*1.5f){
                 rainSlideTime.setTextColor(0xfffa7712);
             }
         } else {
@@ -746,6 +802,63 @@ public class WeatherWarningActivity extends Activity {
         });
     }
 
+    private final static float SEEKBAR_PADDING = (100f/APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE)/2;
+
+    private int getSeekBarPosition(int count){
+        return Math.round((((float) count)/APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE)*(100));
+        // return Math.round((((float) count+1)/APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE)*100);
+    }
+
+    private void updateRainSeekBar(final int count){
+        if (rainsliderSeekbar==null) {
+            rainsliderSeekbar = (SeekBar) findViewById(R.id.warningactivity_rainsliderSeekbar);
+            if (rainsliderSeekbar!=null){
+                rainsliderSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int i, boolean fromUser) {
+                        if (fromUser){
+                            nextRainSlide = Math.round((APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE/100f)*i);
+                        }
+                    }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                    }
+                });
+            }
+        }
+        if (rainsliderSeekbar!=null){
+            int position = getSeekBarPosition(count);
+            rainsliderSeekbar.setProgress(Math.round(position+SEEKBAR_PADDING));
+        }
+    }
+
+    private int getPrecipitationAtPinPoint(final int count, final Bitmap slideBitmap){
+        return slideBitmap.getPixel(Math.round(pinPoint.x),Math.round(pinPoint.y));
+    }
+
+    private int getPrecipitationAtPinPoint(final int count) {
+        try {
+            Bitmap slideBitmap = RadarMN2.getScaledBitmap(context, count);
+            if (slideBitmap != null) {
+                return getPrecipitationAtPinPoint(count, slideBitmap);
+            }
+        } catch (Exception e){
+            // usually this occurs when there are less than 24 slides, no need to worry, just ignore and return zero
+        }
+        return 0;
+    }
+
+    private int[] getPrecipitationArrayAtPinPoint(){
+        int[] resultarray = new int[24];
+        for (int i=0; i<APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE; i++){
+            resultarray[i] = getPrecipitationAtPinPoint(i);
+        }
+        return resultarray;
+    }
+
     private void drawRadarSlide(final int count){
         if (APIReaders.RadarMNSetGeoserverRunnable.radarCacheFileValid(context,count)) {
             radarBitmap.eraseColor(Color.TRANSPARENT);
@@ -758,6 +871,7 @@ public class WeatherWarningActivity extends Activity {
             }
             if (!hide_rain) {
                 drawMapBitmap();
+                updateRainSeekBar(count);
             }
         } else {
             // do nothing
@@ -781,25 +895,37 @@ public class WeatherWarningActivity extends Activity {
         if ((!hide_rain) && (radarBitmap!=null)){
             cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
             canvas.drawBitmap(radarBitmap, 0,0,cp);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showRainDescription();
-                }
-            });
+            if (!mapIsDrawn){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showRainDescription();
+                    }
+                });
+            }
         } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    clearRainDescription();
-                }
-            });
+            if (!mapIsDrawn){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        clearRainDescription();
+                    }
+                });
+            }
         }
         if (WeatherSettings.displayWindDistance(context)){
+            if (advancedWindStencilBitmap==null){
+                advancedWindStencilBitmap = getAdvancedWindStencilBitmap(context,germanyBitmap.getWidth(),germanyBitmap.getHeight());
+            }
+            cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+            canvas.drawBitmap(advancedWindStencilBitmap,0,0,cp);
             drawAdvancedWindStencil(canvas);
         }
         mapZoomable.updateBitmap(visibleBitmap);
         visibleBitmap.recycle();
+        // set this to true to avoid unnecessary updates of views when the rain radar runs; this might be invalidated
+        // by manually changing the layers visible.
+        mapIsDrawn = true;
     }
 
     private void drawWindIcon(){
@@ -895,7 +1021,16 @@ public class WeatherWarningActivity extends Activity {
         }
     }
 
+    public Bitmap getAdvancedWindStencilBitmap(Context context, int targetWidth, int targetHeight) {
+        Bitmap resultBitmap = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.ARGB_8888);
+        resultBitmap.eraseColor(Color.TRANSPARENT);
+        Canvas canvas = new Canvas(resultBitmap);
+        drawAdvancedWindStencil(canvas);
+        return resultBitmap;
+    }
+
     private boolean hideMap(){
+        cancelRainSlides = true;
         germany.setVisibility(View.GONE);
         germany.invalidate();
         LinearLayout.LayoutParams rllp = (LinearLayout.LayoutParams) mapcontainer.getLayoutParams();
@@ -913,8 +1048,8 @@ public class WeatherWarningActivity extends Activity {
         lop.weight=29;
         weatherList.setLayoutParams(lop);
         weatherList.invalidate();
-        LinearLayout.LayoutParams infoContLop = (LinearLayout.LayoutParams) warningactivityMapinfoContainer.getLayoutParams();
-        infoContLop.weight=0;
+        //LinearLayout.LayoutParams infoContLop = (LinearLayout.LayoutParams) warningactivityMapinfoContainer.getLayoutParams();
+        // infoContLop.weight=0;
         return true;
     }
 
@@ -937,8 +1072,11 @@ public class WeatherWarningActivity extends Activity {
         lop.weight=11;
         weatherList.setLayoutParams(lop);
         weatherList.invalidate();
-        LinearLayout.LayoutParams infoContLop = (LinearLayout.LayoutParams) warningactivityMapinfoContainer.getLayoutParams();
-        infoContLop.weight=1;
+        if (!hide_rain){
+            startRainRadar();
+        }
+        // LinearLayout.LayoutParams infoContLop = (LinearLayout.LayoutParams) warningactivityMapinfoContainer.getLayoutParams();
+        // infoContLop.weight=1;
         return true;
     }
     
@@ -1003,7 +1141,6 @@ public class WeatherWarningActivity extends Activity {
         float pinSize = WeatherSettings.getMapPinSize(context)/2f;
         int pinSizePixels = Math.round(18*this.getApplicationContext().getResources().getDisplayMetrics().density*pinSize);
         Bitmap pinBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.pin),pinSizePixels,pinSizePixels,false);
-        PlotPoint pinPoint = getPlotPoint((float) ownLocation.longitude, (float) ownLocation.latitude);
         float pinX = pinPoint.x; float pinY = pinPoint.y;
         // drawAdvancedWindStencil(canvas,145,300);
         drawWindIcon();
@@ -1439,7 +1576,7 @@ public class WeatherWarningActivity extends Activity {
                                 newTextView.setPadding(2,1,2,1);
                                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                 layoutParams.setMargins(2,1,marginRight,1);
-                                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                                layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM,R.id.warningactivity_map);
                                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                                 newTextView.setLayoutParams(layoutParams);
                                 RelativeLayout warningactivity_mapcontainer = (RelativeLayout) findViewById(R.id.warningactivity_mapcontainer);

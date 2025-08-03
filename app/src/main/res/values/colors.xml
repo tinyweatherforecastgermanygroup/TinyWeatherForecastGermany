@@ -77,6 +77,7 @@
     <color name="colorSecondary_SolarizedDark">#268bd2</color>                   <!-- blue -->
     <color name="colorChartTemperatureCold_SolarizedDark">#f8c41c</color>
     <color name="colorChartTemperatureWarm_SolarizedDark">#889ff8</color>
+
     <color name="colorWarning_clear">#00cc00</color>
     <color name="colorWarning_minor">#eeee00</color>
     <color name="colorWarning_moderate">#ee6600</color>
@@ -84,6 +85,8 @@
 
     <color name="fcitem_rain">#2222aa</color>
     <color name="fcitem_clouds">#aaaaaa</color>
+    <color name="seekbar_thumb">#00aaff</color>
+    <color name="seekbar_progress">#0066aa</color>
 
     <color name="colorTextWidget">@color/colorText_DarkTheme</color>
 

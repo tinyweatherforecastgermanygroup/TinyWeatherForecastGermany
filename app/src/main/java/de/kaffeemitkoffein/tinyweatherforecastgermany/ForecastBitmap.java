@@ -32,10 +32,7 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 public class ForecastBitmap{
 
@@ -1306,6 +1303,77 @@ public class ForecastBitmap{
             }
         });
         imageView.startAnimation(fadeInAnimation);
+    }
+
+    public final static int PRECIPITATION_BITMAP_AR = 50;
+
+    final static String PRECITPITATION_LABEL_SAMPLE="+XXX";
+
+    private float getPrecipitationColorLabelFontSize(){
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (windowManager!=null){
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+            float screenWidth = displayMetrics.widthPixels;
+            float bitmapHeight = ((float) displayMetrics.heightPixels) / ForecastBitmap.PRECIPITATION_BITMAP_AR;
+            float itemWidth = ((float)screenWidth) / APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE;
+            float fontSize = bitmapHeight;
+            Paint paintText = new Paint();
+            do {
+                fontSize--;
+                paintText.setTextSize(fontSize);
+            } while ((fontSize>6) && (paintText.measureText(PRECITPITATION_LABEL_SAMPLE)>itemWidth));
+            return fontSize;
+        }
+        return 12;
+    }
+
+    public static Bitmap CreatePrecipitationAtPinPointBitmap(Context context, int[] values, final View imageContainterView){
+        // derive bitmap size from view;
+        // to achieve a horizontally stretched font, the bitmap width is tweaked
+        final float bitmapStrechFactor = 2.5f;
+        int bitmapWidth = Math.round(imageContainterView.getWidth()*bitmapStrechFactor);
+        int bitmapHeight = imageContainterView.getHeight();
+        // create bitmap
+        Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(Color.TRANSPARENT);// calculate tile width
+        int tileWidth = bitmapWidth / APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE;
+        // define font for label
+        float fontSize = bitmapHeight;
+        Paint paintText = new Paint();
+        paintText.setColor(Color.BLACK);
+        // paintText.setTypeface(Typeface.SANS_SERIF);
+        paintText.setFakeBoldText(true);
+        // calculate the font size
+        do {
+            fontSize--;
+            paintText.setTextSize(fontSize);
+        } while ((fontSize>6) && (paintText.measureText(PRECITPITATION_LABEL_SAMPLE)>tileWidth));
+
+        for (int position=0; position<APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE; position++){
+            int value = values[position];
+            if (value != Color.TRANSPARENT){
+                int offsetX = Math.round(tileWidth*position);
+                Canvas canvas = new Canvas(bitmap);
+                Paint paint = new Paint();
+                paint.setStyle(Paint.Style.FILL);
+                int radius = bitmap.getWidth()/24/4;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    paint.setColor(value);
+                    canvas.drawRoundRect(offsetX+1,0,offsetX+Math.round(tileWidth-1),bitmap.getHeight(),radius,radius,paint);
+                    paint.setColor(Color.BLACK);
+                    paint.setStyle(Paint.Style.STROKE);
+                    canvas.drawRoundRect(offsetX+1,0,offsetX+Math.round(tileWidth-1),bitmap.getHeight(),radius,radius,paint);
+                } else {
+                    canvas.drawRect(offsetX+1,0,offsetX+Math.round(tileWidth-1),bitmap.getHeight(),paint);
+                }
+                float offsetY = (bitmap.getHeight() - fontSize)/2f;
+                paintText.setTextSize(fontSize);
+                String text = "+" + position * 5;
+                canvas.drawText(text,offsetX+(tileWidth - paintText.measureText(text))/2,offsetY+fontSize,paintText);
+            }
+        }
+        return bitmap;
     }
 
 }

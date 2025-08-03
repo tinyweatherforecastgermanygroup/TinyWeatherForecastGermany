@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="24dp"
                     android:orientation="horizontal"
-                    android:layout_above="@id/warningactivity_notice_text"
+                    android:layout_alignParentTop="true"
                     android:paddingBottom="5dp"
                     android:weightSum="20">
 
@@ -109,12 +109,60 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_above="@id/warningactivity_mapinfo_container">
+                    android:layout_below="@id/warningactivity_mapinfo_container"
+                    android:layout_above="@id/warningactivity_notice_text">
+
+                <RelativeLayout
+                        android:id="@+id/warningactivity_rainsliderSeekbarContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="1dp"
+                        android:paddingBottom="1dp"
+                        android:visibility="invisible"
+                >
+
+                    <ImageView
+                            android:id="@+id/warningactivity_rainsliderColors"
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp"
+                            android:layout_gravity="center"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center"
+                            android:scaleType="fitXY"
+                    />
+
+                    <SeekBar
+                            android:id="@+id/warningactivity_rainsliderSeekbar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:thumb="@drawable/seekthumb"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="0dp"
+                            android:splitTrack="false"
+                            android:thumbOffset="5dp"
+                            android:layout_below="@id/warningactivity_rainsliderColors"
+                            android:progress="4"
+                            android:min="0"
+                            android:max="100"
+                            android:thumbTint="@color/seekbar_thumb"
+                            android:progressTint="@color/seekbar_progress"
+                            android:indeterminate="false"
+                    />
+
+                </RelativeLayout>
 
                 <ImageView
                         android:id="@+id/warningactivity_map"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_above="@id/warningactivity_rainsliderSeekbarContainer"
                         android:src="@drawable/germany2_scale1">
                 </ImageView>
 
