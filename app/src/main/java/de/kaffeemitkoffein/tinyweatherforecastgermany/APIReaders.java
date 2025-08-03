@@ -941,6 +941,7 @@ public class APIReaders {
         long startTime = 0;
         private boolean forceUpdate = false;
         public boolean ssl_exception = false;
+        private boolean fetchIsReady = false;
         int progress = 0;
         int errors = 0;
 
@@ -1118,19 +1119,24 @@ public class APIReaders {
         public void fetchRadarSet(int start, int stop){
             // data available for 2h with 5 min steps => 24 data sets at max
             for (int i=start; i<=stop; i++){
-                try {
-                    putRadarMapToCache(getRadarInputStream(startTime+i*TIMESTEP_5MINUTES),i);
-                    incrementProgress();
-                } catch (IOException e){
-                    incrementErrors();
-                    incrementProgress();
+                if (!fetchIsReady) {
+                    try {
+                        putRadarMapToCache(getRadarInputStream(startTime+i*TIMESTEP_5MINUTES),i);
+                        incrementProgress();
+                    } catch (IOException e){
+                        incrementErrors();
+                        incrementProgress();
+                    }
+                } else {
+                    break;
                 }
             }
         }
 
         public void incrementProgress(){
             progress++;
-            if (progress>=24){
+            if ((progress>=24) && (!fetchIsReady)){
+                fetchIsReady = true;
                 if (errors>3){
                     startTime = WeatherSettings.getPrefRadarLastdatapoll(context);
                     onFinished(startTime,false);
@@ -1148,6 +1154,8 @@ public class APIReaders {
         }
 
         private void multiFetchRadarSet(){
+            progress = 0;
+            fetchIsReady = false;
             // use 0 to 24 for full set
             startTime = roundUTCUpToNextFiveMinutes(Calendar.getInstance().getTimeInMillis());
             // need to delete if read is incomplete
@@ -1185,6 +1193,7 @@ public class APIReaders {
         }
 
         public void onFinished(long startTime, boolean success){
+
             // override to do something with the map
         }
 

@@ -426,6 +426,14 @@ public class WeatherWarningActivity extends Activity {
         displayOsmNotice();
         radarMNSetGeoserverRunnable = new APIReaders.RadarMNSetGeoserverRunnable(getApplicationContext()){
             @Override
+            public void onStart() {
+                super.onStart();
+                validSlideSetObtained = false;
+                showRainSlideProgressBar();
+                updateRainSlideProgressBar(0);
+            }
+
+            @Override
             public void onProgress(long startTime, final int progress) {
                 if (progress==1){
                     rainSlidesStartTime = startTime;
@@ -443,11 +451,14 @@ public class WeatherWarningActivity extends Activity {
                         }
                     });
                 }
-                updateRainSlideProgressBar(progress);
+                if (progress<=APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE){
+                    updateRainSlideProgressBar(progress);
+                }
             }
             @Override
             public void onFinished(long startTime, boolean success){
                 super.onFinished(startTime,success);
+                hideRainSlideProgressBar();
                 if (success){
                     validSlideSetObtained = true;
                     if (precipitationAtPinPointColors!=null){
@@ -476,13 +487,6 @@ public class WeatherWarningActivity extends Activity {
                 } else {
                     validSlideSetObtained = false;
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        rainSlideProgressBar.setVisibility(View.INVISIBLE);
-                        rainSlideProgressBarText.setVisibility(View.INVISIBLE);
-                    }
-                });
             }
         };
         weatherLocationManager = new WeatherLocationManager(context){
@@ -694,6 +698,21 @@ public class WeatherWarningActivity extends Activity {
         canvas.drawText(text,x,y,paint);
     }
 
+    public void updateSlideTimeText(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        Date rainSlideDate = new Date(rainSlidesStartTime+(nextRainSlide)*APIReaders.RadarMNSetGeoserverRunnable.TIMESTEP_5MINUTES);
+        String radartime = simpleDateFormat.format(rainSlideDate);
+        if (validSlideSetObtained) {
+            rainSlideTime.setTextColor(Color.WHITE);
+            if (Calendar.getInstance().getTimeInMillis() > rainSlidesStartTime + 1000*60*60*1.5f){
+                rainSlideTime.setTextColor(0xfffa7712);
+            }
+        } else {
+            rainSlideTime.setTextColor(Color.YELLOW);
+        }
+        rainSlideTime.setText(radartime);
+    }
+
     @SuppressLint("NewApi")
     private void showRainDescription(){
         // Determine the height of the info bar
@@ -746,19 +765,7 @@ public class WeatherWarningActivity extends Activity {
             radarTextPaint.setTextSize(textsize);
         }
         radarTextPaint.setColor(Color.WHITE);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        Date rainSlideDate = new Date(rainSlidesStartTime+(nextRainSlide)*APIReaders.RadarMNSetGeoserverRunnable.TIMESTEP_5MINUTES);
-        String radartime = simpleDateFormat.format(rainSlideDate);
         float ff=1.1f;
-        if (validSlideSetObtained) {
-            rainSlideTime.setTextColor(Color.WHITE);
-            if (Calendar.getInstance().getTimeInMillis() > rainSlidesStartTime + 1000*60*60*1.5f){
-                rainSlideTime.setTextColor(0xfffa7712);
-            }
-        } else {
-            rainSlideTime.setTextColor(Color.YELLOW);
-        }
-        rainSlideTime.setText(radartime);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[2]);
         drawStrokedText(canvas,getResources().getString(R.string.radar_rain1),infoBarWidth*0.1f,infoBitmap.getHeight()-radarinfobarResourceBitmap.getHeight()*ff,radarTextPaint);
         radarTextPaint.setColor(Radarmap.RAINCOLORS[7]);
@@ -788,14 +795,36 @@ public class WeatherWarningActivity extends Activity {
         return bitmap;
     }
 
-    private void updateRainSlideProgressBar(final int progress){
+    private void showRainSlideProgressBar(){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 rainSlideProgressBar.setVisibility(View.VISIBLE);
-                rainSlideProgressBar.setProgress(progress);
                 rainSlideProgressBar.invalidate();
                 rainSlideProgressBarText.setVisibility(View.VISIBLE);
+                rainSlideProgressBarText.invalidate();
+            }
+        });
+    }
+
+    private void hideRainSlideProgressBar(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rainSlideProgressBar.setVisibility(View.INVISIBLE);
+                rainSlideProgressBar.invalidate();
+                rainSlideProgressBarText.setVisibility(View.INVISIBLE);
+                rainSlideProgressBarText.invalidate();
+            }
+        });
+    }
+
+    private void updateRainSlideProgressBar(final int progress){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                rainSlideProgressBar.setProgress(progress);
+                rainSlideProgressBar.invalidate();
                 rainSlideProgressBarText.setText(Math.round((float) progress/(float) (APIReaders.RadarMNSetGeoserverRunnable.DATASET_SIZE-1)*100f)+"%");
                 rainSlideProgressBarText.invalidate();
             }
@@ -893,6 +922,7 @@ public class WeatherWarningActivity extends Activity {
             canvas.drawBitmap(administrativeBitmap,0,0,cp);
         }
         if ((!hide_rain) && (radarBitmap!=null)){
+            updateSlideTimeText();
             cp.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
             canvas.drawBitmap(radarBitmap, 0,0,cp);
             if (!mapIsDrawn){
