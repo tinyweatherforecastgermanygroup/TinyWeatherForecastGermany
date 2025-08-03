@@ -119,10 +119,10 @@
                         android:layout_alignParentBottom="true"
                         android:layout_gravity="center"
                         android:layout_centerHorizontal="true"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="1dp"
-                        android:paddingBottom="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp"
                         android:visibility="invisible"
                 >
 
