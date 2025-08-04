@@ -941,9 +941,9 @@ public class APIReaders {
         long startTime = 0;
         private boolean forceUpdate = false;
         public boolean ssl_exception = false;
-        private boolean fetchIsReady = false;
         int progress = 0;
         int errors = 0;
+        int threadsDone = 0;
 
         public RadarMNSetGeoserverRunnable(Context context){
             this.context = context;
@@ -1119,24 +1119,20 @@ public class APIReaders {
         public void fetchRadarSet(int start, int stop){
             // data available for 2h with 5 min steps => 24 data sets at max
             for (int i=start; i<=stop; i++){
-                if (!fetchIsReady) {
-                    try {
-                        putRadarMapToCache(getRadarInputStream(startTime+i*TIMESTEP_5MINUTES),i);
-                        incrementProgress();
-                    } catch (IOException e){
-                        incrementErrors();
-                        incrementProgress();
-                    }
-                } else {
-                    break;
+                try {
+                    putRadarMapToCache(getRadarInputStream(startTime+i*TIMESTEP_5MINUTES),i);
+                    incrementProgress();
+                } catch (IOException e){
+                    incrementErrors();
+                    incrementProgress();
                 }
             }
+            threadsDone++;
+            checkThreadsDone();
         }
 
-        public void incrementProgress(){
-            progress++;
-            if ((progress>=24) && (!fetchIsReady)){
-                fetchIsReady = true;
+        private void checkThreadsDone(){
+            if (threadsDone>=4){
                 if (errors>3){
                     startTime = WeatherSettings.getPrefRadarLastdatapoll(context);
                     onFinished(startTime,false);
@@ -1144,9 +1140,12 @@ public class APIReaders {
                     WeatherSettings.setPrefRadarLastdatapoll(context,startTime);
                     onFinished(startTime,true);
                 }
-            } else {
-                onProgress(startTime,progress);
             }
+        }
+
+        public void incrementProgress(){
+            progress++;
+            onProgress(startTime,progress);
         }
 
         public void incrementErrors(){
@@ -1155,7 +1154,7 @@ public class APIReaders {
 
         private void multiFetchRadarSet(){
             progress = 0;
-            fetchIsReady = false;
+            threadsDone = 0;
             // use 0 to 24 for full set
             startTime = roundUTCUpToNextFiveMinutes(Calendar.getInstance().getTimeInMillis());
             // need to delete if read is incomplete
