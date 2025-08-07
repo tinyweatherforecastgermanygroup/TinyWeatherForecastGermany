@@ -108,7 +108,7 @@ Contributors:
 
 Translations:
 
-* Chinese: hugoalh
+* Chinese: hugoalh, YaronW
 * Czech: eUgEntOptIc44, mondstern
 * Danish: eUgEntOptIc44, mondstern
 * Dutch: Allan Nordhøy, alternative_be, eUgEntOptIc44, Jean-Luc Tibaux, jwildeboer, mondstern, Vistaus

@@ -1,0 +1,3 @@
+- improved rain radar
+- fixed missing rounding in precipitation amount
+- improved translations

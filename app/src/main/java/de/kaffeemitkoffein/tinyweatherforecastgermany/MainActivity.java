@@ -794,8 +794,6 @@ public class MainActivity extends Activity {
         long test = (long) DataStorage.getLong(context,DataStorage.DATASTORAGE_TEST, 40);
         DataStorage.printPackages(context,DataStorage.readAllPackages(context));
          */
-        //Log.v("tiwefoge","COLOR: "+Color.parseColor("#fb1bff"));
-        // startActivity(new Intent(this,WeatherWarningActivity.class));
     }
 
     public static long getEstimatedAdapterLayoutTimeInMillis(Context context){

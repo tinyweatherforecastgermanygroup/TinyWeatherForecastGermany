@@ -1,11 +1,7 @@
 New in version [VERSION]:
 
-- fixed a crash caused by warnings with no expiration date
-- fixed rain radar film sometimes not starting properly
-- the precipitation amount in intervals is now displayed as the sum of hourly values
-- when the uv hazard index is set to "clear sky", this is now indicated by a tiny sun symbol
-- further minor ui improvements and bug fixes
-- updated list of weather stations
+- improved rain radar
+- fixed missing rounding in precipitation amount
 - improved translations
 
 For a detailed list of changes, see https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md

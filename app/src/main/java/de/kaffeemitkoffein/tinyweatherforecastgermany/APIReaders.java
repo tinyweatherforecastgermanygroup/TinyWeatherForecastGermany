@@ -945,6 +945,8 @@ public class APIReaders {
         int errors = 0;
         int threadsDone = 0;
 
+        private final static int THREADS_USED = 24;
+
         public RadarMNSetGeoserverRunnable(Context context){
             this.context = context;
             //WN_RADAR_URL="//maps.dwd.de/geoserver/dwd/wms?service=WMS&version=1.1.0&request=GetMap&layers=dwd%3AWN-Produkt&"+RadarMN2.BBOX+"&TIMESTAMP&width="+RadarMN2.getFixedRadarMapWidth(context)+"&height="+RadarMN2.getFixedRadarMapHeight(context)+"&srs=EPSG%3A3857&styles=&format=image%2Fpng";
@@ -1132,7 +1134,7 @@ public class APIReaders {
         }
 
         private void checkThreadsDone(){
-            if (threadsDone>=4){
+            if (threadsDone>=THREADS_USED){
                 if (errors>3){
                     startTime = WeatherSettings.getPrefRadarLastdatapoll(context);
                     onFinished(startTime,false);
@@ -1152,7 +1154,7 @@ public class APIReaders {
             errors++;
         }
 
-        private void multiFetchRadarSet(){
+        private void multiFetchRadarSetOld(){
             progress = 0;
             threadsDone = 0;
             // use 0 to 24 for full set
@@ -1185,6 +1187,53 @@ public class APIReaders {
                     fetchRadarSet(19, 24);
                 }
             });
+        }
+
+        private void multiFetchRadarSet(){
+            progress = 0;
+            threadsDone = 0;
+            // use 0 to 24 for full set
+            startTime = roundUTCUpToNextFiveMinutes(Calendar.getInstance().getTimeInMillis());
+            // need to delete if read is incomplete
+            deleteCacheFiles(context);
+            errors = 0;
+            Executor executor = Executors.newFixedThreadPool(THREADS_USED);
+            final int slidesPerThread = DATASET_SIZE / THREADS_USED;
+            for (int i=0; i<THREADS_USED; i++){
+                final int thread = i;
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        fetchRadarSet(thread*slidesPerThread, (thread+1)*slidesPerThread - 1);
+                    }
+                });
+            }
+            /*
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    fetchRadarSet(0, 5);
+                }
+            });
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    fetchRadarSet(6, 11);
+                }
+            });
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    fetchRadarSet(12, 18);
+                }
+            });
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    fetchRadarSet(19, 24);
+                }
+            });
+             */
         }
 
         public void onStart(){

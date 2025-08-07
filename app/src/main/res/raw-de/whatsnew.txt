@@ -1,11 +1,7 @@
 Neu in dieser Version [VERSION]:
 
-- App-Absturz behoben, der durch Warnungen ohne Ablaufdatum ausgelöst wurde
-- das Regenradar startet nun auch dann zuverlässig, wenn die Daten noch aktuell sind
-- die Niederschlagsmenge in Intervallen wird nun als Summe der Stundenwerte angezeigt
-- falls der UV-Gefahrenindex auf "klarer Himmel" eingestellt ist, wird ein kleines Sonnen-Symbol angezeigt
-- weitere, kleinere Verbesserungen der Benutzeroberfläche und Fehlerbehebungen
-- aktualisierte Liste der Wetterstationen
+- verbessertes Regenradar
+- fehlende Rundung in der Anzeige der Niederschlagsmenge behoben
 - verbesserte Übersetzungen
 
 Für eine detaillierte Liste der Änderungen siehe https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md

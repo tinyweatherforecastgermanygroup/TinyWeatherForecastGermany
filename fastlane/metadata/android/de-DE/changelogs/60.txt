@@ -1,0 +1,3 @@
+- verbessertes Regenradar
+- fehlende Rundung in der Anzeige der Niederschlagsmenge behoben
+- verbesserte Übersetzungen
