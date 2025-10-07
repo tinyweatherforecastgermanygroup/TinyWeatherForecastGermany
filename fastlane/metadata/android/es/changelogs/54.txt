@@ -1,0 +1,5 @@
+- se solucionó el restablecimiento ocasional de la configuración
+- el color de fondo de algunas advertencias ahora es más oscuro para mejorar la legibilidad
+- se añadió una configuración para resaltar la hora del día en el gráfico de resumen
+- se añadió la opción de cambiar a otro espejo de opendata.dwd.de
+- otras correcciones menores de errores y traducciones mejoradas

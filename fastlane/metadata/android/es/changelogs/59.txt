@@ -1,0 +1,7 @@
+- se solucionó un fallo causado por advertencias sin fecha de caducidad
+- se solucionó el problema de que la película del radar de lluvia a veces no comenzaba correctamente
+- la cantidad de precipitación en intervalos ahora se muestra como la suma de los valores horarios
+- cuando el índice de peligro UV se establece en "cielo despejado", esto ahora se indica con un pequeño símbolo de sol
+- se realizaron más mejoras menores en la interfaz de usuario y correcciones de errores
+- lista de estaciones meteorológicas actualizada
+- traducciones mejoradas

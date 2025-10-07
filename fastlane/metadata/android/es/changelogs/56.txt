@@ -1,0 +1,4 @@
+- se solucionó el fallo de la actividad de mapas cuando no hay conexión a internet y/o no hay datos de polen disponibles
+- se mejoró la apariencia del widget en algunos dispositivos y lanzadores
+- se corrigió el tamaño de la fuente demasiado pequeña en el widget "El Tiempo en Detalle"
+- se corrigió la imagen de vista previa incorrecta mostrada en el widget "El Tiempo y la Hora"

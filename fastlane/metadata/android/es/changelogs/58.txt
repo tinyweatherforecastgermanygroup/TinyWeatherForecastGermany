@@ -1,0 +1,5 @@
+- opciones adicionales para personalizar el gráfico de resumen
+- ahora se puede ajustar el tamaño del reloj en el widget
+- si no hay datos meteorológicos para una estación meteorológica, esto se mostrará
+- los widgets ahora se muestran mejor con algunos lanzadores
+- la previsión de polen ahora se muestra de manera fiable en los detalles del clima

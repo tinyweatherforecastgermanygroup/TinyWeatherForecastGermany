@@ -1,0 +1,8 @@
+- nueva configuración para mostrar el punto de rocío en lugar de la humedad relativa
+- fórmula de cálculo de humedad corregida
+- se añadió la opción de mostrar la información de la trayectoria del viento
+- se añadió una opción para guardar la última posición y zoom del mapa
+- las advertencias sobre la ubicación elegida ahora están resaltadas por un marco
+- la humedad relativa y el punto de rocío ahora se dibujan correctamente en el gráfico de resumen para temperaturas por debajo de 0° C
+- más correcciones de errores y mejoras
+- traducciones mejoradas

@@ -1,0 +1,5 @@
+- arregla el radar de lluvia
+- el pronóstico del índice de peligro UV mostrado en la vista principal de la aplicación se puede cambiar a "cielo despejado"
+- mejor rendimiento de la vista principal de la aplicación
+- traducciones mejoradas
+- varias correcciones de errores
