@@ -200,7 +200,7 @@
     <string name="welcome_next">Siguiente</string>
     <string name="welcome_ready">¡Listo!</string>
     <string name="welcome_s1_text1">gratuito, libre, código abierto</string>
-    <string name="welcome_s1_text2">soporta &gt; 5000 localizaciones</string>
+    <string name="welcome_s1_text2">admite &gt; 6000 ubicaciones</string>
     <string name="welcome_s1_text3">previsión de hasta 10 días</string>
     <string name="welcome_s1_text4">avisos meteorológicos para Alemania</string>
     <string name="welcome_s1_text5">widgets de la pantalla de inicio</string>
@@ -531,4 +531,6 @@
     <string name="preference_uvi_notice_summary">Encontrará más detalles sobre el cálculo del índice de peligro UV en la página de inicio de la DWD. El cambio de la preferencia de cielo despejado hace necesario actualizar los datos de previsión de la DWD.</string>
     <string name="preference_screen_uvhi_mainType_title">Cielo despejado</string>
     <string name="preference_screen_uvhi_mainType_summary">No aplique factores de modificación de nubes a la previsión del índice de peligro UV que se muestra en la vista principal de la aplicación.</string>
+    <string name="preference_overviewchart_inappsize_title">Tamaño</string>
+    <string name="preference_overviewchart_inappsize_summary">Tamaño del gráfico en modo vertical.</string>
 </resources>
