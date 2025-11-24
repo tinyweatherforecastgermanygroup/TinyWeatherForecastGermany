@@ -92,7 +92,7 @@
     <string name="preference_displaynoteinwidget_title">DWD-informatie tonen</string>
     <string name="preference_displayvisibility_title">Zichtbaarheid</string>
     <string name="preference_displayvisibility_summary">Toon zichtbaarheid in voorspellingen.</string>
-    <string name="preference_displaysunrise_summary">Toon de zonsop-, ondergang en schemertijden.</string>
+    <string name="preference_displaysunrise_summary">Zonsopgang, -ondergang en schemertijden weergeven.</string>
     <string name="preference_displayendofdaybar_title">Afzonderlijke dagen</string>
     <string name="preference_displayendofdaybar_summary">Toon een balk om dagen afzonderlijk te tonen.</string>
     <string name="preference_display_gradient_title">Tijdskleurverloop</string>
