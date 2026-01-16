@@ -803,10 +803,25 @@ public class ForecastBitmap{
                 canvas.drawText(s2,x1+lineWidth+lineWidth/10f,y1+textPaint.getTextSize(),textPaint);
             }
         }
-        // paint warnings
-        // the warnings arraylist may be empty at 1st call, but this will be called again once the main app knows
-        // which warnings apply to the location. The warnings arraylist only includes warnings that apply to the
-        // selected location. We need to only check here if time applies.
+        /**
+         * Draw weather warning overlays on the chart.
+         * 
+         * Weather warnings are displayed as semi-transparent colored rectangles overlaid on the chart
+         * to visually indicate the time period when a warning is active. Each warning polygon spans:
+         * - Horizontally: from warning onset time (x1) to expiration time (x2)
+         * - Vertically: from top of chart (0) to bottom of chart (chartHeight)
+         * 
+         * The warnings arraylist may be empty at 1st call, but this will be called again once the main 
+         * app knows which warnings apply to the location. The warnings arraylist only includes warnings 
+         * that apply to the selected location. We need to only check here if time applies.
+         * 
+         * Note: The polygon uses 5 points to ensure proper closure:
+         *   Point 0: top-left (x1, 0)
+         *   Point 1: top-right (x2, 0)
+         *   Point 2: bottom-right (x2, chartHeight)
+         *   Point 3: bottom-left (x1, chartHeight)
+         *   Point 4: close path back to top-left (x1, 0)
+         */
         long chartTimeStart = weatherInfos.get(0).getTimestamp();
         long chartTimeStop  = weatherInfos.get(endPosition-1).getTimestamp();
         float chartWidth = width-xChartOffset;
@@ -818,19 +833,22 @@ public class ForecastBitmap{
                      //if ((warning.getSeverity() >= WeatherSettings.getWarningsNotifySeverity(context)) && (WeatherSettings.filterWarningsInOverviewChartBySeverity(context))) {
                      if (!WeatherSettings.areWarningsDisabled(context)){
                          if ((!WeatherSettings.filterWarningsInOverviewChartBySeverity(context)) || (warning.getSeverity() >= WeatherSettings.getWarningsNotifySeverity(context))) {
+                             // Calculate horizontal position: map warning time range to pixel coordinates
                              float x1 = xChartOffset + (warning.onset-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
                              if (x1<xChartOffset){
                                  x1 = xChartOffset;
                              }
                              float x2 = xChartOffset + (warning.getApplicableExpires()-chartTimeStart)*(((float)chartWidth)/((float)(chartTimeStop-chartTimeStart)));
                              int color = warning.getWarningColor();
+                             // Define warning polygon as a rectangle spanning the warning time period
+                             // All coordinates are in pixels (not timestamps!)
                              float[] warningPolygonX = new float[5];
                              float[] warningPolygonY = new float[5];
-                             warningPolygonX[0] = x1; warningPolygonY[0] = 0;
-                             warningPolygonX[1] = x2; warningPolygonY[1] = 0;
-                             warningPolygonX[2] = x2; warningPolygonY[2] = chartHeight;
-                             warningPolygonX[3] = x1; warningPolygonY[3] = chartTimeStart;
-                             warningPolygonX[4] = x1; warningPolygonY[4] = 0;
+                             warningPolygonX[0] = x1; warningPolygonY[0] = 0;                // Top-left corner
+                             warningPolygonX[1] = x2; warningPolygonY[1] = 0;                // Top-right corner
+                             warningPolygonX[2] = x2; warningPolygonY[2] = chartHeight;      // Bottom-right corner
+                             warningPolygonX[3] = x1; warningPolygonY[3] = chartHeight;      // Bottom-left corner (FIXED: was chartTimeStart)
+                             warningPolygonX[4] = x1; warningPolygonY[4] = 0;                // Close path back to top-left
                              drawPolygon(canvas,warningPolygonX,warningPolygonY,color,alphaWarnings);
                          }
                      }
