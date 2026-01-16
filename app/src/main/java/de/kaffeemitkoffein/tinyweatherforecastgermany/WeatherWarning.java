@@ -315,7 +315,9 @@ public class WeatherWarning implements Comparable<WeatherWarning> {
         stringBuilder.append(getUnderlineString(this.headline,"="));
         stringBuilder.append(newLine);
         stringBuilder.append(newLine);
-        if (this.instruction.trim().length()>0){
+        // Instruction field is optional per CAP (Common Alerting Protocol) standard
+        // Only append if present and non-empty to avoid NullPointerException
+        if (this.instruction != null && this.instruction.trim().length()>0){
             stringBuilder.append(this.instruction);
             stringBuilder.append(newLine); stringBuilder.append(newLine);
         }
