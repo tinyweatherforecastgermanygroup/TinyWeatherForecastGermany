@@ -48,6 +48,7 @@ public class CreateAreasDatabaseService extends Service {
             // c) does not already run
             if ((!Areas.doesAreaDatabaseExist(getApplicationContext())) || (!Areas.AreaDatabaseCreator.areAreasUpToDate(getApplicationContext()))){
                 if (!WeatherSettings.isAreaDatabaseLocked(context)){
+                    WeatherSettings.lockAreaDatabase(context); // lock before queuing any work
                     PrivateLog.log(getApplicationContext(),PrivateLog.MAIN, PrivateLog.INFO,"Start building area database...");
                     Areas.AreaDatabaseCreator areasDataBaseCreator = new Areas.AreaDatabaseCreator(getApplicationContext(),executor){
                         @Override
@@ -71,8 +72,12 @@ public class CreateAreasDatabaseService extends Service {
                         }
                     };
                     areasDataBaseCreator.setProgressSteps(100);
-                    areasDataBaseCreator.create();
-                    WeatherSettings.lockAreaDatabase(context);
+                    try {
+                        areasDataBaseCreator.create();
+                    } catch (Exception e){
+                        WeatherSettings.unlockAreaDatabase(context); // ensure lock is released on failure
+                        throw e;
+                    }
                 }
             }
         }
