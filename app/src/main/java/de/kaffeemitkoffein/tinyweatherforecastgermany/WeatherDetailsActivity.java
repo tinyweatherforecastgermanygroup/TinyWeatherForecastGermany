@@ -294,6 +294,13 @@ public class WeatherDetailsActivity extends Activity {
         } catch (Exception e){
             PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"Error loading present weather data: "+e.getMessage());
         }
+        // Check if weather data is available before proceeding
+        if (currentWeatherInfo == null) {
+            PrivateLog.log(context,PrivateLog.MAIN,PrivateLog.ERR,"No weather data available - database may be empty");
+            Toast.makeText(context, R.string.error_no_data, Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
         TextView textViewNotice = (TextView) findViewById(R.id.weatherdetails_reference_text);
         if ((textViewNotice!=null) && (ForecastBitmap.getDisplayOrientation(context)== Configuration.ORIENTATION_LANDSCAPE)){
             float textSize = context.getResources().getDimension(R.dimen.fcmain_textsize_smaller);
