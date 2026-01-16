@@ -987,7 +987,7 @@ public class WeatherSettings {
         pref_editor.putInt(PREF_NOTIFICATION_IDENTIFIER,b);
         pref_editor.apply();
          */
-        DataStorage.setLong(context,DataStorage.DATASTORAGE_NOTIFICATION_IDENTIFIER,b);
+        DataStorage.setInt(context,DataStorage.DATASTORAGE_NOTIFICATION_IDENTIFIER,b);
         return i;
     }
 
@@ -1000,7 +1000,7 @@ public class WeatherSettings {
             pref_editor.putInt(PREF_DISPLAY_OVERVIEWCHART,NotificationIDRange.MIN);
             pref_editor.apply();
              */
-            DataStorage.setLong(context,DataStorage.DATASTORAGE_NOTIFICATION_IDENTIFIER,NotificationIDRange.MIN);
+            DataStorage.setInt(context,DataStorage.DATASTORAGE_NOTIFICATION_IDENTIFIER,NotificationIDRange.MIN);
         }
     }
 
