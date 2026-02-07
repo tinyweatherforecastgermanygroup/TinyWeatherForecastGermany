@@ -486,7 +486,7 @@ public class RawWeatherInfo{
         }
         int[] itemlist = toIntArray(item);
         if (itemlist != null){
-            int v = itemlist[0];
+            int v = itemlist[first];
             for (int i=first; i<=last; i++){
                 if (itemlist[i]>v){
                     v = itemlist[i];

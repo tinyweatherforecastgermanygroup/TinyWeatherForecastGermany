@@ -19,8 +19,10 @@ public class DataStorage {
     public final static int DATASTORAGE_POLLENREGION_DESCRIPTION = 12;
     public final static int DATASTORAGE_LASTGPSFIX = 13;
     public final static int DATASTORAGE_NOTIFICATION_IDENTIFIER = 14;
-    public final static int DATASTORAGE_LAST_NOTIFICATIONS_UPDATE_TIME = 15;
-    public final static int DATASTORAGE_NC_CHANNEL_DETAIL = 15;
+    // Storage for notification system timing and channel management
+    // These IDs must be unique to prevent database key collisions
+    public final static int DATASTORAGE_LAST_NOTIFICATIONS_UPDATE_TIME = 15;  // Timestamp of last notification check
+    public final static int DATASTORAGE_NC_CHANNEL_DETAIL = 16;               // Notification channel ID timestamp (FIXED: was 15, caused collision)
     public final static int DATASTORAGE_WEATHERUPDATEDFLAG = 20;
     public final static int DATASTORAGE_RADAR_LASTDATAPOLL = 21;
     public static final int DATASTORAGE_VIEWS_LAST_UPDATE_TIME = 22;
@@ -61,14 +63,27 @@ public class DataStorage {
         PrivateLog.log(context,PrivateLog.DATA,PrivateLog.INFO,"----------------------");
     }
 
+    /**
+     * Retrieves a single data package from storage by its ID.
+     * This is the core read method used by all typed getter methods (getInt, getLong, etc.).
+     * 
+     * The method queries the database using the ContentResolver, retrieves the cursor,
+     * and converts the first matching row into a DataPackage object.
+     * 
+     * @param context the application context
+     * @param id the storage ID constant identifying which data to retrieve
+     * @return the DataPackage containing the stored value, or null if not found
+     */
     public static DataPackage readDataPackage(Context context, int id){
         DataPackage dataPackage = null;
         ContentResolver contentResolver = context.getContentResolver();
+        // Query database for entry with matching ID
         String selection = WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_id+ " LIKE ?";
         String[] selectionArgs = new String[]{Integer.toString(id)};
         Cursor cursor = contentResolver.query(WeatherContentManager.DATA_URI_ALL,null,selection,selectionArgs,null);
         if (cursor!=null){
             if (cursor.moveToFirst()){
+                // Convert cursor row to DataPackage object
                 dataPackage = WeatherContentManager.getDataFromCursor(cursor);
                 //PrivateLog.log(context,PrivateLog.DATASTORAGE,PrivateLog.ERR,"Got data package: "+dataPackage.valueLong+" id="+dataPackage.id);
             } else {
@@ -84,11 +99,26 @@ public class DataStorage {
         return dataPackage;
     }
 
+    /**
+     * Stores a data package in the database using an upsert pattern (delete then insert).
+     * This is the core write method used by all typed setter methods (setInt, setLong, etc.).
+     * 
+     * Implementation note: This uses a delete-then-insert pattern rather than an update.
+     * This ensures any existing entry with the same ID is completely replaced. This is why
+     * duplicate storage IDs cause data collision - the delete operation removes the previous
+     * entry regardless of which constant was used to write it.
+     * 
+     * @param context the application context
+     * @param id the storage ID constant identifying where to store the data
+     * @param contentValues the pre-formatted ContentValues object containing the data to store
+     */
     private static void putContentValue(Context context, int id, ContentValues contentValues){
         ContentResolver contentResolver = context.getContentResolver();
+        // Delete any existing entry with this ID (enables "upsert" semantics)
         String selection = WeatherContentProvider.WeatherDatabaseHelper.KEY_DATA_id+ " = ?";
         String[] selectionArgs = {Integer.toString(id)};
         contentResolver.delete(WeatherContentManager.DATA_URI_ALL,selection,selectionArgs);
+        // Insert the new value at this ID
         Uri rows = contentResolver.insert(WeatherContentManager.DATA_URI_ALL,contentValues);
         // PrivateLog.log(context,PrivateLog.DATASTORAGE,PrivateLog.INFO,"Station update: rows updated "+rows.toString());
     }
@@ -174,26 +204,57 @@ public class DataStorage {
         putContentValue(context,id,contentValues);
     }
 
-    public boolean getBoolean(Context context, int id, boolean defaultValue){
+    /**
+     * Retrieves a boolean value from storage.
+     * Note: Boolean values are stored as long (0 for false, non-zero for true).
+     * 
+     * @param context the application context
+     * @param id the storage ID constant
+     * @param defaultValue the default value to return if no data exists
+     * @return the stored boolean value, or defaultValue if not found
+     */
+    public static boolean getBoolean(Context context, int id, boolean defaultValue){
         DataPackage dataPackage = readDataPackage(context,id);
         if (dataPackage==null){
             setBoolean(context,id,defaultValue);
             return defaultValue;
         }
-        return dataPackage.valueLong == 0;
+        // Boolean logic: 0 = false, non-zero = true
+        return dataPackage.valueLong != 0;
     }
 
+    /**
+     * Stores the currently selected weather station location in persistent storage.
+     * The location is serialized to a string format before storage.
+     * 
+     * @param context the application context
+     * @param weatherLocation the weather station location to store
+     */
     public static void setStation(Context context, Weather.WeatherLocation weatherLocation){
         String stationString = weatherLocation.serializeToString();
         setString(context,DATASTORAGE_STATION,stationString);
     }
 
+    /**
+     * Retrieves the currently selected weather station location from storage.
+     * If no station has been set, this method initializes storage with the default station
+     * and returns that default location.
+     * 
+     * This is a "get-or-set" pattern: it guarantees a valid weather location is always
+     * returned by creating and storing a default if none exists.
+     * 
+     * @param context the application context
+     * @return the stored weather location, or the default location if none was previously set
+     */
     public static Weather.WeatherLocation getSetStationLocation(Context context){
+        // Retrieve serialized station string from storage, using default as fallback
         String stationString = getString(context,DATASTORAGE_STATION,WeatherSettings.getDefaultWeatherLocation().serializeToString());
         Weather.WeatherLocation weatherLocation;
         if (stationString!=null){
+            // Deserialize the stored station string back into a WeatherLocation object
             weatherLocation = new Weather.WeatherLocation(stationString);
         } else {
+            // No station found in storage - initialize with default and persist it
             weatherLocation = WeatherSettings.getDefaultWeatherLocation();
             DataStorage.setStation(context,weatherLocation);
             PrivateLog.log(context,PrivateLog.DATA,PrivateLog.INFO,"No entry for station found, setting the default station to "+weatherLocation.getDescription(context));

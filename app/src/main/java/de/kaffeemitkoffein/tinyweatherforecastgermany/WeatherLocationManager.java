@@ -234,24 +234,34 @@ public class WeatherLocationManager implements Application.ActivityLifecycleCall
                         locationCandidates.add(location);
                     }
                 }
-                // if known last locations were found, check which one is the most recent
+                // If known last locations were found, select the best one following Android best practices:
+                // Priority 1: Newest location (most recent timestamp)
+                // Priority 2: Best accuracy (only when timestamps are equal - as tiebreaker)
+                // This ensures we always use current location data, which is critical for traveling users
+                // and background location updates (widgets, smartwatch integration, auto station selection).
                 if (locationCandidates.size()>0){
                     Location newLocationCandidate=locationCandidates.get(0);
                     if (locationCandidates.size()>1){
                         for (int i=0; i<locationCandidates.size(); i++){
                             Location location = locationCandidates.get(i);
-                            // always take the newer one
+                            // Priority 1: Always prefer the location with the newer timestamp
+                            // Newer locations are generally more accurate representations of current position
                             if (location.getTime()>newLocationCandidate.getTime()){
                                 newLocationCandidate = location;
                             }
-                            // if both are of the same time, take the more precise one
-                            if (location.hasAccuracy()){
-                                if (!newLocationCandidate.hasAccuracy()){
-                                    newLocationCandidate = location;
-                                } else {
-                                    // means both locations have an accuracy; take the better one
-                                    if (location.getAccuracy()<newLocationCandidate.getAccuracy()){
+                            // Priority 2: Only when timestamps are EQUAL, use accuracy as tiebreaker
+                            // This prevents older but more accurate locations (e.g., stale GPS) from
+                            // overriding newer but less accurate locations (e.g., current Network provider)
+                            else if (location.getTime() == newLocationCandidate.getTime()) {
+                                if (location.hasAccuracy()){
+                                    if (!newLocationCandidate.hasAccuracy()){
+                                        // Prefer location with accuracy data over one without
                                         newLocationCandidate = location;
+                                    } else {
+                                        // Both have accuracy; select the one with better (lower) accuracy value
+                                        if (location.getAccuracy()<newLocationCandidate.getAccuracy()){
+                                            newLocationCandidate = location;
+                                        }
                                     }
                                 }
                             }

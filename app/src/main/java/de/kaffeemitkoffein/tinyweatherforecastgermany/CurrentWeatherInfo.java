@@ -225,14 +225,22 @@ public class CurrentWeatherInfo{
             wi.setForecastType(Weather.WeatherInfo.ForecastType.ONE_HOUR);
             wi.setTimestamp(timesteps[index]);
             wi.setClouds(getIntItem(rawWeatherInfo.N[index]));
+            // N05 = cloud cover at 5% level
             wi.setClouds_N05(getIntItem(rawWeatherInfo.N05[index]));
+            // Nl = low-level cloud cover (below 2000m)
             wi.setClouds_Nl(getIntItem(rawWeatherInfo.Nl[index]));
+            // Nm = mid-level cloud cover (2000-6000m)
             wi.setClouds_Nm(getIntItem(rawWeatherInfo.Nm[index]));
+            // Nh = high-level cloud cover (above 6000m)
             wi.setClouds_Nh(getIntItem(rawWeatherInfo.Nh[index]));
+            // Nlm = cloud cover below 3000m (combined low and mid-level)
             wi.setClouds_Nlm(getIntItem(rawWeatherInfo.Nlm[index]));
+            // H_BsC = height of lowest cloud base in meters
             wi.setClouds_H_BsC(getDoubleItem(rawWeatherInfo.H_BsC[index]));
+            // Neff = effective/total cloud cover accounting for overlapping clouds
             wi.setClouds_Neff(getIntItem(rawWeatherInfo.Neff[index]));
             wi.setTemperature(getDoubleItem(rawWeatherInfo.TTT[index]));
+            // 5cm = temperature at 5cm height above ground
             wi.setTemperature5cm(getDoubleItem(rawWeatherInfo.TTT[index]));
             if ((getDoubleItem(rawWeatherInfo.TTT[index])!=null) && (getDoubleItem(rawWeatherInfo.E_TTT[index])!=null)){
                 wi.setLowTemperature(getDoubleItem(rawWeatherInfo.TTT[index])-getDoubleItem(rawWeatherInfo.E_TTT[index]));
@@ -245,16 +253,25 @@ public class CurrentWeatherInfo{
             wi.setFlurries(getDoubleItem(rawWeatherInfo.FX1[index]));
             wi.setPrecipitationTotal1h(getDoubleItem(rawWeatherInfo.RR1[index]));
             wi.setPrecipitation(getDoubleItem(rawWeatherInfo.RR1c[index]));
+            // Prob = Probability of precipitation event
             wi.setProbPrecipitation(getIntItem(rawWeatherInfo.wwP[index]));
+            // Prob = Probability of drizzle event
             wi.setProbDrizzle(getIntItem(rawWeatherInfo.wwZ[index]));
+            // Prob = Probability of thunderstorm event
             wi.setProbThunderstorms(getIntItem(rawWeatherInfo.wwT[index]));
+            // Prob = Probability of fog event
             wi.setProbFog(getIntItem(rawWeatherInfo.wwM[index]));
+            // Prob = Probability of solid precipitation (snow/sleet)
             wi.setProbSolidPrecipitation(getIntItem(rawWeatherInfo.wwS[index]));
+            // Prob = Probability of freezing rain event
             wi.setProbFreezingRain(getIntItem(rawWeatherInfo.wwF[index]));
             wi.setVisibility(getIntItem(rawWeatherInfo.VV[index]));
+            // Prob = Probability, 1km = event when visibility falls below 1 kilometer
             wi.setProbVisibilityBelow1km(getIntItem(rawWeatherInfo.VV10[index]));
             wi.setPressure(getDoubleItem(rawWeatherInfo.PPPP[index]));
+            // UV = ultraviolet radiation (global irradiance) in kJ/m²
             wi.setUV(getDoubleItem(rawWeatherInfo.RRad1[index]));
+            // Td = dew point temperature in Kelvin
             wi.setTd(getDoubleItem(rawWeatherInfo.Td[index]));
             wi.setPrecipitationDetails(getProbOfPrecipitation(rawWeatherInfo,index));
             wi.setConditionCode(getIntItem((rawWeatherInfo.ww[index])));
@@ -279,7 +296,7 @@ public class CurrentWeatherInfo{
                 rawWeatherInfo.D1[index] = String.valueOf(setSunDurationFromClouds(wi));
             }
             wi.setIsDayTime(isDayTimeArray[index]);
-            // set uv hazard index only if this position is daytime
+            // set UV hazard index only if this position is daytime
             if (isDayTimeArray[index]){
                 wi.setUvHazardIndex(getIntItem(rawWeatherInfo.uvHazardIndex[index]));
             }
@@ -307,14 +324,22 @@ public class CurrentWeatherInfo{
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_6);
             wi.setTimestamp(timesteps[index]);
             wi.setClouds(rawWeatherInfo.getAverageClouds(start, index));
+            // N05 = cloud cover at 5% level
             wi.setClouds_N05(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.N05, start, index));
+            // Nl = low-level cloud cover (below 2000m)
             wi.setClouds_Nl(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nl, start, index));
+            // Nm = mid-level cloud cover (2000-6000m)
             wi.setClouds_Nm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nm, start, index));
+            // Nh = high-level cloud cover (above 6000m)
             wi.setClouds_Nh(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nh, start, index));
+            // Nlm = cloud cover below 3000m (combined low and mid-level)
             wi.setClouds_Nlm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nlm, start, index));
+            // H_BsC = height of lowest cloud base in meters
             wi.setClouds_H_BsC(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.H_BsC, start, index));
+            // Neff = effective/total cloud cover accounting for overlapping clouds
             wi.setClouds_Neff(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Neff, start, index));
             wi.setTemperature(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.TTT, start, index));
+            // 5cm = temperature at 5cm height above ground
             wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm, start, index));
             wi.setLowTemperature(rawWeatherInfo.getMinTemperature(start, index));
             wi.setHighTemperature(rawWeatherInfo.getMaxTemperature(start, index));
@@ -332,40 +357,49 @@ public class CurrentWeatherInfo{
                 // try to self-calculate this
                 wi.setPrecipitation(rawWeatherInfo.getSumDouble(rawWeatherInfo.RR1c, start, index));
             }
+            // Prob = Probability of precipitation event
             wi.setProbPrecipitation(getIntItem(rawWeatherInfo.wwP6[index]));
             if (!wi.hasProbPrecipitation()) {
                 // try to self-calculate this
                 wi.setProbPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwP, start, index));
             }
+            // Prob = Probability of drizzle event
             wi.setProbDrizzle(getIntItem(rawWeatherInfo.wwZ6[index]));
             if (!wi.hasProbDrizzle()) {
                 // try to self-calculate this
                 wi.setProbDrizzle(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwZ, start, index));
             }
+            // Prob = Probability of thunderstorm event
             wi.setProbThunderstorms(getIntItem(rawWeatherInfo.wwT6[index]));
             if (!wi.hasProbThunderstorms()) {
                 // try to self-calculate this
                 wi.setProbThunderstorms(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwT, start, index));
             }
+            // Prob = Probability of fog event
             wi.setProbFog(getIntItem(rawWeatherInfo.wwM6[index]));
             if (!wi.hasProbFog()) {
                 // try to self-calculate this
                 wi.setProbFog(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwM, start, index));
             }
+            // Prob = Probability of solid precipitation (snow/sleet)
             wi.setProbSolidPrecipitation(getIntItem(rawWeatherInfo.wwS6[index]));
             if (!wi.hasProbSolidPrecipitation()) {
                 // try to self-calculate this
                 wi.setProbSolidPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS, start, index));
             }
+            // Prob = Probability of freezing rain event
             wi.setProbFreezingRain(getIntItem(rawWeatherInfo.wwF6[index]));
             if (!wi.hasProbFreezingRain()) {
                 // try to self-calculate this
                 wi.setProbFreezingRain(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS, start, index));
             }
             wi.setVisibility(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.VV, start, index));
+            // Prob = Probability, 1km = event when visibility falls below 1 kilometer
             wi.setProbVisibilityBelow1km(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.VV10, start, index));
             wi.setPressure(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.PPPP, start, index));
+            // UV = ultraviolet radiation (global irradiance) in kJ/m²
             wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1, start, index));
+            // Td = dew point temperature in Kelvin
             wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td, start, index));
             //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
             wi.setConditionCode(getIntItem(rawWeatherInfo.W1W2[index]));
@@ -408,14 +442,22 @@ public class CurrentWeatherInfo{
             wi.setForecastType(Weather.WeatherInfo.ForecastType.HOURS_24);
             wi.setTimestamp(timesteps[index]);
             wi.setClouds(rawWeatherInfo.getAverageClouds(start,index));
+            // N05 = cloud cover at 5% level
             wi.setClouds_N05(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.N05,start,index));
+            // Nl = low-level cloud cover (below 2000m)
             wi.setClouds_Nl(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nl,start,index));
+            // Nm = mid-level cloud cover (2000-6000m)
             wi.setClouds_Nm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nm,start,index));
+            // Nh = high-level cloud cover (above 6000m)
             wi.setClouds_Nh(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nh,start,index));
+            // Nlm = cloud cover below 3000m (combined low and mid-level)
             wi.setClouds_Nlm(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Nlm,start,index));
+            // H_BsC = height of lowest cloud base in meters
             wi.setClouds_H_BsC(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.H_BsC,start,index));
+            // Neff = effective/total cloud cover accounting for overlapping clouds
             wi.setClouds_Neff(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.Neff,start,index));
             wi.setTemperature(rawWeatherInfo.getAverageTemperature(start,index));
+            // 5cm = temperature at 5cm height above ground
             wi.setTemperature5cm(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.T5cm,start,index));
             wi.setLowTemperature(rawWeatherInfo.getMinTemperature(start,index));
             wi.setHighTemperature(rawWeatherInfo.getMaxTemperature(start,index));
@@ -434,17 +476,20 @@ public class CurrentWeatherInfo{
                 // try to self-calculate this
                 wi.setPrecipitation(rawWeatherInfo.getSumDouble(rawWeatherInfo.RR1c, start,index));
             }
+            // Prob = Probability of precipitation event
             wi.setProbPrecipitation(getIntItem(rawWeatherInfo.wwPd[index]));
             if (!wi.hasProbPrecipitation()){
                 // try to self-calculate this
                 wi.setProbPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwP, start,index));
             }
             wi.setProbDrizzle(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwZ,start,index));
+            // Prob = Probability of thunderstorm event
             wi.setProbThunderstorms(getIntItem(rawWeatherInfo.wwTd[index]));
             if (!wi.hasProbThunderstorms()){
                 // try to self-calculate this
                 wi.setProbThunderstorms(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwT, start,index));
             }
+            // Prob = Probability of fog event
             wi.setProbFog(getIntItem(rawWeatherInfo.wwMd[index]));
             if (!wi.hasProbFog()){
                 // try to self-calculate this
@@ -453,9 +498,16 @@ public class CurrentWeatherInfo{
             wi.setProbSolidPrecipitation(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwS,start,index));
             wi.setProbFreezingRain(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.wwF,start,index));
             wi.setVisibility(rawWeatherInfo.getAverageValueInt(rawWeatherInfo.VV,start,index));
+            // Prob = Probability, 1km = event when visibility falls below 1 kilometer
             wi.setProbVisibilityBelow1km(rawWeatherInfo.getMaxIntValue(rawWeatherInfo.VV10,start, index));
-            wi.setPressure(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1,start,index));
+            // Set atmospheric pressure (PPPP) - surface pressure reduced in Pa
+            // This bug caused 24-hour forecasts to display UV radiation values as atmospheric pressure
+            wi.setPressure(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.PPPP,start,index));
+            // Set UV radiation (global irradiance) in kJ/m²
+            // UV = ultraviolet radiation (global irradiance) in kJ/m² - Correctly uses RRad1 for UV data
+            // (unlike the previous line which was incorrectly using RRad1 for pressure)
             wi.setUV(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.RRad1,start,index));
+            // Td = dew point temperature in Kelvin
             wi.setTd(rawWeatherInfo.getAverageValueDouble(rawWeatherInfo.Td,start,index));
             //wi.setPrecipitationDetails(getProbOfPrecipitationAverage(rawWeatherInfo,start,index));
             wi.setConditionCode(getIntItem(rawWeatherInfo.WPcd1[index]));
@@ -475,6 +527,7 @@ public class CurrentWeatherInfo{
             }
             //wi.setSunDuration(getSunDuration(rawWeatherInfo,start,index));
             wi.setSunDuration(rawWeatherInfo.getSumInt(rawWeatherInfo.D1, start,index));
+            // UV = ultraviolet hazard index
             wi.setUvHazardIndex(rawWeatherInfo.getUVHIValue(isDayTimeArray,rawWeatherInfo.uvHazardIndex,start,index));
             forecast24hourly.add(wi);
             index = index + 24;
@@ -496,6 +549,24 @@ public class CurrentWeatherInfo{
         return windData;
     }
 
+    /**
+     * Calculates actual sun duration in seconds based on cloud cover percentage and sunrise/sunset times.
+     * This method estimates the duration of direct sunlight during the forecast hour by reducing the
+     * theoretical maximum sunshine duration (3600 seconds) by the cloud cover percentage.
+     *
+     * The calculation accounts for three scenarios:
+     * 1. Hour contains sunrise: sun duration from sunrise until end of hour, reduced by cloud cover
+     * 2. Hour contains sunset: sun duration from start of hour until sunset, reduced by cloud cover
+     * 3. Full daytime hour (between sunrise and sunset): full hour duration, reduced by cloud cover
+     * 4. Nighttime hour: returns null (no sun duration possible)
+     *
+     * Cloud cover reduction formula: duration * ((100 - cloudCoverPercent) / 100)
+     * This implements the assumption that cloud cover reduces effective solar radiation proportionally.
+     *
+     * @param weatherInfo the Weather.WeatherInfo object containing cloud cover percentage and timestamp.
+     *                    Must have clouds value set for calculation to proceed.
+     * @return the calculated sun duration in seconds (0-3600 for daytime hours, null for nighttime or if clouds unavailable)
+     */
     public Integer setSunDurationFromClouds(Weather.WeatherInfo weatherInfo){
         if (weatherInfo.hasClouds()){
             Astronomy.Riseset riseset = Weather.getRiseset(weatherLocation,weatherInfo.getTimestamp());
@@ -536,6 +607,30 @@ public class CurrentWeatherInfo{
         return null;
     }
 
+    /**
+     * Searches for a significant weather condition across multiple time intervals using a hierarchical
+     * lookup strategy. This method attempts to find a weather condition code from progressively wider
+     * time windows when the current timepoint lacks a condition value.
+     *
+     * The search strategy follows this priority order:
+     * 1. ww (1h): Significant weather at current timepoint (highest priority, most specific)
+     * 2. WPc31 + ww3 (3h): Optional significant weather during last 3 hours
+     * 3. WPc61 + W1W2 (6h): Optional significant weather during last 6 hours
+     * 4. WPch1 (12h): Optional significant weather during last 12 hours
+     * 5. WPcd1 (24h): Optional significant weather during last 24 hours (lowest priority, most general)
+     *
+     * Each condition data array is searched using iteratePositions which returns the first non-null
+     * value found within the search range. This ensures that more recent/specific weather conditions
+     * take precedence over older/general ones.
+     *
+     * Data source: DWD MOSMIX API provides these fields from forecasts at different temporal resolutions.
+     * Weather condition codes follow WMO standards (e.g., 0=clear sky, 1=high clouds, 60=rain, etc.)
+     *
+     * @param position the index in the weather forecast array (0-249) for the timepoint to evaluate
+     * @param rawWeatherInfo the RawWeatherInfo object containing weather arrays from DWD MOSMIX API
+     * @return a weather condition code string if found in any interval, null if no condition found
+     *         in any of the five search intervals
+     */
     public static String interpolateConditionFromHigherIntervals(int position, RawWeatherInfo rawWeatherInfo){
         // WPc11: optional significant weather (highest priority) during last hour
         // WPc31: optional significant weather (highest priority) during last 3h
@@ -575,7 +670,6 @@ public class CurrentWeatherInfo{
      * @param stop
      * @return  true if condition could be determined, otherwise false
      */
-
     public Integer getConditionFromHourlyCondition(final RawWeatherInfo rawWeatherInfo, final int start, final int stop){
         int [] conditions = rawWeatherInfo.toIntArray(rawWeatherInfo.ww);
         // highest DWD code is clear sky 29, but it might be that there are no conditions at all. NOT_AVAILABLE
