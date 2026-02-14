@@ -562,5 +562,6 @@
     <string name="shrug" translatable="false">‾\\_(ツ)_/‾</string>
     <string name="no_data">It seems there is currently no weather forecast available for this location. You can try to refresh the data or choose a different location.</string>
     <string name="switch_to_next_station">Switch to closest station</string>
+    <string name="error_no_data" translatable="true">No weather data available.</string>
 
 </resources>

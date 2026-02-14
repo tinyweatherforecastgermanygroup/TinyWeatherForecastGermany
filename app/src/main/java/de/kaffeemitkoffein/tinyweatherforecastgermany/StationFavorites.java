@@ -35,6 +35,7 @@ public class StationFavorites {
 
     public static ArrayList<Weather.WeatherLocation> getFavorites(Context context){
         String rawFavorites = WeatherSettings.getFavorites2(context);
+        PrivateLog.log(context,PrivateLog.DATA, PrivateLog.INFO,"Favorites string read: "+rawFavorites);
         if (rawFavorites.length()==0){
             return resetFavorites(context);
         }
@@ -46,7 +47,7 @@ public class StationFavorites {
         return favorites;
     }
 
-    public static ArrayList<Weather.WeatherLocation> saveFavorites(Context context, ArrayList<Weather.WeatherLocation> favorites){
+    public static ArrayList<Weather.WeatherLocation> saveFavorites(Context context, final ArrayList<Weather.WeatherLocation> favorites){
         // remove double entries
         ArrayList<Weather.WeatherLocation> sanitizedFavorites = new ArrayList<Weather.WeatherLocation>();
         int count = 0;
@@ -65,6 +66,7 @@ public class StationFavorites {
                 stringBuilder.append(FAVORITES_SEPARATOR);
             }
         }
+        PrivateLog.log(context,PrivateLog.DATA, PrivateLog.INFO,"New favorites string: "+stringBuilder.toString());
         WeatherSettings.putFavorites2(context,stringBuilder.toString());
         return sanitizedFavorites;
     }
@@ -87,7 +89,7 @@ public class StationFavorites {
         return defaultStation;
     }
 
-    public static void deleteList(Context context){
+    public static ArrayList<Weather.WeatherLocation> deleteList(Context context){
         StationFavorites stationFavorites = new StationFavorites(context);
         stationFavorites.favorites = new ArrayList<Weather.WeatherLocation>();
         Weather.WeatherLocation setStation = WeatherSettings.getSetStationLocation(context);
@@ -95,7 +97,7 @@ public class StationFavorites {
             setStation.setDescriptionAlternate(WeatherLocationManager.getDescriptionAlternate(context,setStation));
         }
         stationFavorites.favorites.add(setStation);
-        StationFavorites.saveFavorites(context,stationFavorites.favorites);
+        return StationFavorites.saveFavorites(context,stationFavorites.favorites);
     }
 
     public static ArrayList<Weather.WeatherLocation> resetFavorites(Context context){

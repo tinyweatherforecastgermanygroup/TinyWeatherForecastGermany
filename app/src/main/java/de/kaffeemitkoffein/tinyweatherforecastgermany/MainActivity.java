@@ -997,7 +997,7 @@ public class MainActivity extends Activity {
     }
 
     private void clearFavorites(){
-        StationFavorites.deleteList(context);
+        stationFavorites.favorites = StationFavorites.deleteList(context);
         loadStationsSpinner();
     }
 
