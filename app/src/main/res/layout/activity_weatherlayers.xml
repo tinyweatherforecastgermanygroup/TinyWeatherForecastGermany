@@ -28,7 +28,8 @@
         android:id="@+id/wm_maincontainer"
         android:background="?attr/colorPrimaryDark"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
     <TextView
             android:layout_width="match_parent"

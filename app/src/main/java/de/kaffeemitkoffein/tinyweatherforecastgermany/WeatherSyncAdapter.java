@@ -156,11 +156,11 @@ public class WeatherSyncAdapter extends AbstractThreadedSyncAdapter {
         }
         Intent intent = new Intent(context, WeatherWarningActivity.class);
         PendingIntent pendingIntent;
+        int flags = PendingIntent.FLAG_CANCEL_CURRENT;
         if (Build.VERSION.SDK_INT >= 23) {
-            pendingIntent = PendingIntent.getActivity(context, uniqueNotificationID, intent, PendingIntent.FLAG_IMMUTABLE);
-        } else {
-            pendingIntent = PendingIntent.getActivity(context, uniqueNotificationID, intent, 0);
+            flags |= PendingIntent.FLAG_IMMUTABLE;
         }
+        pendingIntent = PendingIntent.getActivity(context, uniqueNotificationID, intent, flags);
         Bitmap warningIconBitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.warning_icon);
         Bitmap iconMutable = warningIconBitmap.copy(Bitmap.Config.ARGB_8888, true);
         ThemePicker.applyColor(iconMutable, weatherWarning.getWarningColor());

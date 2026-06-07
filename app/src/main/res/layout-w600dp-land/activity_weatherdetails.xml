@@ -28,7 +28,8 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="10"
-        android:background="?attr/colorPrimary">
+        android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true">
 
     <RelativeLayout
             android:layout_width="0dp"

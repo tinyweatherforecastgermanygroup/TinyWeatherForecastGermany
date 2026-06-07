@@ -23,6 +23,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.*;
 import android.graphics.*;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -662,7 +663,11 @@ public class WeatherLayersActivity extends Activity {
         filter.addAction(Pollen.ACTION_UPDATE_POLLEN);
         filter.addAction(MainActivity.MAINAPP_HIDE_PROGRESS);
         filter.addAction(ACTION_UPDATE_FORBIDDEN);
-        registerReceiver(receiver,filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(receiver,filter,RECEIVER_EXPORTED);
+        } else {
+            registerReceiver(receiver,filter);
+        }
     }
 
 

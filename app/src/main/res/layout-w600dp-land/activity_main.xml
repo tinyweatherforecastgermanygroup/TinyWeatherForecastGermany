@@ -26,7 +26,8 @@
         android:layout_height="match_parent"
         android:background="?attr/colorPrimary"
         android:orientation="horizontal"
-        android:weightSum="10">
+        android:weightSum="10"
+        android:fitsSystemWindows="true">
 
     <LinearLayout
             android:id="@+id/main_leftcontainer"

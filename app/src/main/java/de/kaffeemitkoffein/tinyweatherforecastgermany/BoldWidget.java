@@ -72,11 +72,11 @@ public class BoldWidget extends ClassicWidget {
                 Intent intent = new Intent(c, MainActivity.class);
                 PendingIntent pendingIntent;
                 // mutable/immutable flags are available since sdk 23
+                int flags = 0;
                 if (Build.VERSION.SDK_INT>=23){
-                    pendingIntent = PendingIntent.getActivity(c, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-                } else {
-                    pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
+                    flags |= PendingIntent.FLAG_IMMUTABLE;
                 }
+                pendingIntent = PendingIntent.getActivity(c, 0, intent, flags);
                 int widgetResource = R.layout.boldwidget_layout;
                 int forecastDays = 2; // default
                 // calculate threshold values for number of forecast days to display in widget

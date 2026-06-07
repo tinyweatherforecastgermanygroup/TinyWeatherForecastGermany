@@ -45,11 +45,11 @@ public class ClockWidget extends ClassicWidget {
                 Intent intent_weather = new Intent(c, MainActivity.class);
                 // mutable/immutable flags are available since sdk 23
                 PendingIntent pendingIntent_weather;
+                int flags = 0;
                 if (Build.VERSION.SDK_INT>=23){
-                    pendingIntent_weather = PendingIntent.getActivity(c, 0, intent_weather, PendingIntent.FLAG_IMMUTABLE);
-                } else {
-                    pendingIntent_weather = PendingIntent.getActivity(c, 0, intent_weather, 0);
+                    flags |= PendingIntent.FLAG_IMMUTABLE;
                 }
+                pendingIntent_weather = PendingIntent.getActivity(c, 0, intent_weather, flags);
                 remoteViews.setOnClickPendingIntent(R.id.clockwidget_weather_container, pendingIntent_weather);
                 //sets 2nd pending intent to go to clock alarms when clock is touched.
                 Intent intent_clock = new Intent(Intent.ACTION_MAIN);
@@ -57,11 +57,7 @@ public class ClockWidget extends ClassicWidget {
                 ComponentName componentName = new ComponentName("com.android.deskclock", "com.android.deskclock.DeskClock");
                 intent_clock.setComponent(componentName);
                 PendingIntent pendingIntent_clock;
-                if (Build.VERSION.SDK_INT>=23){
-                    pendingIntent_clock = PendingIntent.getActivity(c, 0, intent_clock, PendingIntent.FLAG_IMMUTABLE);
-                } else {
-                    pendingIntent_clock = PendingIntent.getActivity(c, 0, intent_clock, 0);
-                }
+                pendingIntent_clock = PendingIntent.getActivity(c, 0, intent_clock, flags);
                 remoteViews.setOnClickPendingIntent(R.id.clockwidget_clock, pendingIntent_clock);
                 remoteViews.setOnClickPendingIntent(R.id.widget_date, pendingIntent_clock);
                 remoteViews.setOnClickPendingIntent(R.id.widget_nextalarm, pendingIntent_clock);

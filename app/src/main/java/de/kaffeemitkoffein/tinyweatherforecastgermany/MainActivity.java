@@ -1659,7 +1659,11 @@ public class MainActivity extends Activity {
         filter.addAction(WeatherWarningActivity.WEATHER_WARNINGS_UPDATE);
         filter.addAction(MAINAPP_AREADB_READY);
         filter.addAction(MAINAPP_AREADB_PROGRESS);
-        registerReceiver(receiver,filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(receiver,filter,RECEIVER_EXPORTED);
+        } else {
+            registerReceiver(receiver,filter);
+        }
     }
 
     private void disableLogToLogcatIfNotUserDebug(){

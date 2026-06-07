@@ -480,11 +480,11 @@ public class ClassicWidget extends AppWidgetProvider {
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c,MainActivity.class);
                 PendingIntent pendingIntent;
+                int flags = 0;
                 if (Build.VERSION.SDK_INT>=23){
-                    pendingIntent = PendingIntent.getActivity(c,0,intent,PendingIntent.FLAG_IMMUTABLE);
-                } else {
-                    pendingIntent = PendingIntent.getActivity(c,0,intent,0);
+                    flags |= PendingIntent.FLAG_IMMUTABLE;
                 }
+                pendingIntent = PendingIntent.getActivity(c,0,intent,flags);
                 int widgetResource = R.layout.classicwidget_layout;
                 int lines = 1;
                 // if widget hight is > 120 dpi, expand to 2 lines

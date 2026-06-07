@@ -25,7 +25,8 @@
     android:fillViewport="true"
     android:background="?attr/colorPrimary"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/textforecastview_maincontainer"

@@ -1379,7 +1379,11 @@ public class WeatherWarningActivity extends Activity {
         filter.addAction(WEATHER_WARNINGS_UPDATE);
         filter.addAction(MainActivity.MAINAPP_HIDE_PROGRESS);
         filter.addAction(ACTION_RAINRADAR_UPDATE);
-        registerReceiver(receiver,filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(receiver,filter,RECEIVER_EXPORTED);
+        } else {
+            registerReceiver(receiver,filter);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)

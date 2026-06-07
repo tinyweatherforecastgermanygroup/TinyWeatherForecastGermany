@@ -28,7 +28,8 @@
         android:id="@+id/weatherdetails_maincontainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary">
+        android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true">
 
     <TextView android:id="@+id/weatherdetails_reference_text"
               android:layout_width="match_parent"

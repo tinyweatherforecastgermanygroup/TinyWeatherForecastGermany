@@ -48,11 +48,11 @@ public class ChartWidget extends ClassicWidget{
                 // sets up a pending intent to launch main activity when the widget is touched.
                 Intent intent = new Intent(c, MainActivity.class);
                 PendingIntent pendingIntent;
+                int flags = 0;
                 if (Build.VERSION.SDK_INT>=23){
-                    pendingIntent = PendingIntent.getActivity(c, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-                } else {
-                    pendingIntent = PendingIntent.getActivity(c, 0, intent, 0);
+                    flags |= PendingIntent.FLAG_IMMUTABLE;
                 }
+                    pendingIntent = PendingIntent.getActivity(c, 0, intent, flags);
                 RemoteViews remoteViews = new RemoteViews(c.getPackageName(), R.layout.chartwidget_layout);
                 fillChartWidgetItems(c, awm, widget_instances[i], remoteViews, weatherCard);
                 remoteViews.setOnClickPendingIntent(R.id.chartwidget_maincontainer, pendingIntent);
