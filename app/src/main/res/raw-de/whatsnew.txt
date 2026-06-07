@@ -1,6 +1,7 @@
 Neu in dieser Version [VERSION]:
 
-- diverse Fehlerkorrekturen (siehe Changelog für Details)
+- targetSdk ist jetzt 36
+- die App-Sprache kann nun in den App-Einstellungen festgelegt werden
 - verbesserte Übersetzungen
 
 Für eine detaillierte Liste der Änderungen siehe https://codeberg.org/Starfish/TinyWeatherForecastGermany/src/branch/master/CHANGELOG.md

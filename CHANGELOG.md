@@ -1,4 +1,8 @@
 # Changelog 
+## Version 0.63.3
+- app now targets sdk level 36
+- the app language can now be set in the app settings
+- improved translations
 
 ## Version 0.63.2
 - fix probability values in 6-hour and 24-hour forecasts using correct first index
