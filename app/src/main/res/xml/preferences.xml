@@ -18,7 +18,8 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:custom="http://schemas.android.com/apk/res-auto">
+                  xmlns:custom="http://schemas.android.com/apk/res-auto"
+                  android:fitsSystemWindows="true">
 
     <PreferenceCategory
             android:title="@string/preference_category_display">
@@ -74,7 +75,8 @@
         <PreferenceScreen
                 android:key="PREF_screen_display_overviewchart"
                 android:title="@string/preference_display_overviewchart_title"
-                android:summary="@string/preference_screen_overviewchart_summary">
+                android:summary="@string/preference_screen_overviewchart_summary"
+                android:fitsSystemWindows="true">
 
             <CheckBoxPreference
                     android:key="PREF_display_overviewchart"

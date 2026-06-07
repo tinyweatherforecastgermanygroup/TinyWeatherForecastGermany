@@ -27,6 +27,7 @@
           to be set there again.
     -->
     <style name="AppTheme_Light" parent="android:Theme.Holo.Light">
+        <item name="android:fitsSystemWindows">true</item>
         <item name="colorPrimary">@color/colorPrimary_LightTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_LightTheme</item>
         <item name="colorPrimaryLight">@color/colorPrimaryLight_LightTheme</item>
@@ -157,6 +158,7 @@
     -->
 
     <style name="AppTheme_Dark" parent="android:Theme.Holo">
+        <item name="android:fitsSystemWindows">true</item>
         <item name="colorPrimary">@color/colorPrimary_DarkTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_DarkTheme</item>
         <item name="colorPrimaryLight">@color/colorPrimaryLight_DarkTheme</item>

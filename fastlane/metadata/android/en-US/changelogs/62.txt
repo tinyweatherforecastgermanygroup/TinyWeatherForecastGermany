@@ -1,0 +1,3 @@
+- app now targets sdk level 36
+- the app language can now be set in the app settings
+- improved translations

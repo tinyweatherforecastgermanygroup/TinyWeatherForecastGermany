@@ -1,0 +1,3 @@
+- targetSdk ist jetzt 36
+- die App-Sprache kann nun in den App-Einstellungen festgelegt werden
+- verbesserte Übersetzungen
